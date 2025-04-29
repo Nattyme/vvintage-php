@@ -6,13 +6,16 @@
       <a href="<?php HOST;?>shop-new" class="shop__button button button-primary" data-btn="add">
         <span>Добавить товар</span>
        </a>
-  
-      <button class="shop__search search" data-btn="search">
-        <svg class="icon icon--loupe">
-          <use href="./img/svgsprite/sprite.symbol.svg#loupe"></use>
-        </svg>
-        <input type="text" placeholder="Найти">
-      </button>
+      
+      <form method="GET" action="" class="shop__search search" role="search">
+        <input type="text" name="query" placeholder="Найти">
+        <button type="search-submit">
+          <svg class="icon icon--loupe">
+            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
+          </svg>
+        </button>
+      </form>
+
     </header>
 
     <div class="shop__content">
@@ -39,7 +42,17 @@
           <?php foreach ($products as $product) : ?>
             <tr>
               <td class="product-table__img">
-                <img src="  <?php echo HOST . 'usercontent/products/' . $product['cover'];?>" srcset="  <?php echo HOST . 'usercontent/products/' . $product['cover'];?>" alt="">
+              <?php if (file_exists(ROOT . 'usercontent/products/' . $product['cover'])) : ?>
+                <img 
+                  src="<?php echo HOST . 'usercontent/products/' . $product['cover'];?>" 
+                  srcset="<?php echo HOST . 'usercontent/products/' . $product['cover'];?>" alt="" loading="lazy"
+                >
+              <?php else : ?>
+                <img 
+                  src="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" 
+                  srcset="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" alt="Фото товара"
+                >
+              <?php endif; ?>
               </td>
               <td class="product-table__item product-table__item--title">
                 <?php echo htmlspecialchars(trim($product['name'] ?? '')); ?>
@@ -48,9 +61,9 @@
               <!-- link-to-page -->
                 <a class="" href="<?php echo HOST . "admin/"; ?>shop-edit?id=<?php echo $product['id']; ?>"><?php echo $product['brand']; ?></a>
               </td>
-              <td><?php echo $product['category'];?></td>
+              <td><?php echo htmlspecialchars(trim($product['category'] ?? ''));?></td>
               <td>
-                <?php echo $product['price'];?> &euro;
+                <?php echo htmlspecialchars(trim($product['price'] ?? '')); ?>  &euro;
               </td>
               <td>
                 <a class="link" href="https://www.vinted.fr/items/<?php echo $product['article'] . $product['url'];?>">vinted.fr</a>
