@@ -1,0 +1,22 @@
+.nav {
+	display: flex;
+  align-items: center;
+	column-gap: 45px;
+}
+
+.nav__item {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #000;
+}
+
+.nav__item a {
+  color: #000;
+  transition: color 0.5s ease;
+
+  &:hover {
+    color: var(--link-color);
+  }
+}

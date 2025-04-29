@@ -1,0 +1,100 @@
+.admin-panel {
+  padding: 15px 40px;
+
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 54px;
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  background-color: #000;
+}
+
+.admin-panel ~ .header-top {
+  padding-top: 70px;
+}
+
+.admin-panel__message-icon {
+  padding: 4px;
+
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  display: block;
+  -webkit-transform: translate(0%, -50%);
+  -ms-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+
+  font-size: 12px;
+  text-align: center;
+  background-color: #c90000;
+  border-radius: 50%;
+  font-family: var(--font-secondary);
+  min-width: 18px;
+}
+
+.admin-panel__block-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.admin-panel__message {
+  margin-right: 10px;
+
+  position: relative;
+
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+.admin-panel__link {
+  margin-right: 45px;
+
+  display: flex;
+  align-items: center;
+
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  color: #fff;
+
+  transition: all 0.2s ease-in;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.admin-panel__block-button {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+
+  transition: all 0.2s ease-in;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+
+

@@ -1,0 +1,25 @@
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dashboard-item {
+  padding: 15px;
+  border: 1px solid rgb(199, 209, 216);
+  flex-grow: 2;
+}
+
+.dashboard-item {
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+.dashboard-item__title {
+  font-weight: 600;
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+.dashboard-item__value {
+  font-size: 42px;
+  font-weight: 300;
+  margin-bottom: 25px;
+}

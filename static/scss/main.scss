@@ -1,0 +1,66 @@
+/* Base */
+@import './base/_reset';
+@import './base/_vars';
+@import './base/_mixins';
+@import './base/_base';
+@import './base/_utils'; 
+@import './base/_containers';
+@import './base/_sticky-footer';
+@import './base/_buttons';
+@import './base/_typoghraphy';
+
+/* Blocks */
+@import './blocks/_logo';
+@import './blocks/_card';
+@import './blocks/_components';
+@import './blocks/_nav';
+@import './blocks/_sub-nav';
+@import './blocks/_sub-nav-inner';
+@import './blocks/_products-nav';
+@import './blocks/_form-product';
+@import './blocks/_form-contact';
+@import './blocks/_authorization-form';
+@import './blocks/_dashboard';
+@import './blocks/_definition';
+@import './blocks/_article';
+@import './blocks/_header-top';
+@import './blocks/_icons';
+@import './blocks/_mobile-nav';
+@import './blocks/_nav-icon';
+@import './blocks/_pagination';
+@import './blocks/_swiper';
+@import './blocks/_swiper-about';
+@import './blocks/_product-swiper';
+@import './blocks/_tab';
+@import './blocks/_titles';
+@import './blocks/_block-upload';
+@import './blocks/_input';
+@import './blocks/_radio-button';
+@import './blocks/_definition';
+@import './blocks/_avatar';
+@import './blocks/_form-order';
+@import './blocks/_notification.scss';
+@import './blocks/_admin-page.scss';
+@import './blocks/_admin-form.scss';
+@import './blocks/_admin-form-table';
+
+/* Section */
+@import './sections/_admin-panel.scss';
+@import './sections/_about-us';
+@import './sections/_about';
+@import './sections/_arrival';
+@import './sections/_contacts';
+@import './sections/_footer';
+@import './sections/_feature';
+@import './sections/_header';
+@import './sections/_order-created';
+@import './sections/_product-cart';
+@import './sections/_product';
+@import './sections/_products';
+@import './sections/_profile';
+@import './sections/_profile-edit';
+@import './sections/_page-order';
+@import './sections/_page-shopping-cart';
+@import './sections/_page-authorization';
+@import './sections/_admin-panel.scss';
+@import './sections/_control-panel.scss';

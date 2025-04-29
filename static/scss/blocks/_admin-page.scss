@@ -1,0 +1,21 @@
+.admin-panel-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+.admin-page {
+  background: #E0E0E0;
+}
+
+.admin-page__content {
+  flex-grow: 1;
+}
+
+.admin-page__content-form {
+  height: 100%;
+}
+
+.admin-page__left-panel {
+  overflow-y: auto;
+}
+

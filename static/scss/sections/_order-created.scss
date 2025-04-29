@@ -1,0 +1,41 @@
+.order__header {
+  margin-bottom: 214px;
+}
+
+.order__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order__notification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order__img {
+  margin-right: 32px;
+  overflow: hidden;
+
+  img {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+.order__text {
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.order__title {
+  margin-bottom: 17px;
+  font-size: 25px;
+}
+.order__message {
+}
+.order__button {
+}
+.button-outline {
+}

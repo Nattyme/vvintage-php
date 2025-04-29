@@ -1,0 +1,37 @@
+.feature {
+  padding-top: 130px;
+}
+
+.feature__list {
+  margin-bottom: 65px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.feature__item {
+  width: 350px;
+}
+
+.feature__img {
+  margin-bottom: 37px;
+}
+
+.feature__name {
+  margin-bottom: 24px;
+  
+  font-size: 25px;
+  line-height: 1.4;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-skip-ink: none;
+}
+
+.feature__text {
+  p + p {
+    margin-top: 10px;
+  }
+}
+
+.feature__button {
+  text-align: center;
+}

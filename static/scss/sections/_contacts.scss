@@ -1,0 +1,38 @@
+.contacts {
+}
+
+.contacts__header {
+  margin-bottom: 214px;
+}
+
+.contacts__map-wrapper {
+}
+
+.contacts__map {
+  margin-bottom: 130px;
+}
+
+.contacts__widget:not(:last-child) {
+  margin-bottom: 130px;
+}
+
+.contacts__list {
+  display: flex;
+  column-gap: 100px;
+}
+
+.contacts__item {
+  font-size: 20px;
+  line-height: 1.4;
+  
+  p {
+    margin-bottom: 20px;
+  }
+}
+
+.contacts__link {
+}
+
+.contacts__form {
+  margin-bottom: 62px;
+}

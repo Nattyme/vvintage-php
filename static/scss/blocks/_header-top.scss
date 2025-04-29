@@ -1,0 +1,46 @@
+.header-top {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  left: 0;
+  
+  padding-top: 50px;
+  padding-bottom: 40px;
+
+  background-color: #fff;
+
+  &--gradient-bg {
+    background: linear-gradient(
+      90deg, 
+      #fff 57%, 
+      var(--page-bg-accent) 57%
+    );
+    transition: background-color 1s linear;
+    -webkit-transition: background-color 1s linear;
+  }
+
+	&__row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.header-top__nav {
+	@include tablet {
+		display: none;
+	}
+}
+
+.header-top__cta {
+  width: 255px;
+
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 20px;
+}
+
+.header-top__phone {
+  column-gap: 10px;
+}

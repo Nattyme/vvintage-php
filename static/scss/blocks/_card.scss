@@ -1,0 +1,66 @@
+.cards-row {
+  display: flex;
+  column-gap: 30px;
+}
+
+.card {
+  width: 350px;
+  height: 558px;
+  text-align: center;
+}
+
+.card__img {
+  margin-bottom: 24px;
+
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    z-index: 1;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+
+    transition: all 0.5s ease;
+  }
+
+  img {
+    width: 350px;
+    height: 478px;
+    object-fit: cover;
+  }
+
+  svg {
+    z-index: 9;
+    position: absolute;
+    left: 0;
+    top: 50%;
+
+    display: inline-block;
+    transform: translateY(-50%);
+    transition: all 0.5s ease-in-out;
+  }
+}
+
+.card:hover .card__img::before {
+  background: rgba(110, 156, 159, 0.64);
+}
+
+.card:hover svg {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  stroke: #fff;
+}
+
+.card__desc {
+}
+
+.card__title {
+  margin-bottom: 7px;
+}
+
+.card__price {
+}

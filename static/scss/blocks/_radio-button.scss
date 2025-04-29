@@ -1,0 +1,107 @@
+.radio-button-row {
+  display: flex;
+  align-items: center;
+  column-gap: 14px;
+}
+
+.radio-button-real {
+  width: 0;
+  height: 0;
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+.radio-button-custom {
+  position: relative;
+  display: inline-block;
+  vertical-align: sub;
+
+  transition: color 0.3s ease, background-color 0.2s ease-in;
+
+  &--bg-gray {
+    background-color: #927876;
+  }
+
+  &--bg-khaki {
+    background-color: #d4d4d4;
+  }
+
+  &--bg-coral {
+    background-color: #fd9696;
+  }
+
+  &--bg-gold {
+    background-color: #fdc796;
+  }
+}
+
+.radio-button-custom.radio-button-custom--payment {
+  width: 22px;
+  height: 22px;
+
+  border: 1px solid #000;
+}
+
+.radio-button-custom--size {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 41px;
+  height: 41px;
+
+  border: 1px solid #000;
+}
+
+.radio-button-custom--colour {
+  width: 41px;
+  height: 41px;
+
+  border-radius: 50%;
+  border: 1px solid transparent;
+
+  transition: border-color 0.2s ease;
+}
+
+.radio-button-real:focus + .radio-button-custom--before::before  {
+  box-shadow: 0px 0px 0px 1px #000, 0px 0px 10px #ccc;
+}
+
+.radio-button-custom--before::before {
+  content: "";
+
+  /* Рисуем квадрат*/
+  display: inline-block;
+
+  /* Выравниваем по центру */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+
+  transition: 0.2s ease-in;
+}
+
+.radio-button-custom.radio-button-custom--payment::before {
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+}
+
+/*
+Активируем фейковый(декоративный) чекбокс
+*/
+
+.radio-button-real:checked + .radio-button-custom--before::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.radio-button-real:checked + .radio-button-custom--size {
+  background-color: #000;
+  color: #fff;
+}
+
+.radio-button-real:checked + .radio-button-custom--colour {
+  border-color: #000;
+}

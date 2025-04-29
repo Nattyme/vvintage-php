@@ -1,0 +1,93 @@
+.icons-wrapper {
+	padding: 30px 0;
+	display: flex;
+	column-gap: 30px;
+}
+
+.icon {
+	fill: transparent;
+	stroke: transparent;
+	width: 25px;
+	height: 25px;
+}
+
+.icon--logo, .icon--shopping-bag, .icon--arrow-right.dark  {
+	fill: #000;
+}
+
+.icon--arrow-bottom {
+  width: 14px;
+  height: 28px;
+	stroke: #6e9c9f;
+}
+
+.icon--arrow-right {
+  width: 32px;
+  height: 24px;
+}
+
+.icon--approved, .icon--wheel, .icon--hand {
+  width: 60px;
+  height: 60px;
+  fill: #000;
+}
+
+.icon--phone {
+  padding: 3px 4px 7px 6px;
+  width: 27px;
+  height: 27px;
+  fill: #6E9C9F;
+	transition: all 0.5s ease;
+}
+
+:is(a:hover) .icon--phone {
+  background-color: var(--accent);
+  fill: #fff;
+}
+
+.icon--instagram, .icon--facebook, .icon--twitter {
+  width: 23px;
+  height: 23px;
+  fill: #000;
+}
+
+.icon--file-check {
+  width: 96px;
+  height: 96px;
+  fill: #6E9C9F;
+}
+
+.icon--control-up, .icon--control-down {
+  width: 14px;
+  height: 10px;
+  stroke: #A0BBCC;
+}
+
+.icon--delete {
+  width: 12px;
+  height: 12px;
+  stroke: #000;
+}
+
+.icon--success {
+  width: 96px;
+  height: 96px;
+  fill: #6E9C9F;
+}
+
+.icon--slider-arrow {
+  stroke: #000;
+}
+
+.icon--slider-arrow-prev {
+  transform: rotate(180deg);
+}
+
+.icon--profile {
+  stroke: #000;
+}
+
+.icon--logout {
+  fill: #000;
+}
+

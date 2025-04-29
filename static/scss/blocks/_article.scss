@@ -1,0 +1,40 @@
+.article {
+  display: flex;
+  column-gap: 94px;
+  align-items: center;
+}
+
+.article:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.article + .article {
+  margin-top: 130px;
+}
+
+.article__img {
+  flex-shrink: 0;
+  flex-grow: 1;
+  overflow: hidden;
+  img {
+    width: 446px;
+    height: 547px;
+  }
+}
+
+.article__content {
+  flex-grow: 1;
+}
+
+.article__title {
+  margin-bottom: 46px;
+}
+
+.article__text {
+  font-size: 17px;
+  line-height: 1.4;
+  
+  p + p {
+    margin-top: 15px;
+  }
+}

@@ -1,0 +1,28 @@
+<form class="authorization-form authorization-form--lost-pass" name="formLostPass" method="POST" action="">
+  <div class="authorization-form__heading">
+    <h2 class="heading">Восстановить пароль</h2>
+  </div>
+
+  <?php include ROOT . "templates/components/errors.tpl"; ?>
+  <?php include ROOT . "templates/components/success.tpl"; ?>
+
+  <?php if (!isset($resultEmail)) : ?>
+  <div class="authorization-form__field">
+    <p class="authorization-form__field-title">Email</p>
+    <input name="email" class="input" type="text" placeholder="Введите ваш Email" />
+  </div>
+
+  <div class="authorization-form__button">
+    <button name="lost-password" value="lost-password" type="submit" class="button button--with-icon button-primary">Восстановить</button>
+  </div>
+  <?php endif; ?>
+</form>
+
+<div class="authorization__links">
+  <div class="authorization-form__button">
+    <a href="<?php echo HOST; ?>registration" class="button button--with-icon button-primary-outline">Регистрация</a>
+  </div>
+  <div class="authorization-form__button">
+    <a href="<?php echo HOST; ?>login" class="button button--with-icon button-primary-outline">Войти</a>
+  </div>
+</div>
