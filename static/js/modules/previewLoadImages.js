@@ -1,4 +1,7 @@
 const previewLoadImages = () => {
+  const pathHolder = document.querySelector('[data-config]');
+  const path = pathHolder.dataset.config;
+  
   const previewBlock = document.querySelector('[data-preview="block"]');
   const previewInput = previewBlock.querySelector('[data-preview="input"]')
   const previewContainer = previewBlock.querySelector('[data-preview="container"]')
@@ -11,22 +14,22 @@ const previewLoadImages = () => {
     
     previewContainer.innerHTML='';
     for (let file of loadImages) {
-      if (!file.type.startsWith('image/')) return;
+      if (!file.type.startsWith('image/')) continue;
 
       const imageURL = URL.createObjectURL(file);
       let imageTmpl = `
             <div class="form__img-wrapper">
               <img src="${imageURL}" draggable="true" loading="lazy">
-              <button type="button" class="button-close">
+              <button type="button" class="button-close button-close--with-bg">
                 <svg class="icon icon--close">
-                  <use href="./../../../img/svgsprite/sprite.symbol.svg#close"></use>
+                  <use href="${path}static/img/svgsprite/sprite.symbol.svg#close"></use>
                 </svg>
               </button>
             
             </div>
       `;
     
-      previewContainer.insertAdjacentHTML('beforeend', imageTmpl)
+      previewContainer.insertAdjacentHTML('beforeend', imageTmpl);
 
     }
 
@@ -38,7 +41,8 @@ const previewLoadImages = () => {
     console.log('dragged');
   }
 
-  previewInput.addEventListener('dragover', () => {
+  previewContainer.addEventListener('dragover', (e) => {
+    e.preventDefault();
     dragAndDrop();
   });
 

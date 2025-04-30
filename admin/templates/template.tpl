@@ -6,7 +6,7 @@
   </aside>
 
   <div class="admin-page__content">
-    <div class="dashboard">
+    <div class="dashboard" data-config="<?php echo HOST;?>">
   
       <header class="dashboard__header">
         <div class="dashboard-title dashboard__title--wrapper">
