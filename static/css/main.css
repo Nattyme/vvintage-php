@@ -4977,13 +4977,12 @@ main.product-page {
   margin-top: 40px;
  }
 
-.form__field {
+.form__field, .block-upload__description, .block-upload__file-wrapper {
   padding: 10px 15px;
   border: 1px solid #fff;
   box-shadow: 1px 1px 4px #fff;
   border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(40px);
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .form__field--input-with-button {
@@ -5018,6 +5017,43 @@ main.product-page {
   border: 1px solid #8e8e8e;
   background-color: #fff;
 }
+
+.file-button {
+
+}
+
+.file-input-fake {
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: var(--accent);
+  color: #fff;
+
+  transition: opacity 0.2s ease-in;
+}
+
+.file-input-fake:hover {
+  opacity: 0.7;
+}
+
+.file-input-real {
+  display: none;
+}
+
+.block-upload__description {
+  margin-bottom: 20px;
+}
+
+.block-upload__button {
+  margin-bottom: 20px;
+}
+
+.block-upload__file-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+} 
+
 
 /* No styles code below. Only in modules */
 /* Не пишите CSS код ниже. Только в подключаемых файлах */

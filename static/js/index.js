@@ -4,6 +4,7 @@
 // import addSidebarControlPanel from "./modules/admin/model/sidebar/addSidebar.js";
 import addAccordion from './modules/addAccordion.js';
 import fancyBox from './modules/fancybox.js';
+import previewLoadImages from './modules/previewLoadImages.js';
 import addTab from './modules/tab.js';
 // import yMap from './modules/ymap.js';
 
@@ -19,7 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // addSubNavCats();
   addTab();
   addAccordion('many', '#sidebar');
-  fancyBox();
+  previewLoadImages();
+  // fancyBox();
 
   // if (window.location.pathname.trim() === '/index.html' || window.location.pathname.trim() === '') {
   //   addCatsCards();

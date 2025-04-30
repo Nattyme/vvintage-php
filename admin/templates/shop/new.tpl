@@ -32,7 +32,7 @@
         <fieldset class="form__field form__field--input-with-button">
           <label class="form__item">
             <span class="form__text">Выберите категорию </span>
-            <select class="admin-form__select" name="cat">
+            <select class="form__select" name="cat">
               <?php foreach ($cats as $cat) : ?>
               <option value="<?php echo $cat['id'];?>"><?php echo $cat['title'];?></option>
               <?php endforeach; ?>
@@ -45,7 +45,7 @@
         <fieldset class="form__field form__field--inputs-wrapper">
           <label class="form__item">
             <span class="form__text">Выберите бренд</span>
-            <select class="admin-form__select" name="brand">
+            <select class="form__select" name="brand">
               <?php foreach ($brands as $brand) : ?>
                 <option value="<?php echo $brand['id'];?>"><?php echo $brand['title'];?></option>
               <?php endforeach; ?>
@@ -69,77 +69,35 @@
       </div>
 
       <div class="form__column form__column--imgs">
-        <fieldset class="form__field">
+        <fieldset class="form__field" data-preview="block">
           <label class="form__item">
-            <span class="form__text">Изображения</span>
+            <span class="form__text">Фотографии товара</span>
         
             <div class="block-upload">
-              <div class="block-upload__description">
-                <div class="block-upload__title">Фотография товара</div>
-                <p>Изображение jpg или png, рекомендуемая ширина 945px и больше, высота от 400px и более. Вес до 2Мб.</p>
-                <div class="block-upload__file-wrapper">
-                  <input name="cover[]" class="file-button form__input" type="file" multiple>
+                <div class="block-upload__description">
+                  <p class="block-upload__title">Изображение jpg или png, рекомендуемая ширина 945px и больше, высота от 400px и более. Вес до 2Мб.</p>
                 </div>
-              </div>
+              
+                <div class="block-upload__button">
+                  <label>
+                    <span class="file-input-fake">Выбрать изображения</span>
+                    <input name="cover[]" class="file-input-real" data-preview="input" type="file" multiple>
+                  </label>
+                </div>
             </div>
           </label>
-          <div class="form__preview-img">
-          <div class="form__img-wrapper">
-            <button type="button" class="button-close">
-              <svg class="icon icon--close">
-                <use href="./../../../img/svgsprite/sprite.symbol.svg#close"></use>
-              </svg>
-            </button>
-          
-            <img src="./../../../img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg" alt="">
+          <div class="block-upload__file-wrapper sortable-preview" data-preview="container"></div>
+            <!-- <div class="form__img-wrapper">
+              <button type="button" class="button-close">
+                <svg class="icon icon--close">
+                  <use href="./../../../img/svgsprite/sprite.symbol.svg#close"></use>
+                </svg>
+              </button>
+            
+              <img src="'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg';?>" alt="">
+       
+         -->
           </div>
-          <div class="form__img-wrapper">
-            <button type="button" class="button-close">
-              <svg class="icon icon--close">
-                <use href="./../../../img/svgsprite/sprite.symbol.svg#close"></use>
-              </svg>
-            </button>
-          
-            <img src="./../../../img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg" alt="">
-          </div>
-          <div class="form__img-wrapper">
-            <button type="button" class="button-close">
-              <svg class="icon icon--close">
-                <use href="./../../../img/svgsprite/sprite.symbol.svg#close"></use>
-              </svg>
-            </button>
-          
-            <img src="./../../../img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg" alt="">
-          </div>
-          <div class="form__img-wrapper">
-            <button type="button" class="button-close">
-              <svg class="icon icon--close">
-                <use href="./../../../img/svgsprite/sprite.symbol.svg#close"></use>
-              </svg>
-            </button>
-          
-            <img src="./../../../img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg" alt="">
-          </div>
-          <div class="form__img-wrapper">
-            <button type="button" class="button-close">
-              <svg class="icon icon--close">
-                <use href="./../../../img/svgsprite/sprite.symbol.svg#close"></use>
-              </svg>
-            </button>
-          
-            <img src="./../../../img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg" alt="">
-          </div>
-          <div class="form__img-wrapper">
-            <button type="button" class="button-close">
-              <svg class="icon icon--close">
-                <use href="./../../../img/svgsprite/sprite.symbol.svg#close"></use>
-              </svg>
-            </button>
-          
-            <img src="./../../../img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg" alt="">
-          </div>
-        
-        </div>
         </fieldset>
        
 
