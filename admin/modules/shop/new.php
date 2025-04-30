@@ -73,7 +73,7 @@ if( isset($_POST['submit']) ) {
   }
 }
 
-$pageTitle = "Магазин - добавить новый товар";
+$pageTitle = "Добавить новый товар";
 $pageClass = "admin-page";
 // Центральный шаблон для модуля
 ob_start();
