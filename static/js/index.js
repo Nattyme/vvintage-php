@@ -3,10 +3,10 @@
 // import router from './modules/admin/router.js';
 // import addSidebarControlPanel from "./modules/admin/model/sidebar/addSidebar.js";
 import addAccordion from './modules/addAccordion.js';
-import onPreviewImgLoaded from './modules/onPreviewImgLoaded.js';
 import fancyBox from './modules/fancybox.js';
-import previewLoadImages from './modules/previewLoadImages.js';
 import addTab from './modules/tab.js';
+import onPreviewImgLoaded from './modules/onPreviewImgLoaded.js';
+import previewLoadImages from './modules/previewLoadImages.js';
 // import yMap from './modules/ymap.js';
 
 
@@ -34,6 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
       onImageLoad : onPreviewImgLoaded
     }
   );
+  
+  onPreviewImgLoaded();
  
   
   // fancyBox();

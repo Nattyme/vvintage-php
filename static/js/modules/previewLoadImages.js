@@ -1,12 +1,14 @@
+import previewModule from "./preview.js";
+
 let previewInputListening = false;
 
 const previewLoadImages = ({
     blockSelector='[data-preview="block"]', 
     imgServerUrl = '',
-    closeIconHref = 'svgsprite/sprite.symbol.svg#close',
-    onImageLoad = ''
+    closeIconHref = 'svgsprite/sprite.symbol.svg#close'
   } = {}) => {
 
+  // Общий блок с инпутом и блоком изображений
   const previewBlock = document.querySelector(blockSelector);
   if(!previewBlock) return;
 
@@ -16,25 +18,18 @@ const previewLoadImages = ({
   if(!previewInput || !previewContainer) return;
   if(previewInputListening === true) return;
 
-  let currentFiles = [];
-
   // Слушаем момент загрузки файла
   previewInput.addEventListener('change', () => {
     let files = Array.from(previewInput.files);
-    console.log(files);
-    
     if (!files || !files.length) return;
     
     previewContainer.innerHTML='';
     
     if(!previewContainer.classList.contains('active')) previewContainer.classList.add('active');
     
-    files.forEach((file, index) => {
-      if (!file.type.startsWith('image/')) return;
-      console.log(files[index].type);
+    files.forEach(file => {
+      const imageURL = previewModule.addFile(file);
 
-      // Получаем ссылку на загруженное изображение 
-      const imageURL = URL.createObjectURL(file);
       let imageTmpl = `
             <div class="form__img-wrapper" data-preview="image-wrapper" data-url="${imageURL}">
               <img src="${imageURL}" draggable="true" loading="lazy">
@@ -49,16 +44,6 @@ const previewLoadImages = ({
 
       // Вставляем изображения в контейнер
       previewContainer.insertAdjacentHTML('beforeend', imageTmpl);
-
-      currentFiles.push({
-        name : file.name,
-        url : imageURL
-      });
-
-      // Если передана ф-ция коллбек- запускаем её
-      if ( typeof onImageLoad === 'function') {
-        onImageLoad(currentFiles);
-      }
     });
  
   });
