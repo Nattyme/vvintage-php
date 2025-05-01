@@ -16,13 +16,13 @@ const onPreviewImgLoaded = () => {
     const imageURL = imgWrapper?.dataset.url;
     if (!imageURL) return;
 
-    // Удаляем файл из массива и освобождаем память
-    previewModule.removeFile(imageURL);
-
     // Удаляем изображение со страницы
     imgWrapper.remove();
 
-    // Удалим активный стиль у контейнера изображений
+    // Удаляем файл из массива и освобождаем память
+    previewModule.removeFile(imageURL);
+
+    // Если фотографий нет - удалим активный стиль у контейнера изображений
     if(!previewModule.getCurrentFiles().length && previewContainer.classList.contains('active')) previewContainer.classList.remove('active');
   });
 
