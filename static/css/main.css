@@ -4977,6 +4977,10 @@ main.product-page {
   margin-top: 40px;
  }
 
+ .form__item + * {
+  margin-top: 20px;
+ }
+
 .form__field, .block-upload__description, .block-upload__file-wrapper {
   padding: 10px 15px;
   border: 1px solid #fff;
@@ -5044,15 +5048,15 @@ main.product-page {
   margin-bottom: 20px;
 }
 
-.block-upload__button {
-  margin-bottom: 20px;
-}
-
 .block-upload__file-wrapper {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   gap: 10px;
 } 
+
+.block-upload__file-wrapper.active {
+  display: flex;
+}
 
 .button-close--with-bg {
   padding: 5px;
@@ -5062,6 +5066,17 @@ main.product-page {
 
 .button-close--with-bg .icon--close {
   stroke: #000;
+}
+
+.form__img-wrapper .button-close {
+  top: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+}
+
+.form__img-wrapper:hover .button-close {
+  opacity: 1;
 }
 
 

@@ -1,51 +1,80 @@
-const previewLoadImages = () => {
-  const pathHolder = document.querySelector('[data-config]');
-  const path = pathHolder.dataset.config;
-  
-  const previewBlock = document.querySelector('[data-preview="block"]');
-  const previewInput = previewBlock.querySelector('[data-preview="input"]')
-  const previewContainer = previewBlock.querySelector('[data-preview="container"]')
-  console.log(previewInput);
-  console.log(previewContainer);
+let previewInputListening = false;
 
+const previewLoadImages = ({
+    blockSelector='[data-preview="block"]', 
+    imgServerUrl = '',
+    closeIconHref = 'svgsprite/sprite.symbol.svg#close',
+    onImageLoad = ''
+  } = {}) => {
+
+  const previewBlock = document.querySelector(blockSelector);
+  if(!previewBlock) return;
+
+  const previewInput = previewBlock.querySelector('[data-preview="input"]');
+  const previewContainer = previewBlock.querySelector('[data-preview="container"]');
+
+  if(!previewInput || !previewContainer) return;
+  if(previewInputListening === true) return;
+
+  let currentFiles = [];
+
+  // Слушаем момент загрузки файла
   previewInput.addEventListener('change', () => {
-    const loadImages = previewInput.files;
-    console.log(previewInput.files);
+    let files = Array.from(previewInput.files);
+    console.log(files);
+    
+    if (!files || !files.length) return;
     
     previewContainer.innerHTML='';
-    for (let file of loadImages) {
-      if (!file.type.startsWith('image/')) continue;
+    
+    if(!previewContainer.classList.contains('active')) previewContainer.classList.add('active');
+    
+    files.forEach((file, index) => {
+      if (!file.type.startsWith('image/')) return;
+      console.log(files[index].type);
 
+      // Получаем ссылку на загруженное изображение 
       const imageURL = URL.createObjectURL(file);
       let imageTmpl = `
-            <div class="form__img-wrapper">
+            <div class="form__img-wrapper" data-preview="image-wrapper" data-url="${imageURL}">
               <img src="${imageURL}" draggable="true" loading="lazy">
-              <button type="button" class="button-close button-close--with-bg">
+              <button type="button" class="button-close button-close--with-bg" data-preview="btn-close">
                 <svg class="icon icon--close">
-                  <use href="${path}static/img/svgsprite/sprite.symbol.svg#close"></use>
+                  <use href="${imgServerUrl + closeIconHref}"></use>
                 </svg>
               </button>
             
             </div>
       `;
-    
+
+      // Вставляем изображения в контейнер
       previewContainer.insertAdjacentHTML('beforeend', imageTmpl);
 
-    }
+      currentFiles.push({
+        name : file.name,
+        url : imageURL
+      });
 
-    // console.log(previewInput.files);
-    
+      // Если передана ф-ция коллбек- запускаем её
+      if ( typeof onImageLoad === 'function') {
+        onImageLoad(currentFiles);
+      }
+    });
+ 
   });
 
-  const dragAndDrop = () => {
-    console.log('dragged');
-  }
+  previewInputListening = true;
 
-  previewContainer.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dragAndDrop();
-  });
 
+
+  // const dragAndDrop = () => {
+  //   console.log('dragged');
+  // }
+
+  // previewContainer.addEventListener('dragover', (e) => {
+  //   e.preventDefault();
+  //   dragAndDrop();
+  // });
 
 }
 
