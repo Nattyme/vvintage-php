@@ -5,7 +5,7 @@
 
     <div class="admin-form__item admin-form__title">
       <h2 class="heading">Категории</h2>
-      <a class="button-solid button-solid--admin" href="<?php HOST;?>category-new">Создать новую категорию</a>
+      <a class="button button-solid button-solid--admin" href="<?php HOST;?>category-new">Создать новую категорию</a>
     </div>
 
     <!-- Таблица -->

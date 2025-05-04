@@ -12,6 +12,7 @@ const previewLoadImages = ({
   const previewBlock = document.querySelector(blockSelector);
   if(!previewBlock) return;
 
+
   const previewInput = previewBlock.querySelector('[data-preview="input"]');
   const previewContainer = previewBlock.querySelector('[data-preview="container"]');
 
@@ -33,7 +34,7 @@ const previewLoadImages = ({
       let imageTmpl = `
             <div class="form__img-wrapper" data-preview="image-wrapper" data-url="${imageURL}">
               <img src="${imageURL}" draggable="true" loading="lazy">
-              <button type="button" class="button-close button-close--with-bg" data-preview="btn-close">
+              <button type="button" class="button button-close button-close--with-bg" data-preview="btn-close">
                 <svg class="icon icon--close">
                   <use href="${imgServerUrl + closeIconHref}"></use>
                 </svg>

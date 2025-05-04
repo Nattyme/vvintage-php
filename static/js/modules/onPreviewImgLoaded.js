@@ -5,7 +5,7 @@ let previewContainerListening = false;
 const onPreviewImgLoaded = () => {
   if (previewContainerListening === true) return;
   const previewContainer = document.querySelector('[data-preview="container"]');
-
+  if(!previewContainer) return;
   
   // Слушаем клик по контейнеру с изображениями
   previewContainer.addEventListener('click', (e) => {

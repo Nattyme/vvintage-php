@@ -8,8 +8,8 @@ $sqlQuery = 'SELECT
                 p.name, 
                 p.price, 
                 p.url, 
-                b.name AS brand, 
-                c.name AS category,
+                b.title AS brand, 
+                c.title AS category,
                 pi.filename AS cover
                 
              FROM `products` p
@@ -25,8 +25,7 @@ $sqlQuery = 'SELECT
 
 $products = R::getAll($sqlQuery);
 
-// print_r($products);
-// die();
+
 $pageTitle = "Все товары";
 $pageClass = "admin-page";
 ob_start();

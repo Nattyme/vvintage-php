@@ -4,8 +4,7 @@
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
     <div class="admin-form__item admin-form__title">
-      <h2 class="heading">Бренды</h2>
-      <a class="button-solid button-solid--admin" href="<?php HOST;?>brand-new">Создать новый бренд</a>
+      <a class="button button-solid button-solid--admin" href="<?php HOST;?>brand-new">Создать новый бренд</a>
     </div>
 
     <!-- Таблица -->
