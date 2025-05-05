@@ -8,20 +8,27 @@ $uriGetParam = getUriGetParam();
 $pagination = pagination(9, 'products');
 
 $sqlQuery = 'SELECT
-                p.id, p.title, p.content, p.cover, p.timestamp, 
-                p.brand, p.cat, p.price, p.brand, s.cover AS product_cover, s.id, s.cover_small AS product_coverSmall,
-                s.cover_full AS product_coverFull, s.product_id AS product_id
-             FROM `products` as p
-             LEFT JOIN `sliders` as s ON p.id = product_id';
-// $sqlQuery = 'SELECT
-//                 p.id, p.title, p.content, p.cover, p.timestamp, 
-//                 p.brand, p.cat, p.price, p.brand
-//              FROM `products` as p
-//              LEFT JOIN (
-//                 SELECT s.cover AS product_cover, s.id, s.cover_small AS product_coverSmall,
-//                 s.cover_full AS product_coverFull, s.product_id AS product_id
-//                 FROM `sliders` GROUP  BY product_id  
-//              ) s ON p.id = product_id'
+                p.id, 
+                p.article, 
+                p.name, 
+                p.price, 
+                p.url, 
+                b.title AS brand, 
+                c.title AS category,
+                pi.filename AS cover
+                
+             FROM `products` p
+             LEFT JOIN `brands` b ON p.brand = b.id
+             LEFT JOIN `categories` c ON p.category = c.id
+             LEFT JOIN (
+              SELECT product_id, filename
+              FROM product_images 
+              WHERE image_order = 1
+             ) pi ON p.id = pi.product_id
+             ORDER BY p.id DESC
+            LIMIT 0, 8';
+
+$products = R::getAll($sqlQuery);
 
 // $sqlQueryWithLimit = $sqlQuery . $pagination["sql_page_limit"];
 // $sqlQueryWithLimit = $sqlQuery . ' ' . $pagination["sql_page_limit"];

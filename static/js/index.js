@@ -20,12 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
   //  
   // }
   // addSubNavCats();
-  const pathHolder = document.querySelector('[data-config]');
-  const path = pathHolder.dataset.config;
+ 
 
   addTab();
   addAccordion('many', '#sidebar');
-  if( !path) return;
+  fancyBox();
+  const pathHolder = document.querySelector('[data-config]');
+  if (!pathHolder) return;
+  const path = pathHolder.dataset.config;
+  if(!path) return;
   
   previewLoadImages(
     {
@@ -40,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
   onPreviewImgLoaded();
  
   
-  // fancyBox();
+
 
   // if (window.location.pathname.trim() === '/index.html' || window.location.pathname.trim() === '') {
   //   addCatsCards();
