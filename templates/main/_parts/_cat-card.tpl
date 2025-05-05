@@ -5,15 +5,19 @@
     </svg>
 
     <picture>
-      <source srcset="<?php echo HOST . 'static/img/cats/01.webp 1x,' . 'static/img/cats/01@2x.webp 2x';?>" type="image/webp" />
-      <source srcset="<?php echo HOST . 'static/img/cats/01.jpg 1x,' . 'static/img/cats/01@2x.jpg 2x';?>" type="image/jpeg" />
-      <img src="<?php echo HOST . 'static/img/cats/01.jpg';?>" srcset="<?php echo HOST . 'static/img/cats/01@2x.jpg';?>" alt="" />
+      <source srcset="<?php echo HOST . 'static/img/cats/' . $category['image'] . '.webp 1x,' . 'static/img/cats/' . $category['image'] . '@2x.webp 2x';?>" type="image/webp" />
+      <source srcset="<?php echo HOST . 'static/img/cats/' . $category['image'] . '@2x.jpg 2x';?>" type="image/jpeg" />
+      <img 
+        src="<?php echo HOST . 'static/img/cats/' . $category['image'] . '.jpg';?>" 
+        srcset="<?php echo HOST . 'static/img/cats/' . $category['image'] . '@2x.jpg';?>" 
+        alt="<?php echo $category['title']; ?>" 
+      />
     </picture>
   </div>
   <!-- price -->
   <div class="card-small__desc">
     <div class="card-small__title">
-      <h4 class="h4">ДЛЯ ЖЕНЩИН</h4>
+      <h4 class="h4"><?php echo $category['title']; ?></h4>
     </div>
   </div>
   <!--// price -->

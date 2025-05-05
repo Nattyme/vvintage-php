@@ -6,12 +6,9 @@
 
     <div class="cats__cards-wrapper">
       <div class="cards-row">
-        <?php include ROOT . 'templates/main/_parts/_cat-card.tpl';?>
-        <?php include ROOT . 'templates/main/_parts/_cat-card.tpl';?>
-        <?php include ROOT . 'templates/main/_parts/_cat-card.tpl';?>
-        <?php include ROOT . 'templates/main/_parts/_cat-card.tpl';?>
-        <?php include ROOT . 'templates/main/_parts/_cat-card.tpl';?>
-        <?php include ROOT . 'templates/main/_parts/_cat-card.tpl';?>
+        <?php foreach ($categories as $category) : ?>
+          <?php include ROOT . 'templates/main/_parts/_cat-card.tpl';?>
+        <?php endforeach; ?>
       </div>
     </div>
   </div>
