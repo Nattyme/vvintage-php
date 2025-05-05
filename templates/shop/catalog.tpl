@@ -23,7 +23,7 @@
         <div class="products__cards-wrapper">
           <div class="products__cards-row">
             <?php foreach ($products as $product) : ?>
-           <?php include ROOT . 'templates/shop/_parts/_card.tpl';?>
+              <?php include ROOT . 'templates/shop/_parts/_card.tpl';?>
             <?php endforeach; ?> 
             
           </div>

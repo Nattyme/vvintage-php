@@ -5,7 +5,7 @@ $pagination = pagination(8, 'products');
 $sqlQuery = 'SELECT
                 p.id, 
                 p.article, 
-                p.name, 
+                p.title, 
                 p.price, 
                 p.url, 
                 b.title AS brand, 
@@ -25,7 +25,8 @@ $sqlQuery = 'SELECT
 
 $products = R::getAll($sqlQuery);
 
-
+// print_r($products);
+// die();
 $pageTitle = "Все товары";
 $pageClass = "admin-page";
 ob_start();

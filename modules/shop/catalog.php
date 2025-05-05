@@ -10,7 +10,7 @@ $pagination = pagination(9, 'products');
 $sqlQuery = 'SELECT
                 p.id, 
                 p.article, 
-                p.name, 
+                p.title, 
                 p.price, 
                 p.url, 
                 b.title AS brand, 
@@ -35,7 +35,6 @@ $products = R::getAll($sqlQuery);
 
 
 $productsDB = R::getAll($sqlQuery);
-print_r($productsDB);
 
 $pageTitle = "Каталог товаров";
 

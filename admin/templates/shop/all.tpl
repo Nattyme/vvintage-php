@@ -66,7 +66,7 @@
                 <?php endif; ?>
                 </td>
                 <td class="product-table__item product-table__item--title">
-                  <?php echo htmlspecialchars(trim($product['name'] ?? '')); ?>
+                  <?php echo htmlspecialchars(trim($product['title'] ?? '')); ?>
                 </td>
                 <td>
                 <!-- link-to-page -->

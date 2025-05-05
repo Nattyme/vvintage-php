@@ -1,20 +1,50 @@
 <?php 
 require_once ROOT . "./libs/functions.php";
 
-// Показываем отдельную страницу товара
+// Запрашиваем информацию по продукту
 $sqlQuery = 'SELECT
-                products.id, products.title, products.content, products.cover, products.timestamp, 
-                products.brand, products.cat, products.price, products.brand,
-                categories.title AS cat_title,
-                brands.title AS brand_title
-             FROM `products`
-             LEFT JOIN `categories` ON products.cat = categories.id
-             LEFT JOIN `brands` ON products.brand = brands.id
-             WHERE products.id = ? LIMIT 1';
+                p.id, 
+                p.title, 
+                p.desc, 
+                p.brand, 
+                p.category, 
+                p.price, 
+                c.title AS cat_title,
+                b.title AS brand_title
+             FROM `products` p
+             LEFT JOIN `categories` c ON  p.category = c.id
+             LEFT JOIN `brands` b ON p.brand = b.id
+             WHERE p.id = ? LIMIT 1';
 
 $product = R::getRow($sqlQuery, [$uriGet]);
+print_r($product);
 
+// Запрашиваем информацию по изображениям продукта
+$sqlImages = 'SELECT pi.filename, pi.image_order 
+              FROM product_images pi
+              WHERE product_id = ?
+              ORDER BY image_order ASC'; 
 
+$productImages = R::getAll($sqlImages, [$product['id']]);
+
+// Найдем главное изображение
+$mainImage = null;
+$remainingImages = [];
+foreach($productImages as $value) {
+  if((int)$value['image_order'] === 1 && !$mainImage) {
+    $mainImage = $value['filename'];
+  } else {
+    $remainingImages[] = $value['filename'];
+  }
+}
+
+// Найдем изображения для галлереи
+$visibleImages = array_slice($remainingImages, 0, 4);
+$hiddenImages = array_slice($remainingImages, 4);
+$invisibleImages = [];
+// print_r($mainImage);
+// print_r($remainingImages);
+// die();
 // // Комментарии
 // $sqlQueryComments = 'SELECT 
 //                         comments.text, comments.user, comments.timestamp,

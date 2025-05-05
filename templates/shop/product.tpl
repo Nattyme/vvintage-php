@@ -15,81 +15,59 @@
           <div class="product__gallery">
             <div class="product__gallery-block product__gallery-block--main-img">
               <figure class="product__img product__img--main">
-                <a data-fancybox="gallery" href="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>" data-thumb="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>">
+                <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . $mainImage;?>" data-thumb="<?php echo HOST . 'usercontent/products/' . $mainImage;?>">
                   <picture>
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.webp 1x,' . 'static/img/card-full/02@2x.webp 2x" type="image/webp';?>" />
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.jpg 1x,' . 'static/img/card-full/02@2x.jpg 2x';?>" type="image/jpeg" />
-                    <img src="<?php echo HOST . 'static/img/card-full/02.jpg';?>" srcset="<?php echo HOST . 'static/img/card-full/02@2x.jpg';?>" alt="" loading="lazy" />
+                    <img 
+                      src="<?php echo HOST . 'usercontent/products/' . $mainImage;?>" 
+                      srcset="<?php echo HOST . 'usercontent/products/' . $mainImage;?>" alt="" loading="lazy"
+                    >
                   </picture>
                 </a>
               </figure>
             </div>
             <div class="product__gallery-block product__gallery-block--small-imgs">
-              <figure class="product__img product__img--main">
-                <a data-fancybox="gallery" href="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>" data-thumb="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>">
-                  <picture>
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.webp 1x,' . 'static/img/card-full/02@2x.webp 2x" type="image/webp';?>" />
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.jpg 1x,' . 'static/img/card-full/02@2x.jpg 2x';?>" type="image/jpeg" />
-                    <img src="<?php echo HOST . 'static/img/card-full/02.jpg';?>" srcset="<?php echo HOST . 'static/img/card-full/02@2x.jpg';?>" alt="" loading="lazy" />
-                  </picture>
+              <?php foreach ($visibleImages as $image) : ?>
+                <figure class="product__img product__img--main">
+                  <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . $image;?>" data-thumb="<?php echo HOST . 'usercontent/products/' . $image;?>">
+                    <picture>
+                      <img 
+                        src="<?php echo HOST . 'usercontent/products/' . $image;?>" 
+                        srcset="<?php echo HOST . 'usercontent/products/' . $image;?>" alt="" loading="lazy"
+                      >
+                    </picture>
+                  </a>
+                </figure>
+              <?php endforeach; ?>
+
+              <?php foreach($hiddenImages as $image) : ?>
+                <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . $image;?>" data-thumb="<?php echo HOST . 'usercontent/products/' . $image;?>">
                 </a>
-              </figure>
-              <figure class="product__img product__img--main">
-                <a data-fancybox="gallery" href="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>" data-thumb="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>">
-                  <picture>
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.webp 1x,' . 'static/img/card-full/02@2x.webp 2x" type="image/webp';?>" />
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.jpg 1x,' . 'static/img/card-full/02@2x.jpg 2x';?>" type="image/jpeg" />
-                    <img src="<?php echo HOST . 'static/img/card-full/02.jpg';?>" srcset="<?php echo HOST . 'static/img/card-full/02@2x.jpg';?>" alt="" loading="lazy" />
-                  </picture>
-                </a>
-              </figure>
-              <figure class="product__img product__img--main">
-                <a data-fancybox="gallery" href="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>" data-thumb="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>">
-                  <picture>
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.webp 1x,' . 'static/img/card-full/02@2x.webp 2x" type="image/webp';?>" />
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.jpg 1x,' . 'static/img/card-full/02@2x.jpg 2x';?>" type="image/jpeg" />
-                    <img src="<?php echo HOST . 'static/img/card-full/02.jpg';?>" srcset="<?php echo HOST . 'static/img/card-full/02@2x.jpg';?>" alt="" loading="lazy" />
-                  </picture>
-                </a>
-              </figure>
-              <figure class="product__img product__img--main">
-                <a data-fancybox="gallery" href="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>" data-thumb="<?php echo HOST . 'static/img/card-full/02@2x.webp';?>">
-                  <picture>
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.webp 1x,' . 'static/img/card-full/02@2x.webp 2x" type="image/webp';?>" />
-                    <source srcset="<?php echo HOST . 'static/img/card-full/02.jpg 1x,' . 'static/img/card-full/02@2x.jpg 2x';?>" type="image/jpeg" />
-                    <img src="<?php echo HOST . 'static/img/card-full/02.jpg';?>" srcset="<?php echo HOST . 'static/img/card-full/02@2x.jpg';?>" alt="" loading="lazy" />
-                  </picture>
-                </a>
-              </figure>
+              <?php endforeach; ?>
             </div>
           </div>
         </div>
         <div class="product__desc">
           <header class="product__header">
             <div class="product-row">
-              <h1 class="h1">Свитшот Sweet Shot</h1>
+              <h1 class="h1"><?php echo $product['title'];?></h1>
             </div>
             <div class="product-row">
               <p>New without tegs</p>
-              <a href="#" class="product__brand">Michael Course</a>
+              <a href="#" class="product__brand"></a>
             </div>
             <div class="product-row">
-              <div class="product__price"><span class="price">$311</span></div>
+              <div class="product__price"><span class="price"><?php echo $product['price'];?></span></div>
             </div>
           </header>
 
           <ul class="product-details">
             <li class="product-details__item">
               <p>Brand</p>
-              <a href="">Michael Kors</a>
+              <a href=""><?php echo $product['brand_title'];?></a>
             </li>
             <li class="product-details__item">
               <p>Condition</p>
               <p>New without tegs</p>
-            </li>
-            <li class="product-details__item">
-              <p>Colour</p>
-              <p>Black</p>
             </li>
             <li class="product-details__item">
               <p>Uploaded</p>
