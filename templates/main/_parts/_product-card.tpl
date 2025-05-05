@@ -1,4 +1,4 @@
-<a href="<?php echo HOST . 'shop/1';?>" class="card">
+<div class="card">
 
   <div class="card__img">
     <svg class="icon icon--arrow-right">
@@ -7,154 +7,38 @@
 
     <picture>
       <source
-        srcset="
-          <?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.webp    1x,'
-          . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2@2x.webp 2x';?>
-        "
+        srcset="<?php echo HOST . 'usercontent/products/' . $product['cover'];?>"
         type="image/webp"
       />
       <source
-        srcset="
-          <?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg    1x,'
-          . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2@2x.jpeg 2x';?>
-        "
+        srcset="<?php echo HOST . 'usercontent/products/' . $product['cover'];?>"
         type="image/jpeg"
-      />
-      <img
-        src="<?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg';?>"
-        srcset="<?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg';?>"
-        alt=""
-      />
+    
+        />
+        <img 
+          src="<?php echo HOST . 'usercontent/products/' . $product['cover'];?>" 
+          srcset="<?php echo HOST . 'usercontent/products/' . $product['cover'];?>" alt="" loading="lazy"
+        >
+   
     </picture>
   </div>
 
   <div class="card__desc">
-    <div class="card__title">
-      <h4 class="h4">Кольцо Chanel</h4>
+    <a href="<?php echo HOST . 'shop/' . $product['id'];?>" class="card__title block__text">
+      <h4 class="h4 block__desc"><?php echo $product['title'];?></h4>
+    </a>
+    <div class="card__row flex-block">
+      <!-- <div class="card__brand">
+        <span><?php echo $product['brand'];?></span>
+      </div> -->
+      <div class="card__price">
+        <span><?php echo $product['price'];?>&nbsp;&euro;</span>
+      </div>
     </div>
-    <div class="card__price">
-      <span>$229</span>
-      <span>$129</span>
-    </div>
+    <!-- <a href="<?php echo HOST . 'shop/' . $product['id'];?>" class="button button-primary">В корзину</a> -->
   </div>
-</a>
-<a href="<?php echo HOST . 'shop/1';?>" class="card">
+</div>
+ 
 
-  <div class="card__img">
-    <svg class="icon icon--arrow-right">
-      <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#arrow-right';?>"></use>
-    </svg>
-
-    <picture>
-      <source
-        srcset="
-          <?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.webp    1x,'
-          . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2@2x.webp 2x';?>
-        "
-        type="image/webp"
-      />
-      <source
-        srcset="
-          <?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg    1x,'
-          . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2@2x.jpeg 2x';?>
-        "
-        type="image/jpeg"
-      />
-      <img
-        src="<?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg';?>"
-        srcset="<?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg';?>"
-        alt=""
-      />
-    </picture>
-  </div>
-
-  <div class="card__desc">
-    <div class="card__title">
-      <h4 class="h4">Кольцо Chanel</h4>
-    </div>
-    <div class="card__price">
-      <span>$229</span>
-      <span>$129</span>
-    </div>
-  </div>
-</a>
-<a href="<?php echo HOST . 'shop/1';?>" class="card">
-
-  <div class="card__img">
-    <svg class="icon icon--arrow-right">
-      <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#arrow-right';?>"></use>
-    </svg>
-
-    <picture>
-      <source
-        srcset="
-          <?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.webp    1x,'
-          . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2@2x.webp 2x';?>
-        "
-        type="image/webp"
-      />
-      <source
-        srcset="
-          <?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg    1x,'
-          . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2@2x.jpeg 2x';?>
-        "
-        type="image/jpeg"
-      />
-      <img
-        src="<?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg';?>"
-        srcset="<?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg';?>"
-        alt=""
-      />
-    </picture>
-  </div>
-
-  <div class="card__desc">
-    <div class="card__title">
-      <h4 class="h4">Кольцо Chanel</h4>
-    </div>
-    <div class="card__price">
-      <span>$229</span>
-      <span>$129</span>
-    </div>
-  </div>
-</a>
-<a href="<?php echo HOST . 'shop/1';?>" class="card">
-
-  <div class="card__img">
-    <svg class="icon icon--arrow-right">
-      <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#arrow-right';?>"></use>
-    </svg>
-
-    <picture>
-      <source
-        srcset="
-          <?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.webp    1x,'
-          . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2@2x.webp 2x';?>
-        "
-        type="image/webp"
-      />
-      <source
-        srcset="
-          <?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg    1x,'
-          . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2@2x.jpeg 2x';?>
-        "
-        type="image/jpeg"
-      />
-      <img
-        src="<?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg';?>"
-        srcset="<?php echo HOST . 'static/img/arrival/chanel_gold_ring_with_precious_stones_solitaire_2.jpeg';?>"
-        alt=""
-      />
-    </picture>
-  </div>
-
-  <div class="card__desc">
-    <div class="card__title">
-      <h4 class="h4">Кольцо Chanel</h4>
-    </div>
-    <div class="card__price">
-      <span>$229</span>
-      <span>$129</span>
-    </div>
-  </div>
-</a>
+  
+ 

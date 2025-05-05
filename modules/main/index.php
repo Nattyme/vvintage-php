@@ -30,6 +30,31 @@ $categories = R::getAll($sqlCats);
 //   }
 // }
 
+// Получим новинки магазина
+$sqlQuery = 'SELECT
+                p.id, 
+                p.article, 
+                p.title, 
+                p.price, 
+                p.url, 
+                b.title AS brand, 
+                c.title AS category,
+                pi.filename AS cover
+                
+             FROM `products` p
+             LEFT JOIN `brands` b ON p.brand = b.id
+             LEFT JOIN `categories` c ON p.category = c.id
+             LEFT JOIN (
+              SELECT product_id, filename
+              FROM product_images 
+              WHERE image_order = 1
+             ) pi ON p.id = pi.product_id
+             ORDER BY p.id DESC
+            LIMIT 4';
+
+$newProducts = R::getAll($sqlQuery);
+// print_r($newProducts);
+// die();
 $pageTitle = 'Womazing';
 
 include ROOT . "templates/_page-parts/_head.tpl";
