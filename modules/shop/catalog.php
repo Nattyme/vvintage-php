@@ -6,6 +6,9 @@ $uriGetParam = getUriGetParam();
 
 // $pagination = pagination($settings['card_on_page_shop'], 'products');
 $pagination = pagination(9, 'products');
+$showeddProducts = $pagination['page_number'] * 9;
+$productsTtl = R::count('products');
+
 
 $sqlQuery = 'SELECT
                 p.id, 
@@ -25,16 +28,9 @@ $sqlQuery = 'SELECT
               FROM product_images 
               WHERE image_order = 1
              ) pi ON p.id = pi.product_id
-             ORDER BY p.id DESC
-            LIMIT 0, 8';
+             ORDER BY p.id DESC ' . $pagination["sql_page_limit"];
 
 $products = R::getAll($sqlQuery);
-
-// $sqlQueryWithLimit = $sqlQuery . $pagination["sql_page_limit"];
-// $sqlQueryWithLimit = $sqlQuery . ' ' . $pagination["sql_page_limit"];
-
-
-$productsDB = R::getAll($sqlQuery);
 
 $pageTitle = "Каталог товаров";
 

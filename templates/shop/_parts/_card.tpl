@@ -1,6 +1,6 @@
 <div class="card">
 
-  <div class="card__img">
+  <a href="<?php echo HOST . 'shop/' . $product['id'];?>" class="card__img link-abs">
     <svg class="icon icon--arrow-right">
       <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#arrow-right';?>"></use>
     </svg>
@@ -21,12 +21,12 @@
         >
    
     </picture>
-  </div>
+  </a>
 
   <div class="card__desc">
-    <a href="<?php echo HOST . 'shop/' . $product['id'];?>" class="card__title block__text">
+    <div class="card__title block__text">
       <h4 class="h4 block__desc"><?php echo $product['title'];?></h4>
-    </a>
+    </div>
     <div class="card__row flex-block">
       <!-- <div class="card__brand">
         <span><?php echo $product['brand'];?></span>

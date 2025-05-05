@@ -16,7 +16,8 @@
 
         <div class="products__pages-shown">
           <div class="pages-shown">
-            <p>Показано: <span>9</span> из&#160;<span>12</span> товаров</p>
+            <p>Показано: <span><?php echo $showeddProducts; ?></span> из&#160;
+            <span><?php echo $productsTtl; ?></span> товаров</p>
           </div>
         </div>
 
@@ -30,12 +31,14 @@
         </div>
         <div class="products__pages-shown">
           <div class="pages-shown">
-            <p>Показано: <span>9</span> из&#160;<span>12</span> товаров</p>
+            <p>Показано: <span><?php echo $showeddProducts; ?></span> из&#160;
+            <span><?php echo $productsTtl; ?></span> товаров</p>
           </div>
         </div>
         <div class="products__pagination">
           <div class="section-pagination">
-            <a href="#" class="arrow arrow-prev none">
+            <?php include ROOT . 'templates/_parts/pagination/_pagination.tpl';?>
+            <!-- <a href="#" class="arrow arrow-prev none">
               <svg class="icon icon--arrow-right dark">
                 <use href="./img/svgsprite/sprite.symbol.svg#arrow-right"></use>
               </svg>
@@ -52,7 +55,7 @@
               <svg class="icon icon--arrow-right dark">
                 <use href="./img/svgsprite/sprite.symbol.svg#arrow-right"></use>
               </svg>
-            </a>
+            </a> -->
           </div>
         </div>
       </div>

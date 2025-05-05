@@ -3,11 +3,13 @@
     <div class="container">
       <header class="shop-header">
         <div class="breadcrumbs">
-          <a href="#!" class="breadcrumb ">Главная</a>
+          <a href="<?php echo HOST . '';?>" class="breadcrumb ">Главная</a>
           <span>&#8212;</span>
-          <a href="#!" class="breadcrumb">Свитшоты</a>
+          <a href="<?php echo HOST . 'shop';?>" class="breadcrumb">Все товары</a>
           <span>&#8212;</span>
-          <a href="#!" class="breadcrumb breadcrumb--active">Свитшот Sweet Shot</a>
+          <a href="#!" class="breadcrumb"><?php echo $product['cat_title'];?></a>
+          <span>&#8212;</span>
+          <a href="#!" class="breadcrumb breadcrumb--active"><?php echo $product['title'];?></a>
         </div>
       </header>
       <div class="product__content">

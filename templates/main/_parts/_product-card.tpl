@@ -24,7 +24,7 @@
   </div>
 
   <div class="card__desc">
-    <a href="<?php echo HOST . 'shop/' . $product['id'];?>" class="card__title block__text">
+    <a href="<?php echo HOST . 'shop/' . $product['id'];?>" class="card__title block__text ink-abs">
       <h4 class="h4 block__desc"><?php echo $product['title'];?></h4>
     </a>
     <div class="card__row flex-block">

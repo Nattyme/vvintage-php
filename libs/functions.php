@@ -173,11 +173,6 @@ function pagination ($results_per_page, $type, $params = NULL) {
   return $result;
 }
 
-//breadcrumbs
-// function breadcrumbs ($uriModule, $uriGet, $uriGetParam) {
-
-// }
-
 /* **Работа с файлами. Сохранение изображения** */
 // saveUploaddedImg("cover", [600, 300], 12, 'blog', [1110, 460], [290, 230]) 
 function saveUploadedImg($inputFileName, $minSize, $maxFileSizeMb, $folderName, $fullSize, $smallSize) {
