@@ -3,10 +3,14 @@
 <section class="shop">
   <div class="shop__container">
 
-    <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
-    <?php include ROOT . "admin/templates/components/success.tpl"; ?>
+    <?php /* include ROOT . "admin/templates/components/errors.tpl"; */ ?>
+    <?php /* include ROOT . "admin/templates/components/success.tpl"; */ ?>
 
-    <form method="POST" class="shop-form-new" action="<?php echo HOST;?>admin/shop-new" enctype="multipart/form-data">
+    <div hidden class="notifications mb-20">
+      <div class="notifications__title"></div>
+    </div>
+
+    <form id="form-add-product" method="POST" class="shop-form-new" data-url = "<?php echo HOST;?>admin/form-add" enctype="multipart/form-data">
       <div class="form__row">
         <div class="form__column">
           <fieldset class="form__field">
@@ -37,7 +41,11 @@
               </select>
             </label>
             <div class="form__item">
-              <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>category-new?shop">Создать новую категорию</a>
+              <a 
+                class="button button-outline button-outline--small" 
+                href="<?php echo HOST;?>category-new?shop">
+                  Новая категория
+              </a>
             </div>
           </fieldset>
 
@@ -51,7 +59,11 @@
               </select>
             </label>
             <div class="form__item">
-              <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>brand-new">Создать новый бренд</a>
+              <a 
+                class="button button-outline button-outline--small" 
+                href="<?php echo HOST;?>brand-new">
+                  Новый бренд
+              </a>
             </div>
           </fieldset>
 
@@ -59,7 +71,8 @@
             <label class="form__item">
               <span class="form__text">Описание товара</span>
             </label>
-            <textarea class="form__textarea" placeholder="Введите описание товара" name="desc" rows="5" cols="1" id="editor"><?php echo isset($_POST['content']) ? $_POST['content'] : 'Описание товара'; ?></textarea>
+            <!-- <textarea class="form__textarea" placeholder="Введите описание товара" name="desc" rows="5" cols="1" id="editor"><?php echo isset($_POST['content']) ? $_POST['content'] : 'Описание товара'; ?></textarea> -->
+            <textarea class="form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">Описание</textarea>
           </fieldset>
         </div>
 

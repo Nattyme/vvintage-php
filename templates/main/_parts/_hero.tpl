@@ -5,7 +5,7 @@
         <picture>
           <source srcset="<?php echo HOST . 'static/img/hero/01.webp 1x,' . 'static/img/hero/01@2x.webp 2x';?>" type="image/webp" />
           <source srcset="<?php echo HOST . 'static/img/hero/01.jpg 1x,' . 'static/img/hero/01@2x.jpg 2x';?>" type="image/jpeg" />
-          <img src="<?php echo HOST . 'static/img/hero/01.jpg';?>" srcset="<?php echo HOST . 'static/img/hero/01@2x.jpg';?>" alt="" />
+          <img class="hero__img" src="<?php echo HOST . 'static/img/hero/01.jpg';?>" srcset="<?php echo HOST . 'static/img/hero/01@2x.jpg';?>" alt="" />
         </picture>
       </div>
     </div>
@@ -22,7 +22,7 @@
         </div>
       </div>
       <a href="#arrival" class="hero__button">
-        <span class="button-solid">Открыть магазин</span>
+        <span class="button button-solid">Открыть магазин</span>
       </a>
     </div>
   </div>

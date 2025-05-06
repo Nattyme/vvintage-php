@@ -5,6 +5,7 @@
 import dragAndDropFiles from './modules/dragAndDropFiles.js';
 import addAccordion from './modules/addAccordion.js';
 import fancyBox from './modules/fancybox.js';
+import ajaxRequesting from './modules/ajaxRequesting.js';
 import addTab from './modules/tab.js';
 import onPreviewImgLoaded from './modules/onPreviewImgLoaded.js';
 import previewLoadImages from './modules/previewLoadImages.js';
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
  
 
   addTab();
+  ajaxRequesting('#form-add-product');
   addAccordion('many', '#sidebar');
   fancyBox();
   const pathHolder = document.querySelector('[data-config]');

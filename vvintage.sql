@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: MySQL-5.7
--- Время создания: Апр 29 2025 г., 19:06
+-- Время создания: Май 06 2025 г., 21:00
 -- Версия сервера: 5.7.44
 -- Версия PHP: 7.4.33
 
@@ -59,14 +59,14 @@ INSERT INTO `address` (`id`, `user_id`, `name`, `surname`, `fathername`, `countr
 
 CREATE TABLE `brands` (
   `id` int(11) NOT NULL,
-  `name` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `title` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `brands`
 --
 
-INSERT INTO `brands` (`id`, `name`) VALUES
+INSERT INTO `brands` (`id`, `title`) VALUES
 (1, 'Chanel'),
 (2, 'Cerruti'),
 (3, 'Guy Laroche'),
@@ -88,32 +88,34 @@ INSERT INTO `brands` (`id`, `name`) VALUES
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
-  `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `parent_id` int(11) DEFAULT NULL
+  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `parent_id`) VALUES
-(1, 'Для женщин', NULL),
-(2, 'Для мужчин', NULL),
-(3, 'Для детей', NULL),
-(4, 'Для дома', NULL),
-(5, 'Парфюмерия', NULL),
-(6, 'Косметика', NULL),
-(7, 'Сумки', 1),
-(8, 'Очки', 1),
-(9, 'Часы', 1),
-(10, 'Бижутерия', 1),
-(11, 'Косметика', 1),
-(12, 'Аксессуары', 1),
-(13, 'Очки', 2),
-(14, 'Часы', 2),
-(15, 'Ремни', 2),
-(16, 'Галстуки', 2),
-(17, 'Сумки', 2);
+INSERT INTO `categories` (`id`, `title`, `parent_id`, `image`) VALUES
+(1, 'Для женщин', NULL, 'women'),
+(2, 'Для мужчин', NULL, 'men'),
+(3, 'Для детей', NULL, 'children'),
+(4, 'Для дома', NULL, 'home'),
+(5, 'Парфюмерия', NULL, 'parfume'),
+(6, 'Косметика', NULL, 'cosmetic'),
+(7, 'Сумки', 1, ''),
+(8, 'Очки', 1, ''),
+(9, 'Часы', 1, ''),
+(10, 'Бижутерия', 1, ''),
+(11, 'Косметика', 1, ''),
+(12, 'Аксессуары', 1, ''),
+(13, 'Очки', 2, ''),
+(14, 'Часы', 2, ''),
+(15, 'Ремни', 2, ''),
+(16, 'Галстуки', 2, ''),
+(17, 'Сумки', 2, ''),
+(18, 'Все бренды', NULL, 'brands');
 
 -- --------------------------------------------------------
 
@@ -161,7 +163,7 @@ INSERT INTO `messages` (`id`, `email`, `name`, `message`, `phone`, `timestamp`, 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `category` int(11) NOT NULL,
-  `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `desc` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `brand` int(11) NOT NULL,
   `price` int(11) NOT NULL,
@@ -174,7 +176,7 @@ CREATE TABLE `products` (
 -- Дамп данных таблицы `products`
 --
 
-INSERT INTO `products` (`id`, `category`, `name`, `desc`, `brand`, `price`, `article`, `url`, `stock`) VALUES
+INSERT INTO `products` (`id`, `category`, `title`, `desc`, `brand`, `price`, `article`, `url`, `stock`) VALUES
 (1, 10, 'Цепочка и подвеска Chanel в форме креста из золотистого металла со стразами и жемчужно-белыми бусинами.', 'Цепочка и подвеска в форме креста из золотистого металла со стразами и жемчужно-белыми бусинами.\r\n\r\nЧрезвычайно тщательная отделка. \r\n\r\nОбщая длина: 45 см Вес 83 грамма.\r\n\r\nВеликолепное украшение, которое подходит к любому образу. Ни разу не использовалось. Для проверки подлинности можно обращаться в бутик Chanel.', 1, 9000, 1711817016, '-chaine-et-pendentif-metal-dore-chanel?referrer=catalog', 1),
 (2, 10, 'Колье коллекционное Chanel Cruise 2005', 'Колье коллекционное Chanel Cruise 2005.\r\nИзготовлено во Франции.  \r\n\r\n\r\nПоказ мод Chanel Cruise 2005 года был организован Карлом Лагерфельдом.\r\nПо улицам центра Парижа модели прогуливались на фирменных автобусах Chanel (если не видели, то видео стоит найти на YouTube, потому что это действительно впечатляюще).\r\n\r\nОжерелье - одно из тех, которые были показаны, оно было самым важным в коллекции. Нося это действительно редкую и поразительную красоту.\r\n\r\n\r\n\r\nДлина ожерелья составляет около 60 см., плюс 28 см. кулон. Ожерелье редкой красоты', 1, 10000, 2317491898, '-collana-da-collezionisti-chanel-cruise-2005-made-in-france?referrer=catalog', 1),
 (3, 10, 'Колье Chanel', 'Колье Chanel, белое золото и бриллианты. В колье более 100 крошечных бриллиантов и один крупный бриллиант из белого золота . Съемный.', 1, 14000, 5072819272, '-collar-chanel-oro-blanco-y-diamantes?referrer=catalog', 1),
@@ -307,7 +309,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `email`, `role`, `password`, `cart`, `fav_list`, `name`, `surname`, `country`, `city`, `phone`, `address`, `avatar`, `avatar_small`) VALUES
 (1, 'info@mail.ru', 'user', '$2y$10$pNM47.qS/ehe9kuFpA.Lb.AvQ/tfOWbrYlYE33EqQ5r/Ev9o0fA0W', '[]', '[]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 'info2@mail.ru', 'admin', '$2y$10$xvqZsEms93g0uQOFl/dF1OagOiFnRbMUzjeDJuq5fNJks8k1OIUzq', '[]', '[]', 'Наталья', 'Балашова', '', '', '', '', '938751596807.jpg', '48-938751596807.jpg'),
+(2, 'info2@mail.ru', 'admin', '$2y$10$xvqZsEms93g0uQOFl/dF1OagOiFnRbMUzjeDJuq5fNJks8k1OIUzq', '[]', '[]', 'Наталья', 'Балашова', '', '', '', '', '379444427371.jpg', '48-379444427371.jpg'),
 (3, 'text@mail.ru', 'user', '$2y$10$IZ2LlttwKkC0gNXyfvheD.mlf3pQb1gNxR5GSgzeUP1MfL/rx1gDC', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (4, 'test2@mail.ru', 'user', '$2y$10$Ra3.yzKgi0/SGWfgcTRN5OevGK8g71JqcoxEFGwJVWAevEkQhI7Au', '[]', '[]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
@@ -379,7 +381,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `messages`

@@ -1,5 +1,7 @@
 function fancyBox () {
   console.log('ПРИВЕТ МАМА');
+  const dataBox = document.querySelector('[data-fancybox]');
+  if (!dataBox) return;
   
   Fancybox.bind("[data-fancybox]", {
     // Эффект перехода при смене элементов галереи

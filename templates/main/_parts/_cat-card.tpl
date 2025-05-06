@@ -1,4 +1,4 @@
-<a href="shop-single.html" class="card-small">
+<a href="<?php echo HOST . 'shop' . $category['id'];?>" class="card-small">
   <div class="card-small__img">
     <svg class="icon icon--arrow-right">
       <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#arrow-right';?>"></use>

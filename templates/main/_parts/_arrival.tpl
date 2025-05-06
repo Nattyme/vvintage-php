@@ -14,7 +14,7 @@
       </div>
 
       <div class="arrival__button">
-        <a href="<?php echo HOST . 'shop';?>" class="button-outline">Открыть магазин</a>
+        <a href="<?php echo HOST . 'shop';?>" class="button button-outline">Открыть магазин</a>
       </div>
     </div>
   </section>
