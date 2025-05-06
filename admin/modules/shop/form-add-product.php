@@ -1,24 +1,27 @@
 <?php
+  $response = [];
 
   // Проверка на заполненность названия
   if( trim($_POST['title']) == '' ) {
-    $_SESSION['errors'][] = ['title' => 'Введите название товара'];
+    $response['errors'][] = ['название товара'];
   } 
 
   if( trim($_POST['price']) == '' ) {
-    $_SESSION['errors'][] = ['title' => 'Введите стоимость товара'];
+    $response['errors'][] = ['стоимость товара'];
   } 
 
   // Проверка на заполненность содержимого
   if( trim($_POST['content']) == '' ) {
-    $_SESSION['errors'][] = ['title' => 'Введите описание товара'];
+    $response['errors'][] = ['описание товара'];
   } 
 
-  foreach($_SESSION['errors'] as $error) {
-    print_r($error['title']);
+  if(!empty($response['errors'])) {
+    echo json_encode($response);
+    exit();
   }
 
-  // if ( empty($_SESSION['errors']) ) {
+  $response['success'][] = ['Товар успешно добавлен'];
+  echo json_encode($response);
   //   $product = R::dispense('products');
   //   $product->title = $_POST['title'];
   //   $product->brand = $_POST['brand'];
@@ -61,10 +64,7 @@
 
   //   }
 
-    R::store($product);
+    // R::store($product);
     
     
-    $_SESSION['success'][] = ['title' => 'Товар успешно добавлен'];
-    print_r('Товар успешно добавлен');
-  }
-  
+    

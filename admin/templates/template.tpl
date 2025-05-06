@@ -14,7 +14,7 @@
           <h2><span>VVintage</span> Панель управления:</h2>
         </div>
       </header>
-      <div class="dashboard__content" id="dashboard__content">';
+      <div class="dashboard__content" id="dashboard__content">
         <?php echo $content; ?>
       </div>
 
