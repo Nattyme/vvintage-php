@@ -2,7 +2,7 @@
 // import mobileNav from './modules/mobile-nav.js';
 // import router from './modules/admin/router.js';
 // import addSidebarControlPanel from "./modules/admin/model/sidebar/addSidebar.js";
-import dragAndDropFiles from './modules/dragAndDropFiles.js';
+import dragAndDropFiles from './modules/drag-and-drop/dragAndDropFiles.js';
 import addAccordion from './modules/addAccordion.js';
 import fancyBox from './modules/fancybox.js';
 import ajaxRequesting from './modules/ajaxRequesting.js';
