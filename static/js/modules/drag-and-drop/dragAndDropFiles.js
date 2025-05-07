@@ -1,4 +1,5 @@
 import previewModule from "./../preview.js";
+import createObserver from './observer.js';
 import createDragHandlers from './dragEvents.js';
 
 const dragAndDropFiles = () => {
@@ -39,11 +40,8 @@ const dragAndDropFiles = () => {
     });
   }
 
-  //Следим за измненеием контейнера изображений
-  const observer = new MutationObserver((mutationList) => mutationList.forEach(mutationType => {
-    if (mutationType.type === 'childList') onFilesUploaded(mutationType);
-  }));
-  observer.observe(container, {childList : true, attributes: true});
+  //Следим за изменением контейнера изображений
+  createObserver(container, onFilesUploaded);
 }
 
 export default dragAndDropFiles;
