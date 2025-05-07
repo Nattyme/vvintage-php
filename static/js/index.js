@@ -7,8 +7,8 @@ import addAccordion from './modules/addAccordion.js';
 import fancyBox from './modules/fancybox.js';
 import ajaxRequesting from './modules/ajaxRequesting.js';
 import addTab from './modules/tab.js';
-import onPreviewImgLoaded from './modules/onPreviewImgLoaded.js';
-import previewLoadImages from './modules/previewLoadImages.js';
+import handlerLoadedPreviewImages from './modules/preview-images/handlerLoadedPreviewImages.js';
+import previewLoadImages from './modules/preview-images/previewLoadImages.js';
 // import yMap from './modules/ymap.js';
 
 
@@ -37,11 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
       blockSelector : '[data-preview="block"]',
       imgServerUrl : path,
       closeIconHref : '/static/imgs/svgsprite/sprite.symbol.svg#close',
-      onImageLoad : onPreviewImgLoaded
+      onImageLoad : handlerLoadedPreviewImages
     }
   );
   dragAndDropFiles();
-  onPreviewImgLoaded();
+  handlerLoadedPreviewImages();
  
   
 

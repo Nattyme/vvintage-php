@@ -1,4 +1,4 @@
-import previewModule from "./preview.js";
+import previewModule from "./preview-images/preview.js";
 
 const ajaxRequesting = (formSelector) => {
   // CKEDITOR.instance.editor.updateElement();
@@ -13,16 +13,23 @@ const ajaxRequesting = (formSelector) => {
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
+   
     const formData = new FormData(form);
+    formData.delete('cover[]');
+    const orderedFiles = previewModule.getCurrentFiles(); // отсортированный массив
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ':', pair[1]);
-    }
+    orderedFiles.forEach((item, index) => {
+      console.log(item.file);
+      
+      formData.append(`cover[${index}]`, item.file); // Файл
+      formData.append(`order[${index}]`, item.order); // Порядковый номер
+    });
 
     fetch(formUrl, {
       method: 'POST',
       body: formData
-    }).then(res => res.json())
+    })
+    .then(res => res.json())
     .then(data => {  
       const notification = document.querySelector('.notifications');
       const notificationTitle = document.querySelector('.notifications__title');
@@ -30,7 +37,7 @@ const ajaxRequesting = (formSelector) => {
       notification.setAttribute('hidden', true);
 
 
-      if(data.errors) {
+      if(data.errors && data.errors.length) {
         notification.removeAttribute('hidden');
         notificationTitle.classList.add('notifications__title--error');
         let noteText = 'Заполните поля: ';

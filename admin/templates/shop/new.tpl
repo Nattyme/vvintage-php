@@ -17,7 +17,7 @@
             <label class="form__item">
               <span class="form__text">Введите название товара</span>
               <input name="title" class="form__input" type="text"
-                     value="<?php echo isset($_POST['title']) ? $_POST['title'] : ''; ?>"
+                     value="Название товара"
                      placeholder="Название товара" />
             </label>
           </fieldset>
@@ -26,8 +26,25 @@
             <label class="form__item">
               <span class="form__text">Цена</span>
               <input name="price" class="form__input" type="text"
-                     value="<?php echo isset($_POST['price']) ? $_POST['price'] : ''; ?>"
+                     value="1990"
                      placeholder="Введите стоимость товара" />
+            </label>
+          </fieldset>
+
+          <fieldset class="form__field">
+            <label class="form__item">
+              <span class="form__text">Артикул</span>
+              <input name="article" class="form__input" type="text"
+                     value="1990999999"
+                     placeholder="Введите артикул товара" />
+            </label>
+          </fieldset>
+          <fieldset class="form__field">
+            <label class="form__item">
+              <span class="form__text">Ссылка</span>
+              <input name="url" class="form__input" type="text"
+                     value="https//:"
+                     placeholder="Введите ссылку товара на vinted.fr" />
             </label>
           </fieldset>
 
@@ -35,8 +52,8 @@
             <label class="form__item">
               <span class="form__text">Выберите категорию</span>
               <select class="form__select" name="cat">
-                <?php foreach ($cats as $cat) : ?>
-                  <option value="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></option>
+                <?php foreach ($cats as $category) : ?>
+                  <option value="<?php echo $category['id']; ?>"><?php echo $category['title']; ?></option>
                 <?php endforeach; ?>
               </select>
             </label>

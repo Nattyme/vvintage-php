@@ -2,7 +2,7 @@ import previewModule from "./preview.js";
 
 let previewContainerListening = false;
 
-const onPreviewImgLoaded = () => {
+const handlerLoadedPreviewImages = () => {
   if (previewContainerListening === true) return;
   const previewContainer = document.querySelector('[data-preview="container"]');
   if(!previewContainer) return;
@@ -29,4 +29,4 @@ const onPreviewImgLoaded = () => {
   previewContainerListening = true;
 }
 
-export default onPreviewImgLoaded;
+export default handlerLoadedPreviewImages;

@@ -20,51 +20,52 @@
     exit();
   }
 
-  $response['success'][] = ['Товар успешно добавлен'];
-  echo json_encode($response);
-  //   $product = R::dispense('products');
-  //   $product->title = $_POST['title'];
-  //   $product->brand = $_POST['brand'];
-  //   $product->price = $_POST['price'];
-  //   $product->content = $_POST['content'];
-  //   $product->cat = $_POST['cat'];
-  //   $product->timestamp = time();
 
-    // Если передано изображение - уменьшаем, сохраняем, записываем в БД
-    if ( isset($_FILES['cover']['name']) && $_FILES['cover']['tmp_name'] !== '') {
+  $product = R::dispense('products');
+  $product->title = $_POST['title'];
+  $product->content = $_POST['content'];
+  $product->price = $_POST['price'];
+  $product->article = $_POST['article'];
+  $product->category = $_POST['cat'];
+  $product->brand = $_POST['brand'];
+  $product->stock = 1;
+  $product->url = $_POST['url'];
+  $product->timestamp = time();
 
-      //Если передано изображение - уменьшаем, сохраняем файлы в папку
-      $coverSlidesName = saveSliderImg('cover', [350, 478], 12, 'products', [536, 566], [350, 478]);
+  R::store($product);
+
+  // Если передано изображение - уменьшаем, сохраняем, записываем в БД
+  if ( isset($_FILES['cover']['name']) && $_FILES['cover']['tmp_name'] !== '') {
+
+    //Если передано изображение - уменьшаем, сохраняем файлы в папку
+    $coverImages = saveSliderImg('cover', [350, 478], 12, 'products', [536, 566], [350, 478]);
+    
+
+     
+    // Если новое изображение успешно загружено 
+    if ($coverImages) {
+
+      // Записываем имя файлов в БД
+      foreach ( $coverImages as $value) {
+        $productImages = R::dispense('productimages');
+        $productImages->product_id = $product['id'];
+    
+        $productImages->filename_full = $value['cover_full'];
+        $productImages->filename = $value['cover'];
+        $productImages->filename_small = $value['cover_small'];
+        $productImages->image_order = $value['order'];
+        
+        R::store( $productImages);
+      }
+    } 
+
+    $response['success'][] = ['Товар успешно добавлен'];
+    echo json_encode($response);
+    exit();
       
-      // if ( empty($_SESSION['errors']) ) {
-      //   R::store($product);
-      //    // Если новое изображение успешно загружено 
-        
-      //   if ($coverSlidesName) {
-        
-      //     // Записываем имя файлов в БД
-      //     foreach ( $coverSlidesName as $key => $value) {
-      //       $productSliderImg = R::dispense('sliders');
-      //       $productSliderImg->product_id = $product['id'];
-        
-      //       $cover_full = $coverSlidesName[$key][0];
-      //       $cover = $coverSlidesName[$key][1];
-      //       $cover_small = $coverSlidesName[$key][2];
-      //       $productSliderImg->cover = $cover;
-      //       $productSliderImg->cover_small = $cover_small;
-      //       $productSliderImg->cover_full = $cover_full;
-      //       R::store( $productSliderImg);
-      //     }
-      //   } 
-        
-      //   $_SESSION['success'][] = ['title' => 'Товар успешно добавлен'];
-      //   header('Location: ' . HOST . 'admin/shop');
-      //   exit();
-      // }
+  }
 
-    }
-exit();
-    // R::store($product);
+
     
     
     

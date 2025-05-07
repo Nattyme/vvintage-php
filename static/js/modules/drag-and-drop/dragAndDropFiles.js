@@ -1,4 +1,4 @@
-import previewModule from "./../preview.js";
+import previewModule from "./../preview-images/preview.js";
 import createObserver from './observer.js';
 import createDragHandlers from './dragEvents.js';
 

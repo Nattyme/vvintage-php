@@ -12,7 +12,8 @@ const previewModule = (() => {
     // Добавляем объект изображения в массив currentFiles
     currentFiles.push({
       name : file.name,
-      url : imageURL
+      url : imageURL,
+      file: file
     });
 
     currentFiles.forEach((file, index) => file.order = index + 1);
