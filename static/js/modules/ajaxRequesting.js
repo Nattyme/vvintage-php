@@ -6,10 +6,7 @@ const ajaxRequesting = (formSelector) => {
   const form = document.querySelector(formSelector);
   if(!form) return;
   const formUrl = form.dataset.url;
-  console.log('масив текущих файлов:');
-  console.log(previewModule.getCurrentFiles());
-  
-  
+
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();

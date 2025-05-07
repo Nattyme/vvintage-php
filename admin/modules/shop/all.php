@@ -17,7 +17,7 @@ $sqlQuery = 'SELECT
              LEFT JOIN `categories` c ON p.category = c.id
              LEFT JOIN (
               SELECT product_id, filename
-              FROM product_images 
+              FROM productimages 
               WHERE image_order = 1
              ) pi ON p.id = pi.product_id
              ORDER BY p.id DESC
@@ -25,8 +25,6 @@ $sqlQuery = 'SELECT
 
 $products = R::getAll($sqlQuery);
 
-// print_r($products);
-// die();
 $pageTitle = "Все товары";
 $pageClass = "admin-page";
 ob_start();

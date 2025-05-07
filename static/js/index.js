@@ -35,9 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
   previewLoadImages(
     {
       blockSelector : '[data-preview="block"]',
-      imgServerUrl : path,
-      closeIconHref : '/static/imgs/svgsprite/sprite.symbol.svg#close',
-      onImageLoad : handlerLoadedPreviewImages
     }
   );
   dragAndDropFiles();

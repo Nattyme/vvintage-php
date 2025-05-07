@@ -5,7 +5,7 @@ require_once ROOT . "./libs/functions.php";
 $sqlQuery = 'SELECT
                 p.id, 
                 p.title, 
-                p.desc, 
+                p.content, 
                 p.brand, 
                 p.category, 
                 p.price, 
@@ -17,11 +17,10 @@ $sqlQuery = 'SELECT
              WHERE p.id = ? LIMIT 1';
 
 $product = R::getRow($sqlQuery, [$uriGet]);
-print_r($product);
 
 // Запрашиваем информацию по изображениям продукта
 $sqlImages = 'SELECT pi.filename, pi.image_order 
-              FROM product_images pi
+              FROM productimages pi
               WHERE product_id = ?
               ORDER BY image_order ASC'; 
 

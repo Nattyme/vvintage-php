@@ -2,11 +2,7 @@ import previewModule from "./preview.js";
 
 let previewInputListening = false;
 
-const previewLoadImages = ({
-    blockSelector='[data-preview="block"]', 
-    imgServerUrl = '',
-    closeIconHref = 'svgsprite/sprite.symbol.svg#close'
-  } = {}) => {
+const previewLoadImages = ({blockSelector='[data-preview="block"]'} = {}) => {
 
   // Общий блок с инпутом и блоком изображений
   const previewBlock = document.querySelector(blockSelector);
@@ -34,10 +30,10 @@ const previewLoadImages = ({
       let imageTmpl = `
             <div class="form__img-wrapper" data-preview="image-wrapper" data-url="${imageURL}">
               <img src="${imageURL}" draggable="true" loading="lazy">
-              <button type="button" class="button button-close button-close--with-bg" data-preview="btn-close">
-                <svg class="icon icon--close">
-                  <use href="${imgServerUrl + closeIconHref}"></use>
-                </svg>
+              <button type="button" class="button button-close button-close--with-bg cross-wrapper" data-preview="btn-close">
+              
+                  <span class="leftright"></span><span class="rightleft"> </span>
+           
               </button>
             
             </div>
