@@ -19,8 +19,6 @@ const ajaxRequesting = (formSelector) => {
     const orderedFiles = previewModule.getCurrentFiles(); // отсортированный массив
 
     orderedFiles.forEach((item, index) => {
-      console.log(item.file);
-      
       formData.append(`cover[${index}]`, item.file); // Файл
       formData.append(`order[${index}]`, item.order); // Порядковый номер
     });
@@ -52,12 +50,15 @@ const ajaxRequesting = (formSelector) => {
         notification.removeAttribute('hidden');
         notificationTitle.classList.add('notifications__title--success');
         
-        data.success.forEach(text => {
-          notificationTitle.textContent = text;
-        });
+        notificationTitle.textContent = data.success[0];
 
+        // Очистим форму
+        setTimeout(() => {
+          form.reset(); // Очистка полей формы
+          previewModule.reset(); // Очистка файлов (если есть такой метод)
+          window.location.href = '/admin/shop'; // Переход
+        }, 1500); // 1.5 секунды задержки — можно уменьшить
       }
-      console.log('Ответ сервера:', data);
     });
 
     
