@@ -15,7 +15,32 @@ const previewModule = (() => {
       url : imageURL
     });
 
+    currentFiles.forEach((file, index) => file.order = index + 1);
+
     return imageURL;
+  }
+
+  // Ф-ция обновляем порядок массива 
+  const updateOrder = (domElements) => {
+    const newOrder = [];
+   
+    domElements.forEach(element => {
+      // Получим url текущего файла
+      const currentUrl = element.dataset.url;
+
+      // Найдем его в массиве
+      const file = currentFiles.find(file => file.url === currentUrl);
+
+      // Добавим в новый массив
+      if(file) newOrder.push(file);
+    });
+
+    newOrder.forEach((file, index) => file.order = index + 1);
+
+    // Обновим данные основного массива
+    currentFiles.splice(0, currentFiles.length, ...newOrder);
+    console.log(currentFiles);
+    
   }
 
   // Ф-ция удаления файла
@@ -43,6 +68,7 @@ const previewModule = (() => {
 
   return {
     addFile : addFile,
+    updateOrder : updateOrder,
     removeFile : removeFile,
     getCurrentFiles : getCurrentFiles,
     reset : reset

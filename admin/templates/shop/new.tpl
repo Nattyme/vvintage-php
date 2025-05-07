@@ -90,7 +90,7 @@
                 <div class="block-upload__button ">
                   <label>
                     <span class="block-upload__input-fake">Выбрать изображения</span>
-                    <input name="images[]" class="block-upload__input-real" type="file" multiple data-preview="input">
+                    <input name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input">
                   </label>
                 </div>
 

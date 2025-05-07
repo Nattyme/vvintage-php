@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   );
   dragAndDropFiles();
-  
   onPreviewImgLoaded();
  
   
