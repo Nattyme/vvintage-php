@@ -38,7 +38,8 @@ const createDragHandlers = (previewModule, getDragged, setDragged) => {
     const indexTarget = images.indexOf(this);
 
     if (indexTarget < indexDragged) {
-      this.parentElement.insertBefore(dragged, this);     
+      this.parentElement.insertBefore(dragged, this); 
+      this.parentElement.querySelectorAll('.under').forEach(element => element.classList.remove('under'));    
     } else {
       this.parentElement.insertBefore(dragged, this.nextElementSibling);
     }
