@@ -16,7 +16,7 @@
 
         <div class="products__pages-shown">
           <div class="pages-shown">
-            <p>Показано: <span><?php echo $showeddProducts; ?></span> из&#160;
+            <p>Показано: <span><?php echo $showedProducts; ?></span> из&#160;
             <span><?php echo $productsTtl; ?></span> товаров</p>
           </div>
         </div>
@@ -38,24 +38,6 @@
         <div class="products__pagination">
           <div class="section-pagination">
             <?php include ROOT . 'templates/_parts/pagination/_pagination.tpl';?>
-            <!-- <a href="#" class="arrow arrow-prev none">
-              <svg class="icon icon--arrow-right dark">
-                <use href="./img/svgsprite/sprite.symbol.svg#arrow-right"></use>
-              </svg>
-            </a>
-
-            <div class="section-pagination__item active">
-              <a href="#" class="pagination-button">1</a>
-            </div>
-            <div class="section-pagination__item">
-              <a href="#" class="pagination-button">2</a>
-            </div>
-
-            <a href="#" class="arrow arrow-next">
-              <svg class="icon icon--arrow-right dark">
-                <use href="./img/svgsprite/sprite.symbol.svg#arrow-right"></use>
-              </svg>
-            </a> -->
           </div>
         </div>
       </div>

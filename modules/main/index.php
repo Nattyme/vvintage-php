@@ -5,6 +5,7 @@ $uriModule = getModuleName();
 // Получим категории
 $sqlCats = 'SELECT c.id,
                    c.title,
+                   c.parent_id,
                    c.image
             FROM `categories` c 
             WHERE c.parent_id IS NULL';

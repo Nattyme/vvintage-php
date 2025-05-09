@@ -6,7 +6,7 @@ $uriGetParam = getUriGetParam();
 
 // $pagination = pagination($settings['card_on_page_shop'], 'products');
 $pagination = pagination(9, 'products');
-$showeddProducts = $pagination['page_number'] * 9;
+$showedProducts = $pagination['page_number'] * 9;
 $productsTtl = R::count('products');
 
 
@@ -18,7 +18,7 @@ $sqlQuery = 'SELECT
                 p.url, 
                 b.title AS brand, 
                 c.title AS category,
-                pi.filename AS cover
+                pi.filename 
                 
              FROM `products` p
              LEFT JOIN `brands` b ON p.brand = b.id

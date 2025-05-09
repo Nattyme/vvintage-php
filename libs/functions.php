@@ -588,7 +588,7 @@ function num_decline( $number, $titles, $show_number = false ){
 	return ( $show_number ? "$number " : '' ) . $titles[ $title_index ];
 }
 
-// Вывод похожих постов
+// Вывод похожих постов 
 function get_related_posts ($postTitle) {
   // Разбиваем заголовок на слова, записваем массив в переменую
   $wordsArray = explode(' ', $postTitle);
@@ -649,7 +649,7 @@ function get_related_posts ($postTitle) {
 };
 
 // Вывод похожих продуктов
-function get_related_products ($productTitle) {
+function get_related_products ($productTitle, $productCategory, $productBrand) {
   // Разбиваем заголовок на слова, записваем массив в переменую
   $wordsArray = explode(' ', $productTitle);
   $wordsArray = array_unique($wordsArray);
@@ -693,18 +693,27 @@ function get_related_products ($productTitle) {
   }
 
   // Фрмируем sql запрос
-  $sqlQuery = 'SELECT id, title, price, cover_small FROM `products` WHERE ';
+  $sqlQuery = 'SELECT 
+                p.id, 
+                p.title, 
+                p.price,
+                pi.filename,
+                pi.image_order
+              FROM `products` p
+              LEFT JOIN `productimages` pi ON p.id = product_id AND pi.image_order = 1
+              WHERE ';
 
   for ($i = 0; $i < count($newWordsArray); $i++) {
     if ($i + 1 == count($newWordsArray)) {
       // Последний цикл
-      $sqlQuery .= 'title LIKE ?';
+      $sqlQuery .= ' title LIKE ? ';
     } else {
       $sqlQuery .= 'title LIKE ? OR ';
     }
   }
-
-  $sqlQuery .= 'order by RAND() LIMIT 3';
+ 
+  $sqlQuery .= 'order by RAND() LIMIT 4 ';
+  $check = R::getAll($sqlQuery, $newWordsArray);
   return R::getAll($sqlQuery, $newWordsArray);
 };
 

@@ -41,9 +41,7 @@ foreach($productImages as $value) {
 $visibleImages = array_slice($remainingImages, 0, 4);
 $hiddenImages = array_slice($remainingImages, 4);
 $invisibleImages = [];
-// print_r($mainImage);
-// print_r($remainingImages);
-// die();
+
 // // Комментарии
 // $sqlQueryComments = 'SELECT 
 //                         comments.text, comments.user, comments.timestamp,
@@ -54,10 +52,11 @@ $invisibleImages = [];
 
 // $comments = R::getAll( $sqlQueryComments, [$post['id']] );
 
-// // Вывод похожих товаров
-// $relatedProducts = get_related_products($product['title'], $product['brand'], $product['cat']);
-
-// $pageTitle = "Название товара {$product['title']}";
+// Вывод похожих товаров
+$relatedProducts = get_related_products($product['title'], $product['brand'], $product['category']);
+// print_r($relatedProducts);
+// die();
+$pageTitle = "Название товара {$product['title']}";
 // Подключение шаблонов страницы
 include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";
