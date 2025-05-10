@@ -1,4 +1,4 @@
-<?php
+ad<?php
 // Поиск названия модуля
 function getModuleName () {
   $uri = $_SERVER['REQUEST_URI'];
@@ -254,94 +254,94 @@ function saveUploadedImg($inputFileName, $minSize, $maxFileSizeMb, $folderName, 
 
   //Проверка, что передан массив изображений
 
-  function reArrayFiles( $file_post) {
-    $file_count  = count( $file_post['name']);
-    $file_keys  = array_keys($file_post);
-    
-    $file_ary    = [];    //Итоговый массив
-    for($i=0; $i<$file_count; $i++) {
-      foreach($file_keys as $key) {
-        $file_ary[$i][$key] =  $file_post[$key][$i];  
+function reArrayFiles( $file_post) {
+  $file_count  = count( $file_post['name']);
+  $file_keys  = array_keys($file_post);
+  
+  $file_ary    = [];    //Итоговый массив
+  for($i=0; $i<$file_count; $i++) {
+    foreach($file_keys as $key) {
+      $file_ary[$i][$key] =  $file_post[$key][$i];  
+    }
+      
+  }
+  $reArray = [$file_ary, $file_count];
+  return $reArray;
+}
+
+function saveSliderImg($inputFileName, $minSize, $maxFileSizeMb, $folderName, $size, $smallSize) {
+  $reArray = reArrayFiles($_FILES[$inputFileName]);
+  $file_ary = $reArray[0];
+  $file_count = $reArray[1];
+  $coverArray = [];
+
+  for ($i = 0; $i < $file_count; $i++) {
+      $file = $file_ary[$i];
+      $fileName = $file['name'];
+      $fileTmpLoc = $file['tmp_name'];
+      $fileType = $file['type'];
+      $fileSize = $file['size'];
+      $fileErrorMsg = $file['error'];
+      $kaboom = explode(".", $fileName);
+      $fileExt = end($kaboom);
+      
+      $hasError = false;
+
+      // Проверки
+      list($width, $height) = getimagesize($fileTmpLoc);
+      if ($width < $minSize[0] || $height < $minSize[1]) {
+          $_SESSION['errors'][] = ['title' => 'Изображение слишком маленького размера'];
+          $hasError = true;
       }
-        
-    }
-    $reArray = [$file_ary, $file_count];
-    return $reArray;
+
+      if ($fileSize > ($maxFileSizeMb * 1024 * 1024)) {
+          $_SESSION['errors'][] = ['title' => 'Файл слишком большой'];
+          $hasError = true;
+      }
+
+      if (!preg_match("/\.(gif|jpg|jpeg|png|webp)$/i", $fileName)) {
+          $_SESSION['errors'][] = ['title' => 'Недопустимый формат файла'];
+          $hasError = true;
+      }
+
+      if ($fileErrorMsg == 1) {
+          $_SESSION['errors'][] = ['title' => 'Ошибка при загрузке файла'];
+          $hasError = true;
+      }
+
+      if ($hasError) {
+          continue; // пропускаем текущий файл
+      }
+
+      // Генерация имён и путей
+      $imgFolderLocation = ROOT . "usercontent/{$folderName}/";
+      $db_file_name = rand(100000000000, 999999999999) . "." . $fileExt;
+      $db_file_full_name =  $db_file_name . "@2x." . $fileExt;
+      $filePathFullSize = $imgFolderLocation . $db_file_full_name;
+      $filePathSize = $imgFolderLocation . $db_file_name;
+      $filePathSmallSize = $imgFolderLocation . $smallSize[0] . '-' . $db_file_name;
+      $orderValue = $_POST['order'][$i] ?? $i;
+
+      // Обработка изображений
+      $resultSize = resize_and_crop($fileTmpLoc, $filePathSize, $size[0], $size[1]);
+      $resultSmallSize = resize_and_crop($fileTmpLoc, $filePathSmallSize, $smallSize[0], $smallSize[1]);
+      $resultFullSize = move_uploaded_file($fileTmpLoc, $filePathFullSize);
+
+      if (!$resultSize || !$resultSmallSize || !$resultFullSize) {
+          $_SESSION['errors'][] = ['title' => 'Ошибка при сохранении изображения'];
+          continue;
+      }
+
+      $coverArray[] = [
+          'cover_full' => $db_file_full_name,
+          'cover' => $db_file_name,
+          'cover_small' => $smallSize[0] . '-' . $db_file_name,
+          'order' => $orderValue
+      ];
   }
 
-  function saveSliderImg($inputFileName, $minSize, $maxFileSizeMb, $folderName, $size, $smallSize) {
-    $reArray = reArrayFiles($_FILES[$inputFileName]);
-    $file_ary = $reArray[0];
-    $file_count = $reArray[1];
-    $coverArray = [];
-
-    for ($i = 0; $i < $file_count; $i++) {
-        $file = $file_ary[$i];
-        $fileName = $file['name'];
-        $fileTmpLoc = $file['tmp_name'];
-        $fileType = $file['type'];
-        $fileSize = $file['size'];
-        $fileErrorMsg = $file['error'];
-        $kaboom = explode(".", $fileName);
-        $fileExt = end($kaboom);
-        
-        $hasError = false;
-
-        // Проверки
-        list($width, $height) = getimagesize($fileTmpLoc);
-        if ($width < $minSize[0] || $height < $minSize[1]) {
-            $_SESSION['errors'][] = ['title' => 'Изображение слишком маленького размера'];
-            $hasError = true;
-        }
-
-        if ($fileSize > ($maxFileSizeMb * 1024 * 1024)) {
-            $_SESSION['errors'][] = ['title' => 'Файл слишком большой'];
-            $hasError = true;
-        }
-
-        if (!preg_match("/\.(gif|jpg|jpeg|png|webp)$/i", $fileName)) {
-            $_SESSION['errors'][] = ['title' => 'Недопустимый формат файла'];
-            $hasError = true;
-        }
-
-        if ($fileErrorMsg == 1) {
-            $_SESSION['errors'][] = ['title' => 'Ошибка при загрузке файла'];
-            $hasError = true;
-        }
-
-        if ($hasError) {
-            continue; // пропускаем текущий файл
-        }
-
-        // Генерация имён и путей
-        $imgFolderLocation = ROOT . "usercontent/{$folderName}/";
-        $db_file_name = rand(100000000000, 999999999999) . "." . $fileExt;
-        $db_file_full_name =  $db_file_name . "@2x." . $fileExt;
-        $filePathFullSize = $imgFolderLocation . $db_file_full_name;
-        $filePathSize = $imgFolderLocation . $db_file_name;
-        $filePathSmallSize = $imgFolderLocation . $smallSize[0] . '-' . $db_file_name;
-        $orderValue = $_POST['order'][$i] ?? $i;
-
-        // Обработка изображений
-        $resultSize = resize_and_crop($fileTmpLoc, $filePathSize, $size[0], $size[1]);
-        $resultSmallSize = resize_and_crop($fileTmpLoc, $filePathSmallSize, $smallSize[0], $smallSize[1]);
-        $resultFullSize = move_uploaded_file($fileTmpLoc, $filePathFullSize);
-
-        if (!$resultSize || !$resultSmallSize || !$resultFullSize) {
-            $_SESSION['errors'][] = ['title' => 'Ошибка при сохранении изображения'];
-            continue;
-        }
-
-        $coverArray[] = [
-            'cover_full' => $db_file_full_name,
-            'cover' => $db_file_name,
-            'cover_small' => $smallSize[0] . '-' . $db_file_name,
-            'order' => $orderValue
-        ];
-    }
-
-    return $coverArray;
-  }
+  return $coverArray;
+}
   
   // function saveSliderImg($inputFileName, $minSize, $maxFileSizeMb, $folderName, $size, $smallSize) {
   
@@ -748,6 +748,28 @@ function isFav_list ($productId) {
     }
   }
   return $result;
+}
+
+function getBreadcrumbs($items = []) {
+  $html = '<div class="breadcrumbs">';
+  $html .= '<a href="' . HOST . '" class="breadcrumb">Главная</a>';
+  
+  foreach ($items as $index => $item) {
+    $isLast = $index === array_key_last($items);
+    $html .= '<span>&#8212;</span>';
+
+    if ($isLast) {
+      $html .= '<span class="breadcrumb breadcrumb--active">' . htmlspecialchars($item['title']) . '</span>';
+    } else {
+      $html .= '<a href="' . htmlspecialchars($item['url']) . '" class="breadcrumb">' . htmlspecialchars($item['title']) . '</a>';
+    }
+
+    $html .= '</>';
+  }
+  return $html;
+  // die();
+  // $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+  // return $currentPath === $urlPath ? 'breadcrumb--active' : '';
 }
 
 

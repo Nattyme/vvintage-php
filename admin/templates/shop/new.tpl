@@ -3,9 +3,6 @@
 <section class="shop">
   <div class="shop__container">
 
-    <?php /* include ROOT . "admin/templates/components/errors.tpl"; */ ?>
-    <?php /* include ROOT . "admin/templates/components/success.tpl"; */ ?>
-
     <div hidden class="notifications mb-20">
       <div class="notifications__title"></div>
     </div>
@@ -42,7 +39,7 @@
           <fieldset class="form__field">
             <label class="form__item">
               <span class="form__text">Ссылка</span>
-              <input name="url" class="form__input" type="text"
+              <input name="outlink" class="form__input" type="text"
                      value="https//:"
                      placeholder="Введите ссылку товара на vinted.fr" />
             </label>

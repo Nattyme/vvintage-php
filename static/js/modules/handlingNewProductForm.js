@@ -1,6 +1,6 @@
 import previewModule from "./preview-images/preview.js";
 
-const ajaxRequesting = (formSelector) => {
+const handlingNewProductForm = (formSelector) => {
   // CKEDITOR.instance.editor.updateElement();
 
   const form = document.querySelector(formSelector);
@@ -62,4 +62,4 @@ const ajaxRequesting = (formSelector) => {
   });
 }
 
-export default ajaxRequesting;
+export default handlingNewProductForm;

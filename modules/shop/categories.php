@@ -35,6 +35,10 @@ if ($category) {
 
   $products = R::getAll($sql, $subCategoryIds);
 
+  $pagination = pagination(9, 'products');
+  $productsTtl = count($products);
+  $showedProducts = $productsTtl > 0 ? $pagination['page_number'] * 9 : NULL;
+
   // $pagination = pagination(9, 'products', ['category = ? ', [$uriGetParam]]);
 
   // $products = array();
@@ -65,8 +69,6 @@ if ($category) {
   header('Location: ' . HOST . 'shop');
   exit();
 }
-
-
 
 
 // Подключение шаблонов страницы

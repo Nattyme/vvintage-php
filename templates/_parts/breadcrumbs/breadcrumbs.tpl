@@ -1,5 +1,17 @@
-<div class="breadcrumbs">
-  <a href="<?php echo HOST . 'main';?>" class="breadcrumb ">Главная</a> 
-  <span>&mdash;</span> 
-  <a href="#!" class="breadcrumb breadcrumb--active">Магазин</a> 
-</div>
+<?php
+
+$breadcrumbs = [
+  ['title' => 'Магазин', 'url' => HOST . 'shop'],
+];
+
+
+if (isset($category)) {
+  $breadcrumbs[] = ['title' => $category['title'], 'url' => HOST . 'shop/' . $category['id']];
+}
+
+if (isset($product)) {
+  $breadcrumbs[] = ['title' => $product['title'], 'url' => '#'];
+}
+
+echo getBreadcrumbs($breadcrumbs);
+

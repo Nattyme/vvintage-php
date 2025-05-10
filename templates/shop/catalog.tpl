@@ -6,38 +6,31 @@
           <div class="shop-header__title">
             <h1 class="h1">Магазин</h1>
           </div>
-
-          <div class="breadcrumbs">
-            <a href="#!" class="breadcrumb ">Главная</a>
-            <span>&#8212;</span>
-            <a href="#!" class="breadcrumb breadcrumb--active">Магазин</a>
-          </div>
+          <?php include ROOT . 'templates/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
         </header>
 
-        <div class="products__pages-shown">
-          <div class="pages-shown">
-            <p>Показано: <span><?php echo $showedProducts; ?></span> из&#160;
-            <span><?php echo $productsTtl; ?></span> товаров</p>
-          </div>
-        </div>
+        <?php if ($productsTtl > 0 ) : ?>
+          <?php include ROOT . 'templates/shop/_parts/_pages-shown.tpl';?>
+        <?php endif; ?>
 
         <div class="products__cards-wrapper">
           <div class="products__cards-row">
             <?php foreach ($products as $product) : ?>
               <?php include ROOT . 'templates/shop/_parts/_card.tpl';?>
-            <?php endforeach; ?> 
-            
+            <?php endforeach; ?>  
           </div>
         </div>
-        <div class="products__pages-shown">
-          <div class="pages-shown">
-            <p>Показано: <span><?php echo $showeddProducts; ?></span> из&#160;
-            <span><?php echo $productsTtl; ?></span> товаров</p>
-          </div>
-        </div>
+
+        <?php if ($productsTtl > 0 ) : ?>
+          <?php include ROOT . 'templates/shop/_parts/_pages-shown.tpl';?>
+        <?php endif; ?>
+    
+        
         <div class="products__pagination">
           <div class="section-pagination">
-            <?php include ROOT . 'templates/_parts/pagination/_pagination.tpl';?>
+            <?php if ($productsTtl > 0 ) : ?>
+              <?php include ROOT . 'templates/_parts/pagination/_pagination.tpl';?>
+            <?php endif; ?>
           </div>
         </div>
       </div>
