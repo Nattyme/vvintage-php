@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: MySQL-5.7
--- Время создания: Май 07 2025 г., 19:26
+-- Время создания: Май 10 2025 г., 12:56
 -- Версия сервера: 5.7.44
 -- Версия PHP: 7.4.33
 
@@ -157,43 +157,10 @@ INSERT INTO `messages` (`id`, `email`, `name`, `message`, `phone`, `timestamp`, 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `products`
+-- Структура таблицы `productimages`
 --
 
-CREATE TABLE `products` (
-  `id` int(11) NOT NULL,
-  `category` int(11) NOT NULL,
-  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `desc` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `brand` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
-  `article` bigint(10) NOT NULL,
-  `url` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stock` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Дамп данных таблицы `products`
---
-
-INSERT INTO `products` (`id`, `category`, `title`, `desc`, `brand`, `price`, `article`, `url`, `stock`) VALUES
-(1, 10, 'Цепочка и подвеска Chanel в форме креста из золотистого металла со стразами и жемчужно-белыми бусинами.', 'Цепочка и подвеска в форме креста из золотистого металла со стразами и жемчужно-белыми бусинами.\r\n\r\nЧрезвычайно тщательная отделка. \r\n\r\nОбщая длина: 45 см Вес 83 грамма.\r\n\r\nВеликолепное украшение, которое подходит к любому образу. Ни разу не использовалось. Для проверки подлинности можно обращаться в бутик Chanel.', 1, 9000, 1711817016, '-chaine-et-pendentif-metal-dore-chanel?referrer=catalog', 1),
-(2, 10, 'Колье коллекционное Chanel Cruise 2005', 'Колье коллекционное Chanel Cruise 2005.\r\nИзготовлено во Франции.  \r\n\r\n\r\nПоказ мод Chanel Cruise 2005 года был организован Карлом Лагерфельдом.\r\nПо улицам центра Парижа модели прогуливались на фирменных автобусах Chanel (если не видели, то видео стоит найти на YouTube, потому что это действительно впечатляюще).\r\n\r\nОжерелье - одно из тех, которые были показаны, оно было самым важным в коллекции. Нося это действительно редкую и поразительную красоту.\r\n\r\n\r\n\r\nДлина ожерелья составляет около 60 см., плюс 28 см. кулон. Ожерелье редкой красоты', 1, 10000, 2317491898, '-collana-da-collezionisti-chanel-cruise-2005-made-in-france?referrer=catalog', 1),
-(3, 10, 'Колье Chanel', 'Колье Chanel, белое золото и бриллианты. В колье более 100 крошечных бриллиантов и один крупный бриллиант из белого золота . Съемный.', 1, 14000, 5072819272, '-collar-chanel-oro-blanco-y-diamantes?referrer=catalog', 1),
-(4, 10, 'Цельное кольцо Chanel Gold 750', 'Цельное кольцо chanel Gold 750 с драгоценными камнями.\r\n\r\nРазмер: 17 вес: 14,3 грамма\r\n\r\nБыло произведено не так много образцов, только для коллекционеров. Выполнена проверка подлинности, поэтому продажа без скидки. Для коллекционеров.', 1, 12000, 5689659597, '-anello-chanel-oro?referrer=catalog', 1),
-(5, 10, 'Браслет Chanel Coco Crush золото и 9 бриллиантов', 'Браслет Chanel Coco Crush из бежевого золота и 9-ти бриллиантов.\r\n\r\nПодписанный и пронумерованный\r\n\r\nРазмер: 18\r\n\r\nВес брутто: 26,13 г', 1, 16000, 5824383511, '-chanel-bracelet-coco-crush-neuf-en-or-beige-et-diamants?referrer=catalog', 1),
-(6, 10, 'Золотые серьги-клипсы с логотипом Givenchy', 'Винтажные серьги-клипсы в очень хорошем состоянии\r\nКоллекция подписанных ароматов Givenchy France', 12, 230, 5451505123, '-boucles-doreilles-clips-vintage-dorees-logo-givenchy-parfums-france?referrer=catalog', 1),
-(7, 10, 'Серьги-клипсы Orecchini от Givenchy', 'Редкие винтажные клипсы из коллекции Givenchy 1980-х годов.\r\nЗолотого цвета в форме цветка с красным камнем. Идеально подходит для любого случая.', 12, 420, 5443577591, '-orecchini-a-clip-givenchy', 1),
-(8, 10, 'Серьги Givenchy', 'Красивые серьги Givenchy c красным камнем. Ни разу не использовались.', 12, 320, 2702789727, '-boucles-doreilles-givenchy', 1),
-(9, 10, 'Серьги-клипсы Givenchy', 'Винтаж 1980-х годов.\r\nВинтажные серьги-клипсы Givenchy в форме груши золотого цвета с черным камнем и стразами. В очень хорошем состоянии.', 12, 180, 4707509803, '-boucles-doreilles-clips-givenchy', 1);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `product_images`
---
-
-CREATE TABLE `product_images` (
+CREATE TABLE `productimages` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `filename` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -203,10 +170,10 @@ CREATE TABLE `product_images` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Дамп данных таблицы `product_images`
+-- Дамп данных таблицы `productimages`
 --
 
-INSERT INTO `product_images` (`id`, `product_id`, `filename`, `filename_full`, `filename_small`, `image_order`) VALUES
+INSERT INTO `productimages` (`id`, `product_id`, `filename`, `filename_full`, `filename_small`, `image_order`) VALUES
 (1, 1, 'chanel_gold_pendant_necklace_1.jpeg', '', '', 1),
 (2, 1, 'chanel_gold_pendant_necklace_2.jpeg', '', '', 2),
 (3, 1, 'chanel_gold_pendant_necklace_3.jpeg', '', '', 3),
@@ -285,6 +252,39 @@ INSERT INTO `product_images` (`id`, `product_id`, `filename`, `filename_full`, `
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
+  `category` int(11) NOT NULL,
+  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `desc` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `brand` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `article` bigint(10) NOT NULL,
+  `url` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stock` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `products`
+--
+
+INSERT INTO `products` (`id`, `category`, `title`, `desc`, `brand`, `price`, `article`, `url`, `stock`) VALUES
+(1, 10, 'Цепочка и подвеска Chanel в форме креста из золотистого металла со стразами и жемчужно-белыми бусинами.', 'Цепочка и подвеска в форме креста из золотистого металла со стразами и жемчужно-белыми бусинами.\r\n\r\nЧрезвычайно тщательная отделка. \r\n\r\nОбщая длина: 45 см Вес 83 грамма.\r\n\r\nВеликолепное украшение, которое подходит к любому образу. Ни разу не использовалось. Для проверки подлинности можно обращаться в бутик Chanel.', 1, 9000, 1711817016, '-chaine-et-pendentif-metal-dore-chanel?referrer=catalog', 1),
+(2, 10, 'Колье коллекционное Chanel Cruise 2005', 'Колье коллекционное Chanel Cruise 2005.\r\nИзготовлено во Франции.  \r\n\r\n\r\nПоказ мод Chanel Cruise 2005 года был организован Карлом Лагерфельдом.\r\nПо улицам центра Парижа модели прогуливались на фирменных автобусах Chanel (если не видели, то видео стоит найти на YouTube, потому что это действительно впечатляюще).\r\n\r\nОжерелье - одно из тех, которые были показаны, оно было самым важным в коллекции. Нося это действительно редкую и поразительную красоту.\r\n\r\n\r\n\r\nДлина ожерелья составляет около 60 см., плюс 28 см. кулон. Ожерелье редкой красоты', 1, 10000, 2317491898, '-collana-da-collezionisti-chanel-cruise-2005-made-in-france?referrer=catalog', 1),
+(3, 10, 'Колье Chanel', 'Колье Chanel, белое золото и бриллианты. В колье более 100 крошечных бриллиантов и один крупный бриллиант из белого золота . Съемный.', 1, 14000, 5072819272, '-collar-chanel-oro-blanco-y-diamantes?referrer=catalog', 1),
+(4, 10, 'Цельное кольцо Chanel Gold 750', 'Цельное кольцо chanel Gold 750 с драгоценными камнями.\r\n\r\nРазмер: 17 вес: 14,3 грамма\r\n\r\nБыло произведено не так много образцов, только для коллекционеров. Выполнена проверка подлинности, поэтому продажа без скидки. Для коллекционеров.', 1, 12000, 5689659597, '-anello-chanel-oro?referrer=catalog', 1),
+(5, 10, 'Браслет Chanel Coco Crush золото и 9 бриллиантов', 'Браслет Chanel Coco Crush из бежевого золота и 9-ти бриллиантов.\r\n\r\nПодписанный и пронумерованный\r\n\r\nРазмер: 18\r\n\r\nВес брутто: 26,13 г', 1, 16000, 5824383511, '-chanel-bracelet-coco-crush-neuf-en-or-beige-et-diamants?referrer=catalog', 1),
+(6, 10, 'Золотые серьги-клипсы с логотипом Givenchy', 'Винтажные серьги-клипсы в очень хорошем состоянии\r\nКоллекция подписанных ароматов Givenchy France', 12, 230, 5451505123, '-boucles-doreilles-clips-vintage-dorees-logo-givenchy-parfums-france?referrer=catalog', 1),
+(7, 10, 'Серьги-клипсы Orecchini от Givenchy', 'Редкие винтажные клипсы из коллекции Givenchy 1980-х годов.\r\nЗолотого цвета в форме цветка с красным камнем. Идеально подходит для любого случая.', 12, 420, 5443577591, '-orecchini-a-clip-givenchy', 1),
+(8, 10, 'Серьги Givenchy', 'Красивые серьги Givenchy c красным камнем. Ни разу не использовались.', 12, 320, 2702789727, '-boucles-doreilles-givenchy', 1),
+(9, 10, 'Серьги-клипсы Givenchy', 'Винтаж 1980-х годов.\r\nВинтажные серьги-клипсы Givenchy в форме груши золотого цвета с черным камнем и стразами. В очень хорошем состоянии.', 12, 180, 4707509803, '-boucles-doreilles-clips-givenchy', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `users`
 --
 
@@ -346,15 +346,15 @@ ALTER TABLE `messages`
   ADD KEY `index_foreignkey_messages_user` (`user_id`);
 
 --
--- Индексы таблицы `products`
+-- Индексы таблицы `productimages`
 --
-ALTER TABLE `products`
+ALTER TABLE `productimages`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `product_images`
+-- Индексы таблицы `products`
 --
-ALTER TABLE `product_images`
+ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -392,16 +392,16 @@ ALTER TABLE `messages`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT для таблицы `productimages`
+--
+ALTER TABLE `productimages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+
+--
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT для таблицы `product_images`
---
-ALTER TABLE `product_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

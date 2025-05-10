@@ -29,13 +29,12 @@ if ($category) {
                  p.price,
                  pi.filename
           FROM `products` p 
-          LEFT JOIN `productimages` pi ON p.id = pi.product_id AND  pi.order = 1
+          LEFT JOIN `productimages` pi ON p.id = pi.product_id AND  pi.image_order = 1
           WHERE p.category IN ($slotString) 
           ORDER by p.id DESC";
 
   $products = R::getAll($sql, $subCategoryIds);
-print_r($products);
-die();
+
   // $pagination = pagination(9, 'products', ['category = ? ', [$uriGetParam]]);
 
   // $products = array();
