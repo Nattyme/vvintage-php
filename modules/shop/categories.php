@@ -9,17 +9,17 @@ if ($category) {
   $subCategories = R::findAll('categories', 'parent_id = ?', [$uriGetParam]);
 
   // 2. Извлекаем их ID в массив
-  $subCategoryIds = array_values(array_map(function($cat) {
+  $ids = array_values(array_map(function($cat) {
     return $cat['id'];
   }, $subCategories));
 
 
   // Если вдруг нет подкатегорий — ищем по текущей категории
-  if (empty($subCategoryIds)) {
-      $subCategoryIds = [$uriGetParam];
+  if (empty($ids)) {
+      $ids = [$uriGetParam];
   }
 
-  $slotString = R::genSlots($subCategoryIds);
+  $slotString = R::genSlots($ids);
  
   // 3. Получаем все продукты с этими категориями
   $sql = "SELECT p.title,
@@ -33,7 +33,7 @@ if ($category) {
           WHERE p.category IN ($slotString) 
           ORDER by p.id DESC";
 
-  $products = R::getAll($sql, $subCategoryIds);
+  $products = R::getAll($sql, $ids);
 
   $pagination = pagination(9, 'products');
   $productsTtl = count($products);
@@ -70,6 +70,10 @@ if ($category) {
   exit();
 }
 
+// Хлебные крошки
+$breadcrumbs = [
+  ['title' => 'Каталог', 'url' => HOST . 'shop'],
+];
 
 // Подключение шаблонов страницы
 include ROOT . "templates/_page-parts/_head.tpl";

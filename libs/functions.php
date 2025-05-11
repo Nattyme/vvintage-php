@@ -1,4 +1,4 @@
-ad<?php
+<?php
 // Поиск названия модуля
 function getModuleName () {
   $uri = $_SERVER['REQUEST_URI'];
@@ -750,27 +750,6 @@ function isFav_list ($productId) {
   return $result;
 }
 
-function getBreadcrumbs($items = []) {
-  $html = '<div class="breadcrumbs">';
-  $html .= '<a href="' . HOST . '" class="breadcrumb">Главная</a>';
-  
-  foreach ($items as $index => $item) {
-    $isLast = $index === array_key_last($items);
-    $html .= '<span>&#8212;</span>';
-
-    if ($isLast) {
-      $html .= '<span class="breadcrumb breadcrumb--active">' . htmlspecialchars($item['title']) . '</span>';
-    } else {
-      $html .= '<a href="' . htmlspecialchars($item['url']) . '" class="breadcrumb">' . htmlspecialchars($item['title']) . '</a>';
-    }
-
-    $html .= '</>';
-  }
-  return $html;
-  // die();
-  // $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-  // return $currentPath === $urlPath ? 'breadcrumb--active' : '';
-}
 
 
 

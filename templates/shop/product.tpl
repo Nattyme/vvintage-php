@@ -2,15 +2,7 @@
   <section class="product">
     <div class="container">
       <header class="shop-header">
-        <div class="breadcrumbs">
-          <a href="<?php echo HOST . '';?>" class="breadcrumb ">Главная</a>
-          <span>&#8212;</span>
-          <a href="<?php echo HOST . 'shop';?>" class="breadcrumb">Все товары</a>
-          <span>&#8212;</span>
-          <a href="#!" class="breadcrumb"><?php echo $product['cat_title'];?></a>
-          <span>&#8212;</span>
-          <a href="#!" class="breadcrumb breadcrumb--active"><?php echo $product['title'];?></a>
-        </div>
+        <?php include ROOT . 'templates/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
       </header>
       <div class="product__content">
         <div class="product__gallery-container">
@@ -78,7 +70,7 @@
           </ul>
 
           <div class="product__button">
-            <button class="button-solid" type="submit">Добавить в&#160;корзину</button>
+            <a href="<?php echo HOST . 'addtocart?id=' . $product['id'];?>" class="button-solid" type="submit">Добавить в&#160;корзину</a>
           </div>
         </div>
       </div>

@@ -18,6 +18,7 @@ $sqlQuery = 'SELECT
 
 $product = R::getRow($sqlQuery, [$uriGet]);
 
+// die();
 // Запрашиваем информацию по изображениям продукта
 $sqlImages = 'SELECT pi.filename, pi.image_order 
               FROM productimages pi
@@ -56,7 +57,7 @@ $invisibleImages = [];
 $relatedProducts = get_related_products($product['title'], $product['brand'], $product['category']);
 // print_r($relatedProducts);
 // die();
-$pageTitle = "Название товара {$product['title']}";
+$pageTitle = "Название товара: {$product['title']}";
 // Подключение шаблонов страницы
 include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";

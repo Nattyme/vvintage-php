@@ -32,7 +32,13 @@ $sqlQuery = 'SELECT
 
 $products = R::getAll($sqlQuery);
 
+
 $pageTitle = "Каталог товаров";
+
+// Хлебные крошки
+$breadcrumbs = [
+  ['title' => 'Каталог', 'url' => HOST . 'shop'],
+];
 
 // Подключение шаблонов страницы
 include ROOT . 'templates/_page-parts/_head.tpl';

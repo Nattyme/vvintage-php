@@ -28,14 +28,10 @@
       <h4 class="h4 block__desc"><?php echo $product['title'];?></h4>
     </div>
     <div class="card__row flex-block">
-      <!-- <div class="card__brand">
-        <span><?php echo $product['brand'];?></span>
-      </div> -->
       <div class="card__price">
         <span><?php echo $product['price'];?>&nbsp;&euro;</span>
       </div>
     </div>
-    <!-- <a href="<?php echo HOST . 'shop/' . $product['id'];?>" class="button button-primary">В корзину</a> -->
   </div>
 </div>
  
