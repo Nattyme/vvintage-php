@@ -2,7 +2,8 @@
 require_once ROOT . './libs/functions.php';
 $uriModule = getModuleName();
 
-$pageTitle = 'Заказ оформлен';
+$pageTitle = "Заказ оформлен!";
+$new_order_id = $_GET['id'];
 
 include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";

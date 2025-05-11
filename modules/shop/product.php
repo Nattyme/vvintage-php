@@ -55,9 +55,15 @@ $invisibleImages = [];
 
 // Вывод похожих товаров
 $relatedProducts = get_related_products($product['title'], $product['brand'], $product['category']);
-// print_r($relatedProducts);
-// die();
+
+
 $pageTitle = "Название товара: {$product['title']}";
+
+// Хлебные крошки
+$breadcrumbs = [
+  ['title' => 'Каталог', 'url' => HOST . 'shop'],
+];
+
 // Подключение шаблонов страницы
 include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";

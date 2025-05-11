@@ -4,9 +4,9 @@ if (isset($category)) {
   $breadcrumbs[] = ['title' => $category['title'], 'url' => HOST . 'shop/' . $category['id']];
 }
 
-// if (isset($product)) {
-//   $breadcrumbs[] = ['title' => $product['title'], 'url' => '#'];
-// }
+if (isset($product) && !isset($products)) {
+  $breadcrumbs[] = ['title' => $product['title'], 'url' => '#'];
+}
 ?>
 
 <nav class="breadcrumbs" >

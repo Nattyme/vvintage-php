@@ -27,9 +27,12 @@
 									<use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#shopping-bag';?>"></use>
 								</svg>
 								<div class="cart-widget__counter">
-									<div class="counter">
-										<span class="text-ellipsis">33</span>
-									</div>
+                    <?php if (!empty($cartCount)) : ?>
+									    <div class="counter">
+                        <span class="text-ellipsis"><?php echo $cartCount; ?></span>
+                   
+									    </div>
+                    <?php endif; ?>
 								</div>
 							</a>
 						</div>
