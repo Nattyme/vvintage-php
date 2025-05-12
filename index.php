@@ -1,8 +1,9 @@
 <?php
 
-require_once 'config.php';
-require_once 'db.php';
-require_once ROOT . './libs/functions.php';
+require_once "./config.php";
+require_once "./db.php";
+require_once "./libs/functions.php";
+
 
 $_SESSION['errors'] = array();
 $_SESSION['success'] = array();
@@ -13,6 +14,7 @@ require ROOT . 'modules/settings/settings.php';
 require ROOT . 'modules/admin-panel/admin-panel.php';
 // require ROOT . 'modules/navigation/navigation.php';
 require ROOT . 'modules/cart/usercart.php';
+// require ROOT . 'modules/shop/get-nav-categories.php';
 // require ROOT . 'modules/favorite/userfavorite.php';
 
 $uriModule = getModuleName();
@@ -81,8 +83,10 @@ switch ($uriModule) {
       require ROOT . 'modules/shop/brands.php';
     } else if ( isset($uriGet) && $uriGet === 'subcat' && !empty($uriGetParam)) {
       require ROOT . 'modules/shop/subcat.php';
-    } else if ( isset($uriGet) && $uriGet !== 'cat' && $uriGet !== 'subcat') {
+    } else if ( isset($uriGet) && $uriGet !== 'cat' && $uriGet !== 'nav-cats' && $uriGet !== 'subcat') {
       require ROOT . 'modules/shop/product.php';
+    }  else if ( isset($uriGet) && $uriGet === 'nav-cats') {
+      require ROOT . 'modules/shop/get-nav-categories.php';
     } else {
       require ROOT . 'modules/shop/catalog.php';
     }

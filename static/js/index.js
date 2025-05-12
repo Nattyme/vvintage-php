@@ -6,6 +6,7 @@ import dragAndDropFiles from './modules/drag-and-drop/dragAndDropFiles.js';
 import addAccordion from './modules/addAccordion.js';
 import fancyBox from './modules/fancybox.js';
 import handlingNewProductForm from './modules/handlingNewProductForm.js';
+import addSubNavCats from './modules/addSubNavCats.js';
 import addTab from './modules/tab.js';
 import handlerLoadedPreviewImages from './modules/preview-images/handlerLoadedPreviewImages.js';
 import previewLoadImages from './modules/preview-images/previewLoadImages.js';
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //   mobileNav();
   //  
   // }
-  // addSubNavCats();
+  addSubNavCats();
  
 
   addTab();
