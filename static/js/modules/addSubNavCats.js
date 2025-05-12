@@ -4,12 +4,18 @@ const addSubNavCats = () => {
  
   const renderMenu = (data) => {
     const cats = data;
-    console.log(cats);
-    const nav = document.querySelector('#nav');
+    const header = document.querySelector('.header');
+    const nav = header.querySelector('#nav');
     const navList = nav.querySelector('#nav__list');
-    const navOverlay = document.querySelector('.catalog-dropdown__background');
+    const navOverlay = header.querySelector('.catalog-dropdown__background');
 
-    if(!nav || !navList || !navOverlay) return;
+    if(!header || !nav || !navList || !navOverlay) return;
+
+    if(header.classList.contains('header--with-admin-panel')) {
+      navOverlay.classList.add('catalog-dropdown__background--with-admin-panel');
+      navList.classList.add('nav__list--with-admin-panel');
+    }
+    
 
     // Templates 
     // Ф-ция возвращает разметку для 1-го уровня категорий

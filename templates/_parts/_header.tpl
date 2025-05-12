@@ -52,7 +52,10 @@
 				<ul class="nav__list" role="tablist" id="nav__list"></ul>
 			</nav>
 
-			<div class="catalog-dropdown__background" role="none"></div>
+			<div 
+        class="catalog-dropdown__background" 
+        role="none">
+      </div>
 		</div>
 	</div>
 </header>
