@@ -35,7 +35,7 @@ const addSubNavCats = () => {
         </li>
       `;
     }
-  // <span class="nav__title">${cat.name}</span>
+
     const getSubNavTemplate = () => {
       return `
                 <div class="sub-nav">
@@ -55,7 +55,8 @@ const addSubNavCats = () => {
             <svg class="sub-nav__icon icon icon--bag">
               <use href="./img/svgsprite/sprite.symbol.svg#bag"></use>
             </svg>
-            <a href="#" class="sub-nav__link" data-cat="${cat.id}">
+               
+            <a href="https://vvintage/shop/cat/${cat.id}" class="sub-nav__link" data-cat="${cat.id}">
               ${cat.name}
             </a>
             <div class="nav__arrow">
