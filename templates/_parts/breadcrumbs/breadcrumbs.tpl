@@ -11,6 +11,8 @@ if (isset($product) && !isset($products)) {
 
 <nav class="breadcrumbs" >
     <a href="<?php echo HOST;?>" class="breadcrumb ">Главная</a> 
+    <?php echo '<span>&#8212;</span>';?>
+    <a href="<?php echo HOST;?>#cats" class="breadcrumb ">Список категорий</a> 
 
     <?php foreach ($breadcrumbs as $index => $item) {
         $isLast = $index === array_key_last($breadcrumbs);
