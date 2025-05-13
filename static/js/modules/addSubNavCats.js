@@ -5,9 +5,9 @@ const addSubNavCats = () => {
   const renderMenu = (data) => {
     const cats = data;
     const header = document.querySelector('.header');
-    const nav = header.querySelector('#nav');
-    const navList = nav.querySelector('#nav__list');
-    const navOverlay = header.querySelector('.catalog-dropdown__background');
+    const nav = header?.querySelector('#nav');
+    const navList = nav?.querySelector('#nav__list');
+    const navOverlay = header?.querySelector('.catalog-dropdown__background');
 
     if(!header || !nav || !navList || !navOverlay) return;
 
@@ -29,13 +29,13 @@ const addSubNavCats = () => {
           tabindex="0"
         >
           <div class="nav__item">
-          <span class="nav__title">${cat.name}</span>
+          <a href="https://vvintage/shop/cat/${cat.id}" class="nav__title">${cat.name}</a>
           </div>
       
         </li>
       `;
     }
-  
+  // <span class="nav__title">${cat.name}</span>
     const getSubNavTemplate = () => {
       return `
                 <div class="sub-nav">
@@ -154,7 +154,7 @@ const addSubNavCats = () => {
   .then(response => response.json())
   .then(data => {
     const catsData = Object.values(data);
-    renderMenu(catsData);
+    if (catsData) renderMenu(catsData);
   })
   .catch(error => {
     console.log('Ошибка загрузки категорий:', error);
