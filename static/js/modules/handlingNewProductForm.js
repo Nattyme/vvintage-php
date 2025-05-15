@@ -24,7 +24,10 @@ const handlingNewProductForm = (formSelector) => {
       method: 'POST',
       body: formData
     })
-    .then(res => res.json())
+    .then( res => {
+      сonsole.log(res)
+    })
+    // .then(res => res.json())
     .then(data => {  
       const notification = document.querySelector('.notifications');
       const notificationTitle = document.querySelector('.notifications__title');
