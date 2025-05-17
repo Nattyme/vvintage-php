@@ -6,25 +6,26 @@
       </header>
       <div class="product__content">
         <div class="product__gallery-container">
-          <div class="product__gallery">
-            <div class="product__gallery-block product__gallery-block--main-img">
-              <figure class="product__img product__img--main">
+          <div class="gallery">
+           
+              <figure class="gallery__item gallery__item--1">
                 <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . $mainImage;?>" data-thumb="<?php echo HOST . 'usercontent/products/' . $mainImage;?>">
                   <picture>
                     <img 
+                      class="product__img product__img--main"
                       src="<?php echo HOST . 'usercontent/products/' . $mainImage;?>" 
                       srcset="<?php echo HOST . 'usercontent/products/' . $mainImage;?>" alt="" loading="lazy"
                     >
                   </picture>
                 </a>
               </figure>
-            </div>
-            <div class="product__gallery-block product__gallery-block--small-imgs">
-              <?php foreach ($visibleImages as $image) : ?>
-                <figure class="product__img product__img--main">
+          
+              <?php foreach ($visibleImages as $i => $image) : ?>
+                <figure class="gallery__item gallery__item--<?php echo $i + 2; ?>">
                   <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . $image;?>" data-thumb="<?php echo HOST . 'usercontent/products/' . $image;?>">
                     <picture>
                       <img 
+                        class="product__img"
                         src="<?php echo HOST . 'usercontent/products/' . $image;?>" 
                         srcset="<?php echo HOST . 'usercontent/products/' . $image;?>" alt="" loading="lazy"
                       >
@@ -37,13 +38,13 @@
                 <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . $image;?>" data-thumb="<?php echo HOST . 'usercontent/products/' . $image;?>">
                 </a>
               <?php endforeach; ?>
-            </div>
+           
           </div>
         </div>
         <div class="product__desc">
           <header class="product__header">
             <div class="product-row">
-              <h1 class="h1"><?php echo $product['title'];?></h1>
+              <h1 class="h3"><?php echo $product['title'];?></h1>
             </div>
             <div class="product-row">
               <p>New without tegs</p>
