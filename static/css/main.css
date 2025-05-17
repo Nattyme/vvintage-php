@@ -5113,6 +5113,8 @@ main.product-page {
 .form-order__table-row {
   grid-template-columns: 3fr 2fr 1fr;
 }
+
+
 .product__gallery-container{
   width: 738px;
   flex-shrink: 0;
@@ -5153,7 +5155,6 @@ main.product-page {
   object-fit: cover;
 }
 
-
 .product__img--main {
   height: 445px;
   width: 368px;
@@ -5161,6 +5162,53 @@ main.product-page {
 }
 
 
+/*Вариант для 4-х фото*/
+.gallery--4 {
+  grid-template-areas:
+  "main main thumb1 thumb2" 
+  "main main thumb3 thumb3";
+  /* grid-auto-rows: 1fr; */
+}
+
+.gallery--4 .gallery__item--4 {
+  grid-area: thumb3;
+}
+
+/*Вариант для 3-х фото*/
+.gallery--3 {
+  grid-template-areas:
+  "main main thumb1 thumb1" 
+  "main main thumb2 thumb2";
+  /* grid-auto-rows: 1fr; */
+}
+
+.gallery--3 .gallery__item--3 {
+  grid-area: thumb2;
+}
+
+/*Вариант для 2-х фото*/
+.gallery--2 {
+  grid-template-areas:
+  "main main thumb1 thumb1" 
+  "main main thumb1 thumb1";
+  /* grid-auto-rows: 1fr; */
+}
+
+.gallery--2 .gallery__item--2 {
+  grid-area: thumb1;
+}
+
+/*Вариант для 1-го фото*/
+.gallery--1 {
+  grid-template-areas:
+  "main main main main" 
+  "main main main main";
+  /* grid-auto-rows: 1fr; */
+}
+
+.gallery--1 .gallery__item--1 {
+  grid-area: main;
+}
 
 /* No styles code below. Only in modules */
 /* Не пишите CSS код ниже. Только в подключаемых файлах */
