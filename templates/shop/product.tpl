@@ -6,7 +6,7 @@
       </header>
       <div class="product__content">
         <div class="product__gallery-container">
-          <div class="gallery">
+          <div class="gallery gallery--<?php echo $productImagesTotal; ?>">
            
               <figure class="gallery__item gallery__item--1">
                 <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . $mainImage;?>" data-thumb="<?php echo HOST . 'usercontent/products/' . $mainImage;?>">

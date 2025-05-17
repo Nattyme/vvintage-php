@@ -26,6 +26,8 @@ $sqlImages = 'SELECT pi.filename, pi.image_order
               ORDER BY image_order ASC'; 
 
 $productImages = R::getAll($sqlImages, [$product['id']]);
+$productImagesTotal = count($productImages);
+
 
 // Найдем главное изображение
 $mainImage = null;

@@ -5174,6 +5174,11 @@ main.product-page {
   grid-area: thumb3;
 }
 
+.gallery--4 .gallery__item--4 .product__img {
+  width: 100%;
+}
+
+
 /*Вариант для 3-х фото*/
 .gallery--3 {
   grid-template-areas:
@@ -5184,6 +5189,11 @@ main.product-page {
 
 .gallery--3 .gallery__item--3 {
   grid-area: thumb2;
+}
+
+.gallery--3 .gallery__item--2 .product__img, 
+.gallery--3 .gallery__item--3 .product__img {
+  width: 100%;
 }
 
 /*Вариант для 2-х фото*/
@@ -5198,6 +5208,11 @@ main.product-page {
   grid-area: thumb1;
 }
 
+.gallery--2 .gallery__item--2 .product__img {
+  width: 100%;
+  height: 445px;
+}
+
 /*Вариант для 1-го фото*/
 .gallery--1 {
   grid-template-areas:
@@ -5209,6 +5224,12 @@ main.product-page {
 .gallery--1 .gallery__item--1 {
   grid-area: main;
 }
+
+.gallery--1 .gallery__item--1 .product__img {
+  width: 100%;
+}
+
+
 
 /* No styles code below. Only in modules */
 /* Не пишите CSS код ниже. Только в подключаемых файлах */
