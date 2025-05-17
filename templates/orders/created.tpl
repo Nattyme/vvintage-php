@@ -28,7 +28,7 @@
   
           </div>
           <div class="order__button">
-            <a href="<?php echo HOST . 'main';?>" class="button-outline">Перейти на главную</a>
+            <a href="<?php echo HOST . 'main';?>" class="button button-outline">Перейти на главную</a>
           </div>
         </div>
       </div>

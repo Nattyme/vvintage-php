@@ -5,12 +5,9 @@
         <div class="section-title">
           <h1 class="h1">Оформление заказа</h1>
         </div>
-  
-        <div class="breadcrumbs">
-          <a href="#!" class="breadcrumb ">Главная</a> 
-          <span>&mdash;</span> 
-          <a href="#!" class="breadcrumb breadcrumb--active">Оформление заказа</a> 
-        </div>
+
+        <?php @@include ROOT . 'templates/_parts/breadcrumbs/breadcrumbs.tpl';?>
+
       </div>
       <div class="page-order__form">
         <form class="form-order" method="POST">
@@ -55,20 +52,19 @@
               <div class="form-order__table">
                 <div class="form-order__table-row">
                   <p>Товар</p>
-                  <p>Всего</p>
+                  <p>Цена</p>
+                  <p>Количество</p>
                 </div>
-
+             <?php foreach ($products as $product) : ?>
                 <div class="form-order__table-row">
-                  <p>Футболка USA</p>
-                  <p>$129</p>
+                  <p><?php echo $product['title'];?></p>
+                  <p><?php echo $product['price'];?></p>
+                  <p><?php echo $cart[$product['id']];?></p>
                 </div>
-                <div class="form-order__table-row">
-                  <p>Подытог</p>
-                  <p>$129</p>
-                </div>
+              <?php endforeach; ?>
                 <div class="form-order__total form-order__total--button-fake form-order__table-row">
                     <p>Итого</p>
-                    <p>$129</p>
+                    <p><?php echo  $cartTotalPrice; ?></p>
                 </div>
               </div>
               
@@ -83,7 +79,7 @@
                     <input class="radio-button-real " name="select-payment" type="radio">
                     <span class="radio-button-custom radio-button-custom--before radio-button-custom--payment"></span>
                     <div class="form-order__img-wrapper">
-                      <img src="./img/svgsprite/stack/svg/sprite.stack.svg#mir" alt="mir">
+                      <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#mir';?>" alt="mir">
                     </div>
                   </label>
 
@@ -91,7 +87,7 @@
                     <input class="radio-button-real" name="select-payment" type="radio">
                     <span class="radio-button-custom radio-button-custom--before radio-button-custom--payment"></span>
                     <div class="form-order__img-wrapper">
-                      <img src="./img/svgsprite/stack/svg/sprite.stack.svg#visa" alt="visa">
+                      <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#visa';?>" alt="visa">
                     </div>
                   </label>
               
@@ -99,7 +95,7 @@
                     <input class="radio-button-real" name="select-payment" type="radio">
                     <span class="radio-button-custom radio-button-custom--before radio-button-custom--payment"></span>
                     <div class="form-order__img-wrapper">
-                      <img src="./img/svgsprite/stack/svg/sprite.stack.svg#paypal" alt="paypal">
+                      <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#paypal';?>" alt="paypal">
                     </div>
                 
                   </label>
@@ -108,7 +104,7 @@
                     <input class="radio-button-real" name="select-payment" type="radio">
                     <span class="radio-button-custom radio-button-custom--before radio-button-custom--payment"></span>
                     <div class="form-order__img-wrapper">
-                      <img src="./img/svgsprite/stack/svg/sprite.stack.svg#mastercard" alt="mastercard">
+                      <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#mastercard';?>" alt="mastercard">
                     </div>
                   
                   </label>
@@ -117,9 +113,10 @@
               </div>
               <!-- // Выбор оплаты -->
 
-              <a href="<?php echo HOST . 'ordercreated';?>" class="form-order__button button-solid">
+              <button class="form-order__button button button-solid" type="submit" name="submit">
                 Разместить заказ
-              </a>
+              </button>
+              <a class="button button-outline" href="<?php HOST;?>cart">Вернуться в корзину </a>
             </div>
           </div>
         </form>
@@ -127,3 +124,7 @@
     </div>
   </section>
 </main>
+
+   <?php print_r($_SESSION);
+                die();
+                ?>

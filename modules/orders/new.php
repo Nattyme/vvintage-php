@@ -97,6 +97,11 @@ foreach ( $cart as $index => $item) {
 
 $pageTitle = "Оформление нового заказа";
 
+// Хлебные крошки
+$breadcrumbs = [
+  ['title' => 'Оформление заказа', 'url' => '#!'],
+];
+
 include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";
 include ROOT . "templates/orders/new.tpl";

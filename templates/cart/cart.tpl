@@ -93,8 +93,10 @@
           </div>
           <!--// cart table-->
         <?php else : ?>
-          <h1 class="page-shopping-cart__main-title">Корзина пуста</h1>
-          <a href="<?php echo HOST;?>shop" class="button button-primary">Добавить товары</a>
+          <div class="page-cart__empty">
+            <h1 class="page-cart__title page-cart__title-wrapper">Корзина пуста</h1>
+            <a href="<?php echo HOST;?>shop" class="button button-primary">Добавить товары</a>
+          </div>
         <?php endif; ?>
 
       </div>
