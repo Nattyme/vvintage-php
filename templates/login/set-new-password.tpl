@@ -8,8 +8,8 @@
 
   <?php if( !isset($newPasswordReady) ) : ?>
   <div class="authorization-form__field">
-    <p class="authorization-form__field-title">Новый пароль</p>
-    <input name="password" class="input" type="password" placeholder="Введите новый пароль" />
+    <label for="password" class="authorization-form__field-title">Новый пароль</label>
+    <input name="password" class="input" type="password" placeholder="Введите новый пароль" id="password"/>
   </div>
 
   <input type="hidden" name="email" value="<?php echo $_GET['email']; ?>">

@@ -7,21 +7,28 @@
   <?php include ROOT . "templates/components/success.tpl"; ?>
 
   <div class="authorization-form__field">
-    <p class="authorization-form__field-title">Email</p>
+    <label for="email" class="authorization-form__field-title">Email</label>
 
     <input 
       value="<?php echo isset($_POST['email']) ? trim($_POST['email']) : ''; ?>"
       name="email" 
       class="input" 
       type="text" 
+      id="email"
       placeholder="Введите email" 
     />
   </div>
 
   <div class="authorization-form__field">
-    <p class="authorization-form__field-title">Пароль</p>
+    <label fro="password" class="authorization-form__field-title">Пароль</label>
 
-    <input name="password" class="input" type="password" placeholder="Введите пароль" />
+    <input 
+      name="password" 
+      class="input" 
+      type="password" 
+      placeholder="Введите пароль" 
+      id="password"
+    />
   </div>
 
   <div class="authorization-form__button">

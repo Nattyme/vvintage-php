@@ -8,14 +8,14 @@
 
   <?php if(empty($_SESSION['success'])) : ?>
   <div class="authorization-form__field">
-    <p class="authorization-form__field-title">Email</p>
-    <input value="info2@mail.ru" type="email" class="input" name="email" value="" placeholder="Введите ваш email" required />
+    <lable for="email" class="authorization-form__field-title">Email</lable>
+    <input value="info2@mail.ru" type="email" class="input" name="email" value="" placeholder="Введите ваш email" id="email" required />
   </div>
 
   <div class="authorization-form__field">
-    <p class="authorization-form__field-title">Пароль</p>
+    <label for="password" class="authorization-form__field-title">Пароль</label>
 
-    <input value="111111" type="password" class="input" name="password" placeholder="Введите пароль" required />
+    <input value="111111" type="password" class="input" name="password" placeholder="Введите пароль" id="password" required />
   </div>
 
   <div class="authorization-form__button">

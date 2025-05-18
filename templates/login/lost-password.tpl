@@ -8,8 +8,8 @@
 
   <?php if (!isset($resultEmail)) : ?>
   <div class="authorization-form__field">
-    <p class="authorization-form__field-title">Email</p>
-    <input name="email" class="input" type="text" placeholder="Введите ваш Email" />
+    <label for="email" class="authorization-form__field-title">Email</label>
+    <input name="email" class="input" type="text" placeholder="Введите ваш Email" id="email"/>
   </div>
 
   <div class="authorization-form__button">
