@@ -8,7 +8,7 @@ $userCount = R::count('users');
 $projectsCount = R::count('portfolio'); 
 $messagesTotalCount = R::count('messages'); 
 
-$pageTitle = "Панель администратора - главная страница";
+$pageTitle = "Статистика сайта";
 $pageClass = "admin-page";
 ob_start();
 include ROOT . "admin/templates/main/main.tpl";

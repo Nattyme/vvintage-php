@@ -20,21 +20,22 @@
               </legend>
 
               <div class="form-order__table">
-                <div class="form-order__table-row">
+                <div class="form-order__table-row form-order__table-header">
                   <p>Товар</p>
                   <p>Цена</p>
                   <p>Количество</p>
                 </div>
-             <?php foreach ($products as $product) : ?>
-                <div class="form-order__table-row">
-                  <p><?php echo $product['title'];?></p>
-                  <p><?php echo $product['price'];?></p>
-                  <p><?php echo $cart[$product['id']];?></p>
-                </div>
-              <?php endforeach; ?>
-                <div class="form-order__total form-order__total--button-fake form-order__table-row">
-                    <p>Итого</p>
-                    <p><?php echo  $cartTotalPrice; ?></p>
+                <?php foreach ($products as $product) : ?>
+                    <div class="form-order__table-row">
+                      <p><?php echo $product['title'];?></p>
+                      <p><?php echo $product['price'];?></p>
+                      <p><?php echo $cart[$product['id']];?></p>
+                    </div>
+                  <?php endforeach; ?>
+                <div class="form-order__total form-order__table-row">
+                  <p>Итого</p>
+                  <p><?php echo  $cartTotalPrice; ?></p>
+                  <p><?php echo  $cartCount; ?></p>
                 </div>
               </div>
             </fieldset>
@@ -43,7 +44,7 @@
       <div class="page-order__form">
         <form class="form-order" method="POST">
           <div class="form-order__user">
-              <div class="form-order__block">
+              <fieldset class="form-order__block">
                 <legend class="form-order__title form-order__title-wrapper form-order__title-block">
                   <h3>Данные покупателя</h3>
                 </legend>
@@ -69,25 +70,25 @@
                   </div>
                  
                 </div>
-              </div>
-              <div class="form-order__block">
+              </fieldset>
+              <fieldset class="form-order__block">
+                  <legend class="form-order__title form-order__title-wrapper form-order__title-block">
+                    <h3>Данные по доставке</h3>
+                  </legend>
+
                  <div class="form-order__field">
-                    <legend class="form-order__title form-order__title-wrapper form-order__title-block">
-                      <h3>Адрес доставки</h3>
-                    </legend>
-                    <textarea class="textarea" name="address" placeholder="Введите адрес доставки" title="Адрес доставки">
-                    </textarea>
+                    <label class="form-order__label" for="address"><h3>Адрес доставки</h3></label>
+                    <textarea class="textarea" name="address" placeholder="Введите адрес доставки" title="Адрес доставки" id="address"></textarea>
                   </div>
                
                   <div class="form-order__field">
-                    <legend class="form-order__title form-order__title-wrapper form-order__title-block">
+                    <label class="form-order__label" for="message">
                       <h3>Комментарии</h3>
-                    </legend>
-                    <div class="form-input-wrapper">
-                      <textarea type="text" class="form-textarea" name="message">Сообщение</textarea>
-                    </div>
+                    </label>
+                    <textarea type="text" class="textarea" name="message" placeholder="Введите ваш комментарий"  id="message"></textarea>
+                
                   </div>
-              </div>
+              </fieldset>
          
                   <!-- Выбор оплаты -->
               <!-- <div class="form-order__block">
@@ -146,7 +147,3 @@
     </div>
   </section>
 </main>
-
-   <?php print_r($_SESSION);
-                die();
-                ?>
