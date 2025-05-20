@@ -1,5 +1,3 @@
-
-<?php include ROOT . "templates/_parts/_admin-panel.tpl"; ?>
 <header class="<?php echo (isset($_SESSION['logged_user']) && trim($_SESSION['logged_user']) !== '') ? 'header header--with-admin-panel' : 'header';?>">
 	<div class="header__top">
 		<div class="container">

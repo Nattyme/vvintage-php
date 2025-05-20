@@ -41,39 +41,43 @@
            
           </div>
         </div>
-        <div class="product__desc">
-          <header class="product__header">
-            <div class="product-row">
-              <h1 class="h3"><?php echo $product['title'];?></h1>
+        <div class="product-card">
+          <header class="product-card__header">
+            <div class="product-card__row">
+              <h1 class="h1 product-card__title"><?php echo $product['title'];?> </h1>
             </div>
-            <div class="product-row">
+            <div class="product-card__row">
               <p>New without tegs</p>
-              <a href="#" class="product__brand"></a>
+              <a href="#" class="product-card__brand"><?php echo $product['brand_title'];?></a>
             </div>
-            <div class="product-row">
-              <div class="product__price"><span class="price"><?php echo $product['price'];?></span></div>
+            <div class="product-card__row">
+              <div class="product-card__price"><span class="price"><?php echo $product['price'];?></span></div>
             </div>
           </header>
 
-          <ul class="product-details">
-            <li class="product-details__item">
-              <p>Brand</p>
-              <a href=""><?php echo $product['brand_title'];?></a>
-            </li>
-            <li class="product-details__item">
-              <p>Condition</p>
-              <p>New without tegs</p>
-            </li>
-            <li class="product-details__item">
-              <p>Uploaded</p>
-              <p>a&#160;day ago</p>
-            </li>
-          </ul>
+          <dl class="product-card__list">
+            <div class="product-card__item  product-card__item--title">
+              <dt>Brand</dt>
+              <dd><a href=""><?php echo $product['brand_title'];?></a></dd>
+            </div>
+            <div class="product-card__item">
+              <dt>Condition</dt>
+              <dd>New without tags</dd>
+            </div>
+            <div class="product-card__item">
+              <dt>Uploaded</dt>
+              <dd><time datetime="2025-05-18">a day ago</time></dd>
+            </div>
+          
+          </dl>
 
-          <div class="product__button">
-            <a href="<?php echo HOST . 'addtocart?id=' . $product['id'];?>" class="button-solid" type="submit">Добавить в&#160;корзину</a>
-          </div>
+          <div class="product-card__button">
+            <a href="<?php echo HOST . 'addtocart?id=' . $product['id'];?>" class="button-solid">Добавить&#160;в&#160;корзину</a>
+          </div>   
+          
+
         </div>
+
       </div>
     </div>
   </section>

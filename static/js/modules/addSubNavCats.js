@@ -130,7 +130,7 @@ const addSubNavCats = () => {
       subCatBlocksAll.forEach(subCatBlock => subCatBlock.classList.remove('active'));
       e.target.closest('li').classList.add('active');
 
-      subSubNav.innerHTML = currentSubCatData.map (subCat => getSubSubNavItemTemplate(subCat)).join('');
+      subSubNav.innerHTML = currentSubCatData.map(subCat => getSubSubNavItemTemplate(subCat)).join('');
     }
   
     // Найдем основные категории
