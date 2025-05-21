@@ -1,4 +1,5 @@
-import previewModule from "./preview-images/preview.js";
+import previewModel from "./preview-images/preview.model.js";
+import previewView from "./preview-images/preview.view.js";
 
 const handlingNewProductForm = (formSelector) => {
   // CKEDITOR.instance.editor.updateElement();
@@ -14,7 +15,7 @@ const handlingNewProductForm = (formSelector) => {
    
     const formData = new FormData(form);
     formData.delete('cover[]');
-    const orderedFiles = previewModule.getCurrentFiles(); // отсортированный массив
+    const orderedFiles = previewModel.getCurrentFiles(); // отсортированный массив
 
     orderedFiles.forEach((item, index) => {
       formData.append(`cover[${index}]`, item.file); // Файл
@@ -37,8 +38,9 @@ const handlingNewProductForm = (formSelector) => {
       notificationTitle.textContent = '';
       notification.setAttribute('hidden', true);
 
-      if (data.errorsImg && data.errorsImg.length) {
-        previewModule.reset();
+      if (data.errorsImg && data.errorsImg.length ) {
+        previewModel.reset();
+        previewView.removeImage();
       }
 
 
@@ -51,8 +53,6 @@ const handlingNewProductForm = (formSelector) => {
           noteText += error + (index === data.errors.length - 1 ? '.' : ', ');
         });
         notificationTitle.textContent = noteText;
-
-        
       }
 
       if(data.success) {
@@ -64,7 +64,7 @@ const handlingNewProductForm = (formSelector) => {
         // Очистим форму
         setTimeout(() => {
           form.reset(); // Очистка полей формы
-          previewModule.reset(); // Очистка файлов (если есть такой метод)
+          previewModel.reset(); // Очистка файлов (если есть такой метод)
           window.location.href = '/admin/shop'; // Переход
         }, 1500); // 1.5 секунды задержки — можно уменьшить
       }

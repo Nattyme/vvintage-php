@@ -1,4 +1,4 @@
-import previewModule from "./../preview-images/preview.js";
+import previewModel from "./../preview-images/preview.model.js";
 import createObserver from './observer.js';
 import createDragHandlers from './dragEvents.js';
 
@@ -20,7 +20,7 @@ const dragAndDropFiles = () => {
     handleDragOver,
     handleDragLeave,
     handleDrop  
-  } = createDragHandlers(previewModule, getDragged, setDragged);
+  } = createDragHandlers(previewModel, getDragged, setDragged);
 
 
   const onFilesUploaded = (mutationList) => {

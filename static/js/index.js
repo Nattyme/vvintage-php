@@ -5,10 +5,11 @@
 import dragAndDropFiles from './modules/drag-and-drop/dragAndDropFiles.js';
 import addAccordion from './modules/addAccordion.js';
 import fancyBox from './modules/fancybox.js';
+import initPreviewController from './modules/preview-images/index.js'
 import handlingNewProductForm from './modules/handlingNewProductForm.js';
 import addSubNavCats from './modules/addSubNavCats.js';
 import addTab from './modules/tab.js';
-import handlerLoadedPreviewImages from './modules/preview-images/handlerLoadedPreviewImages.js';
+// import handlerLoadedPreviewImages from './modules/preview-images/handlerLoadedPreviewImages.js';
 import previewLoadImages from './modules/preview-images/previewLoadImages.js';
 // import yMap from './modules/ymap.js';
 
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!pathHolder) return;
   const path = pathHolder.dataset.config;
   if(!path) return;
+
   
   previewLoadImages(
     {
@@ -39,10 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   );
   dragAndDropFiles();
-  handlerLoadedPreviewImages();
+  initPreviewController();
+  // handlerLoadedPreviewImages();
  
-  
-
 
   // if (window.location.pathname.trim() === '/index.html' || window.location.pathname.trim() === '') {
   //   addCatsCards();

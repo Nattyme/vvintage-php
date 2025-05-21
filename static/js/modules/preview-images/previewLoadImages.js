@@ -1,4 +1,4 @@
-import previewModule from "./preview.js";
+import previewModule from "./preview.model.js";
 
 let previewInputListening = false;
 
