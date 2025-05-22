@@ -1,5 +1,5 @@
-import previewModel from "./preview.model.js";
-import previewView from "./preview.view.js";
+import previewModel from './preview.model.js';
+import previewView from './preview.view.js';
 
 let previewContainerListening = false;
 
@@ -10,10 +10,12 @@ const initPreviewContainerEvents = () => {
   
   // Слушаем клик по контейнеру с изображениями
   container.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-preview="btn-close"]');
+
+    const btn = previewView.getButtonClose(e.target);
     if (!btn) return;
 
-    const wrapper = btn.closest('[data-preview="image-wrapper"]');
+
+    const wrapper = previewView.getImageWrapper(btn);
     const imageURL = wrapper?.dataset.url;
     if (!imageURL) return;
 

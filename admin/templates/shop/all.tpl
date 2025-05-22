@@ -1,8 +1,8 @@
 <section class="shop">
   <div class="shop__container">
 
-    <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
-    <?php include ROOT . "admin/templates/components/success.tpl"; ?>
+    <?php /* include ROOT . "admin/templates/components/errors.tpl"; */?>
+    <?php @@include ROOT . "admin/templates/components/success.tpl"; ?>
 
     <header class="shop__header shop__row">
       <form method="GET" action="" class="shop__search search" role="search">

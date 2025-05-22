@@ -3,7 +3,7 @@
 <section class="shop">
   <div class="shop__container">
 
-    <div hidden class="notifications mb-20">
+    <div hidden class="notifications">
       <div class="notifications__title"></div>
     </div>
 
@@ -116,8 +116,8 @@
       </div>
 
       <div class="form__button-wrapper form__button-row">
-        <button class="form__button button-solid" type="submit" name="submit" value="submit">Опубликовать</button>
         <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>shop">Отмена</a>
+        <button class="form__button button-solid" type="submit" name="submit" value="submit">Опубликовать</button>
       </div>
     </form>
   </div>

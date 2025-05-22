@@ -20,9 +20,12 @@
     $response['errors'][] = 'описание товара';
   } 
 
-  // Если есть ошибки - сразу возварщаем 
+  // Если есть ошибки - сразу возвращаем 
   if (!empty($response['errors'])) {
     echo json_encode($response);
+
+    // Очищаем ошибки, чтобы не дублировать
+    unset($_SESSION['errors']);
     exit();
   }
   
@@ -33,14 +36,16 @@
 
     // Если в сесси появились ошибки - добавляем их в ответ
     if (!empty($_SESSION['errors'])) {
-      $response['errorsImg'][] = true;
       foreach($_SESSION['errors'] as $error) {
-        $response['errors'][] = $error['title'];
+        $response['errorsImg'][] = [
+          'title' => $error['title'],
+          'url' => $error['fileName']
+        ];
       }
 
+      echo json_encode($response);
       // Очищаем ошибки, чтобы не дублировать
       unset($_SESSION['errors']);
-      echo json_encode($response);
       exit();
     }
 
@@ -80,6 +85,8 @@
     
    
     $response['success'][] = 'Товар успешно добавлен';
+    unset($_SESSION['success']);
+    $_SESSION['success'][] = ['title' => 'Товар успешно добавлен'];
     echo json_encode($response);
     exit();
   } else {

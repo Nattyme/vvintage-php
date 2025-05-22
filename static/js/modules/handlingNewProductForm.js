@@ -26,25 +26,38 @@ const handlingNewProductForm = (formSelector) => {
       method: 'POST',
       body: formData
     })
-    .then( res => {
-       console.log('Raw response:', res); // чтобы посмотреть статус
-        return res.json(); // парсим JSON из ответа
-    })
-    // .then(res => res.json())
-    .then(data => {  
+    .then(res => res.json())
+    .then( data => {  
       console.log('Ответ PHP: ', data);
       const notification = document.querySelector('.notifications');
       const notificationTitle = document.querySelector('.notifications__title');
       notificationTitle.textContent = '';
       notification.setAttribute('hidden', true);
 
-      if (data.errorsImg && data.errorsImg.length ) {
-        previewModel.reset();
-        previewView.removeImage();
+      if (data.errorsImg && data.errorsImg.length > 0 ) {
+        notification.removeAttribute('hidden');
+        notificationTitle.classList.add('notifications__title--error');
+        let noteText = '';
+      
+        data.errorsImg.forEach((error, index) => {
+          noteText += error.title + (index === data.errorsImg.length - 1 ? '.' : ', ');
+        });
+        notificationTitle.textContent = noteText;
+
+        //Прокрутка к блоку с уведомлением
+        notification.scrollIntoView({ behavior: 'smooth', block: 'start' });
+   
+        // previewModel.reset();
+        // data.errorsImg.forEach (image => {
+        //    const wrapper = previewView.getImageWrapper(image.url);
+        //    previewView.removeImage(wrapper);
+        // });
+
+    
       }
 
 
-      if(data.errors && data.errors.length) {
+      if(data.errors && data.errors.length > 0) {
         notification.removeAttribute('hidden');
         notificationTitle.classList.add('notifications__title--error');
         let noteText = '';
@@ -53,20 +66,25 @@ const handlingNewProductForm = (formSelector) => {
           noteText += error + (index === data.errors.length - 1 ? '.' : ', ');
         });
         notificationTitle.textContent = noteText;
+
+        //Прокрутка к блоку с уведомлением
+        notification.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
       if(data.success) {
-        notification.removeAttribute('hidden');
-        notificationTitle.classList.add('notifications__title--success');
-        
-        notificationTitle.textContent = data.success[0];
-
         // Очистим форму
-        setTimeout(() => {
-          form.reset(); // Очистка полей формы
-          previewModel.reset(); // Очистка файлов (если есть такой метод)
-          window.location.href = '/admin/shop'; // Переход
-        }, 1500); // 1.5 секунды задержки — можно уменьшить
+        form.reset(); // Очистка полей формы
+        previewModel.reset(); // Очистка файлов (если есть такой метод)
+        window.location.href = '/admin/shop'; // Переход
+        // setTimeout(()=> {
+        //     const notification = document.querySelector('.notification');
+        // notification.removeAttribute('hidden');
+        // notificationTitle.classList.add('notifications__title--success');
+        // notificationTitle.textContent = data.success[0];
+        // console.log(notification);
+        
+        // }, 500);
+      
       }
     })
     .catch(error => {
