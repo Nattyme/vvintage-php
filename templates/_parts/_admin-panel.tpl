@@ -19,16 +19,16 @@
             </svg>
 
             <?php if ($messagesNewCounter > 0 ) : ?>
-                  <div class="admin-panel__item-icon">9
-                    <?php 
-                      if ($messagesNewCounter <= $messagesDisplayLimit) {
-                        echo $messagesNewCounter;
-                      } else {
-                        echo '&hellip;';
-                      }
-                    ?> 
-                  </div>
-                <?php endif;?>
+              <div class="admin-panel__item-icon">
+                <?php 
+                  if ($messagesNewCounter <= $messagesDisplayLimit) {
+                    echo $messagesNewCounter;
+                  } else {
+                    echo '&hellip;';
+                  }
+                ?> 
+              </div>
+            <?php endif;?>
           </div>
           <span>Сообщение</span>
         </a>

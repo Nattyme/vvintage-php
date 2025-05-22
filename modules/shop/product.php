@@ -9,6 +9,7 @@ $sqlQuery = 'SELECT
                 p.brand, 
                 p.category, 
                 p.price, 
+                p.timestamp,
                 c.title AS cat_title,
                 b.title AS brand_title
              FROM `products` p
@@ -65,7 +66,8 @@ $pageTitle = "Название товара: {$product['title']}";
 $breadcrumbs = [
   ['title' => 'Каталог', 'url' => HOST . 'shop'],
 ];
-
+// print_r($_SESSION['cart']);
+// die();
 // Подключение шаблонов страницы
 include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";

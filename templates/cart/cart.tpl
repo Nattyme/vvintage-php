@@ -9,6 +9,7 @@
       </div>
 
       <div class="page-cart__cart-wrapper">
+        <?php @@include ROOT . "admin/templates/components/success.tpl"; ?>
 
         <?php if (!empty($products)) : ?>
           <!-- cart table-->

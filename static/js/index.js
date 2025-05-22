@@ -3,6 +3,7 @@
 // import router from './modules/admin/router.js';
 // import addSidebarControlPanel from "./modules/admin/model/sidebar/addSidebar.js";
 import dragAndDropFiles from './modules/drag-and-drop/dragAndDropFiles.js';
+import addBackTopBtn from './modules/backtop.js';
 import addAccordion from './modules/addAccordion.js';
 import fancyBox from './modules/fancybox.js';
 import initPreviewController from './modules/preview-images/index.js'
@@ -23,8 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //  
   // }
   addSubNavCats();
- 
-
+  addBackTopBtn();
   addTab();
   handlingNewProductForm('#form-add-product');
   addAccordion('many', '#sidebar');

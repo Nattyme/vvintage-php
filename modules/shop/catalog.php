@@ -4,7 +4,6 @@ $uriModule = getModuleName();
 $uriGet = getUriGet();
 $uriGetParam = getUriGetParam();
 
-// $pagination = pagination($settings['card_on_page_shop'], 'products');
 $pagination = pagination(9, 'products');
 $showedProducts = $pagination['page_number'] * 9;
 $productsTtl = R::count('products');

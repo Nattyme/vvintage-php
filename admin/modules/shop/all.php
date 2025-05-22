@@ -1,6 +1,5 @@
 <?php
-$pagination = pagination(8, 'products');
-// $products = R::find('products', "ORDER BY id DESC {$pagination['sql_page_limit']}");
+$pagination = pagination(4, 'products');
 
 $sqlQuery = 'SELECT
                 p.id, 
@@ -8,6 +7,7 @@ $sqlQuery = 'SELECT
                 p.title, 
                 p.price, 
                 p.url, 
+                p.timestamp,
                 b.title AS brand, 
                 c.title AS category,
                 pi.filename AS cover
@@ -20,8 +20,7 @@ $sqlQuery = 'SELECT
               FROM productimages 
               WHERE image_order = 1
              ) pi ON p.id = pi.product_id
-             ORDER BY p.id DESC
-            LIMIT 0, 8';
+             ORDER BY p.id DESC ' . $pagination["sql_page_limit"];
 
 $products = R::getAll($sqlQuery);
 

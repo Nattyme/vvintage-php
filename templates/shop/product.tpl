@@ -5,6 +5,7 @@
         <?php include ROOT . 'templates/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
       </header>
       <div class="product__content">
+          
         <div class="product__gallery-container">
           <div class="gallery gallery--<?php echo $productImagesTotal; ?>">
            
@@ -43,6 +44,7 @@
         </div>
         <div class="product-card">
           <header class="product-card__header">
+     
             <div class="product-card__row">
               <h1 class="h1 product-card__title"><?php echo $product['title'];?> </h1>
             </div>
@@ -57,22 +59,28 @@
 
           <dl class="product-card__list">
             <div class="product-card__item  product-card__item--title">
-              <dt>Brand</dt>
+              <dt>Бренд</dt>
               <dd><a href=""><?php echo $product['brand_title'];?></a></dd>
             </div>
             <div class="product-card__item">
-              <dt>Condition</dt>
+              <dt>Состоние</dt>
               <dd>New without tags</dd>
             </div>
             <div class="product-card__item">
-              <dt>Uploaded</dt>
-              <dd><time datetime="2025-05-18">a day ago</time></dd>
+              <dt>Обновлено</dt>
+              <dd><time datetime="<?php echo $product['timestamp'];?>"><?php echo rus_date("j. m. Y", $product['timestamp']); ?></dd>
             </div>
           
           </dl>
 
           <div class="product-card__button">
-            <a href="<?php echo HOST . 'addtocart?id=' . $product['id'];?>" class="button-solid">Добавить&#160;в&#160;корзину</a>
+            <?php if (array_key_exists($product['id'], $_SESSION['cart'])) : ?>
+                <span class="button button-solid button-solid--success">Товар добавлен в корзину</span>
+            <?php  else : ?>
+                 <a href="<?php echo HOST . 'addtocart?id=' . $product['id'];?>" class="button button-solid">
+                  Добавить&#160;в&#160;корзину
+                </a>
+            <?php endif;?>
           </div>   
           
 

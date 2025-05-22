@@ -1,7 +1,5 @@
 <section class="shop">
   <div class="shop__container">
-
-    <?php /* include ROOT . "admin/templates/components/errors.tpl"; */?>
     <?php @@include ROOT . "admin/templates/components/success.tpl"; ?>
 
     <header class="shop__header shop__row">
@@ -80,7 +78,8 @@
                   <a class="link" href="https://www.vinted.fr/items/<?php echo $product['article'] . $product['url'];?>">vinted.fr</a>
                 </td>
                 <td>
-                  <button class="button-dropdownMenu" data-btn="menu">
+                    <?php echo rus_date("j. m. Y. в H:i", $product['timestamp']); ?>
+                  <!-- <button class="button-dropdownMenu" data-btn="menu">
                     <svg class="icon icon--menu">
                       <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#menu';?>"></use>
                     </svg>
@@ -127,7 +126,7 @@
                         <span class="dropdownMenu__text">Удалить</span>
                       </a>
                     </li>
-                  </ul>
+                  </ul> -->
                 </td>
                 <td class="product-table__item product-table__item--checkbox">
                   <label>
@@ -140,6 +139,14 @@
           </tbody>
         </table>
       </form>
+    </div>
+
+    <div class="products__pagination">
+      <div class="section-pagination">
+        <?php if (count($products) > 0 ) : ?>
+          <?php include ROOT . 'templates/_parts/pagination/_pagination.tpl';?>
+        <?php endif; ?>
+      </div>
     </div>
 
   </div>
