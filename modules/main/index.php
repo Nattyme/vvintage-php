@@ -54,9 +54,7 @@ $sqlQuery = 'SELECT
             LIMIT 4';
 
 $newProducts = R::getAll($sqlQuery);
-// print_r($newProducts);
-// die();
-$pageTitle = 'Womazing';
+$pageTitle = 'Vvintage - интернет магазин. Главная страница';
 
 include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";

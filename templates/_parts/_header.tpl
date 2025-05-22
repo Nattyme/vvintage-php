@@ -25,7 +25,19 @@
                   </span></a>
               <?php endif; ?>
 						</div>
-						<div class="header__cart">
+						
+            <a href="<?php echo HOST . 'cart';?>" class="header__cart counter">
+              <svg class="icon icon--shopping-bag">
+                <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#shopping-bag';?>"></use>
+              </svg>
+               <?php if (!empty($cartCount)) : ?>
+                <div class="counter__widget counter__widget--cart">
+                  <span class="text-ellipsis"><?php echo $cartCount; ?></span>
+                </div>
+              <?php endif; ?>
+            </a>
+		
+						<!-- <div class="header__cart">
 							<a href="<?php echo HOST . 'cart';?>" class="cart-widget">
 								<svg class="icon icon--shopping-bag">
 									<use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#shopping-bag';?>"></use>
@@ -39,7 +51,7 @@
                     <?php endif; ?>
 								</div>
 							</a>
-						</div>
+						</div> -->
 					</div>
 				</div>
 
