@@ -53,7 +53,7 @@
               <a href="#" class="product-card__brand"><?php echo $product['brand_title'];?></a>
             </div>
             <div class="product-card__row">
-              <div class="product-card__price"><span class="price"><?php echo $product['price'];?></span></div>
+              <div class="product-card__price"><span class="price"><?php echo $product['price'];?>&nbsp;&euro;</span></div>
             </div>
           </header>
 

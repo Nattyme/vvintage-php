@@ -2,11 +2,8 @@
   if ( !empty($_SESSION['success']) ) :
     foreach ($_SESSION['success'] as $result) :
       if ( count($result) == 1) :?>
-        <!-- <div class="notifications">
+        <div class="notifications">
           <div class="notifications__title notifications__title--success"><?php echo $result['title']; ?></div>
-        </div> -->
-        <div class="notification">
-          <div class="notification__text"><?php echo $result['title']; ?></div>
         </div>
       <?php elseif ( count($result) == 2 ) : ?>
         <div class="notifications notifications__title--with-message">

@@ -98,9 +98,9 @@ if( isset($_POST['login']) ) {
         // Обновляем избранное в сессии
         $_SESSION['fav_list'] = $temp_fav_list;
         if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
-          $_SESSION['success'][] = ['title' => 'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']) . '. Вы успешно вошли на сайт. Рады снова видеть вас'];
+          $_SESSION['success'][] = ['title' => 'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
         } else {
-          $_SESSION['success'][] = ['title' => 'Здравствуйте! Вы успешно вошли на сайт. Рады снова видеть вас'];
+          $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
         }
         
         header('Location: ' . HOST . 'profile');

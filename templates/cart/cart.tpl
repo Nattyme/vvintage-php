@@ -60,7 +60,7 @@
                   
                   <div class="cart__row">
                     <div class="cart__price">
-                      <span class="cart__text"><?php echo $product['price']; ?></span>
+                      <span class="cart__text"><?php echo $product['price']; ?>&nbsp;&euro;</span>
                     </div>
                   </div>
 
@@ -76,7 +76,7 @@
                       Количество товаров: <span><?php echo count($products);?></span>
                     </p>
                     <p class="cart__total">
-                      Итого: <span><?php echo $cartTotalPrice; ?></span>
+                      Итого: <span><?php echo $cartTotalPrice; ?>&nbsp;&euro;</span>
                     </p>
             
                   </div>

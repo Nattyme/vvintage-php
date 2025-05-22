@@ -21,7 +21,7 @@
           <p>Мода, вдохновленная прошлым&#8230;</p>
         </div>
       </div>
-      <a href="#arrival" class="hero__button">
+      <a href="<?php echo HOST;?>shop" class="hero__button">
         <span class="button button-solid">Открыть магазин</span>
       </a>
     </div>
