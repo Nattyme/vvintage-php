@@ -14,6 +14,7 @@ const loadSubCats = async (parentId) => {
 
 
 const getMainCats = () => mainCategories;
+
 const setMainCats = async () => {
   mainCategories = await loadMainCats();
   return mainCategories;
