@@ -79,10 +79,8 @@
           <fieldset class="form__field form__field--input-with-button">
             <label class="form__item">
               <span class="form__text">Выберите бренд</span>
-              <select class="form__select" name="brand">
-                <?php foreach ($brands as $brand) : ?>
-                  <option value="<?php echo $brand['id']; ?>"><?php echo $brand['title']; ?></option>
-                <?php endforeach; ?>
+              <select class="form__select" name="brand" id="brands">
+                <option value="">Выберите бренд</option>
               </select>
             </label>
             <div class="form__item">

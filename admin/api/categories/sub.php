@@ -15,12 +15,12 @@ if (!isset($_GET['parent_id']) || !is_numeric($_GET['parent_id'])) {
 $parentId = (int) $_GET['parent_id'];
 
 // Получаем подкатегории по переданному id главное категории
-$subCats = R::find('categories', 'parent_id = ? ORDER BY title ASC', [$parentId]);
+$dataDB = R::find('categories', 'parent_id = ? ORDER BY title ASC', [$parentId]);
 
-foreach ($subCats as $cat) {
+foreach ($dataDB as $data) {
   $response[] = [
-    'id' => $cat->id,
-    'title' => $cat->title
+    'id' => $data->id,
+    'title' => $data->title
   ];
 }
 

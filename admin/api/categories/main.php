@@ -12,12 +12,12 @@ header('Content-Type: application/json');
 $response = [];
 
 // Находим категории, относящиеся к секции shop
-$catsRows = R::find('categories', 'parent_id IS NULL ORDER BY title ASC');
+$dataDB = R::find('categories', 'parent_id IS NULL ORDER BY title ASC');
 
-foreach ($catsRows as $cat) {
+foreach ($dataDB as $data) {
   $response[] = [
-    'id' => $cat->id,
-    'title' => $cat->title
+    'id' => $data->id,
+    'title' => $data->title
   ];
 }
 
