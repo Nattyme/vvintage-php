@@ -63,7 +63,7 @@
     $product->content = $_POST['content'];
     $product->price = $_POST['price'];
     $product->article = $_POST['article'];
-    $product->category = $_POST['cat'];
+    $product->category = $_POST['subCat'];
     $product->brand = $_POST['brand'];
     $product->stock = 1;
     $product->url = $_POST['url'];

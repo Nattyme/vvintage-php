@@ -40,6 +40,17 @@
             <svg class="icon icon--folder">
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#folder';?>"></use>
             </svg>
+            <?php if ($ordersNewCounter > 0 ) : ?>
+              <div class="admin-panel__item-icon">
+                <?php 
+                  if ($ordersNewCounter <= $ordersDisplayLimit) {
+                    echo $ordersNewCounter;
+                  } else {
+                    echo '&hellip;';
+                  }
+                ?> 
+              </div>
+            <?php endif;?>
     
           </div>
           <span>Заказы</span>
@@ -52,6 +63,17 @@
             <svg class="icon icon--message-square">
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#message-square';?>"></use>
             </svg>
+             <?php if ($ordersNewCounter > 0 ) : ?>
+              <div class="admin-panel__item-icon">
+                <?php 
+                  if ($commentsNewCounter <= $commentsDisplayLimit) {
+                    echo $commentsNewCounter;
+                  } else {
+                    echo '&hellip;';
+                  }
+                ?> 
+              </div>
+            <?php endif;?>
           </div>
           <span>Комментарии</span>
         </a>

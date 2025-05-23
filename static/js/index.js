@@ -7,6 +7,7 @@ import addBackTopBtn from './modules/backtop.js';
 import addAccordion from './modules/addAccordion.js';
 import fancyBox from './modules/fancybox.js';
 import initPreviewController from './modules/preview-images/index.js'
+import initCategoriesController from './modules/categories/index.js'
 import handlingNewProductForm from './modules/handlingNewProductForm.js';
 import addSubNavCats from './modules/addSubNavCats.js';
 import addTab from './modules/tab.js';
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //   mobileNav();
   //  
   // }
-  addSubNavCats();
+  // addSubNavCats();
   addBackTopBtn();
   addTab();
   handlingNewProductForm('#form-add-product');
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   dragAndDropFiles();
   initPreviewController();
+  initCategoriesController();
   // handlerLoadedPreviewImages();
  
 

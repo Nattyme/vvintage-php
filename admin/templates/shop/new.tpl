@@ -12,10 +12,10 @@
         <div class="form__column">
           <fieldset class="form__field">
             <label class="form__item">
-              <span class="form__text">Введите название товара</span>
+              <span class="form__text">Название товара</span>
               <input name="title" class="form__input" type="text"
-                     value="Название товара"
-                     placeholder="Название товара" />
+                     value="Введите название товара"
+                     placeholder="Введите название товара" />
             </label>
           </fieldset>
 
@@ -47,11 +47,24 @@
 
           <fieldset class="form__field form__field--input-with-button">
             <label class="form__item">
-              <span class="form__text">Выберите категорию</span>
-              <select class="form__select" name="cat">
-                <?php foreach ($cats as $category) : ?>
-                  <option value="<?php echo $category['id']; ?>"><?php echo $category['title']; ?></option>
-                <?php endforeach; ?>
+              <span class="form__text">Категория</span>
+              <select class="form__select" name="mainCat" id="mainCat">
+                <option value="">Выберите категорию</option>
+              </select>
+            </label>
+            <div class="form__item">
+              <a 
+                class="button button-outline button-outline--small" 
+                href="<?php echo HOST;?>category-new?shop">
+                  Новая категория
+              </a>
+            </div>
+          </fieldset>
+          <fieldset class="form__field form__field--input-with-button">
+            <label class="form__item">
+              <span class="form__text">Подкатегория</span>
+              <select class="form__select" name="subCat" id="subCat">
+                <option value="">Выберите подкатегорию</option>
               </select>
             </label>
             <div class="form__item">

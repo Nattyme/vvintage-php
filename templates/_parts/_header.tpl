@@ -14,6 +14,26 @@
 					</a>
 				</div>
 
+        
+        <ul class="nav-list nav-list--header">
+          <li class="nav-list__item">
+          <a class="nav-list__link" href="<?php echo HOST;?>">Главная</a>
+          </li>
+          <li class="nav-list__item">
+            <a class="nav-list__link nav-list__inner-nav" href="<?php echo HOST;?>shop">Магазин</a>
+          </li>
+          <li class="nav-list__item">
+          <a class="nav-list__link" href="<?php echo HOST;?>about">О нас</a>
+          </li>
+          <li class="nav-list__item">
+            <a class="nav-list__link" href="<?php echo HOST;?>delivery">Доставка</a>
+          </li>
+          <li class="nav-list__item">
+            <a class="nav-list__link" href="<?php echo HOST;?>contacts">Контакты</a>
+          </li>
+        </ul>
+      
+
 				<div class="header__cta">
 					<div class="header__user flex-block">
 						<div class="header__login">
@@ -36,22 +56,7 @@
                 </div>
               <?php endif; ?>
             </a>
-		
-						<!-- <div class="header__cart">
-							<a href="<?php echo HOST . 'cart';?>" class="cart-widget">
-								<svg class="icon icon--shopping-bag">
-									<use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#shopping-bag';?>"></use>
-								</svg>
-								<div class="cart-widget__counter">
-                    <?php if (!empty($cartCount)) : ?>
-									    <div class="counter">
-                        <span class="text-ellipsis"><?php echo $cartCount; ?></span>
-                   
-									    </div>
-                    <?php endif; ?>
-								</div>
-							</a>
-						</div> -->
+	
 					</div>
 				</div>
 

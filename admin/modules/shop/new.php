@@ -1,7 +1,8 @@
 <?php
 
-// Находим категории, относящиеся к секции shop
-$cats = R::find('categories', 'ORDER BY title ASC');
+
+// Находим под  категории, относящиеся к секции shop
+$subCats = R::find('categories', 'parent_id != 0 ORDER BY title ASC');
 
 // Получаем бренды
 $brands = R::find('brands', 'ORDER BY title ASC'); 

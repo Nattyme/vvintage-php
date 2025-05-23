@@ -1,0 +1,34 @@
+const initView = () => {
+  const mainCatBlock = document.querySelector('#mainCat');
+  const subCatBlock = document.querySelector('#subCat');
+
+  if (!mainCatBlock || !subCatBlock) return;
+
+  const getMainCatBlock = () => mainCatBlock;
+  const getSubCatBlock = () => subCatBlock;
+
+  const setCategoriesOptions = (categories, selectElement) => {
+      let optionsList = '';
+  
+      if (categories.length === 0) {
+        optionsList = `<option value="">Нет подкатегорий</option>`;
+        selectElement.disabled = true;
+      } else {
+        optionsList = categories.map(cat => {
+          return `<option value="${cat.id}">${cat.title}</option>`;
+        }).join('');
+        selectElement.disabled = false;
+      }
+
+      selectElement.insertAdjacentHTML('beforeend', optionsList);
+    
+  }
+
+  return {
+    getMainCatBlock,
+    getSubCatBlock,
+    setCategoriesOptions
+  };
+};
+
+export default initView();
