@@ -4,6 +4,10 @@ const initView = () => {
 
   if (!mainCatBlock || !subCatBlock) return;
 
+  const getMainCatBlock = () => mainCatBlock;
+  const getSubCatBlock = () => subCatBlock;
+
+  // Заполняет опции селекта данными категорий 
   const setCategoriesOptions = (categories, selectElement) => {
       let optionsList = '';
   
@@ -22,6 +26,8 @@ const initView = () => {
   }
 
   return {
+    getMainCatBlock,
+    getSubCatBlock,
     setCategoriesOptions
   };
 };
