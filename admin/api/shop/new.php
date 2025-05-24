@@ -3,6 +3,7 @@
   require_once './../../../db.php';
   require_once ROOT . "libs/resize-and-crop.php";
   require_once ROOT . "libs/functions.php";
+  
   header('Content-Type: application/json');
 
   $response = [];
@@ -101,8 +102,6 @@
     exit();
   }
 
-       echo json_encode($response);
-    exit();
  
     
     

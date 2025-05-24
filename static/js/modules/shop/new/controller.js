@@ -30,8 +30,8 @@ const initNewProductFormEvents = () => {
       // Отправляем значения формы
       try {
         const res = await model.sendFormDataFetch();
-console.log(res);
-
+        console.log(res);
+        console.log(res.errors);
         if (res.success) {
           // Очистим форму
           view.resetForm();
@@ -40,11 +40,16 @@ console.log(res);
         }
 
         if (res.errorsImg && res.errorsImg.length > 0) {
+            console.log(res);
+            console.log('scroll in img');
           view.displayNotification('error');
           view.addNotificationText(res.errors);
           view.scrollToElement();
         }
         if (res.errors && res.errors.length > 0) {
+          console.log(res.errors);
+          console.log('scroll in rerrors');
+          
           view.displayNotification('error');
           view.addNotificationText(res.errors);
           view.scrollToElement();
@@ -52,6 +57,7 @@ console.log(res);
       } 
       catch (err) {
         console.log(err);
+         console.log('scroll in rerrors');
         // view.displayNotification('error');
         // view.addNotificationText(errors);
         // view.scrollToElement();

@@ -1,6 +1,7 @@
 const initModel = () => {
   let formData = null;
 
+
   // Ф-ция собирает данные формы
   const collectFormData = (formElement) => {
     return new FormData(formElement);
@@ -36,9 +37,10 @@ const initModel = () => {
       body: formData
     });
     if (!res.ok) throw new Error(`Ошибка сети ${res.status}`);
-    // const json = JSON.parse(text);
-    // return json;
-    return res.json();
+    const result = res.json();
+    console.log(result);
+    
+    return result;
   };
 
   return {

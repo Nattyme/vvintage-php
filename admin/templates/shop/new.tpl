@@ -7,49 +7,53 @@
       <div class="notifications__title"></div>
     </div>
 
-    <form id="form-add-product" method="POST" class="shop-form-new" data-url = "<?php echo HOST;?>admin/form-add" enctype="multipart/form-data">
+    <form id="form-add-product" method="POST" class="shop-form-new" enctype="multipart/form-data">
       <div class="form__row">
         <div class="form__column">
           <fieldset class="form__field">
             <label class="form__item">
               <span class="form__text">Название товара</span>
-              <input name="title" class="form__input" type="text"
-                     value="Введите название товара"
-                     placeholder="Введите название товара" />
+              <input name="title" class="form__input input" type="text"
+                     value="<?php echo isset($_POST['title']) ? $_POST['title'] : '';?>"
+                     placeholder="Введите название" required/>
             </label>
           </fieldset>
 
           <fieldset class="form__field">
             <label class="form__item">
               <span class="form__text">Цена</span>
-              <input name="price" class="form__input" type="text"
-                     value="1990"
-                     placeholder="Введите стоимость товара" />
+              <input name="price" class="form__input input" type="text"
+                     value="<?php echo isset($_POST['price']) ? $_POST['title'] : '';?>"
+                     placeholder="Введите цену в &euro;" required/>
             </label>
           </fieldset>
 
           <fieldset class="form__field">
             <label class="form__item">
               <span class="form__text">Артикул</span>
-              <input name="article" class="form__input" type="text"
-                     value="1990999999"
-                     placeholder="Введите артикул товара" />
+              <input name="article" class="form__input input" type="text"
+                     value="<?php echo isset($_POST['article']) ? $_POST['article'] : '';?>"
+                     placeholder="Введите артикул" />
             </label>
           </fieldset>
           <fieldset class="form__field">
             <label class="form__item">
               <span class="form__text">Ссылка</span>
-              <input name="url" class="form__input" type="text"
-                     value="https//:"
-                     placeholder="Введите ссылку товара на vinted.fr" />
+              <input name="url" class="form__input input" type="text"
+                     value="<?php echo isset($_POST['url']) ? $_POST['url'] : '';?>"
+                     placeholder="Введите ссылку на vinted.fr" />
             </label>
           </fieldset>
 
           <fieldset class="form__field form__field--input-with-button">
             <label class="form__item">
               <span class="form__text">Категория</span>
-              <select class="form__select" name="mainCat" id="mainCat">
-                <option value="">Выберите категорию</option>
+              <select class="select" name="mainCat" id="mainCat">
+                <?php if (isset($_POST['mainCat']) ) : ?>
+                  <option value="<?php echo $_POST['mainCat'];?>"><?php echo $_POST['mainCat'];?></option>
+                <?php else : ?>
+                  <option value="">Выберите категорию</option>
+                <?php endif;?>
               </select>
             </label>
             <div class="form__item">
@@ -63,7 +67,7 @@
           <fieldset class="form__field form__field--input-with-button">
             <label class="form__item">
               <span class="form__text">Подкатегория</span>
-              <select class="form__select" name="subCat" id="subCat">
+              <select class="select" name="subCat" id="subCat">
                 <option value="">Выберите подкатегорию</option>
               </select>
             </label>
@@ -79,7 +83,7 @@
           <fieldset class="form__field form__field--input-with-button">
             <label class="form__item">
               <span class="form__text">Выберите бренд</span>
-              <select class="form__select" name="brand" id="brands">
+              <select class="select" name="brand" id="brands">
                 <option value="">Выберите бренд</option>
               </select>
             </label>
@@ -132,6 +136,7 @@
       </div>
     </form>
   </div>
+
 </section>
 
 <script>

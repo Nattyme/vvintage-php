@@ -3,6 +3,9 @@
     <?php @@include ROOT . "admin/templates/components/success.tpl"; ?>
 
     <header class="shop__header shop__row">
+      <a href="<?php HOST;?>shop-new" class="shop__button button button-primary" data-btn="add">
+        <span>Добавить товар</span>
+      </a>
       <form method="GET" action="" class="shop__search search" role="search">
         <input type="text" name="query" placeholder="Найти">
         <button type="search-submit">
@@ -11,22 +14,20 @@
           </svg>
         </button>
       </form>
-      <a href="<?php HOST;?>shop-new" class="shop__button button button-primary" data-btn="add">
-        <span>Добавить товар</span>
-       </a>
+
 
     </header>
 
     <div class="shop__content">
-      <form>
-        <div class="shop__bulk-actions">
-          <select name="action">
+      <form class="form-products-table">
+        <div class="form-products-table__actions">
+          <select class="select" name="action">
             <option value="">— Выберите действие —</option>
             <option value="delete">Удалить</option>
             <option value="hide">Скрыть</option>
             <option value="show">Показать</option>
           </select>
-          <button type="select-submit" class="button button--small">Применить</button>
+          <button type="select-submit" class="button button-primary button--small">Применить</button>
         </div>
         <table class="product-table table">
           <thead class="product-table__header">
@@ -64,18 +65,21 @@
                 <?php endif; ?>
                 </td>
                 <td class="product-table__item product-table__item--title">
-                  <?php echo htmlspecialchars(trim($product['title'] ?? '')); ?>
+                  <!-- link-to-page -->
+                  <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit?id=<?php echo $product['id']; ?>">
+                    <?php echo htmlspecialchars(trim($product['title'] ?? '')); ?>
+                  </a>
                 </td>
                 <td>
                 <!-- link-to-page -->
-                  <a class="" href="<?php echo HOST . "admin/"; ?>shop-edit?id=<?php echo $product['id']; ?>"><?php echo $product['brand']; ?></a>
+                 <?php echo $product['brand']; ?>
                 </td>
                 <td><?php echo htmlspecialchars(trim($product['category'] ?? ''));?></td>
                 <td>
                   <?php echo htmlspecialchars(trim($product['price'] ?? '')); ?>  &euro;
                 </td>
                 <td>
-                  <a class="link" href="https://www.vinted.fr/items/<?php echo $product['article'] . $product['url'];?>">vinted.fr</a>
+                  <a class="link" href="<?php echo $product['url'];?>">vinted.fr</a>
                 </td>
                 <td>
                     <?php echo rus_date("j. m. Y", $product['timestamp']); ?>
