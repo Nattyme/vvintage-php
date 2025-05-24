@@ -38,7 +38,7 @@
     </li>
     <li class="sidebar__list-item">
       <a class="sidebar__list-button sidebar__inner-link" 
-          href="<?php echo HOST;?>admin/category?shop" title="" data-section="shop-cats">
+          href="<?php echo HOST;?>admin/category" title="" data-section="shop-cats">
         <div class="sidebar__list-img-wrapper">
           <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner'?>" alt="icon" />
         </div>

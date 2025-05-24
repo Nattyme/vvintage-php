@@ -135,11 +135,15 @@ function rus_date () {
 // pagination (6, 'posts'); pagination (6, 'posts', [' cat = ? ', [4] ]);
 function pagination ($results_per_page, $type, $params = NULL) {
   intval($type);
+
+  // Если передали 0
+  if ($results_per_page < 1) {
+    $results_per_page = 5; 
+  }
+
   if ( empty($params) ) {
     $number_of_results = R::count($type);
-  } 
-
-  else {
+  } else {
     $number_of_results = R::count($type, $params[0], $params[1]); // Вернет кол-во постов
   }
 
@@ -148,15 +152,22 @@ function pagination ($results_per_page, $type, $params = NULL) {
   $number_of_pages = ceil($number_of_results / $results_per_page); // ceil округляет число в бол. сторону
 
   // Определяем текущий номер запрашиваемой страницы 
-  if ( !isset($_GET['page']) || empty($_GET['page'])) {
+  $page_number = isset($_GET['page']) ? intval($_GET['page']) : 1;
+  if ($page_number < 1) {
     $page_number = 1;
-  } else {
-    $page_number = intval($_GET['page']); // 2ая стр. пагинации
   }
+  // if ( !isset($_GET['page']) || empty($_GET['page'])) {
+  //   $page_number = 1;
+  // } else {
+  //   $page_number = intval($_GET['page']); // 2ая стр. пагинации
+  // }
 
   // Если текущий номер страницы больше общего кол-ва страниц - показываем последнюю доступную
-  if($page_number > $number_of_pages) {
-    $page_number = $number_of_pages;
+  // if($page_number > $number_of_pages) {
+  //   $page_number = $number_of_pages;
+  // }
+  if ($page_number > $number_of_pages) {
+    $page_number = $number_of_pages > 0 ? $number_of_pages : 1;
   }
 
   // Определяем с какого поста начать вывод

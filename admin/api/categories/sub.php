@@ -14,7 +14,7 @@ if (!isset($_GET['parent_id']) || !is_numeric($_GET['parent_id'])) {
 
 $parentId = (int) $_GET['parent_id'];
 
-// Получаем подкатегории по переданному id главное категории
+// Получаем подкатегории по переданному id главной категории
 $dataDB = R::find('categories', 'parent_id = ? ORDER BY title ASC', [$parentId]);
 
 foreach ($dataDB as $data) {

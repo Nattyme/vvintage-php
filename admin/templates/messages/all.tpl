@@ -3,23 +3,32 @@
     <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
-    <!-- Заголовок -->
-    <div class="admin-form__item admin-form__title">
-      <h2 class="heading">Сообщения</h2>
-    </div>
-    <!-- Заголовок -->
+    <header class="shop__header shop__row">
+      <a href="<?php HOST;?>brand-new" class="shop__button button button-primary" data-btn="add">
+        <span>Написать</span>
+      </a>
+      <form method="GET" action="" class="shop__search search" role="search">
+        <input type="text" name="query" placeholder="Найти">
+        <button type="search-submit">
+          <svg class="icon icon--loupe">
+            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
+          </svg>
+        </button>
+      </form>
+    </header>
+
 
     <!-- Таблица -->
-    <table class="admin-form-table">
-      <thead class="admin-form-table__header">
-        <tr class="admin-form-table__row">
-          <th class="admin-form-table__unit">ID</th>
-          <th class="admin-form-table__unit">Отправитель</th>
-          <th class="admin-form-table__unit">Email</th>
-          <th class="admin-form-table__unit">Текст</th>
-          <th class="admin-form-table__unit">Время</th>
-          <th class="admin-form-table__unit">Файл</th>
-          <th class="admin-form-table__unit"></th>
+    <table class="admin-form-table table">
+      <thead class="product-table__header">
+        <tr>
+          <th>ID</th>
+          <th>Отправитель</th>
+          <th>Email</th>
+          <th>Текст</th>
+          <th>Время</th>
+          <th>Файл</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>

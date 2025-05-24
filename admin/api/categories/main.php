@@ -11,7 +11,7 @@ header('Content-Type: application/json');
 // }
 $response = [];
 
-// Находим категории, относящиеся к секции shop
+// Находим главные категории
 $dataDB = R::find('categories', 'parent_id IS NULL ORDER BY title ASC');
 
 foreach ($dataDB as $data) {

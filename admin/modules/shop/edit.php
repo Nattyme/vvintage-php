@@ -91,7 +91,7 @@
   // Получаем продукт по id
   $product = R::load('products', $_GET['id']);
 
-  $pageTitle = "Магазин. Редактировать товар ";
+  $pageTitle = "Магазин - редактировние товара";
   $pageClass = "admin-page";
   // Центральный шаблон для модуля
   ob_start();

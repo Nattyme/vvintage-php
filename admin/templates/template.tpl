@@ -15,7 +15,9 @@
         </div>
       </header>
       <div class="dashboard__content" id="dashboard__content">
-        <?php echo $content; ?>
+        <div class="dashboard__container">
+          <?php echo $content; ?>
+        </div>
       </div>
 
     </div>
