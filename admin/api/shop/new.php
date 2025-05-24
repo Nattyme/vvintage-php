@@ -1,6 +1,8 @@
 <?php
   require_once './../../../config.php';
   require_once './../../../db.php';
+  require_once ROOT . "libs/resize-and-crop.php";
+  require_once ROOT . "libs/functions.php";
   header('Content-Type: application/json');
 
   $response = [];
@@ -14,7 +16,7 @@
     $response['errors'][] = 'стоимость товара';
   } 
 
-  // Проверка на заполненность ссылки
+  // // Проверка на заполненность ссылки
   if( trim($_POST['url']) == '' ) {
     $response['errors'][] = 'ссылка на vinted.fr';
   } 
@@ -24,7 +26,7 @@
     $response['errors'][] = 'описание товара';
   } 
 
-  // Если есть ошибки - сразу возвращаем 
+  // // Если есть ошибки - сразу возвращаем 
   if (!empty($response['errors'])) {
     echo json_encode($response);
 
@@ -99,7 +101,8 @@
     exit();
   }
 
-    
+       echo json_encode($response);
+    exit();
  
     
     

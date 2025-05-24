@@ -1,12 +1,10 @@
 import previewModel from "./../../preview-images/preview.model.js";
 import previewView from "./../../preview-images/preview.view.js";
-import initView from "./view.js";
-import initModel from "./model.js";
+import view from "./view.js";
+import model from "./model.js";
 
 const initNewProductFormEvents = () => {
-    const view = initView();
-    const model = initModel();
-
+    if (!view || !model) return;
     const formElement = view.getFormElement();
     if (!formElement) return;
 
@@ -32,6 +30,7 @@ const initNewProductFormEvents = () => {
       // Отправляем значения формы
       try {
         const res = await model.sendFormDataFetch();
+console.log(res);
 
         if (res.success) {
           // Очистим форму
@@ -39,11 +38,23 @@ const initNewProductFormEvents = () => {
           previewModel.reset(); // Очистка файлов (если есть такой метод)
           window.location.href = '/admin/shop'; // Переход
         }
-      } catch (err) {
-        console.error('Ошибка при отправки формы добавления нового продукта:', err);
-        view.displayNotification('error');
-        view.addNotificationText([err.message]);
-        view.scrollToElement();
+
+        if (res.errorsImg && res.errorsImg.length > 0) {
+          view.displayNotification('error');
+          view.addNotificationText(res.errors);
+          view.scrollToElement();
+        }
+        if (res.errors && res.errors.length > 0) {
+          view.displayNotification('error');
+          view.addNotificationText(res.errors);
+          view.scrollToElement();
+        }
+      } 
+      catch (err) {
+        console.log(err);
+        // view.displayNotification('error');
+        // view.addNotificationText(errors);
+        // view.scrollToElement();
       }
     });
 };

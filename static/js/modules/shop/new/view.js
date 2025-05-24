@@ -18,7 +18,13 @@ const initView = () => {
 
   // ф-ция очищает текст уведомления
   const clearNotification = () => {
-    noteText = '';
+    notificationTitle.textContent = '';
+  }
+
+  // Ф-ция прячет уведомления 
+  const hideNotifications = () => {
+    clearNotification();
+    notification.setAttribute('hidden', true);
   }
 
   // Ф-ция показывает уведомления
@@ -32,6 +38,7 @@ const initView = () => {
 
   // ф-ция добавляет текст уведомления
   const addNotificationText = (errors) => {
+    console.log(errors);
     clearNotification();
     errors.forEach((error, index) => {
       noteText += error.title + (index === errors.length - 1 ? '.' : ', ');
@@ -53,8 +60,9 @@ const initView = () => {
     displayNotification,
     addNotificationText,
     resetForm,
-    scrollToElement
+    scrollToElement,
+    hideNotifications
   }
 }
 
-export default initView;
+export default initView();

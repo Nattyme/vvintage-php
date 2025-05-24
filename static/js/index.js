@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //   mobileNav();
   //
   // }
-  // addSubNavCats();
+  addSubNavCats();
   addBackTopBtn();
   addTab();
   addAccordion("many", "#sidebar");
