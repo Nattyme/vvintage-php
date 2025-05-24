@@ -26,17 +26,17 @@
       </form>
       <!-- SEARCH FORM-->
     </header>
-    <div class="form-products-table__actions">
+    <form method="GET" action="" class="form-products-table__actions">
       <select class="select" name="action">
-        <option value="">— Выберите раздел —</option>
+        <option value="">— Все разделы —</option>
         <?php foreach ($mainCats as $mainCat) : ?>
             <option value="<?= $mainCat['id'] ?>" <?= ($filterSection == $mainCat['id']) ? 'selected' : '' ?>>
               <?= htmlspecialchars($mainCat['title']) ?>
             </option>
         <?php endforeach;?>
       </select>
-      <button type="select-submit" class="button button-primary button--small">Применить</button>
-    </div>
+      <button type="submit" class="button button-primary button--small">Применить</button>
+    </form>
 
     <!-- Таблица -->
     <table class="admin-form-table table">
