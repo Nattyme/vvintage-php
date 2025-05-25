@@ -7,21 +7,31 @@ const initView = () => {
   if(!header || !nav || !navList || !navOverlay ) return;
 
   const getNav = () => nav;
+
   const getNavList = () => navList;
-  const getSubNavList = (catBlock) => catBlock.querySelector('.sub-nav__list');
-  const getSubSubNav = (catBlock) => catBlock.querySelector('.sub-sub-nav__list');
+
+  const getSubNavList = (catBlock) => {
+    if (!catBlock) return null;
+    return catBlock.querySelector('.sub-nav__list');
+  };
+
+  const getSubSubNav = (catBlock) => {
+    if (!catBlock) return null;
+    return catBlock.querySelector('.sub-sub-nav__list');
+  };
 
   const addAdminActiveClass = () => {
     if (header.classList.contains('header--with-admin-panel')) {
       navOverlay.classList.add('catalog-dropdown__background--with-admin-panel');
       navList.classList.add('nav__list--with-admin-panel');
     }
-    
   }
 
   const getCatBlocksAll = () => navList.querySelectorAll('.nav__block');
 
   const getFirstLvlMenuTemplate = (cat) => {
+    if (!cat || !cat.id || !cat.name) return '';
+
     return `
       <li
         id="${cat.id}"
@@ -52,6 +62,8 @@ const initView = () => {
 
   // Ф-ция возвращает разметку для 2-го уровня категорий
   const getSubNavItemTemplate = (cat) => {
+    if (!cat || !cat.id || !cat.name) return '';
+
     return `
         <li class="sub-nav__item">
           <svg class="sub-nav__icon icon icon--bag">
@@ -70,6 +82,7 @@ const initView = () => {
 
   // Ф-ция возвращает разметку для 3-го уровня категорий
   const getSubSubNavItemTemplate = (subCat) => {
+    if (!subCat || !subCat.name) return '';
     return `
         <li class="sub-sub-nav__item">
           <a href="#" class="sub-sub-nav__link">
@@ -80,22 +93,25 @@ const initView = () => {
   }
 
   const getSubCatWrapper = (target) => {
-     return target.querySelector('[data-cat]');      
+    if (!target) return null;
+    return target.querySelector('[data-cat]');      
   }
 
-
-
   // Ф-ция находит и удаляет все подменю
-  const findAndRemoveAllSubNavs =  () => navList.querySelectorAll('.sub-nav').forEach(nav => nav.remove());
+  const findAndRemoveAllSubNavs =  () => {
+    navList.querySelectorAll('.sub-nav').forEach(nav => nav.remove());
+  }
 
   // Ф-ция вставляет в навигацию шаблон с данными категорий
   const fillNav = (block, data) => {
+    if (!block || !Array.isArray(data)) return;
     block.innerHTML = data.map(cat => getFirstLvlMenuTemplate(cat)).join('');
   }
 
 
   const insertTemplate = (catBlock, template) => {
-     catBlock.insertAdjacentHTML('beforeend', template);
+    if (!catBlock || !template) return;
+    catBlock.insertAdjacentHTML('beforeend', template);
   }
 
   // Ф-ция утсанавливает оверлей
@@ -109,16 +125,25 @@ const initView = () => {
   }
 
   // Ф-ция находит все subNavs в блоке
-  const getSubNavBlocksAll = (wrapper) => wrapper.querySelectorAll('li');
+  const getSubNavBlocksAll = (wrapper) => {
+    if (!wrapper) return [];
+    return wrapper.querySelectorAll('li');
+  };
 
-  const getCurrentBlocksWrapper = (target) => target.closest('ul');
+  const getCurrentBlocksWrapper = (target) => {
+    if (!target) return null;
+    return target.closest('ul');
+  };
 
   const removeActiveClassForElems = (elems) => {
+    if (!elems || !elems.forEach) return;
     elems.forEach(subCatBlock => subCatBlock.classList.remove('active'));
   }
 
   const addActiveClassToClosestBlock = (target) => {
-    target.closest('li').classList.add('active');
+    if (!target) return;
+    const closest = target.closest('li');
+    if (closest) closest.classList.add('active');
   }
 
   return {
