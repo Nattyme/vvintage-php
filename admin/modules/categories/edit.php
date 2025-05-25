@@ -23,7 +23,7 @@ $cat = R::load('categories', $_GET['id']);
 // Перезаписываем текущую секцию данными из БД - чтобы не подставился id из $_GET
 $currentSection = $cat['section'];
 
-$pageTitle = "Категории. Редактировать категорию {$cat['title']}";
+$pageTitle = "Категории - редактирование";
 $pageClass = "admin-page";
 
 ob_start();

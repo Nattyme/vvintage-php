@@ -1,68 +1,74 @@
 import previewModel from "./../../preview-images/preview.model.js";
-import previewView from "./../../preview-images/preview.view.js";
-import view from "./view.js";
-import model from "./model.js";
+import initView from "./view.js";
+import initModel from "./model.js";
 
 const initNewProductFormEvents = () => {
-    if (!view || !model) return;
-    const formElement = view.getFormElement();
-    if (!formElement) return;
+  // const previewModel = initPreviewModel();
+  const formModel = initModel();
+  const formView = initView();
 
-    formElement.addEventListener('submit', async (event) => {
-      event.preventDefault();
+  if (!formView || !formModel) return;
 
-      // Собираем значения формы и записываем в переменную модели
-      model.setFormData(formElement);
+  const formElement = formView.getFormElement();
+  console.log(formElement);
+  
+  if (!formElement) return;
 
-      // Получаем значение формы из модели
-      const formData = model.getFormData();
-      if (!formData) return;
+  formElement.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-      // Очищаем данные файлов
-      model.clearFilesData(formData);
-      
-      const orderedFiles = previewModel.getCurrentFiles(); // отсортированный массив
-      if (!orderedFiles) return;
+    // Собираем значения формы и записываем в переменную модели
+    formModel.setFormData(formElement);
 
-      // Устанавливаем новый массив файлов в form data
-      model.setSortedFiles(orderedFiles);
+    // Получаем значение формы из модели
+    const formData = formModel.getFormData();
+    if (!formData) return;
+
+    // Очищаем данные файлов
+    formModel.clearFilesData(formData);
     
-      // Отправляем значения формы
-      try {
-        const res = await model.sendFormDataFetch();
-        console.log(res);
-        console.log(res.errors);
-        if (res.success) {
-          // Очистим форму
-          view.resetForm();
-          previewModel.reset(); // Очистка файлов (если есть такой метод)
-          window.location.href = '/admin/shop'; // Переход
-        }
+    const orderedFiles = previewModel.getCurrentFiles(); // отсортированный массив
+    if (!orderedFiles) return;
 
-        if (res.errorsImg && res.errorsImg.length > 0) {
-            console.log(res);
-            console.log('scroll in img');
-          view.displayNotification('error');
-          view.addNotificationText(res.errors);
-          view.scrollToElement();
-        }
-        if (res.errors && res.errors.length > 0) {
-          console.log(res.errors);
-          console.log('scroll in rerrors');
-          
-          view.displayNotification('error');
-          view.addNotificationText(res.errors);
-          view.scrollToElement();
-        }
-      } 
-      catch (err) {
-        console.log(err);
-         console.log('scroll in rerrors');
-        // view.displayNotification('error');
-        // view.addNotificationText(errors);
-        // view.scrollToElement();
+    // Устанавливаем новый массив файлов в form data
+    formModel.setSortedFiles(orderedFiles);
+  
+    // Отправляем значения формы
+    try {
+      const res = await formModel.sendFormDataFetch();
+      console.log(res);
+      console.log(res.errors);
+      if (res.success) {
+        // Очистим форму
+        formView.resetForm();
+        previewModel.reset(); // Очистка файлов (если есть такой метод)
+        window.location.href = '/admin/shop'; // Переход
       }
-    });
+
+      if (res.errorsImg && res.errorsImg.length > 0) {
+          console.log(res);
+          console.log('scroll in img');
+        formView.displayNotification('error');
+        formView.addNotificationText(res.errors);
+        formView.scrollToElement();
+      }
+      if (res.errors && res.errors.length > 0) {
+        console.log(res.errors);
+        console.log('scroll in rerrors');
+        
+        formView.displayNotification('error');
+        formView.addNotificationText(res.errors);
+        formView.scrollToElement();
+      }
+    } 
+    catch (err) {
+      console.log(err);
+        console.log('scroll in rerrors');
+      // view.displayNotification('error');
+      // view.addNotificationText(errors);
+      // view.scrollToElement();
+    }
+  });
 };
 
 export default initNewProductFormEvents;

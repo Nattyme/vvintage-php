@@ -3,6 +3,7 @@ import createObserver from './observer.js';
 import createDragHandlers from './dragEvents.js';
 
 const dragAndDropFiles = () => {
+  // const previewModel = initModel();
   // Установим начальное значение для перетаскиваемого эелемента, ф-ции getter и setter для его получения/обновления
   let dragged = null;
   const getDragged = () => dragged;

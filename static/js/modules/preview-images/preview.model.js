@@ -1,6 +1,7 @@
-const previewModule = (() => {
+const initModel = () => {
   // Приватные переменные и состояния
   let currentFiles = [];
+  let uploadedFiles = [];
 
   // Ф-ция добавления файла
   const addFile = (file) => {
@@ -67,16 +68,24 @@ const previewModule = (() => {
     currentFiles = [];
   }
 
-  return {
-    addFile : addFile,
-    updateOrder : updateOrder,
-    removeFile : removeFile,
-    getCurrentFiles : getCurrentFiles,
-    reset : reset
+  const setUploadedFiles = (files) => {
+    uploadedFiles = Array.from(files);
   }
 
+  const getUploadedFiles = () => {
+    return uploadedFiles;
+  }
 
-})();
+  return {
+    addFile,
+    updateOrder,
+    removeFile,
+    getCurrentFiles,
+    reset,
+    setUploadedFiles,
+    getUploadedFiles
+  }
+};
 
-export default previewModule;
+export default initModel();
 

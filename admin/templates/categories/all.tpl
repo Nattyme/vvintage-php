@@ -10,7 +10,7 @@
       </a>
 
       <!-- SEARCH FORM-->
-      <form method="GET" action="" class="shop__search search" role="search">
+      <form method="GET" action="" class="search" role="search">
         <input 
           type="text" 
           name="query" 
@@ -39,7 +39,7 @@
     </form>
 
     <!-- Таблица -->
-    <table class="admin-form-table table">
+    <table class="table">
       <thead class="product-table__header">
         <tr class="">
           <th class="">ID</th>

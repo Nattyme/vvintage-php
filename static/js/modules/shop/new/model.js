@@ -53,4 +53,4 @@ const initModel = () => {
   }
 }
 
-export default initModel();
+export default initModel;
