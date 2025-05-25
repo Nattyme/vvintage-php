@@ -6,23 +6,25 @@ import dragAndDropFiles from "./modules/drag-and-drop/dragAndDropFiles.js";
 import addBackTopBtn from "./modules/backtop.js";
 import addAccordion from "./modules/addAccordion.js";
 import fancyBox from "./modules/fancybox.js";
+import initCatalogEvents from "./modules/catalog/index.js";
 import initPreviewController from "./modules/preview-images/index.js";
 import initCategoriesController from "./modules/categories/index.js";
 import initBrandsController from "./modules/brands/index.js";
 import initNewProductForm from "./modules/shop/new/index.js";
 // import handlingNewProductForm from "./modules/handlingNewProductForm.js";
-import addSubNavCats from "./modules/addSubNavCats.js";
+// import addSubNavCats from "./modules/addSubNavCats.js";
 import addTab from "./modules/tab.js";
 // import yMap from './modules/ymap.js';
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // addSidebarControlPanel();
   // router();
   // if (window.location.pathname !== pageAdmin) {
   //   mobileNav();
   //
   // }
-  addSubNavCats();
+  // addSubNavCats();
+  await initCatalogEvents(); // запускаем каталог в навигации
   addBackTopBtn();
   addTab();
   addAccordion("many", "#sidebar");

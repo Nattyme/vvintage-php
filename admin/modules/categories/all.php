@@ -6,44 +6,6 @@
 $pageTitle = "Категории - все записи";
 $pageClass = "admin-page";
 
-// Получаем главные категории для селекта
-// $mainCats =  R::find( 'categories', 'parent_id IS NULL');
-
-// Обработка формы поиска
-// $searchQuery = isset($_GET['query']) ? $_GET['query'] : '';
-
-// $where = [];
-// $params = [];
-
-// Поиск по названию категории
-// if (trim($searchQuery) !== '') {
-//   $where[] = 'child.title LIKE ?';
-//   $params[] = '%' . $sqlQuery . '%';
-// }
-
-// Обработка селекта - поиска по разделам (главным категориям, parent_id)
-// $filterSection = isset($_GET['action']) ? $_GET['action'] : ''; // имя селекта - action
-
-// Фильтр по разделу
-// if (trim($filterSection) !== '' && $filterSection !== '0') {
-//   $where = 'child.parend_id = ?';
-//   $params[] = $filterSection;
-// }
-
-// Получаем категории, совмещенные с разделами для таблицы
-// $sqlQuery = 'SELECT
-//                 child.id,
-//                 child.title AS child_title,
-//                 child.parent_id,
-//                 parent.title AS parent_title
-//               FROM categories child
-//               LEFT JOIN categories parent ON child.parent_id = parent.id
-//               WHERE child.parent_id IS NOT NULL
-//               ORDER BY child.id DESC ' . $pagination["sql_page_limit"];
-
-
-// $cats = R::getAll($sqlQuery);
-
 // Получаем данные из GET-запроса
 $searchQuery = $_GET['query'] ?? '';
 $filterSection = $_GET['action'] ?? ''; // имя селекта - action
