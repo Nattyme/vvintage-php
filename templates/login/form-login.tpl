@@ -7,20 +7,24 @@
   <?php include ROOT . "templates/components/success.tpl"; ?>
 
   <?php if(empty($_SESSION['success'])) : ?>
-  <div class="authorization-form__field">
-    <lable for="email" class="authorization-form__field-title">Email</lable>
-    <input value="info2@mail.ru" type="email" class="input" name="email" value="" placeholder="Введите ваш email" id="email" required />
-  </div>
+    <div class="authorization-form__field">
+      <lable for="email" class="authorization-form__field-title">Email</lable>
+      <input value="info2@mail.ru" type="email" class="input" name="email" value="" placeholder="Введите ваш email" id="email" required />
+    </div>
 
-  <div class="authorization-form__field">
-    <label for="password" class="authorization-form__field-title">Пароль</label>
+    <div class="authorization-form__field">
+      <label for="password" class="authorization-form__field-title">Пароль</label>
 
-    <input value="111111" type="password" class="input" name="password" placeholder="Введите пароль" id="password" required />
-  </div>
+      <input value="111111" type="password" class="input" name="password" placeholder="Введите пароль" id="password" required />
+    </div>
 
-  <div class="authorization-form__button">
-    <button name="login" value="login" type="submit" class="button button--with-icon button-primary">Войти</button>
-  </div>
+    <div class="authorization-form__button">
+      <button name="login" value="login" type="submit" class="button button--with-icon button-primary">Войти</button>
+    </div>
+
+    <!-- CSRF-токен -->
+      <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+    <!-- // CSRF-токен -->
   <?php endif; ?>
 </form>
 

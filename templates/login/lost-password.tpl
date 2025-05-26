@@ -11,6 +11,10 @@
     <label for="email" class="authorization-form__field-title">Email</label>
     <input name="email" class="input" type="text" placeholder="Введите ваш Email" id="email"/>
   </div>
+  
+  <!-- CSRF-токен -->
+    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+  <!-- // CSRF-токен -->
 
   <div class="authorization-form__button">
     <button name="lost-password" value="lost-password" type="submit" class="button button--with-icon button-primary">Восстановить</button>

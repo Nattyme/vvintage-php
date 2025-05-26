@@ -4,6 +4,10 @@ $pageClass = "authorization-page";
 
 // 1. Проверить, что форма отправлена. Принять данные
 if ( isset($_POST['lost-password']) ) {
+  // Проверка токена
+  if (!check_csrf($_POST['csrf'] ?? '')) {
+    $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+  }
 
   // 2. Проверка на заполненный email
   if( trim($_POST['email']) == '') {

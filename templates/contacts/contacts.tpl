@@ -41,6 +41,11 @@
             </div>
 
             <textarea type="text" class="form-textarea" name="message" placeholder="Сообщение"></textarea>
+            
+            <!-- CSRF-токен -->
+            <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+            <!-- // CSRF-токен -->
+
             <div class="form-contact__button">
               <button class="button-solid" name="submit" type="submit" value="submit">Отправить</button>
             </div>

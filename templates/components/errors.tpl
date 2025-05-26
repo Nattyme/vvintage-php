@@ -6,16 +6,16 @@
       //Если в ошибке только заголовок
       if ( count($error) == 1 ) : ?>
         <div class="notifications">
-          <div class="notifications__title notifications__title--error"><?php echo $error['title']; ?></div>
+          <div class="notifications__title notifications__title--error"><?php echo h($error['title']); ?></div>
         </div>
         <!-- Если в ошибке только заголовок с описанием -->
       <?php elseif ( count($error) == 2 ) : ?>
         <div class="notifications notifications__title--with-message">
-          <div class="notifications__title notifications__title--error"><?php echo $error['title']; ?>
+          <div class="notifications__title notifications__title--error"><?php echo h($error['title']); ?>
            
           </div>
           <div class="notifications__message">
-            <p><?php echo $error['desc']; ?> </p>     
+            <p><?php echo h($error['desc']); ?> </p>     
           </div>
         </div>
       <?php endif;

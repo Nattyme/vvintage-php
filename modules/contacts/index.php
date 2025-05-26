@@ -10,7 +10,12 @@
 // }
 
 if (isset($_POST['submit'])) {
-// Проверка если все поля пустые
+  // Проверка токена
+  if (!check_csrf($_POST['csrf'] ?? '')) {
+    $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+  }
+  
+  // Проверка если все поля пустые
   if  ( empty(trim($_POST['name'])) &&
         empty(trim($_POST['email'])) &&
         empty(trim($_POST['message']))

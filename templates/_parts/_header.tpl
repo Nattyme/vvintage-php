@@ -52,7 +52,7 @@
               </svg>
                <?php if (!empty($cartCount)) : ?>
                 <div class="counter__widget counter__widget--cart">
-                  <span class="text-ellipsis"><?php echo $cartCount; ?></span>
+                  <span class="text-ellipsis"><?php echo h($cartCount); ?></span>
                 </div>
               <?php endif; ?>
             </a>

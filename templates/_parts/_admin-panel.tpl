@@ -22,7 +22,7 @@
               <div class="admin-panel__item-icon">
                 <?php 
                   if ($messagesNewCounter <= $messagesDisplayLimit) {
-                    echo $messagesNewCounter;
+                    echo h($messagesNewCounter);
                   } else {
                     echo '&hellip;';
                   }
@@ -44,7 +44,7 @@
               <div class="admin-panel__item-icon">
                 <?php 
                   if ($ordersNewCounter <= $ordersDisplayLimit) {
-                    echo $ordersNewCounter;
+                    echo h($ordersNewCounter);
                   } else {
                     echo '&hellip;';
                   }
@@ -67,7 +67,7 @@
               <div class="admin-panel__item-icon">
                 <?php 
                   if ($commentsNewCounter <= $commentsDisplayLimit) {
-                    echo $commentsNewCounter;
+                    echo h($commentsNewCounter);
                   } else {
                     echo '&hellip;';
                   }
@@ -81,7 +81,7 @@
 
         <!-- Редактирование текущей страницы -->
         <?php if ( $uriModule === 'blog' && isset($uriGet) && $uriGet !== 'cat') : ?>
-          <a class="admin-panel__link" href="<?php echo HOST . 'admin/post-edit?id=' . $uriGet; ?>" title='Перейти к редактированию текущей страницы'>
+          <a class="admin-panel__link" href="<?php echo HOST . 'admin/post-edit?id=' . u($uriGet); ?>" title='Перейти к редактированию текущей страницы'>
             <div class="admin-panel__item">
               <svg class="icon icon--edit">
                 <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#edit';?>"></use>
@@ -97,7 +97,7 @@
       <div class="admin-panel__block-list">
         
         <a class="admin-panel__link admin-panel__link--avatar" href="<?php echo HOST; ?>profile" title="Перейти на страницу своего профиля">
-            <img src="<?php echo HOST . 'usercontent/avatars/' . $_SESSION['logged_user']['avatarSmall'];?>" alt="">
+            <img src="<?php echo HOST . 'usercontent/avatars/' . h($_SESSION['logged_user']['avatarSmall']);?>" alt="Перейти на страницу своего профиля">
         </a>
         <a class="admin-panel__link" href="<?php echo HOST . 'logout';?>" title="Выйти">
           <svg class="icon icon--logout">
@@ -114,7 +114,7 @@
 
       <div class="admin-panel__block-list">
           <a class="admin-panel__link admin-panel__link--avatar" href="<?php echo HOST . 'profile';?>" title="Перейти в профиль">
-            <img src="<?php echo HOST . 'usercontent/avatars/' . $_SESSION['logged_user']['avatarSmall'];?>" alt="">
+            <img src="<?php echo HOST . 'usercontent/avatars/' . h($_SESSION['logged_user']['avatarSmall']);?>" alt="Перейти в профиль">
           </a>
           <a class="admin-panel__link" href="<?php echo HOST . 'logout';?>" title="Выйти">
             <svg class="icon icon--logout">

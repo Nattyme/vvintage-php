@@ -10,7 +10,7 @@
     <div class="container">
       <div class="authorization__content">
           <div class="authorization__forms-wrapper">
-            <?php echo $content; ?>
+            <?php echo h($content); ?>
           </div>
       </div>
     </div>

@@ -3,6 +3,11 @@ require_once ROOT . './libs/functions.php';
 $uriModule = getModuleName();
 
 if (isset($_POST['submit'])) {
+  // Проверка токена
+  if (!check_csrf($_POST['csrf'] ?? '')) {
+    $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+  }
+  
   // Проверка если поля пустые
   if  ( empty(trim($_POST['name'])) ) {
     $_SESSION['errors'][] = ['title' => 'Поле "имя" пустое. Заполните данные для отправки.'];

@@ -1,12 +1,11 @@
 <?php
+  if (isset($category)) {
+    $breadcrumbs[] = ['title' => $category['title'], 'url' => HOST . 'shop/' . $category['id']];
+  }
 
-if (isset($category)) {
-  $breadcrumbs[] = ['title' => $category['title'], 'url' => HOST . 'shop/' . $category['id']];
-}
-
-if (isset($product) && !isset($products)) {
-  $breadcrumbs[] = ['title' => $product['title'], 'url' => '#'];
-}
+  if (isset($product) && !isset($products)) {
+    $breadcrumbs[] = ['title' => $product['title'], 'url' => '#'];
+  }
 ?>
 
 <nav class="breadcrumbs" >
@@ -19,9 +18,9 @@ if (isset($product) && !isset($products)) {
         echo '<span>&#8212;</span>';
 
         if ($isLast) {
-          echo '<span class="breadcrumb breadcrumb--active">' . htmlspecialchars($item['title']) . '</span>';
+          echo '<span class="breadcrumb breadcrumb--active">' . h($item['title']) . '</span>';
         } else {
-          echo '<a href="' . htmlspecialchars($item['url']) . '" class="breadcrumb">' . htmlspecialchars($item['title']) . '</a>';
+          echo '<a href="' . h($item['url']) . '" class="breadcrumb">' . h($item['title']) . '</a>';
         }
       }
     ?>

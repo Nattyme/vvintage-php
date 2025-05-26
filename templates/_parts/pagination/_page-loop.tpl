@@ -11,8 +11,8 @@
     ?>
 
     <a 
-      class="pagination-button <?php echo $active_class;?>" 
-      href="?page=<?php echo $page;?>"><?php echo $page;?>
+      class="pagination-button <?php echo h($active_class);?>" 
+      href="?page=<?php echo u($page);?>"><?php echo h($page);?>
     </a>
     
   

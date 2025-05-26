@@ -10,7 +10,7 @@
     <label for="email" class="authorization-form__field-title">Email</label>
 
     <input 
-      value="<?php echo isset($_POST['email']) ? trim($_POST['email']) : ''; ?>"
+      value="<?php echo isset($_POST['email']) ? h(trim($_POST['email'])) : ''; ?>"
       name="email" 
       class="input" 
       type="text" 
@@ -30,6 +30,10 @@
       id="password"
     />
   </div>
+
+  <!-- CSRF-токен -->
+    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+  <!-- // CSRF-токен -->
 
   <div class="authorization-form__button">
     <button name="register" value="register" type="submit" class="button button--with-icon button-primary">

@@ -9,7 +9,7 @@
       </div>
 
       <div class="page-cart__cart-wrapper">
-        <?php @@include ROOT . "admin/templates/components/success.tpl"; ?>
+        <?php include ROOT . 'admin/templates/components/success.tpl'; ?>
 
         <?php if (!empty($products)) : ?>
           <!-- cart table-->
@@ -33,19 +33,20 @@
               <?php foreach ($products as $product) : ?>
                 <div class="cart__grid cart__grid--relative">
                   <div class="cart__row">
-                    <a href="<?php echo HOST . 'removefromcart?id=' . $product['id'];?>" class="button button-close cross-wrapper cart__delete link-above-others " aria-label="Удалить товар <?php echo $product['title'];?>">
+                    <a href="<?php echo HOST . 'removefromcart?id=' . u($product['id']);?>" class="button button-close cross-wrapper cart__delete link-above-others " 
+                      aria-label="Удалить товар <?php echo h($product['title']);?>">
                       <span class="leftright"></span><span class="rightleft"> </span>
                     </a>
                   
                     <div class="cart__img">
-                      <img src="<?php echo HOST;?>usercontent/products/<?php echo empty($product['filename']) ? "no-photo.jpg" : $product['filename'];?>" 
-                      srcset="<?php echo HOST . 'usercontent/products/' . $product['filename'];?>" 
-                      alt="<?php echo $product['title'];?>">
+                      <img src="<?php echo HOST;?>usercontent/products/<?php echo empty($product['filename']) ? "no-photo.jpg" : h($product['filename']);?>" 
+                      srcset="<?php echo HOST . 'usercontent/products/' . h($product['filename']);?>" 
+                      alt="<?php echo h($product['title']);?>">
                     </div>
 
                     <div class="cart__title">
                       <a href="<?php echo HOST . 'shop/1';?>" class="link-to-page">
-                        <h2 class="cart__text"><?php echo $product['title']; ?></h2>
+                        <h2 class="cart__text"><?php echo h($product['title']); ?></h2>
                       </a>
                     </div>
                   </div>
@@ -53,14 +54,14 @@
                   <div class="cart__row">
                     <div class="cart__amount">
                       <span class="cart__text">
-                        <?php echo $cart[$product['id']]; ?>
+                        <?php echo h($cart[$product['id']]); ?>
                       </span>
                     </div>
                   </div>
                   
                   <div class="cart__row">
                     <div class="cart__price">
-                      <span class="cart__text"><?php echo $product['price']; ?>&nbsp;&euro;</span>
+                      <span class="cart__text"><?php echo h($product['price']); ?>&nbsp;&euro;</span>
                     </div>
                   </div>
 
@@ -73,10 +74,10 @@
                 <div class="cart__summary">
                   <div class="cart__grid">
                     <p class="cart__total-amount">
-                      Количество товаров: <span class="text-bold"><?php echo count($products);?></span>
+                      Количество товаров: <span class="text-bold"><?php echo count(h($products));?></span>
                     </p>
                     <p class="cart__total">
-                      Итого: <span class="text-bold"><?php echo $cartTotalPrice; ?>&nbsp;&euro;</span>
+                      Итого: <span class="text-bold"><?php echo h($cartTotalPrice); ?>&nbsp;&euro;</span>
                     </p>
             
                   </div>

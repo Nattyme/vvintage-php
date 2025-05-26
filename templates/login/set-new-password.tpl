@@ -12,13 +12,13 @@
     <input name="password" class="input" type="password" placeholder="Введите новый пароль" id="password"/>
   </div>
 
-  <input type="hidden" name="email" value="<?php echo $_GET['email']; ?>">
-  <input type="hidden" name="resetCode" value="<?php echo $_GET['code']; ?>">
+  <input type="hidden" name="email" value="<?php echo h($_GET['email']); ?>">
+  <input type="hidden" name="resetCode" value="<?php echo h($_GET['code']); ?>">
 
   <div class="authorization-form__button">
-      <button name="set-new-password" value="set-new-password" class="button button--with-icon button-primary" type="submit">
-        Установить пароль
-      </button>
+    <button name="set-new-password" value="set-new-password" class="button button--with-icon button-primary" type="submit">
+      Установить пароль
+    </button>
   </div>
   <?php endif; ?>
 </form>

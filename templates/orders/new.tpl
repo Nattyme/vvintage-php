@@ -6,7 +6,7 @@
           <h1 class="h1">Оформление заказа</h1>
         </div>
 
-        <?php @@include ROOT . 'templates/_parts/breadcrumbs/breadcrumbs.tpl';?>
+        <?php include ROOT . 'templates/_parts/breadcrumbs/breadcrumbs.tpl';?>
 
       </div>
 
@@ -27,15 +27,15 @@
                 </div>
                 <?php foreach ($products as $product) : ?>
                     <div class="form-order__table-row">
-                      <p><?php echo $product['title'];?></p>
-                      <p><?php echo $product['price'];?></p>
-                      <p><?php echo $cart[$product['id']];?></p>
+                      <p><?php echo h($product['title']);?></p>
+                      <p><?php echo h($product['price']);?></p>
+                      <p><?php echo h($cart[$product['id']]);?></p>
                     </div>
                   <?php endforeach; ?>
                 <div class="form-order__total form-order__table-row">
                   <p>Итого</p>
-                  <p><?php echo  $cartTotalPrice; ?></p>
-                  <p><?php echo  $cartCount; ?></p>
+                  <p><?php echo  h($cartTotalPrice); ?></p>
+                  <p><?php echo  h($cartCount); ?></p>
                 </div>
               </div>
             </fieldset>
@@ -135,6 +135,10 @@
               </div> -->
               <!-- // Выбор оплаты -->
           </div>
+          <!-- CSRF-токен -->
+          <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+          <!-- // CSRF-токен -->
+
           <div class="form-order__button-wrapper">
             <a class="button button-outline" href="<?php HOST;?>cart">Вернуться в корзину </a>
             <button class="form-order__button button button-solid" type="submit" name="submit">

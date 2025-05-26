@@ -1,5 +1,12 @@
 <?php
-session_destroy();
-setcookie(session_name(), '', time() - 60);
+  // Проверка токена
+  if (!check_csrf($_POST['csrf'] ?? '')) {
+    $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+  }
 
-header("Location: " . HOST);
+  if (empty($_SESSION['errors'])) {
+    session_destroy();
+    setcookie(session_name(), '', time() - 60);
+
+    header("Location: " . HOST);
+  }

@@ -4,6 +4,11 @@ $pageClass = "authorization-page";
     
 // Если форма отправлена - делаем регистрацию
 if ( isset($_POST['register']) ) {
+  // Проверка токена
+  if (!check_csrf($_POST['csrf'] ?? '')) {
+    $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+  }
+
   //Проверка на заполненность
   if( trim($_POST['email']) == "" ) {
     // Ошибка - email пуст. Добавляем массив этой ошибки в массив $errors 

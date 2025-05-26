@@ -64,19 +64,19 @@
           </li>
           <li>
             <svg class="icon icon--note">
-              <use href="./img/svgsprite/sprite.symbol.svg#note"></use>
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#note';?>"></use>
             </svg>
             <div>Итоговая стоимость рассчитывается оператором при выставлении счета.</div>
           </li>
           <li>
             <svg class="icon icon--plane">
-              <use href="./img/svgsprite/sprite.symbol.svg#plane"></use>
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#plane';?>"></use>
             </svg>
             <div>Доставка по&#160;всему миру.</div>
           </li>
           <li>
             <svg class="icon icon--check">
-              <use href="./img/svgsprite/sprite.symbol.svg#check"></use>
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#check';?>"></use>
             </svg>
             <div>Стоимость отправляемого товара может быть задекларирована в&#160;соответствии с&#160;пожеланиями покупателя.</div>
           </li>
