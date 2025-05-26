@@ -1,6 +1,13 @@
 <?php
 
 if( isset($_POST['submit']) ) {
+
+  // Проверка токена
+  if (!check_csrf($_POST['csrf'] ?? '')) {
+    setFlash('error', 'Неверный токен безопасности');
+    exit;
+  }
+  
   // Проверка на заполненность названия
   if( trim($_POST['title']) == '' ) {
     $_SESSION['errors'][] = ['title' => 'Введите заголовок бренда'];

@@ -7,16 +7,32 @@
       <a href="<?php HOST;?>brand-new" class="shop__button button button-primary" data-btn="add">
         <span>Новый бренд</span>
       </a>
-      <form method="GET" action="" class="shop__search search" role="search">
-        <input type="text" name="query" placeholder="Найти">
-        <button type="search-submit">
-          <svg class="icon icon--loupe">
-            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
-          </svg>
-        </button>
-      </form>
+
+      <div class="search-block">
+        <!-- SEARCH FORM-->
+        <form method="GET" action="" class="search" role="search">
+          <input 
+            type="text" 
+            name="query" 
+            placeholder="Найти" 
+            value="<?php htmlspecialchars($searchQuery);?>"
+          >
+          <button type="search-submit">
+            <svg class="icon icon--loupe">
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
+            </svg>
+          </button>
+          
+        </form>
+        <!-- SEARCH FORM-->
+        <?php if (trim($searchQuery) !== '') : ?>
+          <a href="<?php echo HOST;?>admin/brand" class="shop__button button button-primary">Сбросить</a>
+        <?php endif;?>
+      </div>
+
     </header>
 
+    <?php if (!empty($brands)) : ?>
     <!-- Таблица -->
     <table class="admin-form-table table">
       <thead class="admin-form-table__header product-table__header">
@@ -61,5 +77,9 @@
       </div>
     </div>
     <!--// Пагинация -->
+
+    <?php else : ?>
+      Брендов по запросу не найдено
+    <?php endif;?>
   </div>
 </div>
