@@ -16,7 +16,9 @@ import initNewProductForm from "./modules/shop/new/index.js";
 import addTab from "./modules/tab.js";
 // import yMap from './modules/ymap.js';
 
-document.addEventListener("DOMContentLoaded", async () => {
+
+const initEverything = async () => {
+   await initCatalogEvents(); // запускаем каталог в навигации
   // addSidebarControlPanel();
   // router();
   // if (window.location.pathname !== pageAdmin) {
@@ -24,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   //
   // }
   // addSubNavCats();
-  await initCatalogEvents(); // запускаем каталог в навигации
+  
   addBackTopBtn();
   addTab();
   addAccordion("many", "#sidebar");
@@ -43,6 +45,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // if (window.location.pathname.trim() === '/index.html' || window.location.pathname.trim() === '') {
   //   addCatsCards();
   // }
-});
+}
+
+// запускает весь код
+document.addEventListener("DOMContentLoaded", async () => initEverything()); 
 
 // yMap();
