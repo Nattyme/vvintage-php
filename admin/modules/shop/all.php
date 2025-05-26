@@ -1,35 +1,39 @@
 <?php
-$pagination = pagination(4, 'products');
+  // Задаем название страницы и класс
+  $pageTitle = "Все товары";
+  $pageClass = "admin-page";
 
-$sqlQuery = 'SELECT
-                p.id, 
-                p.article, 
-                p.title, 
-                p.price, 
-                p.url, 
-                p.timestamp,
-                b.title AS brand, 
-                c.title AS category,
-                pi.filename AS cover
-                
-             FROM `products` p
-             LEFT JOIN `brands` b ON p.brand = b.id
-             LEFT JOIN `categories` c ON p.category = c.id
-             LEFT JOIN (
-              SELECT product_id, filename
-              FROM productimages 
-              WHERE image_order = 1
-             ) pi ON p.id = pi.product_id
-             ORDER BY p.id DESC ' . $pagination["sql_page_limit"];
+  // Устанавливаем пагинацию
+  $pagination = pagination(4, 'products');
 
-$products = R::getAll($sqlQuery);
+  $sqlQuery = 'SELECT
+                  p.id, 
+                  p.article, 
+                  p.title, 
+                  p.price, 
+                  p.url, 
+                  p.timestamp,
+                  b.title AS brand, 
+                  c.title AS category,
+                  pi.filename AS cover
+                  
+              FROM `products` p
+              LEFT JOIN `brands` b ON p.brand = b.id
+              LEFT JOIN `categories` c ON p.category = c.id
+              LEFT JOIN (
+                SELECT product_id, filename
+                FROM productimages 
+                WHERE image_order = 1
+              ) pi ON p.id = pi.product_id
+              ORDER BY p.id DESC ' . $pagination["sql_page_limit"];
 
-$pageTitle = "Все товары";
-$pageClass = "admin-page";
-ob_start();
-include ROOT . "admin/templates/shop/all.tpl";
-$content = ob_get_contents();
-ob_end_clean();
+  $products = R::getAll($sqlQuery);
 
-//Шаблон страницы
-include ROOT . "admin/templates/template.tpl";
+ 
+  ob_start();
+  include ROOT . "admin/templates/shop/all.tpl";
+  $content = ob_get_contents();
+  ob_end_clean();
+
+  //Шаблон страницы
+  include ROOT . "admin/templates/template.tpl";

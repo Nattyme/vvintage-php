@@ -1,4 +1,8 @@
 <?php
+  // Задаем название страницы и класс
+  $pageTitle = "Магазин - редактировние товара";
+  $pageClass = "admin-page";
+  
   // Находим категории, относящиеся к секции shop
   $catsArray = R::find('categories', ' section LIKE ? ORDER BY title ASC', ['shop']);
 
@@ -12,6 +16,11 @@
   $brands = R::find('brands', 'ORDER BY title ASC');
 
   if( isset($_POST['submit'])) {
+    // Проверка токена
+    if (!check_csrf($_POST['csrf'] ?? '')) {
+      $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+    }
+
     // Проверка на заполненность названия
     if( trim($_POST['title']) == '' ) {
       $_SESSION['errors'][] = ['title' => 'Введите название товара'];
@@ -91,8 +100,6 @@
   // Получаем продукт по id
   $product = R::load('products', $_GET['id']);
 
-  $pageTitle = "Магазин - редактировние товара";
-  $pageClass = "admin-page";
   // Центральный шаблон для модуля
   ob_start();
   include ROOT . "admin/templates/shop/edit.tpl";

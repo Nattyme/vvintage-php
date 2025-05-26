@@ -6,7 +6,7 @@
   <form 
       id="form-edit-category" 
       method="POST" 
-      action="<?php echo HOST;?>admin/category-edit?id=<?php echo $_GET['id'];?>"
+      action="<?php echo HOST;?>admin/category-edit?id=<?php echo u($_GET['id']);?>"
       class="admin-form">
 
       <div class="form__row">
@@ -15,7 +15,7 @@
             <label class="form__item">
               <span class="form__text">Название</span>
               <input name="title" class="form__input input" type="text"
-                     value="<?php echo $cat['title'];?>"
+                     value="<?php echo h(trim($cat['title']);)?>"
                      placeholder="Введите название категории" required
               />
             </label>
@@ -23,6 +23,9 @@
         </div>
 
       </div>
+
+      <!-- CSRF-токен -->
+      <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
       <div class="form__button-wrapper form__button-row">
         <!-- <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>shop">Отмена</a> -->

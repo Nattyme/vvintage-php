@@ -29,7 +29,10 @@
         </select>
         <button type="select-submit" class="button button-primary button--small">Применить</button>
       </div>
+
+      <!-- table -->
       <table class="product-table table">
+        <!-- head -->
         <thead class="product-table__header">
           <tr>
             <th></th>
@@ -47,6 +50,9 @@
             </th>
           </tr>
         </thead>
+        <!-- head -->
+
+        <!-- body -->
         <tbody class="product-table__body">
           
           <?php foreach ($products as $product) : ?>
@@ -54,35 +60,37 @@
               <td class="product-table__img">
               <?php if (file_exists(ROOT . 'usercontent/products/' . $product['cover'])) : ?>
                 <img 
-                  src="<?php echo HOST . 'usercontent/products/' . $product['cover'];?>" 
-                  srcset="<?php echo HOST . 'usercontent/products/' . $product['cover'];?>" alt="" loading="lazy"
+                  src="<?php echo HOST . 'usercontent/products/' . h($product['cover']);?>" 
+                  srcset="<?php echo HOST . 'usercontent/products/' . h($product['cover']);?>" 
+                  alt="<?php echo h($product['title']);?>" loading="lazy"
                 >
               <?php else : ?>
                 <img 
                   src="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" 
-                  srcset="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" alt="Фото товара"
+                  srcset="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" alt="<?php echo h($product['title']);?>"
                 >
               <?php endif; ?>
               </td>
               <td class="product-table__item product-table__item--title">
                 <!-- link-to-page -->
-                <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit?id=<?php echo $product['id']; ?>">
-                  <?php echo htmlspecialchars(trim($product['title'] ?? '')); ?>
+                <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit?id=<?php echo u($product['id']); ?>">
+                  <?php echo htmlspecialchars($product['title'] ? h($product['title']) : ''); ?>
                 </a>
               </td>
               <td>
-              <!-- link-to-page -->
-                <?php echo $product['brand']; ?>
-              </td>
-              <td><?php echo htmlspecialchars(trim($product['category'] ?? ''));?></td>
-              <td>
-                <?php echo htmlspecialchars(trim($product['price'] ?? '')); ?>  &euro;
+                <?php echo h($product['brand']); ?>
               </td>
               <td>
-                <a class="link" href="<?php echo $product['url'];?>">vinted.fr</a>
+                <?php echo h($product['category'] ?? '');?>
               </td>
               <td>
-                  <?php echo rus_date("j. m. Y", $product['timestamp']); ?>
+                <?php echo h($product['price'] ?? ''); ?>  &euro;
+              </td>
+              <td>
+                <a class="link" href="<?php echo u($product['url']);?>">vinted.fr</a>
+              </td>
+              <td>
+                  <?php echo rus_date("j. m. Y", h($product['timestamp'])); ?>
                 <!-- <button class="button-dropdownMenu" data-btn="menu">
                   <svg class="icon icon--menu">
                     <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#menu';?>"></use>
@@ -141,7 +149,10 @@
             </tr>
           <?php endforeach; ?> 
         </tbody>
+        <!-- body -->
       </table>
+      <!-- table -->
+
     </form>
   </div>
 

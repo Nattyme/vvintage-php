@@ -2,15 +2,18 @@
   <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
   <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
-  <form class="admin-form" method="POST" action="<?php echo HOST . 'admin/shop-delete?id=' . $product['id']; ?>">
+  <form class="admin-form" method="POST" action="<?php echo HOST . 'admin/shop-delete?id=' . u($product['id']); ?>">
     <div class="admin-form__item">
       <h2 class="heading">Удалить товар</h2>
     </div>
     <div class="admin-form__item">
       <p><strong>Вы действительно хотите удалить товар?</strong></p>
-      <p><strong>id: </strong><?php echo $product['id'];?></p>
-      <p><strong>Название: </strong><?php echo $product['title'];?></p>
+      <p><strong>id: </strong><?php echo h($product['id']);?></p>
+      <p><strong>Название: </strong><?php echo h($product['title']);?></p>
     </div>
+
+    <!-- CSRF-токен -->
+    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
     <div class="admin-form__item buttons">
       <button name="submit" value="submit" class="primary-button primary-button--red" type="submit">Удалить</button>

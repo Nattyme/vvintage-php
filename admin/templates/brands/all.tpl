@@ -4,18 +4,18 @@
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
     <header class="shop__header shop__row">
-      <a href="<?php HOST;?>brand-new" class="shop__button button button-primary" data-btn="add">
+      <a href="<?php echo HOST;?>brand-new" class="shop__button button button-primary" data-btn="add">
         <span>Новый бренд</span>
       </a>
 
       <div class="search-block">
         <!-- SEARCH FORM-->
-        <form method="GET" action="" class="search" role="search">
+        <form method="GET" class="search" role="search">
           <input 
             type="text" 
             name="query" 
             placeholder="Найти" 
-            value="<?php htmlspecialchars($searchQuery);?>"
+            value="<?php echo h($searchQuery);?>"
           >
           <button type="search-submit">
             <svg class="icon icon--loupe">
@@ -47,19 +47,19 @@
 
           <tr>
             <td >
-                <?php echo $brand['id'];?>
+                <?php echo h($brand['id']);?>
             </td>
             
             <td>
-            <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit?id=<?php echo $brand['id'];?>">
-                <?php echo $brand['title'];?>
+            <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit?id=<?php echo u($brand['id']);?>">
+                <?php echo h($brand['title']);?>
               </a>
             </td>
            
             <td>
-              <a href="<?php echo HOST . "admin/";?>brand-delete?id=<?php echo $brand['id'];?>" class="icon-delete link-above-others">
+              <a href="<?php echo HOST . "admin/";?>brand-delete?id=<?php echo u($brand['id']);?>" class="icon-delete link-above-others">
                 <svg class="icon icon--delete">
-                  <use href="https://womazing-php/static/img/svgsprite/sprite.symbol.svg#delete"></use>
+                  <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#delete';?>"></use>
                 </svg> 
               </a>
             </td>

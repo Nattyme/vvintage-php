@@ -5,7 +5,7 @@
 
 
     <header class="shop__header shop__row">
-      <a href="<?php HOST;?>category-new" class="shop__button button button-primary" data-btn="add">
+      <a href="<?php echo HOST;?>category-new" class="shop__button button button-primary" data-btn="add">
         <span>Новая категория</span>
       </a>
 
@@ -15,7 +15,7 @@
           type="text" 
           name="query" 
           placeholder="Найти" 
-          value="<?php htmlspecialchars($searchQuery);?>"
+          value="<?php echo h($searchQuery);?>"
         >
 
         <button type="search-submit">
@@ -30,8 +30,8 @@
       <select class="select" name="action">
         <option value="">— Все разделы —</option>
         <?php foreach ($mainCats as $mainCat) : ?>
-            <option value="<?= $mainCat['id'] ?>" <?= ($filterSection == $mainCat['id']) ? 'selected' : '' ?>>
-              <?= htmlspecialchars($mainCat['title']) ?>
+            <option value="<?php echo h($mainCat['id']); ?>" <?php echo ($filterSection == $mainCat['id']) ? 'selected' : '' ?>>
+              <?php echo h($mainCat['title']) ?>
             </option>
         <?php endforeach;?>
       </select>
@@ -53,23 +53,23 @@
 
           <tr class="admin-form-table__row">
             <td class="admin-form-table__unit">
-                <?php echo $cat['id'];?>
+                <?php echo h($cat['id']);?>
             </td>
             
             <td class="admin-form-table__unit">
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit?id=<?php echo $cat['id'];?>">
-                <?php echo $cat['child_title'];?>
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit?id=<?php echo u($cat['id']);?>">
+                <?php echo h($cat['child_title']);?>
               </a>
             </td>
 
             <td class="admin-form-table__unit">
-              <?php echo $cat['parent_title'];?>
+              <?php echo h($cat['parent_title']);?>
             </td>
            
             <td class="admin-form-table__unit">
-              <a href="<?php echo HOST . "admin/";?>category-delete?id=<?php echo $cat['id'];?>" class="icon-delete link-above-others">
+              <a href="<?php echo HOST . "admin/";?>category-delete?id=<?php echo u($cat['id']);?>" class="icon-delete link-above-others">
                 <svg class="icon icon--delete">
-                  <use href="https://womazing-php/static/img/svgsprite/sprite.symbol.svg#delete"></use>
+                  <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#delete';?>"></use>
                 </svg> 
               </a>
             </td>

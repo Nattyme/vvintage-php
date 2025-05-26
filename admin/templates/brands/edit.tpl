@@ -3,7 +3,7 @@
   <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
   <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
-  <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/brand-edit?id=<?php echo $_GET['id'];?>">
+  <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/brand-edit?id=<?php echo u($_GET['id']);?>">
     <div class="admin-form__item admin-form__title">
       <h2 class="heading">Редактировать бренд</h2>
     </div>
@@ -16,10 +16,13 @@
           class="admin-form__input admin-form__input--width-label" 
           type="text" 
           placeholder="Заголовок бренда" 
-          value="<?php echo $brand['title'];?>"
+          value="<?php echo h(trim($brand['title']));?>"
         />
       </label>
     </div>
+
+    <!-- CSRF-токен -->
+    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
     <div class="admin-form__item admin-form__item--buttons">
       <button name="submit" value="submit" class="button-solid button-solid--admin" type="submit">

@@ -1,35 +1,40 @@
 <?php
+  // Задаем название страницы и класс
+  $pageTitle = "Категории - редактирование";
+  $pageClass = "admin-page";
 
-if( isset($_POST['submit'])) {
-  // Проверка на заполненность названия
-  if( trim($_POST['title']) == '' ) {
-    $_SESSION['errors'][] = ['title' => 'Введите заголовок категории'];
-  } 
+  if( isset($_POST['submit'])) {
+    // Проверка токена
+    if (!check_csrf($_POST['csrf'] ?? '')) {
+      $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+    }
 
-  // Если нет ошибок
-  if ( empty($_SESSION['errors'])) {
-    $cat = R::load('categories', $_GET['id']);
-    $cat->title = $_POST['title'];
-  
-    R::store($cat);
+    // Проверка на заполненность названия
+    if( trim($_POST['title']) == '' ) {
+      $_SESSION['errors'][] = ['title' => 'Введите заголовок категории'];
+    } 
+
+    // Если нет ошибок
+    if ( empty($_SESSION['errors'])) {
+      $cat = R::load('categories', $_GET['id']);
+      $cat->title = $_POST['title'];
     
-    $_SESSION['success'][] = ['title' => 'Категория успешно обновлена.'];
+      R::store($cat);
+      
+      $_SESSION['success'][] = ['title' => 'Категория успешно обновлена.'];
+    }
   }
-}
 
-// Запрос постов в БД с сортировкой id по убыванию
-$cat = R::load('categories', $_GET['id']); 
+  // Запрос постов в БД с сортировкой id по убыванию
+  $cat = R::load('categories', $_GET['id']); 
 
-// Перезаписываем текущую секцию данными из БД - чтобы не подставился id из $_GET
-$currentSection = $cat['section'];
+  // Перезаписываем текущую секцию данными из БД - чтобы не подставился id из $_GET
+  $currentSection = $cat['section'];
 
-$pageTitle = "Категории - редактирование";
-$pageClass = "admin-page";
+  ob_start();
+  include ROOT . "admin/templates/categories/edit.tpl";
+  $content = ob_get_contents();
+  ob_end_clean();
 
-ob_start();
-include ROOT . "admin/templates/categories/edit.tpl";
-$content = ob_get_contents();
-ob_end_clean();
-
-//Шаблон страницы
-include ROOT . "admin/templates/template.tpl";
+  //Шаблон страницы
+  include ROOT . "admin/templates/template.tpl";

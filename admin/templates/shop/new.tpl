@@ -14,7 +14,7 @@
             <label class="form__item">
               <span class="form__text">Название товара</span>
               <input name="title" class="form__input input" type="text"
-                     value="<?php echo isset($_POST['title']) ? $_POST['title'] : '';?>"
+                     value="<?php echo isset($_POST['title']) ? h($_POST['title']) : '';?>"
                      placeholder="Введите название" required/>
             </label>
           </fieldset>
@@ -23,7 +23,7 @@
             <label class="form__item">
               <span class="form__text">Цена</span>
               <input name="price" class="form__input input" type="text"
-                     value="<?php echo isset($_POST['price']) ? $_POST['title'] : '';?>"
+                     value="<?php echo isset($_POST['price']) ? h($_POST['price']) : '';?>"
                      placeholder="Введите цену в &euro;" required/>
             </label>
           </fieldset>
@@ -32,7 +32,7 @@
             <label class="form__item">
               <span class="form__text">Артикул</span>
               <input name="article" class="form__input input" type="text"
-                     value="<?php echo isset($_POST['article']) ? $_POST['article'] : '';?>"
+                     value="<?php echo isset($_POST['article']) ? h($_POST['article']) : '';?>"
                      placeholder="Введите артикул" />
             </label>
           </fieldset>
@@ -40,7 +40,7 @@
             <label class="form__item">
               <span class="form__text">Ссылка</span>
               <input name="url" class="form__input input" type="text"
-                     value="<?php echo isset($_POST['url']) ? $_POST['url'] : '';?>"
+                     value="<?php echo isset($_POST['url']) ? u($_POST['url']) : '';?>"
                      placeholder="Введите ссылку на vinted.fr" />
             </label>
           </fieldset>
@@ -50,7 +50,7 @@
               <span class="form__text">Категория</span>
               <select class="select" name="mainCat" id="mainCat">
                 <?php if (isset($_POST['mainCat']) ) : ?>
-                  <option value="<?php echo $_POST['mainCat'];?>"><?php echo $_POST['mainCat'];?></option>
+                  <option value="<?php echo h($_POST['mainCat']);?>"><?php echo h($_POST['mainCat']);?></option>
                 <?php else : ?>
                   <option value="">Выберите категорию</option>
                 <?php endif;?>
@@ -100,8 +100,9 @@
             <label class="form__item">
               <span class="form__text">Описание товара</span>
             </label>
-            <!-- <textarea class="form__textarea" placeholder="Введите описание товара" name="desc" rows="5" cols="1" id="editor"><?php echo isset($_POST['content']) ? $_POST['content'] : 'Описание товара'; ?></textarea> -->
-            <textarea class="form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">Описание</textarea>
+            <textarea class="form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
+              <?php echo isset(h($_POST['content'])) ? h($_POST['content']) : 'Введите описание товара'; ?>
+            </textarea>
           </fieldset>
         </div>
 
@@ -129,6 +130,9 @@
           </fieldset>
         </div>
       </div>
+
+      <!-- CSRF-токен -->
+      <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
       <div class="form__button-wrapper form__button-row">
         <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>shop">Отмена</a>

@@ -15,7 +15,7 @@
     </div>
 
     <!-- CSRF-токен -->
-    <input type="hidden" name="csrf" value="<?php echo csrf_token() ;?>">
+    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
     <div class="admin-form__item admin-form__item--buttons">
       <button name="submit" value="submit" class="button-solid button-solid--admin" type="submit">

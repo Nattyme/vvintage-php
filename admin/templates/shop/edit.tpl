@@ -10,7 +10,7 @@
     <form 
       id="form-edit-product" 
       method="POST" 
-      action="<?php echo HOST;?>admin/shop-edit?id=<?php echo $product['id']; ?>"
+      action="<?php echo HOST;?>admin/shop-edit?id=<?php echo h($product['id']); ?>"
       class="shop-form-new" 
       enctype="multipart/form-data">
 
@@ -22,7 +22,7 @@
             <label class="form__item">
               <span class="form__text">Название</span>
               <input name="title" class="form__input input" type="text"
-                     value="<?php echo $product['title']?>"
+                     value="<?php echo h($product['title']);?>"
                      placeholder="Введите название" required
               />
             </label>
@@ -32,7 +32,7 @@
             <label class="form__item">
               <span class="form__text">Цена</span>
               <input name="price" class="form__input input" type="text"
-                     value="<?php echo $product['price']?>"
+                     value="<?php echo h($product['price']);?>"
                      placeholder="Введите цену в &euro;" required/>
             </label>
           </div>
@@ -41,7 +41,7 @@
             <label class="form__item">
               <span class="form__text">Артикул</span>
               <input name="article" class="form__input input" type="text"
-                     value="<?php echo isset($product['article']) ? $product['article'] : '';?>"
+                     value="<?php echo isset($product['article']) ? h($product['article']) : '';?>"
                      placeholder="Введите артикул" />
             </label>
           </div>
@@ -49,7 +49,7 @@
             <label class="form__item">
               <span class="form__text">Ссылка</span>
               <input name="url" class="form__input input" type="text"
-                     value="<?php echo isset($_POST['url']) ? $_POST['url'] : '';?>"
+                     value="<?php echo isset($_POST['url']) ? u($_POST['url']) : '';?>"
                      placeholder="Введите ссылку на vinted.fr" />
             </label>
           </div>
@@ -59,7 +59,7 @@
               <span class="form__text">Категория</span>
               <select class="select" name="mainCat" id="mainCat">
                 <?php if (isset($_POST['mainCat']) ) : ?>
-                  <option value="<?php echo $_POST['mainCat'];?>"><?php echo $_POST['mainCat'];?></option>
+                  <option value="<?php echo h($_POST['mainCat']);?>"><?php echo h($_POST['mainCat']);?></option>
                 <?php else : ?>
                   <option value="">Выберите категорию</option>
                 <?php endif;?>
@@ -78,9 +78,8 @@
               <span class="form__text">Подкатегория</span>
               <select class="select" name="subCat" id="subCat">
                 <?php foreach ($cats as $cat) : ?>
-                  <option 
-                    <?php echo $product['cat'] == $cat['id'] ? 'selected' : '';?> 
-                    value=<?php echo $cat['id'];?>><?php echo $cat['title'];?>
+                  <option <?php echo $product['cat'] == $cat['id'] ? 'selected' : '';?> value="<?php echo h($cat['id']);?>">
+                    <?php echo h($cat['title']);?>
                   </option>
                 <?php endforeach; ?>
               </select>
@@ -99,9 +98,8 @@
               <span class="form__text">Выберите бренд</span>
               <select class="select" name="brand" id="brands">
                 <?php foreach ($brands as $brand) : ?>
-                  <option 
-                    <?php echo $product['brand'] === $brand['id']  ? 'selected' : '';?>
-                    value="<?php echo $brand['id'];?>"><?php echo $brand['title'];?>
+                  <option <?php echo $product['brand'] === $brand['id']  ? 'selected' : '';?> value="<?php echo h($brand['id']);?>">
+                    <?php echo h($brand['title']);?>
                   </option>
                 <?php endforeach; ?>
               </select>
@@ -120,7 +118,7 @@
               <span class="form__text">Описание товара</span>
             </label>
             <textarea class="form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
-               <?php echo $product['content'] ;?>
+               <?php echo h($product['content']) ;?>
             </textarea>
           </div>
         </div>
@@ -145,7 +143,7 @@
 
                 <div class="block-upload__preview" data-preview="container" data-dragg-and-drop>
                     <?php if (!empty($product->cover)) : ?>
-                      <img src="<?php echo HOST . 'usercontent/products/' . $product['coverSmall'];?>" alt="Загрузка картинки" />
+                      <img src="<?php echo HOST . 'usercontent/products/' . h($product['coverSmall']);?>" alt="Загрузка картинки" />
                     <?php endif; ?>
                 </div>
               </div>
@@ -154,8 +152,10 @@
         </div>
       </div>
 
+      <!-- CSRF-токен -->
+      <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+
       <div class="form__button-wrapper form__button-row">
-        <!-- <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>shop">Отмена</a> -->
         <?php if (isset($_POST['submit'])) : ?>
           <a class="form__button button-solid" href="<?php echo HOST;?>admin/shop" title="Вернуться к списку товаров">К списку товаров</a>
         <?php else : ?>
