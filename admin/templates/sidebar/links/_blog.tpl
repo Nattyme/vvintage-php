@@ -1,30 +1,31 @@
-<li class="control-panel__list-item">
-  <a href="?blog" class="control-panel__list-link"  
-     title="Перейти на страницу редактирования блога" 
-     data-name="accordeon-title">
-    <div class="control-panel__list-img-wrapper">
-      <img class="control-panel__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#book';?>" alt="Админ панель" />
+<li class="sidebar__list-item accordion__item">
+  <button class="sidebar__list-button accordion__btn" 
+    title="Перейти на страницу редактирования блога"
+    data-name="accordeon-title" data-section="${cat.data}">
+    <div class="sidebar__list-img-wrapper">
+      <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#book';?>" alt="icon" />
     </div>
-    Блог
-  </a>
-  <ul class="control-panel__list hidden">
+     Блог
+  </button>
+  <ul class="sidebar__list accordion__content">
     <!-- Добавить пост -->
-    <li class="control-panel__list-item">
-      <a class="control-panel__list-link control-panel__inner-link" 
-         href="<?php HOST;?>post-new">
-        <div class="control-panel__list-img-wrapper">
-          <img class="control-panel__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner';?>" alt="icon" />
+    <li class="sidebar__list-item">
+      <a class="sidebar__list-button sidebar__inner-link" 
+          href="<?php echo HOST . 'admin/post-new';?>" title="" data-section="blog-add">
+        <div class="sidebar__list-img-wrapper">
+          <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner'?>" alt="icon" />
         </div>
         Добавить пост
       </a>
     </li>
     <!--// Добавить пост -->
-
+  
     <!-- Все записи -->
-    <li class="control-panel__list-item">
-      <a class="control-panel__list-link control-panel__inner-link" href="<?php echo HOST;?>admin/blog">
-        <div class="control-panel__list-img-wrapper">
-          <img class="control-panel__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner';?>" alt="icon" />
+    <li class="sidebar__list-item">
+      <a class="sidebar__list-button sidebar__inner-link" 
+          href="<?php echo HOST . 'admin/blog';?>" title="" data-section="blog-all">
+        <div class="sidebar__list-img-wrapper">
+          <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner'?>" alt="icon" />
         </div>
         Все записи
       </a>
@@ -32,17 +33,20 @@
     <!--// Все записи -->
 
     <!-- Все категории -->
-    <li class="control-panel__list-item">
-      <a class="control-panel__list-link control-panel__inner-link" href="<?php echo HOST;?>admin/category?blog" title="Перейти на страницу редактирования категорий публикаций">
-        <div class="control-panel__list-img-wrapper">
-          <img class="control-panel__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner';?>" alt="icon" />
+    <li class="sidebar__list-item">
+      <a class="sidebar__list-button sidebar__inner-link" 
+          href="<?php echo HOST . 'admin/category-blog';?>" title="Перейти на страницу редактирования категорий публикаций" data-section="blog-category">
+        <div class="sidebar__list-img-wrapper">
+          <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner'?>" alt="icon" />
         </div>
         Все категории
       </a>
     </li>
     <!--// Все категории -->
+
   </ul>
 </li>
+
 
 
    

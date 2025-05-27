@@ -19,6 +19,7 @@ $messages = R::find('messages', 'ORDER BY id DESC');
         <?php include ROOT . "admin/templates/sidebar/links/_stats.tpl";?>
         <?php include ROOT . "admin/templates/sidebar/links/_shop.tpl";?> 
         <?php include ROOT . "admin/templates/sidebar/links/_messages.tpl";?>
+        <?php include ROOT . "admin/templates/sidebar/links/_blog.tpl";?>
         <?php include ROOT . "admin/templates/sidebar/links/_profile.tpl";?>
         <?php include ROOT . "admin/templates/sidebar/links/_exit.tpl";?>
       </ul>

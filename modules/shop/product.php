@@ -19,7 +19,6 @@ $sqlQuery = 'SELECT
 
 $product = R::getRow($sqlQuery, [$uriGet]);
 
-// die();
 // Запрашиваем информацию по изображениям продукта
 $sqlImages = 'SELECT pi.filename, pi.image_order 
               FROM productimages pi

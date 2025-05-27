@@ -74,7 +74,7 @@
                 <div class="cart__summary">
                   <div class="cart__grid">
                     <p class="cart__total-amount">
-                      Количество товаров: <span class="text-bold"><?php echo count(h($products));?></span>
+                      Количество товаров: <span class="text-bold"><?php echo count($products);?></span>
                     </p>
                     <p class="cart__total">
                       Итого: <span class="text-bold"><?php echo h($cartTotalPrice); ?>&nbsp;&euro;</span>

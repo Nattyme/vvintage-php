@@ -29,6 +29,7 @@ switch ($uriModule) {
     require ROOT . 'modules/main/index.php';
     break;
 
+
   // ::::::::::::: USERS :::::::::::::::::::
   case 'login':
     require ROOT . 'modules/login/login.php';
@@ -62,18 +63,6 @@ switch ($uriModule) {
     require ROOT . 'modules/profile/profile-order.php';
     break;
 
-  // ::::::::::::: OTHER :::::::::::::::::::
-  case 'main':
-    require ROOT . 'modules/main/index.php';
-    break;
-
-  case 'contacts':
-    require ROOT . 'modules/contacts/index.php';
-    break;
-
-  case 'about':
-    require ROOT . 'modules/about/index.php';
-    break;
 
   // ::::::::::::: SHOP :::::::::::::::::::
   case 'shop':
@@ -90,6 +79,22 @@ switch ($uriModule) {
     }
   break;
 
+
+  // ::::::::::::: BLOG :::::::::::::::::::
+  case 'blog':
+    if ( isset($uriGet) && $uriGet === 'cat' && !empty($uriGetParam) ) {
+      require ROOT . 'modules/blog/categories.php';
+    } else if ( isset($uriGet) ) {
+      require ROOT . 'modules/blog/single.php';
+    } else {
+      require ROOT . 'modules/blog/all.php';
+    }
+  break;
+  case 'add-comment':
+    require ROOT . 'modules/blog/add-comment.php';
+    break;
+
+
   // ::::::::::::: CART :::::::::::::::::::
   case 'cart':
     require ROOT . 'modules/cart/cart.php';
@@ -103,6 +108,7 @@ switch ($uriModule) {
     require ROOT . 'modules/cart/remove.php';
     break;
 
+
   // ::::::::::::: ORDERS :::::::::::::::::::
   case 'neworder':
     require ROOT . 'modules/orders/new.php';
@@ -111,4 +117,21 @@ switch ($uriModule) {
   case 'ordercreated':
     require ROOT . 'modules/orders/created.php';
     break;
+
+
+  // ::::::::::::: OTHER :::::::::::::::::::
+  case 'main':
+    require ROOT . 'modules/main/index.php';
+    break;
+
+  case 'contacts':
+    require ROOT . 'modules/contacts/index.php';
+    break;
+
+  case 'about':
+    require ROOT . 'modules/about/index.php';
+    break;
 }
+/*****************************
+            // РОУТЕР 
+*****************************/

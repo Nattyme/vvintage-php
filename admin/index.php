@@ -24,6 +24,8 @@ switch ($uriModule) {
   case '':
     require ROOT . "admin/modules/main/index.php";
     break;
+
+
   // ::::::::::::: BLOG :::::::::::::::::::
   case 'blog':
     require ROOT . "admin/modules/blog/all.php";
@@ -40,6 +42,8 @@ switch ($uriModule) {
   case 'post-delete':
     require ROOT . "admin/modules/blog/delete.php";
     break;
+
+
  // ::::::::::::: CATEGORIES :::::::::::::::::::
   case 'category':
     require ROOT . "admin/modules/categories/all.php";
@@ -56,6 +60,7 @@ switch ($uriModule) {
   case 'category-delete':
     require ROOT . "admin/modules/categories/delete.php";
     break;
+
 
   // ::::::::::::: BRANDS :::::::::::::::::::
   case 'brand':
@@ -87,6 +92,7 @@ switch ($uriModule) {
     require ROOT . "admin/modules/users/block.php";
     break; 
 
+
   // ::::::::::::: SHOP :::::::::::::::::::
   case 'shop':
     require ROOT . "admin/modules/shop/all.php";
@@ -104,6 +110,7 @@ switch ($uriModule) {
     require ROOT . "admin/modules/shop/delete.php";
     break;
 
+
     // ::::::::::::: SHOP :::::::::::::::::::
     case 'orders':
       require ROOT . "admin/modules/orders/all.php";
@@ -116,6 +123,7 @@ switch ($uriModule) {
     case 'order-delete':
       require ROOT . "admin/modules/orders/delete.php";
       break;
+
 
   // ::::::::::::: CATEGORIES SHOP :::::::::::::::::::
   case 'category-shop':
@@ -134,6 +142,7 @@ switch ($uriModule) {
     require ROOT . "admin/modules/categories-shop/delete.php";
     break;
 
+    
   // ::::::::::::: OTHER :::::::::::::::::::
   case 'main':
     require ROOT . "admin/modules/main/edit.php";
