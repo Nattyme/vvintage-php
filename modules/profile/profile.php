@@ -1,5 +1,6 @@
 <?php 
-
+print_r($_SESSION);
+die();
   function getUserComments($userId) {
     $sqlQuery = 'SELECT
                         comments.id, comments.text, comments.post, comments.user, comments.timestamp, 

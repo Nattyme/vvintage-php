@@ -3,7 +3,7 @@
  
       <div class="admin-panel__block-list">
         <a class="admin-panel__link" href="<?php echo HOST; ?>admin" title="Перейти в панель управления сайтом">
-            <div class="admin-panel__item">
+            <div class="admin-panel__icon-wrapper">
               <svg class="icon icon--target">
                 <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#target';?>"></use>
               </svg>
@@ -13,22 +13,25 @@
 
         <!-- Сообщения -->
         <a class="admin-panel__link" href="<?php echo HOST; ?>admin/messages" title="Перейти списку сообщений">
-          <div class="admin-panel__item">
+          <div class="admin-panel__icon-wrapper counter">
             <svg class="icon icon--mail">
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#mail';?>"></use>
             </svg>
 
             <?php if ($messagesNewCounter > 0 ) : ?>
-              <div class="admin-panel__item-icon">
-                <?php 
-                  if ($messagesNewCounter <= $messagesDisplayLimit) {
-                    echo h($messagesNewCounter);
-                  } else {
-                    echo '&hellip;';
-                  }
-                ?> 
+              <div class="counter__widget">
+                <span class="text-ellipsis">
+                    <?php 
+                      if ($messagesNewCounter <= $messagesDisplayLimit) {
+                        echo h($messagesNewCounter);
+                      } else {
+                        echo '&hellip;';
+                      }
+                    ?> 
+                </span>
               </div>
             <?php endif;?>
+        
           </div>
           <span>Сообщение</span>
         </a>
@@ -36,19 +39,22 @@
 
         <!-- Заказы -->
         <a class="admin-panel__link" href="<?php echo HOST; ?>admin/orders" title="Перейти к списку заказов">
-          <div class="admin-panel__item">
+          <div class="admin-panel__icon-wrapper counter">
             <svg class="icon icon--folder">
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#folder';?>"></use>
             </svg>
+            
             <?php if ($ordersNewCounter > 0 ) : ?>
-              <div class="admin-panel__item-icon">
-                <?php 
-                  if ($ordersNewCounter <= $ordersDisplayLimit) {
-                    echo h($ordersNewCounter);
-                  } else {
-                    echo '&hellip;';
-                  }
-                ?> 
+              <div class="counter__widget">
+                <span class="text-ellipsis">
+                    <?php 
+                      if ($ordersNewCounter <= $ordersDisplayLimit) {
+                        echo h($ordersNewCounter);
+                      } else {
+                        echo '&hellip;';
+                      }
+                    ?> 
+                </span>
               </div>
             <?php endif;?>
     
@@ -59,19 +65,21 @@
 
         <!-- Комментарии -->
         <a class="admin-panel__link" href="<?php echo HOST . 'admin/comments';?>" title="Перейти к списку комментариев">
-          <div class="admin-panel__item">
+          <div class="admin-panel__icon-wrapper counter">
             <svg class="icon icon--message-square">
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#message-square';?>"></use>
             </svg>
-             <?php if ($ordersNewCounter > 0 ) : ?>
-              <div class="admin-panel__item-icon">
-                <?php 
-                  if ($commentsNewCounter <= $commentsDisplayLimit) {
-                    echo h($commentsNewCounter);
-                  } else {
-                    echo '&hellip;';
-                  }
-                ?> 
+             <?php if ($commentsNewCounter > 0 ) : ?>
+              <div class="counter__widget">
+                <span class="text-ellipsis">
+                    <?php 
+                      if ($commentsNewCounter <= $commentsDisplayLimit) {
+                        echo h($commentsNewCounter);
+                      } else {
+                        echo '&hellip;';
+                      }
+                    ?> 
+                </span>
               </div>
             <?php endif;?>
           </div>
@@ -82,7 +90,7 @@
         <!-- Редактирование текущей страницы -->
         <?php if ( $uriModule === 'blog' && isset($uriGet) && $uriGet !== 'cat') : ?>
           <a class="admin-panel__link" href="<?php echo HOST . 'admin/post-edit?id=' . u($uriGet); ?>" title='Перейти к редактированию текущей страницы'>
-            <div class="admin-panel__item">
+            <div class="admin-panel__icon-wrapper">
               <svg class="icon icon--edit">
                 <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#edit';?>"></use>
               </svg>

@@ -58,12 +58,12 @@
             
             <td class="admin-form-table__unit">
               <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit?id=<?php echo u($cat['id']);?>">
-                <?php echo h($cat['child_title']);?>
+                <?php echo $cat['child_title'] ? h($cat['child_title']) : 'Нет подкатегорий';?>
               </a>
             </td>
 
             <td class="admin-form-table__unit">
-              <?php echo h($cat['parent_title']);?>
+              <?php echo $cat['parent_title'] ? h($cat['parent_title']) : '';?>
             </td>
            
             <td class="admin-form-table__unit">

@@ -28,6 +28,9 @@
       $whereSql = 'WHERE ' . implode(' AND ', $where);
   }
 
+  // Подключаем пагинацию с параметрами
+  $pagination = pagination(5, 'categories', [$whereSql ? substr($whereSql, 6) : '', $params]);
+
   // Считаем общее количество категорий с фильтрами
   $sqlCount = "SELECT COUNT(*) FROM categories child $whereSql";
   $catsCount = R::getCell($sqlCount, $params);  // количество записей с условиями
@@ -49,8 +52,7 @@
   // Главные категории для селекта
   $mainCats = R::find('categories', 'parent_id IS NULL');
 
-  // Подключаем пагинацию с параметрами
-  $pagination = pagination(5, 'categories', [$whereSql ? substr($whereSql, 6) : '', $params]);
+
 
   ob_start();
   include ROOT . "admin/templates/categories/all.tpl";

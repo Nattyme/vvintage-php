@@ -101,7 +101,7 @@
               <span class="form__text">Описание товара</span>
             </label>
             <textarea class="form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
-              <?php echo isset(h($_POST['content'])) ? h($_POST['content']) : 'Введите описание товара'; ?>
+              <?php echo isset($_POST['content']) ? h($_POST['content']) : 'Введите описание товара'; ?>
             </textarea>
           </fieldset>
         </div>

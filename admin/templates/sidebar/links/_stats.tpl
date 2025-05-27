@@ -3,6 +3,6 @@
     <div class="sidebar__list-img-wrapper">
       <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#inbox';?>" alt="Админ панель" />
     </div>
-    Админ панель
+    Статистика
   </a>
 </li>

@@ -104,10 +104,6 @@ switch ($uriModule) {
     require ROOT . "admin/modules/shop/delete.php";
     break;
 
-  // case 'form-add':
-  //   require ROOT . "admin/modules/shop/form-add-product.php";
-  //   break;
-
     // ::::::::::::: SHOP :::::::::::::::::::
     case 'orders':
       require ROOT . "admin/modules/orders/all.php";
