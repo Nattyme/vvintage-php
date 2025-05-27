@@ -21,8 +21,23 @@
             </a>
           </div>
         <?php endif; ?>
+       
         
         <?php if (isset($uriModule) && $uriModule === 'blog') : ?>
+          <ul class="menu">
+            <li class="menu__item">
+              <a href="<?php echo HOST . 'shop';?>">Перейти в Магазин</a>
+            </li>
+            <li class="menu__item">
+              <a href="<?php echo HOST . 'contacts';?>">Написать нам</a>
+            </li>
+          </ul>
+          <ul class="social-list">
+             <svg class="icon icon--zen">
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#zen';?>"></use>
+              </svg>
+          </ul>
+           
         <?php else : ?>
           <?php include ROOT . 'templates/_parts/nav/nav.tpl';?>
        
