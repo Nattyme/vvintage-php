@@ -2,13 +2,15 @@
   if(isset($_SESSION['logged_user']) && trim($_SESSION['logged_user']) !== '') {
     include ROOT . "templates/_parts/_admin-panel.tpl";
   } 
+
+  $isBlogPage = isset($uriModule) && $uriModule === 'blog' ? true : false;
 ?>
 
 <header class="<?php echo (isset($_SESSION['logged_user']) && trim($_SESSION['logged_user']) !== '') ? 'header header--with-admin-panel' : 'header';?>">
-	<div class="header__top">
+	<div class="header__top header__top--blog">
 		<div class="container">
 			<div class="header__row">
-        <?php if (isset($uriModule) && $uriModule === 'blog') : ?>
+        <?php if ($isBlogPage) : ?>
           <div class="blog-logo">
             <div class="blog-logo__title">VVintage</div>
             <span class="blog-logo__separator"></span>
@@ -23,7 +25,7 @@
         <?php endif; ?>
        
         
-        <?php if (isset($uriModule) && $uriModule === 'blog') : ?>
+        <?php if ($isBlogPage) : ?>
           <ul class="menu">
             <li class="menu__item">
               <a href="<?php echo HOST . 'shop';?>">Перейти в Магазин</a>
@@ -74,7 +76,7 @@
 			</div>
 		</div>
 	</div>
-  <?php if (isset($uriModule) && $uriModule === 'blog') : ?>
+  <?php if ($isBlogPage) : ?>
   <?php else : ?>
     <div class="header__nav">
       <div class="container catalog-dropdown__container">

@@ -1,5 +1,29 @@
 <footer class="footer">
 	<div class="container">
+    <?php if($isBlogPage) : ?>
+      <div class="footer__top">
+        <div class="footer__topics">
+          <div class="footer__topics__title">Заголовок тем</div>
+            <ul class="footer__topics__list">
+              <li>
+                <a href="">Тег</a>
+              </li>
+              <li>
+                <a href="">Тег</a>
+              </li>
+              <li>
+                <a href="">Тег</a>
+              </li>
+              <li>
+                <a href="">Тег</a>
+              </li>
+              <li>
+                <a href="">Тег</a>
+              </li>
+            </ul>
+          </div> 
+        </div>
+    <?php endif; ?>
     <div class="footer__content">
       <div class="footer__column">
         <div class="footer__logo">
@@ -23,20 +47,22 @@
       </div>
       
       <div class="footer__nav">
-        <ul class="nav-list">
-          <li class="nav-list__item">
-           <a class="nav-list__link" href="<?php echo HOST;?>">Главная</a>
-          </li>
-          <li class="nav-list__item">
-           <a class="nav-list__link nav-list__inner-nav" href="<?php echo HOST . 'shop';?>">Магазин</a>
-          </li>
-          <li class="nav-list__item">
-           <a class="nav-list__link" href="<?php echo HOST . 'about';?>">О нас</a>
-          </li>
-          <li class="nav-list__item">
-           <a class="nav-list__link" href="<?php echo HOST . 'contact';?>">Контакты</a>
-          </li>
-        </ul>
+        <?php if(!$isBlogPage) : ?>
+          <ul class="nav-list">
+            <li class="nav-list__item">
+            <a class="nav-list__link" href="<?php echo HOST;?>">Главная</a>
+            </li>
+            <li class="nav-list__item">
+            <a class="nav-list__link nav-list__inner-nav" href="<?php echo HOST . 'shop';?>">Магазин</a>
+            </li>
+            <li class="nav-list__item">
+            <a class="nav-list__link" href="<?php echo HOST . 'about';?>">О нас</a>
+            </li>
+            <li class="nav-list__item">
+            <a class="nav-list__link" href="<?php echo HOST . 'contact';?>">Контакты</a>
+            </li>
+          </ul>
+        <?php endif; ?>
       </div>
        
       <div class="footer__column">
@@ -61,9 +87,9 @@
             </svg>
           </a></li>
         </ul>
-        <ul class="payment-list">
+        <!-- <ul class="payment-list">
           <li><img src="<?php echo HOST . 'static/img/payment/visa-mastercard.png';?>" srcset="<?php echo HOST . 'static/img/payment/visa-mastercard@2x.png';?>" alt=""></li>
-        </ul>
+        </ul> -->
       </div>
     </div>
     <!-- backtop button -->
