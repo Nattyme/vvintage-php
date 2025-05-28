@@ -35,9 +35,9 @@
             </li>
           </ul>
           <ul class="social-list">
-             <svg class="icon icon--zen">
+            <svg class="icon icon--zen">
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#zen';?>"></use>
-              </svg>
+            </svg>
           </ul>
            
         <?php else : ?>
