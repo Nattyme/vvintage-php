@@ -7,7 +7,7 @@
 ?>
 
 <header class="<?php echo (isset($_SESSION['logged_user']) && trim($_SESSION['logged_user']) !== '') ? 'header header--with-admin-panel' : 'header';?>">
-	<div class="header__top header__top--blog">
+	<div class="header__top <?php echo ($isBlogPage) ? 'header__top--blog' : '';?>">
 		<div class="container">
 			<div class="header__row">
         <?php if ($isBlogPage) : ?>
@@ -48,16 +48,16 @@
               <div class="header__login">
                 <?php if (!isset($_SESSION['logged_user']) || trim($_SESSION['logged_user']) === '') : ?>
                     <a href="<?php echo HOST . 'login';?>" class=""><span>
-                      <svg class="icon icon--profile">
-                        <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#profile';?>"></use>
+                      <svg class="icon icon--login">
+                        <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#login';?>"></use>
                       </svg>
                     </span></a>
                 <?php endif; ?>
               </div>
               
               <a href="<?php echo HOST . 'cart';?>" class="header__cart counter">
-                <svg class="icon icon--shopping-bag">
-                  <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#shopping-bag';?>"></use>
+                <svg class="icon icon--cart">
+                  <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#cart';?>"></use>
                 </svg>
                 <?php if (!empty($cartCount)) : ?>
                   <div class="counter__widget counter__widget--cart">

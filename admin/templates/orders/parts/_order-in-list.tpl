@@ -1,20 +1,20 @@
 <tr <?php echo $order['status'] === 'new' ? 'class="message-new"' : NULL;?>>
   <td>
-    <?php echo $order['id'];?>
+    <?php echo h($order['id']);?>
   </td>
   <td>
-    <?php if ($order['timestamp']) { echo rus_date('j F Y G:i', $order['timestamp']); } ?>
+    <?php if ($order['timestamp']) { echo rus_date('j F Y G:i', h($order['timestamp'])); } ?>
   </td>
   <td>
-    <a class="link-to-page" href="<?php echo HOST . 'admin/order?id=' . $order['id'];?>">
-      <?php echo $order['name'] . '&nbsp;' . $order['surname'];  ?>
+    <a class="link-to-page" href="<?php echo HOST . 'admin/order?id=' . u($order['id']);?>">
+      <?php echo h($order['name']) . '&nbsp;' . h($order['surname']);  ?>
     </a>
   </td>
   <td>
-      <?php echo $order['email']; ?>
+      <?php echo h($order['email']); ?>
   </td>
   <td>
-      <?php echo $order['status']; ?>
+      <?php echo h($order['status']); ?>
   </td>
   <td>
     <?php 
@@ -26,9 +26,9 @@
     ?>
   </td>
   <td>
-    <?php echo format_price($order['price']); ?> руб.
+    <?php echo h(format_price($order['price'])); ?> руб.
   </td>
   <td>
-    <a href="<?php echo HOST . "admin/order-delete?id={$order['id']}" ;?>" class="icon-delete"></a>
+    <a href="<?php echo HOST . 'admin/order-delete?id=' . u($order['id']);?>" class="icon-delete"></a>
   </td>
 </tr>

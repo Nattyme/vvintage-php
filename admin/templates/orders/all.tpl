@@ -3,10 +3,6 @@
     <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
-    <div class="admin-form__item d-flex justify-content-between mb-20">
-      <h2 class="heading">Заказы</h2>
-    </div>
-
     <table class="table">
       <thead>
         <tr>
@@ -27,7 +23,7 @@
       </tbody>
     </table>
     <!-- Пагинация -->
-    <div class="admin-form__item pt-40">
+    <div class="admin-form__item">
       <div class="section-pagination">
           <?php include ROOT . "admin/templates/_parts/pagination/_pagination.tpl"; ?>
       </div>

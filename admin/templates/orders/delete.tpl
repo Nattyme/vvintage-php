@@ -3,12 +3,12 @@
   <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
   <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
-  <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/order-delete?id=<?php echo $order['id']; ?>">
+  <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/order-delete?id=<?php echo u($order['id']); ?>">
     <div class="admin-form__item">
       <h2 class="heading">Удалить заказ</h2>
     </div>
     <div class="admin-form__item">
-      <p>Вы действительно хотите удалить заказ N<strong>"<?php echo $order['id'];?>"</strong>?</p>  
+      <p>Вы действительно хотите удалить заказ N<strong>"<?php echo h($order['id']);?>"</strong>?</p>  
     </div>
 
     <div class="admin-form__item buttons">
