@@ -3,7 +3,7 @@
     <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
-    <header class="shop__header shop__row">
+    <header class="admin-form__header admin-form__row">
       <a href="<?php HOST;?>brand-new" class="shop__button button button-primary" data-btn="add">
         <span>Написать</span>
       </a>

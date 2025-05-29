@@ -3,10 +3,10 @@
     <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
-    <div class="admin-form__item d-flex justify-content-between mb-20">
+    <header class="admin-form__header admin-form__row">
       <h2 class="heading">Блог - все записи</h2>
       <a class="secondary-button" href="<?php HOST;?>post-new">Добавить пост</a>
-    </div>
+    </header>
     <table class="table">
       <thead>
         <tr>
