@@ -10,12 +10,12 @@
 
 <nav class="breadcrumbs" >
     <a href="<?php echo HOST;?>" class="breadcrumb ">Главная</a> 
-    <?php echo '<span>&#8212;</span>';?>
+    <?php echo '<span> &#8212; </span>';?>
     <a href="<?php echo HOST;?>#cats" class="breadcrumb ">Список категорий</a> 
 
     <?php foreach ($breadcrumbs as $index => $item) {
         $isLast = $index === array_key_last($breadcrumbs);
-        echo '<span>&#8212;</span>';
+        echo '<span> &#8212; </span>';
 
         if ($isLast) {
           echo '<span class="breadcrumb breadcrumb--active">' . h($item['title']) . '</span>';

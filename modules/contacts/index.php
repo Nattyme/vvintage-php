@@ -87,6 +87,12 @@ if (empty($_SESSION['errors'])) {
 }
 
 $pageTitle = "Контакты";
+
+// Хлебные крошки
+$breadcrumbs = [
+  ['title' => $pageTitle, 'url' => '#'],
+];
+
 // Шаблон страницы
 include ROOT . 'templates/_page-parts/_head.tpl';
 include ROOT . 'templates/_parts/_header.tpl';

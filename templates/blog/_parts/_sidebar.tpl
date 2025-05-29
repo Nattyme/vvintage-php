@@ -24,11 +24,6 @@
     </div>
 
     <div class="sidebar__related">ПОХОЖИЕ СТАТЬИ</div>
-    <div class="sidebar__author">
-      <img src="<?php echo HOST . 'usercontent/avatars/379444427371.jpg';?>" alt="Автор">
-      <h3>Елена</h3>
-      <p>Живу и работаю во Франции более 10 лет. Пишу о жизни в стране, делюсь опытом.</p>
-    </div>
   
   </div>
 </aside>

@@ -1,6 +1,6 @@
 <section class="shop">
 
-  <?php @@include ROOT . "admin/templates/components/success.tpl"; ?>
+  <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
   <header class="shop__header shop__row">
     <a href="<?php HOST;?>shop-new" class="shop__button button button-primary" data-btn="add">
