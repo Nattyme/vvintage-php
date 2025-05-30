@@ -20,7 +20,7 @@
     <!-- table order info -->
     <div class="admin-form__item">
 
-      <table class="order-table">
+      <table class="table">
 
         <tr>
           <th>Дата создания</th>
@@ -69,14 +69,16 @@
 
     <!-- table products  -->
     <div class="admin-form__item">
-      <table class="order-table">
-        <tr>
-          <th>Фотография</th>
-          <th>ID</th>
-          <th>Наименование</th>
-          <th>Стоимость за единицу</th>
-          <th>Количество</th>
-        </tr>
+      <table class="table">
+        <thead class="product-table__header">
+          <tr>
+            <th>Фотография</th>
+            <th>ID</th>
+            <th>Наименование</th>
+            <th>Стоимость за единицу</th>
+            <th>Количество</th>
+          </tr>
+        </thead>
         <?php foreach($products as $product) : ?>
           <tr>
             <td>

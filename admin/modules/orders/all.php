@@ -2,6 +2,9 @@
 // Подключаем пагинацию
 $pagination = pagination(8, 'orders');
 
+// Получаем данные из GET-запроса
+$searchQuery = $_GET['query'] ?? '';
+
 //Запрос постов в БД с сортировкой id по убыванию
 $orders = R::find('orders', "ORDER BY id DESC {$pagination['sql_page_limit']}");
 

@@ -8,44 +8,45 @@
     </div>
 
     <form id="form-add-product" method="POST" class="shop-form-new" enctype="multipart/form-data">
-      <div class="form__row">
-        <div class="form__column">
-          <fieldset class="form__field">
+      <div class="form__column ">
+        <div class="form__row">
+          <div class="form__field">
             <label class="form__item">
               <span class="form__text">Название товара</span>
               <input name="title" class="form__input input" type="text"
                      value="<?php echo isset($_POST['title']) ? h($_POST['title']) : '';?>"
                      placeholder="Введите название" required/>
             </label>
-          </fieldset>
+          </в>
 
-          <fieldset class="form__field">
+          <div class="form__field">
             <label class="form__item">
               <span class="form__text">Цена</span>
               <input name="price" class="form__input input" type="text"
                      value="<?php echo isset($_POST['price']) ? h($_POST['price']) : '';?>"
                      placeholder="Введите цену в &euro;" required/>
             </label>
-          </fieldset>
+          </div>
 
-          <fieldset class="form__field">
+          <div class="form__field">
             <label class="form__item">
               <span class="form__text">Артикул</span>
               <input name="article" class="form__input input" type="text"
                      value="<?php echo isset($_POST['article']) ? h($_POST['article']) : '';?>"
                      placeholder="Введите артикул" />
             </label>
-          </fieldset>
-          <fieldset class="form__field">
+          </div>
+
+          <div class="form__field">
             <label class="form__item">
               <span class="form__text">Ссылка</span>
               <input name="url" class="form__input input" type="text"
                      value="<?php echo isset($_POST['url']) ? u($_POST['url']) : '';?>"
                      placeholder="Введите ссылку на vinted.fr" />
             </label>
-          </fieldset>
+          </div>
 
-          <fieldset class="form__field form__field--input-with-button">
+          <div class="form__field form__field--input-with-button">
             <label class="form__item">
               <span class="form__text">Категория</span>
               <select class="select" name="mainCat" id="mainCat">
@@ -63,8 +64,8 @@
                   Новая категория
               </a>
             </div>
-          </fieldset>
-          <fieldset class="form__field form__field--input-with-button">
+          </div>
+          <div class="form__field form__field--input-with-button">
             <label class="form__item">
               <span class="form__text">Подкатегория</span>
               <select class="select" name="subCat" id="subCat">
@@ -78,9 +79,9 @@
                   Новая категория
               </a>
             </div>
-          </fieldset>
+          </div>
 
-          <fieldset class="form__field form__field--input-with-button">
+          <div class="form__field form__field--input-with-button">
             <label class="form__item">
               <span class="form__text">Выберите бренд</span>
               <select class="select" name="brand" id="brands">
@@ -94,20 +95,20 @@
                   Новый бренд
               </a>
             </div>
-          </fieldset>
+          </div>
 
-          <fieldset class="form__field">
+          <div class="form__field">
             <label class="form__item">
               <span class="form__text">Описание товара</span>
             </label>
             <textarea class="form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
               <?php echo isset($_POST['content']) ? h($_POST['content']) : 'Введите описание товара'; ?>
             </textarea>
-          </fieldset>
+          </div>
         </div>
 
         <div class="form__column form__column--imgs">
-          <fieldset class="form__field">
+          <div class="form__field">
             <label class="form__item">
               <span class="form__text">Фотографии товара</span>
               <div class="block-upload" data-preview="block">
@@ -127,7 +128,7 @@
                 <div class="block-upload__preview" data-preview="container" data-dragg-and-drop></div>
               </div>
             </label>
-          </fieldset>
+          </div>
         </div>
       </div>
 

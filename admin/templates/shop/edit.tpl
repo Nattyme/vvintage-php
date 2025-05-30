@@ -10,7 +10,6 @@
     <form 
       id="form-edit-product" 
       method="POST" 
-      action="<?php echo HOST;?>admin/shop-edit?id=<?php echo h($product['id']); ?>"
       class="shop-form-new" 
       enctype="multipart/form-data">
 
@@ -20,11 +19,10 @@
 
           <div class="form__field">
             <label class="form__item">
-              <span class="form__text">Название</span>
+              <span class="form__text">Название товара</span>
               <input name="title" class="form__input input" type="text"
                      value="<?php echo h($product['title']);?>"
-                     placeholder="Введите название" required
-              />
+                     placeholder="Введите название" required/>
             </label>
           </div>
 
@@ -45,25 +43,23 @@
                      placeholder="Введите артикул" />
             </label>
           </div>
+
           <div class="form__field">
             <label class="form__item">
               <span class="form__text">Ссылка</span>
               <input name="url" class="form__input input" type="text"
-                     value="<?php echo isset($_POST['url']) ? u($_POST['url']) : '';?>"
-                     placeholder="Введите ссылку на vinted.fr" />
+                     value="<?php echo isset($product['url']) ? h($product['url']) : '';?>"
+                     placeholder="Введите ссылку на vinted.fr" 
+                     required
+                    />
+                     
             </label>
           </div>
 
           <div class="form__field form__field--input-with-button">
             <label class="form__item">
               <span class="form__text">Категория</span>
-              <select class="select" name="mainCat" id="mainCat">
-                <?php if (isset($_POST['mainCat']) ) : ?>
-                  <option value="<?php echo h($_POST['mainCat']);?>"><?php echo h($_POST['mainCat']);?></option>
-                <?php else : ?>
-                  <option value="">Выберите категорию</option>
-                <?php endif;?>
-              </select>
+              <select class="select" name="mainCat" id="mainCat" data-selected="<?php echo h($selectedMaiCat);?>"></select>
             </label>
             <div class="form__item">
               <a 
@@ -76,13 +72,7 @@
           <div class="form__field form__field--input-with-button">
             <label class="form__item">
               <span class="form__text">Подкатегория</span>
-              <select class="select" name="subCat" id="subCat">
-                <?php foreach ($cats as $cat) : ?>
-                  <option <?php echo $product['cat'] == $cat['id'] ? 'selected' : '';?> value="<?php echo h($cat['id']);?>">
-                    <?php echo h($cat['title']);?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
+              <select class="select" name="subCat" id="subCat" data-selected="<?php echo h($selectedSubCat);?>"></select>
             </label>
             <div class="form__item">
               <a 
@@ -146,6 +136,20 @@
                       <img src="<?php echo HOST . 'usercontent/products/' . h($product['coverSmall']);?>" alt="Загрузка картинки" />
                     <?php endif; ?>
                 </div>
+
+                <!-- PREVIEW IMG -->
+                <!-- <div class="block-upload__preview active" data-preview="container" data-dragg-and-drop="">
+                  <div class="form__img-wrapper" data-preview="image-wrapper" data-url="blob:https://vvintage/2932f5ed-3290-49ba-bfcd-09f199a163cd" draggable="true">
+                    <img src="blob:https://vvintage/2932f5ed-3290-49ba-bfcd-09f199a163cd" draggable="true" loading="lazy">
+                    <button type="button" class="button button-close button-close--with-bg cross-wrapper" data-preview="btn-close">
+                    
+                        <span class="leftright"></span><span class="rightleft"> </span>
+                
+                    </button>
+                  
+                  </div>
+                </div> -->
+                <!-- // PREVIEW IMG -->
               </div>
             </label>
           </div>

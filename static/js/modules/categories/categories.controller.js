@@ -3,17 +3,26 @@ import view from './categories.view.js';
 
 const initCategoriesEvents = async () => {
   if (!model || !view) return;
-  const mainCats = await model.setMainCats();
-  if (!mainCats) return;
- 
+
   const mainCatsBlock = view.getMainCatBlock();
   const subCatsBlock = view.getSubCatBlock();
-
+  
   if (!mainCatsBlock || !subCatsBlock) return;
 
+  const mainCats = await model.setMainCats();
+  if (!mainCats) return;
 
   // Заполним опции для селекта главных категорий.
   view.setCategoriesOptions(mainCats, mainCatsBlock);
+
+  // Если в селекте уже выбрана категория — редактируем, значит, надо загрузить и подкатегории
+  const selectedMainCatId = view.getSelectedId(mainCatsBlock);
+
+  if (selectedMainCatId) {
+    const subCats = await model.setSubCats(selectedMainCatId);
+    view.setCategoriesOptions(subCats, subCatsBlock);
+  }
+
 
   // Повесим слушатель изменения селекта главных категорий 
   mainCatsBlock.addEventListener('change', async (e) => {
@@ -22,8 +31,6 @@ const initCategoriesEvents = async () => {
     // Заполним опции для селекта подкатегорий.
     view.setCategoriesOptions(subCats, subCatsBlock);
   });
-  
-
 };
 
 export default initCategoriesEvents;

@@ -2,15 +2,38 @@
   // Задаем название страницы и класс
   $pageTitle = "Магазин - редактировние товара";
   $pageClass = "admin-page";
-  
-  // Находим категории, относящиеся к секции shop
-  $catsArray = R::find('categories', ' section LIKE ? ORDER BY title ASC', ['shop']);
 
-  // Создаем массив для категорий shop
-  $cats = [];
-  foreach ($catsArray as $key => $value) {
-    $cats[] = ['id' => $value['id'], 'title' => $value['title'], 'section' => $value['section']];
-  }
+  // Главные категории 
+  // $mainCats   = R::find('categories', 'parent_id IS NULL');
+
+  // Подкатегории
+  $subCats = R::find('categories', 'parent_id IS NOT NULL');
+  
+  $sqlQuery =  'SELECT 
+                  p.id,
+                  p.title,
+                  p.price,
+                  p.content,
+                  p.article,
+                  p.url,
+                  p.category,
+                  p.brand,
+                  p.timestamp,
+                  c.title as cat_title,
+                  b.title as brand_title
+              
+                FROM `products` as p
+                LEFT JOIN `categories` as c ON p.category = c.id
+                LEFT JOIN `brands` as b ON p.brand = b.id
+                WHERE p.id = ? LIMIT 1';
+  $product = R::getRow($sqlQuery, [$_GET['id']]);
+
+  // Загружаем объект категории
+  $subCatBean = R::load('categories', $product['category']);
+  $selectedSubCat =  $subCatBean->id;
+
+  // Главный раздел
+  $selectedMaiCat = $subCatBean->parent_id;
 
   // Получаем список брендов
   $brands = R::find('brands', 'ORDER BY title ASC');

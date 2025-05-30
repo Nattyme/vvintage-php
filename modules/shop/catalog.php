@@ -1,8 +1,5 @@
 <?php 
 require_once ROOT . "./libs/functions.php";
-$uriModule = getModuleName();
-$uriGet = getUriGet();
-$uriGetParam = getUriGetParam();
 
 $pagination = pagination(9, 'products');
 $showedProducts = $pagination['page_number'] * 9;
