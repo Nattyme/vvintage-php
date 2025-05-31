@@ -131,12 +131,6 @@
                   </label>
                 </div>
 
-                <div class="block-upload__preview" data-preview="container" data-dragg-and-drop>
-                    <?php if (!empty($product->cover)) : ?>
-                      <img src="<?php echo HOST . 'usercontent/products/' . h($product['coverSmall']);?>" alt="Загрузка картинки" />
-                    <?php endif; ?>
-                </div>
-
                 <!-- PREVIEW IMG -->
                 <div class="block-upload__preview active" data-preview="container" data-dragg-and-drop="">
                   <?php foreach ($productImages as $image) : ?>

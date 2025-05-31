@@ -117,6 +117,9 @@
                     Изображение jpg или png, рекомендуемая ширина 945px и больше, высота от 400px и более. Вес до 2Мб.
                   </p>
                 </div>
+                          <!-- <div id="drop-area" class="drop-area">Перетащите сюда изображения</div>
+                <div id="preview-list" class="preview-list block-upload__preview" data-preview="container" data-dragg-and-drop>Перетащите сюда изображения</div>
+ -->
 
                 <div class="block-upload__button ">
                   <label>

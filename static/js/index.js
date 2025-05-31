@@ -2,12 +2,12 @@
 // import mobileNav from './modules/mobile-nav.js';
 // import router from './modules/admin/router.js';
 // import addSidebarControlPanel from "./modules/admin/model/sidebar/addSidebar.js";
-import dragAndDropFiles from "./modules/drag-and-drop/dragAndDropFiles.js";
 import addBackTopBtn from "./modules/backtop.js";
 import addAccordion from "./modules/addAccordion.js";
 import fancyBox from "./modules/fancybox.js";
 import initCatalogEvents from "./modules/catalog/index.js";
 import initPreviewController from "./modules/preview-images/index.js";
+import initDragDropController from "./modules/drag-and-drop/index.js";
 import initCategoriesController from "./modules/categories/index.js";
 import initBrandsController from "./modules/brands/index.js";
 import initNewProductForm from "./modules/shop/new/index.js";
@@ -36,7 +36,7 @@ const initEverything = async () => {
   const path = pathHolder.dataset.config;
   if (!path) return;
 
-  dragAndDropFiles();
+  initDragDropController();
   initPreviewController();
   initCategoriesController();
   initBrandsController();
