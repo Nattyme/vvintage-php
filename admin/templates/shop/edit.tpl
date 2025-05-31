@@ -138,17 +138,16 @@
                 </div>
 
                 <!-- PREVIEW IMG -->
-                <!-- <div class="block-upload__preview active" data-preview="container" data-dragg-and-drop="">
-                  <div class="form__img-wrapper" data-preview="image-wrapper" data-url="blob:https://vvintage/2932f5ed-3290-49ba-bfcd-09f199a163cd" draggable="true">
-                    <img src="blob:https://vvintage/2932f5ed-3290-49ba-bfcd-09f199a163cd" draggable="true" loading="lazy">
-                    <button type="button" class="button button-close button-close--with-bg cross-wrapper" data-preview="btn-close">
-                    
-                        <span class="leftright"></span><span class="rightleft"> </span>
-                
-                    </button>
-                  
-                  </div>
-                </div> -->
+                <div class="block-upload__preview active" data-preview="container" data-dragg-and-drop="">
+                  <?php foreach ($productImages as $image) : ?>
+                    <div class="form__img-wrapper" data-preview="image-wrapper" data-url="blob:https://vvintage/2932f5ed-3290-49ba-bfcd-09f199a163cd" draggable="true">
+                      <img src="<?php echo HOST . 'usercontent/products/' . $image['filename_small'];?>" draggable="true" loading="lazy">
+                      <button type="button" class="button button-close button-close--with-bg cross-wrapper" data-preview="btn-close">
+                          <span class="leftright"></span><span class="rightleft"> </span>
+                      </button>
+                    </div>
+                  <?php endforeach;?>
+                </div>
                 <!-- // PREVIEW IMG -->
               </div>
             </label>
@@ -165,7 +164,7 @@
         <?php else : ?>
           <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>shop" title="Отмена">Отмена</a>
         <?php endif; ?>
-        <button class="form__button button-solid" type="submit" name="submit" value="submit">Сохранить изменения</button>
+        <button class="form__button button-solid" type="submit" name="submit" value="submit">Сохранить</button>
       </div>
     </form>
   </div>

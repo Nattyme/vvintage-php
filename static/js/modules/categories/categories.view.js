@@ -7,13 +7,7 @@ const initView = () => {
   const getMainCatBlock = () => mainCatBlock;
   const getSubCatBlock = () => subCatBlock;
 
-  const getSelectedId = (selectElement) => {
-    if (selectElement.dataset.selected) {
-      return selectElement.dataset.selected
-    } else {
-      return '';
-    }
-  };
+  const getSelectedId = (selectElement) => selectElement.value || '';
 
   // Заполняет опции селекта данными категорий 
   const setCategoriesOptions = (categories, selectElement) => {
@@ -29,9 +23,7 @@ const initView = () => {
         }).join('');
         selectElement.disabled = false;
       }
-
-      selectElement.insertAdjacentHTML('beforeend', optionsList);
-    
+      selectElement.innerHTML = optionsList;
   }
 
   return {

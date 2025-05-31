@@ -9,8 +9,8 @@ const initCategoriesEvents = async () => {
   
   if (!mainCatsBlock || !subCatsBlock) return;
 
+  // Получаем главные катерии
   const mainCats = await model.setMainCats();
-  if (!mainCats) return;
 
   // Заполним опции для селекта главных категорий.
   view.setCategoriesOptions(mainCats, mainCatsBlock);

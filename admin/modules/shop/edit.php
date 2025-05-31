@@ -3,9 +3,6 @@
   $pageTitle = "Магазин - редактировние товара";
   $pageClass = "admin-page";
 
-  // Главные категории 
-  // $mainCats   = R::find('categories', 'parent_id IS NULL');
-
   // Подкатегории
   $subCats = R::find('categories', 'parent_id IS NOT NULL');
   
@@ -38,6 +35,15 @@
   // Получаем список брендов
   $brands = R::find('brands', 'ORDER BY title ASC');
 
+  // Запрашиваем информацию по изображениям продукта
+  $sqlImages = 'SELECT 
+                  pi.filename_small,
+                  pi.image_order
+                FROM `productimages` pi
+                WHERE product_id = ?
+                ORDER BY image_order ASC';
+  $productImages = R::getAll($sqlImages, [$product['id']]);
+
   if( isset($_POST['submit'])) {
     // Проверка токена
     if (!check_csrf($_POST['csrf'] ?? '')) {
@@ -63,9 +69,8 @@
     if ( empty($_SESSION['errors'])) {
       $product = R::load('products', $_GET['id']);
       $product->title = $_POST['title'];
-      $product->cat = $_POST['cat'];
+      $product->cat = $_POST['subCat'];
       $product->brand = $_POST['brand'];
-      $product->subcat = $_POST['cat'] . '-' . $_POST['brand'];
       $product->price = $_POST['price'];
       $product->content = $_POST['content'];
       $product->editTime = time();

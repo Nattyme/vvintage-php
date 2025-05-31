@@ -21,7 +21,7 @@ $product = R::getRow($sqlQuery, [$uriGet]);
 
 // Запрашиваем информацию по изображениям продукта
 $sqlImages = 'SELECT pi.filename, pi.image_order 
-              FROM productimages pi
+              FROM `productimages` pi
               WHERE product_id = ?
               ORDER BY image_order ASC'; 
 
