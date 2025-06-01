@@ -1,6 +1,6 @@
 <!-- Заказы пользователя -->
-<section class="section bg-grey">
-  <div class="container">
+<section class="section bg-grey profile__order">
+  <!-- <div class="container"> -->
 
     <div class="section__title">
       <h2 class="heading">Мои заказы</h2>
@@ -34,5 +34,5 @@
     </div>
     <!--//  products -->
 
-  </div>
+  <!-- </div> -->
 </section>

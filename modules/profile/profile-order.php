@@ -28,16 +28,35 @@ foreach ( $products as $product) {
   $ids[] = $product['id'];
 }
 
-// Получаем все товары с id массива $ids из таблицы 'products'
-$productsDB = R::findLike('products', ['id' => $ids]);
+// Запрос продуктов и соответствующих им изображений
+$sqlQuery = " SELECT 
+                  p.*,
+                  pi.filename_small
+              FROM 
+                  `products` p 
+              LEFT JOIN 
+                  `productimages` pi ON p.id = pi.product_id AND pi.image_order = 1
+              WHERE 
+                  p.id IN (" . R::genSlots($ids) . ")";
+
+
+$productsDB = R::getAll($sqlQuery, $ids);
+
+
+// Пересобирем в новый массив $productsData с ключами - Id товара
+$productsData = [];
+
+foreach($productsDB as $product) {
+  $productsData[$product['id']] = $product;
+}
 
 $pageTitle = "Заказ &#8470;" . $order['id'] . "&#160; от &#160;" . rus_date('j F Y', $order['timestamp']);
 $pageClass = "profile-page";
 
-include ROOT . 'templates/page-parts/_head.tpl';
+include ROOT . 'templates/_page-parts/_head.tpl';
 include ROOT . 'templates/_parts/_header.tpl';
 
 include ROOT . 'templates/profile/profile-order.tpl';
 
 include ROOT . 'templates/_parts/_footer.tpl';
-include ROOT . 'templates/page-parts/_foot.tpl';
+include ROOT . 'templates/_page-parts/_foot.tpl';

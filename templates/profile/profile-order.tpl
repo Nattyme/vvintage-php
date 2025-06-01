@@ -65,7 +65,7 @@
           <?php foreach($products as $product) : ?>
             <tr>
               <td>
-                <img src="<?php echo HOST . 'usercontent/products/' . $productsDB[$product['id']]['cover_small'];?>" alt="<?php echo $product['title'] ;?>">
+                <img src="<?php echo HOST . 'usercontent/products/' . $productsData[$product['id']]['filename_small'];?>" alt="<?php echo $product['title'] ;?>">
               </td>
               <td><?php echo $product['title'];?></td>
 
