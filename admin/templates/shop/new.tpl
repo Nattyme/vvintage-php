@@ -7,48 +7,48 @@
       <div class="notifications__title"></div>
     </div>
 
-    <form id="form-add-product" method="POST" class="shop-form-new" enctype="multipart/form-data">
-      <div class="form__column ">
-        <div class="form__row">
-          <div class="form__field">
-            <label class="form__item">
-              <span class="form__text">Название товара</span>
-              <input name="title" class="form__input input" type="text"
+    <form id="form-add-product" method="POST" class="admin-form" enctype="multipart/form-data">
+      <div class="admin-form__row">
+        <div class="admin-form__column">
+          <div class="admin-form__field">
+            <label class="admin-form__item">
+              <span class="admin-form__text">Название товара</span>
+              <input name="title" class="admin-form__input input" type="text"
                      value="<?php echo isset($_POST['title']) ? h($_POST['title']) : '';?>"
                      placeholder="Введите название" required/>
             </label>
-          </в>
+          </div>
 
-          <div class="form__field">
-            <label class="form__item">
-              <span class="form__text">Цена</span>
-              <input name="price" class="form__input input" type="text"
+          <div class="admin-form__field">
+            <label class="admin-form__item">
+              <span class="admin-form__text">Цена</span>
+              <input name="price" class="admin-form__input input" type="text"
                      value="<?php echo isset($_POST['price']) ? h($_POST['price']) : '';?>"
                      placeholder="Введите цену в &euro;" required/>
             </label>
           </div>
 
-          <div class="form__field">
-            <label class="form__item">
-              <span class="form__text">Артикул</span>
-              <input name="article" class="form__input input" type="text"
+          <div class="admin-form__field">
+            <label class="admin-form__item">
+              <span class="admin-form__text">Артикул</span>
+              <input name="article" class="admin-form__input input" type="text"
                      value="<?php echo isset($_POST['article']) ? h($_POST['article']) : '';?>"
                      placeholder="Введите артикул" />
             </label>
           </div>
 
-          <div class="form__field">
-            <label class="form__item">
-              <span class="form__text">Ссылка</span>
-              <input name="url" class="form__input input" type="text"
+          <div class="admin-form__field">
+            <label class="admin-form__item">
+              <span class="admin-form__text">Ссылка</span>
+              <input name="url" class="admin-form__input input" type="text"
                      value="<?php echo isset($_POST['url']) ? u($_POST['url']) : '';?>"
                      placeholder="Введите ссылку на vinted.fr" />
             </label>
           </div>
 
-          <div class="form__field form__field--input-with-button">
-            <label class="form__item">
-              <span class="form__text">Категория</span>
+          <div class="admin-form__field admin-form__field--input-with-button">
+            <label class="admin-form__item">
+              <span class="admin-form__text">Категория</span>
               <select class="select" name="mainCat" id="mainCat">
                 <?php if (isset($_POST['mainCat']) ) : ?>
                   <option value="<?php echo h($_POST['mainCat']);?>"><?php echo h($_POST['mainCat']);?></option>
@@ -57,7 +57,7 @@
                 <?php endif;?>
               </select>
             </label>
-            <div class="form__item">
+            <div class="admin-form__item">
               <a 
                 class="button button-outline button-outline--small" 
                 href="<?php echo HOST;?>category-new?shop">
@@ -65,14 +65,14 @@
               </a>
             </div>
           </div>
-          <div class="form__field form__field--input-with-button">
-            <label class="form__item">
-              <span class="form__text">Подкатегория</span>
+          <div class="admin-form__field admin-form__field--input-with-button">
+            <label class="admin-form__item">
+              <span class="admin-form__text">Подкатегория</span>
               <select class="select" name="subCat" id="subCat">
                 <option value="">Выберите подкатегорию</option>
               </select>
             </label>
-            <div class="form__item">
+            <div class="admin-form__item">
               <a 
                 class="button button-outline button-outline--small" 
                 href="<?php echo HOST;?>category-new?shop">
@@ -81,14 +81,14 @@
             </div>
           </div>
 
-          <div class="form__field form__field--input-with-button">
-            <label class="form__item">
-              <span class="form__text">Выберите бренд</span>
+          <div class="admin-form__field admin-form__field--input-with-button">
+            <label class="admin-form__item">
+              <span class="admin-form__text">Выберите бренд</span>
               <select class="select" name="brand" id="brands">
                 <option value="">Выберите бренд</option>
               </select>
             </label>
-            <div class="form__item">
+            <div class="admin-form__item">
               <a 
                 class="button button-outline button-outline--small" 
                 href="<?php echo HOST;?>brand-new">
@@ -97,29 +97,26 @@
             </div>
           </div>
 
-          <div class="form__field">
-            <label class="form__item">
-              <span class="form__text">Описание товара</span>
+          <div class="admin-form__field">
+            <label class="admin-form__item">
+              <span class="admin-form__text">Описание товара</span>
             </label>
-            <textarea class="form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
+            <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
               <?php echo isset($_POST['content']) ? h($_POST['content']) : 'Введите описание товара'; ?>
             </textarea>
           </div>
         </div>
 
-        <div class="form__column form__column--imgs">
-          <div class="form__field">
-            <label class="form__item">
-              <span class="form__text">Фотографии товара</span>
+        <div class="admin-form__column admin-form_column--imgs">
+          <div class="admin-form__field">
+            <label class="admin-form__item">
+              <span class="admin-form__text">Фотографии товара</span>
               <div class="block-upload" data-preview="block">
                 <div class="block-upload__description">
                   <p class="block-upload__title">
                     Изображение jpg или png, рекомендуемая ширина 945px и больше, высота от 400px и более. Вес до 2Мб.
                   </p>
                 </div>
-                          <!-- <div id="drop-area" class="drop-area">Перетащите сюда изображения</div>
-                <div id="preview-list" class="preview-list block-upload__preview" data-preview="container" data-dragg-and-drop>Перетащите сюда изображения</div>
- -->
 
                 <div class="block-upload__button ">
                   <label>
@@ -138,9 +135,9 @@
       <!-- CSRF-токен -->
       <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
-      <div class="form__button-wrapper form__button-row">
+      <div class="admin-form__button-wrapper admin-form__button-row">
         <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>shop">Отмена</a>
-        <button class="form__button button-solid" type="submit" name="submit" value="submit">Опубликовать</button>
+        <button class="admin-form__button button-solid" type="submit" name="submit" value="submit">Опубликовать</button>
       </div>
     </form>
   </div>

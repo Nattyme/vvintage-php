@@ -1,4 +1,4 @@
-import previewModel from "../preview-images/preview.model";
+import previewModel from "../preview-images/preview.model.js";
 
 const initModel = () => {
   // Хранит текущее перетаскиваемое

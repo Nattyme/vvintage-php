@@ -142,6 +142,20 @@ switch ($uriModule) {
     require ROOT . "admin/modules/categories-shop/delete.php";
     break;
 
+   // ::::::::::::: MESSAGES :::::::::::::::::::
+
+   case 'messages':
+    require ROOT . "admin/modules/messages/all.php";
+    break;
+
+  case 'message':
+    require ROOT . "admin/modules/messages/single.php";
+    break;
+
+  case 'message-delete':
+    require ROOT . "admin/modules/messages/delete.php";
+    break;
+
     
   // ::::::::::::: OTHER :::::::::::::::::::
   case 'main':
@@ -150,14 +164,6 @@ switch ($uriModule) {
 
   case 'contacts':
     require ROOT . "admin/modules/contacts/edit.php";
-    break;
-  
-  case 'messages':
-    require ROOT . "admin/modules/messages/all.php";
-    break;
-
-  case 'message':
-    require ROOT . "admin/modules/messages/single.php";
     break;
 
   case 'comments':

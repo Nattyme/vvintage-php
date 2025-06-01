@@ -1,6 +1,5 @@
 const initView = () => {
   const form = document.querySelector('#form-add-product');
-  console.log(form);
   
   if (!form) return;
 

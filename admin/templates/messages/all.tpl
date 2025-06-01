@@ -1,5 +1,5 @@
 <div class="admin-page__content-form">
-  <div class="admin-form">
+  <div class="">
     <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
@@ -56,10 +56,9 @@
               <a target="_blank" href="<?php echo HOST . 'usercontent/contact-form/' . $message['fileNameSrc'];?>"><?php echo $message['fileNameOriginal']; ?></a>
             </td>
             <td class="admin-form-table__unit">
-              <a href="<?php echo HOST . "admin/";?>messages?action=delete&id=<?php echo $message['id'];?>" class="link-above-others icon-delete">
-                <svg class="icon icon--delete">
-                  <use href="https://womazing-php/static/img/svgsprite/sprite.symbol.svg#delete"></use>
-                </svg>  
+              <a href="<?php echo HOST . 'admin/message-delete?id=' . u($message['id']);?>" class="button button-close cross-wrapper cart__delete link-above-others " 
+                aria-label="Удалить товар <?php echo h($message['id']);?>">
+                <span class="leftright"></span><span class="rightleft"> </span>
               </a>
             </td>
           </tr>

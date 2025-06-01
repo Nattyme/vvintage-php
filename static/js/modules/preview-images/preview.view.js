@@ -51,7 +51,7 @@ const initView = () => {
   // Ф-ция возвращает разметку для изображения
   const getImgTmpl = (url) => {
     return  `
-              <div class="form__img-wrapper" data-preview="image-wrapper" data-url="${url}">
+              <div class="admin-form__img-wrapper" data-preview="image-wrapper" data-url="${url}">
                 <img src="${url}" draggable="true" loading="lazy">
                 <button type="button" class="button button-close button-close--with-bg cross-wrapper" data-preview="btn-close">
                 
