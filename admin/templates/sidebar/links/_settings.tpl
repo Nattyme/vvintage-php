@@ -1,7 +1,10 @@
-<li class="control-panel__list-item">
-  <a class="control-panel__list-link" href="<?php HOST;?>settings" title="Перейти на страницу общих настроек сайта">
-    <div class="control-panel__list-img-wrapper">
-      <img class="control-panel__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#settings';?>" alt="icon" />
-    </div>Настройки
+<li class="sidebar__list-item">
+  <a href="<?php HOST;?>settings" class="sidebar__list-button" title="Перейти на страницу общих настроек сайта" data-section="">
+    <div class="sidebar__list-img-wrapper">
+      <svg class="icon icon--settings">
+        <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#settings';?>"></use>
+      </svg>    
+    </div>
+    Настройки
   </a>
 </li>
