@@ -1,4 +1,5 @@
-<h3 class="admin-section-title">Общие</h3>
+<div class="admin-form__field">
+  <h3 class="admin-section-title">Общие</h3>
 
 <div class="admin-form__item" data-control="tab">
   <!-- Навигация -->
@@ -43,4 +44,6 @@
     </div>
   </div>
   <!--// Блоки с контентом -->
+</div>
+
 </div>

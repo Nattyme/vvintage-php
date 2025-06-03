@@ -51,3 +51,21 @@ const initEverything = async () => {
 document.addEventListener("DOMContentLoaded", async () => initEverything()); 
 
 // yMap();
+setTimeout(() => {
+  console.log('1');
+}, 300).then(
+  setTimeout(() => {
+    console.log('2');
+  }, 200)
+).then(
+  setTimeout(() => {
+    console.log('3');
+  }, 100)
+);
+
+try {
+
+}
+catch {
+  console.log('Ошкибка сервера');
+}

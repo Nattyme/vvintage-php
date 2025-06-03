@@ -1,4 +1,5 @@
-<h3 class="admin-section-title">Секция "Статус"</h3>
+<div class="admin-form__field">
+  <h3 class="admin-section-title">Секция "Статус"</h3>
 
 <div class="admin-form__item" data-control="tab">
   <!-- Навигация -->
@@ -63,5 +64,7 @@
       >
       <span class="checkbox__label"><strong>Показывать секцию статус</strong></span>
   </label>
+</div>
+
 </div>
 
