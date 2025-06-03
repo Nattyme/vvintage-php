@@ -3,7 +3,9 @@
     title="Перейти страницу редактирования магазина"
     data-name="accordeon-title" data-section="${cat.data}">
     <div class="sidebar__list-img-wrapper">
-      <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#shop';?>" alt="icon" />
+      <svg class="icon icon--shop">
+        <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#shop';?>"></use>
+      </svg>
     </div>
     Магазин
   </button>

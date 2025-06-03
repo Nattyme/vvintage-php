@@ -154,9 +154,8 @@
             </g>
         </g>
     </g>
-</symbol><symbol viewBox="0 0 24 24" id="corner" xmlns="http://www.w3.org/2000/svg">
-    <path d="M15 10L20 15L15 20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M4 4V11C4 13.2091 5.79086 15 8 15H20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol><symbol viewBox="0 -960 960 960" id="corner" xmlns="http://www.w3.org/2000/svg">
+    <path d="m560-120-57-57 144-143H200v-480h80v400h367L503-544l56-57 241 241-240 240Z"/>
 </symbol><symbol id="cosmetics" viewBox="0 0 247.646 247.646" style="enable-background:new 0 0 247.646 247.646" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
     <g>
         <g>
