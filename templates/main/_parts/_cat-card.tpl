@@ -5,11 +5,11 @@
     </svg>
 
     <picture>
-      <source srcset="<?php echo HOST . 'static/img/cats/' . h($category['image']) . '.webp 1x,' . 'static/img/cats/' . h($category['image']) . '@2x.webp 2x';?>" type="image/webp" />
-      <source srcset="<?php echo HOST . 'static/img/cats/' . h($category['image']) . '@2x.jpg 2x';?>" type="image/jpeg" />
+      <!-- <source srcset="<?php echo HOST . 'static/img/cats/' . h($category['image']) . 'static/img/cats/' . h($category['image']);?>" type="image/webp" /> -->
+      <source srcset="<?php echo HOST . 'static/img/cats/' . h($category['image']);?>" type="image/jpeg" />
       <img 
-        src="<?php echo HOST . 'static/img/cats/' . h($category['image']) . '.jpg';?>" 
-        srcset="<?php echo HOST . 'static/img/cats/' . h($category['image']) . '@2x.jpg';?>" 
+        src="<?php echo HOST . 'static/img/cats/' . h($category['image']);?>" 
+        srcset="<?php echo HOST . 'static/img/cats/' . h($category['image']);?>" 
         alt="<?php echo h($category['title']); ?>" 
       />
     </picture>

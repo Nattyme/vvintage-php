@@ -12,14 +12,14 @@
 			<div class="header__row">
         <?php if ($isBlogPage) : ?>
           <div class="blog-logo">
-            <div class="blog-logo__title">VVintage</div>
+            <div class="blog-logo__title"><?php echo h($settings['site_title']);?></div>
             <span class="blog-logo__separator"></span>
             <div class="blog-logo__text">Блог о винтажной Франции </div>
           </div>
         <?php else : ?>
           <div class="header__logo">
             <a href="<?php echo HOST . 'main'; ?>" class="logo">
-              VVintage
+              <?php echo h($settings['site_title']);?>
             </a>
           </div>
         <?php endif; ?>

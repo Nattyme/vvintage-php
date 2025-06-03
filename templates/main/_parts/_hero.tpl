@@ -15,10 +15,10 @@
     <div class="hero__content-wrapper">
       <div class="hero__text">
         <div class="hero__title">
-          <h1 class="h1">Откройте для себя VVintage</h1>
+          <h1 class="h1"><?php echo h($main['hero_title']);?></h1>
         </div>
         <div class="hero__desc">
-          <p>Мода, вдохновленная прошлым&#8230;</p>
+          <p><?php echo h($main['hero_text']);?>&#8230;</p>
         </div>
       </div>
       <a href="<?php echo HOST;?>shop" class="hero__button">

@@ -46,26 +46,11 @@ if ( isset($_POST['submit'])) {
     $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['status_text'], 'status_text']);
     $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['status_link'], 'status_link']);
 
-    $_POST['design_on'] = isset($_POST['design_on']) ? $_POST['design_on'] : NULL;
-    $_POST['html_on'] = isset($_POST['html_on']) ? $_POST['html_on'] : NULL;
-    $_POST['css_on'] = isset($_POST['css_on']) ? $_POST['css_on'] : NULL;
-    $_POST['js_on'] = isset($_POST['js_on']) ? $_POST['js_on'] : NULL;
-    $_POST['php_on'] = isset($_POST['php_on']) ? $_POST['php_on'] : NULL;
-    $_POST['wp_on'] = isset($_POST['wp_on']) ? $_POST['wp_on'] : NULL;
-
-    $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['design_on'], 'design_on']);
-    $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['html_on'], 'html_on']);
-    $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['css_on'], 'css_on']);
-    $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['js_on'], 'js_on']);
-    $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['php_on'], 'php_on']);
-    $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['wp_on'], 'wp_on']);
-
     $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['youtube'], 'youtube']);
     $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['instagram'], 'instagram']);
     $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['facebook'], 'facebook']);
     $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['vkontakte'], 'vkontakte']);
-    $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['linkedin'], 'linkedin']);
-    $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['github'], 'github']);
+    $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['dzen'], 'dzen']);
 
     $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['card_on_page_shop'], 'card_on_page_shop']);
     $res[] = R::exec('UPDATE `settings` SET VALUE = ? WHERE name = ? ', [$_POST['card_on_page_blog'], 'card_on_page_blog']);

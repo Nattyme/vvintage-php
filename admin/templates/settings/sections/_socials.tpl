@@ -25,13 +25,8 @@
     </button>
 
     <button type="button" class="tab__nav-button" data-control="tab-button" 
-            title="Перейти в редактирование ссылки на профиль linkedin">
-      LinkedIn
-    </button>
-
-    <button type="button" class="tab__nav-button" data-control="tab-button" 
-            title="Перейти в редактирование ссылки на профиль github">
-      GitHub
+            title="Перейти в редактирование ссылки на профиль яндекс дзен">
+      Дзен
     </button>
   </div>
   <!-- Навигация -->
@@ -70,22 +65,14 @@
           />
         </label>
       </div>
+      <div class="tab__block" data-control="tab-block">
+        <label class="input__label">
+          <input name="dzen" class="input input--width-label" type="text" placeholder="Введите ссылку на профиль яндекс дзен"
+                 value="<?php echo isset($_POST['dzen']) ? $_POST['dzen'] : $settings['dzen']; ?>" 
+          />
+        </label>
+      </div>
 
-      <div class="tab__block" data-control="tab-block">
-        <label class="input__label">
-          <input name="linkedin" class="input input--width-label" type="text" placeholder="Введите ссылку на профиль linkedin" 
-                 value="<?php echo isset($_POST['linkedin']) ? $_POST['linkedin'] : $settings['linkedin']; ?>" 
-          />
-        </label>
-      </div>
-      
-      <div class="tab__block" data-control="tab-block">
-        <label class="input__label">
-          <input name="github" class="input input--width-label" type="text" placeholder="Введите ссылку на профиль github" 
-                 value="<?php echo isset($_POST['github']) ? $_POST['github'] : $settings['github']; ?>" 
-          />
-        </label>
-      </div>
     </div>
   </div>
   <!--// Блоки с контентом -->
