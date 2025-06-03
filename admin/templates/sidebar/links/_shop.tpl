@@ -13,7 +13,9 @@
       <a class="sidebar__list-button sidebar__inner-link" 
           href="<?php echo HOST;?>admin/shop-new" title="" data-section="shop-add">
         <div class="sidebar__list-img-wrapper">
-          <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner'?>" alt="icon" />
+          <svg class="icon icon--corner">
+            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#corner';?>"></use>
+          </svg>    
         </div>
         Добавить товар
       </a>
@@ -22,7 +24,9 @@
       <a class="sidebar__list-button sidebar__inner-link" 
           href="<?php echo HOST;?>admin/shop" title="" data-section="shop-all">
         <div class="sidebar__list-img-wrapper">
-          <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner'?>" alt="icon" />
+          <svg class="icon icon--corner">
+            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#corner';?>"></use>
+          </svg>  
         </div>
         Все товары
       </a>
@@ -31,7 +35,9 @@
       <a class="sidebar__list-button sidebar__inner-link" 
           href="<?php echo HOST;?>admin/brand" title="" data-section="shop-brands">
         <div class="sidebar__list-img-wrapper">
-          <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner'?>" alt="icon" />
+          <svg class="icon icon--corner">
+            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#corner';?>"></use>
+          </svg>  
         </div>
         Все бренды
       </a>
@@ -40,7 +46,9 @@
       <a class="sidebar__list-button sidebar__inner-link" 
           href="<?php echo HOST;?>admin/category" title="" data-section="shop-cats">
         <div class="sidebar__list-img-wrapper">
-          <img class="sidebar__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#corner'?>" alt="icon" />
+          <svg class="icon icon--corner">
+            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#corner';?>"></use>
+          </svg>  
         </div>
         Все категории
       </a>

@@ -3,7 +3,9 @@
      title="Перейти на страницу редактирования страниц сайта" 
      data-name="accordeon-title">
     <div class="control-panel__list-img-wrapper">
-      <img class="control-panel__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#file';?>" alt="icon" />
+      <svg class="icon icon--files">
+        <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#files';?>"></use>
+      </svg>
     </div>
     Страницы
   </a>

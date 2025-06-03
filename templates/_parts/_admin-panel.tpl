@@ -40,8 +40,8 @@
         <!-- Заказы -->
         <a class="admin-panel__link" href="<?php echo HOST; ?>admin/orders" title="Перейти к списку заказов">
           <div class="admin-panel__icon-wrapper counter">
-            <svg class="icon icon--folder">
-              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#folder';?>"></use>
+            <svg class="icon icon--inventory">
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#inventory';?>"></use>
             </svg>
             
             <?php if ($ordersNewCounter > 0 ) : ?>
