@@ -3,22 +3,52 @@
     <?php if($isBlogPage) : ?>
       <div class="footer__top">
         <div class="footer__topics">
-          <div class="footer__topics__title">Заголовок тем</div>
-            <ul class="footer__topics__list">
-              <li>
-                <a href="">Тег</a>
+          <div class="footer__topics-header">ПОСМОТРИТЕ ВСЕ РУБРИКИ БЛОГА</div>
+            <ul class="topics-list">
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
               </li>
-              <li>
-                <a href="">Тег</a>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
               </li>
-              <li>
-                <a href="">Тег</a>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
               </li>
-              <li>
-                <a href="">Тег</a>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
               </li>
-              <li>
-                <a href="">Тег</a>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+               <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+               <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
+              </li>
+              <li class="topics-list__item">
+                <a class="topics-list__link" href="">Тег</a>
               </li>
             </ul>
           </div> 

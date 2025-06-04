@@ -157,15 +157,24 @@ switch ($uriModule) {
     break;
 
     
-  // ::::::::::::: OTHER :::::::::::::::::::
+  // ::::::::::::: PAGES :::::::::::::::::::
   case 'main':
-    require ROOT . "admin/modules/main/edit.php";
+    require ROOT . "admin/modules/pages/main.php";
+    break;
+
+  case 'about':
+  require ROOT . "admin/modules//pages/about.php";
+    break;
+
+  case 'delivery':
+  require ROOT . "admin/modules//pages/delivery.php";
     break;
 
   case 'contacts':
-    require ROOT . "admin/modules/contacts/edit.php";
+    require ROOT . "admin/modules//pages/contacts.php";
     break;
 
+  // ::::::::::::: OTHER :::::::::::::::::::
   case 'comments':
     require ROOT . "admin/modules/comments/all.php";
     break;
