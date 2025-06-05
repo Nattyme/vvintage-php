@@ -3,9 +3,10 @@
     <img src="<?php echo HOST . 'static/img/about-page/01.jpg';?>" alt="">
   </div>
   <div class="post-card-small__text">
-    <a href="#!" class="post-card-small__title link-above-others">
-      Заголовок статьи
-    </a>
+    <div class="post-card-small__title">
+      <h2 class="h3 text-bold">Заголовок статьи</h2>
+    </div>
+    
    
     <div class="post-card-small__description">
       <p>Базовое описание для статьи с информацией о содержании текста примерно на три строки</p>

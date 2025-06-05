@@ -11,7 +11,7 @@
           value=""
         >
 
-        <button type="submit">
+        <button type="submit" aria-label="Найти">
           <svg class="icon icon--loupe">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
           </svg>
@@ -22,10 +22,10 @@
     <div class="sidebar__widget sidebar__widget--categories">
       <div class="widget widget--categories">
         <div class="widget__title">
-          <h4 class="h4 text-bold">РУБРИКИ</h4>
+          <h4 class="h4 text-bold" id="rubrics-title">РУБРИКИ</h4>
         </div>
 
-        <ul class="widget__list widget__list--blog widget__list--categories">
+        <ul class="widget__list widget__list--blog widget__list--categories" aria-labelledby="rubrics-title">
           <li class="widget__item">
             <a href="#!" class="widget__link widget__link--categories">О Франции</a>
           </li>
@@ -59,9 +59,9 @@
     <div class="sidebar__widget sidebar__widget--related">
       <div class="widget">
         <div class="widget__title">
-          <h4 class="h4 text-bold">ДРУГИЕ СТАТЬИ</h4>
+          <h4 class="h4 text-bold" id="other-articles-title">ДРУГИЕ СТАТЬИ</h4>
         </div>
-        <ul class="widget__list widget__list--blog">
+        <ul class="widget__list" aria-labelledby="other-articles-title">
           <li class="widget__item">
             <a href="#!" class="widget__link">
               <?php include ROOT . 'templates/blog/_parts/_post-card-small.tpl';?>
