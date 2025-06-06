@@ -4,14 +4,31 @@
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
     <header class="admin-form__header admin-form__row">
-      <h2 class="heading">Блог - все записи</h2>
-      <a class="secondary-button" href="<?php HOST;?>post-new">Добавить пост</a>
+      <a class="button button-primary" href="<?php HOST;?>post-new">Добавить пост</a>
+      
+      <!-- SEARCH FORM-->
+      <form method="GET" action="" class="search" role="search">
+        <input 
+          type="text" 
+          name="query" 
+          placeholder="Найти" 
+          value="<?php echo h($searchQuery);?>"
+        >
+
+        <button type="search-submit">
+          <svg class="icon icon--loupe">
+            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
+          </svg>
+        </button>
+      </form>
+      <!-- SEARCH FORM-->
     </header>
     <table class="table">
       <thead>
         <tr>
           <th>ID</th>
           <th>Название</th>
+          <th>Обложка</th>
           <th></th>
         </tr>
       </thead>
@@ -21,8 +38,11 @@
             <td><?php echo $post['id']; ?></td>
             <td>
               <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>post-edit?id=<?php echo $post['id']; ?>">
-                <?php echo $post['title']; ?>
+                <?php echo h(shortText($post['title'], $limit = 50));?>"
               </a>
+            </td>
+            <td>
+              <img src="<?php echo HOST . 'usercontent/blog/' . h($post['cover_small']);?>" alt="<?php echo h(shortText($post['title'], $limit = 50));?>">
             </td>
             <td>
               <a href="<?php echo HOST . "admin/";?>post-delete?id=<?php echo $post['id'];?>" class="icon-delete"></a>

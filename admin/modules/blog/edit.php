@@ -1,11 +1,14 @@
 <?php
-// Находим категории, относящиеся к секции shop
-$catsArray = R::find('categories', ' section LIKE ? ORDER BY title ASC', ['blog']);
+$pageTitle = "Блог. Редактировать пост";
+$pageClass = "admin-page";
+
+// Получаем категории блога
+$catsDB = R::find('blogcategories', "ORDER BY id DESC");
 
 // Создаем массив для категорий shop
 $cats = [];
-foreach ($catsArray as $key => $value) {
-  $cats[] = ['id' => $value['id'], 'title' => $value['title'], 'section' => $value['section']];
+foreach ($catsDB as $key => $value) {
+  $cats[] = ['id' => $value['id'], 'title' => $value['title']];
 }
 
 if( isset($_POST['postEdit'])) {
@@ -80,8 +83,7 @@ if( isset($_POST['postEdit'])) {
 
 $post = R::load('posts', $_GET['id']);
 
-$pageTitle = "Блог. Редактировать пост {$post['title']}";
-$pageClass = "admin-page";
+
 // Центральный шаблон для модуля
 ob_start();
 include ROOT . "admin/templates/blog/edit.tpl";

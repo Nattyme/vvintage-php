@@ -29,7 +29,7 @@
             
             <td class="admin-form-table__unit">
               <a class="link-to-page" href="<?php echo HOST; ?>admin/category-blog-edit?id=<?php echo u($cat['id']);?>">
-                <?php echo $cat['child_title'] ? h($cat['child_title']) : 'Нет подкатегорий';?>
+                <?php echo h($cat['title']);?>
               </a>
             </td>
            
