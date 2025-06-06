@@ -67,18 +67,6 @@
               <?php include ROOT . 'templates/blog/_parts/_post-card-small.tpl';?>
             </a>
           </li>
-          <li class="widget__item widget__item--related">
-            <a href="#!" class="widget__link">
-              <?php include ROOT . 'templates/blog/_parts/_post-card-small.tpl';?>
-            </a>
-          </li>
-          <li class="widget__item widget__item--related">
-            <a href="#!" class="widget__link">
-              <?php include ROOT . 'templates/blog/_parts/_post-card-small.tpl';?>
-            </a>
-          </li>
-      
-       
         </ul>
 
       

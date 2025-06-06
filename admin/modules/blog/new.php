@@ -21,6 +21,7 @@ if( isset($_POST['postSubmit']) ) {
     // $post->cat = $_POST['cat'];
     $post->content = $_POST['content'];
     $post->timestamp = time();
+    $post->views = NULL;
 
     // Если передано изображение - уменьшаем, сохраняем, записываем в БД
     if ( isset($_FILES['cover']['name']) && $_FILES['cover']['tmp_name'] !== '') {

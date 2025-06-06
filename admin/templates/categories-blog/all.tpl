@@ -5,38 +5,10 @@
 
 
     <header class="admin-form__header admin-form__row">
-      <a href="<?php echo HOST . 'admin/category-new';?>" class="shop__button button button-primary" data-btn="add">
+      <a href="<?php echo HOST . 'admin/category-blog-new';?>" class="shop__button button button-primary" data-btn="add">
         <span>Новая категория</span>
       </a>
-
-      <!-- SEARCH FORM-->
-      <form method="GET" action="" class="search" role="search">
-        <input 
-          type="text" 
-          name="query" 
-          placeholder="Найти" 
-          value="<?php echo h($searchQuery);?>"
-        >
-
-        <button type="search-submit">
-          <svg class="icon icon--loupe">
-            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
-          </svg>
-        </button>
-      </form>
-      <!-- SEARCH FORM-->
     </header>
-    <form method="GET" action="" class="form-products-table__actions">
-      <select class="select" name="action">
-        <option value="">— Все разделы —</option>
-        <?php foreach ($mainCats as $mainCat) : ?>
-            <option value="<?php echo h($mainCat['id']); ?>" <?php echo ($filterSection == $mainCat['id']) ? 'selected' : '' ?>>
-              <?php echo h($mainCat['title']) ?>
-            </option>
-        <?php endforeach;?>
-      </select>
-      <button type="submit" class="button button-primary button--small">Применить</button>
-    </form>
 
     <!-- Таблица -->
     <table class="table">
@@ -44,7 +16,6 @@
         <tr class="">
           <th class="">ID</th>
           <th class="">Категория</th>
-          <th class="">Главный раздел</th>
           <th class=""></th>
         </tr>
       </thead>
@@ -57,17 +28,13 @@
             </td>
             
             <td class="admin-form-table__unit">
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit?id=<?php echo u($cat['id']);?>">
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-blog-edit?id=<?php echo u($cat['id']);?>">
                 <?php echo $cat['child_title'] ? h($cat['child_title']) : 'Нет подкатегорий';?>
               </a>
             </td>
-
-            <td class="admin-form-table__unit">
-              <?php echo $cat['parent_title'] ? h($cat['parent_title']) : '';?>
-            </td>
            
             <td class="admin-form-table__unit">
-              <a href="<?php echo HOST . "admin/";?>category-delete?id=<?php echo u($cat['id']);?>" class="icon-delete link-above-others">
+              <a href="<?php echo HOST . 'admin/category-blog-delete?id=' . u($cat['id']);?>" class="icon-delete link-above-others">
                 <svg class="icon icon--delete">
                   <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#delete';?>"></use>
                 </svg> 

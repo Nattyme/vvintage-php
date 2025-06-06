@@ -127,19 +127,36 @@ switch ($uriModule) {
 
   // ::::::::::::: CATEGORIES SHOP :::::::::::::::::::
   case 'category-shop':
-    require ROOT . "admin/modules/categories-shop/all.php";
+    require ROOT . "admin/modules/categories/all.php";
     break;
 
   case 'category-shop-new':
-    require ROOT . "admin/modules/categories-shop/new.php";
+    require ROOT . "admin/modules/categories/new.php";
     break;
 
   case 'category-shop-edit':
-    require ROOT . "admin/modules/categories-shop/edit.php";
+    require ROOT . "admin/modules/categories/edit.php";
     break;
 
   case 'category-shop-delete':
-    require ROOT . "admin/modules/categories-shop/delete.php";
+    require ROOT . "admin/modules/categories/delete.php";
+    break;
+
+    // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
+  case 'category-blog':
+    require ROOT . "admin/modules/categories-blog/all.php";
+    break;
+
+  case 'category-blog-new':
+    require ROOT . "admin/modules/categories-blog/new.php";
+    break;
+
+  case 'category-blog-edit':
+    require ROOT . "admin/modules/categories-blog/edit.php";
+    break;
+
+  case 'category-blog-delete':
+    require ROOT . "admin/modules/categories-blog/delete.php";
     break;
 
    // ::::::::::::: MESSAGES :::::::::::::::::::

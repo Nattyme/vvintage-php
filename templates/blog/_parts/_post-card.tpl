@@ -4,7 +4,7 @@
   </div>
   <div class="post-card__text">
     <div class="post-card__title">
-      <h2 class="h2"><?php echo h($post['title']);?></h2>
+      <h2 class="h2"><?php echo h(shortText($post['title'], $limit = 200));?></h2>
     </div>
     <div class="post-card__meta">
       <div class="post-meta">
@@ -27,7 +27,7 @@
    
     </div>
     <div class="post-card__description">
-      <p><?php echo $post['content'];?></p>
+      <p><?php echo shortText($post['content'], $limit = 200);?></p>
     </div>
   </div>
 

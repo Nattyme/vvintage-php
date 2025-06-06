@@ -1,9 +1,9 @@
 <?php
   // Задаем название страницы и класс
-  $pageTitle = "Категории - удалить запись";
+  $pageTitle = "Категории блога - удалить";
   $pageClass = "admin-page";
 
-  $cat = R::load('categories', $_GET['id']); 
+  $cat = R::load('blogcategories', $_GET['id']); 
 
 
   if ( isset($_POST['submit']) ) {
@@ -17,7 +17,7 @@
       R::trash($cat); 
     
       $_SESSION['success'][] = ['title' => 'Категория была успешно удалена.'];
-      header('Location: ' . HOST . 'admin/category');
+      header('Location: ' . HOST . 'admin/category-blog');
       exit();
     }
   
@@ -25,7 +25,7 @@
 
 
   ob_start();
-  include ROOT . "admin/templates/categories/delete.tpl";
+  include ROOT . "admin/templates/categories-blog/delete.tpl";
   $content = ob_get_contents();
   ob_end_clean();
 
