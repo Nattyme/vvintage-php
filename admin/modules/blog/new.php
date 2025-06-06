@@ -1,16 +1,6 @@
 <?php
-// Получаем  текущую секцию 
-$currentSection = getCurrentSection ();
-$_SESSION['currentSection'] = $currentSection;
-
 // Находим категории, относящиеся к секции shop
-$catsArray = R::find('categories', ' section LIKE ? ORDER BY title ASC', ['blog']);
-
-// Создаем массив для категорий shop
-$cats = [];
-foreach ($catsArray as $key => $value) {
-  $cats[] = ['id' => $value['id'], 'title' => $value['title'], 'section' => $value['section']];
-}
+// $catsArray = R::find('categories', ' section LIKE ? ORDER BY title ASC', ['blog']);
 
 if( isset($_POST['postSubmit']) ) {
   
@@ -27,7 +17,8 @@ if( isset($_POST['postSubmit']) ) {
   if ( empty($_SESSION['errors'])) {
     $post = R::dispense('posts');
     $post->title = $_POST['title'];
-    $post->cat = $_POST['cat'];
+    $post->cat = 'Ароматы';
+    // $post->cat = $_POST['cat'];
     $post->content = $_POST['content'];
     $post->timestamp = time();
 

@@ -1,11 +1,11 @@
 <article class="post-card">
   <div class="post-card__img-wrapper">
-    <img src="<?php echo HOST . 'static/img/about-page/01.jpg';?>" alt="">
+    <img src="<?php echo HOST . h("usercontent/blog/{$post['cover']}");?>" alt="">
   </div>
   <div class="post-card__text">
-    <a href="#!" class="post-card__title link-above-others">
-      Заголовок статьи
-    </a>
+    <div class="post-card__title">
+      <h2 class="h2"><?php echo h($post['title']);?></h2>
+    </div>
     <div class="post-card__meta">
       <div class="post-meta">
         <div class="post-meta__date">
@@ -14,7 +14,8 @@
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#calendar';?>"></use>
           </svg>
 
-          <time datetime="2025-05-28">28 мая 2025</time>
+          <time datetime="2025-05-28"><?php echo h(rus_date("j F Y", $post['timestamp']));?></time>
+          <!-- <time datetime="2025-05-28"><?php echo h($post['timestamp']);?></time> -->
         </div>
         <div class="post-meta__views">
           <svg class="icon icon--eye">
@@ -26,7 +27,7 @@
    
     </div>
     <div class="post-card__description">
-      <p>Базовое описание для статьи с информацией о содержании текста примерно на три строки</p>
+      <p><?php echo $post['content'];?></p>
     </div>
   </div>
 

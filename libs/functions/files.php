@@ -78,8 +78,7 @@
     }
   }
 
-    //Проверка, что передан массив изображений
-
+  //Проверка, что передан массив изображений
   function reArrayFiles( $file_post) {
     $file_count  = count( $file_post['name']);
     $file_keys  = array_keys($file_post);
@@ -183,7 +182,6 @@
 
     return $coverArray;
   }
-    
 
   function saveUploadedImgNoCrop ($inputFileName, $minSize, $maxFileSizeMb, $folderName, $fullSize, $smallSize) {
     /*
@@ -254,8 +252,6 @@
         return [$db_file_name, $smallSize[0] . '-' . $db_file_name];
     }
   }
-
-
 
   // saveUploadedFile("file", 12, 'contact-form') 
   function saveUploadedFile($inputFileName, $maxFileSizeMb, $folderName) {

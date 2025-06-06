@@ -63,6 +63,7 @@
   }
   
   // Форматируем дату
+  // rus_date("j F Y", $post['timestamp'])
   function rus_date () {
     // Перевод
     $translate = array(

@@ -10,6 +10,7 @@ $sqlQuery = 'SELECT
              WHERE posts.id = ? LIMIT 1';
 
 $post = R::getRow($sqlQuery, [$uriGet]);
+
 if (!$post) {
   header('Location: ' . HOST . 'blog');
   exit();
@@ -32,18 +33,26 @@ $sqlQueryComments = 'SELECT
                      LEFT JOIN `users` ON comments.user = users.id
                      WHERE comments.post = ?';
 
-$comments = R::getAll( $sqlQueryComments, [$post['id']] );
+// $comments = R::getAll( $sqlQueryComments, [$post['id']] );
 
 // Вывод похожих постов
-$relatedPosts = get_related_posts($post['title']);
+// $relatedPosts = get_related_posts($post['title']);
 
 $pageTitle = "Запись в блоге - {$post['title']}";
 
+//Сохраняем код ниже в буфер
+ob_start();
+include ROOT . 'templates/blog/single.tpl';
+//Записываем вывод из буфера в пепеменную
+$content = ob_get_contents();
+//Окончание буфера, очищаем вывод
+ob_end_clean();
+
 // Подключение шаблонов страницы
-include ROOT . "templates/page-parts/_head.tpl";
+include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";
 
-include ROOT . "templates/blog/single.tpl";
+include ROOT . 'templates/blog/template.tpl';
 
 include ROOT . "templates/_parts/_footer.tpl";
-include ROOT . "templates/page-parts/_foot.tpl";
+include ROOT . "templates/_page-parts/_foot.tpl";
