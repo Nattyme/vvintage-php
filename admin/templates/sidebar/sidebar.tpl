@@ -4,7 +4,7 @@ $messages = R::find('messages', 'ORDER BY id DESC');
 <section class="sidebar" id="sidebar-tab">
 
     <div class="sidebar__container sidebar__content">
-      <a href="<?php echo HOST;?>" class="control-panel__title-wrapper" title="Перейти на главную страницу сайта"" title="Перейти на главную страницу сайта">
+      <a href="<?php echo HOST;?>" class="control-panel__title-wrapper" title="Перейти на главную страницу сайта" title="Перейти на главную страницу сайта">
 
         <div class="sidebar__header">
           <div class="sidebar__title-wrapper">

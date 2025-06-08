@@ -5,7 +5,7 @@
 
    
     <header class="admin-form__header admin-form__row">
-      <a href="<?php echo HOST . 'admin/category-blog-new';?>" class="button button-primary" data-btn="add">
+      <a href="<?php echo HOST . 'admin/category-blog-new';?>" class="button button--m button--primary" data-btn="add">
         Новая категория
       </a>
     </header>
