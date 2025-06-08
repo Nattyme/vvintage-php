@@ -3,10 +3,10 @@
     <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
-
+   
     <header class="admin-form__header admin-form__row">
-      <a href="<?php echo HOST . 'admin/category-blog-new';?>" class="shop__button button button-primary" data-btn="add">
-        <span>Новая категория</span>
+      <a href="<?php echo HOST . 'admin/category-blog-new';?>" class="button button-primary" data-btn="add">
+        Новая категория
       </a>
     </header>
 
@@ -32,7 +32,7 @@
                 <?php echo h($cat['title']);?>
               </a>
             </td>
-           
+          
             <td class="admin-form-table__unit">
               <a href="<?php echo HOST . 'admin/category-blog-delete?id=' . u($cat['id']);?>" class="icon-delete link-above-others">
                 <svg class="icon icon--delete">
@@ -46,13 +46,11 @@
       </tbody>
     </table>
     <!--// Таблица -->
-
-    <!-- Пагинация -->
-    <div class="admin-form__item">
-      <div class="section-pagination">
-          <?php include ROOT . "admin/templates/_parts/pagination/_pagination.tpl"; ?>
-      </div>
-    </div>
-    <!--// Пагинация -->
   </div>
+
+  <!-- Пагинация -->
+  <div class="section-pagination">
+      <?php include ROOT . "admin/templates/_parts/pagination/_pagination.tpl"; ?>
+  </div>
+   <!--// Пагинация -->
 </div>

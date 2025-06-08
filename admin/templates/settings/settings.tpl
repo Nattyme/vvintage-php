@@ -11,10 +11,8 @@
     <?php include ROOT . 'admin/templates/settings/sections/_cardsonpage.tpl' ?>
 
     <div class="admin-form__item buttons">
-        <button name="submit" class="button button-primary" type="submit">
-            Сохранить изменения
-        </button>
-        <a class="button button-outline" href="<?= HOST ?>admin">Отмена</a>
+        <button name="submit" class="button button--m button--primary" type="submit">Сохранить изменения</button>
+        <a class="button button--m button--outline" href="<?php echo HOST . 'admin';?>">Отмена</a>
     </div>
 
   </form>

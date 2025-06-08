@@ -17,16 +17,18 @@
   <!-- // CSRF-токен -->
 
   <div class="authorization-form__button">
-    <button name="lost-password" value="lost-password" type="submit" class="button button--with-icon button-primary">Восстановить</button>
+    <button name="lost-password" value="lost-password" type="submit" class="button button--l button--primary button--with-icon">Восстановить</button>
   </div>
   <?php endif; ?>
 </form>
 
+<!-- links -->
 <div class="authorization__links">
   <div class="authorization-form__button">
-    <a href="<?php echo HOST; ?>registration" class="button button--with-icon button-primary-outline">Регистрация</a>
+    <a href="<?php echo HOST; ?>registration" class="button button--m button--outline button--outline-transparent button--with-icon">Регистрация</a>
   </div>
   <div class="authorization-form__button">
-    <a href="<?php echo HOST; ?>login" class="button button--with-icon button-primary-outline">Войти</a>
+    <a href="<?php echo HOST; ?>login" class="button button--m button--outline button--outline-transparent button--with-icon">Войти</a>
   </div>
 </div>
+<!-- // links -->

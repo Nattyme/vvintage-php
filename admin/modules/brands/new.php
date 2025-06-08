@@ -1,7 +1,7 @@
 <?php
   // Задаем название страницы и класс
-  $pageTitle = "Бренды - новая запись";
-  $pageClass = "admin-page";
+  $pageTitle = 'Бренды - новая запись';
+  $pageClass = 'admin-page';
 
   if( isset($_POST['submit']) ) {
     // Проверка токена
@@ -36,9 +36,9 @@
 
 
   ob_start();
-  include ROOT . "admin/templates/brands/new.tpl";
+  include ROOT . 'admin/templates/brands/new.tpl';
   $content = ob_get_contents();
   ob_end_clean();
 
   //Шаблон страницы
-  include ROOT . "admin/templates/template.tpl";
+  include ROOT . 'admin/templates/template.tpl';

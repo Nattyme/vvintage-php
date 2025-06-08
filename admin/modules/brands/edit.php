@@ -1,7 +1,7 @@
 <?php
   // Задаем название страницы и класс
-  $pageTitle = "Бренды. Редактировать бренд {$brand['title']}";
-  $pageClass = "admin-page";
+  $pageTitle = 'Бренды - редактирование';
+  $pageClass = 'admin-page';
 
   // Задаем название страницы и класс
   if( isset($_POST['submit'])) {
@@ -30,9 +30,9 @@
   $brand = R::load('brands', $_GET['id']); 
 
   ob_start();
-  include ROOT . "admin/templates/brands/edit.tpl";
+  include ROOT . 'admin/templates/brands/edit.tpl';
   $content = ob_get_contents();
   ob_end_clean();
 
   //Шаблон страницы
-  include ROOT . "admin/templates/template.tpl";
+  include ROOT . 'admin/templates/template.tpl';

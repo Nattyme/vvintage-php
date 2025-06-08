@@ -10,24 +10,24 @@
     <label for="email" class="authorization-form__field-title">Email</label>
 
     <input 
-      value="<?php echo isset($_POST['email']) ? h(trim($_POST['email'])) : ''; ?>"
-      name="email" 
-      class="input" 
-      type="text" 
       id="email"
+      class="input" 
+      name="email" 
+      type="text" 
+      value="<?php echo isset($_POST['email']) ? h(trim($_POST['email'])) : ''; ?>"
       placeholder="Введите email" 
     />
   </div>
 
   <div class="authorization-form__field">
-    <label fro="password" class="authorization-form__field-title">Пароль</label>
+    <label for="password" class="authorization-form__field-title">Пароль</label>
 
     <input 
+      id="password"
       name="password" 
       class="input" 
       type="password" 
       placeholder="Введите пароль" 
-      id="password"
     />
   </div>
 
@@ -36,21 +36,23 @@
   <!-- // CSRF-токен -->
 
   <div class="authorization-form__button">
-    <button name="register" value="register" type="submit" class="button button--with-icon button-primary">
+    <button name="register" value="register" type="submit" class="button button--l button--primary button--with-icon">
       Отправить
     </button>
   </div>
 </form>
 
+<!-- links -->
 <div class="authorization__links">
   <h2 class="authorization__subtitle">Зарегестрированы?</h2>
-  <div class="authorization__img">
-    <svg class="icon icon--woman-with-hat">
-      <use href="./img/svgsprite/sprite.symbol.svg#woman-with-hat"></use>
-    </svg>
-  </div>
 
   <div class="authorization-form__button">
-    <a href="<?php echo HOST.'login'; ?>" class="button button--with-icon button-primary-outline">Войти</a>
+    <a href="<?php echo HOST.'login'; ?>" class="button button--m button--outline button--outline-transparent button--with-icon">Войти</a>
+  </div>
+  <div class="authorization-form__button">
+    <a href="<?php echo HOST . 'lost-password';?>" class="button button--m button--outline button--outline-transparent button--with-icon">
+      Восстановить
+    </a>
   </div>
 </div>
+<!-- // links -->

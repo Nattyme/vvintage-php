@@ -1,6 +1,9 @@
 <?php
-// Находим категории, относящиеся к секции shop
-// $catsArray = R::find('categories', ' section LIKE ? ORDER BY title ASC', ['blog']);
+$pageTitle = "Блог - создание новой записи";
+$pageClass = "admin-page";
+
+// Получаем категории блога
+$cats = R::find('blogcategories', "ORDER BY id DESC");
 
 if( isset($_POST['postSubmit']) ) {
   
@@ -44,8 +47,6 @@ if( isset($_POST['postSubmit']) ) {
   }
 }
 
-$pageTitle = "Блог - создание новой записи";
-$pageClass = "admin-page";
 // Центральный шаблон для модуля
 ob_start();
 include ROOT . "admin/templates/blog/new.tpl";

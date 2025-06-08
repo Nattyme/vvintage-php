@@ -1,5 +1,5 @@
 <div class="admin-page__content-form">
-  <div class="admin-form" style="max-width: unset; width: auto;">
+  <div class="admin-form">
     <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
@@ -14,9 +14,8 @@
               </option>
           <?php endforeach;?>
         </select>
-        <button type="submit" class="button button-primary button--small">Применить</button>
+        <button type="submit" class="button button--s button--primary">Применить</button>
       </form>
-
       <!-- // SELECT -->
 
       <!-- SEARCH FORM-->

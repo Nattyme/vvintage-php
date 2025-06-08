@@ -15,7 +15,7 @@
             <label class="form__item">
               <span class="form__text">Название</span>
               <input name="title" class="form__input input" type="text"
-                     value="<?php echo h(trim($cat['title']);)?>"
+                     value="<?php echo h(trim($cat['title']));?>"
                      placeholder="Введите название категории" required
               />
             </label>

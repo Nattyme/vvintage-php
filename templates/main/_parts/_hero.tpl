@@ -22,7 +22,7 @@
         </div>
       </div>
       <a href="<?php echo HOST;?>shop" class="hero__button">
-        <span class="button button-solid">Открыть магазин</span>
+        <span class="button button--l button--primary">Открыть магазин</span>
       </a>
     </div>
   </div>

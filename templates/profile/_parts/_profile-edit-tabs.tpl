@@ -117,8 +117,8 @@
        <!-- Кнопки -->
        <div class="profile-form__row">
         <div class="profile-form__buttons">
-          <button name="updateProfile" class="button-solid" type="submit">Сохранить</button>
-          <a class="button-outline" href="<?php echo HOST; ?>profile">Отмена</a>
+          <a class="button button--m button--outline" href="<?php echo HOST; ?>profile">Отмена</a>
+          <button name="updateProfile" class="button button--m button--primary" type="submit">Сохранить</button>
         </div>
         
       </div>
@@ -273,8 +273,8 @@
       <!-- Кнопки -->
       <div class="profile-form__row">
         <div class="profile-form__buttons">
-          <button name="updateProfileDelivery" class="button-solid" type="submit">Сохранить</button>
-          <a class="button-outline" href="<?php echo HOST; ?>profile">Отмена</a>
+          <a class="button button--m button--outline" href="<?php echo HOST; ?>profile">Отмена</a>
+          <button name="updateProfile" class="button button--m button--primary" type="submit">Сохранить</button>
         </div>
         
       </div>

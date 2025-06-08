@@ -4,21 +4,8 @@
     <?php include ROOT . 'admin/templates/components/errors.tpl'; ?>
     <?php include ROOT . 'admin/templates/components/success.tpl'; ?>
 
-    <div class="admin-form__item d-flex justify-content-between">
-      <h2 class="heading">Заказ &#8470; <?php echo h($order['id']);?></h2>
-
-      <div class="admin-form__item buttons">
-        <a class="secondary-button" href="<?php echo HOST;?>admin/orders">
-          Назад к списку заказов
-        </a>
-        <a href="<?php echo HOST . 'admin/order-delete?id=' . h($order['id']);?>" class="primary-button primary-button--red">
-          Удалить
-        </a>
-      </div>
-    </div>
-
     <!-- table order info -->
-    <div class="admin-form__item">
+    <div class="admin-form__field">
 
       <table class="table">
 
@@ -68,7 +55,7 @@
     <!--// table order info-->
 
     <!-- table products  -->
-    <div class="admin-form__item">
+    <div class="admin-form__field">
       <table class="table">
         <thead class="product-table__header">
           <tr>
@@ -97,6 +84,20 @@
       </table>
     </div>
     <!--//  table products rows -->
+
+    <!-- Buttons -->
+    <div class="admin-form__field">
+      <div class="buttons">
+        <a class="button button--s button--outline" href="<?php echo HOST . 'admin/orders';?>">
+          К списку заказов
+        </a>
+        <a href="<?php echo HOST . 'admin/order-delete?id=' . h($order['id']);?>" 
+           class="button button--s button--primary button--warning">
+          Удалить
+        </a>
+      </div>
+    </div>
+    <!-- // Buttons -->
 
   </div>
 </div>

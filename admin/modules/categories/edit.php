@@ -22,14 +22,14 @@
       R::store($cat);
       
       $_SESSION['success'][] = ['title' => 'Категория успешно обновлена.'];
+      
+      header('Location: ' . HOST . 'admin/category');
+      exit();
     }
   }
 
   // Запрос постов в БД с сортировкой id по убыванию
   $cat = R::load('categories', $_GET['id']); 
-
-  // Перезаписываем текущую секцию данными из БД - чтобы не подставился id из $_GET
-  $currentSection = $cat['section'];
 
   ob_start();
   include ROOT . "admin/templates/categories/edit.tpl";

@@ -12,10 +12,10 @@
     </div>
 
     <div class="admin-form__item buttons">
-      <button name="submit" value="submit" class="primary-button primary-button--red" type="submit">
+      <button name="submit" value="submit" class="button button--m button--primary button--warning" type="submit">
         Удалить
       </button>
-      <a class="secondary-button" href="<?php echo HOST;?>admin/orders">Отмена</a>
+      <a class="button button--m button--outline" href="<?php echo HOST . 'admin/orders';?>">Отмена</a>
     </div>
   </form>
 </div>

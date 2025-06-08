@@ -16,20 +16,21 @@
   <input type="hidden" name="resetCode" value="<?php echo h($_GET['code']); ?>">
 
   <div class="authorization-form__button">
-    <button name="set-new-password" value="set-new-password" class="button button--with-icon button-primary" type="submit">
+    <button name="set-new-password" value="set-new-password" class="button button--l button--primary button--with-icon" type="submit">
       Установить пароль
     </button>
   </div>
   <?php endif; ?>
 </form>
 
+<!-- links -->
 <div class="authorization__links">
   <div class="authorization-form__button">
-    <a href="<?php echo HOST; ?>registration" class="button button--with-icon button-primary-outline">Регистрация</a>
+    <a href="<?php echo HOST; ?>registration" class="button button--m button--outline button--outline-transparent button--with-icon">Регистрация</a>
   </div>
   <div class="authorization-form__button">
-    <a href="<?php echo HOST; ?>login" class="button button--with-icon button-primary-outline">Войти на сайт</a>
+    <a href="<?php echo HOST; ?>login" class="button button--m button--outline button--outline-transparent button--with-icon">Войти на сайт</a>
   </div>
 </div>
-
+<!-- // links -->
 

@@ -4,7 +4,7 @@
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
     <header class="admin-form__header admin-form__row">
-      <a href="<?php HOST;?>brand-new" class="shop__button button button-primary" data-btn="add">
+      <a href="<?php HOST . 'brand-new';?>" class="button button--m button--primary" data-btn="new">
         <span>Написать</span>
       </a>
       <form method="GET" action="" class="shop__search search" role="search">
@@ -40,20 +40,20 @@
             </td>
             <td class="admin-form-table__unit block-text">
               <a class="link-to-page" href="<?php echo HOST;?>admin/message?id=<?php echo $message['id'];?>">
-                <p class="block-text__desc"><?php echo $message['name'];?></p>
+                <p class="block-text__desc"><?php echo h($message['name']);?></p>
               </a>
             </td>
             <td class="admin-form-table__unit">
-              <?php echo $message['email'];?>
+              <?php echo h($message['email']);?>
             </td>
             <td class="admin-form-table__unit block-text">
-              <p class="block-text__desc"><?php echo $message['message'];?></p>
+              <p class="block-text__desc"><?php echo h($message['message']);?></p>
             </td>
             <td class="admin-form-table__unit">
-              <?php echo rus_date("j. m. Y. H:i", $message['timestamp']); ?>
+              <?php echo h(rus_date("j. m. Y. H:i", $message['timestamp'])); ?>
             </td>
             <td class="admin-form-table__unit">
-              <a target="_blank" href="<?php echo HOST . 'usercontent/contact-form/' . $message['fileNameSrc'];?>"><?php echo $message['fileNameOriginal']; ?></a>
+              <a target="_blank" href="<?php echo HOST . 'usercontent/contact-form/' . h($message['fileNameSrc']);?>"><?php echo isset($message['fileNameOriginal']) ? h($message['fileNameOriginal']) : '-';?></a>
             </td>
             <td class="admin-form-table__unit">
               <a href="<?php echo HOST . 'admin/message-delete?id=' . u($message['id']);?>" class="button button-close cross-wrapper cart__delete link-above-others " 

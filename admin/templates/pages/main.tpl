@@ -59,11 +59,11 @@
 
           <div class="admin-form__button-wrapper admin-form__button-row">
             <?php if (isset($_POST['submit'])) : ?>
-              <a class="admin-form__button button-solid" href="<?php echo HOST;?>admin/shop" title="Вернуться к списку товаров">К списку товаров</a>
+              <a class="button button--m button--outline" href="<?php echo HOST;?>admin/shop" title="Вернуться к списку товаров">К списку товаров</a>
             <?php else : ?>
-              <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>shop" title="Отмена">Отмена</a>
+              <a class="button button--m button--outline" href="<?php echo HOST;?>shop" title="Отмена">Отмена</a>
             <?php endif; ?>
-            <button class="admin-form__button button-solid" type="submit" name="submit" value="submit">Сохранить</button>
+            <button class="button button--m button--primary" type="submit" name="submit" value="submit">Сохранить</button>
           </div>
         </form>
     </div>

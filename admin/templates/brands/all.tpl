@@ -4,9 +4,7 @@
     <?php include ROOT . "admin/templates/components/success.tpl"; ?>
 
     <header class="admin-form__header admin-form__row">
-      <a href="<?php echo HOST;?>brand-new" class="shop__button button button-primary" data-btn="add">
-        <span>Новый бренд</span>
-      </a>
+      <a href="<?php echo HOST . 'admin/brand-new';?>" class="shop__button button button-primary" data-btn="add">Новый бренд</a>
 
       <div class="search-block">
         <!-- SEARCH FORM-->
@@ -21,9 +19,9 @@
             <svg class="icon icon--loupe">
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
             </svg>
-          </button>
-          
+          </button>   
         </form>
+
         <!-- SEARCH FORM-->
         <?php if (trim($searchQuery) !== '') : ?>
           <a href="<?php echo HOST;?>admin/brand" class="shop__button button button-primary">Сбросить</a>
@@ -69,17 +67,14 @@
       </tbody>
     </table>
     <!--// Таблица -->
-
-    <!-- Пагинация -->
-    <div class="admin-form__item">
-      <div class="section-pagination">
-          <?php include ROOT . "admin/templates/_parts/pagination/_pagination.tpl"; ?>
-      </div>
-    </div>
-    <!--// Пагинация -->
-
-    <?php else : ?>
-      Брендов по запросу не найдено
-    <?php endif;?>
   </div>
+  <!-- Пагинация -->
+  <div class="section-pagination">
+      <?php include ROOT . "admin/templates/_parts/pagination/_pagination.tpl"; ?>
+  </div>
+  <!--// Пагинация -->
+
+  <?php else : ?>
+    Брендов по запросу не найдено
+  <?php endif;?>
 </div>

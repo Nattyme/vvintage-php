@@ -126,19 +126,19 @@ switch ($uriModule) {
 
 
   // ::::::::::::: CATEGORIES SHOP :::::::::::::::::::
-  case 'category-shop':
+  case 'category':
     require ROOT . "admin/modules/categories/all.php";
     break;
 
-  case 'category-shop-new':
+  case 'category-new':
     require ROOT . "admin/modules/categories/new.php";
     break;
 
-  case 'category-shop-edit':
+  case 'category-edit':
     require ROOT . "admin/modules/categories/edit.php";
     break;
 
-  case 'category-shop-delete':
+  case 'category-delete':
     require ROOT . "admin/modules/categories/delete.php";
     break;
 
