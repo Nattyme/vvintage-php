@@ -1,6 +1,12 @@
 <article class="post-card">
   <div class="post-card__img-wrapper">
-    <img src="<?php echo HOST . h("usercontent/blog/{$post['cover']}");?>" alt="">
+    <?php
+      $coverPath = HOST . 'usercontent/blog/';
+      $coverFile = isset($post['cover']) && file_exists(ROOT . 'usercontent/blog' . $post['cover'])
+      ? h($post['cover'])
+      : 'no-photo@2x.jpg';
+    ?>
+    <img src="<?php echo $coverPath . $coverFile;?>" alt="">
   </div>
   <div class="post-card__text">
     <div class="post-card__title">

@@ -6,18 +6,22 @@
       </div>
 
       <!-- image -->
-      <?php if (!empty($post['cover'])) : ?>
-        <div class="post__img">
-          <img src="<?php echo HOST . "usercontent/blog/{$post['cover']}";?>" alt="<?php echo $post['title'];?>" />
-        </div>
-      <?php endif; ?>
+      <?php
+        $coverPath = HOST . 'usercontent/blog/';
+        $coverFile = isset($post['cover']) && file_exists(ROOT . 'usercontent/blog' . $post['cover'])
+        ? h($post['cover'])
+        : 'no-photo@2x.jpg';
+      ?>
+      <div class="post__img">
+        <img src="<?php echo  $coverPath . $coverFile;?>" alt="<?php echo $post['title'];?>" />
+      </div>
       <!-- // image -->
 
       <!-- meta -->
       <ul class="post-meta post-meta--with-text">
         <li class="post-meta__readtime post-meta__readtime--with-text">
-          <svg class="icon icon--calendar">
-            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#calendar';?>"></use>
+          <svg class="icon icon--timer">
+            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#timer';?>"></use>
           </svg>
 
           <div class="post-meta__item">
