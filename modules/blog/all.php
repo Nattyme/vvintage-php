@@ -7,7 +7,6 @@ $pagination = pagination(4, 'posts');
 // $posts = R::find('posts', "ORDER BY id DESC");
 $posts = R::find('posts', "ORDER BY id DESC {$pagination['sql_page_limit']}");
 
-
 // Вывод похожих постов
 // $relatedPosts = get_related_posts($post['title']);
 $relatedPosts = $posts;

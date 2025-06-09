@@ -5,7 +5,7 @@
 
     <header class="admin-form__header">
       <div class="admin-form__field admin-form__row">
-        <a class="button button--s button--primary" href="<?php HOST . 'post-new';?>">Добавить пост</a>
+        <a class="button button--s button--primary" href="<?php echo HOST . 'admin/post-new';?>">Добавить пост</a>
       
         <!-- SEARCH FORM-->
         <form method="GET" action="" class="search" role="search">

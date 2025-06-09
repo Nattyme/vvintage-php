@@ -2,8 +2,8 @@
   <div class="post-card-small__img-wrapper">
     <?php
       $coverPath = HOST . 'usercontent/blog/';
-      $coverFile = isset($post['cover']) && file_exists(ROOT . 'usercontent/blog' . $post['cover'])
-      ? h($post['cover'])
+      $coverFile = isset($post['cover']) && file_exists(ROOT . 'usercontent/blog/' . $post['cover_small'])
+      ? h($post['cover_small'])
       : 'no-photo@2x.jpg';
     ?>
     <img src="<?php echo $coverPath . $coverFile;?>" alt="<?php echo h(shortText($post['title'], $limit = 80));?>">
@@ -17,7 +17,7 @@
     
    
     <div class="post-card-small__description">
-      <p><?php echo h(shortText($post['title'], $limit = 50)) ;?></p>
+      <p><?php echo h(shortText($post['content'], $limit = 50)) ;?></p>
     </div>
      <div class="post-card-small__meta">
       <div class="post-meta">

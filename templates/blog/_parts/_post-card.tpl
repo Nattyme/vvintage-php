@@ -2,7 +2,7 @@
   <div class="post-card__img-wrapper">
     <?php
       $coverPath = HOST . 'usercontent/blog/';
-      $coverFile = isset($post['cover']) && file_exists(ROOT . 'usercontent/blog' . $post['cover'])
+      $coverFile = isset($post['cover']) && file_exists(ROOT . 'usercontent/blog/' . $post['cover'])
       ? h($post['cover'])
       : 'no-photo@2x.jpg';
     ?>
