@@ -1,15 +1,23 @@
 <article class="post-card-small">
   <div class="post-card-small__img-wrapper">
-    <img src="<?php echo HOST . 'static/img/about-page/01.jpg';?>" alt="">
+    <?php
+      $coverPath = HOST . 'usercontent/blog/';
+      $coverFile = isset($post['cover']) && file_exists(ROOT . 'usercontent/blog' . $post['cover'])
+      ? h($post['cover'])
+      : 'no-photo@2x.jpg';
+    ?>
+    <img src="<?php echo $coverPath . $coverFile;?>" alt="<?php echo h(shortText($post['title'], $limit = 80));?>">
   </div>
   <div class="post-card-small__text">
     <div class="post-card-small__title">
-      <h2 class="h3 text-bold">Заголовок статьи</h2>
+      <h2 class="h3 text-bold">
+        <?php echo isset($post['title']) ? h(shortText($post['title'], $limit = 80)) : 'Статья блога "vvintage"';?>
+      </h2>
     </div>
     
    
     <div class="post-card-small__description">
-      <p>Базовое описание для статьи с информацией о содержании текста примерно на три строки</p>
+      <p><?php echo h(shortText($post['title'], $limit = 50)) ;?></p>
     </div>
      <div class="post-card-small__meta">
       <div class="post-meta">
@@ -18,14 +26,18 @@
           <svg class="icon icon--calendar">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#calendar';?>"></use>
           </svg>
-
-          <time datetime="2025-05-28">28 мая 2025</time>
+          <?php 
+            $date = isset($post['timestamp']) ? $post['timestamp'] : time();
+          ?>
+          <time datetime="<?php echo h(date('Y-m-d', $date));?>">
+            <?php echo h(rus_date("d.m.Y", $date));?>
+          </time>
         </div>
         <div class="post-meta__views">
           <svg class="icon icon--eye">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#eye';?>"></use>
           </svg>
-          <span class="post-card-small__views-counter">22</span>
+          <span class="post-card-small__views-counter"><?php echo isset($post['views']) ?  h($post['views']) : '0';?></span>
         </div>
       </div>
    

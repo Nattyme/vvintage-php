@@ -43,8 +43,8 @@
       }
     }
 
-    // Фрмируем sql запрос
-    $sqlQuery = 'SELECT id, title, cover_small FROM `posts` WHERE ';
+    // Формируем sql запрос
+    $sqlQuery = 'SELECT id, title, timestamp, views, content, cover_small FROM `posts` WHERE ';
 
     for ($i = 0; $i < count($newWordsArray); $i++) {
       if ($i + 1 == count($newWordsArray)) {

@@ -46,7 +46,10 @@
           </svg>
           <div class="post-meta__item">
             <p class="post-meta__text">Опубликовано</p>
-            <time datetime="2025-05-28"><?php echo h(rus_date("j F Y", $post['timestamp']));?></time>
+            <?php 
+              $date = isset($post['timestamp']) ? $post['timestamp'] : time();
+            ?>
+            <time datetime="<?php echo h(date('Y-m-d', $date));?>"><?php echo h(rus_date("j F Y", $date));?></time>
           </div>
         </li>
       </ul>

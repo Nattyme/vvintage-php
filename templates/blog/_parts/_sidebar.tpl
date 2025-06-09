@@ -62,11 +62,13 @@
           <h4 class="h4 text-bold" id="other-articles-title">ДРУГИЕ СТАТЬИ</h4>
         </div>
         <ul class="widget__list" aria-labelledby="other-articles-title">
-          <li class="widget__item widget__item--related">
-            <a href="#!" class="widget__link">
-              <?php include ROOT . 'templates/blog/_parts/_post-card-small.tpl';?>
-            </a>
-          </li>
+          <?php foreach ($relatedPosts as $post) : ?>
+            <li class="widget__item widget__item--related">
+              <a href="<?php echo HOST . "blog/{$post['id']}"?>" class="widget__link">
+                <?php include ROOT . 'templates/blog/_parts/_post-card-small.tpl';?>
+              </a>
+            </li>
+          <?php endforeach; ?>
         </ul>
 
       

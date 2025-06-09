@@ -36,8 +36,7 @@ $sqlQueryComments = 'SELECT
 // $comments = R::getAll( $sqlQueryComments, [$post['id']] );
 
 // Вывод похожих постов
-// $relatedPosts = get_related_posts($post['title']);
-
+$relatedPosts = get_related_posts($post['title']);
 $pageTitle = "Запись в блоге - {$post['title']}";
 
 //Сохраняем код ниже в буфер

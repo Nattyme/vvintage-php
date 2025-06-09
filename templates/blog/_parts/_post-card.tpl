@@ -20,7 +20,10 @@
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#calendar';?>"></use>
           </svg>
 
-          <time datetime="2025-05-28"><?php echo h(rus_date("j F Y", $post['timestamp']));?></time>
+          <?php 
+            $date = isset($post['timestamp']) ? $post['timestamp'] : time();
+          ?>
+          <time datetime="<?php echo h(date('Y-m-d', $date));?>"><?php echo h(rus_date("j F Y", $date));?></time>
           <!-- <time datetime="2025-05-28"><?php echo h($post['timestamp']);?></time> -->
         </li>
         <li class="post-meta__views">

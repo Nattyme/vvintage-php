@@ -1,11 +1,16 @@
 <?php 
+$pageTitle = "Блог - все записи";
 $pagination = pagination(4, 'posts');
 // $pagination = pagination($settings[5], 'posts');
 
 // Делаем запрос в БД для получения постов
 // $posts = R::find('posts', "ORDER BY id DESC");
 $posts = R::find('posts', "ORDER BY id DESC {$pagination['sql_page_limit']}");
-$pageTitle = "Блог - все записи";
+
+
+// Вывод похожих постов
+// $relatedPosts = get_related_posts($post['title']);
+$relatedPosts = $posts;
 
 //Сохраняем код ниже в буфер
 ob_start();
