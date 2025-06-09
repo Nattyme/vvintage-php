@@ -1,4 +1,4 @@
-<main class="page-blog__posts">
+<main class="page-blog__body">
   <ul class="posts">
     <?php if ( isset($posts) && !empty($posts)) : ?>
       <?php foreach ($posts as $post) : ?>
@@ -15,5 +15,12 @@
     <?php endif;?>
       
   </ul>
+
+  <!-- pagination -->
+  <div class="page-blog__pagination">
+    <!-- <?php include ROOT . "templates/_parts/post-nav.tpl";?> -->
+  </div>
+  <!-- pagination -->
+
 </main>
 

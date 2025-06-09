@@ -7,8 +7,8 @@
       <h2 class="h2"><?php echo h(shortText($post['title'], $limit = 200));?></h2>
     </div>
     <div class="post-card__meta">
-      <div class="post-meta">
-        <div class="post-meta__date">
+      <ul class="post-meta">
+        <li class="post-meta__date">
     
           <svg class="icon icon--calendar">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#calendar';?>"></use>
@@ -16,14 +16,14 @@
 
           <time datetime="2025-05-28"><?php echo h(rus_date("j F Y", $post['timestamp']));?></time>
           <!-- <time datetime="2025-05-28"><?php echo h($post['timestamp']);?></time> -->
-        </div>
-        <div class="post-meta__views">
+        </li>
+        <li class="post-meta__views">
           <svg class="icon icon--eye">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#eye';?>"></use>
           </svg>
           <span class="post-card__views-counter">22</span>
-        </div>
-      </div>
+        </li>
+      </ul>
    
     </div>
     <div class="post-card__description">

@@ -1,53 +1,57 @@
-<main class="page-blog__post">
-
+<main class="page-blog__body">
   <section class="post">
-    <div class="post__content">
+    <article class="post__body">
       <div class="post__title">
         <h1 class="h1"><?php echo $post['title'];?></h1>
       </div>
-   
-      <?php if (!empty($post['cover'])) : ?>
-      <div class="post__img">
-        <img src="<?php echo HOST . "usercontent/blog/{$post['cover']}";?>" alt="<?php echo $post['title'];?>" />
-      </div>
-      <?php endif; ?>
 
-      <div class="post-meta">
-        <div class="post-meta__readtime">
-    
+      <!-- image -->
+      <?php if (!empty($post['cover'])) : ?>
+        <div class="post__img">
+          <img src="<?php echo HOST . "usercontent/blog/{$post['cover']}";?>" alt="<?php echo $post['title'];?>" />
+        </div>
+      <?php endif; ?>
+      <!-- // image -->
+
+      <!-- meta -->
+      <ul class="post-meta post-meta--with-text">
+        <li class="post-meta__readtime post-meta__readtime--with-text">
           <svg class="icon icon--calendar">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#calendar';?>"></use>
           </svg>
 
-          <time datetime="2025-05-28"><?php echo h(rus_date("j F Y", $post['timestamp']));?></time>
-          <div class="post-meta__text">Время на чтение</div>
+          <div class="post-meta__item">
+            <p class="post-meta__text">На чтение</p>
+            <p class="post-meta__counter">1 мин.</p>
+          </div>
         
-        </div>
-        <div class="post-meta__views">
+        </li>
+        <li class="post-meta__views post-meta__views--with-text">
           <svg class="icon icon--eye">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#eye';?>"></use>
           </svg>
-          <span class="post-card__views-counter">22</span>
-          <div class="post-meta__text">Просмотров</div>
-        </div>
-        <div class="post-meta__date">
+          <div class="post-meta__item">
+            <p class="post-meta__text">Просмотров</p>
+            <span class="post-meta__counter">22</span>
+          </div>
+        </li>
+        <li class="post-meta__date post-meta__date--with-text">
     
           <svg class="icon icon--calendar">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#calendar';?>"></use>
           </svg>
-
-          <time datetime="2025-05-28"><?php echo h(rus_date("j F Y", $post['timestamp']));?></time>
-          <div class="post-meta__text">Опубликовано</div>
-        </div>
-      </div>
+          <div class="post-meta__item">
+            <p class="post-meta__text">Опубликовано</p>
+            <time datetime="2025-05-28"><?php echo h(rus_date("j F Y", $post['timestamp']));?></time>
+          </div>
+        </li>
+      </ul>
+      <!-- meta -->
    
-      <div class="section-posts__content">
+      <div class="post__content">
+        <!-- Как применить здесь Htmlspecialchair? Здесь вывод из эдитора -->
         <?php echo $post['content'];?>
       </div>
-    </div>
-    <div class="page-post__post-pagination">
-      <!-- <?php include ROOT . "templates/_parts/post-nav.tpl";?> -->
-    </div>
+    </article>
   </section>
-
 </main>
