@@ -85,7 +85,7 @@
               </div>
           
               <div class="cart__row cart__row--end">
-                <a href="<?php echo HOST;?>neworder" class="button button-primary">
+                <a href="<?php echo HOST;?>neworder" class="button button--primary button--l">
                   Оформить заказ
                 </a>
               </div>
