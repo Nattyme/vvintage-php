@@ -9,43 +9,43 @@
         <div class="product__gallery-container">
           <div class="gallery gallery--<?php echo h($productImagesTotal); ?>">
            
-              <figure class="gallery__item gallery__item--1">
-                <a 
-                  href="<?php echo HOST . 'usercontent/products/' . u($mainImage);?>" 
-                  data-thumb="<?php echo HOST . 'usercontent/products/' . h($mainImage);?>"
-                  data-fancybox="gallery">
+            <figure class="gallery__item gallery__item--1">
+              <a 
+                href="<?php echo HOST . 'usercontent/products/' . u($mainImage);?>" 
+                data-thumb="<?php echo HOST . 'usercontent/products/' . h($mainImage);?>"
+                data-fancybox="gallery">
 
+                <picture>
+                  <img 
+                    class="product__img product__img--main"
+                    src="<?php echo HOST . 'usercontent/products/' . u($mainImage);?>" 
+                    srcset="<?php echo HOST . 'usercontent/products/' . u($mainImage);?>" alt="" loading="lazy"
+                  >
+                </picture>
+              </a>
+            </figure>
+        
+            <?php foreach ($visibleImages as $i => $image) : ?>
+              <figure class="gallery__item gallery__item--<?php echo $i + 2; ?>">
+                <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
+                    data-thumb="<?php echo HOST . 'usercontent/products/' . h($image);?>">
                   <picture>
                     <img 
-                      class="product__img product__img--main"
-                      src="<?php echo HOST . 'usercontent/products/' . u($mainImage);?>" 
-                      srcset="<?php echo HOST . 'usercontent/products/' . u($mainImage);?>" alt="" loading="lazy"
+                      class="product__img"
+                      src="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
+                      srcset="<?php echo HOST . 'usercontent/products/' . u($image);?>" alt="" loading="lazy"
                     >
                   </picture>
                 </a>
               </figure>
-          
-              <?php foreach ($visibleImages as $i => $image) : ?>
-                <figure class="gallery__item gallery__item--<?php echo $i + 2; ?>">
-                  <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
-                     data-thumb="<?php echo HOST . 'usercontent/products/' . h($image);?>">
-                    <picture>
-                      <img 
-                        class="product__img"
-                        src="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
-                        srcset="<?php echo HOST . 'usercontent/products/' . u($image);?>" alt="" loading="lazy"
-                      >
-                    </picture>
-                  </a>
-                </figure>
-              <?php endforeach; ?>
+            <?php endforeach; ?>
 
-              <?php foreach($hiddenImages as $image) : ?>
-                <a 
-                  data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
-                  data-thumb="<?php echo HOST . 'usercontent/products/' . h($image);?>">
-                </a>
-              <?php endforeach; ?>
+            <?php foreach($hiddenImages as $image) : ?>
+              <a 
+                data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
+                data-thumb="<?php echo HOST . 'usercontent/products/' . h($image);?>">
+              </a>
+            <?php endforeach; ?>
            
           </div>
         </div>
@@ -80,11 +80,15 @@
           
           </dl>
 
+          <div class="product__description">
+            <?php echo $product['content'];?>
+          </div>
+
           <div class="product-card__button">
             <?php if (isset($_SESSION['cart']) && array_key_exists($product['id'], $_SESSION['cart'])) : ?>
-              <span class="button button-solid button-solid--success">Товар добавлен в корзину</span>
+              <span class="button button--primary button--m">Товар добавлен в корзину</span>
             <?php  else : ?>
-              <a href="<?php echo HOST . 'addtocart?id=' . u($product['id']);?>" class="button button-solid">
+              <a href="<?php echo HOST . 'addtocart?id=' . u($product['id']);?>" class="button button--primary button--xl">
                 Добавить&#160;в&#160;корзину
               </a>
             <?php endif;?>

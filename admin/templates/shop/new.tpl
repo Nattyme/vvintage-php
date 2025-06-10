@@ -116,10 +116,10 @@
         </div>
       </div>
 
-      <div class="admin-form__column admin-form_column--imgs">
+      <div class="admin-form__column admin-form__column--imgs">
         <div class="admin-form__field">
     
-          <label class="admin-form__label" for="file">Фотографии товара</label>
+          <label class="admin-form__label">Фотографии товара</label>
           <div class="block-upload" data-preview="block">
             <div class="block-upload__description">
               <p class="block-upload__title">
@@ -128,8 +128,8 @@
             </div>
 
             <div class="block-upload__button">
-              <span class="block-upload__input-fake">Выбрать изображения</span>
-              <input if="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input">
+              <label class="block-upload__input-fake" for="file">Выбрать изображения</label>
+              <input id="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input">
             </div>
 
             <div class="block-upload__preview" data-preview="container" data-dragg-and-drop></div>

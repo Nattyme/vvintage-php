@@ -40,6 +40,9 @@ foreach ($settingsMain as $key => $value) {
   $main[$value['name']] = $value['value'];
 }
 
+// Делаем запрос в БД для получения постов
+$posts = R::find('posts', "ORDER BY id DESC LIMIT 4");
+
 include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";
 include ROOT . "templates/main/main.tpl";

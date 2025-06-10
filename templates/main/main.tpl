@@ -4,4 +4,5 @@
   <?php /* include ROOT . 'templates/main/_parts/_about.tpl'; */ ?>
   <?php include ROOT . 'templates/main/_parts/_arrival.tpl';?>
   <?php include ROOT . 'templates/main/_parts/_cats.tpl';?>
+  <?php include ROOT . 'templates/main/_parts/_latest-posts.tpl';?>
 </main>
