@@ -14,6 +14,14 @@
       />
     
     </div>
+    
+    <div class="admin-form__field">
+      <label class="admin-form__label" for="description">Введите краткое описание</label> 
+      <input name="description" class="input" type="text" placeholder="Описание поста" id="description"
+             value="<?php echo isset($_POST['description']) ? h($_POST['description']) : ''; ?>"
+      />
+    
+    </div>
 
     <div class="admin-form__field ">
         <label class="admin-form__label" for="cat">Выберите категорию</label>

@@ -44,7 +44,7 @@
     }
 
     // Формируем sql запрос
-    $sqlQuery = 'SELECT id, title, timestamp, views, content, cover_small FROM `posts` WHERE ';
+    $sqlQuery = 'SELECT * FROM `posts` WHERE ';
 
     for ($i = 0; $i < count($newWordsArray); $i++) {
       if ($i + 1 == count($newWordsArray)) {

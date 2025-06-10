@@ -18,6 +18,11 @@ if( isset($_POST['postEdit'])) {
     $_SESSION['errors'][] = ['title' => 'Введите заголовок поста'];
   } 
 
+  // Проверка на заполненность описания
+  if( trim($_POST['description']) == '' ) {
+    $_SESSION['errors'][] = ['title' => 'Заполните описание поста'];
+  } 
+
   // Проверка на заполненность содержимого
   if( trim($_POST['content']) == '' ) {
     $_SESSION['errors'][] = ['title' => 'Заполните содержимое поста'];
@@ -28,6 +33,7 @@ if( isset($_POST['postEdit'])) {
     $post = R::load('posts', $_GET['id']);
     $post->title = $_POST['title'];
     $post->cat = $_POST['cat'];
+    $post->description = $_POST['description'];
     $post->content = $_POST['content'];
     $post->editTime = time();
 

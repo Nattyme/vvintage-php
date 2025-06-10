@@ -11,11 +11,23 @@
     <div class="admin-form__field">
       <label class="admin-form__label" for="title">Введите название записи</label> 
       <input name="title" 
-              class="input input--width-label" 
-              type="text" 
-              placeholder="Заголовок поста" 
-              value="<?php echo h($post['title']); ?>"
+             class="input input--width-label" 
+             type="text" 
+             placeholder="Заголовок поста" 
+             value="<?php echo h($post['title']); ?>"
       />
+    </div>
+
+    <div class="admin-form__field">
+      <label class="admin-form__label" for="description">Введите краткое описание</label> 
+      <input id="description"
+             name="description" 
+             class="input" 
+             type="text" 
+             placeholder="Описание поста" 
+             value="<?php echo isset($_POST['description']) ? h($_POST['description']) : ''; ?>"
+      />
+    
     </div>
 
     

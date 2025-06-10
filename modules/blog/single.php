@@ -3,7 +3,15 @@ require_once ROOT . "./libs/functions.php";
 
 //Одиночный пост, показываем отдельную страницу блога
 $sqlQuery = 'SELECT
-                posts.id, posts.title, posts.content, posts.cover, posts.timestamp, posts.edit_time, posts.cat,
+                posts.id, 
+                posts.title, 
+                posts.description, 
+                posts.content, 
+                posts.cover, 
+                posts.views, 
+                posts.timestamp, 
+                posts.edit_time, 
+                posts.cat,
                 categories.title AS cat_title
              FROM `posts`
              LEFT JOIN `categories` ON posts.cat = categories.id
