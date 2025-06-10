@@ -4,9 +4,9 @@
 ;?>
 
 <section class="post">
-  <article class="post__body">
+  <article class="post__body" itemscope itemtype="https://schema.org/BlogPosting"?>
     <div class="post__title">
-      <h1 class="h1"><?php echo $title;?></h1>
+      <h1 class="h1" itemprop="headline"><?php echo $title;?></h1>
     </div>
 
     <!-- image -->
@@ -47,6 +47,10 @@
         <div class="post-meta__item">
           <p class="post-meta__text">Опубликовано</p>
           <time datetime="<?php echo $datetime;?>"><?php echo $rusDate;?></time>
+        </div>
+        <div class="post-meta__item" itemprop="author" itemscope itemtype="https://schema.org/Organization">
+          <meta itemprop="name" content="vvintage.ru">
+          <meta itemprop="url" content="https://vvintage.ru">
         </div>
       </li>
     </ul>
