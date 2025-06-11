@@ -29,24 +29,24 @@ const initView = () => {
 
   const getCatBlocksAll = () => navList.querySelectorAll('.nav__block');
 
-  const getFirstLvlMenuTemplate = (cat) => {
-    if (!cat || !cat.id || !cat.name) return '';
+  // const getFirstLvlMenuTemplate = (cat) => {
+  //   if (!cat || !cat.id || !cat.name) return '';
 
-    return `
-      <li
-        id="${cat.id}"
-        class="nav__block"
-        role="tab"
-        area-selected="false"
-        tabindex="0"
-      >
-        <div class="nav__item">
-        <a href="https://vvintage/shop/cat/${cat.id}" class="nav__title">${cat.name}</a>
-        </div>
+  //   return `
+  //     <li
+  //       id="${cat.id}"
+  //       class="nav__block"
+  //       role="tab"
+  //       area-selected="false"
+  //       tabindex="0"
+  //     >
+  //       <div class="nav__item">
+  //       <a href="https://vvintage/shop/cat/${cat.id}" class="nav__title">${cat.name}</a>
+  //       </div>
     
-      </li>
-    `;
-  }
+  //     </li>
+  //   `;
+  // }
 
   const getSubNavContainerTemplate = () => {
     return `
@@ -61,53 +61,46 @@ const initView = () => {
   }
 
   // Ф-ция возвращает разметку для 2-го уровня категорий
-  const getSubNavItemTemplate = (cat) => {
-    if (!cat || !cat.id || !cat.name) return '';
+  // const getSubNavItemTemplate = (cat) => {
+  //   if (!cat || !cat.id || !cat.name) return '';
 
-    return `
-        <li class="sub-nav__item">
-          <svg class="sub-nav__icon icon icon--bag">
-            <use href="./img/svgsprite/sprite.symbol.svg#bag"></use>
-          </svg>
+  //   return `
+  //       <li class="sub-nav__item">
+  //         <svg class="sub-nav__icon icon icon--bag">
+  //           <use href="./img/svgsprite/sprite.symbol.svg#bag"></use>
+  //         </svg>
               
-          <a href="https://vvintage/shop/cat/${cat.id}" class="sub-nav__link" data-cat="${cat.id}">
-            ${cat.name}
-          </a>
-          <div class="nav__arrow">
-            <div class="arrow"></div>
-          </div>
-        </li>
-    `;
-  }
+  //         <a href="https://vvintage/shop/cat/${cat.id}" class="sub-nav__link" data-cat="${cat.id}">
+  //           ${cat.name}
+  //         </a>
+  //         <div class="nav__arrow">
+  //           <div class="arrow"></div>
+  //         </div>
+  //       </li>
+  //   `;
+  // }
 
   // Ф-ция возвращает разметку для 3-го уровня категорий
-  const getSubSubNavItemTemplate = (subCat) => {
-    if (!subCat || !subCat.name) return '';
-    return `
-        <li class="sub-sub-nav__item">
-          <a href="#" class="sub-sub-nav__link">
-            ${subCat.name}
-          </a>
-        </li>
-    `;
-  }
+  // const getSubSubNavItemTemplate = (subCat) => {
+  //   if (!subCat || !subCat.name) return '';
+  //   return `
+  //       <li class="sub-sub-nav__item">
+  //         <a href="#" class="sub-sub-nav__link">
+  //           ${subCat.name}
+  //         </a>
+  //       </li>
+  //   `;
+  // }
 
   const getSubCatWrapper = (target) => {
     if (!target) return null;
-    return target.querySelector('[data-cat]');      
+    return target.closest('[data-cat]');      
   }
 
   // Ф-ция находит и удаляет все подменю
   const findAndRemoveAllSubNavs =  () => {
     navList.querySelectorAll('.sub-nav').forEach(nav => nav.remove());
   }
-
-  // Ф-ция вставляет в навигацию шаблон с данными категорий
-  const fillNav = (block, data) => {
-    if (!block || !Array.isArray(data)) return;
-    block.innerHTML = data.map(cat => getFirstLvlMenuTemplate(cat)).join('');
-  }
-
 
   const insertTemplate = (catBlock, template) => {
     if (!catBlock || !template) return;
@@ -146,12 +139,58 @@ const initView = () => {
     if (closest) closest.classList.add('active');
   }
 
+  // Ф-ция строит дерево категорий (рекурсивная)
+  const renderMenuTree = (cats, level = 1, baseUrl = 'https://vvintage') => {
+    if(!Array.isArray(cats)) return '';
+
+    const levelClassMap = {
+      1: 'nav__block',
+      2: 'sub-nav__item',
+      3: 'sub-sub-nav__item'
+    }
+
+    const linkClassMap = {
+      1: 'nav__title',
+      2: 'sub-nav__link',
+      3: 'sub-sub-nav__link'
+    }
+
+    const ulClassMap = {
+      1: 'nav__list',
+      2: 'sub-nav__list',
+      3: 'sub-sub-nav__list'
+    }
+
+    const liClass = levelClassMap[level] || '';
+    const linkClass = linkClassMap[level] || '';
+    const ulClass = ulClassMap[level] || '';
+
+    return `
+      <ul class="${ulClass}">
+        ${cats.map(cat => `
+          <li class="${liClass}">
+            <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}">${cat.name}</a>
+            ${cat.children ? renderMenuTree(cat.children, level + 1) : ''}
+          </li>
+        `).join('')}
+      </ul>
+    `;
+  }
+
+  // Ф-ция вставляет в навигацию шаблон с данными категорий
+  const fillNav = (block, data) => {
+    if (!block || !Array.isArray(data)) return;
+    block.innerHTML = renderMenuTree(data, 1, window.BASE_URL || '');
+    // block.innerHTML = data.map(cat => getFirstLvlMenuTemplate(cat)).join('');
+  }
+
+
   return {
     getNav,
-    getFirstLvlMenuTemplate,
+    // getFirstLvlMenuTemplate,
     getSubNavContainerTemplate,
-    getSubNavItemTemplate,
-    getSubSubNavItemTemplate,
+    // getSubNavItemTemplate,
+    // getSubSubNavItemTemplate,
     getSubCatWrapper,
     getCurrentBlocksWrapper,
     getSubNavBlocksAll,

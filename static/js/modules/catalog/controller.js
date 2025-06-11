@@ -9,14 +9,17 @@ const initController = async () => {
 
   const nav = view.getNav();
   const navList = view.getNavList();
-  const catsData = await model.setCatsData();   // Получаем данные по категориям с сервера и задаем cats в моднли
+  const catsData = await model.setCatsData();   // Получаем данные по категориям с сервера и задаем cats в модели
   const mainCats = model.getMainCats();  // Найдем основные категории
   if (!catsData || !nav || !navList || !mainCats) return;
   
+console.log(catsData);
 
   view.addAdminActiveClass(); // Если нужно - задаем активный класс админ панели
   view.findAndRemoveAllSubNavs();  // Находим и удаляем все подменю
-  view.fillNav(navList, mainCats);  // Добавляем разметку c основными категорими в навигацию
+  const mainMenuMarkup = view.generateMenuMarkup(mainCats, 1);
+  navList.innerHTML = mainMenuMarkup;
+  // view.fillNav(navList, mainCats);  // Добавляем разметку c основными категорими в навигацию
   const catBlocksAll = navList.querySelectorAll('.nav__block');
   if (!catBlocksAll) return;
 
@@ -32,7 +35,9 @@ const initController = async () => {
 
     const subNavList = view.getSubNavList(catBlock);
     if (!subNavList) return;
-    view.fillNav(subNavList, currentCatData); // Заполняем меню подактагорий данными
+    const subNavMarkup = view.renderMenuTree(currentCatData, 2);
+    subNavList.innerHTML = subNavMarkup;
+    // view.fillNav(subNavList, currentCatData); // Заполняем меню подкаетагорий данными
     const subSubNav = view.getSubSubNav(catBlock);
     if(!subSubNav) return;
    
@@ -71,7 +76,9 @@ const initController = async () => {
     view.removeActiveClassForElems(subCatBlocksAll);
     view.addActiveClassToClosestBlock(e.target);
 
-    subSubNav.innerHTML = currentSubCatData.map(subCat => view.getSubSubNavItemTemplate(subCat)).join('');
+    // subSubNav.innerHTML = currentSubCatData.map(subCat => view.getSubSubNavItemTemplate(subCat)).join('');
+    const subSubNavMarkup = view.renderMenuTree(currentSubCatData, 3);
+    subSubNav.innerHTML = subSubNavMarkup;
   }
 
   // На каждый блок главной навигации вешаем прослушку событий hover
