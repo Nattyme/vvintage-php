@@ -4,6 +4,13 @@ const getCookiesFormData = () => {
   if (!form) return;
 
   let formData = null;
+
+  // config
+  const config = {
+    link: '#',
+    metrike: false,
+    position: 'right'
+  }
     
   // При изменении формы (ввод, чекбоксы)
   form.addEventListener('input', () => {
