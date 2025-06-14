@@ -9,7 +9,8 @@ const initController = () => {
   console.log(form);
     // При изменении формы (ввод, чекбоксы)
   form.addEventListener('input', () => {
-    model.setFormData(form);
+    const formData = view.getFormConfig();
+    model.setFormData(formData);
     // Формируем и выводим код разметки
   });
   

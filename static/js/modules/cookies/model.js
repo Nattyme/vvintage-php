@@ -16,13 +16,13 @@ const initModel = () => {
     return config;
   }
 
-  const setFormData = (formElement) => {
-    formData = new FormData(formElement);
+  const setFormData = (configObj) => {
+    console.log(configObj);
     
     // заполняем config
-    config.link = formData.get('link'); 
-    config.metrika = formData.get('metrika'); 
-    config.position = formData.get('position'); 
+    config.link = configObj.link || ''; 
+    config.metrika = configObj.metrika || false; 
+    config.position = configObj.position || 'right'; 
     console.log(config);
   }
 
