@@ -3,6 +3,7 @@
 // import router from './modules/admin/router.js';
 // import addSidebarControlPanel from "./modules/admin/model/sidebar/addSidebar.js";
 import addBackTopBtn from "./modules/backtop.js";
+import getCookiesFormData from "./modules/cookies/index.js";
 import addAccordion from "./modules/addAccordion.js";
 import fancyBox from "./modules/fancybox.js";
 import initCatalogEvents from "./modules/catalog/index.js";
@@ -29,6 +30,7 @@ const initEverything = async () => {
   
   addBackTopBtn();
   addTab();
+  getCookiesFormData();
   addAccordion("many", "#sidebar");
   fancyBox();
   const pathHolder = document.querySelector("[data-config]");
