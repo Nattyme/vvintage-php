@@ -17,8 +17,6 @@ const initModel = () => {
   }
 
   const setFormData = (configObj) => {
-    console.log(configObj);
-    
     // заполняем config
     config.link = configObj.link || ''; 
     config.metrika = configObj.metrika || false; 
@@ -26,6 +24,7 @@ const initModel = () => {
 
     formData = configObj;
   }
+
 
   return {
     getConfig,

@@ -1,5 +1,8 @@
 const initView = () => {
   const form = document.querySelector('#cookies-form');
+  const codeHTML = document.querySelector('#codeHTML');
+  const codeCSS = document.querySelector('#codeCSS');
+  const codeJS = document.querySelector('#codeJS');
 
   const getFormElement = () => {
     if (form) return form || null;
@@ -17,9 +20,31 @@ const initView = () => {
     }
   }
 
+  const getHTML = () => {
+    return `
+          <div class="cookies-popup">
+            <div class="cookies-popup__wrapper">
+              <p class="cookies-popup__content" id="previewText">
+                Мы используем файлы соокіе для улучшения работы сайта.
+                Продолжая использовать сайт, вы даёте согласие на обработку файлов соокіе в соответствии с
+                Федеральным законом N°152-Ф3
+                «O персональных данных».
+                Подробнее о правилах обработки в <a href="https://">Политике обработки персональных данных</a>.
+              </p>
+              <button class="cookies-popup__btn">Окей</button>
+            </div>
+          </div>
+    `;
+  }
+
+  const render = () => {
+    codeHTML.value = getHTML();
+  }
+
   return {
     getFormElement,
-    getFormConfig
+    getFormConfig,
+    render
   }
 }
 

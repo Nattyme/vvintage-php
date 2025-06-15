@@ -12,7 +12,9 @@ const initController = () => {
   form.addEventListener('input', () => {
     const formData = view.getFormConfig();
     model.setFormData(formData);
-    
+
+    // Заполняем код HTML разметки
+    view.render();
   });
 }
 

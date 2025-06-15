@@ -200,9 +200,19 @@ switch ($uriModule) {
     require ROOT . "admin/modules/comments/single.php";
     break;
 
+  // ::::::::::::: SETTINGS :::::::::::::::::::
   case 'settings':
-    require ROOT . "admin/modules/settings/settings.php";
+    require ROOT . "admin/modules/settings/main.php";
     break;
+
+  case 'settings-social':
+    require ROOT . "admin/modules/settings/settings-social.php";
+    break;
+
+  case 'settings-cookies':
+    require ROOT . "admin/modules/settings/settings-social.php";
+    break;
+  // ::::::::::::: SETTINGS :::::::::::::::::::
 
   default: 
     require ROOT . "admin/modules/main/index.php";

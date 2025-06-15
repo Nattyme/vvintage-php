@@ -1,6 +1,4 @@
 <div class="admin-form__field" data-control="tab">
-  <h3 class="h3 text-bold">Социальные ссылки</h3>
-
   <!-- Навигация -->
   <div class="admin-form__field buttons" data-control="tab-nav">
     <button type="button" class="button button--m button--outline active" data-control="tab-button" 
@@ -66,6 +64,5 @@
   </div>
   <!--// Блоки с контентом -->
 </div>
-
 
 
