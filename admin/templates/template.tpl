@@ -24,7 +24,7 @@
   </div>
 
   <!-- backtop button -->
-  <a href="#top" class="backtop-btn" id="backtop" title="Наверх">
+  <a href="#top" class="button button--backtop" id="backtop" title="Наверх">
     <svg class="icon icon--arrow">
       <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#arrow';?>"></use>
     </svg>

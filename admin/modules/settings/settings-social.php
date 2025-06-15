@@ -1,7 +1,7 @@
 <?php 
 if ( isset($_POST['submit'])) {
 
-  $socialFields = ['youtube', 'instagram', 'facebook', 'vkontakte', 'dzen'];
+  $socialFields = ['youtube', 'instagram', 'facebook', 'vkontakte', 'dzen', 'telegram'];
 
   foreach ($socialFields as $field) {
     $url = trim($_POST[$field]) ?? '';
