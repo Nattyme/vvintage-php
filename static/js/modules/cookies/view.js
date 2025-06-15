@@ -1,14 +1,14 @@
 const initView = () => {
   const form = document.querySelector('#cookies-form');
-  if (!form) return;
 
   const getFormElement = () => {
-    if (form) return form;
+    if (form) return form || null;
+    return;
   }
 
   const getFormConfig = () => {
     const formData = new FormData(form);
-    if (!formData) return;
+    if (!form) return null;
 
     return {
       link : formData.get('link') || '',

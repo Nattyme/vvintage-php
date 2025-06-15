@@ -23,7 +23,8 @@ const initModel = () => {
     config.link = configObj.link || ''; 
     config.metrika = configObj.metrika || false; 
     config.position = configObj.position || 'right'; 
-    console.log(config);
+
+    formData = configObj;
   }
 
   return {
