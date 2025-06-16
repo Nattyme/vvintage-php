@@ -210,7 +210,7 @@ switch ($uriModule) {
     break;
 
   case 'settings-cookies':
-    require ROOT . "admin/modules/settings/settings-social.php";
+    require ROOT . "admin/modules/settings/settings-cookies.php";
     break;
   // ::::::::::::: SETTINGS :::::::::::::::::::
 

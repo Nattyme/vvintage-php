@@ -20,7 +20,7 @@ const initView = () => {
     }
   }
 
-  const getHTML = () => {
+  const getHTML = (link='#', metrika=false) => {
     return `
           <div class="cookies-popup">
             <div class="cookies-popup__wrapper">
@@ -29,7 +29,7 @@ const initView = () => {
                 Продолжая использовать сайт, вы даёте согласие на обработку файлов соокіе в соответствии с
                 Федеральным законом N°152-Ф3
                 «O персональных данных».
-                Подробнее о правилах обработки в <a href="https://">Политике обработки персональных данных</a>.
+                Подробнее о правилах обработки в <a href="https://${link}">Политике обработки персональных данных</a>.
               </p>
               <button class="cookies-popup__btn">Окей</button>
             </div>
@@ -38,7 +38,8 @@ const initView = () => {
   }
 
   const render = () => {
-    codeHTML.value = getHTML();
+    const config = getFormConfig();
+    codeHTML.value = getHTML(config.link, config.metrika);
   }
 
   return {

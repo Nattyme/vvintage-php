@@ -150,7 +150,7 @@ const initView = () => {
     }
 
     const linkClassMap = {
-      1: 'nav__title',
+      1: 'nav__link',
       2: 'sub-nav__link',
       3: 'sub-sub-nav__link'
     }
@@ -168,7 +168,7 @@ const initView = () => {
     return `
       <ul class="${ulClass}">
         ${cats.map(cat => `
-          <li class="${liClass}">
+          <li class="${liClass}" id="${cat.id}">
             <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}">${cat.name}</a>
             ${cat.children ? renderMenuTree(cat.children, level + 1) : ''}
           </li>
@@ -205,8 +205,8 @@ const initView = () => {
     removeOverlay,
     addAdminActiveClass,
     removeActiveClassForElems,
-    addActiveClassToClosestBlock
- 
+    addActiveClassToClosestBlock,
+    renderMenuTree
   }
 }
 

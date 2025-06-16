@@ -13,11 +13,9 @@ const initController = async () => {
   const mainCats = model.getMainCats();  // Найдем основные категории
   if (!catsData || !nav || !navList || !mainCats) return;
   
-console.log(catsData);
-
   view.addAdminActiveClass(); // Если нужно - задаем активный класс админ панели
   view.findAndRemoveAllSubNavs();  // Находим и удаляем все подменю
-  const mainMenuMarkup = view.generateMenuMarkup(mainCats, 1);
+  const mainMenuMarkup = view.renderMenuTree(mainCats, 1);
   navList.innerHTML = mainMenuMarkup;
   // view.fillNav(navList, mainCats);  // Добавляем разметку c основными категорими в навигацию
   const catBlocksAll = navList.querySelectorAll('.nav__block');
@@ -26,13 +24,14 @@ console.log(catsData);
    // Ф-ция добавляет 2-й уровень меню
   const addSubNav = (catBlock) => {
     const catId = catBlock.id; // id категории
+     console.log(catId);
     if (!catId) return;
     const currentCatData = model.getCatsByParent(catId); // получаем данные объекта по категории
     if(!currentCatData.length) return;
 
     view.findAndRemoveAllSubNavs(); // Находим все саб меню и удаляем их
     view.insertTemplate(catBlock, view.getSubNavContainerTemplate()); // Добавляем новое подменю на страницу
-
+  
     const subNavList = view.getSubNavList(catBlock);
     if (!subNavList) return;
     const subNavMarkup = view.renderMenuTree(currentCatData, 2);

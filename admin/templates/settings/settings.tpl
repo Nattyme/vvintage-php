@@ -1,6 +1,4 @@
 <div class="admin-page__content-form">
-  <form class="admin-form" method="POST" action="<?= HOST ?>admin/settings">
-
     <?php include ROOT . 'admin/templates/components/errors.tpl'; ?>
     <?php include ROOT . 'admin/templates/components/success.tpl'; ?>
 
@@ -18,6 +16,9 @@
         case 'settings-seo':
           include ROOT . 'admin/templates/settings/parts/_seo.tpl';
           break;
+        case 'settings-cookies':
+          include ROOT . 'admin/templates/settings/parts/_cookies.tpl';
+          break;
       }
     ;?>
 
@@ -25,7 +26,4 @@
         <button name="submit" class="button button--m button--primary" type="submit">Сохранить изменения</button>
         <a class="button button--m button--outline" href="<?php echo HOST . 'admin';?>">Отмена</a>
     </div>
-
-  </form>
-
 </div>
