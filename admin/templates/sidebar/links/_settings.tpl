@@ -13,7 +13,7 @@
     <!-- Общие -->
     <li class="sidebar__list-item">
       <a class="sidebar__list-button sidebar__inner-link" 
-          href="<?php echo HOST . 'admin/settings';?>" title="" data-section="settings-base">
+          href="<?php echo HOST . 'admin/settings-main';?>" title="" data-section="settings-main">
         <div class="sidebar__list-img-wrapper">
           <svg class="icon icon--corner">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#corner';?>"></use>

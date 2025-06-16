@@ -3,13 +3,17 @@
 
     $socialFields = ['youtube', 'instagram', 'facebook', 'vkontakte', 'dzen', 'telegram'];
 
-    foreach ($socialFields as $field) {
-      $url = trim($_POST[$field]) ?? '';
+    // Обойдем каждый элемент массива, если он передан в POST, то проверяем корректность ссылки
+    // foreach ($socialFields as $field) {
+    //   $url = trim($_POST[$field]) ?? '';
 
-      if (!empty($url) && !filter_var($url, FILTER_VALIDATE_URL)) {
-        $_SESSION['errors'][$field] = 'Введите корректную ссылку';
-      } 
-    }
+    //   if (!empty($url) && !filter_var($url, FILTER_VALIDATE_URL)) {
+    //       $_SESSION['errors'][] = [
+    //         'title' => 'Введите корректную ссылку',
+    //         'desc' => $field
+    //       ];
+    //   } 
+    // }
 
     if ( empty($_SESSION['errors'])) {
       $res = [];
@@ -32,6 +36,7 @@
         } 
       }
 
+      // Если ошибка
       if ($fail) {
         $_SESSION['errors'][] = [
           'title' => 'Данные не сохранились',
@@ -39,10 +44,12 @@
         ];
       } else {
         $_SESSION['success'][] = ['title' => 'Все изменения успешно сохранены.'];
+        header('Location: ' . HOST . 'admin/settings-social');
+        exit;
       }
     } else {
       $_SESSION['errors'][] = [
-        'title' => 'Данные не сохранились',
+        'title' => 'Ошибка валидации ссылок',
         'desc' => 'Ошибка валидации ссылок'
       ];
     }

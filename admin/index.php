@@ -202,7 +202,11 @@ switch ($uriModule) {
 
   // ::::::::::::: SETTINGS :::::::::::::::::::
   case 'settings':
-    require ROOT . "admin/modules/settings/main.php";
+    require ROOT . "admin/modules/settings/settings.php";
+    break;
+
+  case 'settings-main':
+    require ROOT . "admin/modules/settings/settings-main.php";
     break;
 
   case 'settings-social':
