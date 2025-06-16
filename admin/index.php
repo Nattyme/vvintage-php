@@ -216,6 +216,10 @@ switch ($uriModule) {
   case 'settings-cookies':
     require ROOT . "admin/modules/settings/settings-cookies.php";
     break;
+
+  case 'settings-cards':
+    require ROOT . "admin/modules/settings/settings-cards.php";
+    break;
   // ::::::::::::: SETTINGS :::::::::::::::::::
 
   default: 

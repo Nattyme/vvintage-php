@@ -21,6 +21,9 @@
         case 'settings-cookies':
           include ROOT . 'admin/templates/settings/parts/_cookies.tpl';
           break;
+        case 'settings-cards':
+          include ROOT . 'admin/templates/settings/parts/_cardsonpage.tpl';
+          break;
       }
     ;?>
     <input type="hidden" name="csrf" value="<?php echo h(csrf_token()); ?>">

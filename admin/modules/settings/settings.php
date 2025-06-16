@@ -6,6 +6,10 @@
     case 'settings-social':
       require ROOT . 'admin/modules/settings/settings-social.php';
       break;
+
+    case 'settings-cards':
+      require ROOT . 'admin/modules/settings/settings-cards.php';
+      break;
     case 'settings-contacts':
       require ROOT . 'admin/modules/settings/settings-contacts.php';
       break;
