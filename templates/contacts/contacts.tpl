@@ -57,7 +57,7 @@
                   <!-- // CSRF-токен -->
 
                   <div class="form-contact__button">
-                    <button class="button button--primary" name="submit" type="submit" value="submit">Отправить</button>
+                    <button class="button button--primary button--l" name="submit" type="submit" value="submit">Отправить</button>
                   </div>
                 </form>
               </div>

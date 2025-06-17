@@ -140,8 +140,8 @@
           <!-- // CSRF-токен -->
 
           <div class="form-order__button-wrapper">
-            <a class="button button-outline" href="<?php HOST;?>cart">Вернуться в корзину </a>
-            <button class="form-order__button button button-solid" type="submit" name="submit">
+            <a class="button button--outline button--l" href="<?php HOST;?>cart">Вернуться в корзину </a>
+            <button class="button button--primary button--l" type="submit" name="submit">
               Разместить заказ
             </button>
           </div>

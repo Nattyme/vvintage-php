@@ -86,7 +86,7 @@
 
           <div class="product-card__button">
             <?php if (isset($_SESSION['cart']) && array_key_exists($product['id'], $_SESSION['cart'])) : ?>
-              <span class="button button--primary button--m">Товар добавлен в корзину</span>
+              <button type="button" class="button button--primary button--l" disabled>Товар в корзине</button>
             <?php  else : ?>
               <a href="<?php echo HOST . 'addtocart?id=' . u($product['id']);?>" class="button button--primary button--xl">
                 Добавить&#160;в&#160;корзину

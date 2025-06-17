@@ -97,7 +97,7 @@
         <?php else : ?>
           <div class="page-cart__empty">
             <h1 class="page-cart__title page-cart__title-wrapper">Корзина пуста</h1>
-            <a href="<?php echo HOST;?>shop" class="button button-primary">Добавить товары</a>
+            <a href="<?php echo HOST;?>shop" class="button button--primary button--m">Добавить товары</a>
           </div>
         <?php endif; ?>
 
