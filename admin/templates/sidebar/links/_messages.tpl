@@ -5,7 +5,7 @@
         <use href="<?= HOST . 'static/img/svgsprite/sprite.symbol.svg#mail' ?>"></use>
       </svg>
       <?php 
-        $counterData = getMessagesNewCounter();
+        $counterData = getAdminCounter('messages');
         $counter = $counterData['counter'];
         $limit = $counterData['limit'];
       ?>

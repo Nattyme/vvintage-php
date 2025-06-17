@@ -62,27 +62,10 @@
     return $uriGet; // ['blog/cat/5'] => 5
   }
 
-  // Сообщения
-  function getMessagesNewCounter () {
-    $counter = R::count('messages', ' status = ?', ['new']);
-    $limit = 9; 
-    return [
-      'counter' =>  $counter,
-      'limit' => $limit
-    ];
-  }
 
-  // Заказы
-  function getOrdersNewCounter () {
-    $counter = R::count('orders', ' status = ?', ['new']);
-    $limit = 9; 
-    return [
-      'counter' =>  $counter,
-      'limit' => $limit
-    ];
-  }
-
-
+// Комментарии
+// $commentsNewCounter = R::count('comments', ' status = ?', ['new']);
+// $commentsDisplayLimit = 9; 
   // Подключение шаблона через буфер
   function renderTemplateUseBufer ($pathTmpl, $pathMainTmpl, $data) {
     // Передаем переменные для сайдбара

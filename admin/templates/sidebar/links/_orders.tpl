@@ -5,7 +5,7 @@
         <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#inventory';?>"></use>
       </svg>
       <?php 
-        $counterData = getOrdersNewCounter();
+        $counterData = getAdminCounter('orders');
         $counter = $counterData['counter'];
         $limit = $counterData['limit'];
       ?>
