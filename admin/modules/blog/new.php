@@ -53,11 +53,12 @@ if( isset($_POST['postSubmit']) ) {
   }
 }
 
-// Центральный шаблон для модуля
-ob_start();
-include ROOT . "admin/templates/blog/new.tpl";
-$content = ob_get_contents();
-ob_end_clean();
-
-//Шаблон страницы
-include ROOT . "admin/templates/template.tpl";
+// Центральный шаблон для модуля. Передаем шаблон текущ стараницы и гланвый шаблон, название страницы и класс(елси есть)
+renderTemplateUseBufer(
+  'admin/templates/blog/new.tpl', 
+  'admin/templates/template.tpl',
+  [
+    'title' => 'Блог - создание новой записи', 
+    'class' => 'admin-page'
+  ]
+);

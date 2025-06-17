@@ -18,14 +18,9 @@ if( isset($_POST['postDelete']) ) {
   exit();
 }
 
-$pageTitle = "Блог - удалить пост";
-$pageClass = "admin-page";
-
-// Центральный шаблон для модуля
-ob_start();
-include ROOT . "admin/templates/blog/delete.tpl";
-$content = ob_get_contents();
-ob_end_clean();
-
-//Шаблон страницы
-include ROOT . "admin/templates/template.tpl";
+// Центральный шаблон для модуля. Передаем шаблон текущ стараницы и гланвый шаблон, название страницы и класс(елси есть)
+renderTemplateUseBufer(
+  'admin/templates/blog/delete.tpl', 
+  'admin/templates/template.tpl', 
+  ['title' => 'Блог - удалить пост', 'class' => 'admin-page']
+);

@@ -62,11 +62,47 @@
     return $uriGet; // ['blog/cat/5'] => 5
   }
 
-  // Определение текущей категории
-  function getCurrentSection () {
-    $uri = $_SERVER['REQUEST_URI'];
-    $uriArr = explode('?', $uri); // Разбиваем запрос по сиволу '?', чтобы получить GET запрос
-    $uri = isset($uriArr[1]) ? $uriArr[1] : trim($uriArr[0], "/");
-    $currentSection = $uri;
-    return $currentSection;
+  // Сообщения
+  function getMessagesNewCounter () {
+    $counter = R::count('messages', ' status = ?', ['new']);
+    $limit = 9; 
+    return [
+      'counter' =>  $counter,
+      'limit' => $limit
+    ];
   }
+
+  // Заказы
+  function getOrdersNewCounter () {
+    $counter = R::count('orders', ' status = ?', ['new']);
+    $limit = 9; 
+    return [
+      'counter' =>  $counter,
+      'limit' => $limit
+    ];
+  }
+
+
+  // Подключение шаблона через буфер
+  function renderTemplateUseBufer ($pathTmpl, $pathMainTmpl, $data) {
+    // Передаем переменные для сайдбара
+    $data['ordersCounter'] = getOrdersNewCounter()['counter'];
+    $data['messagesCounter'] = getMessagesNewCounter()['counter'];
+
+    // Получаем переменные из массива ( если переданы)
+    extract($data);
+    $pageTitle = h($title) ?? 'Без названия';
+    $pageClass = h($class) ?? '';
+    $ordersNewCounter = h($ordersCounter);
+    $messagesNewCounter = h($messagesCounter);
+
+    // Центральный шаблон для модуля
+    ob_start();
+    include ROOT . $pathTmpl;
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    //Шаблон страницы
+    include ROOT . $pathMainTmpl;
+  }
+

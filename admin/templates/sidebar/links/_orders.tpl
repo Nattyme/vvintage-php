@@ -4,11 +4,17 @@
       <svg class="icon icon--inventory">
         <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#inventory';?>"></use>
       </svg>
-      <?php if ($ordersNewCounter > 0) : ?>
+      <?php 
+        $counterData = getOrdersNewCounter();
+        $counter = $counterData['counter'];
+        $limit = $counterData['limit'];
+      ?>
+
+      <?php if ($counter > 0) : ?>
         <div class="admin-panel__message-icon counter__widget">
           <?php 
-            if ($ordersNewCounter <= $ordersDisplayLimit) {
-              echo $ordersNewCounter;
+            if ($counter <= $limit) {
+              echo $counter;
             } else {
               echo '&hellip;';
             } 
