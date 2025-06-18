@@ -1,5 +1,5 @@
 <?php
-namespace Vvintage\Project\Config;
+namespace Vvintage\Config;
 
 class Config {
   public const DB_HOST = 'localhost';

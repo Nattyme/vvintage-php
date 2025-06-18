@@ -1,6 +1,6 @@
 <?php 
 declare(strict_types=1);
-namespace Vvintage\Project\Models\Shop;
+namespace Vvintage\Models\Shop;
 
 require_once ROOT . "./libs/functions.php";
 
