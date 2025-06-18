@@ -1,16 +1,16 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
+use Vvintage\Project\Config\Config;
 
-require_once "./config.php";
-require_once "./db.php";
-require_once __DIR__ . '/../vendor/autoload.php';
-// require_once "./libs/functions.php";
+define('ROOT', Config::getRoot());
+define('HOST', Config::getHost());
 
+session_start();
 
 $_SESSION['errors'] = array();
 $_SESSION['success'] = array();
 
-session_start();
-
+require_once "./db.php";
 require ROOT . 'modules/settings/settings.php';
 require ROOT . 'modules/admin-panel/admin-panel.php';
 // require ROOT . 'modules/navigation/navigation.php';
@@ -20,6 +20,9 @@ require ROOT . 'modules/cart/usercart.php';
 
 $uriModule = getModuleName();
 $uriGet = getUriGet();
+
+
+
 $uriGetParam = getUriGetParam();
 
 /*****************************
