@@ -2,7 +2,7 @@
 <section class="arrival" id="arrival">
     <div class="container">
       <div class="section-title">
-        <h2 class="h2">Новинки магазина</h2>
+        <h2 class="h2 text-bold">Новинки магазина</h2>
       </div>
 
       <div class="arrival__cards-wrapper">

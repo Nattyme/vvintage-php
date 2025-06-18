@@ -1,7 +1,7 @@
 <section class="about">
   <div class="container">
     <div class="section-title">
-      <h2 class="h2">О&#160;нас</h2>
+      <h2 class="h2 text-bold">О&#160;нас</h2>
     </div>
 
     <div class="about__grid">

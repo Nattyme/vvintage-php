@@ -2,7 +2,8 @@
 
 require_once "./config.php";
 require_once "./db.php";
-require_once "./libs/functions.php";
+require_once __DIR__ . '/../vendor/autoload.php';
+// require_once "./libs/functions.php";
 
 
 $_SESSION['errors'] = array();
@@ -73,7 +74,8 @@ switch ($uriModule) {
     } else if ( isset($uriGet) && $uriGet === 'subcat' && !empty($uriGetParam)) {
       require ROOT . 'modules/shop/subcat.php';
     } else if ( isset($uriGet) && $uriGet !== 'cat' && $uriGet !== 'subcat') {
-      require ROOT . 'modules/shop/product.php';
+      require ROOT . 'Models/shop/Product.php';
+      // require ROOT . 'modules/shop/product.php';
     } else {
       require ROOT . 'modules/shop/catalog.php';
     }

@@ -1,0 +1,16 @@
+{
+    "name": "vvintage/project",
+    "description": "internet shop of vintage things",
+    "autoload": {
+        "psr-4": {
+            "Vvintage\\Project\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nattyme",
+            "email": "ifrance@yandex.ru"
+        }
+    ],
+    "require": {}
+}

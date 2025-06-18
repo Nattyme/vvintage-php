@@ -3,7 +3,7 @@
     title="Перейти к настройкам"
     data-name="accordeon-title" data-section="${cat.data}">
     <div class="sidebar__list-img-wrapper">
-      <svg class="icon icon--book">
+      <svg class="icon icon--settings">
         <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#settings';?>"></use>
       </svg>
     </div>
