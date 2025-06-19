@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
+
 // Сообщения
 $messagesNewCounter = R::count('messages', ' status = ? ', ['new']);
 $messagesDisplayLimit = 9; 

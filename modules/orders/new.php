@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
+
 require_once ROOT . './libs/functions.php';
 $uriModule = getModuleName();
 

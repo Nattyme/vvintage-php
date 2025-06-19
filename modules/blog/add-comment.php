@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
+
 // Проверка вошел пользователь или нет 
 if ( isset($_SESSION['login']) && $_SESSION['login'] === 1) {
 

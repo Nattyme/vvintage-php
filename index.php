@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
-use Vvintage\Project\Config\Config;
+
+use Vvintage\Config\Config;
+use Vvintage\Database\Database;
 
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
@@ -10,7 +12,10 @@ session_start();
 $_SESSION['errors'] = array();
 $_SESSION['success'] = array();
 
-require_once "./db.php";
+//Обязательно подключение БД:
+Database::connect(); // <-- Вызов подключения
+
+require_once ROOT . "libs/functions.php";
 require ROOT . 'modules/settings/settings.php';
 require ROOT . 'modules/admin-panel/admin-panel.php';
 // require ROOT . 'modules/navigation/navigation.php';

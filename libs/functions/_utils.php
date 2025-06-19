@@ -1,4 +1,6 @@
 <?php 
+  use RedBeanPHP\R;
+  
   // pagination (6, 'posts'); pagination (6, 'posts', [' cat = ? ', [4] ]);
   function pagination ($results_per_page, $type, $params = NULL) {
     intval($type);

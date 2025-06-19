@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
+
 $settingsArray = R::find('settings', ' section LIKE ? ', ['settings']);
 
 $settings = [];

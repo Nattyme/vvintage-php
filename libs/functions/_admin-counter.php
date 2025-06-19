@@ -1,4 +1,6 @@
 <?php
+  use RedBeanPHP\R;
+
   function getCounter (string $tableName, ?string $status = null, int $limit=9) : array {
     if (!R::inspect($tableName)) {
       throw new InvalidArgumentException("Таблица не существует: $tableName");

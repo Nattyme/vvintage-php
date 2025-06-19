@@ -1,4 +1,6 @@
 <?php
+  use RedBeanPHP\R;
+  
   // Вывод похожих постов 
   function get_related_posts ($postTitle) {
     // Разбиваем заголовок на слова, записваем массив в переменую

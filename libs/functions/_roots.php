@@ -1,4 +1,5 @@
 <?php 
+  use RedBeanPHP\R;
   // Поиск названия модуля
   function getModuleName () {
     $uri = $_SERVER['REQUEST_URI'];

@@ -1,4 +1,6 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
 // print_r($_POST);
 // die();
 // $settingsContacts = R::find('settings', ' section LIKE ? ', ['contacts']); // Получаем массив с нужными настройками

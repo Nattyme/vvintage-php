@@ -1,4 +1,7 @@
 <?php 
+// Подключаем readbean
+use RedBeanPHP\R;
+
 // Получаем категории
 $category = R::load('categories', $uriGetParam);
 

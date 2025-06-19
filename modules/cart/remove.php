@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
+
 if ( isLoggedIn() ) {
   // Находим пользователя в БД по id
   $user = R::load('users', $_SESSION['logged_user']['id']);

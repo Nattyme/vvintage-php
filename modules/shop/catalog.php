@@ -1,5 +1,6 @@
 <?php 
 require_once ROOT . "./libs/functions.php";
+use RedBeanPHP\R;
 
 $pagination = pagination(9, 'products');
 $showedProducts = $pagination['page_number'] * 9;

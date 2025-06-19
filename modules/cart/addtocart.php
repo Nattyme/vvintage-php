@@ -1,4 +1,6 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
 
 // Пользователь выполнил вход в профиль
 if ( isLoggedIn() ) {

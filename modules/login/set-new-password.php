@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
+
 $pageTitle = "Установить новый пароль";
 $pageClass = "authorization-page";
 

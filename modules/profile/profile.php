@@ -1,4 +1,6 @@
 <?php 
+  // Подключаем readbean
+  use RedBeanPHP\R;
 
   function getUserComments($userId) {
     $sqlQuery = 'SELECT

@@ -1,4 +1,7 @@
 <?php 
+// Подключаем readbean
+use RedBeanPHP\R;
+
 $pageTitle = "Блог - все записи";
 $pagination = pagination(3, 'posts');
 // $pagination = pagination($settings[5], 'posts');

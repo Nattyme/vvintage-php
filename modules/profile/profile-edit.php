@@ -1,4 +1,7 @@
 <?php 
+  // Подключаем readbean
+  use RedBeanPHP\R;
+  
   require_once ROOT . './libs/functions.php';
   require_once ROOT . './libs/resize-and-crop.php';
 

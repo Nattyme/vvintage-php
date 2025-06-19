@@ -12,5 +12,7 @@
             "email": "ifrance@yandex.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "gabordemooij/redbean": "^5.7"
+    }
 }

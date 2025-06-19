@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
+
 // Если ID нет - выходим
 if ( !isset($_GET['id']) || empty($_GET['id'])) {
   header('Location: ' . HOST . 'profile');

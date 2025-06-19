@@ -1,4 +1,7 @@
 <?php 
+// Подключаем readbean
+use RedBeanPHP\R;
+
 $brand = R::load('brands', $uriGetParam);
 $pageTitle = "Категория: {$brand['title']}";
 

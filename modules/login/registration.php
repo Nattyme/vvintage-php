@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R;
+
 $pageTitle = "Регистрация";
 $pageClass = "authorization-page";
     
