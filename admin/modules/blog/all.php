@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R; 
+
 // Подключаем пагинацию
 $pagination = pagination(8, 'posts');
 

@@ -1,4 +1,7 @@
-<?php 
+<?php
+  // Подключаем readbean
+  use RedBeanPHP\R; 
+   
   if ( isset($_POST['submit'])) {
 
     $socialFields = ['youtube', 'instagram', 'facebook', 'vkontakte', 'dzen', 'telegram'];

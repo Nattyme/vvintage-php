@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R; 
+
 $pageTitle = "Блог - создание новой записи";
 $pageClass = "admin-page";
 

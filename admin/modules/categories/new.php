@@ -1,4 +1,7 @@
 <?php
+  // Подключаем readbean
+  use RedBeanPHP\R; 
+  
   // Задаем название страницы и класс
   $pageTitle = "Категории - новая запись";
   $pageClass = "admin-page";

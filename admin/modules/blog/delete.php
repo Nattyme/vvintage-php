@@ -1,4 +1,7 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R; 
+
 $post = R::load('posts', $_GET['id']); 
 
 if( isset($_POST['postDelete']) ) {

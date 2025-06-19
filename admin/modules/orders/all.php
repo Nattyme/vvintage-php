@@ -1,20 +1,23 @@
 <?php
-// Подключаем пагинацию
-$pagination = pagination(8, 'orders');
+  // Подключаем readbean
+  use RedBeanPHP\R; 
 
-// Получаем данные из GET-запроса
-$searchQuery = $_GET['query'] ?? '';
+  // Подключаем пагинацию
+  $pagination = pagination(8, 'orders');
 
-//Запрос постов в БД с сортировкой id по убыванию
-$orders = R::find('orders', "ORDER BY id DESC {$pagination['sql_page_limit']}");
+  // Получаем данные из GET-запроса
+  $searchQuery = $_GET['query'] ?? '';
 
-$pageTitle = "Заказы - все записи";
-$pageClass = "admin-page";
-// Центральный шаблон для модуля
-ob_start();
-include ROOT . "admin/templates/orders/all.tpl";
-$content = ob_get_contents();
-ob_end_clean();
+  //Запрос постов в БД с сортировкой id по убыванию
+  $orders = R::find('orders', "ORDER BY id DESC {$pagination['sql_page_limit']}");
 
-//Шаблон страницы
-include ROOT . "admin/templates/template.tpl";
+  $pageTitle = "Заказы - все записи";
+  $pageClass = "admin-page";
+  // Центральный шаблон для модуля
+  ob_start();
+  include ROOT . "admin/templates/orders/all.tpl";
+  $content = ob_get_contents();
+  ob_end_clean();
+
+  //Шаблон страницы
+  include ROOT . "admin/templates/template.tpl";

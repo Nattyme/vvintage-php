@@ -1,12 +1,26 @@
 <?php
-require_once "./../config.php";
-require_once "./../db.php";
+use Vvintage\Config\Config;
+use Vvintage\Database\Database;
+
+// Подключаем  компилятор composer
+require_once __DIR__ . '/../vendor/autoload.php';
+
+
+// Определяем константы 
+define('ROOT', Config::getRoot());
+define('HOST', Config::getHost());
+
 require_once ROOT . "libs/resize-and-crop.php";
 require_once ROOT . "libs/functions.php";
 
 $_SESSION['errors'] = array();
 $_SESSION['success'] = array();
+
+// Старт сессии
 session_start();
+
+//Обязательно подключение БД:
+Database::connect(); // <-- Вызов подключения
 
 // Проверка на права доступа
 if ( !(isset($_SESSION['role']) && $_SESSION['role'] === 'admin')) {

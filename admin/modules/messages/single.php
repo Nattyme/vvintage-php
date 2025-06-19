@@ -1,19 +1,22 @@
 <?php
-// Получаем сообщение
-$message = R::load('messages', $_GET['id']); 
+  // Подключаем readbean
+  use RedBeanPHP\R; 
 
-if ($message['status'] === 'new') {
-  $message->status = NULL;
-  R::store($message);
-  $messagesNewCounter = R::count('messages', ' status = ?', ['new']);
-}
+  // Получаем сообщение
+  $message = R::load('messages', $_GET['id']); 
 
-$pageTitle = "Сообщение";
-$pageClass = "admin-page";
-ob_start();
-include ROOT . "admin/templates/messages/single.tpl";
-$content = ob_get_contents();
-ob_end_clean();
+  if ($message['status'] === 'new') {
+    $message->status = NULL;
+    R::store($message);
+    $messagesNewCounter = R::count('messages', ' status = ?', ['new']);
+  }
 
-//Шаблон страницы
-include ROOT . "admin/templates/template.tpl";
+  $pageTitle = "Сообщение";
+  $pageClass = "admin-page";
+  ob_start();
+  include ROOT . "admin/templates/messages/single.tpl";
+  $content = ob_get_contents();
+  ob_end_clean();
+
+  //Шаблон страницы
+  include ROOT . "admin/templates/template.tpl";

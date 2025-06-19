@@ -1,5 +1,8 @@
 <?php 
-$messages = R::find('messages', 'ORDER BY id DESC'); 
+  // Подключаем readbean
+  use RedBeanPHP\R; 
+
+  $messages = R::find('messages', 'ORDER BY id DESC'); 
 ;?>
 <section class="sidebar" id="sidebar-tab">
 

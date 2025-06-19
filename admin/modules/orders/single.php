@@ -1,29 +1,32 @@
 <?php
-// Получаем заказ
-$order = R::load('orders', $_GET['id']); 
+  // Подключаем readbean
+  use RedBeanPHP\R; 
 
-if ($order['status'] === 'new') {
-  $order->status = 'in progress';
-  R::store($order);
-  $ordersNewCounter = R::count('orders', ' status = ?', ['new']);
-}
+  // Получаем заказ
+  $order = R::load('orders', $_GET['id']); 
 
-// Получаем массив продуктов из JSON формата
-$products = json_decode($order['cart'], true);
+  if ($order['status'] === 'new') {
+    $order->status = 'in progress';
+    R::store($order);
+    $ordersNewCounter = R::count('orders', ' status = ?', ['new']);
+  }
 
-// Создаем массив из id всех товаров корзины
-foreach ($products as $product) { $ids[] = $product['id'];}
+  // Получаем массив продуктов из JSON формата
+  $products = json_decode($order['cart'], true);
 
-// Получаем продукты с id из массива $ids из БД 
-$productsDB = R::findLike('products', ['id' => $ids]);
+  // Создаем массив из id всех товаров корзины
+  foreach ($products as $product) { $ids[] = $product['id'];}
 
-$pageTitle = "Заказ N{$order['id']}";
-$pageClass = "admin-page";
-// Центральный шаблон для модуля
-ob_start();
-include ROOT . "admin/templates/orders/single.tpl";
-$content = ob_get_contents();
-ob_end_clean();
+  // Получаем продукты с id из массива $ids из БД 
+  $productsDB = R::findLike('products', ['id' => $ids]);
 
-//Шаблон страницы
-include ROOT . "admin/templates/template.tpl";
+  $pageTitle = "Заказ N{$order['id']}";
+  $pageClass = "admin-page";
+  // Центральный шаблон для модуля
+  ob_start();
+  include ROOT . "admin/templates/orders/single.tpl";
+  $content = ob_get_contents();
+  ob_end_clean();
+
+  //Шаблон страницы
+  include ROOT . "admin/templates/template.tpl";

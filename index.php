@@ -7,10 +7,11 @@ use Vvintage\Database\Database;
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
 
-session_start();
-
 $_SESSION['errors'] = array();
 $_SESSION['success'] = array();
+
+session_start();
+
 
 //Обязательно подключение БД:
 Database::connect(); // <-- Вызов подключения

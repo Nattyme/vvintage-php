@@ -1,4 +1,6 @@
 <?php
+// Подключаем readbean
+use RedBeanPHP\R; 
 
 //Запрос постов в БД с сортировкой id по убыванию
 $postCount = R::count('posts'); 
