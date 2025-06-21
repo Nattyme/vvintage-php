@@ -5,6 +5,7 @@ use RedBeanPHP\R;
 use Vvintage\Config\Config;
 
 class Database {
+  // Подключение к БД
   public static function connect(): void 
   {
     R::setup(
@@ -16,6 +17,11 @@ class Database {
     // R::useJSONFeatures(true);
   }
 
+  /**
+   * Получение массива настроек из таблицы settings
+   * 
+   * @return array<string, string>
+  */
   public static function getSettingsArray(): array
   {
     $settingsArray = R::find('settings', ' section LIKE ? ', ['settings']);

@@ -16,14 +16,9 @@ $_SESSION['success'] = array();
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
 
-// Подключение БД:
-Database::connect(); 
 
-// Получение массива настроек
-$settings = Database::getSettingsArray();
-
-// Загрузка настроек в Settings
-Settings::load($settings);
+Database::connect(); // Подключение БД:
+Settings::init(); // Получение массива настроек
 
 require_once ROOT . 'libs/functions.php';
 
