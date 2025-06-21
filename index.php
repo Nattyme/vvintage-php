@@ -5,6 +5,7 @@ use Vvintage\Config\Config;
 use Vvintage\Database\Database;
 use Vvintage\Routing\RouteData;
 use Vvintage\Routing\Router;
+use Vvintage\Models\Settings\Settings;
 
 // Старт сесии
 session_start();
@@ -17,8 +18,16 @@ define('HOST', Config::getHost());
 
 // Подключение БД:
 Database::connect(); 
+
+// Получение массива настроек
+$settings = Database::getSettingsArray();
+
+// Загрузка настроек в Settings
+Settings::load($settings);
+
 require_once ROOT . 'libs/functions.php';
 
+// Задаем переменные
 $uriModule = getModuleName();
 $uriGet = getUriGet();
 $uriGetParam = getUriGetParam();

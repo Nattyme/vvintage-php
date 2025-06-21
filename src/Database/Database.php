@@ -5,7 +5,8 @@ use RedBeanPHP\R;
 use Vvintage\Config\Config;
 
 class Database {
-  public static function connect():void {
+  public static function connect(): void 
+  {
     R::setup(
       'mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME,
       Config::DB_USER,
@@ -14,6 +15,18 @@ class Database {
     // можно включить JSON-фичи, если нужно
     // R::useJSONFeatures(true);
   }
+
+  public static function getSettingsArray(): array
+  {
+    $settingsArray = R::find('settings', ' section LIKE ? ', ['settings']);
+    $result = [];
+
+    foreach ($settingsArray as $item) {
+      $result[$item->name] = $item->value;
+    }
+
+    return $result;
+  }
 }
 
-// R::useJSONFeatuews(TRUE);  // Настройка ReadBean, кот. сохраняет массив в БД в JSON формате
+// R::useJSONFeatures(TRUE);  // Настройка ReadBean, кот. сохраняет массив в БД в JSON формате

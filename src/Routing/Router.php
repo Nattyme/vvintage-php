@@ -3,10 +3,10 @@
   use Vvintage\Routing\RouteData; 
 
   class Router {
-    public static function route(RouteData $data) {
-      /*****************************
+     /*****************************
             РОУТЕР
-      *****************************/
+    *****************************/
+    public static function route(RouteData $data) {
       switch ($data->module) {
         case '':
         case 'main':
@@ -60,51 +60,11 @@
           http_response_code(404);
           // require ROOT . 'modules/errors/404.php';
           break;
- 
-                    
-        // ::::::::::::: CART :::::::::::::::::::
-        case 'cart':
-          require ROOT . 'modules/cart/cart.php';
-          break;
-          
-        case 'addtocart':
-          require ROOT . 'modules/cart/addtocart.php';
-          break;
-        
-        case 'removefromcart':
-          require ROOT . 'modules/cart/remove.php';
-          break;
-
-
-        // ::::::::::::: ORDERS :::::::::::::::::::
-        case 'neworder':
-          require ROOT . 'modules/orders/new.php';
-          break;
-
-        case 'ordercreated':
-          require ROOT . 'modules/orders/created.php';
-          break;
-
-
-        // ::::::::::::: OTHER :::::::::::::::::::
-        case 'main':
-          require ROOT . 'modules/main/index.php';
-          break;
-
-        case 'contacts':
-          require ROOT . 'modules/contacts/index.php';
-          break;
-
-        case 'about':
-          require ROOT . 'modules/about/index.php';
-          break;
-
-        
       }
-      /*****************************
-                  // РОУТЕР 
-      *****************************/
     }
+    /*****************************
+              // РОУТЕР 
+    *****************************/
 
     private static function routeAuth(RouteData $data) {
       switch ($data->module) {
