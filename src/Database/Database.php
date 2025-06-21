@@ -1,11 +1,18 @@
 <?php 
+declare(strict_types=1);
+
 namespace Vvintage\Database;
 
 use RedBeanPHP\R;
 use Vvintage\Config\Config;
 
+/**
+ * Класс Database управляет подключением к БД и получением данных
+ */
 class Database {
-  // Подключение к БД
+  /**
+   * Подключение к БД иcпользуя ReadBean
+   */
   public static function connect(): void 
   {
     R::setup(
@@ -14,7 +21,7 @@ class Database {
       Config::DB_PASS
     );
     // можно включить JSON-фичи, если нужно
-    // R::useJSONFeatures(true);
+    // R::useJSONFeatures(true); // Настройка ReadBean, кот. сохраняет массив в БД в JSON формате
   }
 
   /**
@@ -34,5 +41,3 @@ class Database {
     return $result;
   }
 }
-
-// R::useJSONFeatures(TRUE);  // Настройка ReadBean, кот. сохраняет массив в БД в JSON формате
