@@ -115,7 +115,8 @@
       } else if ( isset($data->get) && $data->get === 'subcat' && !empty($data->getParam)) {
         require ROOT . 'modules/shop/subcat.php';
       } else if ( isset($data->get) && $data->get !== 'cat' && $data->get !== 'subcat') {
-        require ROOT . 'Models/shop/Product.php';
+        \Vvintage\Controllers\Shop\ProductController::showProduct($data);
+        // require ROOT . 'Models/shop/Product.php';
         // require ROOT . 'modules/shop/product.php';
       } else {
         require ROOT . 'modules/shop/catalog.php';

@@ -8,7 +8,7 @@ use Vvintage\Database\Database;
 /**
  * Класс Settings управляет массивом настроек, загруженных из БД
  */
-class Settings {
+final class Settings {
   private static array $settings = [];
 
   /** 

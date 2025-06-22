@@ -9,7 +9,7 @@ use Vvintage\Config\Config;
 /**
  * Класс Database управляет подключением к БД и получением данных
  */
-class Database {
+final class Database {
   /**
    * Подключение к БД иcпользуя ReadBean
    */
@@ -39,5 +39,51 @@ class Database {
     }
 
     return $result;
+  }
+
+  /** 
+   * Возвращает массив данных о продукте
+   * @return array<string, string>
+  */
+  public static function getProductRow( int $id): array
+  {
+      // Запрашиваем информацию по продукту
+      $sqlQuery = 'SELECT
+          p.id, 
+          p.title, 
+          p.content, 
+          p.brand, 
+          p.category, 
+          p.price, 
+          p.timestamp,
+          c.title AS cat_title,
+          b.title AS brand_title
+        FROM `products` p
+        LEFT JOIN `categories` c ON  p.category = c.id
+        LEFT JOIN `brands` b ON p.brand = b.id
+        WHERE p.id = ? LIMIT 1
+      ';
+
+      $row = R::getRow($sqlQuery, [$id]);
+
+      return $row;
+  }
+
+  /** 
+   * Возвращает массив изображений по id продукта
+   * @return array<string, string>
+  */
+  public static function getProductImagesRow (int $id)
+  {
+  
+    // Запрашиваем информацию по тзображениям
+    $sqlQuery = 'SELECT pi.filename, pi.image_order 
+        FROM `productimages` pi
+        WHERE product_id = ?
+        ORDER BY image_order ASC'; 
+
+    $row = R::getAll($sqlQuery, [$id]);
+    
+    return $row;
   }
 }
