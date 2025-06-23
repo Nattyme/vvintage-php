@@ -9,7 +9,7 @@ use Vvintage\Routing\RouteData;
 
 final class ProductController
 {
-  public static function showProduct(RouteData $data): void 
+  public static function index(RouteData $data): void 
   {
       // Получаем массив всех настроек
       $settings = Settings::all();
@@ -24,6 +24,8 @@ final class ProductController
       }
 
       $relatedProducts = $product->getRelated();
+
+      $pageTitle = $product->getTitle();
 
       // Передаем данные в view
       require ROOT . 'views/_page-parts/_head.tpl';

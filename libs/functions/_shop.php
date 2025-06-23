@@ -92,4 +92,24 @@
     return number_format($price, 0, ',', ' ');
   }
 
+  function isProductInCart ($productId)
+  {
+    if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) 
+    {
+      return array_key_exists($productId, $_SESSION['cart']);
+    }
+
+    if (isset($_COOKIE['cart'])) 
+    {
+      $cookieCart = json_decode($_COOKIE['cart'], true);
+
+      if (is_array($cookieCart)) 
+      {
+        return array_key_exists($productId, $cookieCart);
+      }
+    }
+
+    return false;
+  }
+
 

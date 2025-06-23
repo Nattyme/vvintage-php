@@ -11,7 +11,7 @@
 <nav class="breadcrumbs" >
     <a href="<?php echo HOST;?>" class="breadcrumb ">Главная</a> 
     <?php echo '<span> &#8212; </span>';?>
-    <a href="<?php echo HOST;?>shop" class="breadcrumb ">Все товары</a> 
+    <a href="<?php echo HOST;?>shop" class="breadcrumb ">Каталог</a> 
 
     <?php foreach ($breadcrumbs as $index => $item) {
         $isLast = $index === array_key_last($breadcrumbs);

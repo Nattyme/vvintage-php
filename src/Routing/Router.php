@@ -115,12 +115,12 @@
       } else if ( isset($data->get) && $data->get === 'subcat' && !empty($data->getParam)) {
         require ROOT . 'modules/shop/subcat.php';
       } else if ( isset($data->get) && $data->get !== 'cat' && $data->get !== 'subcat') {
-        \Vvintage\Controllers\Shop\ProductController::showProduct($data);
+        \Vvintage\Controllers\Shop\ProductController::index($data);
       } else if (isset($data->get) && $data->get === 'shop') {
-        \Vvintage\Controllers\Shop\CatalogController::index();
+        \Vvintage\Controllers\Shop\CatalogController::index($data);
       }
       else {
-        \Vvintage\Controllers\Shop\CatalogController::index();
+        \Vvintage\Controllers\Shop\CatalogController::index($data);
       }
     }
 

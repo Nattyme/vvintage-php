@@ -11,8 +11,11 @@ require_once ROOT . "./libs/functions.php";
 
 final class CatalogController 
 {
-  public static function index(): void
+  public static function index(RouteData $data): void
   {
+    // Получаем массив всех настроек
+    $settings = Settings::all();
+
     $productsPerPage = 9;
 
     // Получаем параметры пагинации
@@ -31,9 +34,7 @@ final class CatalogController
     $pageTitle = "Каталог товаров";
 
     // Хлебные крошки
-    $breadcrumbs = [
-      ['title' => 'Каталог', 'url' => HOST . 'shop'],
-    ];
+    $breadcrumbs = [];
 
   
     // Передаем данные в view

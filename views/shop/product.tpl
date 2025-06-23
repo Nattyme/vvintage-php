@@ -97,7 +97,7 @@
           </div>
 
           <div class="product-card__button">
-            <?php if (isset($_SESSION['cart']) && array_key_exists($product->getId(), $_SESSION['cart'])) : ?>
+            <?php if (isProductInCart($product->getId())) : ?>
               <button type="button" class="button button--primary button--l" disabled>Товар в корзине</button>
             <?php  else : ?>
               <a href="<?php echo HOST . 'addtocart?id=' . u($product->getId());?>" class="button button--primary button--xl">

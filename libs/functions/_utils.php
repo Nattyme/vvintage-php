@@ -52,7 +52,7 @@
 
     return $result;
   }
-
+  
   // Проверка вошел ли пользователь в профиль (залогинился)
   function isLoggedIn() {
     $result = false;
