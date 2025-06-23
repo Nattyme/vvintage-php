@@ -7,7 +7,13 @@
       <div class="product__content">
           
         <div class="product__gallery-container">
-          <div class="gallery gallery--<?php echo h($product->imagesTotal); ?>">
+          <?php
+            $imagesTotal = $product->getImagesTotal();
+            $images = $product->getImages();
+            $related = $product->getRelated();
+            $galleryVars = $product->getGalleryVars();
+          ?>
+          <div class="gallery gallery--<?php echo h($imagesTotal); ?>">
            
             <figure class="gallery__item gallery__item--1">
               <a 

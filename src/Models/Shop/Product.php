@@ -121,6 +121,15 @@ class Product
       {
         return $this->timestamp;
       }
+
+      public function getImagesTotal(): int
+      {
+        if ($this->imagesTotal === null) 
+        {
+          $this->getImages(); // автоматически загружает изображения и считает images
+        }
+        return $this->imagesTotal;
+      }
       /** 
       * // Getters
       */
