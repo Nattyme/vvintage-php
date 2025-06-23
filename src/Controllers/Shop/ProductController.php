@@ -23,6 +23,8 @@ final class ProductController
         return;
       }
 
+      $relatedProducts = $product->getRelated();
+
       // Передаем данные в view
       require ROOT . 'views/_page-parts/_head.tpl';
       require ROOT . 'views/_parts/_header.tpl';

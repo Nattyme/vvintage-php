@@ -113,6 +113,6 @@
     </div>
   </section>
 
-  <?php include ROOT. 'view/shop/_parts/_related-products.tpl';?>
+  <?php include ROOT. 'views/shop/_parts/_related-products.tpl';?>
 
 </main>
