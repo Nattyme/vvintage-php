@@ -6,7 +6,6 @@ use Vvintage\Database\Database;
 
 require_once ROOT . "./libs/functions.php";
 
-
 class Product 
 {
       private int $id;
@@ -19,22 +18,33 @@ class Product
       private ?array $images = null; // изначально изображения не загружены
       private ?int $imagesTotal = null;
 
-      public static function findById (int $id) : ?self
+      public function loadFromArray(array $row) : void
       {
-          $row = Database::getProductRow($id);
-          if(!$row) return null;
-
-          $product = new self();
-          $product->id = (int) $row['id'];
-          $product->title = $row['title'];
-          $product->content = $row['content'];
-          $product->category = $row['cat_title'];
-          $product->brand = $row['brand_title'];
-          $product->price = (float)$row['price'];
-          $product->timestamp = $row['timestamp'];
-
-          return $product;
+        $this->id = (int) $row['id'];
+        $this->title = $row['title'];
+        $this->content = $row['content'];
+        $this->category = $row['cat_title'];
+        $this->brand = $row['brand_title'];
+        $this->price = (float)$row['price'];
+        $this->timestamp = $row['timestamp'];
       }
+
+      // public static function findById (int $id) : ?self
+      // {
+      //     $row = Database::getProductRow($id);
+      //     if(!$row) return null;
+
+      //     $product = new self();
+      //     $product->id = (int) $row['id'];
+      //     $product->title = $row['title'];
+      //     $product->content = $row['content'];
+      //     $product->category = $row['cat_title'];
+      //     $product->brand = $row['brand_title'];
+      //     $product->price = (float)$row['price'];
+      //     $product->timestamp = $row['timestamp'];
+
+      //     return $product;
+      // }
 
       // Ф-ция возвращает изображения продукта
       public function getImages(): array 
@@ -72,14 +82,14 @@ class Product
         // Если загружены изображения - возвращаем
         if ($this->images === null) 
         {
-          $product->getImages();
+          $this->getImages();
         }
 
         // Найдем изображения для галлереи
         $visibleImages = array_slice( $this->images['others'], 0, 4);
         $hiddenImages = array_slice($this->images['others'], 4);
-        $invisibleImages = [];
-        $galleryVars = ['visible' =>  $visibleImages, 'hidden' => $hiddenImages, 'invisible' => $invisibleImages];
+      
+        $galleryVars = ['visible' =>  $visibleImages, 'hidden' => $hiddenImages];
     
         return  $galleryVars; 
       }
@@ -123,6 +133,7 @@ class Product
         return $this->timestamp;
       }
 
+      // Ленивая загрузка изображений, если они ещё не загружены
       public function getImagesTotal(): int
       {
         if ($this->imagesTotal === null) 
@@ -134,16 +145,4 @@ class Product
       /** 
       * // Getters
       */
-
-      public static function show(object $data): void 
-      {
-        $id = (int) $data->get;
-        $product = self::findById($id);
-
-        if(!$product) {
-          http_response_code(404);
-          echo 'Товар не найден';
-          return;
-        }
-      }
 }

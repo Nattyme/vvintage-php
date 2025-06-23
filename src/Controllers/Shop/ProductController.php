@@ -3,19 +3,21 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Shop;
 
+use Vvintage\Repositories\ProductRepository;
 use Vvintage\Models\Shop\Product;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Routing\RouteData;
 
 final class ProductController
 {
+
   public static function index(RouteData $data): void 
   {
       // Получаем массив всех настроек
       $settings = Settings::all();
 
       $id = (int) $data->get; // получаем id товара из URL
-      $product = Product::findById($id);
+      $product = ProductRepository::findById($id);
 
       if (!$product) {
         http_response_code(404);

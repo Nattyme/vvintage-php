@@ -45,56 +45,56 @@ final class Database {
    * Возвращает массив данных о продукте
    * @return array<string, string>
   */
-  public static function getProductRow( int $id): array
-  {
-      // Запрашиваем информацию по продукту
-      $sqlQuery = 'SELECT
-          p.id, 
-          p.title, 
-          p.content, 
-          p.brand, 
-          p.category, 
-          p.price, 
-          p.timestamp,
-          c.title AS cat_title,
-          b.title AS brand_title
-        FROM `products` p
-        LEFT JOIN `categories` c ON  p.category = c.id
-        LEFT JOIN `brands` b ON p.brand = b.id
-        WHERE p.id = ? LIMIT 1
-      ';
+  // public static function getProductRow( int $id): array
+  // {
+  //     // Запрашиваем информацию по продукту
+  //     $sqlQuery = 'SELECT
+  //         p.id, 
+  //         p.title, 
+  //         p.content, 
+  //         p.brand, 
+  //         p.category, 
+  //         p.price, 
+  //         p.timestamp,
+  //         c.title AS cat_title,
+  //         b.title AS brand_title
+  //       FROM `products` p
+  //       LEFT JOIN `categories` c ON  p.category = c.id
+  //       LEFT JOIN `brands` b ON p.brand = b.id
+  //       WHERE p.id = ? LIMIT 1
+  //     ';
 
-      $row = R::getRow($sqlQuery, [$id]);
+  //     $row = R::getRow($sqlQuery, [$id]);
 
-      return $row;
-  }
+  //     return $row;
+  // }
 
-  public static function getProductsRow( array $pagination): array 
-  {
-    $sqlQuery = 'SELECT
-                p.id, 
-                p.article, 
-                p.title, 
-                p.price, 
-                p.url, 
-                b.title AS brand, 
-                c.title AS category,
-                pi.filename 
+  // public static function getProductsRow( array $pagination): array 
+  // {
+  //   $sqlQuery = 'SELECT
+  //               p.id, 
+  //               p.article, 
+  //               p.title, 
+  //               p.price, 
+  //               p.url, 
+  //               b.title AS brand, 
+  //               c.title AS category,
+  //               pi.filename 
                 
-             FROM `products` p
-             LEFT JOIN `brands` b ON p.brand = b.id
-             LEFT JOIN `categories` c ON p.category = c.id
-             LEFT JOIN (
-              SELECT product_id, filename
-              FROM productimages 
-              WHERE image_order = 1
-             ) pi ON p.id = pi.product_id
-             ORDER BY p.id DESC ' . $pagination["sql_page_limit"];
+  //            FROM `products` p
+  //            LEFT JOIN `brands` b ON p.brand = b.id
+  //            LEFT JOIN `categories` c ON p.category = c.id
+  //            LEFT JOIN (
+  //             SELECT product_id, filename
+  //             FROM productimages 
+  //             WHERE image_order = 1
+  //            ) pi ON p.id = pi.product_id
+  //            ORDER BY p.id DESC ' . $pagination["sql_page_limit"];
 
-    $rows = R::getAll($sqlQuery);
+  //   $rows = R::getAll($sqlQuery);
 
-    return $rows;
-  }
+  //   return $rows;
+  // }
 
   /** 
    * Возвращает массив изображений по id продукта
