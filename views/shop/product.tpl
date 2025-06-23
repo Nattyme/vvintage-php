@@ -7,25 +7,25 @@
       <div class="product__content">
           
         <div class="product__gallery-container">
-          <div class="gallery gallery--<?php echo h($productImagesTotal); ?>">
+          <div class="gallery gallery--<?php echo h($product->imagesTotal); ?>">
            
             <figure class="gallery__item gallery__item--1">
               <a 
-                href="<?php echo HOST . 'usercontent/products/' . u($mainImage);?>" 
-                data-thumb="<?php echo HOST . 'usercontent/products/' . h($mainImage);?>"
+                href="<?php echo HOST . 'usercontent/products/' . u($images['main']);?>" 
+                data-thumb="<?php echo HOST . 'usercontent/products/' . h($images['main']);?>"
                 data-fancybox="gallery">
 
                 <picture>
                   <img 
                     class="product__img product__img--main"
-                    src="<?php echo HOST . 'usercontent/products/' . u($mainImage);?>" 
-                    srcset="<?php echo HOST . 'usercontent/products/' . u($mainImage);?>" alt="" loading="lazy"
+                    src="<?php echo HOST . 'usercontent/products/' . u($images['main']);?>" 
+                    srcset="<?php echo HOST . 'usercontent/products/' . u($images['main']);?>" alt="" loading="lazy"
                   >
                 </picture>
               </a>
             </figure>
         
-            <?php foreach ($visibleImages as $i => $image) : ?>
+            <?php foreach ($galleryVars['visible'] as $i => $image) : ?>
               <figure class="gallery__item gallery__item--<?php echo $i + 2; ?>">
                 <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
                     data-thumb="<?php echo HOST . 'usercontent/products/' . h($image);?>">
@@ -40,7 +40,7 @@
               </figure>
             <?php endforeach; ?>
 
-            <?php foreach($hiddenImages as $image) : ?>
+            <?php foreach($galleryVars['hidden'] as $image) : ?>
               <a 
                 data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
                 data-thumb="<?php echo HOST . 'usercontent/products/' . h($image);?>">

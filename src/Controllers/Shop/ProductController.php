@@ -11,6 +11,9 @@ final class ProductController
 {
   public static function showProduct(RouteData $data): void 
   {
+      // Получаем массив всех настроек
+      $settings = Settings::all();
+      
       $id = (int) $data->get; // получаем id товара из URL
       $product = Product::findById($id);
 
@@ -22,6 +25,7 @@ final class ProductController
     
       $images = $product->getImages();
       $related = $product->getRelated();
+      $galleryVars = $product->getGalleryVars();
 
       // Передаем данные в view
       require ROOT . 'views/_page-parts/_head.tpl';

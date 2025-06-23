@@ -16,6 +16,7 @@ class Product
       private float $price;
       private string $timestamp;
       private ?array $images = null; // изначально изображения не загружены
+      private ?int $imagesTotal = null;
 
       public static function findById (int $id) : ?self
       {
@@ -34,6 +35,7 @@ class Product
           return $product;
       }
 
+      // Ф-ция возвращает изображения продукта
       public function getImages(): array 
       {
         // Если загружены изображения - возвращаем
@@ -46,18 +48,39 @@ class Product
         $others = [];
         $rows = Database::getProductImagesRow($this->id);
 
+        // Посчитаем общее кол-во изображений
+        $this->imagesTotal = count($rows);
+
         // Обходим массив изображении продукта и находим главное. Остальные сохраняем в массив
         foreach ($rows as $row) 
         {
-              if ((int) $row['image_order'] === 1 && $main === null) {
-                $main = $row['filename'];
-              } else {
-                $others[] = $row['filename'];
-              }
+          if ((int) $row['image_order'] === 1 && $main === null) {
+            $main = $row['filename'];
+          } else {
+            $others[] = $row['filename'];
+          }
         }
 
         $this->images = ['main' => $main, 'others' => $others];
         return $this->images;
+      }
+
+      // Ф-ция формирует массивы дляя галереи изображений 
+      public function getGalleryVars() : array 
+      {
+        // Если загружены изображения - возвращаем
+        if ($this->images === null) 
+        {
+          $product->getImages();
+        }
+
+        // Найдем изображения для галлереи
+        $visibleImages = array_slice( $this->images['others'], 0, 4);
+        $hiddenImages = array_slice($this->images['others'], 4);
+        $invisibleImages = [];
+        $galleryVars = ['visible' =>  $visibleImages, 'hidden' => $hiddenImages, 'invisible' => $invisibleImages];
+    
+        return  $galleryVars; 
       }
 
       // Ф-ция возвращает похожие продукты
