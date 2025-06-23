@@ -116,10 +116,11 @@
         require ROOT . 'modules/shop/subcat.php';
       } else if ( isset($data->get) && $data->get !== 'cat' && $data->get !== 'subcat') {
         \Vvintage\Controllers\Shop\ProductController::showProduct($data);
-        // require ROOT . 'Models/shop/Product.php';
-        // require ROOT . 'modules/shop/product.php';
-      } else {
-        require ROOT . 'modules/shop/catalog.php';
+      } else if (isset($data->get) && $data->get === 'shop') {
+        \Vvintage\Controllers\Shop\CatalogController::index();
+      }
+      else {
+        \Vvintage\Controllers\Shop\CatalogController::index();
       }
     }
 

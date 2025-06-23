@@ -1,5 +1,6 @@
 <?php 
 declare(strict_types=1);
+
 namespace Vvintage\Models\Shop;
 use Vvintage\Database\Database;
 

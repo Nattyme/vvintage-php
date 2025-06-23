@@ -69,6 +69,33 @@ final class Database {
       return $row;
   }
 
+  public static function getProductsRow( array $pagination): array 
+  {
+    $sqlQuery = 'SELECT
+                p.id, 
+                p.article, 
+                p.title, 
+                p.price, 
+                p.url, 
+                b.title AS brand, 
+                c.title AS category,
+                pi.filename 
+                
+             FROM `products` p
+             LEFT JOIN `brands` b ON p.brand = b.id
+             LEFT JOIN `categories` c ON p.category = c.id
+             LEFT JOIN (
+              SELECT product_id, filename
+              FROM productimages 
+              WHERE image_order = 1
+             ) pi ON p.id = pi.product_id
+             ORDER BY p.id DESC ' . $pagination["sql_page_limit"];
+
+    $rows = R::getAll($sqlQuery);
+
+    return $rows;
+  }
+
   /** 
    * Возвращает массив изображений по id продукта
    * @return array<string, string>
