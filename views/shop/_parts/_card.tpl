@@ -1,20 +1,20 @@
 <div class="card">
 
   <a href="<?php echo HOST . 'shop/' . u($product->getId());?>" class="card__img link-abs">
-    <?php if (file_exists(ROOT . 'usercontent/products/' . $images['main'])) : ?>
+    <?php if (file_exists(ROOT . 'usercontent/products/' . $product->getMainImage())) : ?>
       <picture>
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . h($images['main']);?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>"
           type="image/webp"
         />
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . h($images['main']);?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>"
           type="image/jpeg"
       
           />
           <img 
-            src="<?php echo HOST . 'usercontent/products/' . h($images['main']);?>" 
-            srcset="<?php echo HOST . 'usercontent/products/' . h($images['main']);?>" alt="" loading="lazy"
+            src="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>" 
+            srcset="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>" alt="" loading="lazy"
           >
     
       </picture>

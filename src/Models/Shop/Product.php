@@ -29,7 +29,15 @@ class Product
         $this->category = $row['cat_title'] ?? '';
         $this->brand = $row['brand_title'] ?? '';
         $this->timestamp = $row['timestamp'] ?? '';
+        $this->getImages();
       }
+      
+      public function getMainImage(): ?string
+      {
+          $this->getImages(); // на случай, если изображения ещё не загружены
+          return $this->images['main'] ?? null;
+      }
+
 
       // public static function findById (int $id) : ?self
       // {
