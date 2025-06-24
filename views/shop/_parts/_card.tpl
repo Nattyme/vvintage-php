@@ -1,20 +1,20 @@
 <div class="card">
 
-  <a href="<?php echo HOST . 'shop/' . u($product['id']);?>" class="card__img link-abs">
-    <?php if (file_exists(ROOT . 'usercontent/products/' . $product['filename'])) : ?>
+  <a href="<?php echo HOST . 'shop/' . u($product->getId());?>" class="card__img link-abs">
+    <?php if (file_exists(ROOT . 'usercontent/products/' . $images['main'])) : ?>
       <picture>
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . h($product['filename']);?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . h($images['main']);?>"
           type="image/webp"
         />
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . h($product['filename']);?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . h($images['main']);?>"
           type="image/jpeg"
       
           />
           <img 
-            src="<?php echo HOST . 'usercontent/products/' . h($product['filename']);?>" 
-            srcset="<?php echo HOST . 'usercontent/products/' . h($product['filename']);?>" alt="" loading="lazy"
+            src="<?php echo HOST . 'usercontent/products/' . h($images['main']);?>" 
+            srcset="<?php echo HOST . 'usercontent/products/' . h($images['main']);?>" alt="" loading="lazy"
           >
     
       </picture>
@@ -40,11 +40,11 @@
 
   <div class="card__desc">
     <div class="card__title block__text">
-      <h4 class="h4 block__desc"><?php echo isset($product['title']) ? h($product['title']) : 'Название продукта';?></h4>
+      <h4 class="h4 block__desc"><?php echo $product->getTitle() !== null ? h($product->getTitle()) : 'Название продукта';?></h4>
     </div>
     <div class="card__row flex-block">
       <div class="card__price">
-        <span><?php echo isset($product['price']) ? h($product['price']) : '5000';?>&nbsp;&euro;</span>
+        <span><?php echo $product->getPrice() !== null ? h($product->getPrice()) : '5000';?>&nbsp;&euro;</span>
       </div>
     </div>
   </div>

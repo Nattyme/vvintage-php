@@ -22,11 +22,13 @@ class Product
       {
         $this->id = (int) $row['id'];
         $this->title = $row['title'];
-        $this->content = $row['content'];
-        $this->category = $row['cat_title'];
-        $this->brand = $row['brand_title'];
         $this->price = (float)$row['price'];
-        $this->timestamp = $row['timestamp'];
+
+        // Опциональные поля
+        $this->content = $row['content'] ?? '';
+        $this->category = $row['cat_title'] ?? '';
+        $this->brand = $row['brand_title'] ?? '';
+        $this->timestamp = $row['timestamp'] ?? '';
       }
 
       // public static function findById (int $id) : ?self
