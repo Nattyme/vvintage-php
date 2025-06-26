@@ -8,6 +8,8 @@ use Vvintage\Models\Cart;
 // use Vvintage\Models\Settings\Settings;
 use Vvintage\Routing\Router;
 
+require_once ROOT . './libs/functions.php';
+
 final class CartController
 {
   public static function index(RouteData $data): void
@@ -27,5 +29,17 @@ final class CartController
     include ROOT . "views/cart/cart.tpl";
     include ROOT . "views/_parts/_footer.tpl";
     include ROOT . "views/_page-parts/_foot.tpl";
+  }
+
+  public static function get (): array 
+  {
+    // Пользователь выполнил вход в профиль
+    $isLoggedIn = isLoggedIn();
+
+    // Определяем корзину
+    Cart::set($isLoggedIn);
+
+    // Получаем корзину
+    $cart = Cart::get($isLoggedIn);
   }
 }

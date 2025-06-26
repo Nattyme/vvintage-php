@@ -5,17 +5,37 @@ namespace Vvintage\Models\Cart;
 
 final class Cart
 {
-  public static function add ()
+  public static function get (boolval $isLoggedIn): array
   {
-    // Пользователь выполнил вход в профиль
-    if ( isLoggedIn() ) {
+    if ( $isLoggedIn ) 
+    {
       // Находим пользователя в БД по id
       $user = R::load('users', $_SESSION['logged_user']['id']);
 
       // Получаем корзину из БД
       $cart = json_decode($user->cart, true);
+    } 
+    
+    if ( !$isLoggedIn) 
+    {
+       // 1. Проверить наличие корзины пользователя
+      // 2. Если корзина есть - работаем с ней, если нет - создаем новую
+      if (isset($_COOKIE['cart'])) {
+        // Получаем корзину из COOKIE
+        $cart = json_decode($_COOKIE['cart'], true);
+      } else {
+        $cart = array();
+      }
+    }
 
-      // Добавляем товар в корзину
+    return $cart;
+  }
+  
+  public static function add (boolval $isLoggedIn): void
+  {
+    if ($isLoggedIn) 
+    {
+       // Добавляем товар в корзину
       if(isset( $cart[$_GET['id']] )) {
 
         // Если товар уже есть в корзине - увеличиваем кол-во на 1
@@ -38,11 +58,12 @@ final class Cart
       R::store($user);
 
       // Сообщение о добавлении товара
-      // $_SESSION['success'][] = ['title' => 'Товар добавлен в корзину.'];
-    }
+      $_SESSION['success'][] = ['title' => 'Товар добавлен в корзину.'];
 
+    }
+     
     // Пользователь НЕ вошел в профиль
-    if ( !isLoggedIn() ) {
+    if ( !$isLoggedIn) {
       // 1. Проверить наличие корзины пользователя
       // 2. Если корзина есть - работаем с ней, если нет - создаем новую
       if (isset($_COOKIE['cart'])) {
@@ -77,9 +98,14 @@ final class Cart
     exit();
   }
 
-  public static function remove ()
+  private static function getUser (str $id): array
   {
-    if ( isLoggedIn() ) {
+
+  }
+
+  public static function remove (boolval $isLoggedIn)
+  {
+    if ( $isLoggedIn) {
       // Находим пользователя в БД по id
       $user = R::load('users', $_SESSION['logged_user']['id']);
 
@@ -102,7 +128,7 @@ final class Cart
       $_SESSION['success'][] = ['title' => 'Товар был удалён из корзины.'];
     }
 
-    if ( !isLoggedIn() ) {
+    if ( !$isLoggedIn ) {
       if (isset($_COOKIE['cart'])) {
         // Получаем корзину из COOKIE
         $cart = json_decode($_COOKIE['cart'], true);
@@ -124,11 +150,11 @@ final class Cart
     exit();
   }
 
-  public static function get ()
+  public static function set (boolval $isLoggedIn): void
   {
     // Определяем корзину
     $cart = array();
-    if ( isLoggedIn() && isset($_SESSION['cart'])) {
+    if ( $isLoggedIn && isset($_SESSION['cart'])) {
       $cart = $_SESSION['cart'];
     } else if ( isset($_COOKIE['cart']) && !empty($_COOKIE['cart']) ) {
       $cart = json_decode($_COOKIE['cart'], true);
