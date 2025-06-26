@@ -5,12 +5,18 @@ namespace Vvintage\Models\Cart;
 
 final class Cart
 {
-  public static function get (boolval $isLoggedIn): array
+  private static function getUser (string $id): array
+  {
+    $user = R::load('users', $id);
+    return $user;
+  }
+
+  public static function get (bool $isLoggedIn): array
   {
     if ( $isLoggedIn ) 
     {
       // Находим пользователя в БД по id
-      $user = R::load('users', $_SESSION['logged_user']['id']);
+      $user = self::getUser($_SESSION['logged_user']['id']);
 
       // Получаем корзину из БД
       $cart = json_decode($user->cart, true);
@@ -31,22 +37,24 @@ final class Cart
     return $cart;
   }
   
-  public static function add (boolval $isLoggedIn): void
+  public static function add (bool $isLoggedIn): void
   {
     if ($isLoggedIn) 
     {
-       // Добавляем товар в корзину
-      if(isset( $cart[$_GET['id']] )) {
+      // Получаем корзину
+      $cart = json_decode($user->cart, true) ?? [];
 
-        // Если товар уже есть в корзине - увеличиваем кол-во на 1
-        // $cart[$_GET['id']] = $cart[$_GET['id']] + 1; 
-        // Если товар уже есть в корзине - не увеличиваем кол-во на 1
-        $cart[$_GET['id']] = $cart[$_GET['id']]; 
+       // Добавляем товар в корзину
+      if (isset( $cart[$_GET['id']] )) {
+        // Не увеличиваем количество, если товар уже есть
       } else {
 
         // Формируем корзину в ассоциативный массив
         $cart[$_GET['id']] = 1;
       }
+
+      // Находим пользователя в БД по id
+      $user = self::getUser($_SESSION['logged_user']['id']);      
 
       // Превращаем корзину в json строку
       $user->cart = json_encode($cart);
@@ -98,16 +106,11 @@ final class Cart
     exit();
   }
 
-  private static function getUser (str $id): array
-  {
-
-  }
-
-  public static function remove (boolval $isLoggedIn)
+  public static function remove (bool $isLoggedIn): void
   {
     if ( $isLoggedIn) {
       // Находим пользователя в БД по id
-      $user = R::load('users', $_SESSION['logged_user']['id']);
+      $user = self::getUser($_SESSION['logged_user']['id']);
 
       // Получаем корзину из БД
       $cart = json_decode($user->cart, true);
@@ -150,7 +153,7 @@ final class Cart
     exit();
   }
 
-  public static function set (boolval $isLoggedIn): void
+  public static function set (bool $isLoggedIn): int
   {
     // Определяем корзину
     $cart = array();
@@ -162,5 +165,6 @@ final class Cart
 
     // Определяем счетчик товаров в корзине
     $cartCount = array_sum($cart);
+    return $cartCount;
   }
 }
