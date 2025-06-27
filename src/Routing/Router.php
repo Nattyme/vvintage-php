@@ -139,7 +139,8 @@
     private static function routeCart(RouteData $data) {
       switch ($data->module) {
         case 'cart':
-          require ROOT . 'modules/cart/cart.php';
+          \Vvintage\Controllers\Cart\CartController::index($data);
+          // require ROOT . 'modules/cart/cart.php';
           break;
         case 'addtocart':
           require ROOT . 'modules/cart/addtocart.php';

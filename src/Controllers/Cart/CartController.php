@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Cart;
 
 use RedBeanPHP\R; // Подключаем readbean
-use Vvintage\Models\Cart;
-// use Vvintage\Models\Settings\Settings;
 use Vvintage\Routing\Router;
+use Vvintage\Routing\RouteData;
+use Vvintage\Models\Settings\Settings;
+use Vvintage\Models\Cart\Cart;
 
 require_once ROOT . './libs/functions.php';
 
@@ -22,6 +23,8 @@ final class CartController
     $breadcrumbs = [
       ['title' => $pageTitle, 'url' => '#'],
     ];
+
+    $cart = self::get();
 
     // Подключение шаблонов страницы
     include ROOT . "views/_page-parts/_head.tpl";
@@ -41,5 +44,7 @@ final class CartController
 
     // Получаем корзину
     $cart = Cart::get($isLoggedIn);
+
+    return $cart;
   }
 }

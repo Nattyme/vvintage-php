@@ -41,6 +41,9 @@ final class Cart
   {
     if ($isLoggedIn) 
     {
+      // Находим пользователя в БД по id
+      $user = self::getUser($_SESSION['logged_user']['id']);     
+
       // Получаем корзину
       $cart = json_decode($user->cart, true) ?? [];
 
@@ -51,10 +54,7 @@ final class Cart
 
         // Формируем корзину в ассоциативный массив
         $cart[$_GET['id']] = 1;
-      }
-
-      // Находим пользователя в БД по id
-      $user = self::getUser($_SESSION['logged_user']['id']);      
+      } 
 
       // Превращаем корзину в json строку
       $user->cart = json_encode($cart);
@@ -84,11 +84,7 @@ final class Cart
       // 3. Добавляем товар в корзину
       // Добавляем товар в корзину
       if(isset( $cart[$_GET['id']] )) {
-
-        // Если товар уже есть в корзине - увеличиваем кол-во на 1
-        // $cart[$_GET['id']] = $cart[$_GET['id']] + 1; 
         // Если товар уже есть в корзине - не увеличиваем кол-во на 1
-        $cart[$_GET['id']] = $cart[$_GET['id']]; 
       } else {
 
         // Формируем корзину в ассоциативный массив
