@@ -41,14 +41,12 @@ final class CartController
     // Проверяем вход пользователя в профиль
     $isLoggedIn = isLoggedIn();
 
-    // Определяем тип корзины (пользователь или нет)
-    Cart::set($isLoggedIn);
-
-    // Получаем список товаров корзины
-    $idsData = Cart::get($isLoggedIn);
+    // Создаем объект корзины
+    $cart = new Cart();
+    $cartData = $cart->set($isLoggedIn);
 
     // Получаем информацию по продуктам из списка корзины 
-    $products = ProductRepository::findByIds($idsData);
+    $products = ProductRepository::findByIds($cartData);
 
     return $products;
   }

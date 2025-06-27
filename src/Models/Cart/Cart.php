@@ -5,13 +5,18 @@ namespace Vvintage\Models\Cart;
 
 final class Cart
 {
+  // Общая стоимость товаров в корзине
+  private array $cart = [];
+  private int $totalPrice = 0;
+
+
   private static function getUser (string $id): array
   {
     $user = R::load('users', $id);
     return $user;
   }
 
-  public static function get (bool $isLoggedIn): array
+  public function get (bool $isLoggedIn): array
   {
     if ( $isLoggedIn ) 
     {
@@ -149,18 +154,32 @@ final class Cart
     exit();
   }
 
-  public static function set (bool $isLoggedIn): int
+  public function set (bool $isLoggedIn): array
   {
     // Определяем корзину
-    $cart = array();
     if ( $isLoggedIn && isset($_SESSION['cart'])) {
       $cart = $_SESSION['cart'];
     } else if ( isset($_COOKIE['cart']) && !empty($_COOKIE['cart']) ) {
       $cart = json_decode($_COOKIE['cart'], true);
     }
 
+    $this->cart = $cart;
     // Определяем счетчик товаров в корзине
-    $cartCount = array_sum($cart);
-    return $cartCount;
+    $cartCount = array_sum($this->cart);
+
+    return $cart;
   }
+
+  private function count (array $products): int
+  {
+    $total = 0;
+    foreach ( $this->cart as $id => $quantity) {
+      if(isset($products[$id])) {
+        $total = $total + $products[$id]['price'] * $quantity;
+      }
+    }
+    $this->total = $total;
+    return $total;
+  }
+
 }
