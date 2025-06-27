@@ -44,5 +44,4 @@ final class CatalogController
     require ROOT . 'views/_parts/_footer.tpl';
     require ROOT . 'views/_page-parts/_foot.tpl';
   }
-
 }

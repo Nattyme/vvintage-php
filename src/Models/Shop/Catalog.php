@@ -20,4 +20,6 @@ final class Catalog
   {
     return R::count('products');
   }
+
+ 
 }
