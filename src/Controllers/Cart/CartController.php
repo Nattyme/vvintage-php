@@ -43,10 +43,11 @@ final class CartController
 
     // Создаем объект корзины
     $cart = new Cart();
-    $cartData = $cart->set($isLoggedIn);
+    $cartData = $cart->getCart($isLoggedIn);
 
     // Получаем информацию по продуктам из списка корзины 
     $products = ProductRepository::findByIds($cartData);
+    $cartTotalPrice = $cart->count($products);
 
     return $products;
   }

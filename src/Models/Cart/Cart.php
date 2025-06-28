@@ -7,7 +7,7 @@ final class Cart
 {
   // Общая стоимость товаров в корзине
   private array $cart = [];
-  private int $totalPrice = 0;
+  private int $cartTotalPrice = 0;
 
 
   private static function getUser (string $id): array
@@ -16,7 +16,11 @@ final class Cart
     return $user;
   }
 
-  public function get (bool $isLoggedIn): array
+  // Метод получает корзину из БД или куки и записывает её в $this->cart
+  /** 
+   * @return array
+   */
+  public function getCart (bool $isLoggedIn): array
   {
     if ( $isLoggedIn ) 
     {
@@ -24,25 +28,24 @@ final class Cart
       $user = self::getUser($_SESSION['logged_user']['id']);
 
       // Получаем корзину из БД
-      $cart = json_decode($user->cart, true);
-    } 
-    
-    if ( !$isLoggedIn) 
-    {
+      $cart = json_decode($user->cart, true) ?? [];
+    } else {
+
        // 1. Проверить наличие корзины пользователя
       // 2. Если корзина есть - работаем с ней, если нет - создаем новую
       if (isset($_COOKIE['cart'])) {
         // Получаем корзину из COOKIE
         $cart = json_decode($_COOKIE['cart'], true);
       } else {
-        $cart = array();
+        $cart = [];
       }
     }
 
+    $this->cart = $cart;
     return $cart;
   }
   
-  public static function add (bool $isLoggedIn): void
+  public static function addItem (bool $isLoggedIn): void
   {
     if ($isLoggedIn) 
     {
@@ -107,7 +110,7 @@ final class Cart
     exit();
   }
 
-  public static function remove (bool $isLoggedIn): void
+  public static function removeItem (bool $isLoggedIn): void
   {
     if ( $isLoggedIn) {
       // Находим пользователя в БД по id
@@ -154,23 +157,110 @@ final class Cart
     exit();
   }
 
-  public function set (bool $isLoggedIn): array
+  // public function oldSet (bool $isLoggedIn): void
+  // {
+  //   // Определяем корзину
+  //   if ( $isLoggedIn && isset($_SESSION['cart'])) {
+  //     $cart = $_SESSION['cart'];
+  //   } else if ( isset($_COOKIE['cart']) && !empty($_COOKIE['cart']) ) {
+  //     $cart = json_decode($_COOKIE['cart'], true);
+  //   }
+
+  //   $this->cart = $cart;
+  //   // Определяем счетчик товаров в корзине
+  //   $cartCount = array_sum($this->cart);
+
+  // }
+
+  public function mergeCartAfterLogin (bool $isLoggedIn, $user): void
   {
-    // Определяем корзину
-    if ( $isLoggedIn && isset($_SESSION['cart'])) {
-      $cart = $_SESSION['cart'];
-    } else if ( isset($_COOKIE['cart']) && !empty($_COOKIE['cart']) ) {
-      $cart = json_decode($_COOKIE['cart'], true);
+    if (!$isLoggedIn || !$user) {
+      // Пароль не верен
+      $_SESSION['errors'][] = ['title' => 'Неверный пароль'];
     }
 
-    $this->cart = $cart;
-    // Определяем счетчик товаров в корзине
-    $cartCount = array_sum($this->cart);
+    // Загружаем корзину и избранное пользователя из БД 
+    $temp = [
+      'cart' => !empty($user->cart) ? json_decode($user->cart, true) : [], 
+      'fav_list' => !empty($user->fav_list) ? json_decode($user->fav_list, true) : []
+    ];
 
-    return $cart;
-  }
+    // $_SESSION['cart'] = json_decode($_SESSION['logged_user']['cart'], true);  
+    // $_SESSION['fav_list'] = json_decode($_SESSION['logged_user']['fav_list'], true);
 
-  private function count (array $products): int
+    // Объединение содержимое куки в цикле
+    foreach(['cart', 'fav_list'] as $key) {
+      if ( isset($_COOKIE[$key]) && !empty($_COOKIE[$key]) ) {
+        $cookieData = json_decode($_COOKIE[$key], true);
+
+        foreach ( $cookieData as $itemKey => $value) {
+          if ( isset($temp[$key][$itemKey]) ) {
+            $temp[$key][$itemKey] += $value;
+          } else {
+            $temp[$key][$itemKey] = $value;
+          }
+        }
+      }
+    }
+  
+
+    // Работа с корзиной
+    // Действия:
+    // 1. Достать корзину из БД
+    // 2. Совместить ее с COOKIES, если они есть
+    // 3. Сохранить полученную корзину в БД
+    // 4. Сохранить полученную корзину в сессию
+    // 5. Очистить корзину COOKIE
+
+    // Если есть корзина COOKIE, то переносим ее данные в БД $temp 
+    // if ( isset($_COOKIE['cart']) && !empty($_COOKIE['cart']) ) {
+    //   $cookie_cart = json_decode($_COOKIE['cart'], true);
+
+    //   foreach ( $cookie_cart as $key => $value) {
+    //     if ( isset($temp['cart'][$key]) ) {
+    //       $temp['cart'][$key] += $value;
+    //     } else {
+    //       $temp['cart'][$key] = $value;
+    //     }
+    //   }
+    // }
+
+    // // Если есть избранное в  COOKIE, то переносим эти данные в БД $temp_fav_list 
+    // if ( isset($_COOKIE['fav_list']) && !empty($_COOKIE['fav_list']) ) {
+    //   $cookie_fav_list = json_decode($_COOKIE['fav_list'], true);
+
+    //   foreach ( $cookie_fav_list as $key => $value) {
+    //     if ( isset($temp['fav_list'][$key]) ) {
+    //       $temp['fav_list'][$key] += $value;
+    //     } else {
+    //       $temp['fav_list'][$key] = $value;
+    //     }
+    //   }
+    // }
+
+    // Сохраняем в БД, очщиаем куки, обновляем сессии
+    foreach ($temp as $key => $value) 
+    {
+      setcookie($key, '', time() - 3600);
+      $user->$key = json_encode($temp[$key]);
+      $_SESSION[$key] = $temp[$key];
+    }
+
+    // Обновляем пользователя в БД
+    R::store($user);
+
+    if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
+      $_SESSION['success'][] = ['title' => 'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
+    } else {
+      $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
+    }
+
+    header('Location: ' . HOST . 'profile');
+    exit();
+  } 
+
+
+  public function count (array $products): int
   {
     $total = 0;
     foreach ( $this->cart as $id => $quantity) {
@@ -178,8 +268,9 @@ final class Cart
         $total = $total + $products[$id]['price'] * $quantity;
       }
     }
-    $this->total = $total;
-    return $total;
+    $this->cartTotalPrice = $total;
+    dd($cartTotalPrice);
+    return $cartTotalPrice;
   }
 
 }
