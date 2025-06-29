@@ -69,7 +69,7 @@
     private static function routeAuth(RouteData $data) {
       switch ($data->module) {
         case 'login':
-          require ROOT . 'modules/login/login.php';
+          \Vvintage\Controllers\Auth\AuthController::login($data);
           break;
 
         case 'registration':
