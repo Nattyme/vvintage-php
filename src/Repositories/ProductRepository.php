@@ -9,31 +9,31 @@ use Vvintage\Models\Shop\Product;
 final class ProductRepository 
 {
   public static function findById (int $id) : ?Product
-      {
-        // Запрашиваем информацию по продукту
-        $sqlQuery = 'SELECT
-            p.id, 
-            p.title, 
-            p.content, 
-            p.brand, 
-            p.category, 
-            p.price, 
-            p.timestamp,
-            c.title AS cat_title,
-            b.title AS brand_title
-          FROM `products` p
-          LEFT JOIN `categories` c ON  p.category = c.id
-          LEFT JOIN `brands` b ON p.brand = b.id
-          WHERE p.id = ? LIMIT 1
-        ';
-        $row = R::getRow($sqlQuery, [$id]);
+  {
+    // Запрашиваем информацию по продукту
+    $sqlQuery = 'SELECT
+        p.id, 
+        p.title, 
+        p.content, 
+        p.brand, 
+        p.category, 
+        p.price, 
+        p.timestamp,
+        c.title AS cat_title,
+        b.title AS brand_title
+      FROM `products` p
+      LEFT JOIN `categories` c ON  p.category = c.id
+      LEFT JOIN `brands` b ON p.brand = b.id
+      WHERE p.id = ? LIMIT 1
+    ';
+    $row = R::getRow($sqlQuery, [$id]);
 
-        if(!$row) return null;
+    if(!$row) return null;
 
-        $product = new Product();
-        $product->loadFromArray($row);
-        return $product;
-      }
+    $product = new Product();
+    $product->loadFromArray($row);
+    return $product;
+  }
 
   public static function findAll ( array $pagination): array 
   {
@@ -71,35 +71,35 @@ final class ProductRepository
     return $products;
   }
 
-   public static function findByIds (array $idsData): array
-   {
-      // Массив ids
-      $ids = array_keys($idsData);
+  public static function findByIds (array $idsData): array
+  {
+    // Массив ids
+    $ids = array_keys($idsData);
 
-      // Плейсхолдеры для запроса
-      $slotString = R::genSlots($ids);
+    // Плейсхолдеры для запроса
+    $slotString = R::genSlots($ids);
 
-      // Находим продкуты и их главное изображение
-      $sql = "SELECT 
-                    p.id,
-                    p.title,
-                    p.article, 
-                    p.category,
-                    p.brand,
-                    p.price,
-                    pi.filename
-              FROM `products` p 
-              LEFT JOIN `productimages` pi ON p.id = pi.product_id AND pi.image_order = 1
-              WHERE p.id IN ($slotString)";
+    // Находим продкуты и их главное изображение
+    $sql = "SELECT 
+                  p.id,
+                  p.title,
+                  p.article, 
+                  p.category,
+                  p.brand,
+                  p.price,
+                  pi.filename
+            FROM `products` p 
+            LEFT JOIN `productimages` pi ON p.id = pi.product_id AND pi.image_order = 1
+            WHERE p.id IN ($slotString)";
 
-        $productsData = R::getAll($sql, $ids);
+      $productsData = R::getAll($sql, $ids);
 
-        $products = [];
-        foreach ($productsData as $product) {
-          $id = $product['id']; // получаем id из строки
-          $products[$id] = $product; // сохраняем строку под ключом id
-        }
+      $products = [];
+      foreach ($productsData as $product) {
+        $id = $product['id']; // получаем id из строки
+        $products[$id] = $product; // сохраняем строку под ключом id
+      }
 
-        return $products;
-   }
+      return $products;
+  }
 }

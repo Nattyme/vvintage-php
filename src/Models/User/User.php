@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Vvintage\Models\User;
+use Vvintage\Repositories\User\UserRepository;
 
 final class User
 {
