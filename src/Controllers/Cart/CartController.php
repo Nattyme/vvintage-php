@@ -10,6 +10,8 @@ use Vvintage\Repositories\ProductRepository;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
+use Vvintage\Models\User\User;
+use Vvintage\Repositories\UserRepository;
 
 require_once ROOT . './libs/functions.php';
 
@@ -21,6 +23,9 @@ final class CartController
     // После создания класса авторизации ДОБАВИТЬ ЗДЕСЬ ВЫЗОВ МЕТОДА ПРОВЕРКИ И ДЕЙСТВИЯ НА СЛУЧАЙ, ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ ЗАЛОГИНЕН
     // Проверяем вход пользователя в профиль
     $isLoggedIn = isLoggedIn();
+    if(!$isLoggedIn) {
+      return;
+    }
 
     // Получаем массив всех настроек
     $settings = Settings::all();

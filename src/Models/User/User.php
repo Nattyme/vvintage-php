@@ -7,20 +7,45 @@ use Vvintage\Repositories\User\UserRepository;
 final class User
 {
   private int $id;
+  private string $password;
   private string $email;
   private string $name;
   private string $role;
+  private array $fav_list;
 
-  public function __construct (array $userData)
+  public Cart $cart;
+
+  public function __construct ( $bean )
   {
-    $this->id = (int) $userData['id'];
-    $this->email =  $userData['email'];
-    $this->name = $userData['name'];
-    $this->role = $userData['role'] ?? 'user';
+    $this->id = (int) $bean['id'];
+    $this->email = $bean['email'];
+    $this->password = $bean['password'];
+    $this->name = $bean['name'];
+    $this->role = $bean['role'] ?? 'user';
+
+    $cartData = isset($bean['cart']) ? json_decode($bean->cart ?? '[]', true) : [];
+    $this->cart = new Cart($cartData);
+    $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
+  }
+
+  public function export(): array
+  {
+    return [
+      'id' => $this->id,
+      'name' => $this->name,
+      'email' => $this->email,
+      'role' => $this->role,
+      'password' => $this->password,
+      'cart' => json_encode($this->cart->getItems())
+    ];
   }
 
   public function getId(): int {
     return $this->id;
+  }
+
+  public function getPassword(): string {
+    return $this->password;
   }
 
   public function getEmail():string
@@ -41,5 +66,16 @@ final class User
   public function getRole(): string
   {
     return $this->role;
+  }
+
+
+  public function getCart () 
+  {
+    return $this->cart;
+  }
+  
+  public function getFavList ()
+  {
+    return $this->fav_list;
   }
 }

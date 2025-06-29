@@ -9,6 +9,11 @@ final class Cart
   private array $cart = [];
   private int $cartTotalPrice = 0;
 
+  public function __construct(array $cart = [])
+  {
+    $this->cart = $cart;
+  }
+
 
   private static function getUser (string $id)
   {
