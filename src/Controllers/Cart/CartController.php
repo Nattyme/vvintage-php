@@ -17,16 +17,29 @@ final class CartController
 {
   public static function index(RouteData $data): void
   {
+    // TO DO
+    // После создания класса авторизации ДОБАВИТЬ ЗДЕСЬ ВЫЗОВ МЕТОДА ПРОВЕРКИ И ДЕЙСТВИЯ НА СЛУЧАЙ, ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ ЗАЛОГИНЕН
+    // Проверяем вход пользователя в профиль
+    $isLoggedIn = isLoggedIn();
+
     // Получаем массив всех настроек
     $settings = Settings::all();
+ 
+    // Создаем объект корзины
+    $cart = new Cart();
+    $cartData = $cart->getCart($isLoggedIn);
+
+    // Получаем информацию по продуктам из списка корзины 
+    $products = ProductRepository::findByIds($cartData);
+
+    $cartTotalPrice = $cart->countTotalPrice($products);
+
     $pageTitle = "Корзина товаров";
 
     // Хлебные крошки
     $breadcrumbs = [
       ['title' => $pageTitle, 'url' => '#'],
     ];
-
-    $products = self::get();
 
     // Подключение шаблонов страницы
     include ROOT . "views/_page-parts/_head.tpl";
@@ -36,19 +49,11 @@ final class CartController
     include ROOT . "views/_page-parts/_foot.tpl";
   }
 
-  public static function get (): array 
+  public static function addItem ($data): void
   {
     // Проверяем вход пользователя в профиль
     $isLoggedIn = isLoggedIn();
-
-    // Создаем объект корзины
-    $cart = new Cart();
-    $cartData = $cart->getCart($isLoggedIn);
-
-    // Получаем информацию по продуктам из списка корзины 
-    $products = ProductRepository::findByIds($cartData);
-    $cartTotalPrice = $cart->count($products);
-
-    return $products;
+    Cart::addItem($isLoggedIn);
   }
+
 }

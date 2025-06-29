@@ -10,7 +10,7 @@ final class Cart
   private int $cartTotalPrice = 0;
 
 
-  private static function getUser (string $id): array
+  private static function getUser (string $id)
   {
     $user = R::load('users', $id);
     return $user;
@@ -43,6 +43,15 @@ final class Cart
 
     $this->cart = $cart;
     return $cart;
+  }
+
+  public function getQuantity ($productId): int
+  {
+    // Проверяем, есть ли товар в корзине
+    if (isset($this->cart[$productId])) {
+        return $this->cart[$productId];
+    }
+    return 0; // если товара нет, возвращаем 0
   }
   
   public static function addItem (bool $isLoggedIn): void
@@ -79,35 +88,33 @@ final class Cart
     }
      
     // Пользователь НЕ вошел в профиль
+    // 1. Проверить наличие корзины пользователя
+    // 2. Если корзина есть - работаем с ней, если нет - создаем новую
     if ( !$isLoggedIn) {
-      // 1. Проверить наличие корзины пользователя
-      // 2. Если корзина есть - работаем с ней, если нет - создаем новую
-      if (isset($_COOKIE['cart'])) {
-        // Получаем корзину из COOKIE
-        $cart = json_decode($_COOKIE['cart'], true);
-      } else {
-        $cart = array();
-      }
+      // Получаем корзину из COOKIE
+      $cart = json_decode($_COOKIE['cart'] ?? '[]', true);
     
-      // 3. Добавляем товар в корзину
-      // Добавляем товар в корзину
-      if(isset( $cart[$_GET['id']] )) {
-        // Если товар уже есть в корзине - не увеличиваем кол-во на 1
-      } else {
-
+      // 3. Добавляем товар в корзину, если его там нет
+      if(! isset($cart[$_GET['id']] )) {
         // Формируем корзину в ассоциативный массив
         $cart[$_GET['id']] = 1;
-      }
 
-      // 4. Сохранение корзины в COOKIE
-      setcookie('cart', json_encode($cart), time() + 60 * 60 * 24 * 30);
+        // 4. Сохранение корзины в COOKIE
+        setcookie('cart', json_encode($cart), [
+          'expires' => time() + 60 * 60 * 24 * 30,
+          'path' => '/',
+          'secure' => true, // только через HTTPS
+          'httponly' => true, //Недоступно из JS
+          'samesite' => 'Strict'
+        ]);
 
-      // 5. Сообщение о добавлении товара
-      $_SESSION['success'][] = ['title' => 'Товар добавлен в корзину.'];
+        // 5. Сообщение о добавлении товара
+        $_SESSION['success'][] = ['title' => 'Товар добавлен в корзину.'];
+
+        header('Location: ' . HOST . 'shop/' . $_GET['id']);
+        exit();
+      } 
     }
-
-    header('Location: ' . HOST . 'shop/' . $_GET['id']);
-    exit();
   }
 
   public static function removeItem (bool $isLoggedIn): void
@@ -177,6 +184,7 @@ final class Cart
     if (!$isLoggedIn || !$user) {
       // Пароль не верен
       $_SESSION['errors'][] = ['title' => 'Неверный пароль'];
+      return;
     }
 
     // Загружаем корзину и избранное пользователя из БД 
@@ -202,41 +210,6 @@ final class Cart
         }
       }
     }
-  
-
-    // Работа с корзиной
-    // Действия:
-    // 1. Достать корзину из БД
-    // 2. Совместить ее с COOKIES, если они есть
-    // 3. Сохранить полученную корзину в БД
-    // 4. Сохранить полученную корзину в сессию
-    // 5. Очистить корзину COOKIE
-
-    // Если есть корзина COOKIE, то переносим ее данные в БД $temp 
-    // if ( isset($_COOKIE['cart']) && !empty($_COOKIE['cart']) ) {
-    //   $cookie_cart = json_decode($_COOKIE['cart'], true);
-
-    //   foreach ( $cookie_cart as $key => $value) {
-    //     if ( isset($temp['cart'][$key]) ) {
-    //       $temp['cart'][$key] += $value;
-    //     } else {
-    //       $temp['cart'][$key] = $value;
-    //     }
-    //   }
-    // }
-
-    // // Если есть избранное в  COOKIE, то переносим эти данные в БД $temp_fav_list 
-    // if ( isset($_COOKIE['fav_list']) && !empty($_COOKIE['fav_list']) ) {
-    //   $cookie_fav_list = json_decode($_COOKIE['fav_list'], true);
-
-    //   foreach ( $cookie_fav_list as $key => $value) {
-    //     if ( isset($temp['fav_list'][$key]) ) {
-    //       $temp['fav_list'][$key] += $value;
-    //     } else {
-    //       $temp['fav_list'][$key] = $value;
-    //     }
-    //   }
-    // }
 
     // Сохраняем в БД, очщиаем куки, обновляем сессии
     foreach ($temp as $key => $value) 
@@ -260,7 +233,7 @@ final class Cart
   } 
 
 
-  public function count (array $products): int
+  public function countTotalPrice (array $products): int
   {
     $total = 0;
     foreach ( $this->cart as $id => $quantity) {
@@ -269,8 +242,7 @@ final class Cart
       }
     }
     $this->cartTotalPrice = $total;
-    dd($cartTotalPrice);
-    return $cartTotalPrice;
+    return $this->cartTotalPrice;
   }
 
 }

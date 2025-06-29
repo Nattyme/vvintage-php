@@ -140,10 +140,9 @@
       switch ($data->module) {
         case 'cart':
           \Vvintage\Controllers\Cart\CartController::index($data);
-          // require ROOT . 'modules/cart/cart.php';
           break;
         case 'addtocart':
-          require ROOT . 'modules/cart/addtocart.php';
+          \Vvintage\Controllers\Cart\CartController::addItem($data);
           break;
         case 'removefromcart':
           require ROOT . 'modules/cart/remove.php';

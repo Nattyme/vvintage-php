@@ -54,7 +54,7 @@
                   <div class="cart__row">
                     <div class="cart__amount">
                       <span class="cart__text">
-                        <?php echo h($product['id']); ?>
+                        <?php echo h($cart->getQuantity($product['id'])); ?>
                       </span>
                     </div>
                   </div>
