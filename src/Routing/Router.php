@@ -145,7 +145,7 @@
           \Vvintage\Controllers\Cart\CartController::addItem($data);
           break;
         case 'removefromcart':
-          require ROOT . 'modules/cart/remove.php';
+          \Vvintage\Controllers\Cart\CartController::removeItem($data);
           break;
       }
     }

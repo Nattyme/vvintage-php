@@ -29,11 +29,16 @@ final class CartController
     $cart = new Cart();
     $cartData = $cart->getCart($isLoggedIn);
 
-    // Получаем информацию по продуктам из списка корзины 
-    $products = ProductRepository::findByIds($cartData);
+    if (!empty($cartData)) 
+    {
+      // Получаем информацию по продуктам из списка корзины 
+      $products = ProductRepository::findByIds($cartData);
 
-    $cartTotalPrice = $cart->countTotalPrice($products);
+      $cartTotalPrice = $cart->countTotalPrice($products);
 
+    }
+
+    
     $pageTitle = "Корзина товаров";
 
     // Хлебные крошки
@@ -54,6 +59,13 @@ final class CartController
     // Проверяем вход пользователя в профиль
     $isLoggedIn = isLoggedIn();
     Cart::addItem($isLoggedIn);
+  }
+
+  public static function removeItem($data): void
+  {
+    // Проверяем вход пользователя в профиль
+    $isLoggedIn = isLoggedIn();
+    Cart::removeItem($isLoggedIn);
   }
 
 }
