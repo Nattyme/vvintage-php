@@ -41,7 +41,7 @@ final class CartController
     {
       // Получаем информацию по продуктам из списка корзины 
       $products = ProductRepository::findByIds($cartData);
-      // $cartTotalPrice = $cart->countTotalPrice($products);
+      $cartTotalPrice = $cart->getTotalPrice($products);
     }
     
     $pageTitle = "Корзина товаров";
