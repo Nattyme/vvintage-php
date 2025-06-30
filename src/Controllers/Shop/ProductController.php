@@ -16,7 +16,7 @@ final class ProductController
       // Получаем массив всех настроек
       $settings = Settings::all();
 
-      $id = (int) $data->get; // получаем id товара из URL
+      $id = (int) $data->uriGet; // получаем id товара из URL
       $product = ProductRepository::findById($id);
 
       if (!$product) {

@@ -7,7 +7,6 @@ final class Cart
 {
   // Общая стоимость товаров в корзине
   private array $cart = [];
-  private int $cartTotalPrice = 0;
 
   public function __construct(array $cart = [])
   {
@@ -15,9 +14,9 @@ final class Cart
   }
 
 
-  public function toArray() {
-    return $this->cart;
-  }
+  // public function toArray() {
+  //   return $this->cart;
+  // }
 
 
   // private static function getUser (string $id)
@@ -33,10 +32,7 @@ final class Cart
   {
     if ( $isLoggedIn ) 
     {
-      // Получаем корзину из БД
-      $cart = $user->getCart();
-      $cart = $cart->toArray();
-     
+      $cart = $user->getCart()->getProducts();
     } else {
 
        // 1. Проверить наличие корзины пользователя
@@ -56,10 +52,7 @@ final class Cart
   public function getQuantity ($productId): int
   {
     // Проверяем, есть ли товар в корзине
-    if (isset($this->cart[$productId])) {
-        return $this->cart[$productId];
-    }
-    return 0; // если товара нет, возвращаем 0
+    return $this->cart[$productId] ?? 0; // если товара нет, возвращаем 0
   }
 
   public function getProducts (): array {
@@ -81,7 +74,7 @@ final class Cart
 
   // }
 
-  public function countTotalPrice (array $products): int
+  public function getTotalPrice (array $products): int
   {
     $total = 0;
     foreach ( $this->cart as $id => $quantity) {
@@ -89,8 +82,7 @@ final class Cart
         $total = $total + $products[$id]['price'] * $quantity;
       }
     }
-    $this->cartTotalPrice = $total;
-    return $this->cartTotalPrice;
+    return $total;
   }
 
 }
