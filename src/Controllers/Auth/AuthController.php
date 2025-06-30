@@ -63,9 +63,14 @@ final class AuthController
 
             // Проверить пароль
             if ( password_verify($_POST['password'], $user->getPassword() ) ) {
-              $loggedUser = Auth::login($user);
+              Auth::login($user);
               $cartController = new CartController();
-              $cartController->loadCart($loggedUser);
+              $loggedUser = Auth::user(); // получаем объект пользователя из сессии
+              $cartController->loadCart($loggedUser); // передаем объект User
+
+              // Редирект 
+              header('Location: ' . HOST . 'profile');
+              exit();
             
             } else {
               // Пароль не верен
