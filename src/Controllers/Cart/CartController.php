@@ -33,15 +33,18 @@ final class CartController
     // После создания класса авторизации ДОБАВИТЬ ЗДЕСЬ ВЫЗОВ МЕТОДА ПРОВЕРКИ И ДЕЙСТВИЯ НА СЛУЧАЙ, ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ ЗАЛОГИНЕН
     // Проверяем вход пользователя в профиль
     $isLoggedIn = isLoggedIn();
-    $settings = Settings::all(); // Получаем массив всех настроек
-    $cartService = new CartService(new CartRepository());
-    $cartData = $_SESSION['cart'];
+
+    // $settings = Settings::all(); // Получаем массив всех настроек
+    // $cartService = new CartService(new CartRepository());
  
     if ($isLoggedIn) 
     {
       // Получаем информацию по продуктам из списка корзины 
-      $products = ProductRepository::findByIds($cartData);
-      $cartTotalPrice = $cart->getTotalPrice($products);
+      $cart = new Cart($_SESSION['cart'] ?? []);
+             
+      $products = ProductRepository::findByIds($cart->getProducts());
+   
+      $totalPrice = $cart->getTotalPrice($products);
     }
     
     $pageTitle = "Корзина товаров";
@@ -65,20 +68,6 @@ final class CartController
     // Создаем объект корзины
     $cart = $user->getCartProducts();
     $_SESSION['cart'] = $cart;
-  }
-
-  public static function addItem ($data): void
-  {
-    // Проверяем вход пользователя в профиль
-    $isLoggedIn = isLoggedIn();
-    Cart::addItem($isLoggedIn);
-  }
-
-  public static function removeItem($data): void
-  {
-    // Проверяем вход пользователя в профиль
-    $isLoggedIn = isLoggedIn();
-    Cart::removeItem($isLoggedIn);
   }
 
 }
