@@ -116,7 +116,7 @@
   
   </div>
 
-<?php elseif (isset($_SESSION['logged_user']) && trim($_SESSION['logged_user']) !== '' && $_SESSION['logged_user']['role'] !== 'admin') : ?>
+<?php elseif (isset($_SESSION['logged_user'])  && $_SESSION['logged_user']['role'] !== 'admin') : ?>
   <div class="admin-panel">
     <div class="admin-panel__nav">
 

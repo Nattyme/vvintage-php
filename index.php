@@ -24,7 +24,7 @@ Settings::init(); // Загружаем и сохраняем настройки
 
 require_once ROOT . 'libs/functions.php'; // подключаем пользовательскте ф-ции
 
-// Получаем часит URI и создаем переменные (например: /shop/product/1)
+// Получаем части URI и создаем переменные (например: /shop/product/1)
 $uriModule = getModuleName();    // первая часть пути — модуль
 $uriGet = getUriGet();           // вторая часть — подстраница/id
 $uriGetParam = getUriGetParam(); // третья часть — параметр get

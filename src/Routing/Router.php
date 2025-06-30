@@ -7,9 +7,11 @@
             РОУТЕР
     *****************************/
     public static function route(RouteData $data) {
-      switch ($data->module) {
+ 
+      switch ($data->uriModule) {
         case '':
         case 'main':
+          require ROOT . 'modules/admin-panel/admin-panel.php';
           require ROOT . 'modules/main/index.php';
           break;
 
@@ -61,13 +63,17 @@
           // require ROOT . 'modules/errors/404.php';
           break;
       }
+  
     }
     /*****************************
               // РОУТЕР 
     *****************************/
 
+
+
+
     private static function routeAuth(RouteData $data) {
-      switch ($data->module) {
+      switch ($data->uriModule) {
         case 'login':
           \Vvintage\Controllers\Auth\AuthController::login($data);
           break;
@@ -91,7 +97,7 @@
     }
 
     private static function routeProfile(RouteData $data) {
-      switch ($data->module) {
+      switch ($data->uriModule) {
         case 'profile':
           require ROOT . 'modules/profile/profile.php';
           break;
@@ -108,15 +114,15 @@
 
     // ::::::::::::: SHOP :::::::::::::::::::
     private static function routeShop(RouteData $data) {
-      if ( isset($data->get) && $data->get === 'cat' && !empty($data->getParam) ) {
+      if ( isset($data->uriGet) && $data->uriGet === 'cat' && !empty($data->uriGetParam) ) {
         require ROOT . 'modules/shop/categories.php';
-      } else if ( isset($data->get) && $data->get === 'brand' && !empty($data->getParam) ) {
+      } else if ( isset($data->uriGet) && $data->uriGet === 'brand' && !empty($data->uriGetParam) ) {
         require ROOT . 'modules/shop/brands.php';
-      } else if ( isset($data->get) && $data->get === 'subcat' && !empty($data->getParam)) {
+      } else if ( isset($data->uriGet) && $data->uriGet === 'subcat' && !empty($data->uriGetParam)) {
         require ROOT . 'modules/shop/subcat.php';
-      } else if ( isset($data->get) && $data->get !== 'cat' && $data->get !== 'subcat') {
+      } else if ( isset($data->uriGet) && $data->uriGet !== 'cat' && $data->uriGet !== 'subcat') {
         \Vvintage\Controllers\Shop\ProductController::index($data);
-      } else if (isset($data->get) && $data->get === 'shop') {
+      } else if (isset($data->uriGet) && $data->uriGet === 'shop') {
         \Vvintage\Controllers\Shop\CatalogController::index($data);
       }
       else {
@@ -125,11 +131,11 @@
     }
 
     private static function routeBlog(RouteData $data) {
-        if ($data->module === 'add-comment') {
+        if ($data->uriModule === 'add-comment') {
           require ROOT . 'modules/blog/add-comment.php';
-        } elseif ($data->get === 'cat' && !empty($data->getParam)) {
+        } elseif ($data->uriGet === 'cat' && !empty($data->uriGetParam)) {
           require ROOT . 'modules/blog/categories.php';
-        } elseif (!empty($data->get)) {
+        } elseif (!empty($data->uriGet)) {
           require ROOT . 'modules/blog/single.php';
         } else {
           require ROOT . 'modules/blog/all.php';
@@ -137,7 +143,7 @@
     }
 
     private static function routeCart(RouteData $data) {
-      switch ($data->module) {
+      switch ($data->uriModule) {
         case 'cart':
           \Vvintage\Controllers\Cart\CartController::index($data);
           break;
@@ -151,7 +157,7 @@
     }
 
     private static function routeOrders(RouteData $data) {
-      switch ($data->module) {
+      switch ($data->uriModule) {
         case 'neworder':
           require ROOT . 'modules/orders/new.php';
           break;

@@ -12,6 +12,7 @@ final class CartRepository
   public function getCart (User $user): array
   {
     $cart = json_decode($user->getCart() ?? '[]', true);
+
   }
 }
 

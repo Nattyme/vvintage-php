@@ -9,14 +9,14 @@ use Vvintage\Models\User\User;
 
 final class UserRepository 
 {
-  public function findById (int $id): ?User {
+  public function findById (int $id): ?OODBBean {
     $bean = R::load('users', $id);
 
     if ( !$bean || $bean->id === 0) {
       return null;
     }
     
-    return new User($bean);
+    return$bean;
   }
 
   public function findByEmail (string $email): ?OODBBean 

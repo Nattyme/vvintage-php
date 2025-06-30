@@ -3,14 +3,22 @@ declare(strict_types=1);
 
 namespace Vvintage\Services;
 
+use Vvintage\Repositories\CartRepository;
+use Vvintage\Models\User\User;
+
 final class CartService 
 {
-  private  $cartRepository;
+  private CartRepository  $cartRepository;
 
   // Создает экземпляр 
-  public function __construct ( $cartRepository)
+  public function __construct ( CartRepository $cartRepository)
   {
     $this->cartRepository = $cartRepository;
+  }
+
+  public function loadCartProducts()
+  {
+     
   }
 
   public function addItem (User $user, int $productId, bool $isLoggedIn): void
@@ -112,24 +120,25 @@ final class CartService
     exit();
   }
 
-  //Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
-  public function mergeCartAfterLogin (bool $isLoggedIn, $user): void
-  {
-    if (!$isLoggedIn || !$user) {
-      // Пароль не верен
-      $_SESSION['errors'][] = ['title' => 'Неверный пароль'];
-      return;
-    }
 
-    // Загружаем корзину и избранное пользователя из БД 
-    $temp = [
-      'cart' => !empty($user->getCart()->toArray) ? json_decode($user->getCart()->toArray, true) ?? [] : [], 
-      'fav_list' => []
-      // 'fav_list' => !empty($user->fav_list) ? json_decode($user->fav_list, true) ?? [] : []
+  //Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
+  public function mergeCartAfterLogin (User $user): void
+  {
+    // 1. Получаем корзину пользователя из БД (или создаём пустую)
+    $userCart = $user->getCart() && method_exists($user->getCart(), 'toArray') 
+                ? $user->getCart()->toArray()
+                : [];
+    dd($cartRepository->getCart($user));
+    // 2. Получаем избранное пользвоателя
+    $userFavList = !empty($user->fav_list) 
+                   ? json_decode($user->fav_list, true) ?? [] 
+                   : [];
+
+    $merged = [
+      'cart' => $userCart,
+      'fav_list' => $userFavList
     ];
-    dd($user->getCart());
-    // $_SESSION['cart'] = json_decode($_SESSION['logged_user']['cart'], true);  
-    // $_SESSION['fav_list'] = json_decode($_SESSION['logged_user']['fav_list'], true);
+
 
     // Объединение содержимое куки в цикле
     foreach(['cart', 'fav_list'] as $key) {
@@ -138,27 +147,37 @@ final class CartService
 
         foreach ( $cookieData as $itemKey => $value) {
           if ( isset($temp[$key][$itemKey]) ) {
-            $temp[$key][$itemKey] += $value;
+            $merged[$key][$itemKey] += $value;
           } else {
-            $temp[$key][$itemKey] = $value;
+            $merged[$key][$itemKey] = $value;
           }
         }
+        // Очищаем cookies
+        setcookie($key, '', time() - 3600, '/');
       }
     }
 
-    // Сохраняем в БД, очщиаем куки, обновляем сессии
-    foreach ($temp as $key => $value) 
-    {
-      dd($temp);
-      setcookie($key, '', time() - 3600, '/');
-      dd($temp[$key]);
-      dd($user->$key);
-      $user->$key = json_encode($temp[$key]);
-      $_SESSION[$key] = $temp[$key];
+    // Сохраняем в БД
+    if ($user->getCart()) {
+      $cart = $user->getCart()->getProducts();
+      $cart = json_encode($merged['cart']);
+      dd($cart);
+    } else {
+      // Если корозины нет, создаем новую
+      $cart = R::dispense('cart');
+      $cart->items = json_encode($merged['cart']);
+      $cart->user = $user;
+      R::store($cart);
     }
+// dd($user->getFavList());
+    // $user->getFavList() = json_encode($merged['fav_list']);
 
     // Обновляем пользователя в БД
     R::store($user);
+
+    // Обновляем сессию
+    $_SESSION['cart'] = $merged['cart'];
+    $_SESSION['fav_list'] = $merged['fav_list'];
 
     if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
       $_SESSION['success'][] = ['title' => 'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
@@ -166,6 +185,7 @@ final class CartService
       $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
     }
 
+    // 7. Переход на профиль
     header('Location: ' . HOST . 'profile');
     exit();
   } 

@@ -8,7 +8,9 @@ use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 use Vvintage\Models\Auth\Auth;
 use Vvintage\Models\User\User;
+use Vvintage\Services\CartService;
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Repositories\CartRepository;
 use Vvintage\Controllers\Cart\CartController;
 
 require_once ROOT . './libs/functions.php';
@@ -59,13 +61,18 @@ final class AuthController
         
           if ( empty($_SESSION['errors']) ) {
             // Создаем нового пользователя
-            $user = new User( $userBean);
+            $user = new User($userBean);
 
             // Проверить пароль
             if ( password_verify($_POST['password'], $user->getPassword() ) ) {
               Auth::login($user);
-              $cartController = new CartController();
+
+              // Совмещаем корзины
+              $cartService = new CartService(new CartRepository());
+              // $cartService->mergeCartAfterLogin($user);
+              $cartController = new CartController($cartService);
               $loggedUser = Auth::user(); // получаем объект пользователя из сессии
+              
               $cartController->loadCart($loggedUser); // передаем объект User
 
               // Редирект 

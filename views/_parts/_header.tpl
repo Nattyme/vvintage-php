@@ -1,12 +1,13 @@
 <?php 
-  if(isset($_SESSION['logged_user']) && trim($_SESSION['logged_user']) !== '') {
-    include ROOT . "templates/_parts/_admin-panel.tpl";
+  if (isset($_SESSION['login']) && $_SESSION['login'] === 1 ) {
+    // include ROOT . "views/_parts/_admin-panel.tpl";
   } 
 
-  $isBlogPage = isset($uriModule) && $uriModule === 'blog' ? true : false;
+  $isBlogPage = isset($data->uriModule) && $data->uriModule === 'blog' ? true : false;
+
 ?>
 
-<header class="<?php echo (isset($_SESSION['logged_user']) && trim($_SESSION['logged_user']) !== '') ? 'header header--with-admin-panel' : 'header';?>">
+<header class="<?php echo (isset($_SESSION['login']) && $_SESSION['login'] === 1) ? 'header header--with-admin-panel' : 'header';?>">
 	<div class="header__top <?php echo ($isBlogPage) ? 'header__top--blog' : '';?>">
 		<div class="container">
 			<div class="header__row">
@@ -46,7 +47,7 @@
           <div class="header__cta">
             <div class="header__user flex-block">
               <div class="header__login">
-                <?php if (!isset($_SESSION['logged_user']) || trim($_SESSION['logged_user']) === '') : ?>
+                <?php if (!isset($_SESSION['login']) || $_SESSION['login'] !== 1) : ?>
                     <a href="<?php echo HOST . 'login';?>" class=""><span>
                       <svg class="icon icon--login">
                         <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#login';?>"></use>

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<?php echo HOST . 'static/css/main.css';?>"/>
 
     <?php 
-      if ($data->module === '' || $data->module === 'contacts') {
+      if ($data->uriModule === '' || $data->uriModule === 'contacts') {
         echo '<script src="https://api-maps.yandex.ru/v3/?apikey=144f79d1-953e-448c-9341-fb93fa71b6c2&lang=ru_RU"></script>';
       } else {
         echo '';

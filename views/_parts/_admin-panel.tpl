@@ -18,7 +18,9 @@
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#mail';?>"></use>
             </svg>
 
-            <?php if ($messagesNewCounter > 0 ) : ?>
+            <?php 
+          dd('panel');
+            if ($messagesNewCounter > 0 ) : ?>
               <div class="counter__widget">
                 <span class="text-ellipsis">
                     <?php 

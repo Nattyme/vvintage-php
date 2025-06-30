@@ -26,31 +26,23 @@ final class CartController
     $this->cartService = $cartService;
   }
 
-  public function index(RouteData $data): void
+  public static function index(RouteData $data): void
   {
+  
     // TO DO
     // После создания класса авторизации ДОБАВИТЬ ЗДЕСЬ ВЫЗОВ МЕТОДА ПРОВЕРКИ И ДЕЙСТВИЯ НА СЛУЧАЙ, ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ ЗАЛОГИНЕН
     // Проверяем вход пользователя в профиль
     $isLoggedIn = isLoggedIn();
     $settings = Settings::all(); // Получаем массив всех настроек
-
-    $cartData = [];
-    if ( $isLoggedIn ) {
-      $user = 
-    }
-
-
-    // $cartData = $cart->getCart($isLoggedIn);
-
-    if (!empty($cartData)) 
+    $cartService = new CartService(new CartRepository());
+    $cartData = $_SESSION['cart'];
+ 
+    if ($isLoggedIn) 
     {
       // Получаем информацию по продуктам из списка корзины 
       $products = ProductRepository::findByIds($cartData);
-
-      $cartTotalPrice = $cart->countTotalPrice($products);
-
+      // $cartTotalPrice = $cart->countTotalPrice($products);
     }
-
     
     $pageTitle = "Корзина товаров";
 
@@ -67,18 +59,12 @@ final class CartController
     include ROOT . "views/_page-parts/_foot.tpl";
   }
 
-  public function loadCart(array $loggedUser): array 
+  public function loadCart(User $user): void
   {
+  
     // Создаем объект корзины
-    $cartModel = new Cart();
-
-    // Создаем объект данных корзины
-    $cartRepository = new CartRepository();
-    
-    // Создаем объект действий корзины
-    $cartService = new CartService($cartRepository);
-dd(  $cartService);
-
+    $cart = $user->getCartProducts();
+    $_SESSION['cart'] = $cart;
   }
 
   public static function addItem ($data): void

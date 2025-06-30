@@ -61,8 +61,10 @@ final class Cart
     }
     return 0; // если товара нет, возвращаем 0
   }
-  
 
+  public function getProducts (): array {
+    return $this->cart;
+  }
 
   // public function oldSet (bool $isLoggedIn): void
   // {

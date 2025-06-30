@@ -2,13 +2,15 @@
   namespace Vvintage\Routing;
 
   class RouteData {
-    public string $module;
-    public ?string $get;
-    public ?string $getParam;
+    public string $uriModule;
+    public ?string $uriGet;
+    public ?string $uriGetParam;
 
-    public function __construct(string $module, ?string $get = null, ?string $getParam = null) {
-      $this->module = $module;
-      $this->get = $get;
-      $this->getParam = $getParam;
+    public function __construct(string  $uriModule, ?string $uriGet = null, ?string $uriGetParam = null) {
+      $this->uriModule = $uriModule;
+      $this->uriGet = $uriGet;
+      $this->uriGetParam = $uriGetParam;
     }
   }
+
+ 
