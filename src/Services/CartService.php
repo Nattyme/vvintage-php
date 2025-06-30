@@ -5,6 +5,7 @@ namespace Vvintage\Services;
 
 use Vvintage\Repositories\CartRepository;
 use Vvintage\Models\User\User;
+use Vvintage\Models\Cart\Cart;
 
 final class CartService 
 {
@@ -26,19 +27,22 @@ final class CartService
     if ($isLoggedIn) 
     {
       $cart = $this->cartRepository->getCart($user);
-      $cart->addItem($productId);
+      $products = $cart->getProducts();
       $this->cartRepository->saveCart($user, $cart);
-  
-      // Превращаем корзину в json строку
-      $cart = json_encode($cart);
 
-      // Обновляем состояние корзины в сессии
-      $_SESSION['cart'] = $cart;
+      // Добавляем товар или увеличиваем количество
+      if (!isset($products[$productId])) {
+        $products[$productId] = 1;
+      }
+
+      $cart = new Cart($products);
+      $this->cartRepository->saveCart($user, $cart);
 
       // Обноваляем пользователя в БД
       R::store($user);
 
-      // Сообщение о добавлении товара
+      // Обновляем состояние корзины в сессии. Сохраняем сообщение о добавлении товара
+      $_SESSION['cart'] = $cart;
       $_SESSION['success'][] = ['title' => 'Товар добавлен в корзину.'];
 
     }
@@ -51,9 +55,9 @@ final class CartService
       $cart = json_decode($_COOKIE['cart'] ?? '[]', true);
     
       // 3. Добавляем товар в корзину, если его там нет
-      if(! isset($cart[$_GET['id']] )) {
+      if(!isset($cart[$productId] )) {
         // Формируем корзину в ассоциативный массив
-        $cart[$_GET['id']] = 1;
+        $cart[$productId] = 1;
 
         // 4. Сохранение корзины в COOKIE
         setcookie('cart', json_encode($cart), [
@@ -67,7 +71,7 @@ final class CartService
         // 5. Сообщение о добавлении товара
         $_SESSION['success'][] = ['title' => 'Товар добавлен в корзину.'];
 
-        header('Location: ' . HOST . 'shop/' . $_GET['id']);
+        header('Location: ' . HOST . 'shop/' . $productId);
         exit();
       } 
     }
