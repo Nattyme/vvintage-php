@@ -45,11 +45,20 @@ final class AuthController
 
         // Если ошибок нет
         if( empty($_SESSION['errors']) ) {
-          //3. Ищем нужного пользователя в базе данных
-          $userData = new UserRepository; // создаем новый объект репозитория
-          $user =  $userData->findByEmail();
 
-          if ( $user ) {
+          // Ищем нужного пользователя в базе данных
+          $userData = new UserRepository; // создаем новый объект репозитория
+          $userBean =  $userData->findByEmail($_POST['email']);
+
+          // Если в БД не найден email
+          if (!$userBean) {
+            $_SESSION['errors'][] = ['title' => 'Неверный email'];
+          }
+
+        
+          if ( empty($_SESSION['errors']) ) {
+            // Создаем нового пользователя
+            $user = new User( $userBean);
 
             // Проверить пароль
             if ( password_verify($_POST['password'], $user->getPassword() ) ) {
@@ -58,10 +67,7 @@ final class AuthController
               // Пароль не верен
               $_SESSION['errors'][] = ['title' => 'Неверный пароль'];
             }
-          } else {
-            // Email не найден
-            $_SESSION['errors'][] = ['title' => 'Неверный email'];
-          }
+          } 
         }
       }
 

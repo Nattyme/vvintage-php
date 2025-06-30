@@ -13,21 +13,19 @@ class Auth
 
       // Автологин пользователя после регистрации
       // Преобразуем объект user в массив и сохрагняем в сессию
-      $_SESSION['logged_user'] = $user;
+      $_SESSION['logged_user'] = $user->export($user);
       $_SESSION['login'] = 1;
       $_SESSION['role'] = $user->getRole();
-      $_SESSION['cart'] = $user->getCart();
-      $_SESSION['fav_list'] = $user->getFavList();
+      $_SESSION['cart'] = [];
+      $_SESSION['fav_list'] = [];
+      // $_SESSION['cart'] = $user->getCartProducts();
+      // $_SESSION['fav_list'] = $user->getFavList();
+
+      $cartObj = $user->getCart();
   
-      // Работа с корзиной
-      // Действия:
-      // 1. Достать корзину из БД
-      // 2. Совместить ее с COOKIES, если они есть
-      // 3. Сохранить полученную корзину в БД
-      // 4. Сохранить полученную корзину в сессию
-      // 5. Очистить корзину COOKIE
-      // Cart::mergeCartAfterLogin(bool $isLoggedIn, $user);
-    
+      // Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
+      $cartNew = $cartObj->mergeCartAfterLogin(true, $user);
+      dd( $cartNew );
 
       // Обновляем избранное в сессии
       // $_SESSION['fav_list'] = $temp_fav_list;

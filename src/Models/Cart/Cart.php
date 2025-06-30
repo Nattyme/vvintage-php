@@ -14,26 +14,28 @@ final class Cart
     $this->cart = $cart;
   }
 
-
-  private static function getUser (string $id)
-  {
-    $user = R::load('users', $id);
-    return $user;
+  public function toArray() {
+    return $this->cart;
   }
 
+
+  // private static function getUser (string $id)
+  // {
+  //   $user = R::load('users', $id);
+  //   return $user;
+  // }
   // Метод получает корзину из БД или куки и записывает её в $this->cart
   /** 
    * @return array
    */
-  public function getCart (bool $isLoggedIn): array
+  public function getCart (bool $isLoggedIn, $user): array
   {
     if ( $isLoggedIn ) 
     {
-      // Находим пользователя в БД по id
-      $user = self::getUser($_SESSION['logged_user']['id']);
-
       // Получаем корзину из БД
-      $cart = json_decode($user->cart, true) ?? [];
+      $cart = $user->getCart();
+      $cart = $cart->toArray();
+     
     } else {
 
        // 1. Проверить наличие корзины пользователя
@@ -183,7 +185,7 @@ final class Cart
   //   $cartCount = array_sum($this->cart);
 
   // }
-
+  //Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
   public function mergeCartAfterLogin (bool $isLoggedIn, $user): void
   {
     if (!$isLoggedIn || !$user) {
@@ -194,17 +196,18 @@ final class Cart
 
     // Загружаем корзину и избранное пользователя из БД 
     $temp = [
-      'cart' => !empty($user->cart) ? json_decode($user->cart, true) : [], 
-      'fav_list' => !empty($user->fav_list) ? json_decode($user->fav_list, true) : []
+      'cart' => !empty($user->getCart()->toArray) ? json_decode($user->getCart()->toArray, true) ?? [] : [], 
+      'fav_list' => []
+      // 'fav_list' => !empty($user->fav_list) ? json_decode($user->fav_list, true) ?? [] : []
     ];
-
+dd($user->getCart());
     // $_SESSION['cart'] = json_decode($_SESSION['logged_user']['cart'], true);  
     // $_SESSION['fav_list'] = json_decode($_SESSION['logged_user']['fav_list'], true);
 
     // Объединение содержимое куки в цикле
     foreach(['cart', 'fav_list'] as $key) {
       if ( isset($_COOKIE[$key]) && !empty($_COOKIE[$key]) ) {
-        $cookieData = json_decode($_COOKIE[$key], true);
+        $cookieData = json_decode($_COOKIE[$key], true) ?? [];
 
         foreach ( $cookieData as $itemKey => $value) {
           if ( isset($temp[$key][$itemKey]) ) {
@@ -219,7 +222,10 @@ final class Cart
     // Сохраняем в БД, очщиаем куки, обновляем сессии
     foreach ($temp as $key => $value) 
     {
-      setcookie($key, '', time() - 3600);
+      dd($temp);
+      setcookie($key, '', time() - 3600, '/');
+      dd($temp[$key]);
+      dd($user->$key);
       $user->$key = json_encode($temp[$key]);
       $_SESSION[$key] = $temp[$key];
     }

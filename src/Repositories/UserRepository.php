@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Repositories;
 
 use RedBeanPHP\R; // Подключаем readbean
+use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\User\User;
 
 final class UserRepository 
@@ -18,9 +19,9 @@ final class UserRepository
     return new User($bean);
   }
 
-  public function findByEmail (): ?User {
-    $bean = R::findOne('users', 'email = ?', array($_POST['email']));
-    return new User($bean);
+  public function findByEmail (string $email): ?OODBBean 
+  {
+    return R::findOne('users', 'email = ?', [strtolower($email)]);
   }
 
   public function findAll () {
