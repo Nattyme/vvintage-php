@@ -9,6 +9,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Models\Auth\Auth;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Controllers\Cart\CartController;
 
 require_once ROOT . './libs/functions.php';
 
@@ -62,7 +63,10 @@ final class AuthController
 
             // Проверить пароль
             if ( password_verify($_POST['password'], $user->getPassword() ) ) {
-              Auth::login($user);
+              $loggedUser = Auth::login($user);
+              $cartController = new CartController();
+              $cartController->loadCart($loggedUser);
+            
             } else {
               // Пароль не верен
               $_SESSION['errors'][] = ['title' => 'Неверный пароль'];

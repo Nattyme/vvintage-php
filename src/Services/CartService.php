@@ -5,10 +5,10 @@ namespace Vvintage\Services;
 
 final class CartService 
 {
-  private CartRepository $cartRepository;
+  private  $cartRepository;
 
   // Создает экземпляр 
-  public function __construct (CartRepository $cartRepository)
+  public function __construct ( $cartRepository)
   {
     $this->cartRepository = $cartRepository;
   }

@@ -10,6 +10,8 @@ use Vvintage\Repositories\ProductRepository;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
+use Vvintage\Repositories\CartRepository;
+use Vvintage\Services\CartService;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
 
@@ -17,22 +19,28 @@ require_once ROOT . './libs/functions.php';
 
 final class CartController
 {
-  public static function index(RouteData $data): void
+  private CartService $cartService;
+
+  public function __construct(CartService $cartService)
+  {
+    $this->cartService = $cartService;
+  }
+
+  public function index(RouteData $data): void
   {
     // TO DO
     // После создания класса авторизации ДОБАВИТЬ ЗДЕСЬ ВЫЗОВ МЕТОДА ПРОВЕРКИ И ДЕЙСТВИЯ НА СЛУЧАЙ, ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ ЗАЛОГИНЕН
     // Проверяем вход пользователя в профиль
     $isLoggedIn = isLoggedIn();
-    if(!$isLoggedIn) {
-      return;
+    $settings = Settings::all(); // Получаем массив всех настроек
+
+    $cartData = [];
+    if ( $isLoggedIn ) {
+      $user = 
     }
 
-    // Получаем массив всех настроек
-    $settings = Settings::all();
- 
-    // Создаем объект корзины
-    $cart = new Cart();
-    $cartData = $cart->getCart($isLoggedIn);
+
+    // $cartData = $cart->getCart($isLoggedIn);
 
     if (!empty($cartData)) 
     {
@@ -57,6 +65,20 @@ final class CartController
     include ROOT . "views/cart/cart.tpl";
     include ROOT . "views/_parts/_footer.tpl";
     include ROOT . "views/_page-parts/_foot.tpl";
+  }
+
+  public function loadCart(array $loggedUser): array 
+  {
+    // Создаем объект корзины
+    $cartModel = new Cart();
+
+    // Создаем объект данных корзины
+    $cartRepository = new CartRepository();
+    
+    // Создаем объект действий корзины
+    $cartService = new CartService($cartRepository);
+dd(  $cartService);
+
   }
 
   public static function addItem ($data): void

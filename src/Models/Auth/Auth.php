@@ -9,23 +9,25 @@ use RedBeanPHP\R; // Подключаем readbean
 // findByEmail
 class Auth 
 {
-  public static function login ($user) {
+  public static function login (User $user): void 
+  {
 
       // Автологин пользователя после регистрации
       // Преобразуем объект user в массив и сохрагняем в сессию
       $_SESSION['logged_user'] = $user->export($user);
+      $_SESSION['user_id'] = $user->getId();
       $_SESSION['login'] = 1;
       $_SESSION['role'] = $user->getRole();
       $_SESSION['cart'] = [];
       $_SESSION['fav_list'] = [];
+      // return  $_SESSION['logged_user'];
       // $_SESSION['cart'] = $user->getCartProducts();
       // $_SESSION['fav_list'] = $user->getFavList();
 
-      $cartObj = $user->getCart();
+      // $cartObj = $user->getCart();
   
       // Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
-      $cartNew = $cartObj->mergeCartAfterLogin(true, $user);
-      dd( $cartNew );
+      // $cartNew = $cartObj->mergeCartAfterLogin(true, $user);
 
       // Обновляем избранное в сессии
       // $_SESSION['fav_list'] = $temp_fav_list;
@@ -38,8 +40,28 @@ class Auth
       // header('Location: ' . HOST . 'profile');
       // exit();
          
+  }
+
+  public static function user(): ?User
+  {
+    if (!isset($_Session['user_id'])) {
+      return null;
     }
 
+    $userRepo = new UserRepository();
+    $userBean = $userRepo->findById($_SESSION['user_id']);
+
+    if ($userBean) {
+      return null;
+    }
+
+    return new User($userBean);
+  }
+
+  public static function isLoggedIn(): bool
+  {
+    return isset( $_SESSION['user_id']) && $_SESSION['login'] === 1;
+  }
 
 }
 
