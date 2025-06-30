@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="cart__title">
-                      <a href="<?php echo HOST . 'shop/1';?>" class="link-to-page">
+                      <a href="<?php echo HOST . 'shop/' . h($product['id']);?>" class="link-to-page">
                         <h2 class="cart__text"><?php echo h($product['title']); ?></h2>
                       </a>
                     </div>
@@ -77,7 +77,7 @@
                       Количество товаров: <span class="text-bold"><?php echo count($products);?></span>
                     </p>
                     <p class="cart__total">
-                      Итого: <span class="text-bold"><?php echo h($cartTotalPrice); ?>&nbsp;&euro;</span>
+                      Итого: <span class="text-bold"><?php echo h($totalPrice); ?>&nbsp;&euro;</span>
                     </p>
             
                   </div>

@@ -34,7 +34,7 @@ final class CartController
     // Проверяем вход пользователя в профиль
     $isLoggedIn = isLoggedIn();
 
-    // $settings = Settings::all(); // Получаем массив всех настроек
+    $settings = Settings::all(); // Получаем массив всех настроек
     // $cartService = new CartService(new CartRepository());
  
     if ($isLoggedIn) 

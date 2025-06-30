@@ -14,16 +14,10 @@ final class Cart
   }
 
 
-  // public function toArray() {
-  //   return $this->cart;
-  // }
+  public function toArray() {
+    return $this->cart;
+  }
 
-
-  // private static function getUser (string $id)
-  // {
-  //   $user = R::load('users', $id);
-  //   return $user;
-  // }
   // Метод получает корзину из БД или куки и записывает её в $this->cart
   /** 
    * @return array
@@ -76,12 +70,14 @@ final class Cart
 
   public function getTotalPrice (array $products): int
   {
+
     $total = 0;
     foreach ( $this->cart as $id => $quantity) {
       if(isset($products[$id])) {
         $total = $total + $products[$id]['price'] * $quantity;
       }
     }
+
     return $total;
   }
 

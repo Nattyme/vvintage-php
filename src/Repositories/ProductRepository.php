@@ -95,6 +95,12 @@ final class ProductRepository
 
     $productsData = R::getAll($sql, $ids);
 
-    return $productsData;
+    $products = [];
+
+    foreach($productsData as $key=>$value) {
+      $products[$value['id']] = $value;
+    }
+
+    return $products;
   }
 }
