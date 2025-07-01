@@ -1,6 +1,7 @@
 <?php
   namespace Vvintage\Routing;
-  use Vvintage\Routing\RouteData; 
+
+  use Vvintage\Routing\RouteData;
 
   class Router {
      /*****************************
@@ -148,7 +149,7 @@
           \Vvintage\Controllers\Cart\CartController::index($data);
           break;
         case 'addtocart':
-          \Vvintage\Controllers\Cart\CartController::addItem($data);
+          \Vvintage\Controllers\Cart\CartController::addItem($_GET['id'], $data);
           break;
         case 'removefromcart':
           \Vvintage\Controllers\Cart\CartController::removeItem($data);

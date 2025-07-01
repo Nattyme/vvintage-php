@@ -13,20 +13,15 @@ final class Cart
     $this->cart = $cart;
   }
 
-
-  public function toArray() {
-    return $this->cart;
-  }
-
   // Метод получает корзину из БД или куки и записывает её в $this->cart
   /** 
    * @return array
    */
-  public function getCart (bool $isLoggedIn, $user): array
+  public function loadCart (bool $isLoggedIn, $user=null): array
   {
-    if ( $isLoggedIn ) 
+    if ( $isLoggedIn && $user) 
     {
-      $cart = $user->getCart()->getProducts();
+      $cart = $user->getCart()->getItems();
     } else {
 
        // 1. Проверить наличие корзины пользователя
@@ -49,7 +44,7 @@ final class Cart
     return $this->cart[$productId] ?? 0; // если товара нет, возвращаем 0
   }
 
-  public function getProducts (): array {
+  public function getItems (): array {
     return $this->cart;
   }
 

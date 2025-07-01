@@ -65,7 +65,7 @@ final class AuthController
 
             // Проверить пароль
             if ( password_verify($_POST['password'], $user->getPassword() ) ) {
-              Auth::login($user);
+              $isLoggedIn = Auth::login($user);
 
               // Совмещаем корзины
               $cartService = new CartService(new CartRepository());
@@ -73,7 +73,7 @@ final class AuthController
               $cartController = new CartController($cartService);
               $loggedUser = Auth::user(); // получаем объект пользователя из сессии
               
-              $cartController->loadCart($loggedUser); // передаем объект User
+              $cartController->loadCart($isLoggedIn, $loggedUser); // передаем объект User
 
               // Редирект 
               header('Location: ' . HOST . 'profile');

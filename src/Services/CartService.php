@@ -17,17 +17,12 @@ final class CartService
     $this->cartRepository = $cartRepository;
   }
 
-  public function loadCartProducts()
-  {
-     
-  }
-
-  public function addItem (User $user, int $productId, bool $isLoggedIn): void
+  public function addItem (int $productId, bool $isLoggedIn, User $user = null): void
   {
     if ($isLoggedIn) 
     {
       $cart = $this->cartRepository->getCart($user);
-      $products = $cart->getProducts();
+      $products = $cart->getItems();
       $this->cartRepository->saveCart($user, $cart);
 
       // Добавляем товар или увеличиваем количество
@@ -75,9 +70,10 @@ final class CartService
         exit();
       } 
     }
+
   }
 
-  public static function removeItem (bool $isLoggedIn): void
+  public function removeItem (bool $isLoggedIn): void
   {
     if ( $isLoggedIn) {
       // Находим пользователя в БД по id
@@ -124,15 +120,14 @@ final class CartService
     exit();
   }
 
-
   //Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
   public function mergeCartAfterLogin (User $user): void
   {
     // 1. Получаем корзину пользователя из БД (или создаём пустую)
-    $userCart = $user->getCart() && method_exists($user->getCart(), 'toArray') 
-                ? $user->getCart()->toArray()
+    $userCart = $user->getCart() && method_exists($user->getCart(), 'getItems') 
+                ? $user->getCart()->getItems()
                 : [];
-    dd($cartRepository->getCart($user));
+
     // 2. Получаем избранное пользвоателя
     $userFavList = !empty($user->fav_list) 
                    ? json_decode($user->fav_list, true) ?? [] 
@@ -163,9 +158,9 @@ final class CartService
 
     // Сохраняем в БД
     if ($user->getCart()) {
-      $cart = $user->getCart()->getProducts();
+      $cart = $user->getCart()->getItems();
       $cart = json_encode($merged['cart']);
-      dd($cart);
+   
     } else {
       // Если корозины нет, создаем новую
       $cart = R::dispense('cart');
@@ -173,7 +168,7 @@ final class CartService
       $cart->user = $user;
       R::store($cart);
     }
-// dd($user->getFavList());
+    // dd($user->getFavList());
     // $user->getFavList() = json_encode($merged['fav_list']);
 
     // Обновляем пользователя в БД

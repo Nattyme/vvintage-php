@@ -12,7 +12,7 @@ use Vvintage\Repositories\UserRepository;
 // findByEmail
 class Auth 
 {
-  public static function login (User $user): void 
+  public static function login (User $user): bool 
   {
 
       // Автологин пользователя после регистрации
@@ -21,8 +21,15 @@ class Auth
       $_SESSION['user_id'] = $user->getId();
       $_SESSION['login'] = 1;
       $_SESSION['role'] = $user->getRole();
-      $_SESSION['cart'] = $_SESSION['logged_user']['cart']->getProducts();
+      $_SESSION['cart'] = $_SESSION['logged_user']['cart']->getItems();
       $_SESSION['fav_list'] = $user->getFavList();
+      
+
+      if ($_SESSION['login']) {
+        return true;
+      }
+
+      return false;
       // $cartObj = $user->getCart();
       // Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
       // $cartNew = $cartObj->mergeCartAfterLogin(true, $user);

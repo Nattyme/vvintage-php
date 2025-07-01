@@ -42,9 +42,14 @@ final class CartController
       // Получаем информацию по продуктам из списка корзины 
       $cart = new Cart($_SESSION['cart'] ?? []);
              
-      $products = ProductRepository::findByIds($cart->getProducts());
+      $products = ProductRepository::findByIds($cart->getItems());
    
       $totalPrice = $cart->getTotalPrice($products);
+    }
+
+    if (!$isLoggedIn) {
+      $cartController = new CartController(new CartService(new CartRepository));
+      $cart = $cartController->loadCart($isLoggedIn);
     }
     
     $pageTitle = "Корзина товаров";
@@ -62,12 +67,26 @@ final class CartController
     include ROOT . "views/_page-parts/_foot.tpl";
   }
 
-  public function loadCart(User $user): void
+  public function loadCart(bool $isLoggedIn, User $user = null): Cart
   {
-  
-    // Создаем объект корзины
-    $cart = $user->getCartProducts();
-    $_SESSION['cart'] = $cart;
+    $cartObj = new Cart();
+    $cartData = $cartObj->loadCart($isLoggedIn, $user);
+    $_SESSION['cart'] = $cartData;
+
+    return new Cart($cartData);
+  }
+
+  public static function addItem($productId, $data)
+  {
+    $isLoggedIn = isLoggedIn();
+    $user = $isLoggedIn  ? getLoggedInUser() : null; // получить объект User
+
+    $cartService = new CartService(new CartRepository);
+    $cartService->addItem((int) $productId, $isLoggedIn, $user);
+
+    // Переадресация обратно на страницу товара (или корзины)
+    header('Location: ' . HOST . 'shop/' . $productId);
+    exit();
   }
 
 }

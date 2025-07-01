@@ -81,7 +81,7 @@ final class User
   // Для отображения
   public function getCartProducts (): array
   {
-    return $this->cart->toArray(); // возвращает только масив товаров
+    return $this->cart->getItems(); // возвращает только масив товаров
   }
   
   public function getFavList ()
