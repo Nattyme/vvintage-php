@@ -71,7 +71,7 @@ final class AuthController
               $cartService = new CartService(new CartRepository());
               // $cartService->mergeCartAfterLogin($user);
               $cartController = new CartController($cartService);
-              $loggedUser = Auth::user(); // получаем объект пользователя из сессии
+              $loggedUser = Auth::getLoggedInUser(); // получаем объект пользователя из сессии
               
               $cartController->loadCart($isLoggedIn, $loggedUser); // передаем объект User
 
