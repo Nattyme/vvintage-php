@@ -12,6 +12,7 @@ use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Repositories\CartRepository;
 use Vvintage\Services\CartService;
+use Vvintage\Models\Auth\Auth;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
 
@@ -28,28 +29,43 @@ final class CartController
 
   public static function index(RouteData $data): void
   {
-  
-    // TO DO
-    // После создания класса авторизации ДОБАВИТЬ ЗДЕСЬ ВЫЗОВ МЕТОДА ПРОВЕРКИ И ДЕЙСТВИЯ НА СЛУЧАЙ, ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ ЗАЛОГИНЕН
     // Проверяем вход пользователя в профиль
-    $isLoggedIn = isLoggedIn();
-
+    $isLoggedIn = Auth::isLoggedIn();
     $settings = Settings::all(); // Получаем массив всех настроек
     // $cartService = new CartService(new CartRepository());
  
     if ($isLoggedIn) 
     {
-      // Получаем информацию по продуктам из списка корзины 
-      $cart = new Cart($_SESSION['cart'] ?? []);
-             
-      $products = ProductRepository::findByIds($cart->getItems());
+      print_r('Пользователь зашел в профиль');
    
-      $totalPrice = $cart->getTotalPrice($products);
+      // dd($_COOKIE);
+      // Получаем информацию по продуктам из списка корзины 
+      $cartController = new CartController(new CartService(new CartRepository));
+      $loggedUser = $isLoggedIn ? Auth::getLoggedInUser() : null;
+      $cart = $cartController->loadCart($isLoggedIn, $loggedUser);
+      $cartItems = $cart->getItems();
+      
+      if ( !empty($cartItems) ) {
+        $products = ProductRepository::findByIds($cart->getItems());
+        $totalPrice = $cart->getTotalPrice($products);
+      }
+   
     }
 
     if (!$isLoggedIn) {
+      print_r('Пользователь не зашел в профиль');
       $cartController = new CartController(new CartService(new CartRepository));
+
+      // Загружаем корзину
       $cart = $cartController->loadCart($isLoggedIn);
+      $cartItems = $cart->getItems();
+
+      if( !empty($cartItems) ) {
+        // Получаем товары по Ids корзины и считаем total
+        $products = ProductRepository::findByIds($cart->getItems());
+        $totalPrice = $cart->getTotalPrice($products);
+      }
+
     }
     
     $pageTitle = "Корзина товаров";

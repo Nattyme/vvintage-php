@@ -41,7 +41,7 @@ final class Cart
   public function getQuantity ($productId): int
   {
     // Проверяем, есть ли товар в корзине
-    return $this->cart[$productId] ?? 0; // если товара нет, возвращаем 0
+    return $this->cart[(int) $productId] ?? 0; // если товара нет, возвращаем 0
   }
 
   public function getItems (): array {

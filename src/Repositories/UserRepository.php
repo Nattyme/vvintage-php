@@ -6,6 +6,7 @@ namespace Vvintage\Repositories;
 use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\User\User;
+use Vvintage\Models\Cart\Cart;
 
 final class UserRepository 
 {
@@ -36,8 +37,13 @@ final class UserRepository
 
   }
 
-  public function saveUser () {
-
+  public function updateCart (int $userId, array $cartItems): void {
+    // Находим bean пользователя по id из модели
+    $userBean = R::load('users', $userId);
+    
+    // Обнволяем корзину 
+    $userBean->cart = json_encode($cartItems);
+    R::store($userBean);
   }
 
   public function removeUser () {

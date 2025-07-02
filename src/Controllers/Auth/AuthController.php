@@ -69,7 +69,7 @@ final class AuthController
 
               // Совмещаем корзины
               $cartService = new CartService(new CartRepository());
-              // $cartService->mergeCartAfterLogin($user);
+              $cartService->mergeCartAfterLogin($user);
               $cartController = new CartController($cartService);
               $loggedUser = Auth::getLoggedInUser(); // получаем объект пользователя из сессии
               

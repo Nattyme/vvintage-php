@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services;
 
 use Vvintage\Repositories\CartRepository;
+use Vvintage\Repositories\UserRepository;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 
@@ -34,7 +35,10 @@ final class CartService
       $this->cartRepository->saveCart($user, $cart);
 
       // Обноваляем пользователя в БД
-      R::store($user);
+      // Обноваляем пользователя в БД
+      $userRepository = new UserRepository();
+      $userRepository->saveUser($user);
+      // R::store($user);
 
       // Обновляем состояние корзины в сессии. Сохраняем сообщение о добавлении товара
       $_SESSION['cart'] = $cart;
@@ -89,7 +93,9 @@ final class CartService
       $user->cart = json_encode($cart);
 
       // Обноваляем пользователя в БД
-      R::store($user);
+      $userRepository = new UserRepository();
+      $userRepository->saveUser($user);
+      // R::store($user);
 
       // Обновляем состояние корзины в сессии
       $_SESSION['cart'] = $cart;
@@ -123,6 +129,7 @@ final class CartService
   //Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
   public function mergeCartAfterLogin (User $user): void
   {
+    
     // 1. Получаем корзину пользователя из БД (или создаём пустую)
     $userCart = $user->getCart() && method_exists($user->getCart(), 'getItems') 
                 ? $user->getCart()->getItems()
@@ -166,13 +173,20 @@ final class CartService
       $cart = R::dispense('cart');
       $cart->items = json_encode($merged['cart']);
       $cart->user = $user;
-      R::store($cart);
-    }
-    // dd($user->getFavList());
-    // $user->getFavList() = json_encode($merged['fav_list']);
 
-    // Обновляем пользователя в БД
-    R::store($user);
+      $cartRepository = new CartRepository();
+      $cartRepository->saveCart($user, $cart);
+      // R::store($cart);
+    }
+
+    
+    // Обноваляем пользователя в Б
+    $userRepository = new UserRepository();
+    $userId = $user->getId();
+    $cart = $user->getCart()->getItems();
+    $result = $userRepository->updateCart($userId, $cart);
+    dd($result);
+    // R::store($user);
 
     // Обновляем сессию
     $_SESSION['cart'] = $merged['cart'];

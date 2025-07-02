@@ -48,8 +48,13 @@ class Auth
   }
 
   public static function isLoggedIn(): bool
-  {
-    return isset( $_SESSION['user_id']) && $_SESSION['login'] === 1;
+  {  
+    $result = false;
+
+    if ( isset($_SESSION['logged_user']) && $_SESSION['user_id'] && $_SESSION['login'] === 1 ) {
+      $result = true;
+    }
+    return $result;
   }
 
   public static function logout(): void 
@@ -74,7 +79,7 @@ class Auth
     $userRepo = new UserRepository();
     $userBean = $userRepo->findById($_SESSION['user_id']);
 
-    return true;
+    return new User($userBean) ? new User($userBean) : null;
   }
 
 }

@@ -17,7 +17,7 @@ final class CartRepository
 
   public function saveCart (User $user, Cart $cart): void
   {
-    $user->cart = json_encode($cart->getProducts());
+    $user->cart = json_encode($cart->getItems());
     R::store($user);
   }
 }
