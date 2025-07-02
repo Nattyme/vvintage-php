@@ -26,7 +26,7 @@ final class User
     $this->name = $bean['name'];
     $this->role = $bean['role'] ?? 'user';
     $cartData = isset($bean['cart']) ? json_decode($bean->cart ?? '[]', true) : [];
-    $this->cart = new Cart($cartData);
+    $this->cart = new Cart(new UserRepository(), $cartData);
     $this->fav_list = [];
     // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
   }
@@ -76,12 +76,6 @@ final class User
   public function getCart (): Cart
   {
     return $this->cart;
-  }
-
-  // Для отображения
-  public function getCartProducts (): array
-  {
-    return $this->cart->getItems(); // возвращает только масив товаров
   }
   
   public function getFavList ()

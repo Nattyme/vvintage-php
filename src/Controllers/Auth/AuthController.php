@@ -8,7 +8,8 @@ use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 use Vvintage\Models\Auth\Auth;
 use Vvintage\Models\User\User;
-use Vvintage\Services\CartService;
+use Vvintage\Models\Cart\Cart;
+// use Vvintage\Services\CartService;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\CartRepository;
 use Vvintage\Controllers\Cart\CartController;
@@ -67,16 +68,17 @@ final class AuthController
             if ( password_verify($_POST['password'], $user->getPassword() ) ) {
               $isLoggedIn = Auth::login($user);
 
+              $userId = $user->getId();
               // Совмещаем корзины
-              $cartService = new CartService(new CartRepository());
-              $cartService->mergeCartAfterLogin($user);
-              $cartController = new CartController($cartService);
+              $cartModel = (new Cart (new UserRepository()) );
+              $newCart = $cartModel->mergeCartAfterLogin((int) $userId, $_COOKIE['cart'] ?? []);
+              // dd($newCart);
               $loggedUser = Auth::getLoggedInUser(); // получаем объект пользователя из сессии
-              
-              $cartController->loadCart($isLoggedIn, $loggedUser); // передаем объект User
+              $cart = CartController::loadCart($isLoggedIn, $loggedUser); // передаем объект User
 
               // Редирект 
-              header('Location: ' . HOST . 'profile');
+              header('Location: ' . HOST . 'cart');
+              // header('Location: ' . HOST . 'profile');
               exit();
             
             } else {

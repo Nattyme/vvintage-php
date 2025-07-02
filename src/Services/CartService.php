@@ -3,36 +3,35 @@ declare(strict_types=1);
 
 namespace Vvintage\Services;
 
-use Vvintage\Repositories\CartRepository;
+// use Vvintage\Repositories\CartRepository;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 
 final class CartService 
 {
-  private CartRepository  $cartRepository;
+  // private CartRepository  $cartRepository;
 
   // Создает экземпляр 
-  public function __construct ( CartRepository $cartRepository)
-  {
-    $this->cartRepository = $cartRepository;
-  }
+  // public function __construct ( CartRepository $cartRepository)
+  // {
+  //   $this->cartRepository = $cartRepository;
+  // }
 
   public function addItem (int $productId, bool $isLoggedIn, User $user = null): void
   {
     if ($isLoggedIn) 
     {
-      $cart = $this->cartRepository->getCart($user);
-      $products = $cart->getItems();
-      $this->cartRepository->saveCart($user, $cart);
+      $userId = $user->getId();
 
-      // Добавляем товар или увеличиваем количество
-      if (!isset($products[$productId])) {
-        $products[$productId] = 1;
-      }
-
-      $cart = new Cart($products);
-      $this->cartRepository->saveCart($user, $cart);
+      // Работа с моделью и данными корзины
+      $cartModel = new Cart(new UserRepository());
+      $cartModel->addToCart($userId, $productId);  // Добавляем товар в корзину БД
+      $cartModel->loadFromUser((int) $userId);   // Устанавливаем новые данные по корзине в модель
+ dd( $cartModel->getItems());
+      // Получаем продукты 
+      $products = $cartModel->getItems();
+     
 
       // Обноваляем пользователя в БД
       // Обноваляем пользователя в БД
@@ -77,7 +76,7 @@ final class CartService
 
   }
 
-  public function removeItem (bool $isLoggedIn): void
+  public function removeItem (bool $isLoggedIn, int $userId): void
   {
     if ( $isLoggedIn) {
       // Находим пользователя в БД по id
@@ -126,81 +125,6 @@ final class CartService
     exit();
   }
 
-  //Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
-  public function mergeCartAfterLogin (User $user): void
-  {
-    
-    // 1. Получаем корзину пользователя из БД (или создаём пустую)
-    $userCart = $user->getCart() && method_exists($user->getCart(), 'getItems') 
-                ? $user->getCart()->getItems()
-                : [];
-
-    // 2. Получаем избранное пользвоателя
-    $userFavList = !empty($user->fav_list) 
-                   ? json_decode($user->fav_list, true) ?? [] 
-                   : [];
-
-    $merged = [
-      'cart' => $userCart,
-      'fav_list' => $userFavList
-    ];
-
-
-    // Объединение содержимое куки в цикле
-    foreach(['cart', 'fav_list'] as $key) {
-      if ( isset($_COOKIE[$key]) && !empty($_COOKIE[$key]) ) {
-        $cookieData = json_decode($_COOKIE[$key], true) ?? [];
-
-        foreach ( $cookieData as $itemKey => $value) {
-          if ( isset($temp[$key][$itemKey]) ) {
-            $merged[$key][$itemKey] += $value;
-          } else {
-            $merged[$key][$itemKey] = $value;
-          }
-        }
-        // Очищаем cookies
-        setcookie($key, '', time() - 3600, '/');
-      }
-    }
-
-    // Сохраняем в БД
-    if ($user->getCart()) {
-      $cart = $user->getCart()->getItems();
-      $cart = json_encode($merged['cart']);
    
-    } else {
-      // Если корозины нет, создаем новую
-      $cart = R::dispense('cart');
-      $cart->items = json_encode($merged['cart']);
-      $cart->user = $user;
-
-      $cartRepository = new CartRepository();
-      $cartRepository->saveCart($user, $cart);
-      // R::store($cart);
-    }
-
-    
-    // Обноваляем пользователя в Б
-    $userRepository = new UserRepository();
-    $userId = $user->getId();
-    $cart = $user->getCart()->getItems();
-    $result = $userRepository->updateCart($userId, $cart);
-    dd($result);
-    // R::store($user);
-
-    // Обновляем сессию
-    $_SESSION['cart'] = $merged['cart'];
-    $_SESSION['fav_list'] = $merged['fav_list'];
-
-    if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
-      $_SESSION['success'][] = ['title' => 'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
-    } else {
-      $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
-    }
-
-    // 7. Переход на профиль
-    header('Location: ' . HOST . 'profile');
-    exit();
-  } 
 
 }
