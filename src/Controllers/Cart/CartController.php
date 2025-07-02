@@ -96,12 +96,23 @@ final class CartController
     return $cart;
   }
 
-  public static function addItem($productId, $data)
+  public static function addItem(int $productId, $data): void
   {
-    $isLoggedIn = isLoggedIn();
+    $isLoggedIn = Auth::isLoggedIn();
+
+    // Если пользователь залогинился - сохраняем модель или null
     $user = $isLoggedIn  ? Auth::getLoggedInUser() : null; // получить объект User
-    $cartService = new CartService(new CartRepository);
-    $cartService->addItem((int) $productId, $isLoggedIn, $user);
+    $userId = $user ? $user->getId() : null;
+    $cartModel = new Cart( new UserRepository ()); 
+    // Загружаем корзину
+    $cartModel->loadCart($isLoggedIn);
+
+    // Добавляем новый товар
+    $cartModel->addToCart($productId, $userId ?? null);
+    // Получаем корзину с новым товаром
+    $cartUpdated = $cartModel->getItems();
+
+    // $cartService->addItem((int) $productId, $isLoggedIn, $user);
 
     // Переадресация обратно на страницу товара (или корзины)
     header('Location: ' . HOST . 'shop/' . $productId);

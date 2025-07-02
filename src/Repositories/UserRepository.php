@@ -50,20 +50,35 @@ final class UserRepository
     R::store($userBean);
   }
 
-  public function addToCart(int $userId, int $productId):void
+  public function addToCart (int $productId, int $userId = null): array
   {
+    if (!$userId) {
+      $currentCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
+
+      if (!isset($currentCart[$productId]))
+      {
+        $currentCart[$productId] = 1; // добавляем новый товар
+      }
+      return $currentCart;
+    }
+
     $userBean = R::load('users', $userId);
 
     // Расшифровываем текущую корзину, если не пустая
     $currentCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
 
-    // Объединяем текущую корзину с новой
+    // Добавляем новый товар
     if(!isset($currentCart[$productId]))
     {
-      $currentCart[$productId] = 1; // добавляем новый товар
+      $currentCart[$productId] = 1; 
     }
+
+    // Обновляем корзину в БД
     $userBean->cart = json_encode($currentCart);
     R::store($userBean);
+
+    // Вернем массив новой корзины в модель
+    return $currentCart;
   }
 
   public function getUserCart(int $userId) {

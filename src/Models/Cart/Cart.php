@@ -35,9 +35,9 @@ final class Cart
     return $this->cart;
   }
 
-  public function addToCart (int $userId, int $productId): void
+  public function addToCart (int $productId, ?int $userId=null): void
   {
-    $this->cart = $this->userRepository->addToCart($userId, $productId);
+    $this->cart = $this->userRepository->addToCart($productId, $userId);
   }
 
   
