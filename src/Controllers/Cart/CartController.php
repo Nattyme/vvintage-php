@@ -44,7 +44,7 @@ final class CartController
       print_r('Пользователь не зашел в профиль');
       // Загружаем корзину
       $cart = self::loadCart($isLoggedIn);
-      
+    
       if ( !empty($cart) ) {
         $products = ProductRepository::findByIds($cart);
         // $totalPrice = $cart->getTotalPrice($products);
@@ -77,6 +77,7 @@ final class CartController
 
   public static function loadCart(bool $isLoggedIn, User $user = null): array
   {
+    dd($_SESSION['cart']);
     $cartModel = new Cart(new UserRepository());
 
     if (!$isLoggedIn || !$user) {

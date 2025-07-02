@@ -37,8 +37,29 @@ final class Cart
 
   public function addToCart (int $productId, ?int $userId=null): void
   {
-    $this->cart = $this->userRepository->addToCart($productId, $userId);
+    if ($userId !== null) 
+    {
+      $this->cart = $this->userRepository->addToCart($productId, $userId);
+    } 
+    else 
+    {
+      // 1. Загружаем старую корзину из куки (если есть)
+      $cookieCart = isset ( $_COOKIE['cart'] ) ? json_decode($_COOKIE['cart'], true) : [];
+
+      // 2. Добавляем товар
+      if (!isset($cookieCart[$productId])) {
+        $cookieCart[$productId] = 1;
+      }
+
+      // 3. Сохраняем обратно в куки
+      setcookie('cart', json_encode($cookieCart), time() + 3600 * 24 * 7, '/');
+
+      // 4. Обновляем локальную корзину
+      $this->cart = $cookieCart;
+    }
+
   }
+  
 
   
 

@@ -52,7 +52,7 @@ final class UserRepository
 
   public function addToCart (int $productId, int $userId = null): array
   {
-    if (!$userId) {
+    if ($userId !== null) {
       $currentCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
 
       if (!isset($currentCart[$productId]))
