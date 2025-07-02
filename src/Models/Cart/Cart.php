@@ -25,10 +25,15 @@ final class Cart
     $this->cart = $this->userRepository->getUserCart($userId);
   }
 
-  public function loadFromNotUser ()
+  public function loadFromNotUser (): array
   {
-    print_r('Обработка корзины куки');
-// dd($cookieData);
+    if ( isset($_COOKIE['cart'])) {
+      $this->cart = json_decode($_COOKIE['cart'], true);
+    } else {
+      $this->cart = [];
+    }
+    return $this->cart;
+
   }
 
   public function getItems (): array {
