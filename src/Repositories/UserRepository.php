@@ -52,16 +52,6 @@ final class UserRepository
 
   public function addToCart (int $productId, int $userId = null): array
   {
-    if ($userId !== null) {
-      $currentCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
-
-      if (!isset($currentCart[$productId]))
-      {
-        $currentCart[$productId] = 1; // добавляем новый товар
-      }
-      return $currentCart;
-    }
-
     $userBean = R::load('users', $userId);
 
     // Расшифровываем текущую корзину, если не пустая

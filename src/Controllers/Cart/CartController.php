@@ -25,6 +25,7 @@ final class CartController
     // Проверяем вход пользователя в профиль
     $isLoggedIn = Auth::isLoggedIn();
     $settings = Settings::all(); // Получаем массив всех настроек
+    $cartModel = new Cart ( new UserRepository());
  
     if ($isLoggedIn) 
     {
@@ -32,30 +33,17 @@ final class CartController
   
       // Получаем информацию по продуктам из списка корзины 
       $loggedUser = $isLoggedIn ? Auth::getLoggedInUser() : null;
-      $cart = self::loadCart($isLoggedIn, $loggedUser);
-      
-      if ( !empty($cart) ) {
-        $products = ProductRepository::findByIds($cart);
-        // $totalPrice = $cart->getTotalPrice($products);
-      }
+      $cart = self::loadCart($isLoggedIn, $loggedUser ?? null);
+      $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
+      $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
 
     if (!$isLoggedIn) {
       print_r('Пользователь не зашел в профиль');
       // Загружаем корзину
-      $cart = self::loadCart($isLoggedIn);
-    
-      if ( !empty($cart) ) {
-        $products = ProductRepository::findByIds($cart);
-        // $totalPrice = $cart->getTotalPrice($products);
-      }
-
-      if( !empty($cartItems) ) {
-        // Получаем товары по Ids корзины и считаем total
-        $products = ProductRepository::findByIds($cart->getItems());
-        $totalPrice = $cart->getTotalPrice($products);
-      }
-
+      $cart = self::loadCart($isLoggedIn, $loggedUser ?? null);
+      $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
+      $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
     
     $pageTitle = "Корзина товаров";
@@ -73,16 +61,14 @@ final class CartController
     include ROOT . "views/_page-parts/_foot.tpl";
   }
 
-
-
   public static function loadCart(bool $isLoggedIn, User $user = null): array
   {
-    dd($_SESSION['cart']);
     $cartModel = new Cart(new UserRepository());
 
     if (!$isLoggedIn || !$user) {
+
       // Устанавливаем корзину пользователя в модель
-      $cart = isset($_COOKIE['cart']) && !empty($_COOKIE['cart']) ? $cartModel->loadFromNotUser($_COOKIE) : [];
+      $cart = $cartModel->loadFromNotUser();
       return $cart;
     }
 
