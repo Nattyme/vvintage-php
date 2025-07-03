@@ -73,7 +73,7 @@ final class User
   }
 
   // Для логики
-  public function getCart (): Cart
+  public function getCartModel (): Cart
   {
     return $this->cart;
   }

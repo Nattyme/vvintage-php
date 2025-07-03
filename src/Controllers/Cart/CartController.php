@@ -31,9 +31,9 @@ final class CartController
       // Получаем информацию по продуктам из списка корзины 
       $loggedUser = $isLoggedIn ? Auth::getLoggedInUser() : null;
       $cartModel = self::loadCart($isLoggedIn, $loggedUser ?? null);
-      $cart = $cartModel->getItems();
+      $cartItems = $cartModel->getItems();
 
-      $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
+      $products = !empty($cartItems) ? ProductRepository::findByIds($cartItems) : [];
       $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
 
@@ -41,9 +41,11 @@ final class CartController
       print_r('Пользователь не зашел в профиль');
       // Загружаем корзину
       $cartModel = self::loadCart($isLoggedIn, $loggedUser ?? null);
+
+      // Получаем продукты
       $cartItems = $cartModel->getItems();
-      // $cartModel = new Cart ( new UserRepository(), $cart);
-      $products = !empty($cart) ? ProductRepository::findByIds($cartItems) : [];
+      
+      $products = !empty($cartItems) ? ProductRepository::findByIds($cartItems) : [];
       $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
     
@@ -96,7 +98,7 @@ final class CartController
     /**
      * @var Cart
     */
-    $cartModel = $user->getCart();
+    $cartModel = $user ? $user->getCartModel() : new Cart (new UserRepository);
 
     /** Добавляем новый товар*/
     $cartModel->addToCart($productId, $userId ?? null);
@@ -105,9 +107,16 @@ final class CartController
     /** @var array $cartUpdated */
     $cartUpdated = $cartModel->getItems();
 
-    // Сохраняем корзину в БД
-    $userRepository = $cartModel->getUserRepository();
-    $userRepository->updateCart($userId, $cartUpdated);
+    // Сохраняем корзину 
+    // Если пользователь - в БД
+    if ($user !== null) {
+      $userRepository = $cartModel->getUserRepository();
+      $userRepository->saveUserCart($userId, $cartUpdated);
+
+      // Переадресация обратно на страницу товара (или корзины)
+      header('Location: ' . HOST . 'shop/' . $productId);
+      exit();
+    }
 
     // Переадресация обратно на страницу товара (или корзины)
     header('Location: ' . HOST . 'shop/' . $productId);

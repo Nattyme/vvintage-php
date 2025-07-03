@@ -42,6 +42,8 @@ final class Cart
 
   }
 
+  
+
   public function getItems (): array {
     return $this->cart;
   }
@@ -50,7 +52,9 @@ final class Cart
   {
     if ($userId !== null) 
     {
-      $this->cart = $this->userRepository->addToCart($productId, $userId);
+      $this->cart = $this->userRepository->addToUserCart($productId, $userId);
+      $_SESSION['cart'] =  json_encode($this->cart);
+      dd($_SESSION);
     } 
     else 
     {
@@ -133,38 +137,49 @@ final class Cart
     return $total;
   }
 
+  public function setProductsInCart (array $products): void
+  {
+    if (!empty($products)) {
+      foreach ( $products as $itemKey => $quantity) {
+        if ( !isset($this->cart[$itemKey]) ) {
+          $this->cart[$itemKey] = 1;
+        }
+      }
+    }
+  }
+
   //Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
   public function mergeCartAfterLogin (User $user, array $cookieCart): void
   {
     print_r("Функция совмещения корзин после логина");
     $userId = $user->getId();
+
     // 1. Получаем корзину пользователя из БД (или создаём пустую)
-    $userCart = $this->userRepository->getUserCart((int) $userId);
+    $cartModel = $user->getCartModel();
+
+    /**
+     * @return void
+     */
+    $cartModel->setProductsInCart($cookieCart);
 
     // 2. Получаем избранное пользвоателя
-    $userFavList = !empty($user->fav_list) 
-                   ? json_decode($user->fav_list, true) ?? [] 
-                   : [];
+    // $userFavList = !empty($user->fav_list) 
+    //                ? json_decode($user->fav_list, true) ?? [] 
+    //                : [];
 
-    $merged = [
-      'cart' => $userCart,
-      'fav_list' => $userFavList
-    ];
 
 
     // Объединение содержимое куки в цикле
-    foreach(['cart', 'fav_list'] as $key) {
-      if ( !empty($cookieCart) ) {
-
-        foreach ( $cookieCart as $itemKey => $quantity) {
-          if ( !isset($userCart[$key][$itemKey]) ) {
-            $merged[$key][$itemKey] = 1;
-          }
-        }
-        // Очищаем cookies
-        setcookie($key, '', time() - 3600, '/');
-      }
-    }
+    // $tempCart = [];
+  
+      // if ( !empty($cookieCart) ) {
+      //   foreach ( $cookieCart as $itemKey => $quantity) {
+      //     if ( !isset($userCart[$itemKey]) ) {
+      //       $tempCart[$itemKey] = 1;
+      //     }
+      //   }
+      // }
+    // dd($tempCart);
     // foreach(['cart', 'fav_list'] as $key) {
     //   if ( isset($_COOKIE[$key]) && !empty($_COOKIE[$key]) ) {
     //     $cookieData = json_decode($_COOKIE[$key], true) ?? [];
@@ -180,31 +195,39 @@ final class Cart
     //     setcookie($key, '', time() - 3600, '/');
     //   }
     // }
-
+// dd($userCart);
     // Сохраняем в БД
-    if ($user->getCart()) {
-      $cart = $user->getCart()->getItems();
-      $cart = json_encode($merged['cart']);
+    // if ($user->getCart()) {
+    //   $cart = $user->getCart()->getItems();
+    //   $cart = json_encode($merged['cart']);
    
-    } else {
-      // Если корозины нет, создаем новую
-      $cart = R::dispense('cart');
-      $cart->items = json_encode($merged['cart']);
-      $cart->user = $user;
-    }
+    // } else {
+    //   // Если корозины нет, создаем новую
+    //   $cart = R::dispense('cart');
+    //   $cart->items = json_encode($merged['cart']);
+    //   $cart->user = $user;
+    // }
 
     // $cartRepository->saveCart($user, $cart);
     // R::store($cart);
 
     
-    // Обноваляем корзину пользователя в Б
-    $userRepository = new UserRepository();
-    $userId = $user->getId();
-    $cart = $user->getCart()->getItems();
+    // Обновляем корзину пользователя в БД
+    $cart = $cartModel->getItems();
+    $userRepository = $cartModel->getUserRepository();
 
     // Если получена корзина и id пользователя  - обновляем 
     if ( $userId && $cart) {
-      $userRepository->updateCart($userId, $cart);
+      $userRepository->saveUserCart($userId, $cart);
+    }
+
+    // Очищаем cookies
+    if (isset($_COOKIE['cart'])) {
+      setcookie('cart', '', time() - 3600, '/');
+
+    }
+    if (isset ($_COOKIE['fav_list'])) {
+      setcookie('fav_list', '', time() - 3600, '/');
     }
 
     // Обновляем сессию
@@ -217,5 +240,12 @@ final class Cart
       $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
     }
   }
+
+  public function isSessionCartStale(): bool
+  {
+      $sessionCart = json_decode($_SESSION['cart'] ?? '[]', true);
+      return $sessionCart !== $this->cart;
+  }
+
 
 }
