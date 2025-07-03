@@ -32,18 +32,18 @@ final class CartController
       $loggedUser = $isLoggedIn ? Auth::getLoggedInUser() : null;
       $cartModel = self::loadCart($isLoggedIn, $loggedUser ?? null);
       $cart = $cartModel->getItems();
-      // $cartModel = new Cart ( new UserRepository(), $cart);
-      $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
 
-      // $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
+      $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
+      $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
 
     if (!$isLoggedIn) {
       print_r('Пользователь не зашел в профиль');
       // Загружаем корзину
-      $cart = self::loadCart($isLoggedIn, $loggedUser ?? null);
-      $cartModel = new Cart ( new UserRepository(), $cart);
-      $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
+      $cartModel = self::loadCart($isLoggedIn, $loggedUser ?? null);
+      $cartItems = $cartModel->getItems();
+      // $cartModel = new Cart ( new UserRepository(), $cart);
+      $products = !empty($cart) ? ProductRepository::findByIds($cartItems) : [];
       $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
     
@@ -67,10 +67,10 @@ final class CartController
     $cartModel = new Cart(new UserRepository());
 
     if (!$isLoggedIn || !$user) {
-
       // Устанавливаем корзину пользователя в модель
       $cart = $cartModel->loadFromNotUser();
-      return $cart;
+    
+      return $cartModel;
     }
 
     // Устанавливаем корзину пользователя в модель
@@ -80,7 +80,7 @@ final class CartController
     // Получаем продукты и записываем в сессию
     // $cart = $cartModel->getItems();
     $_SESSION['cart'] = $cartModel->getItems();
-  
+
     return $cartModel;
   }
 
@@ -91,16 +91,23 @@ final class CartController
     // Если пользователь залогинился - сохраняем модель или null
     $user = $isLoggedIn  ? Auth::getLoggedInUser() : null; // получить объект User
     $userId = $user ? $user->getId() : null;
-    $cartModel = new Cart( new UserRepository ()); 
-    // Загружаем корзину
-    $cartModel->loadCart($isLoggedIn);
 
-    // Добавляем новый товар
+    // Получаем модель корзины
+    /**
+     * @var Cart
+    */
+    $cartModel = $user->getCart();
+
+    /** Добавляем новый товар*/
     $cartModel->addToCart($productId, $userId ?? null);
+
     // Получаем корзину с новым товаром
+    /** @var array $cartUpdated */
     $cartUpdated = $cartModel->getItems();
 
-    // $cartService->addItem((int) $productId, $isLoggedIn, $user);
+    // Сохраняем корзину в БД
+    $userRepository = $cartModel->getUserRepository();
+    $userRepository->updateCart($userId, $cartUpdated);
 
     // Переадресация обратно на страницу товара (или корзины)
     header('Location: ' . HOST . 'shop/' . $productId);

@@ -77,7 +77,7 @@
                       Количество товаров: <span class="text-bold"><?php echo count($products);?></span>
                     </p>
                     <p class="cart__total">
-                      <!-- Итого: <span class="text-bold"><?php echo h($totalPrice); ?>&nbsp;&euro;</span> -->
+                      Итого: <span class="text-bold"><?php echo h($totalPrice); ?>&nbsp;&euro;</span>
                     </p>
             
                   </div>

@@ -17,6 +17,12 @@ final class Cart
     $this->cart = $cart;
   }
 
+  public function getUserRepository(): UserRepository
+  {
+    return $this->userRepository;
+  }
+
+
   /**
    * Загружает корзину пользователя из БД, если она не была передана вручную
   */
@@ -64,22 +70,18 @@ final class Cart
     }
 
   }
-  
-
-  
-
-
 
 
   // Метод получает корзину из БД или куки и записывает её в $this->cart
   /** 
    * @return array
    */
-  public function loadCart (bool $isLoggedIn, $user=null): array
+  public function loadCart (bool $isLoggedIn, User $user=null): array
   {
     if ( $isLoggedIn && $user) 
     {
       $cart = $user->getCart()->getItems();
+      dd($cart);
     } else {
 
        // 1. Проверить наличие корзины пользователя

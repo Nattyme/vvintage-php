@@ -41,6 +41,10 @@ final class UserRepository
 
   }
 
+  /**
+   * Метод обновляет корзину
+   * @return void
+   */
   public function updateCart (int $userId, array $cartItems): void {
     // Находим bean пользователя по id из модели
     $userBean = R::load('users', $userId);
@@ -50,6 +54,10 @@ final class UserRepository
     R::store($userBean);
   }
 
+  /**
+   * Метод добавляет товар в корзину
+   * @return array
+  */
   public function addToCart (int $productId, int $userId = null): array
   {
     $userBean = R::load('users', $userId);
@@ -71,7 +79,11 @@ final class UserRepository
     return $currentCart;
   }
 
-  public function getUserCart(int $userId) {
+  /** 
+   * Метод возвращает корзину user из БД 
+   * @return array
+  */
+  public function getUserCart (int $userId): array {
     // Находим bean пользователя по id из модели
     $userBean = R::load('users', $userId);
 
@@ -80,6 +92,4 @@ final class UserRepository
     return $userCart;
   }
 
-
- 
 } 
