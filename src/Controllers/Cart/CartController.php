@@ -11,7 +11,6 @@ use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Repositories\CartRepository;
-// use Vvintage\Services\CartService;
 use Vvintage\Models\Auth\Auth;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
@@ -25,23 +24,25 @@ final class CartController
     // Проверяем вход пользователя в профиль
     $isLoggedIn = Auth::isLoggedIn();
     $settings = Settings::all(); // Получаем массив всех настроек
-    $cartModel = new Cart ( new UserRepository());
  
     if ($isLoggedIn) 
     {
       print_r('Пользователь зашел в профиль');
-  
       // Получаем информацию по продуктам из списка корзины 
       $loggedUser = $isLoggedIn ? Auth::getLoggedInUser() : null;
-      $cart = self::loadCart($isLoggedIn, $loggedUser ?? null);
+      $cartModel = self::loadCart($isLoggedIn, $loggedUser ?? null);
+      $cart = $cartModel->getItems();
+      // $cartModel = new Cart ( new UserRepository(), $cart);
       $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
-      $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
+
+      // $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
 
     if (!$isLoggedIn) {
       print_r('Пользователь не зашел в профиль');
       // Загружаем корзину
       $cart = self::loadCart($isLoggedIn, $loggedUser ?? null);
+      $cartModel = new Cart ( new UserRepository(), $cart);
       $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
       $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
@@ -61,7 +62,7 @@ final class CartController
     include ROOT . "views/_page-parts/_foot.tpl";
   }
 
-  public static function loadCart(bool $isLoggedIn, User $user = null): array
+  public static function loadCart(bool $isLoggedIn, User $user = null): Cart
   {
     $cartModel = new Cart(new UserRepository());
 
@@ -77,10 +78,10 @@ final class CartController
     $cartModel->loadFromUser($userId);
 
     // Получаем продукты и записываем в сессию
-    $cart = $cartModel->getItems();
-    $_SESSION['cart'] = $cart;
-
-    return $cart;
+    // $cart = $cartModel->getItems();
+    $_SESSION['cart'] = $cartModel->getItems();
+  
+    return $cartModel;
   }
 
   public static function addItem(int $productId, $data): void

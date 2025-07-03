@@ -71,8 +71,10 @@ final class AuthController
               $userId = $user->getId();
               // Совмещаем корзины
               $cartModel = (new Cart (new UserRepository()) );
-              $newCart = $cartModel->mergeCartAfterLogin((int) $userId, $_COOKIE['cart'] ?? []);
-              // dd($newCart);
+              $coookieCart = $cartModel->loadFromNotUser();
+              // dd($coookieCart);
+              $newCart = $cartModel->mergeCartAfterLogin($user,  $coookieCart ?? []);
+
               $loggedUser = Auth::getLoggedInUser(); // получаем объект пользователя из сессии
               $cart = CartController::loadCart($isLoggedIn, $loggedUser); // передаем объект User
 

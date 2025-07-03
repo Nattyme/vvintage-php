@@ -54,7 +54,7 @@
                   <div class="cart__row">
                     <div class="cart__amount">
                       <span class="cart__text">
-                        <?php echo h($cart->getQuantity($product['id'])); ?>
+                        <?php echo h($cartModel->getQuantity($product['id'])); ?>
                       </span>
                     </div>
                   </div>
@@ -77,7 +77,7 @@
                       Количество товаров: <span class="text-bold"><?php echo count($products);?></span>
                     </p>
                     <p class="cart__total">
-                      Итого: <span class="text-bold"><?php echo h($totalPrice); ?>&nbsp;&euro;</span>
+                      <!-- Итого: <span class="text-bold"><?php echo h($totalPrice); ?>&nbsp;&euro;</span> -->
                     </p>
             
                   </div>

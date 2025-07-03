@@ -132,13 +132,12 @@ final class Cart
   }
 
   //Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
-  public function mergeCartAfterLogin (int $userId, array $cookieCart): void
+  public function mergeCartAfterLogin (User $user, array $cookieCart): void
   {
     print_r("Функция совмещения корзин после логина");
+    $userId = $user->getId();
     // 1. Получаем корзину пользователя из БД (или создаём пустую)
     $userCart = $this->userRepository->getUserCart((int) $userId);
-    dd( $cookieCart);
-    $userCookieCart = $cookieCart;
 
     // 2. Получаем избранное пользвоателя
     $userFavList = !empty($user->fav_list) 
@@ -153,20 +152,32 @@ final class Cart
 
     // Объединение содержимое куки в цикле
     foreach(['cart', 'fav_list'] as $key) {
-      if ( isset($_COOKIE[$key]) && !empty($_COOKIE[$key]) ) {
-        $cookieData = json_decode($_COOKIE[$key], true) ?? [];
+      if ( !empty($cookieCart) ) {
 
-        foreach ( $cookieData as $itemKey => $value) {
-          if ( isset($temp[$key][$itemKey]) ) {
-            $merged[$key][$itemKey] += $value;
-          } else {
-            $merged[$key][$itemKey] = $value;
+        foreach ( $cookieCart as $itemKey => $quantity) {
+          if ( !isset($userCart[$key][$itemKey]) ) {
+            $merged[$key][$itemKey] = 1;
           }
         }
         // Очищаем cookies
         setcookie($key, '', time() - 3600, '/');
       }
     }
+    // foreach(['cart', 'fav_list'] as $key) {
+    //   if ( isset($_COOKIE[$key]) && !empty($_COOKIE[$key]) ) {
+    //     $cookieData = json_decode($_COOKIE[$key], true) ?? [];
+
+    //     foreach ( $cookieData as $itemKey => $value) {
+    //       if ( isset($temp[$key][$itemKey]) ) {
+    //         $merged[$key][$itemKey] += $value;
+    //       } else {
+    //         $merged[$key][$itemKey] = $value;
+    //       }
+    //     }
+    //     // Очищаем cookies
+    //     setcookie($key, '', time() - 3600, '/');
+    //   }
+    // }
 
     // Сохраняем в БД
     if ($user->getCart()) {
@@ -178,11 +189,10 @@ final class Cart
       $cart = R::dispense('cart');
       $cart->items = json_encode($merged['cart']);
       $cart->user = $user;
-
-      // $cartRepository = new CartRepository();
-      // $cartRepository->saveCart($user, $cart);
-      // R::store($cart);
     }
+
+    // $cartRepository->saveCart($user, $cart);
+    // R::store($cart);
 
     
     // Обноваляем корзину пользователя в Б
@@ -204,10 +214,6 @@ final class Cart
     } else {
       $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
     }
-
-    // 7. Переход на профиль
-    header('Location: ' . HOST . 'profile');
-    exit();
   }
 
 }
