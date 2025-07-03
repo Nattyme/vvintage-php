@@ -92,7 +92,6 @@ final class CartController
 
     // Если пользователь залогинился - сохраняем модель или null
     $user = $isLoggedIn  ? Auth::getLoggedInUser() : null; // получить объект User
-    $userId = $user ? $user->getId() : null;
 
     // Получаем модель корзины
     /**
@@ -100,11 +99,13 @@ final class CartController
     */
     $cartModel = $user ? $user->getCartModel() : new Cart (new UserRepository);
 
-    /** Добавляем новый товар*/
     $cartModel->addToCart($productId, $userId ?? null);
+    $cartModel->saveToSession();
 
-    // Получаем корзину с новым товаром
-    /** @var array $cartUpdated */
+    /** 
+     *  Получаем корзину с новым товаром
+     * @var array $cartUpdated 
+    * */
     $cartUpdated = $cartModel->getItems();
 
     // Сохраняем корзину 
