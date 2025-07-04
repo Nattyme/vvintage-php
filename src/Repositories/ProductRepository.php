@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Vvintage\Repositories;
@@ -6,12 +7,12 @@ namespace Vvintage\Repositories;
 use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Models\Shop\Product;
 
-final class ProductRepository 
+final class ProductRepository
 {
-  public static function findById (int $id) : ?Product
-  {
-    // Запрашиваем информацию по продукту
-    $sqlQuery = 'SELECT
+    public static function findById(int $id): ?Product
+    {
+        // Запрашиваем информацию по продукту
+        $sqlQuery = 'SELECT
         p.id, 
         p.title, 
         p.content, 
@@ -26,18 +27,20 @@ final class ProductRepository
       LEFT JOIN `brands` b ON p.brand = b.id
       WHERE p.id = ? LIMIT 1
     ';
-    $row = R::getRow($sqlQuery, [$id]);
+        $row = R::getRow($sqlQuery, [$id]);
 
-    if(!$row) return null;
+        if (!$row) {
+            return null;
+        }
 
-    $product = new Product();
-    $product->loadFromArray($row);
-    return $product;
-  }
+        $product = new Product();
+        $product->loadFromArray($row);
+        return $product;
+    }
 
-  public static function findAll ( array $pagination): array 
-  {
-    $sqlQuery = 'SELECT
+    public static function findAll(array $pagination): array
+    {
+        $sqlQuery = 'SELECT
                 p.id, 
                 p.title, 
                 p.article, 
@@ -57,31 +60,30 @@ final class ProductRepository
             ) pi ON p.id = pi.product_id
             ORDER BY p.id DESC ' . $pagination["sql_page_limit"];
 
-    $rows = R::getAll($sqlQuery);
+        $rows = R::getAll($sqlQuery);
 
-    $products = [];
+        $products = [];
 
-    foreach ($rows as $row) 
-    {
-      $product = new Product();
-      $product->loadFromArray($row);
-      $products[] = $product;
+        foreach ($rows as $row) {
+            $product = new Product();
+            $product->loadFromArray($row);
+            $products[] = $product;
+        }
+
+        return $products;
     }
 
-    return $products;
-  }
+    public static function findByIds(array $idsData): array
+    {
 
-  public static function findByIds (array $idsData): array
-  {
- 
-    // Массив ids
-    $ids = array_keys($idsData);
+        // Массив ids
+        $ids = array_keys($idsData);
 
-    // Плейсхолдеры для запроса
-    $slotString = R::genSlots($ids);
+        // Плейсхолдеры для запроса
+        $slotString = R::genSlots($ids);
 
-    // Находим продукты и их главное изображение
-    $sql = "SELECT 
+        // Находим продукты и их главное изображение
+        $sql = "SELECT 
                   p.id,
                   p.title,
                   p.article, 
@@ -93,14 +95,14 @@ final class ProductRepository
             LEFT JOIN `productimages` pi ON p.id = pi.product_id AND pi.image_order = 1
             WHERE p.id IN ($slotString)";
 
-    $productsData = R::getAll($sql, $ids);
+        $productsData = R::getAll($sql, $ids);
 
-    $products = [];
+        $products = [];
 
-    foreach($productsData as $key=>$value) {
-      $products[$value['id']] = $value;
+        foreach ($productsData as $key => $value) {
+            $products[$value['id']] = $value;
+        }
+
+        return $products;
     }
-
-    return $products;
-  }
 }

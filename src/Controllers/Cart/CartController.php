@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Vvintage\Controllers\Cart;
@@ -19,116 +20,115 @@ require_once ROOT . './libs/functions.php';
 
 final class CartController
 {
-  public static function index(RouteData $routeData): void
-  {
-    /**
-     * Проверяем вход пользователя в профиль
-     * @var bool
-     */
-    $isLoggedIn = Auth::isLoggedIn();
-    $settings = Settings::all(); // Получаем массив всех настроек
- 
-    if ($isLoggedIn) 
+    public static function index(RouteData $routeData): void
     {
-      print_r('Пользователь зашел в профиль');
-      // Получаем информацию по продуктам из списка корзины 
-      $userModel = $isLoggedIn ? Auth::getLoggedInUser() : null;
-      // $loggedUser = $isLoggedIn ? Auth::getLoggedInUser() : null;
-      $cartModel = self::loadCart($isLoggedIn, $userModel ?? null);
-      $cartItems = $cartModel->getItems();
+        /**
+         * Проверяем вход пользователя в профиль
+         * @var bool
+         */
+        $isLoggedIn = Auth::isLoggedIn();
+        $settings = Settings::all(); // Получаем массив всех настроек
 
-      $products = !empty($cartItems) ? ProductRepository::findByIds($cartItems) : [];
-      $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
+        if ($isLoggedIn) {
+            print_r('Пользователь зашел в профиль');
+            // Получаем информацию по продуктам из списка корзины
+            $userModel = $isLoggedIn ? Auth::getLoggedInUser() : null;
+            // $loggedUser = $isLoggedIn ? Auth::getLoggedInUser() : null;
+            $cartModel = self::loadCart($isLoggedIn, $userModel ?? null);
+            $cartItems = $cartModel->getItems();
+
+            $products = !empty($cartItems) ? ProductRepository::findByIds($cartItems) : [];
+            $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
+        }
+
+        if (!$isLoggedIn) {
+            print_r('Пользователь не зашел в профиль');
+            // Загружаем корзину
+            $cartModel = self::loadCart($isLoggedIn, $loggedUser ?? null);
+
+            // Получаем продукты
+            $cartItems = $cartModel->getItems();
+
+            $products = !empty($cartItems) ? ProductRepository::findByIds($cartItems) : [];
+            $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
+        }
+
+        $pageTitle = "Корзина товаров";
+
+        // Хлебные крошки
+        $breadcrumbs = [
+          ['title' => $pageTitle, 'url' => '#'],
+        ];
+
+        // Подключение шаблонов страницы
+        include ROOT . "views/_page-parts/_head.tpl";
+        include ROOT . "views/_parts/_header.tpl";
+        include ROOT . "views/cart/cart.tpl";
+        include ROOT . "views/_parts/_footer.tpl";
+        include ROOT . "views/_page-parts/_foot.tpl";
     }
 
-    if (!$isLoggedIn) {
-      print_r('Пользователь не зашел в профиль');
-      // Загружаем корзину
-      $cartModel = self::loadCart($isLoggedIn, $loggedUser ?? null);
+    public static function loadCart(bool $isLoggedIn, User $user = null): Cart
+    {
+        $cartModel = new Cart(new UserRepository());
 
-      // Получаем продукты
-      $cartItems = $cartModel->getItems();
-      
-      $products = !empty($cartItems) ? ProductRepository::findByIds($cartItems) : [];
-      $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
-    }
-    
-    $pageTitle = "Корзина товаров";
+        if (!$isLoggedIn || !$user) {
+            // Устанавливаем корзину пользователя в модель
+            $cart = $cartModel->loadFromNotUser();
 
-    // Хлебные крошки
-    $breadcrumbs = [
-      ['title' => $pageTitle, 'url' => '#'],
-    ];
+            return $cartModel;
+        }
 
-    // Подключение шаблонов страницы
-    include ROOT . "views/_page-parts/_head.tpl";
-    include ROOT . "views/_parts/_header.tpl";
-    include ROOT . "views/cart/cart.tpl";
-    include ROOT . "views/_parts/_footer.tpl";
-    include ROOT . "views/_page-parts/_foot.tpl";
-  }
+        // Устанавливаем корзину пользователя в модель
+        $userId = $user->getId();
+        $cartModel->loadFromUser($userId);
 
-  public static function loadCart(bool $isLoggedIn, User $user = null): Cart
-  {
-    $cartModel = new Cart(new UserRepository());
+        // Получаем продукты и записываем в сессию
+        // $cart = $cartModel->getItems();
+        $_SESSION['cart'] = $cartModel->getItems();
 
-    if (!$isLoggedIn || !$user) {
-      // Устанавливаем корзину пользователя в модель
-      $cart = $cartModel->loadFromNotUser();
-    
-      return $cartModel;
+        return $cartModel;
     }
 
-    // Устанавливаем корзину пользователя в модель
-    $userId = $user->getId();
-    $cartModel->loadFromUser($userId);
+    public static function addItem(int $productId, $routeData): void
+    {
+        $isLoggedIn = Auth::isLoggedIn();
 
-    // Получаем продукты и записываем в сессию
-    // $cart = $cartModel->getItems();
-    $_SESSION['cart'] = $cartModel->getItems();
+        /**
+         * Если пользователь залогинился - сохраняем модель User или null
+         * @var User || NULL
+        */
+        $userModel = $isLoggedIn ? Auth::getLoggedInUser() : null;
 
-    return $cartModel;
-  }
+        /**
+         * Получаем модель корзины
+         * @var Cart
+        */
+        $cartModel = $userModel ? $userModel->getCartModel() : new Cart(new UserRepository());
 
-  public static function addItem(int $productId, $routeData): void
-  {
-    $isLoggedIn = Auth::isLoggedIn();
+        $cartModel->addToCart($productId, $userModel ?? null);
+        // $cartModel->saveToSession();
 
-    /**
-     * Если пользователь залогинился - сохраняем модель User или null
-     * @var User || NULL
-    */
-    $userModel = $isLoggedIn ? Auth::getLoggedInUser() : null; 
+        /**
+         *  Получаем корзину с новым товаром
+         * @var array $cartUpdated
+        * */
+        $cartUpdated = $cartModel->getItems();
 
-    /**
-     * Получаем модель корзины
-     * @var Cart
-    */
-    $cartModel = $userModel ? $userModel->getCartModel() : new Cart (new UserRepository);
+        // Сохраняем корзину
+        // Если пользователь - в БД
+        if ($user !== null) {
+            $userRepository = $cartModel->getUserRepository();
+            $userRepository->saveUserCart($userId, $cartUpdated);
 
-    $cartModel->addToCart($productId, $userModel ?? null);
-    // $cartModel->saveToSession();
+            // Переадресация обратно на страницу товара (или корзины)
+            header('Location: ' . HOST . 'shop/' . $productId);
+            exit();
+        }
 
-    /** 
-     *  Получаем корзину с новым товаром
-     * @var array $cartUpdated 
-    * */
-    $cartUpdated = $cartModel->getItems();
-
-    // Сохраняем корзину 
-    // Если пользователь - в БД
-    if ($user !== null) {
-      $userRepository = $cartModel->getUserRepository();
-      $userRepository->saveUserCart($userId, $cartUpdated);
-
-      // Переадресация обратно на страницу товара (или корзины)
-      header('Location: ' . HOST . 'shop/' . $productId);
-      exit();
+        // Переадресация обратно на страницу товара (или корзины)
+        header('Location: ' . HOST . 'shop/' . $productId);
+        exit();
     }
-
-    // Переадресация обратно на страницу товара (или корзины)
-    header('Location: ' . HOST . 'shop/' . $productId);
-    exit();
-  }
 
 }

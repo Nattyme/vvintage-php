@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Vvintage\Controllers\Shop;
@@ -10,31 +11,29 @@ use Vvintage\Routing\RouteData;
 
 final class ProductController
 {
+    public static function index(RouteData $routeData): void
+    {
+        // Получаем массив всех настроек
+        $settings = Settings::all();
 
-  public static function index(RouteData $routeData): void 
-  {
-      // Получаем массив всех настроек
-      $settings = Settings::all();
+        $id = (int) $routeData->uriGet; // получаем id товара из URL
+        $product = ProductRepository::findById($id);
 
-      $id = (int) $routeData->uriGet; // получаем id товара из URL
-      $product = ProductRepository::findById($id);
+        if (!$product) {
+            http_response_code(404);
+            echo 'Товар не найден';
+            return;
+        }
 
-      if (!$product) {
-        http_response_code(404);
-        echo 'Товар не найден';
-        return;
-      }
+        $relatedProducts = $product->getRelated();
 
-      $relatedProducts = $product->getRelated();
+        $pageTitle = $product->getTitle();
 
-      $pageTitle = $product->getTitle();
-
-      // Передаем данные в view
-      require ROOT . 'views/_page-parts/_head.tpl';
-      require ROOT . 'views/_parts/_header.tpl';
-      require ROOT . 'views/shop/product.tpl';
-      require ROOT . 'views/_parts/_footer.tpl';
-      require ROOT . 'views/_page-parts/_foot.tpl';
-  }
+        // Передаем данные в view
+        require ROOT . 'views/_page-parts/_head.tpl';
+        require ROOT . 'views/_parts/_header.tpl';
+        require ROOT . 'views/shop/product.tpl';
+        require ROOT . 'views/_parts/_footer.tpl';
+        require ROOT . 'views/_page-parts/_foot.tpl';
+    }
 }
-

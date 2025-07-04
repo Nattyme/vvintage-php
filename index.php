@@ -33,10 +33,6 @@ $uriGetParam = getUriGetParam(); // третья часть — параметр
 // Передаем данные маршрутизатору
 $routeData = new RouteData($uriModule, $uriGet, $uriGetParam);
 Router::route($routeData);
-function helloWorld()
-{
-    echo 'Привет, Наташа';
-}
 
 // require ROOT . 'modules/settings/settings.php';
 // require ROOT . 'modules/admin-panel/admin-panel.php';
