@@ -58,9 +58,9 @@ final class UserRepository
    * Метод добавляет товар в корзину
    * @return array
   */
-  public function addToUserCart (int $productId, int $userId = null): array
+  public function addToUserCart (int $productId, ?User $userModel = null): array
   {
-    $userBean = R::load('users', $userId);
+    $userBean = R::load('users', $userModel->getId());
 
     // Расшифровываем текущую корзину, если не пустая
     $currentCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];

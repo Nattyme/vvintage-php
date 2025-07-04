@@ -47,13 +47,13 @@ final class Cart
     return $this->cart;
   }
 
-  public function addToCart (int $productId, ?int $userId=null): void
+  public function addToCart (int $productId, ?User $userModel=null): void
   {
-    if ($userId !== null) 
+    if ($userModel !== null) 
     {
-      $this->cart = $this->userRepository->addToUserCart($productId, $userId);
+      $this->cart = $this->userRepository->addToUserCart($productId, $userModel);
+ dd($_SESSION);
       $_SESSION['cart'] = json_encode($this->cart);
-      dd($_SESSION);
     } 
     else 
     {

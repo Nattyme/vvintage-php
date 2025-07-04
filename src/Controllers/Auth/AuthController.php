@@ -18,7 +18,7 @@ require_once ROOT . './libs/functions.php';
 
 final class AuthController 
 {
-    public static function login (RouteData $data): void {
+    public static function login (RouteData $routeData): void {
 
       //1. Проверяем массив POST
       if( isset($_POST['login']) ) {
@@ -62,18 +62,17 @@ final class AuthController
         
           if ( empty($_SESSION['errors']) ) {
             // Создаем нового пользователя
-            $user = new User($userBean);
+            $userModel = new User($userBean);
 
             // Проверить пароль
-            if ( password_verify($_POST['password'], $user->getPassword() ) ) {
-              $isLoggedIn = Auth::login($user);
+            if ( password_verify($_POST['password'], $userModel->getPassword() ) ) {
+              $isLoggedIn = Auth::login($userModel);
 
-              $userId = $user->getId();
+              $userId = $userModel->getId();
               // Совмещаем корзины
               $cartModel = (new Cart (new UserRepository()) );
               $coookieCart = $cartModel->loadFromNotUser();
-              // dd($coookieCart);
-              $newCart = $cartModel->mergeCartAfterLogin($user,  $coookieCart ?? []);
+              $newCart = $cartModel->mergeCartAfterLogin($userModel,  $coookieCart ?? []);
 
               $loggedUser = Auth::getLoggedInUser(); // получаем объект пользователя из сессии
               $cart = CartController::loadCart($isLoggedIn, $loggedUser); // передаем объект User

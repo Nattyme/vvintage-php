@@ -19,9 +19,12 @@ require_once ROOT . './libs/functions.php';
 
 final class CartController
 {
-  public static function index(RouteData $data): void
+  public static function index(RouteData $routeData): void
   {
-    // Проверяем вход пользователя в профиль
+    /**
+     * Проверяем вход пользователя в профиль
+     * @var bool
+     */
     $isLoggedIn = Auth::isLoggedIn();
     $settings = Settings::all(); // Получаем массив всех настроек
  
@@ -29,8 +32,9 @@ final class CartController
     {
       print_r('Пользователь зашел в профиль');
       // Получаем информацию по продуктам из списка корзины 
-      $loggedUser = $isLoggedIn ? Auth::getLoggedInUser() : null;
-      $cartModel = self::loadCart($isLoggedIn, $loggedUser ?? null);
+      $userModel = $isLoggedIn ? Auth::getLoggedInUser() : null;
+      // $loggedUser = $isLoggedIn ? Auth::getLoggedInUser() : null;
+      $cartModel = self::loadCart($isLoggedIn, $userModel ?? null);
       $cartItems = $cartModel->getItems();
 
       $products = !empty($cartItems) ? ProductRepository::findByIds($cartItems) : [];
@@ -86,21 +90,24 @@ final class CartController
     return $cartModel;
   }
 
-  public static function addItem(int $productId, $data): void
+  public static function addItem(int $productId, $routeData): void
   {
     $isLoggedIn = Auth::isLoggedIn();
 
-    // Если пользователь залогинился - сохраняем модель или null
-    $user = $isLoggedIn  ? Auth::getLoggedInUser() : null; // получить объект User
-
-    // Получаем модель корзины
     /**
+     * Если пользователь залогинился - сохраняем модель User или null
+     * @var User || NULL
+    */
+    $userModel = $isLoggedIn ? Auth::getLoggedInUser() : null; 
+
+    /**
+     * Получаем модель корзины
      * @var Cart
     */
-    $cartModel = $user ? $user->getCartModel() : new Cart (new UserRepository);
+    $cartModel = $userModel ? $userModel->getCartModel() : new Cart (new UserRepository);
 
-    $cartModel->addToCart($productId, $userId ?? null);
-    $cartModel->saveToSession();
+    $cartModel->addToCart($productId, $userModel ?? null);
+    // $cartModel->saveToSession();
 
     /** 
      *  Получаем корзину с новым товаром

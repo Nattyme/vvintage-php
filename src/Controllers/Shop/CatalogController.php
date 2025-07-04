@@ -11,7 +11,7 @@ require_once ROOT . "./libs/functions.php";
 
 final class CatalogController 
 {
-  public static function index(RouteData $data): void
+  public static function index(RouteData $routeData): void
   {
     // Получаем массив всех настроек
     $settings = Settings::all();

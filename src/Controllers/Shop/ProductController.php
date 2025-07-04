@@ -11,12 +11,12 @@ use Vvintage\Routing\RouteData;
 final class ProductController
 {
 
-  public static function index(RouteData $data): void 
+  public static function index(RouteData $routeData): void 
   {
       // Получаем массив всех настроек
       $settings = Settings::all();
 
-      $id = (int) $data->uriGet; // получаем id товара из URL
+      $id = (int) $routeData->uriGet; // получаем id товара из URL
       $product = ProductRepository::findById($id);
 
       if (!$product) {
