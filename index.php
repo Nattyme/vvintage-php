@@ -1,4 +1,5 @@
 <?php
+
 // Автозагрузка файлов через composer
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -12,8 +13,8 @@ use Vvintage\Models\Settings\Settings;
 // Старт сесии (хранение ошибок, уведомлений, данных пользователя)
 session_start();
 
-$_SESSION['errors'] = array();
-$_SESSION['success'] = array();
+$_SESSION['errors'] = [];
+$_SESSION['success'] = [];
 
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
@@ -32,6 +33,10 @@ $uriGetParam = getUriGetParam(); // третья часть — параметр
 // Передаем данные маршрутизатору
 $routeData = new RouteData($uriModule, $uriGet, $uriGetParam);
 Router::route($routeData);
+function helloWorld()
+{
+    echo 'Привет, Наташа';
+}
 
 // require ROOT . 'modules/settings/settings.php';
 // require ROOT . 'modules/admin-panel/admin-panel.php';
@@ -39,7 +44,3 @@ Router::route($routeData);
 // require ROOT . 'modules/cart/usercart.php';
 // require ROOT . 'modules/shop/get-nav-categories.php';
 // require ROOT . 'modules/favorite/userfavorite.php';
-
-
-
-
