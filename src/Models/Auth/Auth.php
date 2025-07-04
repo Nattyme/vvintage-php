@@ -76,9 +76,9 @@ class Auth
         }
 
         $userRepository = new UserRepository();
-        $userBean = $userRepository->findUserById((int) $_SESSION['user_id']);
+        $userModel = $userRepository->findUserById((int) $_SESSION['user_id']);
 
-        return new User($userBean) ? new User($userBean) : null;
+        return $userModel ? $userModel : null;
     }
 
 }

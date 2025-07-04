@@ -11,7 +11,12 @@ use Vvintage\Models\Cart\Cart;
 
 final class UserRepository
 {
-    public function findUserById(int $id): ?OODBBean
+    /**
+     * Метод ищет пользователя по id
+     * @param int $id
+     * @return User|null
+     */
+    public function findUserById(int $id): ?User
     {
         $bean = R::load('users', $id);
 
@@ -19,9 +24,14 @@ final class UserRepository
             return null;
         }
 
-        return $bean;
+        return new User($bean);
     }
 
+    /**
+     * Метод ищет пользователя по email
+     * @param string $email
+     * @return OODBBean
+     */
     public function findUserByEmail(string $email): ?OODBBean
     {
         return R::findOne('users', 'email = ?', [strtolower($email)]);
@@ -52,15 +62,23 @@ final class UserRepository
       return $bean;
     }
 
-    public function editUser(User $userModel, $newUserData): OODBBean
+    /**
+     * Метод редактирует пользователя 
+     * @param User $userModel, array $newUserData
+     * @return OODBBean
+     */
+    public function editUser(User $userModel, array $newUserData): OODBBean
     {
       $id = $userModel->getId();
       $bean = R::load('users', $id);
 
-      // Заполнить пар-ры
-      // $userBean->name = $newUserData['name'];
-      R::store( $bean );
-      return $bean;
+      if ($bean->id !== 0) {
+        // Заполнить пар-ры
+        // $userBean->name = $newUserData['name'];
+        R::store( $bean );
+        return $bean;
+      }
+
     }
 
     /**
@@ -72,8 +90,11 @@ final class UserRepository
     {
       $id = $userModel->getId();
 
-      $bean = R::load('users', $id);
-      R::trash( $bean ); 
+      if ($bean->id !== 0) {
+        $bean = R::load('users', $id);
+        R::trash( $bean ); 
+      }
+
     }
 
 

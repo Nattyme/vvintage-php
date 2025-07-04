@@ -18,15 +18,16 @@ final class User
 
     public Cart $cart;
 
-    public function __construct($bean)
+    public function __construct(OODBBean $bean)
     {
 
-        $this->id = (int) $bean['id'];
-        $this->email = $bean['email'];
-        $this->password = $bean['password'];
-        $this->name = $bean['name'];
-        $this->role = $bean['role'] ?? 'user';
-        $cartData = isset($bean['cart']) ? json_decode($bean->cart ?? '[]', true) : [];
+        $this->id = (int) $bean->id;
+        $this->email = $bean->email;
+        $this->password = $bean->password;
+        $this->name = $bean->name;
+        $this->role = $bean->role ?? 'user';
+
+        $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
         $this->cart = new Cart(new UserRepository(), $cartData);
         $this->fav_list = [];
         // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
