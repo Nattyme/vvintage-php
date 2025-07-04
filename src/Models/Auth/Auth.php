@@ -7,15 +7,13 @@ namespace Vvintage\Models\Auth;
 use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
-
-// findByEmail
 class Auth
 {
     public static function login(User $user): bool
     {
 
         // Автологин пользователя после регистрации
-        // Преобразуем объект user в массив и сохрагняем в сессию
+        // Преобразуем объект user в массив и сохраняем в сессию
         $_SESSION['logged_user'] = $user->export($user);
         $_SESSION['user_id'] = $user->getId();
         $_SESSION['login'] = 1;
@@ -77,8 +75,8 @@ class Auth
             return null;
         }
 
-        $userRepo = new UserRepository();
-        $userBean = $userRepo->findById($_SESSION['user_id']);
+        $userRepository = new UserRepository();
+        $userBean = $userRepository->findUserById((int) $_SESSION['user_id']);
 
         return new User($userBean) ? new User($userBean) : null;
     }

@@ -54,7 +54,7 @@ final class AuthController
 
                 // Ищем нужного пользователя в базе данных
                 $userData = new UserRepository(); // создаем новый объект репозитория
-                $userBean =  $userData->findByEmail($_POST['email']);
+                $userBean =  $userData->findUserByEmail($_POST['email']);
 
                 // Если в БД не найден email
                 if (!$userBean) {

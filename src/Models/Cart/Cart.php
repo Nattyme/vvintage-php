@@ -129,11 +129,14 @@ final class Cart
         }
     }
 
-    //Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
+    /** 
+      * Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
+      * @param User $user модель пользователя
+      * @param Cart $cookieCart модель корзины
+    */
     public function mergeCartAfterLogin(User $user, array $cookieCart): void
     {
         print_r("Функция совмещения корзин после логина");
-        $userId = $user->getId();
 
         // 1. Получаем корзину пользователя из БД (или создаём пустую)
         $cartModel = $user->getCartModel();
@@ -148,9 +151,8 @@ final class Cart
         $cart = $cartModel->getItems();
         $userRepository = $cartModel->getUserRepository();
 
-        // Если получена корзина и id пользователя - обновляем в БД
-        if ($userId && $cart) {
-            $userRepository->saveUserCart($userId, $cart);
+        if ($user && $cart) {
+            $userRepository->saveUserCart($user, $cart);
         }
 
         // Очищаем cookies

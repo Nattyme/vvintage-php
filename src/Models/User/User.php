@@ -75,7 +75,9 @@ final class User
         return $this->role;
     }
 
-    // Для логики
+    /**
+     * @return Cart
+     */
     public function getCartModel(): Cart
     {
         return $this->cart;

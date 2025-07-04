@@ -11,49 +11,81 @@ use Vvintage\Models\Cart\Cart;
 
 final class UserRepository
 {
-    public function findById(int $id): ?OODBBean
+    public function findUserById(int $id): ?OODBBean
     {
         $bean = R::load('users', $id);
 
-        if (!$bean || $bean->id === 0) {
+        if ($bean->id === 0) {
             return null;
         }
 
-        return$bean;
+        return $bean;
     }
 
-    public function findByEmail(string $email): ?OODBBean
+    public function findUserByEmail(string $email): ?OODBBean
     {
         return R::findOne('users', 'email = ?', [strtolower($email)]);
     }
 
-    public function findAll()
+    /**
+     * Метод возвращает всех пользователей
+     * 
+     * @return OODBBean[]
+     */
+    public function findAll(): array
     {
-
+      return R::findAll( 'users' );
     }
 
-    public function createUser()
+    /**
+     * Метод создает нового пользователя 
+     * 
+     * @return OODBBean
+    */
+    public function createUser(array $userData): OODBBean
     {
+      $bean = R::dispense( 'users' );
+      // Добавить $
+      //  $bean->name = $userData['name'] ?? null;
+      R::store($bean);
 
+      return $bean;
     }
 
-    public function editUser()
+    public function editUser(User $userModel, $newUserData): OODBBean
     {
+      $id = $userModel->getId();
+      $bean = R::load('users', $id);
 
+      // Заполнить пар-ры
+      // $userBean->name = $newUserData['name'];
+      R::store( $bean );
+      return $bean;
     }
 
-    public function removeUser()
+    /**
+     * Метод удаления пользователя 
+     * 
+     * @return void
+    */
+    public function removeUser(User $userModel): void
     {
+      $id = $userModel->getId();
 
+      $bean = R::load('users', $id);
+      R::trash( $bean ); 
     }
+
+
 
     /**
      * Метод обновляет корзину
      * @return void
      */
-    public function saveUserCart(int $userId, array $cartItems): void
+    public function saveUserCart(User $userModel, array $cartItems): void
     {
         // Находим bean пользователя по id из модели
+        $userId = $userModel->getId();
         $userBean = R::load('users', $userId);
 
         // Обновляем корзину
@@ -65,11 +97,10 @@ final class UserRepository
      * Метод добавляет товар в корзину
      * @return array
     */
-    public function addToUserCart(int $productId, ?User $userModel = null): array
+    public function addToUserCart(int $productId, User $userModel): array
     {
-        $userBean = R::load('users', $userModel->getId());
-
         // Расшифровываем текущую корзину, если не пустая
+        $userBean = R::load('users', $userModel->getId());
         $currentCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
 
         // Добавляем новый товар
