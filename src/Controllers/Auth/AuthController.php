@@ -54,18 +54,15 @@ final class AuthController
 
                 // Ищем нужного пользователя в базе данных
                 $userData = new UserRepository(); // создаем новый объект репозитория
-                $userBean =  $userData->findUserByEmail($_POST['email']);
+                $userModel =  $userData->findUserByEmail($_POST['email']);
 
                 // Если в БД не найден email
-                if (!$userBean) {
+                if (!$userModel) {
                     $_SESSION['errors'][] = ['title' => 'Неверный email'];
                 }
 
 
                 if (empty($_SESSION['errors'])) {
-                    // Создаем нового пользователя
-                    $userModel = new User($userBean);
-
                     // Проверить пароль
                     if (password_verify($_POST['password'], $userModel->getPassword())) {
                         $isLoggedIn = Auth::login($userModel);

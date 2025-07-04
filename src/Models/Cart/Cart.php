@@ -52,6 +52,7 @@ final class Cart
     public function addToCart(int $productId, ?User $userModel = null): void
     {
         if ($userModel !== null) {
+          dd($this->cart);
             $this->cart = $this->userRepository->addToUserCart($productId, $userModel);
             dd($_SESSION);
             $_SESSION['cart'] = json_encode($this->cart);
@@ -72,6 +73,31 @@ final class Cart
         }
 
     }
+
+    // public function addToCart(int $productId, ?User $userModel = null): void
+    // {
+    //     if ($userModel !== null) {
+    //       dd($this->cart);
+    //         $this->cart = $this->userRepository->addToUserCart($productId, $userModel);
+    //         dd($_SESSION);
+    //         $_SESSION['cart'] = json_encode($this->cart);
+    //     } else {
+    //         // 1. Загружаем старую корзину из куки (если есть)
+    //         $cookieCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
+
+    //         // 2. Добавляем товар
+    //         if (!isset($cookieCart[$productId])) {
+    //             $cookieCart[$productId] = 1;
+    //         }
+
+    //         // 3. Сохраняем обратно в куки
+    //         setcookie('cart', json_encode($cookieCart), time() + 3600 * 24 * 7, '/');
+
+    //         // 4. Обновляем локальную корзину
+    //         $this->cart = $cookieCart;
+    //     }
+
+    // }
 
 
     // Метод получает корзину из БД или куки и записывает её в $this->cart

@@ -32,15 +32,16 @@ final class UserRepository
      * @param string $email
      * @return OODBBean
      */
-    public function findUserByEmail(string $email): ?OODBBean
+    public function findUserByEmail(string $email): ?User
     {
-        return R::findOne('users', 'email = ?', [strtolower($email)]);
+      $bean = R::findOne('users', 'email = ?', [strtolower($email)]);
+      return new User($bean);
     }
 
     /**
      * Метод возвращает всех пользователей
      * 
-     * @return OODBBean[]
+     * @return array
      */
     public function findAll(): array
     {
@@ -50,24 +51,25 @@ final class UserRepository
     /**
      * Метод создает нового пользователя 
      * 
-     * @return OODBBean
+     * @return User|null
     */
-    public function createUser(array $userData): OODBBean
+    public function createUser(array $userData): ?User
     {
       $bean = R::dispense( 'users' );
-      // Добавить $
-      //  $bean->name = $userData['name'] ?? null;
-      R::store($bean);
 
-      return $bean;
+      if ($bean === 0) {
+        return null;
+      }
+    
+      return new User ($bean);
     }
 
     /**
      * Метод редактирует пользователя 
      * @param User $userModel, array $newUserData
-     * @return OODBBean
+     * @return User|null
      */
-    public function editUser(User $userModel, array $newUserData): OODBBean
+    public function editUser(User $userModel, array $newUserData): ?User
     {
       $id = $userModel->getId();
       $bean = R::load('users', $id);
@@ -76,7 +78,7 @@ final class UserRepository
         // Заполнить пар-ры
         // $userBean->name = $newUserData['name'];
         R::store( $bean );
-        return $bean;
+        return new User ($bean);
       }
 
     }
@@ -89,6 +91,7 @@ final class UserRepository
     public function removeUser(User $userModel): void
     {
       $id = $userModel->getId();
+      $bean = R::load('users', $id);
 
       if ($bean->id !== 0) {
         $bean = R::load('users', $id);
@@ -120,7 +123,7 @@ final class UserRepository
     */
     public function addToUserCart(int $productId, User $userModel): array
     {
-        // Расшифровываем текущую корзину, если не пустая
+        // Расшифровываем корзину из БД, если не пустая
         $userBean = R::load('users', $userModel->getId());
         $currentCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
 
