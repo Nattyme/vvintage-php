@@ -11,7 +11,6 @@ use Vvintage\Repositories\ProductRepository;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
-use Vvintage\Repositories\CartRepository;
 use Vvintage\Models\Auth\Auth;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
@@ -31,11 +30,9 @@ final class CartController
 
         if ($isLoggedIn) {
             print_r('Пользователь зашел в профиль');
+          
             // Получаем информацию по продуктам из списка корзины
-            $userModel = $isLoggedIn ? Auth::getLoggedInUser() : null;
-            
-            // Загружаем модель корзины
-            $cartModel = self::loadCart($isLoggedIn, $userModel ?? null);
+            $userModel = Auth::getLoggedInUser();
         }
 
         if (!$isLoggedIn) {
@@ -45,8 +42,8 @@ final class CartController
         }
 
         // Получаем продукты
-        $cartItems = $cartModel->getItems();
-        $products = !empty($cartItems) ? ProductRepository::findByIds($cartItems) : [];
+        $cart = $userModel->getCart();
+        $products = !empty($cartItems) ? ProductRepository::findByIds($cart) : [];
         $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
 
         $pageTitle = "Корзина товаров";
@@ -66,7 +63,8 @@ final class CartController
 
     public static function loadCart(bool $isLoggedIn, User $user = null): Cart
     {
-        $cartModel = new Cart(new UserRepository());
+     
+        $cartModel = new Cart($user->getItems());
 
         if (!$user) {
             // Устанавливаем корзину пользователя в модель

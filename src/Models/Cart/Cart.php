@@ -9,20 +9,12 @@ use Vvintage\Repositories\UserRepository;
 
 final class Cart
 {
-    private UserRepository $userRepository;
-    private array $cart = [];
+    private array $cart;
 
-    public function __construct(UserRepository $userRepository, array $cart = [])
+    public function __construct( array $cart)
     {
-        $this->userRepository = $userRepository;
         $this->cart = $cart;
     }
-
-    public function getUserRepository(): UserRepository
-    {
-        return $this->userRepository;
-    }
-
 
     /**
      * Загружает корзину пользователя из БД, если она не была передана вручную
@@ -108,31 +100,6 @@ final class Cart
         }
     }
 
-    // public function addToCart(int $productId, ?User $userModel = null): void
-    // {
-    //     if ($userModel !== null) {
-    //       dd($this->cart);
-    //         $this->cart = $this->userRepository->addToUserCart($productId, $userModel);
-    //         dd($_SESSION);
-    //         $_SESSION['cart'] = json_encode($this->cart);
-    //     } else {
-    //         // 1. Загружаем старую корзину из куки (если есть)
-    //         $cookieCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
-
-    //         // 2. Добавляем товар
-    //         if (!isset($cookieCart[$productId])) {
-    //             $cookieCart[$productId] = 1;
-    //         }
-
-    //         // 3. Сохраняем обратно в куки
-    //         setcookie('cart', json_encode($cookieCart), time() + 3600 * 24 * 7, '/');
-
-    //         // 4. Обновляем локальную корзину
-    //         $this->cart = $cookieCart;
-    //     }
-
-    // }
-
 
     // Метод получает корзину из БД или куки и записывает её в $this->cart
     /**
@@ -194,26 +161,22 @@ final class Cart
       * @param User $user модель пользователя
       * @param Cart $cookieCart модель корзины
     */
-    public function mergeCartAfterLogin(User $user, array $cookieCart): void
+    public function mergeCartAfterLogin(Cart $cartModel, array $guestCart): void
     {
         print_r("Функция совмещения корзин после логина");
-
-        // 1. Получаем корзину пользователя из БД (или создаём пустую)
-        $cartModel = $user->getCartModel();
 
         /**
          * @return void
          */
-        $cartModel->setProductsInCart($cookieCart);
-
+        $cartModel->setProductsInCart($guestCart);
 
         // Обновляем корзину пользователя
-        $cart = $cartModel->getItems();
-        $userRepository = $cartModel->getUserRepository();
+        // $cart = $cartModel->getItems();
+        // $userRepository = $cartModel->getUserRepository();
 
-        if ($user && $cart) {
-            $userRepository->saveUserCart($user, $cart);
-        }
+        // if ($user && $cart) {
+        //     $userRepository->saveUserCart($user, $cart);
+        // }
 
         // Очищаем cookies
         if (isset($_COOKIE['cart'])) {
@@ -225,7 +188,8 @@ final class Cart
         }
 
         // Обновляем сессию
-        $_SESSION['cart'] = json_encode($cart);
+        $_SESSION['logged_user']['cart'] = json_encode($this->cart);
+        $_SESSION['cart'] = json_encode($this->cart);
         // $_SESSION['fav_list'] = $merged['fav_list'];
 
         if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
@@ -233,6 +197,8 @@ final class Cart
         } else {
             $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
         }
+
+      
     }
 
     public function isSessionCartStale(): bool

@@ -5,7 +5,8 @@ namespace Vvintage\Store;
 
 class GuestCartStore {
   public function load(): array {
-    return isset($_COOKIE['cart'])
+    
+    return isset($_COOKIE['cart']) && is_string($_COOKIE['cart'])
       ? json_decode($_COOKIE['cart'], true)
       : [];
   }

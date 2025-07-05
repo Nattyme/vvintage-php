@@ -17,15 +17,17 @@ class UserCartStore
 
   public function load(): array
   {
-    $userModel = $this->$userRepository->findUserById((int) $_SESSION['user_id']);
-    return $userModel->getCart() ?? [];
+    $user = $this->userRepository->findUserById((int) $_SESSION['user_id']);
+    
+    return $user->getCart() ?? [];
   }
 
   public function save(array $cart): void {
     $userModel = Auth::getLoggedInUser();
-    $userModel-setCartModel($cart);
+    $userModel->setCartModel($cart);
 
     // Записываем в БД
     $this->userRepository->save($user);
   }
+
 } 

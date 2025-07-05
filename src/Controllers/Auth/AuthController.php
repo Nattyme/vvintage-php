@@ -13,6 +13,10 @@ use Vvintage\Models\Cart\Cart;
 // use Vvintage\Services\CartService;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\CartRepository;
+use Vvintage\User\GuestUser;
+use Vvintage\User\UserInterface;
+use Vvintage\Store\GuestCartStore;
+use Vvintage\Store\UserCartStore;
 use Vvintage\Controllers\Cart\CartController;
 
 require_once ROOT . './libs/functions.php';
@@ -53,33 +57,55 @@ final class AuthController
             if (empty($_SESSION['errors'])) {
 
                 // Ищем нужного пользователя в базе данных
-                $userData = new UserRepository(); // создаем новый объект репозитория
-                $userModel =  $userData->findUserByEmail($_POST['email']);
+                $userRepository = new UserRepository(); // создаем новый объект репозитория
+                $userModel = $userRepository->findUserByEmail($_POST['email']);
+
+$temp = [
+    20 => 1,
+    35 => 2,
+    42 => 1
+];
+
+// Преобразуем массив в строку для хранения в cookie
+$tempString = json_encode($temp);
+
+// Устанавливаем куку на 30 дней
+setcookie('cart', $tempString, time() + 3600 * 24 * 30, '/');
+
+
+                // Получаем корзину пользователя
+                $guestCartStore = new GuestCartStore();
+                $guestCart = $guestCartStore->load();
 
                 // Если в БД не найден email
                 if (!$userModel) {
                     $_SESSION['errors'][] = ['title' => 'Неверный email'];
                 }
 
-
                 if (empty($_SESSION['errors'])) {
                     // Проверить пароль
                     if (password_verify($_POST['password'], $userModel->getPassword())) {
-                        $isLoggedIn = Auth::setUserSession($userModel);
+                    
+                      $isLoggedIn = Auth::setUserSession($userModel);
 
-                        $userId = $userModel->getId();
-                        // Совмещаем корзины
-                        $cartModel = (new Cart(new UserRepository()));
-                        $coookieCart = $cartModel->loadFromNotUser();
-                        $newCart = $cartModel->mergeCartAfterLogin($userModel, $coookieCart ?? []);
+                      $userCartStore = new UserCartStore($userRepository);
+                      $userCart = $userCartStore->load();
+                      $cartModel = (new Cart($userCart));
+                
 
-                        $loggedUser = Auth::getLoggedInUser(); // получаем объект пользователя из сессии
-                        $cart = CartController::loadCart($isLoggedIn, $loggedUser); // передаем объект User
+      
+                      $cartModel->mergeCartAfterLogin($cartModel, $guestCart ?? []);
+                      $mergedCart = $cartModel->getItems();
 
-                        // Редирект
-                        header('Location: ' . HOST . 'cart');
-                        // header('Location: ' . HOST . 'profile');
-                        exit();
+                      // Сохраняем в БД
+                      $userRepository->saveUserCart($userModel, $mergedCart);
+                    
+                      // $cart = CartController::loadCart($isLoggedIn, $userModel); // передаем объект User
+  
+                      // Редирект
+                      header('Location: ' . HOST . 'cart');
+                      // header('Location: ' . HOST . 'profile');
+                      exit();
 
                     } else {
                         // Пароль не верен

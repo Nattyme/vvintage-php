@@ -16,8 +16,7 @@ final class User
     private string $name;
     private string $role;
     private array $fav_list;
-
-    public Cart $cart;
+    public array $cart;
 
     public function __construct(OODBBean $bean)
     {
@@ -27,10 +26,14 @@ final class User
         $this->name = $bean->name;
         $this->role = $bean->role ?? 'user';
 
-        $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
-        $this->cart = new Cart(new UserRepository(), $cartData);
+        // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
+        $this->cart = json_decode($bean->cart, true);
         $this->fav_list = [];
         // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
+    }
+
+    public function getRepository(): UserRepository {
+      return new UserRepository();
     }
 
     public function export($user): array
@@ -79,7 +82,7 @@ final class User
     /**
      * @return Cart
      */
-    public function getCartModel(): Cart
+    public function getCart(): array
     {
         return $this->cart;
     }

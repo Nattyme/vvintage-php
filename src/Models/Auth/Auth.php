@@ -13,14 +13,11 @@ class Auth
     {
 
         // Автологин пользователя после регистрации
-        // Преобразуем объект user в массив и сохраняем в сессию
         $_SESSION['logged_user'] = $user->export($user);
         $_SESSION['user_id'] = $user->getId();
         $_SESSION['login'] = 1;
         $_SESSION['role'] = $user->getRole();
-        // $_SESSION['cart'] = $_SESSION['logged_user']['cart']->getItems();
-        $cartModel = $_SESSION['logged_user']['cart'];
-        $_SESSION['cart'] = $cartModel->getItems();
+        $_SESSION['cart'] =  $_SESSION['logged_user']['cart'];
         $_SESSION['fav_list'] = $user->getFavList();
 
 
