@@ -90,7 +90,7 @@ final class CartController
         return $cartModel;
     }
 
-    public static function addItem(int $productId, $routeData): void
+    public static function addItemToCart(int $productId, $routeData): void
     {
         $isLoggedIn = Auth::isLoggedIn();
 
@@ -105,15 +105,25 @@ final class CartController
          * @var Cart
         */
         $cartModel = $userModel ? $userModel->getCartModel() : new Cart(new UserRepository());
-
         $cartModel->addToCart($productId, $userModel ?? null);
-        // $cartModel->saveToSession();
 
+        $updatedCart = $cartModel->getItems();
+
+        // Обновляем данные логина пользователя в сессии
+        if ($userModel) {
+          Auth::setUserSession($userModel);
+        }
+
+        // Обновляем параметр cart
+        $cartModel->saveToSession($updatedCart);
+
+        // $updatedCart = $cartModel->getItems();
+        // dd($_SESSION);
         /**
          *  Получаем корзину с новым товаром
          * @var array $cartUpdated
         * */
-        $cartUpdated = $cartModel->getItems();
+        // $cartUpdated = $cartModel->getItems();
 
         // Сохраняем корзину
         // Если пользователь - в БД
@@ -129,6 +139,24 @@ final class CartController
         // Переадресация обратно на страницу товара (или корзины)
         header('Location: ' . HOST . 'shop/' . $productId);
         exit();
+    }
+
+    public static function removeItem(): void
+    {
+      $isLoggedIn = Auth::isLoggedIn();
+
+      /**
+       * Если пользователь залогинился - сохраняем модель User или null
+       * @var User || NULL
+      */
+      $userModel = $isLoggedIn ? Auth::getLoggedInUser() : null;
+
+      /**
+       * Получаем модель корзины
+       * @var Cart
+      */
+      $cartModel = $userModel ? $userModel->getCartModel() : new Cart(new UserRepository());
+      dd( $cartModel);
     }
 
 }

@@ -94,7 +94,6 @@ final class UserRepository
       $bean = R::load('users', $id);
 
       if ($bean->id !== 0) {
-        $bean = R::load('users', $id);
         R::trash( $bean ); 
       }
 
@@ -118,29 +117,6 @@ final class UserRepository
     }
 
     /**
-     * Метод добавляет товар в корзину
-     * @return array
-    */
-    public function addToUserCart(int $productId, User $userModel): array
-    {
-        // Расшифровываем корзину из БД, если не пустая
-        $userBean = R::load('users', $userModel->getId());
-        $currentCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
-
-        // Добавляем новый товар
-        if (!isset($currentCart[$productId])) {
-            $currentCart[$productId] = 1;
-        }
-
-        // Обновляем корзину в БД
-        $userBean->cart = json_encode($currentCart);
-        R::store($userBean);
-
-        // Вернем массив новой корзины в модель
-        return $currentCart;
-    }
-
-    /**
      * Метод возвращает корзину user из БД
      * @return array
     */
@@ -152,6 +128,15 @@ final class UserRepository
         // Получаем корзину из БД и переводим в массив
         $userCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
         return $userCart;
+    }
+
+    public function removeCartItem(int $itemId)
+    {
+      $bean = R::load('users', $itemId);
+
+      if ($bean->id !== 0) {
+        R::trash( $bean ); 
+      }
     }
 
 }

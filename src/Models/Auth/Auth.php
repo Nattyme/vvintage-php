@@ -9,7 +9,7 @@ use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
 class Auth
 {
-    public static function login(User $user): bool
+    public static function setUserSession(User $user): bool
     {
 
         // Автологин пользователя после регистрации

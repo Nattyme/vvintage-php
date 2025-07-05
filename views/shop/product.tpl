@@ -98,6 +98,7 @@
 
           <div class="product-card__button">
             <?php if (isProductInCart($product->getId())) : ?>
+            
               <button type="button" class="button button--primary button--l" disabled>Товар в корзине</button>
             <?php  else : ?>
               <a href="<?php echo HOST . 'addtocart?id=' . u($product->getId());?>" class="button button--primary button--xl">

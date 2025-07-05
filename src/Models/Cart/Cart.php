@@ -49,13 +49,24 @@ final class Cart
         return $this->cart;
     }
 
-    public function addToCart(int $productId, ?User $userModel = null): void
+    public function addToCart(int $productId, ?User $userModel = null)
     {
         if ($userModel !== null) {
-          dd($this->cart);
-            $this->cart = $this->userRepository->addToUserCart($productId, $userModel);
-            dd($_SESSION);
-            $_SESSION['cart'] = json_encode($this->cart);
+          // $this->cart = $this->userRepository->addToUserCart($productId, $userModel);
+       
+          // Расшифровываем корзину из БД, если не пустая
+          // $cartDB =  $this->userRepository-> R::load('users', $userModel->getId());
+          // $currentCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
+
+          // Добавляем новый товар
+          if (!isset($this->cart[$productId])) {
+              $this->cart[$productId] = 1;
+          }
+
+          // Обновляем корзину в БД
+          $this->userRepository->saveUserCart($userModel, $this->cart);
+        
+          // $_SESSION['cart'] = json_encode($this->cart);
         } else {
             // 1. Загружаем старую корзину из куки (если есть)
             $cookieCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
@@ -209,7 +220,9 @@ final class Cart
 
     public function saveToSession()
     {
-        $_SESSION['cart'] = isset($_SESSION['cart']) ? json_encode($this->$cart) : '[]';
+      if (isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = !empty($_SESSION['cart']) ? $cart : '[]';
+      }
     }
 
 

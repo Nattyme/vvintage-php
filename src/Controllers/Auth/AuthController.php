@@ -65,7 +65,7 @@ final class AuthController
                 if (empty($_SESSION['errors'])) {
                     // Проверить пароль
                     if (password_verify($_POST['password'], $userModel->getPassword())) {
-                        $isLoggedIn = Auth::login($userModel);
+                        $isLoggedIn = Auth::setUserSession($userModel);
 
                         $userId = $userModel->getId();
                         // Совмещаем корзины
