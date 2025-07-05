@@ -68,7 +68,7 @@ final class CartController
     {
         $cartModel = new Cart(new UserRepository());
 
-        if (!$isLoggedIn || !$user) {
+        if (!$user) {
             // Устанавливаем корзину пользователя в модель
             $cart = $cartModel->loadFromNotUser();
 

@@ -21,7 +21,6 @@ final class User
 
     public function __construct(OODBBean $bean)
     {
-
         $this->id = (int) $bean->id;
         $this->email = $bean->email;
         $this->password = $bean->password;
@@ -83,6 +82,11 @@ final class User
     public function getCartModel(): Cart
     {
         return $this->cart;
+    }
+
+    public function setCartModel(array $cart): void
+    {
+      $this->cart = $cart;
     }
 
     public function getFavList()
