@@ -105,7 +105,7 @@ final class CartController
          * @var Cart
         */
         $cartModel = $userModel ? $userModel->getCartModel() : new Cart(new UserRepository());
-        $cartModel->addToCart($productId, $userModel ?? null);
+        $cartModel->addCartItem($productId, $userModel ?? null);
 
         $updatedCart = $cartModel->getItems();
 
@@ -116,14 +116,6 @@ final class CartController
 
         // Обновляем параметр cart
         $cartModel->saveToSession($updatedCart);
-
-        // $updatedCart = $cartModel->getItems();
-        // dd($_SESSION);
-        /**
-         *  Получаем корзину с новым товаром
-         * @var array $cartUpdated
-        * */
-        // $cartUpdated = $cartModel->getItems();
 
         // Сохраняем корзину
         // Если пользователь - в БД
@@ -136,7 +128,7 @@ final class CartController
             exit();
         }
 
-        // Переадресация обратно на страницу товара (или корзины)
+        // Переадресация обратно на страницу товара 
         header('Location: ' . HOST . 'shop/' . $productId);
         exit();
     }
@@ -156,7 +148,34 @@ final class CartController
        * @var Cart
       */
       $cartModel = $userModel ? $userModel->getCartModel() : new Cart(new UserRepository());
-      dd( $cartModel);
+      
+      $productId = (int) $_GET['id'];
+      $cartModel->removeCartItem($productId, $userModel ?? null);
+
+      $updatedCart = $cartModel->getItems();
+
+      // Обновляем данные логина пользователя в сессии
+      if ($userModel) {
+        Auth::setUserSession($userModel);
+      }
+
+      // Обновляем параметр cart
+      $cartModel->saveToSession($updatedCart);
+
+      // Сохраняем корзину
+      // Если пользователь - в БД
+      if ($user !== null) {
+          $userRepository = $cartModel->getUserRepository();
+          $userRepository->saveUserCart($userId, $cartUpdated);
+
+          // Переадресация обратно на страницу товара (или корзины)
+          header('Location: ' . HOST . 'cart');
+          exit();
+      }
+
+      // Переадресация обратно на страницу товара 
+      header('Location: ' . HOST . 'cart');
+      exit();
     }
 
 }

@@ -49,24 +49,16 @@ final class Cart
         return $this->cart;
     }
 
-    public function addToCart(int $productId, ?User $userModel = null)
+    public function addCartItem(int $productId, ?User $userModel = null)
     {
         if ($userModel !== null) {
-          // $this->cart = $this->userRepository->addToUserCart($productId, $userModel);
-       
-          // Расшифровываем корзину из БД, если не пустая
-          // $cartDB =  $this->userRepository-> R::load('users', $userModel->getId());
-          // $currentCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
+            // Добавляем новый товар
+            if (!isset($this->cart[$productId])) {
+                $this->cart[$productId] = 1;
+            }
 
-          // Добавляем новый товар
-          if (!isset($this->cart[$productId])) {
-              $this->cart[$productId] = 1;
-          }
-
-          // Обновляем корзину в БД
-          $this->userRepository->saveUserCart($userModel, $this->cart);
-        
-          // $_SESSION['cart'] = json_encode($this->cart);
+            // Обновляем корзину в БД
+            $this->userRepository->saveUserCart($userModel, $this->cart);
         } else {
             // 1. Загружаем старую корзину из куки (если есть)
             $cookieCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
@@ -83,6 +75,36 @@ final class Cart
             $this->cart = $cookieCart;
         }
 
+    }
+
+    public function removeCartItem(int $productId, ?User $userModel = null)
+    {
+        if ($userModel !== null) {
+            // Удаляем товар из модели
+            if (!isset($this->cart[$productId])) {
+                return;
+            }
+            unset($this->cart[$productId]);
+
+            // Обновляем корзину в БД
+            $this->userRepository->saveUserCart($userModel, $this->cart);
+        } else {
+            // 1. Загружаем старую корзину из куки (если есть)
+            $cookieCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
+
+            // 2. Добавляем товар
+            if (!isset($cookieCart[$productId])) {
+                return;
+            }
+
+            unset($cookieCart[$productId]);
+
+            // 3. Сохраняем обратно в куки
+            setcookie('cart', json_encode($cookieCart), time() + 3600 * 24 * 7, '/');
+
+            // 4. Обновляем локальную корзину
+            $this->cart = $cookieCart;
+        }
     }
 
     // public function addToCart(int $productId, ?User $userModel = null): void
@@ -166,7 +188,7 @@ final class Cart
         }
     }
 
-    /** 
+    /**
       * Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
       * @param User $user модель пользователя
       * @param Cart $cookieCart модель корзины
@@ -218,11 +240,11 @@ final class Cart
         return $sessionCart !== $this->cart;
     }
 
-    public function saveToSession()
+    public function saveToSession($cart)
     {
-      if (isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = !empty($_SESSION['cart']) ? $cart : '[]';
-      }
+        if (isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = !empty($_SESSION['cart']) ? $cart : '[]';
+        }
     }
 
 

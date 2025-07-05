@@ -61,7 +61,7 @@
 
         default:
           http_response_code(404);
-          // require ROOT . 'modules/errors/404.php';
+          require ROOT . 'modules/404/404.php';
           break;
       }
   
