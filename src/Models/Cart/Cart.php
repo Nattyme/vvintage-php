@@ -79,6 +79,7 @@ final class Cart
 
     public function removeCartItem(int $productId, ?User $userModel = null)
     {
+        // Если залогинен 
         if ($userModel !== null) {
             // Удаляем товар из модели
             if (!isset($this->cart[$productId])) {
@@ -242,6 +243,7 @@ final class Cart
 
     public function saveToSession($cart)
     {
+
         if (isset($_SESSION['cart'])) {
             $_SESSION['cart'] = !empty($_SESSION['cart']) ? $cart : '[]';
         }

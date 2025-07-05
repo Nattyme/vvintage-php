@@ -20,7 +20,7 @@ class Auth
         $_SESSION['role'] = $user->getRole();
         // $_SESSION['cart'] = $_SESSION['logged_user']['cart']->getItems();
         $cartModel = $_SESSION['logged_user']['cart'];
-        $_SESSION['cart'] = json_encode($cartModel->getItems());
+        $_SESSION['cart'] = $cartModel->getItems();
         $_SESSION['fav_list'] = $user->getFavList();
 
 
