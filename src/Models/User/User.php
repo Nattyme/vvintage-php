@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Vvintage\Models\User;
@@ -16,7 +15,7 @@ final class User
     private string $name;
     private string $role;
     private array $fav_list;
-    public array $cart;
+    private array $cart;
 
     public function __construct(OODBBean $bean)
     {
@@ -90,6 +89,11 @@ final class User
     public function setCartModel(array $cart): void
     {
       $this->cart = $cart;
+    }
+
+    public function getCartModel(): Cart
+    {
+      return new Cart($this->cart);
     }
 
     public function getFavList()

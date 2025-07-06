@@ -134,7 +134,7 @@ final class Cart
 
     public function getTotalPrice(array $products): int
     {
-
+    
         $total = 0;
         foreach ($this->cart as $id => $quantity) {
             if (isset($products[$id])) {
@@ -145,38 +145,24 @@ final class Cart
         return $total;
     }
 
-    public function setProductsInCart(array $products): void
-    {
-        if (!empty($products)) {
-            foreach ($products as $itemKey => $quantity) {
-                if (!isset($this->cart[$itemKey])) {
-                    $this->cart[$itemKey] = 1;
-                }
-            }
-        }
-    }
 
     /**
       * Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
       * @param User $user модель пользователя
       * @param Cart $cookieCart модель корзины
     */
-    public function mergeCartAfterLogin(Cart $cartModel, array $guestCart): void
+    public function mergeCartAfterLogin(array $guestCart): void
     {
         print_r("Функция совмещения корзин после логина");
+     
 
-        /**
-         * @return void
-         */
-        $cartModel->setProductsInCart($guestCart);
-
-        // Обновляем корзину пользователя
-        // $cart = $cartModel->getItems();
-        // $userRepository = $cartModel->getUserRepository();
-
-        // if ($user && $cart) {
-        //     $userRepository->saveUserCart($user, $cart);
-        // }
+        if (!empty($guestCart)) {
+            foreach ($guestCart as $itemKey => $quantity) {
+                if (!isset($this->cart[$itemKey])) {
+                    $this->cart[$itemKey] = 1;
+                }
+            }
+        }
 
         // Очищаем cookies
         if (isset($_COOKIE['cart'])) {

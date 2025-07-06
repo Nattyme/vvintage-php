@@ -52,7 +52,17 @@ final class AuthController
                 // Ошибка - пароль пуст. Добавляем массив этой ошибки в массив $errors
                 $_SESSION['errors'][] = ['title' => 'Введите пароль'];
             }
+    $temp = [
+    20 => 1,
+    19 => 1,
+    18 => 1
+];
 
+        // Преобразуем массив в строку для хранения в cookie
+        $tempString = json_encode($temp);
+
+        // Устанавливаем куку на 30 дней
+        setcookie('cart', $tempString, time() + 3600 * 24 * 30, '/');
             // Если ошибок нет
             if (empty($_SESSION['errors'])) {
 
@@ -60,22 +70,11 @@ final class AuthController
                 $userRepository = new UserRepository(); // создаем новый объект репозитория
                 $userModel = $userRepository->findUserByEmail($_POST['email']);
 
-$temp = [
-    20 => 1,
-    35 => 2,
-    42 => 1
-];
-
-// Преобразуем массив в строку для хранения в cookie
-$tempString = json_encode($temp);
-
-// Устанавливаем куку на 30 дней
-setcookie('cart', $tempString, time() + 3600 * 24 * 30, '/');
-
-
-                // Получаем корзину пользователя
-                $guestCartStore = new GuestCartStore();
-                $guestCart = $guestCartStore->load();
+                /** Получаем модель с корзиной гостя
+                 * @var UserInterface $guestCartData 
+                */
+                $guestCartData = (new GuestCartStore())->load();
+                $guestCartModel = new Cart( $guestCartData);
 
                 // Если в БД не найден email
                 if (!$userModel) {
@@ -88,13 +87,16 @@ setcookie('cart', $tempString, time() + 3600 * 24 * 30, '/');
                     
                       $isLoggedIn = Auth::setUserSession($userModel);
 
-                      $userCartStore = new UserCartStore($userRepository);
-                      $userCart = $userCartStore->load();
-                      $cartModel = (new Cart($userCart));
-                
+                 
+                      /** Получаем корзину пользователя из БД
+                       * @var UserInterface  $userCartData
+                      */
+                      $userCartData = ( new UserCartStore($userRepository) ) -> load(); 
 
-      
-                      $cartModel->mergeCartAfterLogin($cartModel, $guestCart ?? []);
+                      // Создаем модель корзины пользователя
+                      $cartModel = new Cart( $userCartData );
+                      
+                      $cartModel->mergeCartAfterLogin( $guestCartData  ?? []);
                       $mergedCart = $cartModel->getItems();
 
                       // Сохраняем в БД
