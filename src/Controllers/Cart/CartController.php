@@ -42,7 +42,9 @@ final class CartController
         // Устанавливаем куку на 30 дней
         setcookie('cart', $tempString, time() + 3600 * 24 * 30, '/');
 
-        $guestCart = new Cart((new GuestCartStore())->load());
+        $guestCartModel = new Cart((new GuestCartStore())->load());
+        $guestCart = $guestCartModel->getItems();
+
         /** 
          * @var UserInterface $userModel
         */

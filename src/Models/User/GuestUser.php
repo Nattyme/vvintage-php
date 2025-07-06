@@ -7,7 +7,7 @@ use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Store\GuestCartStore;
 
-class GuestUser implements UserInterface 
+class GuestUser implements UserInterface  
 {
   private $cart;
 
@@ -16,6 +16,12 @@ class GuestUser implements UserInterface
     $this->cart = $cart;
         // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
   }
+  public function load(): array
+  {
+    return [];
+      // Для гостевого пользователя может быть пусто или логика по умолчанию
+  }
+
   // public function getRepository(): UserRepository {
   //   return new UserRepository();
   // }
@@ -34,9 +40,9 @@ class GuestUser implements UserInterface
     return new Cart($this->cart);
   }
 
-  public function setCart(array $cart): array
+  public function setCart(array $cart): void
   {
-    return $this->cart = $cart;
+    $this->cart = $cart;
   }
 
 }
