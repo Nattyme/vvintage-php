@@ -28,27 +28,13 @@ final class CartController
          * Проверяем вход пользователя в профиль
          * @var bool
          */
-        $isLoggedIn = Auth::isLoggedIn();
         $settings = Settings::all(); // Получаем массив всех настроек
-        $temp = [
-    20 => 1,
-    19 => 1,
-    18 => 1
-];
 
-        // Преобразуем массив в строку для хранения в cookie
-        $tempString = json_encode($temp);
-
-        // Устанавливаем куку на 30 дней
-        setcookie('cart', $tempString, time() + 3600 * 24 * 30, '/');
-
-        $guestCartModel = new Cart((new GuestCartStore())->load());
-        $guestCart = $guestCartModel->getItems();
-
-        /** 
-         * @var UserInterface $userModel
+        /**
+         * Получаем модель пользователя - гость или залогоиненный
+         * @var UserInreface $userModel
         */
-        $userModel = $isLoggedIn ? Auth::getLoggedInUser() : new GuestUser($guestCart);
+        $userModel = Auth::getLoggedInUser();
      
         // Получаем корзину и ее модель
         $cartModel = $userModel->getCartModel();

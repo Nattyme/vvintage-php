@@ -6,7 +6,10 @@ namespace Vvintage\Models\Auth;
 
 use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Models\User\User;
+use Vvintage\Models\User\GuestUser;
+use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Store\GuestCartStore;
 class Auth
 {
     public static function setUserSession(User $user): bool
@@ -65,11 +68,12 @@ class Auth
         );
     }
 
-    public static function getLoggedInUser(): ?User
+    public static function getLoggedInUser(): ?UserInterface
     {
-
+        // Если не пользователь - возвращаем экземпляр гостя с корзиной из куки
         if (!isset($_SESSION['user_id'])) {
-            return null;
+          $guestCart = ( new GuestCartStore() )->load();
+            return new GuestUser( $guestCart );
         }
 
         $userRepository = new UserRepository();

@@ -7,7 +7,7 @@ use Vvintage\Repositories\UserRepository;
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\Cart\Cart;
 
-final class User
+final class User implements UserInterface
 {
     private int $id;
     private string $password;
@@ -48,6 +48,14 @@ final class User
         ];
     }
 
+    public function load (): array 
+    {
+      $userRepository = $this->getRepository();
+      $this->cart = $userRepository->getUserCart($this); // если у тебя есть такой метод
+
+      return $this->cart;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -86,7 +94,7 @@ final class User
         return $this->cart;
     }
 
-    public function setCartModel(array $cart): void
+    public function setCart(array $cart): void
     {
       $this->cart = $cart;
     }
