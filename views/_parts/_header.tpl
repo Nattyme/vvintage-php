@@ -53,6 +53,8 @@
                         <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#login';?>"></use>
                       </svg>
                     </span></a>
+                <?php else : ?>
+                   <a href="<?php echo HOST . 'logout';?>" class="">Выход</a>
                 <?php endif; ?>
               </div>
               

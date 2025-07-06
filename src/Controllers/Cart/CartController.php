@@ -84,20 +84,18 @@ final class CartController
 
     public static function addItemToCart(int $productId, $routeData): void
     {
-        $isLoggedIn = Auth::isLoggedIn();
-
-        /**
-         * Если пользователь залогинился - сохраняем модель User или null
-         * @var User || NULL
+        // $isLoggedIn = Auth::isLoggedIn();
+         /**
+         * Получаем модель пользователя - гость или залогоиненный
+         * @var UserInreface $userModel
         */
-        $userModel = $isLoggedIn ? Auth::getLoggedInUser() : null;
+        $userModel = Auth::getLoggedInUser();
 
-        /**
-         * Получаем модель корзины
-         * @var Cart
-        */
-        $cartModel = $userModel ? $userModel->getCartModel() : new Cart(new UserRepository());
-        $cartModel->addCartItem($productId, $userModel ?? null);
+        // Получаем корзину и ее модель
+        $cartModel = $userModel->getCartModel();
+        $cart = $userModel->getCart();
+
+        $cartModel->addCartItem($productId, $userModel);
 
         $updatedCart = $cartModel->getItems();
 
@@ -105,7 +103,7 @@ final class CartController
         $cartModel->saveToSession($updatedCart);
 
         // Обновляем данные пользователя в БД и сессии
-        if ($userModel !== null) {
+        if ($userModel instanceof User) {
             $userRepository = $cartModel->getUserRepository();
             $userRepository->saveUserCart($userModel, $updatedCart);
 

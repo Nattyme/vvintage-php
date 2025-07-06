@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vvintage\Models\Cart;
 
 use Vvintage\Models\User\User;
+use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
 
 final class Cart
@@ -41,9 +42,9 @@ final class Cart
         return $this->cart;
     }
 
-    public function addCartItem(int $productId, ?User $userModel = null)
+    public function addCartItem(int $productId, UserInterface $userModel)
     {
-        if ($userModel !== null) {
+        if ($userModel instanceof User) {
             // Добавляем новый товар
             if (!isset($this->cart[$productId])) {
                 $this->cart[$productId] = 1;
