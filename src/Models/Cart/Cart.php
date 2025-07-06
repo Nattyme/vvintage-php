@@ -70,14 +70,15 @@ final class Cart
 
     }
 
-    public function removeCartItem(int $productId, ?User $userModel = null)
+    public function removeCartItem(int $productId, ?UserInterface $userModel)
     {
         // Если залогинен 
-        if ($userModel !== null) {
+        if ($userModel instanceof User) {
             // Удаляем товар из модели
             if (!isset($this->cart[$productId])) {
                 return;
             }
+
             unset($this->cart[$productId]);
 
             // Обновляем корзину в БД
