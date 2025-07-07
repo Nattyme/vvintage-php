@@ -25,23 +25,23 @@ final class CartController
 {
     public static function index(RouteData $routeData): void
     {
+      
         /**
          * Проверяем вход пользователя в профиль
          * @var bool
          */
         $settings = Settings::all(); // Получаем массив всех настроек
 
-
-          /**
-           * Получаем модель пользователя - гость или залогоиненный
-           * @var UserInreface $userModel
-          */
-          $userModel = Auth::getLoggedInUser();
+        /**
+         * Получаем модель пользователя - гость или залогоиненный
+         * @var UserInreface $userModel
+        */
+        $userModel = Auth::getLoggedInUser();
      
         // Получаем корзину и ее модель
         $cartModel = $userModel->getCartModel();
         $cart = $userModel->getCart();
-// dd($cart);
+
         // Получаем продукты
         $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
         $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
@@ -52,7 +52,7 @@ final class CartController
         $breadcrumbs = [
           ['title' => $pageTitle, 'url' => '#'],
         ];
-
+     
         // Подключение шаблонов страницы
         include ROOT . "views/_page-parts/_head.tpl";
         include ROOT . "views/_parts/_header.tpl";
@@ -61,32 +61,9 @@ final class CartController
         include ROOT . "views/_page-parts/_foot.tpl";
     }
 
-    // public static function loadCart(bool $isLoggedIn, User $user = null): Cart
-    // {
-
-    //     $cartModel = new Cart($user->getItems());
-
-    //     if (!$user) {
-    //         // Устанавливаем корзину пользователя в модель
-    //         $cart = $cartModel->loadFromNotUser();
-
-    //         return $cartModel;
-    //     }
-
-    //     // Устанавливаем корзину пользователя в модель
-    //     $userId = $user->getId();
-    //     $cartModel->loadFromUser($userId);
-
-    //     // Получаем продукты и записываем в сессию
-    //     // $cart = $cartModel->getItems();
-    //     $_SESSION['cart'] = $cartModel->getItems();
-
-    //     return $cartModel;
-    // }
-
     public static function addItem(int $productId, $routeData): void
     {
-   
+  
         /**
          * Получаем модель пользователя - гость или залогоиненный
          * @var UserInreface $userModel
@@ -95,23 +72,25 @@ final class CartController
      
         // Получаем корзину и ее модель
         $cartModel = $userModel->getCartModel();
-     
         $cart = $userModel->getCart();
 
+        // Добавляем новый продукт
         $cartModel->addCartItem($productId);
 
         if ($userModel instanceof User) {
-          $userCartStore = new UserCartStore( new UserRepository() );
           // Сохраняем корзину в БД
+          $userCartStore = new UserCartStore( new UserRepository() );
           $userCartStore->save($cartModel, $userModel);
+
+          // Обновляем объект User
+          $userModel->setCart( $cartModel->getItems() );
 
           //  Обновляем данные пользователя в сессии
           Auth::setUserSession($userModel);  // обновляем logged_user
-          $cartModel->saveToSession($cart); // Обновляем св-во cart 
-  
+
         } else {
-          $guestCartStore = new GuestCartStore();
           // Сохраняем корзину в куки
+          $guestCartStore = new GuestCartStore();
           $guestCartStore->save($cartModel);
         }
 
@@ -120,10 +99,10 @@ final class CartController
         exit();
     }
 
-    public static function removeItem(): void
+    public static function removeItem(int $productId): void
     {
         /**
-         * Получаем модель пользователя - гость или залогоиненный
+         * Получаем модель пользователя - гость или залогиненный
          * @var UserInreface $userModel
         */
         $userModel = Auth::getLoggedInUser();
@@ -132,23 +111,25 @@ final class CartController
         $cartModel = $userModel->getCartModel();
         $cart = $userModel->getCart();
 
-
-        $productId = (int) $_GET['id'];
-        $cartModel->removeCartItem($productId, $userModel);
-
-        $updatedCart = $cartModel->getItems();
-
-        // Обновляем параметр cart
-        $cartModel->saveToSession($updatedCart);
-
-        // Обновляем данные пользователя в БД и сессии
+        // Удаляем товар
+        $cartModel->removeCartItem($productId);
+        
+        // Если залогинен 
         if ($userModel instanceof User) {
+          // Обновляем корзину в БД
+          $userCartStore = new UserCartStore( new UserRepository() );
+          $userCartStore->save($cartModel, $userModel);
 
-            $userRepository = $userModel->getRepository();
-            $userRepository->saveUserCart($userModel, $updatedCart);
+          // Обновляем объект User
+          $userModel->setCart( $cartModel->getItems() );
 
-            // обновляем сессию логина
-            Auth::setUserSession($userModel);
+          //  Обновляем данные пользователя в сессии
+          Auth::setUserSession($userModel);  // обновляем logged_user
+
+        } else {
+          // Сохраняем корзину в куки
+          $guestCartStore = new GuestCartStore();
+          $guestCartStore->save($cartModel);
         }
 
         // Переадресация обратно на страницу товара

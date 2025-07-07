@@ -20,30 +20,15 @@ class Auth
         $_SESSION['user_id'] = $user->getId();
         $_SESSION['login'] = 1;
         $_SESSION['role'] = $user->getRole();
-        $_SESSION['cart'] =  $_SESSION['logged_user']['cart'];
+     
+        $_SESSION['cart'] =  $user->getCart();
         $_SESSION['fav_list'] = $user->getFavList();
-
 
         if ($_SESSION['login']) {
             return true;
         }
 
         return false;
-        // $cartObj = $user->getCart();
-        // Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
-        // $cartNew = $cartObj->mergeCartAfterLogin(true, $user);
-
-        // Обновляем избранное в сессии
-        // $_SESSION['fav_list'] = $temp_fav_list;
-        // if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
-        //   $_SESSION['success'][] = ['title' => 'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
-        // } else {
-        //   $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
-        // }
-
-        // header('Location: ' . HOST . 'profile');
-        // exit();
-
     }
 
     public static function isLoggedIn(): bool

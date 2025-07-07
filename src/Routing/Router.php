@@ -149,10 +149,10 @@
           \Vvintage\Controllers\Cart\CartController::index($routeData);
           break;
         case 'addtocart':
-          \Vvintage\Controllers\Cart\CartController::addItem($_GET['id'], $routeData);
+          \Vvintage\Controllers\Cart\CartController::addItem((int) $_GET['id'], $routeData);
           break;
         case 'removefromcart':
-          \Vvintage\Controllers\Cart\CartController::removeItem($routeData);
+          \Vvintage\Controllers\Cart\CartController::removeItem((int) $_GET['id'], $routeData);
           break;
       }
     }

@@ -50,41 +50,17 @@ final class Cart
       }
     }
 
-    public function removeCartItem(int $productId, ?UserInterface $userModel)
+    public function removeCartItem(int $productId)
     {
-        // Если залогинен 
-        if ($userModel instanceof User) {
-            // Удаляем товар из модели
-            if (!isset($this->cart[$productId])) {
-                return;
-            }
-
-            unset($this->cart[$productId]);
-// dd($this->userRepository);
-            // // Обновляем корзину в БД
-            // $this->userRepository->saveUserCart($userModel, $this->cart);
-        } else {
-            // 1. Загружаем старую корзину из куки (если есть)
-            $cookieCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
-
-            // 2. Добавляем товар
-            if (!isset($cookieCart[$productId])) {
-                return;
-            }
-
-            unset($cookieCart[$productId]);
-
-            // 3. Сохраняем обратно в куки
-            setcookie('cart', json_encode($cookieCart), time() + 3600 * 24 * 7, '/');
-
-            // 4. Обновляем локальную корзину
-            $this->cart = $cookieCart;
-        }
+        // Удаляем товар из модели
+        if (isset($this->cart[$productId])) {
+          unset($this->cart[$productId]);
+        } 
     }
 
 
-    // Метод получает корзину из БД или куки и записывает её в $this->cart
     /**
+     * Метод получает корзину из БД или куки и записывает её в $this->cart
      * @return array
      */
     public function loadCart(bool $isLoggedIn, User $user = null): array
@@ -157,8 +133,8 @@ final class Cart
         }
 
         // Обновляем сессию
-        $_SESSION['logged_user']['cart'] = json_encode($this->cart);
-        $_SESSION['cart'] = json_encode($this->cart);
+        $_SESSION['logged_user']['cart'] = $this->cart;
+        $_SESSION['cart'] = $this->cart;
         // $_SESSION['fav_list'] = $merged['fav_list'];
 
         if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
@@ -175,14 +151,5 @@ final class Cart
         $sessionCart = json_decode($_SESSION['cart'] ?? '[]', true);
         return $sessionCart !== $this->cart;
     }
-
-    public function saveToSession($cart)
-    {
-
-        if (isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = !empty($_SESSION['cart']) ? $cart : '[]';
-        }
-    }
-
 
 }

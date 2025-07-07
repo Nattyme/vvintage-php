@@ -24,6 +24,7 @@ class UserCartStore implements CartStoreInterface
   }
 
   public function save (Cart $cartModel, ?UserInterface $userModel = null): void {
+
     $cart = $cartModel->getItems();
     // Записываем в БД
     $this->userRepository->saveUserCart($userModel, $cart);
