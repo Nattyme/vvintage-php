@@ -13,8 +13,9 @@ use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Auth\Auth;
 use Vvintage\Models\User\User;
-use Vvintage\Store\GuestCartStore;
 use Vvintage\Models\User\GuestUser;
+use Vvintage\Store\GuestCartStore;
+use Vvintage\Store\UserCartStore;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
 
@@ -29,7 +30,7 @@ final class CartController
          * @var bool
          */
         $settings = Settings::all(); // Получаем массив всех настроек
-dd($_SESSION);
+
 
           /**
            * Получаем модель пользователя - гость или залогоиненный
@@ -83,35 +84,35 @@ dd($_SESSION);
     //     return $cartModel;
     // }
 
-    public static function addItemToCart(int $productId, $routeData): void
+    public static function addItem(int $productId, $routeData): void
     {
+   
         /**
          * Получаем модель пользователя - гость или залогоиненный
          * @var UserInreface $userModel
         */
         $userModel = Auth::getLoggedInUser();
-
+     
         // Получаем корзину и ее модель
         $cartModel = $userModel->getCartModel();
+     
         $cart = $userModel->getCart();
 
-        $cartModel->addCartItem($productId, $userModel);
+        $cartModel->addCartItem($productId);
 
-        $updatedCart = $cartModel->getItems();
-
-        // Обновляем параметр cart в сессии
-        $cartModel->saveToSession($updatedCart);
-
-        // Обновляем данные пользователя в БД и сессии
         if ($userModel instanceof User) {
-            $userRepository = $userModel->getRepository();
-            $userRepository->saveUserCart($userModel, $updatedCart);
+          $userCartStore = new UserCartStore( new UserRepository() );
+          // Сохраняем корзину в БД
+          $userCartStore->save($cartModel, $userModel);
 
-            // обновляем сессию логина
-            Auth::setUserSession($userModel);
-            // Переадресация обратно на страницу товара (или корзины)
-            header('Location: ' . HOST . 'shop/' . $productId);
-            exit();
+          //  Обновляем данные пользователя в сессии
+          Auth::setUserSession($userModel);  // обновляем logged_user
+          $cartModel->saveToSession($cart); // Обновляем св-во cart 
+  
+        } else {
+          $guestCartStore = new GuestCartStore();
+          // Сохраняем корзину в куки
+          $guestCartStore->save($cartModel);
         }
 
         // Переадресация обратно на страницу товара

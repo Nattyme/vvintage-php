@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace Vvintage\Store;
 
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Models\User\UserInterface;
+use Vvintage\Models\Cart\Cart;
 use Vvintage\Auth\Auth;
 
-class UserCartStore 
+class UserCartStore implements CartStoreInterface
 {
   private UserRepository $userRepository;
 
@@ -21,12 +23,10 @@ class UserCartStore
     return $user->getCart() ?? [];
   }
 
-  public function save(array $cart): void {
-    $userModel = Auth::getLoggedInUser();
-    $userModel->setCartModel($cart);
-
+  public function save (Cart $cartModel, ?UserInterface $userModel = null): void {
+    $cart = $cartModel->getItems();
     // Записываем в БД
-    $this->userRepository->save($user);
+    $this->userRepository->saveUserCart($userModel, $cart);
   }
 
 } 

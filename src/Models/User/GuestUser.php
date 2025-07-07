@@ -9,7 +9,7 @@ use Vvintage\Store\GuestCartStore;
 
 class GuestUser implements UserInterface  
 {
-  private $cart;
+  private array $cart;
 
   public function __construct(array $cart)
   {

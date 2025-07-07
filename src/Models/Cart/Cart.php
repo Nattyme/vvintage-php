@@ -42,30 +42,12 @@ final class Cart
         return $this->cart;
     }
 
-    public function addCartItem(int $productId, UserInterface $userModel)
+    public function addCartItem(int $productId)
     {
-        if ($userModel instanceof User) {
-            // Добавляем новый товар
-            if (!isset($this->cart[$productId])) {
-                $this->cart[$productId] = 1;
-            }
-
-        } else {
-            // 1. Загружаем старую корзину из куки (если есть)
-            $cookieCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
-
-            // 2. Добавляем товар
-            if (!isset($cookieCart[$productId])) {
-                $cookieCart[$productId] = 1;
-            }
-
-            // 3. Сохраняем обратно в куки
-            setcookie('cart', json_encode($cookieCart), time() + 3600 * 24 * 7, '/');
-
-            // 4. Обновляем локальную корзину
-            $this->cart = $cookieCart;
-        }
-
+      // Добавляем новый товар
+      if (!isset($this->cart[$productId])) {
+          $this->cart[$productId] = 1;
+      }
     }
 
     public function removeCartItem(int $productId, ?UserInterface $userModel)

@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Vvintage\Store;
 
-class GuestCartStore {
+use Vvintage\Models\User\UserInterface;
+use Vvintage\Models\Cart\Cart;
+
+class GuestCartStore implements CartStoreInterface {
   public function load(): array {
     
     return isset($_COOKIE['cart']) && is_string($_COOKIE['cart'])
@@ -11,7 +14,9 @@ class GuestCartStore {
       : [];
   }
 
-  public function save(array $cart): void {
-    setcookie('cart', json_encode($cart), time() + 3600);
+  public function save(Cart $cartModel, ?UserInterface $userModel = null): void 
+  {
+    $cart = $cartModel->getItems(); // получаем массив корзины
+    setcookie('cart', json_encode($cart), time() + 3600 * 24 * 7, '/');
   }
 }
