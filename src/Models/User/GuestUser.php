@@ -5,7 +5,6 @@ namespace Vvintage\Models\User;
 
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\User\UserInterface;
-use Vvintage\Store\GuestCartStore;
 
 class GuestUser implements UserInterface  
 {
@@ -16,10 +15,6 @@ class GuestUser implements UserInterface
     $this->cart = $cart;
         // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
   }
-
-  // public function getRepository(): UserRepository {
-  //   return new UserRepository();
-  // }
 
   public function getId(): ?int {
     return null;

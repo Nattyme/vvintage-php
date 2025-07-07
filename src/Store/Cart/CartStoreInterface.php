@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Store;
+namespace Vvintage\Store\Cart;
 
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Cart\Cart;

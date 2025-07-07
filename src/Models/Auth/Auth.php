@@ -9,7 +9,7 @@ use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
-use Vvintage\Store\GuestCartStore;
+use Vvintage\Store\Cart\GuestCartStore;
 class Auth
 {
     public static function setUserSession(User $user): bool

@@ -14,8 +14,9 @@ use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Auth\Auth;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
-use Vvintage\Store\GuestCartStore;
-use Vvintage\Store\UserCartStore;
+use Vvintage\Store\Cart\GuestCartStore;
+use Vvintage\Store\Cart\UserCartStore;
+use Vvintage\Store\Cart\CartStoreInterface;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
 
@@ -77,22 +78,15 @@ final class CartController
         // Добавляем новый продукт
         $cartModel->addCartItem($productId);
 
-        if ($userModel instanceof User) {
-          // Сохраняем корзину в БД
-          $userCartStore = new UserCartStore( new UserRepository() );
-          $userCartStore->save($cartModel, $userModel);
+        /**
+         * Сохраняем в нужное хранилище
+         * @var CartStoreInterface $cartStore;
+         */
+        $cartStore = ($userModel instanceof User) 
+                     ? new UserCartStore( new UserRepository() ) 
+                     : new GuestCartStore();
 
-          // Обновляем объект User
-          $userModel->setCart( $cartModel->getItems() );
-
-          //  Обновляем данные пользователя в сессии
-          Auth::setUserSession($userModel);  // обновляем logged_user
-
-        } else {
-          // Сохраняем корзину в куки
-          $guestCartStore = new GuestCartStore();
-          $guestCartStore->save($cartModel);
-        }
+        $cartStore->save($cartModel, $userModel);
 
         // Переадресация обратно на страницу товара
         header('Location: ' . HOST . 'shop/' . $productId);
@@ -113,24 +107,16 @@ final class CartController
 
         // Удаляем товар
         $cartModel->removeCartItem($productId);
-        
-        // Если залогинен 
-        if ($userModel instanceof User) {
-          // Обновляем корзину в БД
-          $userCartStore = new UserCartStore( new UserRepository() );
-          $userCartStore->save($cartModel, $userModel);
 
-          // Обновляем объект User
-          $userModel->setCart( $cartModel->getItems() );
+        /**
+         * Сохраняем в нужное хранилище
+         * @var CartStoreInterface $cartStore;
+         */
+        $cartStore = ($userModel instanceof User) 
+                     ? new UserCartStore( new UserRepository() ) 
+                     : new GuestCartStore();
 
-          //  Обновляем данные пользователя в сессии
-          Auth::setUserSession($userModel);  // обновляем logged_user
-
-        } else {
-          // Сохраняем корзину в куки
-          $guestCartStore = new GuestCartStore();
-          $guestCartStore->save($cartModel);
-        }
+        $cartStore->save($cartModel, $userModel);
 
         // Переадресация обратно на страницу товара
         header('Location: ' . HOST . 'cart');

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Store;
+namespace Vvintage\Store\Cart;
 
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Cart\Cart;
-use Vvintage\Auth\Auth;
+use Vvintage\Models\Auth\Auth;
 
 class UserCartStore implements CartStoreInterface
 {
@@ -26,8 +26,15 @@ class UserCartStore implements CartStoreInterface
   public function save (Cart $cartModel, ?UserInterface $userModel = null): void {
 
     $cart = $cartModel->getItems();
+
     // Записываем в БД
     $this->userRepository->saveUserCart($userModel, $cart);
-  }
+
+    // Обновляем объект User в сессии
+    $userModel->setCart( $cartModel->getItems() );
+
+    //  Обновляем данные пользователя в сессии
+    Auth::setUserSession($userModel);  // обновляем logged_user
+}
 
 } 

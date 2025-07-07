@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Models\User;
 
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Models\User\UserInterface;
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\Cart\Cart;
 

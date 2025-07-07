@@ -15,8 +15,9 @@ use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\CartRepository;
 use Vvintage\User\GuestUser;
 use Vvintage\User\UserInterface;
-use Vvintage\Store\GuestCartStore;
-use Vvintage\Store\UserCartStore;
+use Vvintage\Store\Cart\GuestCartStore;
+use Vvintage\Store\Cart\UserCartStore;
+use Vvintage\Store\Cart\CartStoreInterface;
 use Vvintage\Controllers\Cart\CartController;
 
 require_once ROOT . './libs/functions.php';
