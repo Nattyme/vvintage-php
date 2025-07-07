@@ -52,17 +52,8 @@ final class AuthController
                 // Ошибка - пароль пуст. Добавляем массив этой ошибки в массив $errors
                 $_SESSION['errors'][] = ['title' => 'Введите пароль'];
             }
-    $temp = [
-    20 => 1,
-    19 => 1,
-    18 => 1
-];
 
-        // Преобразуем массив в строку для хранения в cookie
-        $tempString = json_encode($temp);
 
-        // Устанавливаем куку на 30 дней
-        setcookie('cart', $tempString, time() + 3600 * 24 * 30, '/');
             // Если ошибок нет
             if (empty($_SESSION['errors'])) {
 
@@ -95,7 +86,7 @@ final class AuthController
 
                       // Создаем модель корзины пользователя
                       $cartModel = new Cart( $userCartData );
-                      
+             
                       $cartModel->mergeCartAfterLogin( $guestCartData  ?? []);
                       $mergedCart = $cartModel->getItems();
 

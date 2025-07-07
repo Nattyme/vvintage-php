@@ -29,17 +29,18 @@ final class CartController
          * @var bool
          */
         $settings = Settings::all(); // Получаем массив всех настроек
+dd($_SESSION);
 
-        /**
-         * Получаем модель пользователя - гость или залогоиненный
-         * @var UserInreface $userModel
-        */
-        $userModel = Auth::getLoggedInUser();
+          /**
+           * Получаем модель пользователя - гость или залогоиненный
+           * @var UserInreface $userModel
+          */
+          $userModel = Auth::getLoggedInUser();
      
         // Получаем корзину и ее модель
         $cartModel = $userModel->getCartModel();
         $cart = $userModel->getCart();
-
+// dd($cart);
         // Получаем продукты
         $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
         $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
@@ -103,12 +104,11 @@ final class CartController
 
         // Обновляем данные пользователя в БД и сессии
         if ($userModel instanceof User) {
-            $userRepository = $cartModel->getUserRepository();
+            $userRepository = $userModel->getRepository();
             $userRepository->saveUserCart($userModel, $updatedCart);
 
             // обновляем сессию логина
             Auth::setUserSession($userModel);
-
             // Переадресация обратно на страницу товара (или корзины)
             header('Location: ' . HOST . 'shop/' . $productId);
             exit();
@@ -142,7 +142,8 @@ final class CartController
 
         // Обновляем данные пользователя в БД и сессии
         if ($userModel instanceof User) {
-            $userRepository = $cartModel->getUserRepository();
+
+            $userRepository = $userModel->getRepository();
             $userRepository->saveUserCart($userModel, $updatedCart);
 
             // обновляем сессию логина

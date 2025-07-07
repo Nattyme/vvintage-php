@@ -50,8 +50,6 @@ final class Cart
                 $this->cart[$productId] = 1;
             }
 
-            // Обновляем корзину в БД
-            $this->userRepository->saveUserCart($userModel, $this->cart);
         } else {
             // 1. Загружаем старую корзину из куки (если есть)
             $cookieCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
@@ -80,9 +78,9 @@ final class Cart
             }
 
             unset($this->cart[$productId]);
-
-            // Обновляем корзину в БД
-            $this->userRepository->saveUserCart($userModel, $this->cart);
+// dd($this->userRepository);
+            // // Обновляем корзину в БД
+            // $this->userRepository->saveUserCart($userModel, $this->cart);
         } else {
             // 1. Загружаем старую корзину из куки (если есть)
             $cookieCart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
@@ -111,7 +109,7 @@ final class Cart
     {
         if ($isLoggedIn && $user) {
             $cart = $user->getCart()->getItems();
-            dd($cart);
+         
         } else {
 
             // 1. Проверить наличие корзины пользователя

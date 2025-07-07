@@ -8,7 +8,6 @@ use Vvintage\Models\Cart\Cart;
 interface UserInterface 
 {
   // public function getRepository(): UserRepository;
-  public function load(): array;
   public function getId(): ?int;
   public function getCart(): array;
   public function setCart(array $cart): void;

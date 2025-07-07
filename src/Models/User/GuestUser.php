@@ -16,11 +16,6 @@ class GuestUser implements UserInterface
     $this->cart = $cart;
         // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
   }
-  public function load(): array
-  {
-    return [];
-      // Для гостевого пользователя может быть пусто или логика по умолчанию
-  }
 
   // public function getRepository(): UserRepository {
   //   return new UserRepository();

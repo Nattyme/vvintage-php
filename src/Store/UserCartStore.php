@@ -18,7 +18,6 @@ class UserCartStore
   public function load(): array
   {
     $user = $this->userRepository->findUserById((int) $_SESSION['user_id']);
-    
     return $user->getCart() ?? [];
   }
 
