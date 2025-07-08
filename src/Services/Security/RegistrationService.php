@@ -20,14 +20,14 @@ final class RegistrationService
     // Сохраняем пароль в зашифрованном виде функцией password_hash
     $user->password = password_hash($postData['password'], PASSWORD_DEFAULT);
 
-    $result = R::store($user);
+    $userId = R::store($user);
 
-    if ( is_int($result) ) {
+    if ( is_int($userId) ) {
       // Сохраняем id пользователя в таблицу адресов доставки
-      $userDelivery->user_id = $result;
+      $userDelivery->user_id = $userId;
       R::store($userDelivery);
 
-      $this->autoLoginNewUser();
+      $this->autoLoginNewUser($userId);
     }
   }
 

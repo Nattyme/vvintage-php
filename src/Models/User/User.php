@@ -23,11 +23,11 @@ final class User implements UserInterface
         $this->id = (int) $bean->id;
         $this->email = $bean->email;
         $this->password = $bean->password;
-        $this->name = $bean->name;
+        $this->name = $bean->name ?? 'Пользователь';
         $this->role = $bean->role ?? 'user';
 
         // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
-        $this->cart = json_decode($bean->cart, true);
+        $this->cart = json_decode($bean->cart, true) ?? [];
         $this->fav_list = [];
         // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
     }

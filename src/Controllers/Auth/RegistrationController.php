@@ -50,7 +50,7 @@ final class RegistrationController
 
       //Если нет ошибок - Регистрируем пользователя
       if ( empty($_SESSION['errors']) ) {
-        RegistrationService::createNewUser($_POST);
+         $regService->createNewUser($_POST);
       } else {
         $_SESSION['errors'][] = ['title' => 'Что-то пошло не так. Повторите действие заново.'];
       }
