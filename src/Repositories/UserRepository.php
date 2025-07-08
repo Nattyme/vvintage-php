@@ -35,6 +35,11 @@ final class UserRepository
     public function findUserByEmail(string $email): ?User
     {
       $bean = R::findOne('users', 'email = ?', [strtolower($email)]);
+
+      if (!$bean) {
+          return null;
+      }
+
       return new User($bean);
     }
 
@@ -53,14 +58,22 @@ final class UserRepository
      * 
      * @return User|null
     */
-    public function createUser(array $userData): ?User
+    public function createUser(array $postData): ?User
     {
       $bean = R::dispense( 'users' );
 
       if ($bean === 0) {
         return null;
       }
-    
+
+      $bean->email = $postData['email'];
+      $bean->role = 'user';
+
+      // Сохраняем пароль в зашифрованном виде функцией password_hash
+      $bean->password = password_hash($postData['password'], PASSWORD_DEFAULT);
+
+      $userId = R::store($bean);
+   
       return new User ($bean);
     }
 

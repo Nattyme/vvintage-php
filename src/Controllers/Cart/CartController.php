@@ -34,7 +34,7 @@ final class CartController
         $settings = Settings::all(); // Получаем массив всех настроек
 
         /**
-         * Получаем модель пользователя - гость или залогоиненный
+         * Получаем модель пользователя - гость или залогиненный
          * @var UserInreface $userModel
         */
         $userModel = SessionManager::getLoggedInUser();

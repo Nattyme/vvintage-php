@@ -58,54 +58,53 @@ final class AuthController
             // Если ошибок нет
             if (empty($_SESSION['errors'])) {
 
-                // Ищем нужного пользователя в базе данных
-                $userRepository = new UserRepository(); // создаем новый объект репозитория
-                $userModel = $userRepository->findUserByEmail($_POST['email']);
+              // Ищем нужного пользователя в базе данных
+              $userRepository = new UserRepository(); // создаем новый объект репозитория
+              $userModel = $userRepository->findUserByEmail($_POST['email']);
 
-                /** Получаем модель с корзиной гостя
-                 * @var UserInterface $guestCartData 
-                */
-                $guestCartData = (new GuestCartStore())->load();
-                $guestCartModel = new Cart( $guestCartData);
+              if (!$userModel) {
+                $_SESSION['errors'][] = ['title' => 'Неверный email'];
+              }
 
-                // Если в БД не найден email
-                if (!$userModel) {
-                    $_SESSION['errors'][] = ['title' => 'Неверный email'];
-                }
+              if (empty($_SESSION['errors'])) {
 
-                if (empty($_SESSION['errors'])) {
-                    // Проверить пароль
-                    if (password_verify($_POST['password'], $userModel->getPassword())) {
-                    
-                      $isLoggedIn = SessionManager::setUserSession($userModel);
+                  /** Получаем модель с корзиной гостя
+                  * @var UserInterface $guestCartData 
+                  */
+                  $guestCartData = (new GuestCartStore())->load();
+                  $guestCartModel = new Cart( $guestCartData);
+                  // Проверить пароль
+                  if (password_verify($_POST['password'], $userModel->getPassword())) {
+                  
+                    $isLoggedIn = SessionManager::setUserSession($userModel);
 
-                 
-                      /** Получаем корзину пользователя из БД
-                       * @var UserInterface  $userCartData
-                      */
-                      $userCartData = ( new UserCartStore($userRepository) ) -> load(); 
+                
+                    /** Получаем корзину пользователя из БД
+                     * @var UserInterface  $userCartData
+                    */
+                    $userCartData = ( new UserCartStore($userRepository) ) -> load(); 
 
-                      // Создаем модель корзины пользователя
-                      $cartModel = new Cart( $userCartData );
-             
-                      $cartModel->mergeCartAfterLogin( $guestCartData  ?? []);
-                      $mergedCart = $cartModel->getItems();
+                    // Создаем модель корзины пользователя
+                    $cartModel = new Cart( $userCartData );
+            
+                    $cartModel->mergeCartAfterLogin( $guestCartData  ?? []);
+                    $mergedCart = $cartModel->getItems();
 
-                      // Сохраняем в БД
-                      $userRepository->saveUserCart($userModel, $mergedCart);
-                    
-                      // $cart = CartController::loadCart($isLoggedIn, $userModel); // передаем объект User
-  
-                      // Редирект
-                      header('Location: ' . HOST . 'cart');
-                      // header('Location: ' . HOST . 'profile');
-                      exit();
+                    // Сохраняем в БД
+                    $userRepository->saveUserCart($userModel, $mergedCart);
+                  
+                    // $cart = CartController::loadCart($isLoggedIn, $userModel); // передаем объект User
 
-                    } else {
-                        // Пароль не верен
-                        $_SESSION['errors'][] = ['title' => 'Неверный пароль'];
-                    }
-                }
+                    // Редирект
+                    header('Location: ' . HOST . 'cart');
+                    // header('Location: ' . HOST . 'profile');
+                    exit();
+
+                  } else {
+                      // Пароль не верен
+                      $_SESSION['errors'][] = ['title' => 'Неверный пароль'];
+                  }
+              }
             }
         }
 

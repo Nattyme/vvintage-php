@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 namespace Vvintage\Services\Security;
+use Vvintage\Models\User\User;
+use Vvintage\Repositories\UserRepository;
 
 use RedBeanPHP\R;
 
@@ -9,18 +11,25 @@ final class RegistrationService
 {
   public function createNewUser (array $postData):void
   {
-    $user = R::dispense('users');
+    $userRepository = new UserRepository();
+
+    /**
+     * @var User|null
+    */
+    $user = $userRepository->createUser($postData);
+    dd($user);
+    // $user = R::dispense('users');
     
     // Создаем бин в таблице адресов доставки
     $userDelivery = R::dispense('address');
 
-    $user->email = $postData['email'];
-    $user->role = 'user';
+    // $user->email = $postData['email'];
+    // $user->role = 'user';
 
-    // Сохраняем пароль в зашифрованном виде функцией password_hash
-    $user->password = password_hash($postData['password'], PASSWORD_DEFAULT);
+    // // Сохраняем пароль в зашифрованном виде функцией password_hash
+    // $user->password = password_hash($postData['password'], PASSWORD_DEFAULT);
 
-    $userId = R::store($user);
+    // $userId = R::store($user);
 
     if ( is_int($userId) ) {
       // Сохраняем id пользователя в таблицу адресов доставки
