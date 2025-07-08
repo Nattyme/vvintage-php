@@ -73,6 +73,16 @@ final class UserRepository
       return new User ($bean);
     }
 
+    public function createAddress (int $userId): void
+    {
+      // Создаем бин в таблице адресов доставки
+      $address = R::dispense('address');
+      
+      // Сохраняем id пользователя в таблицу адресов доставки
+      $address->user_id = $userId;
+      R::store($address);
+    }
+
     /**
      * Метод редактирует пользователя 
      * @param User $userModel, array $newUserData

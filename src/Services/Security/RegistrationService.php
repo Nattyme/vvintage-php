@@ -17,25 +17,13 @@ final class RegistrationService
      * @var User|null
     */
     $user = $userRepository->createUser($postData);
-
-    // $user = R::dispense('users');
-    
-    // Создаем бин в таблице адресов доставки
-    $userDelivery = R::dispense('address');
-
-    // $user->email = $postData['email'];
-    // $user->role = 'user';
-
-    // // Сохраняем пароль в зашифрованном виде функцией password_hash
-    // $user->password = password_hash($postData['password'], PASSWORD_DEFAULT);
-
-    // $userId = R::store($user);
+    $userId = $user->getId();
 
     if ( is_int($userId) ) {
-      // Сохраняем id пользователя в таблицу адресов доставки
-      $userDelivery->user_id = $userId;
-      R::store($userDelivery);
+      // Создаем адрес пользователи в таблицу адресов доставки
+      $userRepository->createAddress( $userId );
 
+      // Автологин пользователя после регистрации
       $this->autoLoginNewUser($userId);
     }
   }
