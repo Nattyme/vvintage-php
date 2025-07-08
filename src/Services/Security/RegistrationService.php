@@ -28,7 +28,7 @@ final class RegistrationService
       $userRepository->updateUserAddressId( $userId, $addressId );
 
       // Автологин 
-      $this->autoLoginNewUser($userId);
+      $this->autoLoginNewUser($user);
     }
   }
 
