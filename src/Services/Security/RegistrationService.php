@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Security;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Services\Auth\SessionManager;
 
 use RedBeanPHP\R;
 
@@ -23,10 +24,10 @@ final class RegistrationService
       // Создаем адрес пользователи в таблицу адресов доставки и сохраняем Id адреса 
       $addressId = $userRepository->createAddress( $userId );
 
-      // Сохраняем id адреса в поле таблицы user
+      // Обновляем пользователя, добавляя address_id
       $userRepository->updateUserAddressId( $userId, $addressId );
 
-      // Автологин пользователя после регистрации
+      // Автологин 
       $this->autoLoginNewUser($userId);
     }
   }
@@ -43,12 +44,16 @@ final class RegistrationService
     return $blockedUsers !== NULL ? true : false;
   }
 
-  private function autoLoginNewUser (int $userId): void
+  private function autoLoginNewUser (User $user): void
   {
-    $_SESSION['logged_user'] = $user;
-    $_SESSION['login'] = 1;
-    $_SESSION['role'] = $user->role;
-    $_SESSION['success'][] = ['title' => 'Регистрация завершена.', 'desc'=>'Заполните свой профиль для дальнейшего пользования сайтом'];
+    SessionManager::setUserSession($user);
+
+    // Сообщение об успехе
+    $_SESSION['success'][] = [
+      'title' => 'Регистрация завершена.', 'desc'=>'Заполните свой профиль для дальнейшего пользования сайтом'
+    ];
+
+    // Перенаправляем
     header('Location: ' . HOST . 'profile-edit');
     exit();
   }

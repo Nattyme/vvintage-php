@@ -15,7 +15,6 @@ class SessionManager
 {
     public static function setUserSession(User $user): bool
     {
-
         // Автологин пользователя после регистрации
         $_SESSION['logged_user'] = $user->export($user);
         $_SESSION['user_id'] = $user->getId();
