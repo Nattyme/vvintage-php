@@ -44,15 +44,13 @@ class SessionManager
 
     public static function logout(): void
     {
-        unset(
-            $_SESSION['logged_user'],
-            $_SESSION['user_id'],
-            $_SESSION['login'],
-            $_SESSION['role'],
-            $_SESSION['cart'],
-            $_SESSION['fav_list']
-        );
+      if (empty($_SESSION['errors'])) {
+        session_destroy();
+        setcookie(session_name(), '', time() - 60);
+        header("Location: " . HOST);
+      }
     }
+
 
     public static function getLoggedInUser(): ?UserInterface
     {
