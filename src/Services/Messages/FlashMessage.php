@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Messages;
 
 
-final class FlashMessages 
+final class FlashMessage
 {
   public function renderError (string $title, ?string $desc = null) {
     $this->addMessage('errors', $title, $desc);
