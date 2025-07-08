@@ -62,10 +62,6 @@ final class UserRepository
     {
       $bean = R::dispense( 'users' );
 
-      if ($bean === 0) {
-        return null;
-      }
-
       $bean->email = $postData['email'];
       $bean->role = 'user';
 

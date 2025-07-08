@@ -7,7 +7,7 @@ use Vvintage\Services\Security\RegistrationService;
 
 final class RegistrationController 
 {
-  public static function index ($routeData) {
+  public static function index ($routeData) {   
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
       // Проверка токена
@@ -50,14 +50,15 @@ final class RegistrationController
 
       //Если нет ошибок - Регистрируем пользователя
       if ( empty($_SESSION['errors']) ) {
-         $regService->createNewUser($_POST);
-      } else {
-        $_SESSION['errors'][] = ['title' => 'Что-то пошло не так. Повторите действие заново.'];
-      }
+         $newUser = $regService->createNewUser($_POST);
+         if (!$newUser) {
+           $_SESSION['errors'][] = ['title' => 'Что-то пошло не так. Попробуйте еще раз.'];
+         }
+      } 
     }
-      
-      // Показываем форму
-      self::renderForm($routeData);
+
+    // Показываем форму
+    self::renderForm($routeData);
   }
 
   private static function renderForm ($routeData) {

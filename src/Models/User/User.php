@@ -20,20 +20,16 @@ final class User implements UserInterface
 
     public function __construct(OODBBean $bean)
     {
-      if ($bean !== null) {
-        $this->id = (int) $bean->id;
-        $this->email = $bean->email;
-        $this->password = $bean->password;
-        $this->name = $bean->name ?? 'Пользователь';
-        $this->role = $bean->role ?? 'user';
+      $this->id = (int) $bean->id;
+      $this->email = $bean->email;
+      $this->password = $bean->password;
+      $this->name = $bean->name ?? 'Пользователь';
+      $this->role = $bean->role ?? 'user';
 
-        // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
-        $this->cart = json_decode($bean->cart, true) ?? [];
-        $this->fav_list = [];
-        // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
-      } else {
-        return null;
-      }
+      // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
+      $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
+      $this->fav_list = [];
+      // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
 
     }
 
