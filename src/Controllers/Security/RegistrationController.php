@@ -50,7 +50,8 @@ final class RegistrationController
 
       // Проверка на занятый email
       $freeEmail = $regService->isEmailFree( trim($_POST['email']) );
-      if ( !$freeEmail ) {
+
+      if ( (int) $freeEmail === 0) {
         $notes->renderError('Пользователь с таким email уже существует', 'Используйте другой email адрес или воспользуйтесь <a href="'.HOST.'lost-password">восстановлением пароля.</a>');
 
         // $_SESSION['errors'][] = [

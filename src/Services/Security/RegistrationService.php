@@ -32,10 +32,9 @@ final class RegistrationService
     }
   }
 
-  public function isEmailFree (string $emailData): bool
+  public function isEmailFree (string $emailData): int
   {
-    $email = R::count('users', 'email = ?', array($emailData));
-    return  $email  > 0 ? false : true;
+    return R::count('users', 'email = ?', array($emailData));
   }
 
   public function isEmailBlocked (string $emailData): bool
