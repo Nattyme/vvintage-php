@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Security;
 
 use RedBeanPHP\R;
+use Vvintage\Config\Config;
 
 final class PasswordResetService 
 {
@@ -33,7 +34,7 @@ final class PasswordResetService
     $code = self::randomStr();
 
     // 5. Запомнить секретный код. Записать в БД.
-    $user->recovery_code = $recovery_code;
+    $user->recovery_code = $code;
     R::store($user);
 
     return $code;
@@ -49,8 +50,8 @@ final class PasswordResetService
 
     $headers =  "MIME-Version: 1.0" . PHP_EOL .
                 "Content-Type: text/html; charset=utf-8" . PHP_EOL .
-                "From: =?utf-8?B?" . base64_encode(SITE_NAME) . "?= <" . SITE_EMAIL . ">" . PHP_EOL .
-                "Reply-To: " . SITE_EMAIL . PHP_EOL;
+                "From: =?utf-8?B?" . base64_encode(Config::SITE_NAME) . "?= <" . Config::SITE_EMAIL . ">" . PHP_EOL .
+                "Reply-To: " . Config::SITE_EMAIL . PHP_EOL;
 
     return mail($email, 'Восстановление доступа', $message, $headers);
   }

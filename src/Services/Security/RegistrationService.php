@@ -17,7 +17,7 @@ final class RegistrationService
      * @var User|null
     */
     $user = $userRepository->createUser($postData);
-    dd($user);
+
     // $user = R::dispense('users');
     
     // Создаем бин в таблице адресов доставки

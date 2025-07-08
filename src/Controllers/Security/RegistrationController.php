@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Auth;
+namespace Vvintage\Controllers\Security;
 
 use Vvintage\Services\Security\RegistrationService;
 
@@ -67,15 +67,15 @@ final class RegistrationController
  
     //Сохраняем код ниже в буфер
     ob_start();
-    include ROOT . 'templates/login/form-registration.tpl';
+    include ROOT . 'views/login/form-registration.tpl';
     //Записываем вывод из буфера в пепеменную
     $content = ob_get_contents();
     //Окончание буфера, очищаем вывод
     ob_end_clean();
 
     include ROOT . "views/_page-parts/_head.tpl";
-    include ROOT . "templates/login/login-page.tpl";
-    include ROOT . "templates/_page-parts/_foot.tpl";
+    include ROOT . "views/login/login-page.tpl";
+    include ROOT . "views/_page-parts/_foot.tpl";
 
   }
 }

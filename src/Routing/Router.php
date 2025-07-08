@@ -80,7 +80,7 @@
           break;
 
         case 'registration':
-          \Vvintage\Controllers\Auth\RegistrationController::index($routeData);
+          \Vvintage\Controllers\Security\RegistrationController::index($routeData);
           break;
 
         case 'logout':
@@ -88,7 +88,7 @@
           break;
 
         case 'lost-password':
-          \Vvintage\Controllers\Auth\PasswordResetController::index($routeData);
+          \Vvintage\Controllers\Security\PasswordResetController::index($routeData);
           break;
 
         case 'set-new-password':
