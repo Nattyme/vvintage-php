@@ -7,7 +7,7 @@ namespace Vvintage\Controllers\Auth;
 use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
-use Vvintage\Models\Auth\Auth;
+use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 // use Vvintage\Services\CartService;
@@ -77,7 +77,7 @@ final class AuthController
                     // Проверить пароль
                     if (password_verify($_POST['password'], $userModel->getPassword())) {
                     
-                      $isLoggedIn = Auth::setUserSession($userModel);
+                      $isLoggedIn = SessionManager::setUserSession($userModel);
 
                  
                       /** Получаем корзину пользователя из БД

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Models\Auth;
+namespace Vvintage\Services\Auth;
 
 use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Models\User\User;
@@ -10,7 +10,8 @@ use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Store\Cart\GuestCartStore;
-class Auth
+
+class SessionManager
 {
     public static function setUserSession(User $user): bool
     {

@@ -11,7 +11,7 @@ use Vvintage\Repositories\ProductRepository;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
-use Vvintage\Models\Auth\Auth;
+use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
 use Vvintage\Store\Cart\GuestCartStore;
@@ -37,7 +37,7 @@ final class CartController
          * Получаем модель пользователя - гость или залогоиненный
          * @var UserInreface $userModel
         */
-        $userModel = Auth::getLoggedInUser();
+        $userModel = SessionManager::getLoggedInUser();
      
         // Получаем корзину и ее модель
         $cartModel = $userModel->getCartModel();
@@ -69,7 +69,7 @@ final class CartController
          * Получаем модель пользователя - гость или залогоиненный
          * @var UserInreface $userModel
         */
-        $userModel = Auth::getLoggedInUser();
+        $userModel = SessionManager::getLoggedInUser();
      
         // Получаем корзину и ее модель
         $cartModel = $userModel->getCartModel();
@@ -99,7 +99,7 @@ final class CartController
          * Получаем модель пользователя - гость или залогиненный
          * @var UserInreface $userModel
         */
-        $userModel = Auth::getLoggedInUser();
+        $userModel = SessionManager::getLoggedInUser();
 
         // Получаем корзину и ее модель
         $cartModel = $userModel->getCartModel();
