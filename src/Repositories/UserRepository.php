@@ -53,6 +53,8 @@ final class UserRepository
       return R::findAll( 'users' );
     }
 
+
+
     /**
      * Метод создает нового пользователя 
      * 
@@ -73,15 +75,19 @@ final class UserRepository
       return new User ($bean);
     }
 
-    public function createAddress (int $userId): void
+    public function createAddress (int $userId): int
     {
       // Создаем бин в таблице адресов доставки
       $address = R::dispense('address');
       
       // Сохраняем id пользователя в таблицу адресов доставки
       $address->user_id = $userId;
-      R::store($address);
+      $addressId = R::store($address);
+
+      return $addressId;
     }
+
+
 
     /**
      * Метод редактирует пользователя 
@@ -103,23 +109,18 @@ final class UserRepository
     }
 
     /**
-     * Метод удаления пользователя 
-     * 
-     * @return void
+     * Метод сохраняет id адреса в поле теблицы User
     */
-    public function removeUser(User $userModel): void
-    {
-      $id = $userModel->getId();
-      $bean = R::load('users', $id);
-
-      if ($bean->id !== 0) {
-        R::trash( $bean ); 
+    public function updateUserAddressId(int $userId, int $addressId): void {
+      $user = R::load('users', $userId);
+      if ($user->id !== 0) {
+        $user->address_id = $addressId;
+        R::store($user);
       }
-
     }
 
 
-
+  
     /**
      * Метод обновляет корзину
      * @return void
@@ -135,6 +136,33 @@ final class UserRepository
         R::store($userBean);
     }
 
+
+    /**
+     * Метод удаления пользователя 
+     * 
+     * @return void
+    */
+    public function removeUser(User $userModel): void
+    {
+      $id = $userModel->getId();
+      $bean = R::load('users', $id);
+
+      if ($bean->id !== 0) {
+        R::trash( $bean ); 
+      }
+
+    }
+
+    public function removeCartItem(int $itemId)
+    {
+      $bean = R::load('users', $itemId);
+
+      if ($bean->id !== 0) {
+        R::trash( $bean ); 
+      }
+    }
+
+
     /**
      * Метод возвращает корзину user из БД
      * @return array
@@ -147,15 +175,6 @@ final class UserRepository
         // Получаем корзину из БД и переводим в массив
         $userCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
         return $userCart;
-    }
-
-    public function removeCartItem(int $itemId)
-    {
-      $bean = R::load('users', $itemId);
-
-      if ($bean->id !== 0) {
-        R::trash( $bean ); 
-      }
     }
 
 }

@@ -20,8 +20,11 @@ final class RegistrationService
     $userId = $user->getId();
 
     if ( is_int($userId) ) {
-      // Создаем адрес пользователи в таблицу адресов доставки
-      $userRepository->createAddress( $userId );
+      // Создаем адрес пользователи в таблицу адресов доставки и сохраняем Id адреса 
+      $addressId = $userRepository->createAddress( $userId );
+
+      // Сохраняем id адреса в поле таблицы user
+      $userRepository->updateUserAddressId( $userId, $addressId );
 
       // Автологин пользователя после регистрации
       $this->autoLoginNewUser($userId);
