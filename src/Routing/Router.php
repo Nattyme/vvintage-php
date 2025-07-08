@@ -80,7 +80,7 @@
           break;
 
         case 'registration':
-          require ROOT . 'modules/login/registration.php';
+          \Vvintage\Controllers\Auth\RegistrationController::index($routeData);
           break;
 
         case 'logout':
@@ -88,7 +88,7 @@
           break;
 
         case 'lost-password':
-          require ROOT . 'modules/login/lost-password.php';
+          \Vvintage\Controllers\Auth\PasswordResetController::index($routeData);
           break;
 
         case 'set-new-password':
