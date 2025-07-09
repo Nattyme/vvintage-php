@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Auth;
 
-use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
-// use Vvintage\Services\CartService;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\CartRepository;
 use Vvintage\User\GuestUser;
@@ -19,6 +17,8 @@ use Vvintage\Store\Cart\GuestCartStore;
 use Vvintage\Store\Cart\UserCartStore;
 use Vvintage\Store\Cart\CartStoreInterface;
 use Vvintage\Controllers\Cart\CartController;
+use Vvintage\Services\Validation\LoginValidator;
+use Vvintage\Services\Messages\FlashMessage;
 
 require_once ROOT . './libs/functions.php';
 
@@ -29,37 +29,14 @@ final class AuthController
 
         //1. Проверяем массив POST
         if (isset($_POST['login'])) {
-            // Проверка токена
-            if (!check_csrf($_POST['csrf'] ?? '')) {
-                $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
-            }
-
-            //2. Заполненность полей. Проверка на заполненность
-            if (trim($_POST['email']) == '') {
-                // Ошибка - email пуст. Добавляем массив этой ошибки в массив $errors
-                $_SESSION['errors'][] = ['title' => 'Введите email', 'desc' => '<p>Email обязателен для регистрации на сайте</p>'];
-            } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                $_SESSION['errors'][] = ['title' => 'Введите корректный Email'];
-            } elseif (trim(strtolower($_POST['email']))) {
-                $blockedUsers  = R::findOne('blockedusers', ' email = ? ', [ $_POST['email'] ]);
-                $result = $blockedUsers !== null ? true : false;
-
-                if ($result) {
-                    $_SESSION['errors'][] = ['title' => 'Ошибка, невозможно зайти в профиль.'];
-                }
-            }
-
-            if (trim($_POST['password']) == "") {
-                // Ошибка - пароль пуст. Добавляем массив этой ошибки в массив $errors
-                $_SESSION['errors'][] = ['title' => 'Введите пароль'];
-            }
-
+          $userRepository = new UserRepository();
+          $notes = new FlashMessage ();   
+          $validator = new LoginValidator( $userRepository, $notes);
 
             // Если ошибок нет
             if (empty($_SESSION['errors'])) {
 
               // Ищем нужного пользователя в базе данных
-              $userRepository = new UserRepository(); // создаем новый объект репозитория
               $userModel = $userRepository->findUserByEmail($_POST['email']);
 
               if (!$userModel) {
@@ -108,22 +85,26 @@ final class AuthController
             }
         }
 
+        // Показываем страницу
+        self::renderPage($routeData);
+    }
 
+    private static function renderPage (RouteData $routeData): void
+    {
+      $pageTitle = "Вход на сайт";
+      $pageClass = "authorization-page";
 
-        $pageTitle = "Вход на сайт";
-        $pageClass = "authorization-page";
+      //Сохраняем код ниже в буфер
+      ob_start();
+      include ROOT . 'views/login/form-login.tpl';
+      //Записываем вывод из буфера в пепеменную
+      $content = ob_get_contents();
+      //Окончание буфера, очищаем вывод
+      ob_end_clean();
 
-        //Сохраняем код ниже в буфер
-        ob_start();
-        include ROOT . 'views/login/form-login.tpl';
-        //Записываем вывод из буфера в пепеменную
-        $content = ob_get_contents();
-        //Окончание буфера, очищаем вывод
-        ob_end_clean();
-
-        include ROOT . "views/_page-parts/_head.tpl";
-        include ROOT . "views/login/login-page.tpl";
-        include ROOT . "views/_page-parts/_foot.tpl";
+      include ROOT . "views/_page-parts/_head.tpl";
+      include ROOT . "views/login/login-page.tpl";
+      include ROOT . "views/_page-parts/_foot.tpl";
     }
 
     public static function logout()

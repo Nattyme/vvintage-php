@@ -19,33 +19,15 @@ final class PasswordResetController {
         $result = $resetPassService->processPasswordResetRequest($_POST['email']);
 
         if ($result['success']) {
-          $notes->renderSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
+          $notes->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
    
         } else {
           foreach ($result['errors'] as $error) {
-            $notes->renderError($error['title']);
+            $notes->pushError($error['title']);
           }
         }
 
       }
-
-        // if (!check_csrf($_POST['csrf'] ?? '')) {
-        //     $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
-        // } else {
-        //     $passwordResetService = new PasswordResetService();
-        //     $result = $passwordResetService->processPasswordResetRequest($_POST['email']);
-
-        //     if ($result['success']) {
-        //         $_SESSION['success'][] = [
-        //             'title' => 'Проверьте почту', 
-        //             'desc' => '<p>На указанную почту был отправлен email с ссылкой для сброса пароля.</p>'
-        //         ];
-        //     } else {
-        //         foreach ($result['errors'] as $error) {
-        //             $_SESSION['errors'][] = $error;
-        //         }
-        //     }
-        // }
     }
 
     // Показываем форму

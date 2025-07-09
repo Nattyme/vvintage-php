@@ -6,11 +6,11 @@ namespace Vvintage\Services\Messages;
 
 final class FlashMessage
 {
-  public function renderError (string $title, ?string $desc = null) {
+  public function pushError (string $title, ?string $desc = null) {
     $this->addMessage('errors', $title, $desc);
   }
 
-  public function renderSuccess (string $title, ?string $desc = null) {
+  public function pushSuccess (string $title, ?string $desc = null) {
     $this->addMessage('success', $title, $desc);
   }
 

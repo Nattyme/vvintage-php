@@ -21,7 +21,7 @@ final class RegistrationController
         $newUser = $regService->createNewUser( $_POST );
 
         if (!$newUser) {
-          $notes->renderError('Что-то пошло не так. Попробуйте ещё раз.');
+          $notes->pushError('Что-то пошло не так. Попробуйте ещё раз.');
         }
       }
     }

@@ -43,6 +43,12 @@ final class UserRepository
       return new User($bean);
     }
 
+    public function findBlockedUserByEmail (string $email): bool 
+    {
+      $bean  = R::findOne('blockedusers', ' email = ? ', [ strtolower($email) ]);
+      return $bean ? true : false;
+    }
+
     /**
      * Метод возвращает всех пользователей
      * 

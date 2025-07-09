@@ -7,6 +7,7 @@ namespace Vvintage\Models\Cart;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Services\Messages\FlashMessage;
 
 final class Cart
 {
@@ -112,9 +113,6 @@ final class Cart
     */
     public function mergeCartAfterLogin(array $guestCart): void
     {
-        print_r("Функция совмещения корзин после логина");
-     
-
         if (!empty($guestCart)) {
             foreach ($guestCart as $itemKey => $quantity) {
                 if (!isset($this->cart[$itemKey])) {
@@ -138,9 +136,18 @@ final class Cart
         // $_SESSION['fav_list'] = $merged['fav_list'];
 
         if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
-            $_SESSION['success'][] = ['title' => 'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
+            $notes->renderSuccess(
+              'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 
+              'На указанную почту был отправлен email с ссылкой для сброса пароля.'
+            );
+
+            // $_SESSION['success'][] = ['title' => 'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
         } else {
-            $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
+           $notes->renderSuccess(
+              'Здравствуйте!', 
+              'Вы успешно вошли на сайт. Рады снова видеть вас'
+            );
+            // $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
         }
 
       
