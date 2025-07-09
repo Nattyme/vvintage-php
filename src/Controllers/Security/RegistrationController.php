@@ -4,70 +4,26 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Security;
 
 use Vvintage\Services\Security\RegistrationService;
+use Vvintage\Services\Validation\RegistrationValidator;
 use Vvintage\Services\Messages\FlashMessage;
+
 
 final class RegistrationController 
 {
   public static function index ($routeData) {
-    $notes = new FlashMessage ();   
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
-      $regService = new RegistrationService ();
+      $regService = new RegistrationService();
+      $notes = new FlashMessage ();   
+      $validator = new RegistrationValidator($regService, $notes);
 
-      // Проверка токена
-      if (!check_csrf($_POST['csrf'] ?? '')) {
-        $notes->renderError('Неверный токен безопасности');
-        // $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
-      }
+      if ( $validator->validate( $_POST )) {
+        $newUser = $regService->createNewUser( $_POST );
 
-      // Проверка на заполненность
-      if( trim($_POST['email']) == "" ) {
-        // Ошибка - email пуст. Добавляем массив этой ошибки в массив $errors 
-        $notes->renderError('Введите email', 'Email обязателен для регистрации на сайте');
-        // $_SESSION['errors'][] = ['title' => 'Введите email', 'desc' => '<p>Email обязателен для регистрации на сайте</p>'];
-      } else if ( !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ) {
-        $notes->renderError('Введите корректный Email');
-        // $_SESSION['errors'][] = ['title' => 'Введите корректный Email'];
-      } else if ( trim($_POST['email']) ) {
-        $emailIsBlocked  = $regService->isEmailBlocked( trim($_POST['email']) );
-        
-        if ($emailIsBlocked) {
-          $notes->renderError('Ошибка регистрации.');
-          // $_SESSION['errors'][] = ['title' => 'Ошибка регистрации.'];
+        if (!$newUser) {
+          $notes->renderError('Что-то пошло не так. Попробуйте ещё раз.');
         }
       }
-
-      if( trim($_POST['password']) == "") {
-        // Ошибка - пароль пуст. Добавляем массив этой ошибки в массив $errors 
-        $notes->renderError('Введите пароль', 'Пароль обязателен для регистрации на сайте');
-        // $_SESSION['errors'][] = ['title' => 'Введите пароль', 'desc' => 'Пароль обязателен для регистрации на сайте'];
-      }
-
-      if( ! trim($_POST['password']) == "" && strlen(trim($_POST['password']) ) < 5) {
-        $notes->renderError('Неверный формат пароля', 'Пароль должен быть больше четырёх символов');
-        // $_SESSION['errors'][] = ['title' => 'Неверный формат пароля', 'desc' => '<p>Пароль должен быть больше четырёх символов</p>'];
-      }
-
-      // Проверка на занятый email
-      $freeEmail = $regService->isEmailFree( trim($_POST['email']) );
-
-      if ( (int) $freeEmail === 0) {
-        $notes->renderError('Пользователь с таким email уже существует', 'Используйте другой email адрес или воспользуйтесь <a href="'.HOST.'lost-password">восстановлением пароля.</a>');
-
-        // $_SESSION['errors'][] = [
-        //   'title' => 'Пользователь с таким email уже существует', 
-        //   // 'desc' => '<p>Используйте другой email адрес или воспользуйтесь <a href="'.HOST.'lost-password">восстановлением пароля.</a></p>'
-        // ];
-      }
-
-      //Если нет ошибок - Регистрируем пользователя
-      if ( empty($_SESSION['errors']) ) {
-         $newUser = $regService->createNewUser($_POST);
-         if (!$newUser) {
-          $notes->renderError('Что-то пошло не так. Попробуйте еще раз.', '');
-           $_SESSION['errors'][] = ['title' => 'Что-то пошло не так. Попробуйте еще раз.'];
-         }
-      } 
     }
 
     // Показываем форму
