@@ -19,6 +19,7 @@ use Vvintage\Store\Cart\UserCartStore;
 use Vvintage\Store\Cart\CartStoreInterface;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Services\Messages\FlashMessage;
 
 require_once ROOT . './libs/functions.php';
 

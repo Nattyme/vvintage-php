@@ -33,6 +33,7 @@ final class AuthController
           $userRepository = new UserRepository();
           $notes = new FlashMessage ();   
           $validator = new LoginValidator( $userRepository, $notes);
+          $cartService = new CartService( $notes );
 
             // Если ошибок нет
             if (empty($_SESSION['errors'])) {
@@ -67,7 +68,6 @@ final class AuthController
                     $cartModel = new Cart( $userCartData );
 
                     // Выполняем слияние через CartService
-                    $cartService = new \Vvintage\Services\Cart\CartService();
                     $cartService->mergeCartAfterLogin($cartModel, $guestCartModel);
             
                     $mergedCart = $cartModel->getItems();

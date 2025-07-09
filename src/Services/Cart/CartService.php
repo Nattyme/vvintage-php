@@ -9,6 +9,12 @@ use Vvintage\Models\User\User;
 
 final class CartService 
 {
+    private FlashMessage $flash;
+
+    public function __construct(FlashMessage $flash)
+    {
+        $this->flash = $flash;
+    }
   // public function loadCartFromUser(User $user): Cart
   // {
   //   return new Cart($user->getCart()->getItems());
@@ -19,7 +25,7 @@ final class CartService
       * @param Cart $userCartModel модель корзины пользователя
       * @param Cart $guestCartModel модель корзины гостя
     */
-     public function mergeCartAfterLogin(Cart $userCartModel, Cart $guestCartModel): void
+    public function mergeCartAfterLogin(Cart $userCartModel, Cart $guestCartModel): void
     {
       $userCartProducts = $userCartModel->getItems();
       $guestCartProducts = $guestCartModel->getItems();
@@ -31,24 +37,35 @@ final class CartService
       }
 
       // Очищаем cookies
-      if (isset($_COOKIE['cart'])) {
-          setcookie('cart', '', time() - 3600, '/');
-      }
-      if (isset($_COOKIE['fav_list'])) {
-          setcookie('fav_list', '', time() - 3600, '/');
-      }
+      $this->clearGuestCookies();
 
       // Обновляем сессию
       $_SESSION['logged_user']['cart'] = $userCartModel->getItems();
       $_SESSION['cart'] =  $userCartModel->getItems();
       // $_SESSION['fav_list'] = $merged['fav_list'];
 
-      if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
-          $_SESSION['success'][] = ['title' => 'Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
-      } else {
+      // Передаем приветствие в сессию
+      $this->setWelcomeMessage();
+    }
 
-          $_SESSION['success'][] = ['title' => 'Здравствуйте!', 'desc' => 'Вы успешно вошли на сайт. Рады снова видеть вас'];
+    private function clearGuestCookies()
+    {
+      if (isset($_COOKIE['cart'])) {
+             setcookie('cart', '', time() - 3600, '/');
       }
+
+      if (isset($_COOKIE['fav_list'])) {
+          setcookie('fav_list', '', time() - 3600, '/');
+      }
+    }
+
+    private function setWelcomeMessage()
+    {
+      if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
+        $this->notes->pushSuccess('Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'Вы успешно вошли на сайт. Рады снова видеть вас');
+      } else {
+        $this->notes->pushSuccess('Здравствуйте!', 'Вы успешно вошли на сайт. Рады снова видеть вас');
+      }  
     }
 
 }
