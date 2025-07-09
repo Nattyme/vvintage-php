@@ -23,8 +23,8 @@ class UserCartStore implements CartStoreInterface
     return $user->getCart() ?? [];
   }
 
-  public function save (Cart $cartModel, ?UserInterface $userModel = null): void {
-
+  public function save (Cart $cartModel, ?UserInterface $userModel = null): void 
+  {
     $cart = $cartModel->getItems();
 
     // Записываем в БД

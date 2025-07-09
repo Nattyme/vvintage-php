@@ -28,67 +28,66 @@ final class AuthController
     public static function login(RouteData $routeData): void
     {
 
-        //1. Проверяем массив POST
-        if (isset($_POST['login'])) {
-          $userRepository = new UserRepository();
-          $notes = new FlashMessage ();   
-          $validator = new LoginValidator( $userRepository, $notes);
-          $cartService = new CartService( $notes );
+      //1. Проверяем массив POST
+      if (isset($_POST['login'])) {
+        $userRepository = new UserRepository();
+        $notes = new FlashMessage ();   
+        $validator = new LoginValidator( $userRepository, $notes);
+        $cartService = new CartService( $notes );
 
-            // Если ошибок нет
+          // Если ошибок нет
+          if (empty($_SESSION['errors'])) {
+
+            // Ищем нужного пользователя в базе данных
+            $userModel = $userRepository->findUserByEmail($_POST['email']);
+
+            if (!$userModel) {
+              $notes->pushError('Неверный email');
+            }
+
             if (empty($_SESSION['errors'])) {
 
-              // Ищем нужного пользователя в базе данных
-              $userModel = $userRepository->findUserByEmail($_POST['email']);
+                /** Получаем модель с корзиной гостя
+                  * @var UserInterface $guestCartData 
+                */
+                $guestCartData = (new GuestCartStore())->load();
+                $guestCartModel = new Cart( $guestCartData);
 
-              if (!$userModel) {
-                $_SESSION['errors'][] = ['title' => 'Неверный email'];
-              }
-
-              if (empty($_SESSION['errors'])) {
-
-                  /** Получаем модель с корзиной гостя
-                    * @var UserInterface $guestCartData 
+                // Проверить пароль
+                if (password_verify($_POST['password'], $userModel->getPassword())) {
+                  $isLoggedIn = SessionManager::setUserSession($userModel);
+              
+                  /** Получаем корзину пользователя из БД
+                   * @var UserInterface  $userCartData
                   */
-                  $guestCartData = (new GuestCartStore())->load();
-                  $guestCartModel = new Cart( $guestCartData);
+                  $userCartData = ( new UserCartStore($userRepository) ) -> load(); 
 
-                  // Проверить пароль
-                  if (password_verify($_POST['password'], $userModel->getPassword())) {
+                  // Создаем модель корзины пользователя
+                  $cartModel = new Cart( $userCartData );
+
+                  // Выполняем слияние через CartService
+                  $cartService->mergeCartAfterLogin($cartModel, $guestCartModel);
+          
+                  $mergedCart = $cartModel->getItems();
+
+                  // Сохраняем в БД
+                  $userRepository->saveUserCart($userModel, $mergedCart);
                   
-                    $isLoggedIn = SessionManager::setUserSession($userModel);
+                  // Редирект
+                  header('Location: ' . HOST . 'cart');
+                  // header('Location: ' . HOST . 'profile');
+                  exit();
 
-                
-                    /** Получаем корзину пользователя из БД
-                     * @var UserInterface  $userCartData
-                    */
-                    $userCartData = ( new UserCartStore($userRepository) ) -> load(); 
-
-                    // Создаем модель корзины пользователя
-                    $cartModel = new Cart( $userCartData );
-
-                    // Выполняем слияние через CartService
-                    $cartService->mergeCartAfterLogin($cartModel, $guestCartModel);
-            
-                    $mergedCart = $cartModel->getItems();
-                  
-                    // $cart = CartController::loadCart($isLoggedIn, $userModel); // передаем объект User
-
-                    // Редирект
-                    header('Location: ' . HOST . 'cart');
-                    // header('Location: ' . HOST . 'profile');
-                    exit();
-
-                  } else {
-                      // Пароль не верен
-                      $_SESSION['errors'][] = ['title' => 'Неверный пароль'];
-                  }
-              }
+                } else {
+                    // Пароль не верен
+                    $notes->pushError('Неверный пароль');
+                }
             }
-        }
+          }
+      }
 
-        // Показываем страницу
-        self::renderPage($routeData);
+      // Показываем страницу
+      self::renderPage($routeData);
     }
 
     private static function renderPage (RouteData $routeData): void

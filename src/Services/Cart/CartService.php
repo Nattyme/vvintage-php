@@ -6,19 +6,17 @@ namespace Vvintage\Services\Cart;
 use RedBeanPHP\R;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\User\User;
+use Vvintage\Services\Messages\FlashMessage;
+
 
 final class CartService 
 {
-    private FlashMessage $flash;
+    private FlashMessage $notes;
 
-    public function __construct(FlashMessage $flash)
+    public function __construct(FlashMessage $notes)
     {
-        $this->flash = $flash;
+        $this->notes = $notes;
     }
-  // public function loadCartFromUser(User $user): Cart
-  // {
-  //   return new Cart($user->getCart()->getItems());
-  // }
 
     /**
       * Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
@@ -31,7 +29,7 @@ final class CartService
       $guestCartProducts = $guestCartModel->getItems();
 
       foreach ($guestCartProducts as $itemId => $quantity) {
-          if (!isset(  $userCartProducts[$itemId]) ) {
+          if (!isset( $userCartProducts[$itemId]) ) {
             $userCartModel->addCartItem($itemId);
           }
       }

@@ -18,25 +18,6 @@ final class Cart
         $this->cart = $cart;
     }
 
-    /**
-     * Загружает корзину пользователя из БД, если она не была передана вручную
-    */
-    // public function loadFromUser(int $userId): void
-    // {
-    //     $this->cart = $this->userRepository->getUserCart($userId);
-    // }
-
-    // public function loadFromGuest(): array
-    // {
-    //     if (isset($_COOKIE['cart'])) {
-    //         $this->cart = json_decode($_COOKIE['cart'], true);
-    //     } else {
-    //         $this->cart = [];
-    //     }
-    //     return $this->cart;
-
-    // }
-
 
     public function getItems(): array
     {
@@ -59,33 +40,7 @@ final class Cart
         } 
     }
 
-
-    /**
-     * Метод получает корзину из БД или куки и записывает её в $this->cart
-     * @return array
-     */
-    public function loadCart(bool $isLoggedIn, User $user = null): array
-    {
-        if ($isLoggedIn && $user) {
-            $cart = $user->getCart()->getItems();
-         
-        } else {
-
-            // 1. Проверить наличие корзины пользователя
-            // 2. Если корзина есть - работаем с ней, если нет - создаем новую
-            if (isset($_COOKIE['cart'])) {
-                // Получаем корзину из COOKIE
-                $cart = json_decode($_COOKIE['cart'], true);
-            } else {
-                $cart = [];
-            }
-        }
-
-        $this->cart = $cart;
-        return $cart;
-    }
-
-    public function getQuantity($productId): int
+    public function getQuantity(int $productId): int
     {
         return isset($this->cart[(int)$productId])
             ? (int)$this->cart[(int)$productId]
