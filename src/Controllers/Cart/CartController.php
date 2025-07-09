@@ -26,25 +26,26 @@ final class CartController
 {
     public static function index(RouteData $routeData): void
     {
-        /**
-         * Получаем модель пользователя - гость или залогиненный
-         * @var UserInreface $userModel
-        */
-        $userModel = SessionManager::getLoggedInUser();
-     
-        // Получаем корзину и ее модель
-        $cartModel = $userModel->getCartModel();
-        $cart = $userModel->getCart();
+      /**
+       * Получаем модель пользователя - гость или залогиненный
+       * @var UserInreface $userModel
+      */
+      $userModel = SessionManager::getLoggedInUser();
+    
+      // Получаем корзину и ее модель
+      $cartModel = $userModel->getCartModel();
+      $cart = $userModel->getCart();
 
-        // Получаем продукты
-        $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
-        $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
+      // Получаем продукты
+      $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
+      $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
 
-        // Показываем страницу
-        self::renderPage($routeData);
+      // Показываем страницу
+      self::renderPage($routeData, $products, $cartModel, $totalPrice);
     }
 
-    private static function renderPage (RouteData $routeData): void {  
+    private static function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
+    {  
       /**
         * Проверяем вход пользователя в профиль
         * @var bool
@@ -69,32 +70,32 @@ final class CartController
     public static function addItem(int $productId, $routeData): void
     {
   
-        /**
-         * Получаем модель пользователя - гость или залогоиненный
-         * @var UserInreface $userModel
-        */
-        $userModel = SessionManager::getLoggedInUser();
-     
-        // Получаем корзину и ее модель
-        $cartModel = $userModel->getCartModel();
-        $cart = $userModel->getCart();
+      /**
+       * Получаем модель пользователя - гость или залогоиненный
+       * @var UserInreface $userModel
+      */
+      $userModel = SessionManager::getLoggedInUser();
+    
+      // Получаем корзину и ее модель
+      $cartModel = $userModel->getCartModel();
+      $cart = $userModel->getCart();
 
-        // Добавляем новый продукт
-        $cartModel->addCartItem($productId);
+      // Добавляем новый продукт
+      $cartModel->addCartItem($productId);
 
-        /**
-         * Сохраняем в нужное хранилище
-         * @var CartStoreInterface $cartStore;
-         */
-        $cartStore = ($userModel instanceof User) 
-                     ? new UserCartStore( new UserRepository() ) 
-                     : new GuestCartStore();
+      /**
+       * Сохраняем в нужное хранилище
+       * @var CartStoreInterface $cartStore;
+       */
+      $cartStore = ($userModel instanceof User) 
+                    ? new UserCartStore( new UserRepository() ) 
+                    : new GuestCartStore();
 
-        $cartStore->save($cartModel, $userModel);
+      $cartStore->save($cartModel, $userModel);
 
-        // Переадресация обратно на страницу товара
-        header('Location: ' . HOST . 'shop/' . $productId);
-        exit();
+      // Переадресация обратно на страницу товара
+      header('Location: ' . HOST . 'shop/' . $productId);
+      exit();
     }
 
     public static function removeItem(int $productId): void

@@ -19,6 +19,7 @@ use Vvintage\Store\Cart\CartStoreInterface;
 use Vvintage\Controllers\Cart\CartController;
 use Vvintage\Services\Validation\LoginValidator;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Cart\CartService;
 
 require_once ROOT . './libs/functions.php';
 
@@ -46,10 +47,11 @@ final class AuthController
               if (empty($_SESSION['errors'])) {
 
                   /** Получаем модель с корзиной гостя
-                  * @var UserInterface $guestCartData 
+                    * @var UserInterface $guestCartData 
                   */
                   $guestCartData = (new GuestCartStore())->load();
                   $guestCartModel = new Cart( $guestCartData);
+
                   // Проверить пароль
                   if (password_verify($_POST['password'], $userModel->getPassword())) {
                   
@@ -63,12 +65,12 @@ final class AuthController
 
                     // Создаем модель корзины пользователя
                     $cartModel = new Cart( $userCartData );
-            
-                    $cartModel->mergeCartAfterLogin( $guestCartData  ?? []);
-                    $mergedCart = $cartModel->getItems();
 
-                    // Сохраняем в БД
-                    $userRepository->saveUserCart($userModel, $mergedCart);
+                    // Выполняем слияние через CartService
+                    $cartService = new \Vvintage\Services\Cart\CartService();
+                    $cartService->mergeCartAfterLogin($cartModel, $guestCartModel);
+            
+                    $mergedCart = $cartModel->getItems();
                   
                     // $cart = CartController::loadCart($isLoggedIn, $userModel); // передаем объект User
 
