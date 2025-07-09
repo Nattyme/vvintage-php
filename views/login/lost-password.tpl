@@ -3,8 +3,8 @@
     <h2 class="heading">Восстановить пароль</h2>
   </div>
 
-  <?php include ROOT . "templates/components/errors.tpl"; ?>
-  <?php include ROOT . "templates/components/success.tpl"; ?>
+  <?php include ROOT . "views/components/errors.tpl"; ?>
+  <?php include ROOT . "views/components/success.tpl"; ?>
 
   <?php if (!isset($resultEmail)) : ?>
   <div class="authorization-form__field">

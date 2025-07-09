@@ -4,28 +4,48 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Security;
 
 use Vvintage\Services\Security\PasswordResetService;
+use Vvintage\Services\Validation\PasswordResetValidator;
+use Vvintage\Services\Messages\FlashMessage;
 
 final class PasswordResetController {
   public static function index ($routeData) 
   {
     if (isset($_POST['lost-password'])) {
-        if (!check_csrf($_POST['csrf'] ?? '')) {
-            $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
-        } else {
-            $passwordResetService = new PasswordResetService();
-            $result = $passwordResetService->processPasswordResetRequest($_POST['email']);
+      $resetPassService = new PasswordResetService();
+      $notes = new FlashMessage ();   
+      $validator = new PasswordResetValidator($resetPassService, $notes);
 
-            if ($result['success']) {
-                $_SESSION['success'][] = [
-                    'title' => 'Проверьте почту', 
-                    'desc' => '<p>На указанную почту был отправлен email с ссылкой для сброса пароля.</p>'
-                ];
-            } else {
-                foreach ($result['errors'] as $error) {
-                    $_SESSION['errors'][] = $error;
-                }
-            }
+      if ($validator->validate($_POST)) {
+        $result = $resetPassService->processPasswordResetRequest($_POST['email']);
+
+        if ($result['success']) {
+          $notes->renderSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
+   
+        } else {
+          foreach ($result['errors'] as $error) {
+            $notes->renderError($error['title']);
+          }
         }
+
+      }
+
+        // if (!check_csrf($_POST['csrf'] ?? '')) {
+        //     $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+        // } else {
+        //     $passwordResetService = new PasswordResetService();
+        //     $result = $passwordResetService->processPasswordResetRequest($_POST['email']);
+
+        //     if ($result['success']) {
+        //         $_SESSION['success'][] = [
+        //             'title' => 'Проверьте почту', 
+        //             'desc' => '<p>На указанную почту был отправлен email с ссылкой для сброса пароля.</p>'
+        //         ];
+        //     } else {
+        //         foreach ($result['errors'] as $error) {
+        //             $_SESSION['errors'][] = $error;
+        //         }
+        //     }
+        // }
     }
 
     // Показываем форму

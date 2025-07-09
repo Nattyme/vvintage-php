@@ -15,9 +15,9 @@ final class FlashMessage
   }
 
   private function addMessage (string $type, string $title, string $desc = null) {
-      if ( $desc === null) {
-       return $_SESSION[$type][] = [$type, $title];
-     }
+    if ( $desc === null) {
+      return $_SESSION[$type][] = ['title' => $title];
+    }
 
      return $_SESSION[$type][] = ['title' => $title, 'desc' => $desc];
   }
