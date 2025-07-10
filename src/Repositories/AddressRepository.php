@@ -85,10 +85,10 @@ final class AddressRepository
 
     /**
      * Метод редактирует пользователя 
-     * @param User $userModel, array $newUserData
-     * @return User|null
+     * @param Address $addressrModel array $postData
+     * @return Address|null
      */
-    public function editUser(Address $addressModel, array $postData): ?Address
+    public function editAddress(Address $addressModel, array $postData): ?Address
     {
       $id = $addressModel->getId();
       $bean = R::load('address', $id);
@@ -120,6 +120,7 @@ final class AddressRepository
      * Метод удаления адрес 
      * 
      * @return void
+     * @param Address $addressModel
     */
     public function removeAddress(Address $addressModel): void
     {
