@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Security;
 
 use Vvintage\Services\Security\PasswordResetService;
+use Vvintage\Repositories\UserRepository;
 use Vvintage\Services\Validation\PasswordResetValidator;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Routing\RouteData;
@@ -12,7 +13,7 @@ final class PasswordResetController {
   public static function index ($routeData) 
   {
     if (isset($_POST['lost-password'])) {
-      $resetPassService = new PasswordResetService();
+      $resetPassService = new PasswordResetService( new UserRepository);
       $notes = new FlashMessage ();   
       $validator = new PasswordResetValidator($resetPassService, $notes);
       $resultEmail = false;

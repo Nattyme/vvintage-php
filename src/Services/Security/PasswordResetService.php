@@ -9,6 +9,12 @@ use Vvintage\Config\Config;
 
 final class PasswordResetService 
 {
+  private UserRepository $userRepository;
+
+  public function __construct (UserRepository $userRepository) {
+    $this->userRepository = $userRepository;
+  }
+
   // Генерируем случайную строку заданной длины 
   private function randomStr(int $length = 30): string 
   {
@@ -18,8 +24,7 @@ final class PasswordResetService
   // Метод проверяет, существует ли пользователь с таким email
   public function userExists(string $email): bool
   {
-    $userRepository = new UserRepository();
-    $user = $userRepository->findUserByEmail($email);
+    $user = $this->userRepository->findUserByEmail($email);
 
     return $user !== null;
   }
@@ -27,8 +32,7 @@ final class PasswordResetService
   // Создает и сохраняет код восстановления для пользователя
   public function createRecoveryCode(string $email): ?string
   {
-    $userRepository = new UserRepository();
-    $user = $userRepository->findUserByEmail($email);
+    $user = $this->userRepository->findUserByEmail($email);
 
     if (!$user) {
       return null;

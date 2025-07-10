@@ -9,6 +9,7 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Repositories\UserRepository;
 
 final class PasswordSetNewController {
+  
   public static function index($routeData)
   {
       $userRepository = new UserRepository();
