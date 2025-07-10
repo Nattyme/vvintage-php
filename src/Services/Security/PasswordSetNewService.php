@@ -23,4 +23,36 @@ final class PasswordSetNewService
     return $userModel;
   }
 
+  /**
+   * Метод сохраняет id адреса в поле теблицы User
+  */
+  public function updateRecoveryCodeByEmail (string $email, string $recoveryCode): bool {
+    $userModel = $this->userRepository->findUserByEmail($email);
+    
+    if (!$userModel) {
+        return false;
+    }
+
+    // Сохраняем recovery code в таблицу User
+    $this->userRepository->setRecoveryCode($userModel, $recoveryCode);
+    return true;
+  }
+
+  // public function isValidRecoveryCode(string $email, string $code): bool
+  // {
+  //   $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
+    
+  //   return $userBean && $userBean->recovery_code === $code;
+  // }
+
+  // public function updateUserPassword(string $password, string $email)
+  // {
+  //   // Найдем bean пользователя
+  //   $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
+  //   // Смена пароля. Сохраняем пароль в зашифрованном виде функцией password_hash
+  //   $userBean->password = password_hash($password, PASSWORD_DEFAULT);
+  //   $userBean->recovery_code = '';
+  //   R::store($userBean);
+  // }
+
 }

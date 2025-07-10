@@ -37,11 +37,9 @@ final class PasswordResetService
     // $code = $this->randomStr();
     $code = $this->randomStr();
 
-    // обновляем код в БД через репозиторий
-    $userRepository->updateRecoveryCodeByEmail($email, $code);
-
-    // $user->recovery_code = $code;
-    // R::store($user);
+    // обновляем код в БД 
+    $setNewPassService = new PasswordSetNewService( new UserRepository());
+    $setNewPassService->updateRecoveryCodeByEmail($email, $code);
 
     return $code;
   }
