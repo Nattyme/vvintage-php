@@ -1,0 +1,87 @@
+<?php
+declare(strict_types=1);
+
+namespace Vvintage\Controllers\Security;
+
+use Vvintage\Services\Security\PasswordSetNewService;
+use Vvintage\Services\Validation\PasswordSetNewValidator;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Repositories\UserRepository;
+
+final class PasswordSetNewController {
+  public static function index($routeData)
+  {
+    $userRepository = new UserRepository();
+    $setNewPassService = new PasswordSetNewService($userRepository);
+    $notes = new FlashMessage();
+
+    // 1. Обработка отправки формы (POST)
+    if (!empty($_POST['set-new-password'])) {
+      $email = $_POST['email'] ?? '';
+      $resetCode = $_POST['resetCode'] ?? '';
+      $password = $_POST['password'] ?? '';
+
+      // Найти пользователя по email
+      $userModel = $setNewPassService->findUserByEmail($email);
+
+      if ($userModel) {
+          dd($userRepository->isValidRecoveryCode($email, $resetCode));
+
+        // Проверить код восстановления
+        if ($userRepository->isValidRecoveryCode($email, $resetCode)) {
+          dd($userRepository);
+          // Хешируем и сохраняем пароль
+          $newPasss = $userRepository->updateUserPassword($password, $email);
+
+          $notes->pushSuccess('Пароль был успешно изменён');
+          $newPasswordReady = true;
+
+        } else {
+          $notes->pushError('Неверный код');
+        }
+      } else {
+        $notes->pushError('Пользователь не найден');
+      }
+    }
+
+    // 2. Переход по ссылке из письма (GET)
+    else if (!empty($_GET['email']) && !empty($_GET['code'])) {
+      $email = $_GET['email'];
+
+      // Проверка, существует ли пользователь
+      $userModel = $setNewPassService->findUserByEmail($email);
+
+      if (!$userModel) {
+        $notes->pushError('Пользователь не найден');
+        header("Location: " . HOST . "lost-password");
+        exit;
+      }
+    }
+
+    // Иначе — редирект на форму восстановления
+    else {
+      header("Location: " . HOST . "lost-password");
+      exit;
+    }
+
+    // Отображение формы
+    self::renderForm($routeData ?? [], $newPasswordReady ?? false);
+  }
+
+  private static function renderForm($routeData, bool $newPasswordReady = false)
+  {
+    $pageTitle = "Установить новый пароль";
+    $pageClass = "authorization-page";
+
+    ob_start();
+    include ROOT . 'views/login/set-new-password.tpl';
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    include ROOT . "views/_page-parts/_head.tpl";
+    include ROOT . "views/login/login-page.tpl";
+    include ROOT . "views/_page-parts/_foot.tpl";
+  }
+
+}
+

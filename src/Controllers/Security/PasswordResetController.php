@@ -6,6 +6,7 @@ namespace Vvintage\Controllers\Security;
 use Vvintage\Services\Security\PasswordResetService;
 use Vvintage\Services\Validation\PasswordResetValidator;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Routing\RouteData;
 
 final class PasswordResetController {
   public static function index ($routeData) 
@@ -14,11 +15,13 @@ final class PasswordResetController {
       $resetPassService = new PasswordResetService();
       $notes = new FlashMessage ();   
       $validator = new PasswordResetValidator($resetPassService, $notes);
+      $resultEmail = false;
 
       if ($validator->validate($_POST)) {
         $result = $resetPassService->processPasswordResetRequest($_POST['email']);
 
         if ($result['success']) {
+          $resultEmail = true;
           $notes->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
    
         } else {
@@ -29,12 +32,12 @@ final class PasswordResetController {
 
       }
     }
-
+    
     // Показываем форму
-    self::renderForm($routeData);
+    self::renderForm($routeData, $resultEmail ?? null);
   }
 
-  private static function renderForm ($routeData) {
+  private static function renderForm (RouteData $routeData, ?bool $resultEmail = false) {
     $pageTitle = "Восстановить пароль";
     $pageClass = "authorization-page";
  

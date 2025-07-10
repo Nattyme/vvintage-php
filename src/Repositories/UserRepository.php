@@ -120,10 +120,43 @@ final class UserRepository
     public function updateUserAddressId(int $userId, int $addressId): void {
       $user = R::load('users', $userId);
       if ($user->id !== 0) {
-        $user->address_id = $addressId;
+        $user->address = $addressId;
         R::store($user);
       }
     }
+
+    /**
+     * Метод сохраняет id адреса в поле теблицы User
+    */
+    public function updateRecoveryCodeByEmail (string $email, string $recoveryCode): bool {
+      $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
+      if (!$userBean) {
+          return false;
+      }
+
+      $userBean->recovery_code = $recoveryCode;
+
+      R::store($userBean);
+      return true;
+    }
+
+    public function isValidRecoveryCode(string $email, string $code): bool
+    {
+      $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
+      return $userBean && $userBean->recovery_code === $code;
+    }
+
+    public function updateUserPassword(string $password, string $email)
+    {
+      // Найдем bean пользователя
+      $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
+dd($userBean);
+      // Смена пароля. Сохраняем пароль в зашифрованном виде функцией password_hash
+      $userBean->password = password_hash($password, PASSWORD_DEFAULT);
+      $userBean->recovery_code = '';
+      R::store($userBean);
+    }
+
 
 
   

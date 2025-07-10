@@ -6,7 +6,7 @@
   <?php include ROOT . "views/components/errors.tpl"; ?>
   <?php include ROOT . "views/components/success.tpl"; ?>
 
-  <?php if (!isset($resultEmail)) : ?>
+  <?php if (!$resultEmail ) : ?>
   <div class="authorization-form__field">
     <label for="email" class="authorization-form__field-title">Email</label>
     <input name="email" class="input" type="text" placeholder="Введите ваш Email" id="email"/>

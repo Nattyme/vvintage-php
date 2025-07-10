@@ -6,7 +6,7 @@
   <?php include ROOT . "templates/components/errors.tpl"; ?>
   <?php include ROOT . "templates/components/success.tpl"; ?>
 
-  <?php if( !isset($newPasswordReady) ) : ?>
+  <?php if( !$newPasswordReady ) : ?>
   <div class="authorization-form__field">
     <label for="password" class="authorization-form__field-title">Новый пароль</label>
     <input name="password" class="input" type="password" placeholder="Введите новый пароль" id="password"/>

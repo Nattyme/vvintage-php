@@ -92,7 +92,7 @@
           break;
 
         case 'set-new-password':
-          require ROOT . 'modules/login/set-new-password.php';
+          \Vvintage\Controllers\Security\PasswordSetNewController::index($routeData);
           break;
       }
     }

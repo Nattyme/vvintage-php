@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Vvintage\Services\Security;
+use Vvintage\Repositories\UserRepository;
 
 use RedBeanPHP\R;
 use Vvintage\Config\Config;
@@ -17,25 +18,30 @@ final class PasswordResetService
   // Метод проверяет, существует ли пользователь с таким email
   public function userExists(string $email): bool
   {
-    $user = R::findOne('users', 'email = ?', [$email]);
+    $userRepository = new UserRepository();
+    $user = $userRepository->findUserByEmail($email);
+
     return $user !== null;
   }
 
   // Создает и сохраняет код восстановления для пользователя
   public function createRecoveryCode(string $email): ?string
   {
-    $user = R::findOne('users', 'email = ?', [$email]);
+    $userRepository = new UserRepository();
+    $user = $userRepository->findUserByEmail($email);
 
     if (!$user) {
       return null;
     }
 
     // $code = $this->randomStr();
-    $code = self::randomStr();
+    $code = $this->randomStr();
 
-    // 5. Запомнить секретный код. Записать в БД.
-    $user->recovery_code = $code;
-    R::store($user);
+    // обновляем код в БД через репозиторий
+    $userRepository->updateRecoveryCodeByEmail($email, $code);
+
+    // $user->recovery_code = $code;
+    // R::store($user);
 
     return $code;
   }
@@ -57,34 +63,35 @@ final class PasswordResetService
   }
 
   // Главный метод, объединяющий все шаги
-    public function processPasswordResetRequest(string $email): array
-    {
-        $errors = [];
+  public function processPasswordResetRequest(string $email): array
+  {
+      $errors = [];
 
-        if (trim($email) === '') {
-            $errors[] = ['title' => 'Введите email', 'desc' => '<p>Email - обязательное поле</p>'];
-        } elseif (!filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
-            $errors[] = ['title' => 'Введите корректный Email'];
-        } elseif (!$this->userExists($email)) {
-            $errors[] = ['title' => 'Пользователя с таким email не существует'];
-        }
+      if (trim($email) === '') {
+          $errors[] = ['title' => 'Введите email', 'desc' => '<p>Email - обязательное поле</p>'];
+      } elseif (!filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
+          $errors[] = ['title' => 'Введите корректный Email'];
+      } elseif (!$this->userExists($email)) {
+          $errors[] = ['title' => 'Пользователя с таким email не существует'];
+      }
 
-        if ($errors) {
-            return ['success' => false, 'errors' => $errors];
-        }
+      if ($errors) {
+          return ['success' => false, 'errors' => $errors];
+      }
 
-        $code = $this->createRecoveryCode($email);
-        if (!$code) {
-            return ['success' => false, 'errors' => [['title' => 'Ошибка генерации кода восстановления']]];
-        }
+      $code = $this->createRecoveryCode($email);
 
-        $mailResult = $this->sendRecoveryEmail($email, $code);
+      if (!$code) {
+          return ['success' => false, 'errors' => [['title' => 'Ошибка генерации кода восстановления']]];
+      }
 
-        if (!$mailResult) {
-            return ['success' => false, 'errors' => [['title' => 'Ошибка отправки письма']]];
-        }
+      $mailResult = $this->sendRecoveryEmail($email, $code);
 
-        return ['success' => true];
-    }
+      if (!$mailResult) {
+          return ['success' => false, 'errors' => [['title' => 'Ошибка отправки письма']]];
+      }
+
+      return ['success' => true];
+  }
 
 }
