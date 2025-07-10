@@ -18,7 +18,7 @@ final class RegistrationController
       $validator = new RegistrationValidator($regService, $notes);
 
       if ( $validator->validate( $_POST )) {
-        $newUser = $regService->createNewUser( $_POST );
+        $newUser = $regService->registrateUser( $_POST );
 
         if (!$newUser) {
           $notes->pushError('Что-то пошло не так. Попробуйте ещё раз.');

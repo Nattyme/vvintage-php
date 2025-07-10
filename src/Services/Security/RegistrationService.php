@@ -4,31 +4,23 @@ declare(strict_types=1);
 namespace Vvintage\Services\Security;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Services\User\UserService;
 use Vvintage\Services\Auth\SessionManager;
 
 use RedBeanPHP\R;
 
 final class RegistrationService
 {
-  public function createNewUser (array $postData):void
+ 
+  public function registrateUser (array $postData):void 
   {
-    $userRepository = new UserRepository();
+    // Создаем нового пользователя
+    $userService = new UserService( new UserRepository() );
+    $newUser = $userService->createUser( $postData );
 
-    /**
-     * @var User|null
-    */
-    $user = $userRepository->createUser($postData);
-    $userId = $user->getId();
-
-    if ( is_int($userId) ) {
-      // Создаем адрес пользователи в таблицу адресов доставки и сохраняем Id адреса 
-      $addressId = $userRepository->createAddress( $userId );
-
-      // Обновляем пользователя, добавляя address_id
-      $userRepository->updateUserAddressId( $userId, $addressId );
-
-      // Автологин 
-      $this->autoLoginNewUser($user);
+    // Автологин 
+    if ($newUser) {
+      $this->autoLoginNewUser($newUser);
     }
   }
 

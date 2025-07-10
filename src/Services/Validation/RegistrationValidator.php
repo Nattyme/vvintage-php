@@ -23,7 +23,7 @@ final class RegistrationValidator
 
     $csrfToken = $data['csrf'] ?? '';
     if (!check_csrf($csrfToken)) {
-      $this->notes->renderError('Неверный токен безопасности');
+      $this->notes->pushError('Неверный токен безопасности');
       $valid = false;
     }
 
@@ -31,26 +31,26 @@ final class RegistrationValidator
     $password = trim($data['password'] ?? '');
 
     if ($email === '') {
-      $this->notes->renderError('Введите email', 'Email обязателен для регистрации на сайте');
+      $this->notes->pushError('Введите email', 'Email обязателен для регистрации на сайте');
       $valid = false;
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->notes->renderError('Введите корректный Email');
+      $this->notes->pushError('Введите корректный Email');
       $valid = false;
     } elseif ($this->regService->isEmailBlocked($email)) {
-      $this->notes->renderError('Ошибка регистрации.');
+      $this->notes->pushError('Ошибка регистрации.');
       $valid = false;
     }
 
     if ($password === '') {
-      $this->notes->renderError('Введите пароль', 'Пароль обязателен для регистрации на сайте');
+      $this->notes->pushError('Введите пароль', 'Пароль обязателен для регистрации на сайте');
       $valid = false;
     } elseif (strlen($password) < 5) {
-      $this->notes->renderError('Неверный формат пароля', 'Пароль должен быть больше четырёх символов');
+      $this->notes->pushError('Неверный формат пароля', 'Пароль должен быть больше четырёх символов');
       $valid = false;
     }
 
-    if (! $this->regService->isEmailFree($email)) {
-      $this->notes->renderError(
+    if ($this->regService->isEmailFree($email)) {
+      $this->notes->pushError(
         'Пользователь с таким email уже существует',
         'Используйте другой email адрес или воспользуйтесь <a href="' . HOST . 'lost-password">восстановлением пароля.</a>'
       );
