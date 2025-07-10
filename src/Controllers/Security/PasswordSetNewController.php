@@ -11,62 +11,68 @@ use Vvintage\Repositories\UserRepository;
 final class PasswordSetNewController {
   public static function index($routeData)
   {
-    $userRepository = new UserRepository();
-    $setNewPassService = new PasswordSetNewService($userRepository);
-    $notes = new FlashMessage();
+      $userRepository = new UserRepository();
+      $setNewPassService = new PasswordSetNewService($userRepository);
+      $notes = new FlashMessage();
 
-    // 1. Обработка отправки формы (POST)
-    if (!empty($_POST['set-new-password'])) {
-      $email = $_POST['email'] ?? '';
-      $resetCode = $_POST['resetCode'] ?? '';
-      $password = $_POST['password'] ?? '';
+      $email = '';
+      $resetCode = '';
+      $newPasswordReady = false;
 
-      // Найти пользователя по email
-      $userModel = $setNewPassService->findUserByEmail($email);
+      // 1. Обработка отправки формы (POST)
+      if (!empty($_POST['set-new-password'])) {
+          $email = $_POST['email'] ?? '';
+          $resetCode = $_POST['resetCode'] ?? '';
+          $password = $_POST['password'] ?? '';
 
-      if ($userModel) {
-          dd($userRepository->isValidRecoveryCode($email, $resetCode));
+          $userModel = $setNewPassService->findUserByEmail($email);
 
-        // Проверить код восстановления
-        if ($userRepository->isValidRecoveryCode($email, $resetCode)) {
-          dd($userRepository);
-          // Хешируем и сохраняем пароль
-          $newPasss = $userRepository->updateUserPassword($password, $email);
+          if ($userModel) {
+              if ($userRepository->isValidRecoveryCode($email, $resetCode)) {
 
-          $notes->pushSuccess('Пароль был успешно изменён');
-          $newPasswordReady = true;
-
-        } else {
-          $notes->pushError('Неверный код');
-        }
-      } else {
-        $notes->pushError('Пользователь не найден');
+                $userRepository->updateUserPassword($password, $email);
+                  $notes->pushSuccess('Пароль был успешно изменён');
+                  $newPasswordReady = true;
+              } else {
+                  $notes->pushError('Неверный код восстановления');
+              }
+          } else {
+              $notes->pushError('Пользователь не найден');
+          }
       }
-    }
 
-    // 2. Переход по ссылке из письма (GET)
-    else if (!empty($_GET['email']) && !empty($_GET['code'])) {
-      $email = $_GET['email'];
+      // 2. Переход по ссылке из письма (GET)
+      else if (!empty($_GET['email']) && !empty($_GET['code'])) {
+          $email = $_GET['email'];
+          $resetCode = $_GET['code'];
 
-      // Проверка, существует ли пользователь
-      $userModel = $setNewPassService->findUserByEmail($email);
+          $userModel = $setNewPassService->findUserByEmail($email);
 
-      if (!$userModel) {
-        $notes->pushError('Пользователь не найден');
-        header("Location: " . HOST . "lost-password");
-        exit;
+          if (!$userModel) {
+              $notes->pushError('Пользователь не найден');
+              header("Location: " . HOST . "lost-password");
+              exit;
+          }
+
+          if (!$userRepository->isValidRecoveryCode($email, $resetCode)) {
+              $notes->pushError('Неверный или просроченный код восстановления');
+              header("Location: " . HOST . "lost-password");
+              exit;
+          }
+
+          // иначе — показываем форму смены пароля
       }
-    }
 
-    // Иначе — редирект на форму восстановления
-    else {
-      header("Location: " . HOST . "lost-password");
-      exit;
-    }
+      // 3. Иначе — редирект на форму восстановления
+      else {
+          header("Location: " . HOST . "lost-password");
+          exit;
+      }
 
-    // Отображение формы
-    self::renderForm($routeData ?? [], $newPasswordReady ?? false);
+      // Отображение формы
+      self::renderForm($routeData ?? [], $newPasswordReady, $email, $resetCode);
   }
+
 
   private static function renderForm($routeData, bool $newPasswordReady = false)
   {

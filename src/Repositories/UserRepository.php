@@ -143,6 +143,7 @@ final class UserRepository
     public function isValidRecoveryCode(string $email, string $code): bool
     {
       $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
+      
       return $userBean && $userBean->recovery_code === $code;
     }
 
@@ -150,7 +151,6 @@ final class UserRepository
     {
       // Найдем bean пользователя
       $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
-dd($userBean);
       // Смена пароля. Сохраняем пароль в зашифрованном виде функцией password_hash
       $userBean->password = password_hash($password, PASSWORD_DEFAULT);
       $userBean->recovery_code = '';
