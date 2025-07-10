@@ -1,0 +1,109 @@
+<?php
+declare(strict_types=1);
+
+namespace Vvintage\Models\Address;
+
+use Vvintage\Repositories\UserRepository;
+use Vvintage\Models\User\UserInterface;
+
+
+final class Address 
+{
+    private int $id;
+    private string $password;
+    private string $email;
+    private string $name;
+    private string $role;
+    private array $fav_list;
+    private array $cart;
+
+    public function __construct(OODBBean $bean)
+    {
+      $this->id = (int) $bean->id;
+      $this->email = $bean->email;
+      $this->password = $bean->password;
+      $this->name = $bean->name ?? 'Пользователь';
+      $this->role = $bean->role ?? 'user';
+
+      // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
+      $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
+      $this->fav_list = [];
+      // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
+
+    }
+
+
+    public function export($user): array
+    {
+        return [
+          'id' => $this->id,
+          'name' => $this->name,
+          'email' => $this->email,
+          'role' => $this->role,
+          'password' => $this->password,
+          'cart' => $this->cart,
+          'fav_list' => $this->fav_list
+        ];
+    }
+
+    public function load (): array 
+    {
+      $userRepository = $this->getRepository();
+      $this->cart = $userRepository->getUserCart($this); // если у тебя есть такой метод
+
+      return $this->cart;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    /**
+     * @return Cart
+     */
+    public function getCart(): array
+    {
+        return $this->cart;
+    }
+
+    public function setCart(array $cart): void
+    {
+      $this->cart = $cart;
+    }
+
+    public function getCartModel(): Cart
+    {
+      return new Cart($this->cart);
+    }
+
+    public function getFavList()
+    {
+        return $this->fav_list;
+    }
+}
