@@ -29,10 +29,10 @@ final class PasswordSetNewController {
           $userModel = $setNewPassService->findUserByEmail($email);
 
           if ($userModel) {
-            $isValidCode = $$setNewPassService->isValidRecoveryCode($email, $resetCode);
+            $isValidCode = $setNewPassService->isValidRecoveryCode($email, $resetCode);
 
             if ($isValidCode) {
-              $userRepository->updateUserPassword($password, $email);
+              $setNewPassService->updateUserPassword($password, $email);
 
               $notes->pushSuccess('Пароль был успешно изменён');
               $newPasswordReady = true;

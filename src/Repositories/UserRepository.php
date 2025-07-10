@@ -137,6 +137,17 @@ final class UserRepository
 
     }
 
+    public function updateUserPassword (User $userModel, string $password): void
+    {
+      $id = $userModel->getId();
+      $bean = R::load('users', $id);
+
+      if ($bean->id !== 0) {
+        $bean->password = password_hash($password, PASSWORD_DEFAULT);
+        R::store( $bean );
+      }
+    }
+
     /**
      * Метод сохраняет id адреса в поле теблицы User
     */
@@ -147,19 +158,6 @@ final class UserRepository
         R::store($user);
       }
     }
-
-
-    public function updateUserPassword(string $password, string $email)
-    {
-      // Найдем bean пользователя
-      $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
-      // Смена пароля. Сохраняем пароль в зашифрованном виде функцией password_hash
-      $userBean->password = password_hash($password, PASSWORD_DEFAULT);
-      $userBean->recovery_code = '';
-      R::store($userBean);
-    }
-
-
 
   
     /**

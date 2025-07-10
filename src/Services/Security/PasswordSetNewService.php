@@ -52,14 +52,15 @@ final class PasswordSetNewService
     return $recoveryCodeDB === $code;
   }
 
-  // public function updateUserPassword(string $password, string $email)
-  // {
-  //   // Найдем bean пользователя
-  //   $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
-  //   // Смена пароля. Сохраняем пароль в зашифрованном виде функцией password_hash
-  //   $userBean->password = password_hash($password, PASSWORD_DEFAULT);
-  //   $userBean->recovery_code = '';
-  //   R::store($userBean);
-  // }
+  public function updateUserPassword(string $password, string $email)
+  {
+    $userModel = $this->userRepository->findUserByEmail($email);
+
+    // Смена пароля. Сохраняем пароль в зашифрованном виде функцией password_hash
+    $this->userRepository->updateUserPassword($userModel, $password);
+
+    // Сбрасываем recovery code
+    $this->userRepository->setRecoveryCode ($userModel, '');
+  }
 
 }
