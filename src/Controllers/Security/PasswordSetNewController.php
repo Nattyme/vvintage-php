@@ -29,14 +29,16 @@ final class PasswordSetNewController {
           $userModel = $setNewPassService->findUserByEmail($email);
 
           if ($userModel) {
-              if ($userRepository->isValidRecoveryCode($email, $resetCode)) {
+            $isValidCode = $$setNewPassService->isValidRecoveryCode($email, $resetCode);
 
-                $userRepository->updateUserPassword($password, $email);
-                  $notes->pushSuccess('Пароль был успешно изменён');
-                  $newPasswordReady = true;
-              } else {
-                  $notes->pushError('Неверный код восстановления');
-              }
+            if ($isValidCode) {
+              $userRepository->updateUserPassword($password, $email);
+
+              $notes->pushSuccess('Пароль был успешно изменён');
+              $newPasswordReady = true;
+            } else {
+              $notes->pushError('Неверный код восстановления');
+            }
           } else {
               $notes->pushError('Пользователь не найден');
           }
@@ -55,7 +57,7 @@ final class PasswordSetNewController {
               exit;
           }
 
-          if (!$userRepository->isValidRecoveryCode($email, $resetCode)) {
+          if (!$setNewPassService->isValidRecoveryCode($email, $resetCode)) {
               $notes->pushError('Неверный или просроченный код восстановления');
               header("Location: " . HOST . "lost-password");
               exit;

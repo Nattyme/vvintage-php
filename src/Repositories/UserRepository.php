@@ -126,6 +126,17 @@ final class UserRepository
       }
     }
 
+    public function getRecoveryCode (User $userModel): string
+    {
+      $id = $userModel->getId();
+      $bean = R::load('users', $id);
+
+      if ($bean->id !== 0) {
+        return $bean->recovery_code;
+      }
+
+    }
+
     /**
      * Метод сохраняет id адреса в поле теблицы User
     */
@@ -137,27 +148,6 @@ final class UserRepository
       }
     }
 
-    /**
-     * Метод сохраняет id адреса в поле теблицы User
-    */
-    // public function updateRecoveryCodeByEmail (string $email, string $recoveryCode): bool {
-    //   $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
-    //   if (!$userBean) {
-    //       return false;
-    //   }
-
-    //   $userBean->recovery_code = $recoveryCode;
-
-    //   R::store($userBean);
-    //   return true;
-    // }
-
-    public function isValidRecoveryCode(string $email, string $code): bool
-    {
-      $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
-      
-      return $userBean && $userBean->recovery_code === $code;
-    }
 
     public function updateUserPassword(string $password, string $email)
     {

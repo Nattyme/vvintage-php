@@ -38,12 +38,19 @@ final class PasswordSetNewService
     return true;
   }
 
-  // public function isValidRecoveryCode(string $email, string $code): bool
-  // {
-  //   $userBean = R::findOne('users', 'email = ?', [strtolower($email)]);
-    
-  //   return $userBean && $userBean->recovery_code === $code;
-  // }
+  public function isValidRecoveryCode(string $email, string $code): bool
+  {
+    $userModel = $this->userRepository->findUserByEmail($email);
+
+    if (!$userModel) {
+        return false;
+    }
+
+    // Получим recovery code из БД
+    $recoveryCodeDB = $this->userRepository->getRecoveryCode($userModel);
+
+    return $recoveryCodeDB === $code;
+  }
 
   // public function updateUserPassword(string $password, string $email)
   // {
