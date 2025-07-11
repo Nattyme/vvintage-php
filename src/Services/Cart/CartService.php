@@ -52,9 +52,9 @@ final class CartService
              setcookie('cart', '', time() - 3600, '/');
       }
 
-      if (isset($_COOKIE['fav_list'])) {
-          setcookie('fav_list', '', time() - 3600, '/');
-      }
+      // if (isset($_COOKIE['fav_list'])) {
+      //     setcookie('fav_list', '', time() - 3600, '/');
+      // }
     }
 
     private function setWelcomeMessage()

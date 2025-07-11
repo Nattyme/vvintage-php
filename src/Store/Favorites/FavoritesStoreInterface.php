@@ -6,7 +6,7 @@ namespace Vvintage\Store\Favorites;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Favorites\Favorites;
 
-interface FavoritesInterface 
+interface FavoritesStoreInterface 
 {
   public function save(Favorites $favModel, ?UserInterface $userModel = null): void;
 

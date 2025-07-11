@@ -6,7 +6,7 @@ namespace Vvintage\Store\Favorites;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Favorites\Favorites;
 
-class GuestFavoritesStore implements FavoritesInterface {
+class GuestFavoritesStore implements FavoritesStoreInterface {
   public function load(): array {
     
     return isset($_COOKIE['fav_list']) && is_string($_COOKIE['fav_list'])
