@@ -70,12 +70,24 @@ final class UserRepository
     {
       $bean = R::dispense( 'users' );
 
-      $bean->email = $postData['email'];
       $bean->role = 'user';
-      $bean->address = '';
+      $bean->email = $postData['email'];
 
       // Сохраняем пароль в зашифрованном виде функцией password_hash
       $bean->password = password_hash($postData['password'], PASSWORD_DEFAULT);
+
+      $bean->name = '';
+      $bean->cart = [];
+      $bean->fav_list = [];
+      $bean->name = '';
+      $bean->surname = '';
+      $bean->country = '';
+      $bean->city = '';
+      $bean->phone = '';
+      $bean->avatar = '';
+      $bean->avatar_small = '';
+      $bean->recovery_code = '';
+      $bean->address_id = '';
 
       $userId = R::store($bean);
    
@@ -95,8 +107,18 @@ final class UserRepository
 
       if ($bean->id !== 0) {
         // Заполнить пар-ры
-        // $userBean->name = $newUserData['name'];
+        $bean->name =  $postData['name'] ?? '';
+        $bean->surname = $postData['surname'] ?? '';
+        $bean->country = $postData['country'] ?? '';
+        $bean->city = $postData['city'] ?? '';
+        $bean->phone = $postData['phone'] ?? '';
+        $bean->avatar = $postData['avatar'] ?? '';
+        $bean->avatar_small = $postData['avatar_small'] ?? '';
+
+        $userId = R::store($bean);
+    
         R::store( $bean );
+
         return new User ($bean);
       }
 
@@ -184,28 +206,19 @@ final class UserRepository
 
     }
 
-    // public function removeCartItem(int $itemId)
-    // {
-    //   $bean = R::load('users', $itemId);
-
-    //   if ($bean->id !== 0) {
-    //     R::trash( $bean ); 
-    //   }
-    // }
-
 
     /**
      * Метод возвращает корзину user из БД
      * @return array
     */
-    public function getUserCart(int $userId): array
-    {
-        // Находим bean пользователя по id из модели
-        $userBean = R::load('users', $userId);
+    // public function getUserCart(int $userId): array
+    // {
+    //     // Находим bean пользователя по id из модели
+    //     $userBean = R::load('users', $userId);
 
-        // Получаем корзину из БД и переводим в массив
-        $userCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
-        return $userCart;
-    }
+    //     // Получаем корзину из БД и переводим в массив
+    //     $userCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
+    //     return $userCart;
+    // }
 
 }

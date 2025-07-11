@@ -83,7 +83,6 @@ final class AddressRepository
    
       return new Address ($bean);
     }
-
     /**
      * Метод редактирует пользователя 
      * @param Address $addressrModel array $postData
