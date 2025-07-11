@@ -6,6 +6,8 @@ use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Services\User\UserService;
 use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Address\AddressService;
+use Vvintage\Repositories\AddressRepository;
 
 use RedBeanPHP\R;
 
@@ -15,7 +17,7 @@ final class RegistrationService
   public function registrateUser (array $postData):void 
   {
     // Создаем нового пользователя
-    $userService = new UserService( new UserRepository() );
+    $userService = new UserService( new UserRepository(), new AddressService(new AddressRepository()));
     $newUser = $userService->createUser( $postData );
 
     // Автологин 

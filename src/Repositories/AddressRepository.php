@@ -60,11 +60,12 @@ final class AddressRepository
      * 
      * @return Address|null
     */
-    public function createAddress(array $postData): ?Address
+    public function createAddress(int $user_id, array $postData): ?Address
     {
+      $userBean = R::load('users', $user_id);
       $bean = R::dispense( 'address' );
 
-      $bean->user_id = $postData['user_id'];
+      $bean->user_id = $userBean->id;
       $bean->name = $postData['name'] ?? '';
       $bean->surname = $postData['surname'] ?? '';
       $bean->fathername = $postData['fathername'] ?? '';
@@ -80,7 +81,7 @@ final class AddressRepository
       // Сохраняем 
       $userId = R::store($bean);
    
-      return new Address ($bean) ?? null;
+      return new Address ($bean);
     }
 
     /**
