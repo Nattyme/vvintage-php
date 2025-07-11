@@ -17,6 +17,7 @@ final class User implements UserInterface
     private string $role;
     private array $fav_list;
     private array $cart;
+    private int $address;
 
     public function __construct(OODBBean $bean)
     {
@@ -29,6 +30,7 @@ final class User implements UserInterface
       // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
       $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
       $this->fav_list = [];
+      $this->address = (int) $bean->address;
       // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
 
     }
@@ -46,7 +48,8 @@ final class User implements UserInterface
           'role' => $this->role,
           'password' => $this->password,
           'cart' => $this->cart,
-          'fav_list' => $this->fav_list
+          'fav_list' => $this->fav_list,
+          'address' => $this->address
         ];
     }
 
@@ -110,4 +113,9 @@ final class User implements UserInterface
     {
         return $this->fav_list;
     }
+
+    public function getAddress() {
+      return $this->address;
+    }
+
 }

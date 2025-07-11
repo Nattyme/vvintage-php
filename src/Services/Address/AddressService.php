@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\User;
+namespace Vvintage\Services\Address;
 
 use Vvintage\Models\Address\Address;
 use Vvintage\Repositories\AddressRepository;
@@ -14,8 +14,8 @@ final class AddressService
     $this->addressRepository = $addressRepository;
   }
   
-  public function createAddress ($user_id, array $postData): ?Adress
+  public function createAddress (int $user_id, array $postData): ?Address
   {
-    return $this->addressRepository->createAddress($userId, $postData);
+    return $this->addressRepository->createAddress($user_id, $postData);
   }
 }

@@ -72,6 +72,7 @@ final class UserRepository
 
       $bean->email = $postData['email'];
       $bean->role = 'user';
+      $bean->address = '';
 
       // Сохраняем пароль в зашифрованном виде функцией password_hash
       $bean->password = password_hash($postData['password'], PASSWORD_DEFAULT);
@@ -80,19 +81,6 @@ final class UserRepository
    
       return new User ($bean);
     }
-
-    // public function createAddress (int $userId): int
-    // {
-    //   // Создаем бин в таблице адресов доставки
-    //   $address = R::dispense('address');
-      
-    //   // Сохраняем id пользователя в таблицу адресов доставки
-    //   $address->user_id = $userId;
-    //   $addressId = R::store($address);
-
-    //   return $addressId;
-    // }
-
 
 
     /**
@@ -112,6 +100,7 @@ final class UserRepository
         return new User ($bean);
       }
 
+      return null;
     }
 
     public function setRecoveryCode (User $userModel, string $recoveryCode): void
@@ -135,6 +124,7 @@ final class UserRepository
         return $bean->recovery_code;
       }
 
+      return null;
     }
 
     public function updateUserPassword (User $userModel, string $password): void
@@ -152,10 +142,12 @@ final class UserRepository
      * Метод сохраняет id адреса в поле теблицы User
     */
     public function updateUserAddressId(int $userId, int $addressId): void {
-      $user = R::load('users', $userId);
-      if ($user->id !== 0) {
-        $user->address = $addressId;
-        R::store($user);
+      $userBean = R::load('users', $userId);
+      $addressBean = R::load('address',  $addressId);
+
+      if ($userBean->id !== 0) {
+        $userBean->address = $addressBean;
+        R::store( $userBean);
       }
     }
 
@@ -192,14 +184,14 @@ final class UserRepository
 
     }
 
-    public function removeCartItem(int $itemId)
-    {
-      $bean = R::load('users', $itemId);
+    // public function removeCartItem(int $itemId)
+    // {
+    //   $bean = R::load('users', $itemId);
 
-      if ($bean->id !== 0) {
-        R::trash( $bean ); 
-      }
-    }
+    //   if ($bean->id !== 0) {
+    //     R::trash( $bean ); 
+    //   }
+    // }
 
 
     /**

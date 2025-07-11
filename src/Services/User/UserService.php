@@ -26,19 +26,18 @@ final class UserService
     /**
      * @var User|null
     */
-    $user = $this->userRepository->createUser($postData);
-    $userId = $user->getId();
+    $userModel = $this->userRepository->createUser($postData);
+    $userId = $userModel->getId();
 
     if ( is_int($userId) ) {
       // Создаем адрес пользователи в таблицу адресов доставки и сохраняем Id адреса 
       $addressModel = $this->addressService->createAddress( $userId, $postData);
-      dd($addressModel);
       $addressId = $addressModel->getId();
 
-      // Обновляем пользователя, добавляя address_id
+      // Обновляем пользователя, добавляя id адреса
       $this->userRepository->updateUserAddressId( $userId, $addressId );
     }
 
-    return $user;
+    return $userModel;
   }
 }
