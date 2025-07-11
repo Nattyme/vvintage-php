@@ -7,6 +7,7 @@ use Vvintage\Repositories\UserRepository;
 use Vvintage\Models\User\UserInterface;
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\Cart\Cart;
+use Vvintage\Models\Favorites\Favorites;
 
 final class User implements UserInterface
 {
@@ -29,7 +30,7 @@ final class User implements UserInterface
 
       // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
       $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
-      $this->fav_list = [];
+      $this->fav_list = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
       $this->address = (int) $bean->address;
       // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
 
@@ -109,9 +110,14 @@ final class User implements UserInterface
       return new Cart($this->cart);
     }
 
-    public function getFavList()
+    public function getFav()
     {
         return $this->fav_list;
+    }
+
+    public function getFavModel()
+    {      
+      return new Favorites ($this->fav_list);
     }
 
     public function getAddress() {

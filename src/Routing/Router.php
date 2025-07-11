@@ -45,6 +45,12 @@
         case 'removefromcart':
           self::routeCart($routeData);
           break;
+
+        case 'favorites':
+        case 'addtofav':
+        case 'removefromfav':
+          self::routeFav($routeData);
+          break;
         
         case 'neworder':
         case 'ordercreated':
@@ -152,6 +158,20 @@
           \Vvintage\Controllers\Cart\CartController::addItem((int) $_GET['id'], $routeData);
           break;
         case 'removefromcart':
+          \Vvintage\Controllers\Cart\CartController::removeItem((int) $_GET['id'], $routeData);
+          break;
+      }
+    }
+
+    private static function routeFav(RouteData $routeData) {
+      switch ($routeData->uriModule) {
+        case 'favorites':
+          \Vvintage\Controllers\favorites\favoritesController::index($routeData);
+          break;
+        case 'addtofav':
+          \Vvintage\Controllers\Cart\CartController::addItem((int) $_GET['id'], $routeData);
+          break;
+        case 'removefromfav':
           \Vvintage\Controllers\Cart\CartController::removeItem((int) $_GET['id'], $routeData);
           break;
       }

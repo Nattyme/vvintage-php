@@ -52,7 +52,7 @@ final class FavoritesController
       */
       $settings = Settings::all(); // Получаем массив всех настроек
       
-      $pageTitle = "Корзина товаров";
+      $pageTitle = "Избранное";
 
       // Хлебные крошки
       $breadcrumbs = [
