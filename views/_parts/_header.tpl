@@ -56,18 +56,26 @@
                 <?php else : ?>
                    <a href="<?php echo HOST . 'logout';?>" class="">Выход</a>
                 <?php endif; ?>
+
+                    <a href="<?php echo HOST . 'favorites';?>" class="header__favorite">
+                      <svg class="icon icon--favorite">
+                        <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>"></use>
+                      </svg>
+                    </a>
+                    
+                    <a href="<?php echo HOST . 'cart';?>" class="header__cart counter">
+                      <svg class="icon icon--cart">
+                        <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#cart';?>"></use>
+                      </svg>
+                      <?php if (!empty($cartCount)) : ?>
+                        <div class="counter__widget counter__widget--cart">
+                          <span class="text-ellipsis"><?php echo h($cartCount); ?></span>
+                        </div>
+                      <?php endif; ?>
+                    </a>
               </div>
-              
-              <a href="<?php echo HOST . 'cart';?>" class="header__cart counter">
-                <svg class="icon icon--cart">
-                  <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#cart';?>"></use>
-                </svg>
-                <?php if (!empty($cartCount)) : ?>
-                  <div class="counter__widget counter__widget--cart">
-                    <span class="text-ellipsis"><?php echo h($cartCount); ?></span>
-                  </div>
-                <?php endif; ?>
-              </a>
+
+         
     
             </div>
           </div>

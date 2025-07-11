@@ -76,19 +76,19 @@
                     <p class="cart__total-amount">
                       Количество товаров: <span class="text-bold"><?php echo count($products);?></span>
                     </p>
-                    <p class="cart__total">
+                    <!-- <p class="cart__total">
                       Итого: <span class="text-bold"><?php echo h($totalPrice); ?>&nbsp;&euro;</span>
-                    </p>
+                    </p> -->
             
                   </div>
                 </div>
               </div>
           
-              <div class="cart__row cart__row--end">
+              <!-- <div class="cart__row cart__row--end">
                 <a href="<?php echo HOST;?>neworder" class="button button--primary button--l">
                   Оформить заказ
                 </a>
-              </div>
+              </div> -->
 
             </div>
 
@@ -96,7 +96,7 @@
           <!--// cart table-->
         <?php else : ?>
           <div class="page-cart__empty">
-            <h1 class="page-cart__title page-cart__title-wrapper">Корзина пуста</h1>
+            <h1 class="page-cart__title page-cart__title-wrapper">Список избранного пуст</h1>
             <a href="<?php echo HOST;?>shop" class="button button--primary button--m">Добавить товары</a>
           </div>
         <?php endif; ?>

@@ -52,6 +52,14 @@
                 data-thumb="<?php echo HOST . 'usercontent/products/' . h($image);?>">
               </a>
             <?php endforeach; ?>
+
+            <div class="fav-button-wrapper">
+              <a href="<?php echo HOST . 'addtofav?id=' . u($product->getId());?>" class="fav-button">
+                  <svg class="icon icon--favorite">
+                    <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>"></use>
+                  </svg>
+              </a>
+            </div>
            
           </div>
         </div>
