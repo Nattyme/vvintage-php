@@ -54,10 +54,14 @@
             <?php endforeach; ?>
 
             <div class="fav-button-wrapper">
-              <a href="<?php echo HOST . 'addtofav?id=' . u($product->getId());?>" class="fav-button">
+              <a 
+                href="<?php echo HOST . 'addtofav?id=' . u($product->getId());?>" 
+                class="fav-button <?php echo isProductInFav($product->getId()) ? 'fav-button--active' : '';?>"
+              >
                   <svg class="icon icon--favorite">
                     <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>"></use>
                   </svg>
+
               </a>
             </div>
            

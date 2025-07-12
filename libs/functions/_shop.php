@@ -112,5 +112,25 @@
     return false;
   }
 
+  function isProductInFav ($productId): bool
+  {
+    if (isset($_SESSION['fav_list']) && is_array($_SESSION['fav_list'])) 
+    {
+      return array_key_exists($productId, $_SESSION['fav_list']);
+    }
+
+    if (isset($_COOKIE['fav_list'])) 
+    {
+      $cookieCart = json_decode($_COOKIE['fav_list'], true);
+
+      if (is_array($cookieCart)) 
+      {
+        return array_key_exists($productId, $cookieCart);
+      }
+    }
+
+    return false;
+  }
+
 
 

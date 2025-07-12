@@ -36,6 +36,18 @@
     
       </picture>
     <?php endif; ?>
+
+    <div class="fav-button-wrapper">
+      <div 
+        href="<?php echo HOST . 'addtofav?id=' . u($product->getId());?>" 
+        class="fav-button <?php echo isProductInFav($product->getId()) ? 'fav-button--active' : '';?>"
+      >
+          <svg class="icon icon--favorite">
+            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>"></use>
+          </svg>
+
+      </div>
+    </div>
   </a>
 
   <div class="card__desc">
