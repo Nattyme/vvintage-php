@@ -20,7 +20,7 @@
                   <h2 class="cart__heading">Товар</р>
                 </div>
                 <div class="cart__grid-block">
-                  <p class="cart__heading">Количество</p>
+                  <p class="cart__heading">Описание</p>
                 </div>
                 <div class="cart__grid-block">
                   <p class="cart__heading">Стоимость</p>
@@ -54,7 +54,7 @@
                   <div class="cart__row">
                     <div class="cart__amount">
                       <span class="cart__text">
-                        <?php echo h($cartModel->getQuantity($product['id'])); ?>
+                         Описание
                       </span>
                     </div>
                   </div>

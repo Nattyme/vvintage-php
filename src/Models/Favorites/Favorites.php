@@ -11,39 +11,39 @@ use Vvintage\Services\Messages\FlashMessage;
 
 final class Favorites
 {
-    private array $favorite;
+    private array $favorites;
 
-    public function __construct( array $favorite)
+    public function __construct( array $favorites)
     {
-        $this->favorite = $favorite;
+        $this->favorites = $favorites;
     }
 
 
     public function getItems(): array
     {
-        return $this->favorite;
+        return $this->favorites;
     }
 
     public function addFavItem(int $productId)
     {
       // Добавляем новый товар
-      if (!isset($this->favorite[$productId])) {
-          $this->favorite[$productId] = 1;
+      if (!isset($this->favorites[$productId])) {
+          $this->favorites[$productId] = 1;
       }
     }
 
     public function removeFavItem(int $productId)
     {
         // Удаляем товар из модели
-        if (isset($this->favorite[$productId])) {
-          unset($this->favorite[$productId]);
+        if (isset($this->favorites[$productId])) {
+          unset($this->favorites[$productId]);
         } 
     }
 
     public function getQuantity(int $productId): int
     {
-        return isset($this->favorite[(int)$productId])
-            ? (int)$this->favorite[(int)$productId]
+        return isset($this->favorites[(int)$productId])
+            ? (int)$this->favorites[(int)$productId]
             : 0;
     }
 
@@ -51,7 +51,7 @@ final class Favorites
     {
     
         $total = 0;
-        foreach ($this->favorite as $id => $quantity) {
+        foreach ($this->favorites as $id => $quantity) {
             if (isset($products[$id])) {
                 $total = $total + $products[$id]['price'] * $quantity;
             }
@@ -62,7 +62,7 @@ final class Favorites
 
     public function isSessionFavStale(): bool
     {
-        $sessionFav = json_decode($_SESSION['favorite'] ?? '[]', true);
+        $sessionFav = json_decode($_SESSION['fav_list'] ?? '[]', true);
         return $sessionCFav !== $this->favorite;
     }
 

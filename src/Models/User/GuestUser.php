@@ -5,15 +5,20 @@ namespace Vvintage\Models\User;
 
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\User\UserInterface;
+use Vvintage\Models\Favorites\Favorites;
 
 class GuestUser implements UserInterface  
 {
   private array $cart;
+  private array $fav;
 
-  public function __construct(array $cart)
+  public function __construct($data)
+  // public function __construct(array $cart, array $fav=[])
   {
-    $this->cart = $cart;
-        // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
+    $this->cart = $data['cart'] ?? [];
+    // $this->cart = $cart ?? [];
+    // $this->fav = $fav ?? [];
+    $this->fav = $data['fav'] ?? [];
   }
 
   public function getId(): ?int {
@@ -34,5 +39,19 @@ class GuestUser implements UserInterface
   {
     $this->cart = $cart;
   }
+
+ 
+  public function getFavModel(): Favorites
+  {
+    return new Favorites ($this->fav);
+  }
+
+  public function getFav(): array
+  {
+    return $this->fav;
+  }
+
+
+  
 
 }

@@ -16,7 +16,7 @@ final class User implements UserInterface
     private string $email;
     private string $name;
     private string $role;
-    private array $fav_list;
+    private array $fav;
     private array $cart;
     private int $address;
 
@@ -30,10 +30,8 @@ final class User implements UserInterface
 
       // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
       $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
-      $this->fav_list = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
+      $this->fav = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
       $this->address = (int) $bean->address;
-      // $this->fav_list = json_decode($bean->fav_list ?? '[]', true);
-
     }
 
     public function getRepository(): UserRepository {
@@ -112,12 +110,12 @@ final class User implements UserInterface
 
     public function getFav()
     {
-        return $this->fav_list;
+        return $this->fav;
     }
 
     public function getFavModel()
     {      
-      return new Favorites ($this->fav_list);
+      return new Favorites ($this->fav);
     }
 
     public function getAddress() {

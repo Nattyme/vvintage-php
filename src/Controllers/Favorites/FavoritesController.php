@@ -26,6 +26,7 @@ final class FavoritesController
 {
     public static function index(RouteData $routeData): void
     {
+
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
@@ -38,13 +39,13 @@ final class FavoritesController
 
       // Получаем продукты
       $products = !empty($fav) ? ProductRepository::findByIds($fav) : [];
-      $totalPrice = !empty($products) ? $favModel->getTotalPrice($products) : 0;
+      // $totalPrice = !empty($products) ? $favModel->getTotalPrice($products) : 0;
 
       // Показываем страницу
-      self::renderPage($routeData, $products, $favModel, $totalPrice);
+      self::renderPage($routeData, $products, $favModel);
     }
 
-    private static function renderPage (RouteData $routeData, array $products, Favorites $favModel, int $totalPrice): void 
+    private static function renderPage (RouteData $routeData, array $products, Favorites $favModel): void 
     {  
       /**
         * Проверяем вход пользователя в профиль
@@ -75,7 +76,7 @@ final class FavoritesController
        * @var UserInreface $userModel
       */
       $userModel = SessionManager::getLoggedInUser();
-    
+   
       // Получаем корзину и ее модель
       $favModel = $userModel->getFavModel();
       $fav = $userModel->getFav();
@@ -88,8 +89,8 @@ final class FavoritesController
        * @var FavoritesStoreInterface $cartStore;
        */
       $favStore = ($userModel instanceof User) 
-                    ? new UserFavStore( new UserRepository() ) 
-                    : new GuestFavStore();
+                    ? new UserFavoritesStore( new UserRepository() ) 
+                    : new GuestFavoritesStore();
 
       $favStore->save($favModel, $userModel);
 

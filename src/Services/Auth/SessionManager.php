@@ -10,6 +10,7 @@ use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Store\Cart\GuestCartStore;
+use Vvintage\Store\Favorites\GuestFavoritesStore;
 
 class SessionManager
 {
@@ -56,7 +57,8 @@ class SessionManager
         // Если не пользователь - возвращаем экземпляр гостя с корзиной из куки
         if (!isset($_SESSION['user_id'])) {
           $guestCart = ( new GuestCartStore() )->load();
-            return new GuestUser( $guestCart );
+          $guestFav = ( new GuestFavoritesStore() )->load();
+          return new GuestUser( ['fav' => $guestFav] );
         }
 
         $userRepository = new UserRepository();
