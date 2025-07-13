@@ -14,6 +14,8 @@ final class Page
   private string $content;
   private bool $visible;
 
+  private array $fields = [];
+
   public function __construct (OODBBean $bean) {
     $this->id = (int) $bean->id;
     $this->slug = $bean->slug ?? '404';
@@ -21,6 +23,22 @@ final class Page
     $this->content = $bean->content ?? 'Ошибка 404. Старница не найдена.';
     $this->visible = (bool) ($bean->visible ?? false);
   }
+
+  public function getId(): int
+  {
+    return $this->id;
+  }
+  
+  public function setFields ($fields):void
+  {
+    $this->fiels = $fields;
+  }
+
+  public function getFields(): array
+  {
+    return $this->fields;
+  }
+
 
   /** 
    * Метод возвращает данные страницы в виде массива
@@ -37,9 +55,14 @@ final class Page
       ];
   }
 
-
-  public function getId(): int
+  public function getFieldsValue(string $name):? string 
   {
-      return $this->id;
+    foreach($this->fields as $field) {
+      if($field->getName() === $name) {
+        return $field->geetValue();
+      }
+    }
+
+    return null;
   }
 }

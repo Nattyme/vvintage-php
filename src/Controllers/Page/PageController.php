@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Pages;
 
-use Vvintage\Repositories\PageRepository;
+use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Services\Page\PageService;
 
 final class PageController

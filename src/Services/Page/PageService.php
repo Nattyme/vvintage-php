@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Page;
 
-use Vvintage\Repositories\PageRepository;
+use Vvintage\Repositories\Page\PageRepository;
 
 final class PageService
 {
@@ -17,8 +17,16 @@ final class PageService
       return null;
     }
 
-    return PageRepository::getBySlug($slug);
+    $pageModel = PageRepository::getBySlug($slug);
+    if(!$pageModel) {
+      return null;
+    }
 
+    // Получаем поля страницы и задаем модели
+    $pageFields = PageFieldRepository::getByPageId( $pageModel->getId());
+    $pageModel->setFields($fiуlds);
+
+    return $pageModel;
   }
 
 }
