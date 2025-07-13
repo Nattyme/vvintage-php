@@ -31,7 +31,7 @@ final class Page
   
   public function setFields ($fields):void
   {
-    $this->fiels = $fields;
+    $this->fields = $fields;
   }
 
   public function getFields(): array
@@ -59,7 +59,7 @@ final class Page
   {
     foreach($this->fields as $field) {
       if($field->getName() === $name) {
-        return $field->geetValue();
+        return $field->getValue();
       }
     }
 

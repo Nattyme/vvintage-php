@@ -28,9 +28,9 @@ final class PageField
   {
       return [
         'id' => $this->id,
-        'page_id' => $this->slug,
-        'name' => $this->title,
-        'value' => $this->content,
+        'page_id' => $this->page_id,
+        'name' => $this->name,
+        'value' => $this->value,
       ];
   }
 
@@ -38,5 +38,15 @@ final class PageField
   public function getId(): int
   {
       return $this->id;
+  }
+
+  public function getValue(): string
+  {
+    return $this->value;
+  }
+
+  public function getName(): string 
+  {
+    return $this->name;
   }
 }
