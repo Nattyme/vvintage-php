@@ -28,6 +28,15 @@ final class Page
   {
     return $this->id;
   }
+
+  public function getTitle(): string
+  {
+    if ($this->title === '') {
+      return 'Ошибка 404. Страница не найдена';
+    }
+
+    return $this->title;
+  }
   
   public function setFields ($fields):void
   {

@@ -58,7 +58,7 @@
           break;
 
         case 'contacts':
-          require ROOT . 'modules/contacts/index.php';
+          self::routePages($routeData);
           break;
 
         case 'about':
@@ -184,6 +184,18 @@
           break;
         case 'ordercreated':
           require ROOT . 'modules/orders/created.php';
+          break;
+      }
+    }
+
+    /*************************/
+    /******** PAGES *********/
+    /**********************/
+    private static function routePages(RouteData $routeData)
+    {
+      switch ($routeData->uriModule) {
+        case 'contacts':
+          \Vvintage\Controllers\Page\PageController::index($routeData, $routeData->uriModule);
           break;
       }
     }

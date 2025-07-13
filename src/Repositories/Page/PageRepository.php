@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace Vvintage\Repositories\Page;
 
+use RedBeanPHP\R; // Подключаем readbean
+use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\Page\Page;
 use Vvintage\Repositories\Page\PageFieldRepository;
+
 
 final class PageRepository
 {

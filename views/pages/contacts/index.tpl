@@ -3,15 +3,23 @@
     <div class="container">
       <div class="contacts__header">
         <div class="section-title">
-          <h1 class="h1"><?php echo $page['title']; ?></h1>
+          <h1 class="h1"><?php echo $pageModel->getTitle();?></h1>
         </div>
-        <?php include 'templates/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
+        <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
       </div>
 
       <div class="contacts__map-wrapper">
         <div class="contacts__map" id="map" style="width: 100%; height: 476px">
-          <?php if (!empty($fields['map_embed'])): ?>
-            <?php echo $fields['map_embed']; ?>
+         
+          <?php if (!empty($fields['map'])): ?>
+            <iframe 
+              src="<?php echo $fields['map'];?>" 
+              width="600" height="450" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
           <?php else: ?>
             <p>Карта не добавлена</p>
           <?php endif; ?>

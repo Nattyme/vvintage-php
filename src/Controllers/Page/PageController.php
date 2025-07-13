@@ -1,14 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Pages;
+namespace Vvintage\Controllers\Page;
 
 use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Models\Settings\Settings;
 
 final class PageController
 {
-  public function show($slug)
+  public static function index($routeData, $slug)
   {
     $pageService = new PageService();
     $pageModel = $pageService->getPageBySlug($slug);
@@ -27,6 +28,23 @@ final class PageController
       $fields[$field->getName()] = $field->getValue();
     }
 
-    include ROOT . 'views/pages/contacts/index.tpl';
+    // Получаем массив всех настроек
+    $settings = Settings::all();
+
+    // Хлебные крошки
+    $breadcrumbs = [
+      ['title' => $pageModel->getTitle(), 'url' => '#'],
+    ];
+
+      // Шаблон страницы
+    include ROOT . 'views/_page-parts/_head.tpl';
+    include ROOT . 'views/_parts/_header.tpl';
+
+    include ROOT . 'views/pages/' . $slug . '/index.tpl';
+
+    include ROOT . 'views/_parts/_footer.tpl';
+    include ROOT . 'views/_page-parts/_foot.tpl';
+
   }
+
 }

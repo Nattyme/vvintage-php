@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace Vvintage\Repositories\Page;
 
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
-use Vvintage\Model\Page\PageField;
+use RedBeanPHP\R; // Подключаем readbean
+use Vvintage\Models\Page\PageField;
 
 
 final class PageFieldRepository
@@ -13,8 +14,9 @@ final class PageFieldRepository
   {
     // Найдём страницу
     $bean = R::load('pages', $pageId);
+  
     // Получить список всех связанных полей страницы
-    $fields = $bean->ownPageFieldList ?? [];
+    $fields = $bean->ownPageFieldsList;
 
     // Преобразуем каждый bean из pagefield в объект модели PageField
     return array_map(fn($bean) => new PageField($bean), $fields);
@@ -33,7 +35,7 @@ final class PageFieldRepository
       $field->value = $value;
 
       // Добавляем новое поле к странице.
-      $bean->ownPageFieldsList[] = $field;
+      $page->ownPageFieldsList[] = $field;
     }
 
     R::store($page);

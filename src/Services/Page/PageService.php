@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Page;
 
+use Vvintage\Models\Page\Page;
 use Vvintage\Repositories\Page\PageRepository;
+use Vvintage\Repositories\Page\PageFieldRepository;
 
 final class PageService
 {
@@ -23,8 +25,9 @@ final class PageService
     }
 
     // Получаем поля страницы и задаем модели
-    $pageFields = PageFieldRepository::getByPageId( $pageModel->getId());
-    $pageModel->setFields($fiуlds);
+    $pageFields = PageFieldRepository::getFieldsByPageId( $pageModel->getId());
+  
+    $pageModel->setFields($pageFields);
 
     return $pageModel;
   }
