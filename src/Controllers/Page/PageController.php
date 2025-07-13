@@ -20,5 +20,13 @@ final class PageController
     }
 
     // Передаем данные  шаблон
+    $page = $pageModel->export();
+    $fields = [];
+
+    foreach($pageModel->getFields() as $field) {
+      $fields[$field->getName()] = $field->getValue();
+    }
+
+    include ROOT . 'views/pages/contacts/index.tpl';
   }
 }
