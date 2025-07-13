@@ -13,7 +13,7 @@ final class PageController
     $pageService = new PageService();
     $pageModel = $pageService->getPageBySlug($slug);
 
-    if(!$page) {
+    if(!$pageModel) {
       http_response_code(404);
       echo "404 — Страница не найдена";
       return;
