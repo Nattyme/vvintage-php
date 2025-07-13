@@ -4,12 +4,14 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Pages;
 
 use Vvintage\Repositories\PageRepository;
+use Vvintage\Services\Page\PageService;
 
 final class PageController
 {
   public function show($slug)
   {
-    $page = PageRepository::getBySLug($slug);
+    $pageService = new PageService();
+    $pageModel = $pageService->getPageBySlug($slug);
 
     if(!$page) {
       http_response_code(404);
