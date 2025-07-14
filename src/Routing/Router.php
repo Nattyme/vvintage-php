@@ -197,6 +197,10 @@
         case 'contacts':
           \Vvintage\Controllers\Page\PageController::index($routeData, $routeData->uriModule);
           break;
+          
+        case 'contacts':
+          \Vvintage\Controllers\Page\PageController::index($routeData, $routeData->uriModule);
+          break;
       }
     }
   }

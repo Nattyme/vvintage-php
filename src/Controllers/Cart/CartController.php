@@ -61,7 +61,7 @@ final class CartController
       ];
 
       // Подключение шаблонов страницы
-      include ROOT . "views/_page-parts/_head.tpl";
+      include ROOT . "templates/_page-parts/_head.tpl";
       include ROOT . "views/_parts/_header.tpl";
       include ROOT . "views/cart/cart.tpl";
       include ROOT . "views/_parts/_footer.tpl";

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Cart;
 
+use Vvintage\Models\Shared\AbstractUserProductList;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Services\Messages\FlashMessage;
 
-final class Cart
+final class Cart extends AbstractUserProductList
 {
     private array $cart;
 
