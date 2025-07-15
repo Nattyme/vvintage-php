@@ -7,9 +7,10 @@ use RedBeanPHP\R;
 use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Models\User\User;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Shared\AbstractUserItemsListService;
 
 
-final class FavoritesService 
+final class FavoritesService extends AbstractUserItemsListService
 {
     private FlashMessage $notes;
 
@@ -42,24 +43,15 @@ final class FavoritesService
       $_SESSION['fav_list'] =  $userFavModel->getItems();
 
       // Передаем приветствие в сессию
-      $this->setWelcomeMessage();
+      // $this->setWelcomeMessage();
     }
 
     private function clearGuestCookies()
     {
       if (isset($_COOKIE['fav_list'])) {
-             setcookie('fav_list', '', time() - 3600, '/');
+        setcookie('fav_list', '', time() - 3600, '/');
       }
 
-    }
-
-    private function setWelcomeMessage()
-    {
-      if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
-        $this->notes->pushSuccess('Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'Вы успешно вошли на сайт. Рады снова видеть вас');
-      } else {
-        $this->notes->pushSuccess('Здравствуйте!', 'Вы успешно вошли на сайт. Рады снова видеть вас');
-      }  
     }
 
 }

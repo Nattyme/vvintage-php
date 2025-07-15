@@ -2,6 +2,8 @@
   namespace Vvintage\Routing;
 
   use Vvintage\Routing\RouteData;
+  use Vvintage\Services\Messages\FlashMessage;
+  use \Vvintage\Controllers\Auth\AuthController;
 
   class Router {
      /*****************************
@@ -82,7 +84,8 @@
     private static function routeAuth(RouteData $routeData) {
       switch ($routeData->uriModule) {
         case 'login':
-          \Vvintage\Controllers\Auth\AuthController::login($routeData);
+          $controller  = new AuthController( new FlashMessage());
+          $controller->login($routeData);
           break;
 
         case 'registration':

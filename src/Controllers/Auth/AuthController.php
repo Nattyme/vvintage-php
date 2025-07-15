@@ -30,16 +30,22 @@ require_once ROOT . './libs/functions.php';
 
 final class AuthController
 {
-    public static function login(RouteData $routeData): void
+    private FlashMessage $notes;
+
+    public function __construct(FlashMessage $notes)
+    {
+        $this->notes = $notes;
+    }
+
+    public function login(RouteData $routeData): void
     {
 
       //1. Проверяем массив POST
       if (isset($_POST['login'])) {
-        $userRepository = new UserRepository();
-        $notes = new FlashMessage ();   
-        $validator = new LoginValidator( $userRepository, $notes);
-        $cartService = new CartService( $notes );
-        $favService = new FavoritesService( $notes );
+        $userRepository = new UserRepository(); 
+        $validator = new LoginValidator( $userRepository, $this->notes);
+        $cartService = new CartService(  $this->notes );
+        $favService = new FavoritesService(  $this->notes );
 
           // Если ошибок нет
           if (empty($_SESSION['errors'])) {
@@ -48,7 +54,7 @@ final class AuthController
             $userModel = $userRepository->findUserByEmail($_POST['email']);
 
             if (!$userModel) {
-              $notes->pushError('Неверный email');
+              $this->notes->pushError('Неверный email');
             }
 
             if (empty($_SESSION['errors'])) {
@@ -85,6 +91,14 @@ final class AuthController
                   // Сохраняем в БД
                   $userRepository->saveUserCart($userModel, $mergedCart);
                   $userRepository->saveUserFav($userModel, $mergedFav);
+
+                  
+                  if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
+                    $this->notes->pushSuccess('Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'Вы успешно вошли на сайт. Рады снова видеть вас');
+                  } else {
+                    $this->notes->pushSuccess('Здравствуйте!', 'Вы успешно вошли на сайт. Рады снова видеть вас');
+                  }  
+                  
                   
                   // Редирект
                   header('Location: ' . HOST . 'cart');
@@ -92,8 +106,8 @@ final class AuthController
                   exit();
 
                 } else {
-                    // Пароль не верен
-                    $notes->pushError('Неверный пароль');
+                  // Пароль не верен
+                  $this->notes->pushError('Неверный пароль');
                 }
             }
           }
