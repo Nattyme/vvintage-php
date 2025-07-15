@@ -8,7 +8,6 @@ use Vvintage\Models\Shared\AbstractUserItemsList;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
-use Vvintage\Services\Messages\FlashMessage;
 
 
 final class Cart extends AbstractUserItemsList

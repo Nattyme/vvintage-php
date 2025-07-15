@@ -12,13 +12,7 @@ use Vvintage\Services\Shared\AbstractUserItemsListService;
 
 final class FavoritesService extends AbstractUserItemsListService
 {
-    private FlashMessage $notes;
-
-    public function __construct(FlashMessage $notes)
-    {
-        $this->notes = $notes;
-    }
-
+   
     /**
       * Слияние избранного (очистка куки, сохранение нового избранного в БД и сессию)
       * @param Favorites $userFavModel модель избранного пользователя

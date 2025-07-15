@@ -12,13 +12,7 @@ use Vvintage\Services\Shared\AbstractUserItemsListService;
 
 final class CartService extends AbstractUserItemsListService
 {
-    private FlashMessage $notes;
-
-    public function __construct(FlashMessage $notes)
-    {
-        $this->notes = $notes;
-    }
-
+  
     /**
       * Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
       * @param Cart $userCartModel модель корзины пользователя

@@ -42,10 +42,10 @@ final class AuthController
 
       //1. Проверяем массив POST
       if (isset($_POST['login'])) {
-        $userRepository = new UserRepository(); 
+        $userRepository = new UserRepository();
         $validator = new LoginValidator( $userRepository, $this->notes);
-        $cartService = new CartService(  $this->notes );
-        $favService = new FavoritesService(  $this->notes );
+        $cartService = new CartService();
+        $favService = new FavoritesService();
 
           // Если ошибок нет
           if (empty($_SESSION['errors'])) {
