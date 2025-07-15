@@ -35,7 +35,7 @@ final class FavoritesController
     
       // Получаем корзину и ее модель
       $favModel = $userModel->getFavModel();
-      $fav = $userModel->getFav();
+      $fav = $userModel->getFavList();
 
       // Получаем продукты
       $products = !empty($fav) ? ProductRepository::findByIds($fav) : [];
@@ -61,7 +61,7 @@ final class FavoritesController
       ];
 
       // Подключение шаблонов страницы
-      include ROOT . "views/_page-parts/_head.tpl";
+      include ROOT . "templates/_page-parts/_head.tpl";
       include ROOT . "views/_parts/_header.tpl";
       include ROOT . "views/favorites/favorites.tpl";
       include ROOT . "views/_parts/_footer.tpl";
@@ -79,10 +79,10 @@ final class FavoritesController
    
       // Получаем корзину и ее модель
       $favModel = $userModel->getFavModel();
-      $fav = $userModel->getFav();
+      $fav = $userModel->getFavList();
 
       // Добавляем новый продукт
-      $favModel->addFavItem($productId);
+      $favModel->addItem($productId);
 
       /**
        * Сохраняем в нужное хранилище
@@ -109,23 +109,23 @@ final class FavoritesController
 
         // Получаем корзину и ее модель
         $favModel = $userModel->getFavModel();
-        $fav = $userModel->getFav();
+        $fav = $userModel->getFavList();
 
         // Удаляем товар
-        $favModel->removeFavItem($productId);
+        $favModel->removeItem($productId);
 
         /**
          * Сохраняем в нужное хранилище
          * @var FavStoreInterface $cartStore;
          */
         $favStore = ($userModel instanceof User) 
-                     ? new UserFavStore( new UserRepository() ) 
-                     : new GuestFavStore();
+                     ? new UserFavoritesStore( new UserRepository() ) 
+                     : new GuestFavoritesStore();
 
         $favStore->save($favModel, $userModel);
 
         // Переадресация обратно на страницу товара
-        header('Location: ' . HOST . 'fav');
+        header('Location: ' . HOST . 'favorites');
         exit();
     }
 

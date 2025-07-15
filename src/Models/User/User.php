@@ -47,7 +47,7 @@ final class User implements UserInterface
           'role' => $this->role,
           'password' => $this->password,
           'cart' => $this->cart,
-          'fav_list' => $this->fav_list,
+          'fav' => $this->fav,
           'address' => $this->address
         ];
     }
@@ -108,7 +108,7 @@ final class User implements UserInterface
       return new Cart($this->cart);
     }
 
-    public function getFav()
+    public function getFavList()
     {
         return $this->fav;
     }

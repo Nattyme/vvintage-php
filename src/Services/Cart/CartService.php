@@ -30,7 +30,7 @@ final class CartService
 
       foreach ($guestCartProducts as $itemId => $quantity) {
           if (!isset( $userCartProducts[$itemId]) ) {
-            $userCartModel->addCartItem($itemId);
+            $userCartModel->addItem($itemId);
           }
       }
 

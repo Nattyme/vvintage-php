@@ -30,7 +30,7 @@ final class ProductController
         $pageTitle = $product->getTitle();
 
         // Передаем данные в view
-        require ROOT . 'views/_page-parts/_head.tpl';
+        require ROOT . 'templates/_page-parts/_head.tpl';
         require ROOT . 'views/_parts/_header.tpl';
         require ROOT . 'views/shop/product.tpl';
         require ROOT . 'views/_parts/_footer.tpl';

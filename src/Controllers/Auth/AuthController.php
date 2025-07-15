@@ -9,6 +9,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
+use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\CartRepository;
 use Vvintage\User\GuestUser;
@@ -17,9 +18,13 @@ use Vvintage\Store\Cart\GuestCartStore;
 use Vvintage\Store\Cart\UserCartStore;
 use Vvintage\Store\Cart\CartStoreInterface;
 use Vvintage\Controllers\Cart\CartController;
+use Vvintage\Store\Favorites\GuestFavoritesStore;
+use Vvintage\Store\Favorites\UserFavoritesStore;
+use Vvintage\Store\Favorites\FavoritesStoreInterface;
 use Vvintage\Services\Validation\LoginValidator;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Cart\CartService;
+use Vvintage\Services\Favorites\FavoritesService;
 
 require_once ROOT . './libs/functions.php';
 
@@ -34,6 +39,7 @@ final class AuthController
         $notes = new FlashMessage ();   
         $validator = new LoginValidator( $userRepository, $notes);
         $cartService = new CartService( $notes );
+        $favService = new FavoritesService( $notes );
 
           // Если ошибок нет
           if (empty($_SESSION['errors'])) {
@@ -51,7 +57,9 @@ final class AuthController
                   * @var UserInterface $guestCartData 
                 */
                 $guestCartData = (new GuestCartStore())->load();
+                $guestFavData = (new GuestFavoritesStore())->load();
                 $guestCartModel = new Cart( $guestCartData);
+                $guestFavModel = new Favorites( $guestFavData);
 
                 // Проверить пароль
                 if (password_verify($_POST['password'], $userModel->getPassword())) {
@@ -61,17 +69,22 @@ final class AuthController
                    * @var UserInterface  $userCartData
                   */
                   $userCartData = ( new UserCartStore($userRepository) ) -> load(); 
+                  $userFavData = ( new UserFavoritesStore($userRepository) ) -> load(); 
 
                   // Создаем модель корзины пользователя
                   $cartModel = new Cart( $userCartData );
+                  $favModel = new Favorites( $userFavData );
 
-                  // Выполняем слияние через CartService
+                  // Выполняем слияние cart и fav через Service
                   $cartService->mergeCartAfterLogin($cartModel, $guestCartModel);
+                  $favService->mergeFavAfterLogin($favModel, $guestFavModel);
           
                   $mergedCart = $cartModel->getItems();
+                  $mergedFav = $favModel->getItems();
 
                   // Сохраняем в БД
                   $userRepository->saveUserCart($userModel, $mergedCart);
+                  $userRepository->saveUserFav($userModel, $mergedFav);
                   
                   // Редирект
                   header('Location: ' . HOST . 'cart');
@@ -103,7 +116,7 @@ final class AuthController
       //Окончание буфера, очищаем вывод
       ob_end_clean();
 
-      include ROOT . "views/_page-parts/_head.tpl";
+      include ROOT . "templates/_page-parts/_head.tpl";
       include ROOT . "views/login/login-page.tpl";
       include ROOT . "views/_page-parts/_foot.tpl";
     }

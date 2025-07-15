@@ -30,7 +30,7 @@ final class FavoritesService
 
       foreach ($guestFavProducts as $itemId => $quantity) {
           if (!isset( $userFavProducts[$itemId]) ) {
-            $userFavModel->addFavItem($itemId);
+            $userFavModel->addItem($itemId);
           }
       }
 

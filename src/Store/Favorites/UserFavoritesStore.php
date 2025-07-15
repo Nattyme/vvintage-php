@@ -20,7 +20,7 @@ class UserFavoritesStore implements FavoritesStoreInterface
   public function load(): array
   {
     $user = $this->userRepository->findUserById((int) $_SESSION['user_id']);
-    return $user->getFav() ?? [];
+    return $user->getFavList() ?? [];
   }
 
   public function save (Favorites $favModel, ?UserInterface $userModel = null): void 

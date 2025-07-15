@@ -58,7 +58,7 @@ class SessionManager
         if (!isset($_SESSION['user_id'])) {
           $guestCart = ( new GuestCartStore() )->load();
           $guestFav = ( new GuestFavoritesStore() )->load();
-          return new GuestUser( ['fav' => $guestFav] );
+          return new GuestUser( ['cart'=> $guestCart, 'fav' => $guestFav] );
         }
 
         $userRepository = new UserRepository();

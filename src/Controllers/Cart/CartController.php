@@ -10,6 +10,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Repositories\ProductRepository;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
+use Vvintage\Models\Shared\AbstractUserItemsList;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Models\User\User;
@@ -32,7 +33,7 @@ final class CartController
        * @var UserInreface $userModel
       */
       $userModel = SessionManager::getLoggedInUser();
-    
+
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
       $cart = $userModel->getCart();
@@ -82,7 +83,7 @@ final class CartController
       $cart = $userModel->getCart();
 
       // Добавляем новый продукт
-      $cartModel->addCartItem($productId);
+      $cartModel->addItem($productId);
 
       /**
        * Сохраняем в нужное хранилище
@@ -112,7 +113,7 @@ final class CartController
         $cart = $userModel->getCart();
 
         // Удаляем товар
-        $cartModel->removeCartItem($productId);
+        $cartModel->removeItem($productId);
 
         /**
          * Сохраняем в нужное хранилище

@@ -33,7 +33,9 @@
               <?php foreach ($products as $product) : ?>
                 <div class="cart__grid cart__grid--relative">
                   <div class="cart__row">
-                    <a href="<?php echo HOST . 'removefromcart?id=' . u($product['id']);?>" class="button button-close cross-wrapper cart__delete link-above-others " 
+                    <a 
+                      href="<?php echo HOST . 'removefromfav?id=' . u($product['id']);?>" 
+                      class="button button-close cross-wrapper cart__delete link-above-others " 
                       aria-label="Удалить товар <?php echo h($product['title']);?>">
                       <span class="leftright"></span><span class="rightleft"> </span>
                     </a>

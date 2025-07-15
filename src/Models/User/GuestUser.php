@@ -46,7 +46,7 @@ class GuestUser implements UserInterface
     return new Favorites ($this->fav);
   }
 
-  public function getFav(): array
+  public function getFavList(): array
   {
     return $this->fav;
   }

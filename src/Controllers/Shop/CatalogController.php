@@ -39,7 +39,7 @@ final class CatalogController
 
 
         // Передаем данные в view
-        require ROOT . 'views/_page-parts/_head.tpl';
+        require ROOT . 'templates/_page-parts/_head.tpl';
         require ROOT . 'views/_parts/_header.tpl';
         require ROOT . 'views/shop/catalog.tpl';
         require ROOT . 'views/_parts/_footer.tpl';
