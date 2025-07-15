@@ -28,7 +28,7 @@ final class UserService
     */
     $userModel = $this->userRepository->createUser($postData);
     $userId = $userModel->getId();
-dd($userModel);
+
     // if ( is_int($userId) ) {
     //   // Создаем адрес пользователя в таблицу адресов доставки и сохраняем Id адреса 
     //   $addressModel = $this->addressService->createAddress( $userId, $postData);

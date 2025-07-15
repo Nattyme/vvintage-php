@@ -84,31 +84,30 @@ final class UserRepository
       // Сохраняем пароль в зашифрованном виде функцией password_hash
       $bean->password = password_hash($postData['password'], PASSWORD_DEFAULT);
 
-      $bean->name = '';
-      $bean->cart = '[]';
-      $bean->fav_list = '[]';
-      $bean->name = '';
-      $bean->surname = '';
-      $bean->country = '';
-      $bean->city = '';
-      $bean->phone = '';
-      $bean->avatar = '';
-      $bean->avatar_small = '';
-      $bean->recovery_code = '';
-
-      $userId = R::store($bean);
+      $bean->name = null;
+      $bean->cart = null;
+      $bean->fav_list = null;
+      $bean->surname = null;
+      $bean->country = null;
+      $bean->city = null;
+      $bean->phone = null;
+      $bean->avatar = null;
+      $bean->avatar_small = null;
+      $bean->recovery_code = null;
       
-      if ( is_int( $userId)) {
-        $addressBean = $this->addressRepository->createAddress( $userId ); // создаем новый адрес
-        $bean->user_id = $addressBean;
+      $addressModel = $this->addressRepository->createAddress(); // создаем новый адрес
+      $addressId = $addressModel->getId();
 
-        $userId = R::store($bean);
-
-        return new User ($bean);
+      if (!is_int($addressId) || $addressId === 0) {
+        return null;
       }
 
-      return null;
+      $addressBean = R::load('address', $addressId);
+      $bean->address = $addressBean;
 
+      $userId = R::store($bean);
+
+      return new User ($bean);
     }
 
 
@@ -117,7 +116,7 @@ final class UserRepository
      * @param User $userModel, array $newUserData
      * @return User|null
      */
-    public function editUser(User $userModel, array $newUserData): ?User
+    public function editUser(User $userModel, array $postData): ?User
     {
       $id = $userModel->getId();
       $bean = R::load('users', $id);
@@ -154,7 +153,7 @@ final class UserRepository
       }
     }
 
-    public function getRecoveryCode (User $userModel): string
+    public function getRecoveryCode (User $userModel): ?string
     {
       $id = $userModel->getId();
       $bean = R::load('users', $id);

@@ -60,32 +60,32 @@ final class AddressRepository
      * 
      * @return Address|null
     */
-    public function createAddress(int $user_id): ?OODBBean
+    public function createAddress(): ?Address
     {
-      $userBean = R::load('users', $user_id);
+      // $userBean = R::load('users', $user_id);
       $bean = R::dispense( 'address' );
 
-      $bean->user_id = $userBean->id;
-      $bean->name = '';
-      $bean->surname = '';
-      $bean->fathername = '';
-      $bean->country = '';
-      $bean->area = '';
-      $bean->city = '';
-      $bean->street = '';
-      $bean->building = '';
-      $bean->flat = '';
-      $bean->post_index = '';
-      $bean->phone = '';
+      $bean->name = null;
+      $bean->surname = null;
+      $bean->fathername = null;
+      $bean->country = null;
+      $bean->area = null;
+      $bean->city = null;
+      $bean->street = null;
+      $bean->building = null;
+      $bean->flat = null;
+      $bean->post_index = null;
+      $bean->phone = null;
+      
 
       // Сохраняем 
       $addressId = R::store($bean);
 
-      if ( is_int(  $addressId  )) {
-        return $bean;
+      if ( !is_int(  $addressId  )) {
+        return null;
       }
 
-      return null;
+      return new Address($bean);
   
     }
     /**
