@@ -4,27 +4,41 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Auth;
 
+/** Роутер */
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
-use Vvintage\Services\Auth\SessionManager;
+
+/** Модели */
 use Vvintage\Models\User\User;
+use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
+
+/** Интерфейсы */
+use Vvintage\Models\User\UserInterface;
+
+/** Репозитории */
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\CartRepository;
-use Vvintage\User\GuestUser;
-use Vvintage\User\UserInterface;
-use Vvintage\Store\Cart\GuestCartStore;
-use Vvintage\Store\Cart\UserCartStore;
-use Vvintage\Store\Cart\CartStoreInterface;
-use Vvintage\Controllers\Cart\CartController;
-use Vvintage\Store\Favorites\GuestFavoritesStore;
-use Vvintage\Store\Favorites\UserFavoritesStore;
-use Vvintage\Store\Favorites\FavoritesStoreInterface;
+
+/** Сервисы */
+use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Validation\LoginValidator;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Favorites\FavoritesService;
+
+/** Store */
+use Vvintage\Store\Cart\GuestCartStore;
+use Vvintage\Store\Cart\UserCartStore;
+use Vvintage\Store\Cart\CartStoreInterface;
+use Vvintage\Store\Favorites\GuestFavoritesStore;
+use Vvintage\Store\Favorites\UserFavoritesStore;
+use Vvintage\Store\Favorites\FavoritesStoreInterface;
+
+/** Контролеры */
+use Vvintage\Controllers\Cart\CartController;
+use Vvintage\Controllers\Security\RegistrationController;
 
 require_once ROOT . './libs/functions.php';
 
@@ -117,7 +131,7 @@ final class AuthController
       self::renderPage($routeData);
     }
 
-    private static function renderPage (RouteData $routeData): void
+    private function renderPage (RouteData $routeData): void
     {
       $pageTitle = "Вход на сайт";
       $pageClass = "authorization-page";
@@ -140,9 +154,10 @@ final class AuthController
 
     }
 
-    public static function register()
+    public function register(RouteData $routeData)
     {
-
+      $regController = new RegistrationController( $this->notes );
+      $regController->index($routeData);
     }
 
     public static function setNewPassword()

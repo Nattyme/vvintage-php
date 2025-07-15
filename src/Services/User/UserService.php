@@ -22,21 +22,21 @@ final class UserService
 // createNewUser
   public function createUser (array $postData): ?User
   {
-   
+  
     /**
      * @var User|null
     */
     $userModel = $this->userRepository->createUser($postData);
     $userId = $userModel->getId();
+dd($userModel);
+    // if ( is_int($userId) ) {
+    //   // Создаем адрес пользователя в таблицу адресов доставки и сохраняем Id адреса 
+    //   $addressModel = $this->addressService->createAddress( $userId, $postData);
+    //   $addressId = $addressModel->getId();
 
-    if ( is_int($userId) ) {
-      // Создаем адрес пользователи в таблицу адресов доставки и сохраняем Id адреса 
-      $addressModel = $this->addressService->createAddress( $userId, $postData);
-      $addressId = $addressModel->getId();
-
-      // Обновляем пользователя, добавляя id адреса
-      $this->userRepository->updateUserAddressId( $userId, $addressId );
-    }
+    //   // Обновляем пользователя, добавляя id адреса
+    //   $this->userRepository->updateUserAddressId( $userId, $addressId );
+    // }
 
     return $userModel;
   }

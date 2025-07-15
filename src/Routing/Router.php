@@ -82,14 +82,16 @@
 
 
     private static function routeAuth(RouteData $routeData) {
+      $controller  = new AuthController( new FlashMessage());
+
       switch ($routeData->uriModule) {
         case 'login':
-          $controller  = new AuthController( new FlashMessage());
           $controller->login($routeData);
           break;
 
         case 'registration':
-          \Vvintage\Controllers\Security\RegistrationController::index($routeData);
+          $controller->register($routeData);
+          // \Vvintage\Controllers\Security\RegistrationController::index($routeData);
           break;
 
         case 'logout':

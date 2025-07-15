@@ -8,9 +8,17 @@ use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
+use Vvintage\Repositories\AddressRepository;
 
 final class UserRepository
 {
+    private AddressRepository $addressRepository;
+
+    public function __construct()
+    {
+      $this->addressRepository = new AddressRepository();
+    }
+
     /**
      * Метод ищет пользователя по id
      * @param int $id
@@ -77,8 +85,8 @@ final class UserRepository
       $bean->password = password_hash($postData['password'], PASSWORD_DEFAULT);
 
       $bean->name = '';
-      $bean->cart = [];
-      $bean->fav_list = [];
+      $bean->cart = '[]';
+      $bean->fav_list = '[]';
       $bean->name = '';
       $bean->surname = '';
       $bean->country = '';
@@ -87,11 +95,20 @@ final class UserRepository
       $bean->avatar = '';
       $bean->avatar_small = '';
       $bean->recovery_code = '';
-      $bean->address_id = '';
 
       $userId = R::store($bean);
-   
-      return new User ($bean);
+      
+      if ( is_int( $userId)) {
+        $addressBean = $this->addressRepository->createAddress( $userId ); // создаем новый адрес
+        $bean->user_id = $addressBean;
+
+        $userId = R::store($bean);
+
+        return new User ($bean);
+      }
+
+      return null;
+
     }
 
 

@@ -10,18 +10,24 @@ use Vvintage\Services\Messages\FlashMessage;
 
 final class RegistrationController 
 {
-  public static function index ($routeData) {
+  private FlashMessage $notes;
+
+  public function __construct(FlashMessage $notes)
+  {
+      $this->notes = $notes;
+  }
+
+  public function index ($routeData) {
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
       $regService = new RegistrationService();
-      $notes = new FlashMessage ();   
-      $validator = new RegistrationValidator($regService, $notes);
+      $validator = new RegistrationValidator($regService, $this->notes);
 
       if ( $validator->validate( $_POST )) {
         $newUser = $regService->registrateUser( $_POST );
 
         if (!$newUser) {
-          $notes->pushError('Что-то пошло не так. Попробуйте ещё раз.');
+          $this->notes->pushError('Что-то пошло не так. Попробуйте ещё раз.');
         }
       }
     }
@@ -42,7 +48,7 @@ final class RegistrationController
     //Окончание буфера, очищаем вывод
     ob_end_clean();
 
-    include ROOT . "views/_page-parts/_head.tpl";
+    include ROOT . "templates/_page-parts/_head.tpl";
     include ROOT . "views/login/login-page.tpl";
     include ROOT . "views/_page-parts/_foot.tpl";
 

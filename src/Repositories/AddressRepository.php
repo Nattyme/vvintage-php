@@ -60,28 +60,33 @@ final class AddressRepository
      * 
      * @return Address|null
     */
-    public function createAddress(int $user_id, array $postData): ?Address
+    public function createAddress(int $user_id): ?OODBBean
     {
       $userBean = R::load('users', $user_id);
       $bean = R::dispense( 'address' );
 
       $bean->user_id = $userBean->id;
-      $bean->name = $postData['name'] ?? '';
-      $bean->surname = $postData['surname'] ?? '';
-      $bean->fathername = $postData['fathername'] ?? '';
-      $bean->country = $postData['country'] ?? '';
-      $bean->area = $postData['area'] ?? '';
-      $bean->city = $postData['city'] ?? '';
-      $bean->street = $postData['street'] ?? '';
-      $bean->building = $postData['building'] ?? '';
-      $bean->flat = $postData['flat'] ?? '';
-      $bean->post_index = $postData['post_index'] ?? '';
-      $bean->phone = $postData['phone'] ?? '';
+      $bean->name = '';
+      $bean->surname = '';
+      $bean->fathername = '';
+      $bean->country = '';
+      $bean->area = '';
+      $bean->city = '';
+      $bean->street = '';
+      $bean->building = '';
+      $bean->flat = '';
+      $bean->post_index = '';
+      $bean->phone = '';
 
       // Сохраняем 
-      $userId = R::store($bean);
-   
-      return new Address ($bean);
+      $addressId = R::store($bean);
+
+      if ( is_int(  $addressId  )) {
+        return $bean;
+      }
+
+      return null;
+  
     }
     /**
      * Метод редактирует пользователя 
