@@ -94,7 +94,7 @@
           break;
 
         case 'logout':
-          require ROOT . 'modules/login/logout.php';
+          $controller->logout($routeData);
           break;
 
         case 'lost-password':
