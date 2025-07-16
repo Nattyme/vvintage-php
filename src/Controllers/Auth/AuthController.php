@@ -40,7 +40,8 @@ use Vvintage\Store\Favorites\FavoritesStoreInterface;
 use Vvintage\Controllers\Cart\CartController;
 use Vvintage\Controllers\Security\RegistrationController;
 use Vvintage\Controllers\Security\PasswordResetController;
-
+use Vvintage\Controllers\Security\PasswordSetNewController;
+use Vvintage\Services\Security\PasswordSetNewService;
 
 require_once ROOT . './libs/functions.php';
 
@@ -158,18 +159,20 @@ final class AuthController
 
     public function register(RouteData $routeData)
     {
-      $regController = new RegistrationController( $this->notes );
-      $regController->index($routeData);
+      $controller = new RegistrationController( $this->notes );
+      $controller->index($routeData);
     }
 
-    public static function setNewPassword()
+    public function setNewPassword(RouteData $routeData)
     {
-
+      $setNewPassService = new PasswordSetNewService( new UserRepository() );
+      $controller = new PasswordSetNewController( $setNewPassService, $this->notes );
+      $controller->index($routeData);
     }
 
     public function resetPassword(RouteData $routeData)
     {
-      $regController = new PasswordResetController( $this->notes );
-      $regController->index($routeData);
+      $controller = new PasswordResetController( $this->notes );
+      $controller->index($routeData);
     }
 }

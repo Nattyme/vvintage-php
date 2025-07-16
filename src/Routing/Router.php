@@ -102,7 +102,7 @@
           break;
 
         case 'set-new-password':
-          \Vvintage\Controllers\Security\PasswordSetNewController::index($routeData);
+          $controller->setNewPassword($routeData);
           break;
       }
     }

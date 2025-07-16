@@ -29,7 +29,7 @@ final class PasswordResetController {
 
         if ($result['success']) {
           $resultEmail = true;
-          $this->notes->pushError('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
+          $this->notes->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
    
         } else {
           foreach ($result['errors'] as $error) {

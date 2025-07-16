@@ -6,16 +6,20 @@ namespace Vvintage\Controllers\Security;
 use Vvintage\Services\Security\PasswordSetNewService;
 use Vvintage\Services\Validation\PasswordSetNewValidator;
 use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Repositories\UserRepository;
 
 final class PasswordSetNewController {
-  
-  public static function index($routeData)
-  {
-      $userRepository = new UserRepository();
-      $setNewPassService = new PasswordSetNewService($userRepository);
-      $notes = new FlashMessage();
+  private FlashMessage $notes;
+  private PasswordSetNewService $setNewPassService;
 
+  public function __construct(PasswordSetNewService $setNewPassService, FlashMessage $notes)
+  {
+    $this->setNewPassService = $setNewPassService;
+    $this->notes = $notes;
+  }
+
+  
+  public function index($routeData)
+  {
       $email = '';
       $resetCode = '';
       $newPasswordReady = false;
@@ -26,21 +30,21 @@ final class PasswordSetNewController {
           $resetCode = $_POST['resetCode'] ?? '';
           $password = $_POST['password'] ?? '';
 
-          $userModel = $setNewPassService->findUserByEmail($email);
+          $userModel = $this->setNewPassService->findUserByEmail($email);
 
           if ($userModel) {
-            $isValidCode = $setNewPassService->isValidRecoveryCode($email, $resetCode);
+            $isValidCode = $this->setNewPassService->isValidRecoveryCode($email, $resetCode);
 
             if ($isValidCode) {
-              $setNewPassService->updateUserPassword($password, $email);
+              $this->setNewPassService->updateUserPassword($password, $email);
 
-              $notes->pushSuccess('Пароль был успешно изменён');
+              $this->notes->pushSuccess('Пароль был успешно изменён');
               $newPasswordReady = true;
             } else {
-              $notes->pushError('Неверный код восстановления');
+              $this->notes->pushError('Неверный код восстановления');
             }
           } else {
-              $notes->pushError('Пользователь не найден');
+              $this->notes->pushError('Пользователь не найден');
           }
       }
 
@@ -49,24 +53,22 @@ final class PasswordSetNewController {
           $email = $_GET['email'];
           $resetCode = $_GET['code'];
 
-          $userModel = $setNewPassService->findUserByEmail($email);
+          $userModel = $this->setNewPassService->findUserByEmail($email);
 
           if (!$userModel) {
-              $notes->pushError('Пользователь не найден');
+              $this->notes->pushError('Пользователь не найден');
               header("Location: " . HOST . "lost-password");
               exit;
           }
 
-          if (!$setNewPassService->isValidRecoveryCode($email, $resetCode)) {
-              $notes->pushError('Неверный или просроченный код восстановления');
+          if (!$this->setNewPassService->isValidRecoveryCode($email, $resetCode)) {
+              $this->notes->pushError('Неверный или просроченный код восстановления');
               header("Location: " . HOST . "lost-password");
               exit;
           }
-
-          // иначе — показываем форму смены пароля
       }
 
-      // 3. Иначе — редирект на форму восстановления
+      // Иначе — редирект на форму восстановления
       else {
           header("Location: " . HOST . "lost-password");
           exit;
@@ -77,7 +79,7 @@ final class PasswordSetNewController {
   }
 
 
-  private static function renderForm($routeData, bool $newPasswordReady = false)
+  private  function renderForm($routeData, bool $newPasswordReady = false)
   {
     $pageTitle = "Установить новый пароль";
     $pageClass = "authorization-page";

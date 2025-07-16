@@ -6,7 +6,6 @@ use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
 
 use RedBeanPHP\R;
-// use Vvintage\Config\Config;
 
 final class PasswordSetNewService 
 {
