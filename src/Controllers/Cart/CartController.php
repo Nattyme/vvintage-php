@@ -26,27 +26,20 @@ require_once ROOT . './libs/functions.php';
 
 final class CartController
 {
-    public static function index(RouteData $routeData): void
+    private UserInterface $userModel;
+    private Cart $cartModel;
+    private array $cart;
+    private FlashMessage $notes;
+
+    public function __construct(UserInterface $userModel, Cart $cartModel, array $cart, FlashMessage $notes)
     {
-      /**
-       * Получаем модель пользователя - гость или залогиненный
-       * @var UserInreface $userModel
-      */
-      $userModel = SessionManager::getLoggedInUser();
-
-      // Получаем корзину и ее модель
-      $cartModel = $userModel->getCartModel();
-      $cart = $userModel->getCart();
-
-      // Получаем продукты
-      $products = !empty($cart) ? ProductRepository::findByIds($cart) : [];
-      $totalPrice = !empty($products) ? $cartModel->getTotalPrice($products) : 0;
-
-      // Показываем страницу
-      self::renderPage($routeData, $products, $cartModel, $totalPrice);
+      $this->userModel = $userModel;
+      $this->cartModel = $cartModel;
+      $this->cart = $cart;
+      $this->notes = $notes;
     }
 
-    private static function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
+    private function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
     {  
       /**
         * Проверяем вход пользователя в профиль
@@ -69,61 +62,52 @@ final class CartController
       include ROOT . "views/_page-parts/_foot.tpl";
     }
 
-    public static function addItem(int $productId, $routeData): void
-    {
-  
-      /**
-       * Получаем модель пользователя - гость или залогоиненный
-       * @var UserInreface $userModel
-      */
-      $userModel = SessionManager::getLoggedInUser();
-    
-      // Получаем корзину и ее модель
-      $cartModel = $userModel->getCartModel();
-      $cart = $userModel->getCart();
 
+
+    public function index(RouteData $routeData): void
+    {
+      // Получаем продукты
+      $products = !empty($this->cart) ? ProductRepository::findByIds($this->cart) : [];
+      $totalPrice = !empty($products) ? $this->cartModel->getTotalPrice($products) : 0;
+
+      // Показываем страницу
+      self::renderPage($routeData, $products, $this->cartModel, $totalPrice);
+    }
+
+    public function addItem(int $productId, $routeData): void
+    {
       // Добавляем новый продукт
-      $cartModel->addItem($productId);
+      $this->cartModel->addItem($productId);
 
       /**
        * Сохраняем в нужное хранилище
        * @var CartStoreInterface $cartStore;
        */
-      $cartStore = ($userModel instanceof User) 
+      $cartStore = ($this->userModel instanceof User) 
                     ? new UserCartStore( new UserRepository() ) 
                     : new GuestCartStore();
 
-      $cartStore->save($cartModel, $userModel);
+      $cartStore->save($this->cartModel, $this->userModel);
 
       // Переадресация обратно на страницу товара
       header('Location: ' . HOST . 'shop/' . $productId);
       exit();
     }
 
-    public static function removeItem(int $productId): void
+    public function removeItem(int $productId): void
     {
-        /**
-         * Получаем модель пользователя - гость или залогиненный
-         * @var UserInreface $userModel
-        */
-        $userModel = SessionManager::getLoggedInUser();
-
-        // Получаем корзину и ее модель
-        $cartModel = $userModel->getCartModel();
-        $cart = $userModel->getCart();
-
         // Удаляем товар
-        $cartModel->removeItem($productId);
+        $this->cartModel->removeItem($productId);
 
         /**
          * Сохраняем в нужное хранилище
          * @var CartStoreInterface $cartStore;
          */
-        $cartStore = ($userModel instanceof User) 
+        $cartStore = ($this->userModel instanceof User) 
                      ? new UserCartStore( new UserRepository() ) 
                      : new GuestCartStore();
 
-        $cartStore->save($cartModel, $userModel);
+        $cartStore->save($this->cartModel, $this->userModel);
 
         // Переадресация обратно на страницу товара
         header('Location: ' . HOST . 'cart');

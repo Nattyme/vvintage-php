@@ -2,8 +2,21 @@
   namespace Vvintage\Routing;
 
   use Vvintage\Routing\RouteData;
+
+  /**  Сервисы */
   use Vvintage\Services\Messages\FlashMessage;
-  use \Vvintage\Controllers\Auth\AuthController;
+  use Vvintage\Services\Auth\SessionManager;
+
+  /** Контроллеры */
+  use Vvintage\Controllers\Auth\AuthController;
+  use Vvintage\Controllers\Cart\CartController;
+
+  /** Модели */
+  use Vvintage\Models\Cart\Cart;
+
+  /** Интерфейсы */
+  use Vvintage\Models\User\UserInterface;
+
 
   class Router {
      /*****************************
@@ -154,15 +167,27 @@
     }
 
     private static function routeCart(RouteData $routeData) {
+      /**
+       * Получаем модель пользователя - гость или залогиненный
+       * @var UserInreface $userModel
+      */
+      $userModel = SessionManager::getLoggedInUser();
+
+      // Получаем корзину и ее модель
+      $cartModel = $userModel->getCartModel();
+      $cart = $userModel->getCart();
+
+      $controller  = new CartController( $userModel, $cartModel, $cart, new FlashMessage() );
+
       switch ($routeData->uriModule) {
         case 'cart':
-          \Vvintage\Controllers\Cart\CartController::index($routeData);
+          $controller->index($routeData);
           break;
         case 'addtocart':
-          \Vvintage\Controllers\Cart\CartController::addItem((int) $_GET['id'], $routeData);
+          $controller->addItem((int) $_GET['id'], $routeData);
           break;
         case 'removefromcart':
-          \Vvintage\Controllers\Cart\CartController::removeItem((int) $_GET['id'], $routeData);
+          $controller->removeItem((int) $_GET['id'], $routeData);
           break;
       }
     }
