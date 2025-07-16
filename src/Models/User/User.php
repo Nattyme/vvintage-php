@@ -103,17 +103,22 @@ final class User implements UserInterface
       $this->cart = $cart;
     }
 
+    public function setFav(array $fav): void 
+    {
+      $this->fav = $fav;
+    }
+
     public function getCartModel(): Cart
     {
       return new Cart($this->cart);
     }
 
-    public function getFavList()
+    public function getFavList(): array
     {
         return $this->fav;
     }
 
-    public function getFavModel()
+    public function getFavModel(): Favorites
     {      
       return new Favorites ($this->fav);
     }

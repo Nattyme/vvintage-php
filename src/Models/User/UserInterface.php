@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Models\User;
 
 use Vvintage\Models\Cart\Cart;
+use Vvintage\Models\Favorites\Favorites;
 
 interface UserInterface 
 {
@@ -12,4 +13,8 @@ interface UserInterface
   public function getCart(): array;
   public function setCart(array $cart): void;
   public function getCartModel(): Cart;
+
+  public function getFavList(): array;
+  public function setFav(array $fav): void;
+  public function getFavModel(): Favorites;
 }

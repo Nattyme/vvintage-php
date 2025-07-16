@@ -24,28 +24,32 @@ require_once ROOT . './libs/functions.php';
 
 final class FavoritesController
 {
-    public static function index(RouteData $routeData): void
+    private UserInterface $userModel;
+    private Favorites $favModel;
+    private array $fav;
+    private FavoritesStoreInterface $favStore;
+    private FlashMessage $notes;
+
+    public function __construct(UserInterface $userModel, Favorites $favModel, array $fav, FavoritesStoreInterface $favStore, FlashMessage $notes)
     {
+      $this->userModel = $userModel;
+      $this->favModel = $favModel;
+      $this->fav = $fav;
+      $this->favStore = $favStore;
+      $this->notes = $notes;
+    }
 
-      /**
-       * Получаем модель пользователя - гость или залогиненный
-       * @var UserInreface $userModel
-      */
-      $userModel = SessionManager::getLoggedInUser();
-    
-      // Получаем корзину и ее модель
-      $favModel = $userModel->getFavModel();
-      $fav = $userModel->getFavList();
-
+    public function index(RouteData $routeData): void
+    {
       // Получаем продукты
-      $products = !empty($fav) ? ProductRepository::findByIds($fav) : [];
+      $products = !empty($this->fav) ? ProductRepository::findByIds($this->fav) : [];
       // $totalPrice = !empty($products) ? $favModel->getTotalPrice($products) : 0;
 
       // Показываем страницу
-      self::renderPage($routeData, $products, $favModel);
+      self::renderPage($routeData, $products, $this->favModel);
     }
 
-    private static function renderPage (RouteData $routeData, array $products, Favorites $favModel): void 
+    private function renderPage (RouteData $routeData, array $products, Favorites $favModel): void 
     {  
       /**
         * Проверяем вход пользователя в профиль
@@ -68,61 +72,22 @@ final class FavoritesController
       include ROOT . "views/_page-parts/_foot.tpl";
     }
 
-    public static function addItem(int $productId, $routeData): void
+    public function addItem(int $productId, $routeData): void
     {
-  
-      /**
-       * Получаем модель пользователя - гость или залогоиненный
-       * @var UserInreface $userModel
-      */
-      $userModel = SessionManager::getLoggedInUser();
-   
-      // Получаем корзину и ее модель
-      $favModel = $userModel->getFavModel();
-      $fav = $userModel->getFavList();
-
       // Добавляем новый продукт
-      $favModel->addItem($productId);
-
-      /**
-       * Сохраняем в нужное хранилище
-       * @var FavoritesStoreInterface $cartStore;
-       */
-      $favStore = ($userModel instanceof User) 
-                    ? new UserFavoritesStore( new UserRepository() ) 
-                    : new GuestFavoritesStore();
-
-      $favStore->save($favModel, $userModel);
+      $this->favModel->addItem($productId);
+      $this->favStore->save($this->favModel, $this->userModel);
 
       // Переадресация обратно на страницу товара
       header('Location: ' . HOST . 'shop/' . $productId);
       exit();
     }
 
-    public static function removeItem(int $productId): void
+    public function removeItem(int $productId): void
     {
-        /**
-         * Получаем модель пользователя - гость или залогиненный
-         * @var UserInreface $userModel
-        */
-        $userModel = SessionManager::getLoggedInUser();
-
-        // Получаем корзину и ее модель
-        $favModel = $userModel->getFavModel();
-        $fav = $userModel->getFavList();
-
         // Удаляем товар
-        $favModel->removeItem($productId);
-
-        /**
-         * Сохраняем в нужное хранилище
-         * @var FavStoreInterface $cartStore;
-         */
-        $favStore = ($userModel instanceof User) 
-                     ? new UserFavoritesStore( new UserRepository() ) 
-                     : new GuestFavoritesStore();
-
-        $favStore->save($favModel, $userModel);
+        $this->favModel->removeItem($productId);
+        $this->favStore->save($this->favModel, $this->userModel);
 
         // Переадресация обратно на страницу товара
         header('Location: ' . HOST . 'favorites');

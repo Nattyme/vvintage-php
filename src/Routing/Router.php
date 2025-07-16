@@ -10,17 +10,26 @@
   /** Контроллеры */
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Cart\CartController;
+  use Vvintage\Controllers\Favorites\FavoritesController;
 
   /** Модели */
   use Vvintage\Models\Cart\Cart;
+  use Vvintage\Models\User\User;
+  use Vvintage\Models\Favorites\Favorites;
 
   /** Хранилища */
   use Vvintage\Store\Cart\GuestCartStore;
   use Vvintage\Store\Cart\UserCartStore;
+  use Vvintage\Store\Favorites\GuestFavoritesStore;
+  use Vvintage\Store\Favorites\UserFavoritesStore;
 
   /** Интерфейсы */
   use Vvintage\Models\User\UserInterface;
   use Vvintage\Store\Cart\CartStoreInterface;
+  use Vvintage\Store\Favorites\FavoritesStoreInterface;
+
+  use Vvintage\Repositories\UserRepository;
+
 
 
   class Router {
@@ -177,6 +186,7 @@
        * @var UserInreface $userModel
       */
       $userModel = SessionManager::getLoggedInUser();
+      $notes = new FlashMessage();
 
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
@@ -189,9 +199,6 @@
       $cartStore = ($userModel instanceof User) 
                     ? new UserCartStore( new UserRepository() ) 
                     : new GuestCartStore();
-
-      $notes = new FlashMessage();
-
 
 
       $controller  = new CartController( $userModel, $cartModel, $cart, $cartStore, $notes );
@@ -210,15 +217,37 @@
     }
 
     private static function routeFav(RouteData $routeData) {
+      $notes = new FlashMessage();
+
+      /**
+       * Получаем модель пользователя - гость или залогиненный
+       * @var UserInreface $userModel
+      */
+      $userModel = SessionManager::getLoggedInUser();
+
+      // Получаем корзину и ее модель
+      $favModel = $userModel->getFavModel();
+      $fav = $userModel->getFavList();
+
+      /**
+       * Получаем хранилище
+       * @var FavoritesStoreInterface $cartStore;
+      */
+      $favStore = ($userModel instanceof User) 
+                    ? new UserFavoritesStore( new UserRepository() ) 
+                    : new GuestFavoritesStore();
+
+                    $controller  = new FavoritesController($userModel, $favModel, $fav, $favStore, $notes);
+
       switch ($routeData->uriModule) {
         case 'favorites':
-          \Vvintage\Controllers\Favorites\FavoritesController::index($routeData);
+          $controller->index($routeData);
           break;
         case 'addtofav':
-          \Vvintage\Controllers\Favorites\FavoritesController::addItem((int) $_GET['id'], $routeData);
+          $controller->addItem((int) $_GET['id'], $routeData);
           break;
         case 'removefromfav':
-          \Vvintage\Controllers\Favorites\FavoritesController::removeItem((int) $_GET['id'], $routeData);
+          $controller->removeItem((int) $_GET['id'], $routeData);
           break;
       }
     }

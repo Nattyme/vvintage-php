@@ -40,6 +40,11 @@ class GuestUser implements UserInterface
     $this->cart = $cart;
   }
 
+  public function setFav(array $fav): void
+  {
+    $this->fav = $fav;
+  }
+
  
   public function getFavModel(): Favorites
   {
