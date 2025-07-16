@@ -12,53 +12,48 @@ use Vvintage\Services\Shared\AbstractUserItemsListService;
 
 final class CartService extends AbstractUserItemsListService
 {
+    public function getCartTotalPrice($products, $cartModel)
+    {
+      return !empty($products) ? $cartModel->getTotalPrice($products) : 0;
+    }
   
     /**
       * Слияние корзины (очистка куки, сохранение новой корзины в БД и сессию)
       * @param Cart $userCartModel модель корзины пользователя
       * @param Cart $guestCartModel модель корзины гостя
     */
-    public function mergeCartAfterLogin(Cart $userCartModel, Cart $guestCartModel): void
-    {
-      $userCartProducts = $userCartModel->getItems();
-      $guestCartProducts = $guestCartModel->getItems();
-
-      foreach ($guestCartProducts as $itemId => $quantity) {
-          if (!isset( $userCartProducts[$itemId]) ) {
-            $userCartModel->addItem($itemId);
-          }
-      }
-
-      // Очищаем cookies
-      $this->clearGuestCookies();
-
-      // Обновляем сессию
-      $_SESSION['logged_user']['cart'] = $userCartModel->getItems();
-      $_SESSION['cart'] =  $userCartModel->getItems();
-      // $_SESSION['fav_list'] = $merged['fav_list'];
-
-      // Передаем приветствие в сессию
-      // $this->setWelcomeMessage();
-    }
-
-    private function clearGuestCookies()
-    {
-      if (isset($_COOKIE['cart'])) {
-             setcookie('cart', '', time() - 3600, '/');
-      }
-
-      if (isset($_COOKIE['fav_list'])) {
-          setcookie('fav_list', '', time() - 3600, '/');
-      }
-    }
-
-    // private function setWelcomeMessage()
+    // public function mergeCartAfterLogin(Cart $userCartModel, Cart $guestCartModel): void
     // {
-    //   if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
-    //     $this->notes->pushSuccess('Здравствуйте, ' . htmlspecialchars($_SESSION['logged_user']['name']), 'Вы успешно вошли на сайт. Рады снова видеть вас');
-    //   } else {
-    //     $this->notes->pushSuccess('Здравствуйте!', 'Вы успешно вошли на сайт. Рады снова видеть вас');
-    //   }  
+    //   $userCartProducts = $userCartModel->getItems();
+    //   $guestCartProducts = $guestCartModel->getItems();
+
+    //   foreach ($guestCartProducts as $itemId => $quantity) {
+    //       if (!isset( $userCartProducts[$itemId]) ) {
+    //         $userCartModel->addItem($itemId);
+    //       }
+    //   }
+
+    //   // Очищаем cookies
+    //   $this->clearGuestCookies();
+
+    //   // Обновляем сессию
+    //   $_SESSION['logged_user']['cart'] = $userCartModel->getItems();
+    //   $_SESSION['cart'] =  $userCartModel->getItems();
+    //   // $_SESSION['fav_list'] = $merged['fav_list'];
+
+    //   // Передаем приветствие в сессию
+    //   // $this->setWelcomeMessage();
+    // }
+
+    // private function clearGuestCookies()
+    // {
+    //   if (isset($_COOKIE['cart'])) {
+    //          setcookie('cart', '', time() - 3600, '/');
+    //   }
+
+    //   if (isset($_COOKIE['fav_list'])) {
+    //       setcookie('fav_list', '', time() - 3600, '/');
+    //   }
     // }
 
 }

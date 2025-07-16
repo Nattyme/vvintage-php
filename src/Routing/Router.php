@@ -6,6 +6,7 @@
   /**  Сервисы */
   use Vvintage\Services\Auth\SessionManager;
   use Vvintage\Services\Page\PageService;
+  use Vvintage\Services\Cart\CartService;
   use Vvintage\Services\Messages\FlashMessage;
 
   /** Контроллеры */
@@ -30,9 +31,9 @@
   use Vvintage\Store\Cart\CartStoreInterface;
   use Vvintage\Store\Favorites\FavoritesStoreInterface;
 
+  /** Репозитории */
   use Vvintage\Repositories\UserRepository;
-
-
+  use Vvintage\Repositories\ProductRepository;
 
   class Router {
      /*****************************
@@ -194,6 +195,8 @@
       $cartModel = $userModel->getCartModel();
       $cart = $userModel->getCart();
 
+      $productRepository = new ProductRepository();
+
       /**
        * Получаем хранилище
        * @var CartStoreInterface $cartStore;
@@ -202,8 +205,9 @@
                     ? new UserCartStore( new UserRepository() ) 
                     : new GuestCartStore();
 
+      $cartService = new CartService($userModel, $cartModel, $cart, $cartStore, $productRepository, $notes);
 
-      $controller  = new CartController( $userModel, $cartModel, $cart, $cartStore, $notes );
+      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $notes );
 
       switch ($routeData->uriModule) {
         case 'cart':
@@ -279,10 +283,7 @@
         case 'contacts':
           $controller->index($routeData);
           break;
-          
-        case 'contacts':
-          $controller->index($routeData);
-          break;
+        
       }
     }
   }

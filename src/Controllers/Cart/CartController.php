@@ -7,33 +7,48 @@ namespace Vvintage\Controllers\Cart;
 use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
+
+/** Репозитории */
+use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\ProductRepository;
-use Vvintage\Models\Settings\Settings;
-use Vvintage\Models\Shop\Catalog;
+
+/** Абстракции */
 use Vvintage\Models\Shared\AbstractUserItemsList;
-use Vvintage\Models\Cart\Cart;
-use Vvintage\Services\Auth\SessionManager;
+
+/** Интерфейсы */
+use Vvintage\Models\User\UserInterface;
+
+/** Модели */
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
+use Vvintage\Models\Settings\Settings;
+use Vvintage\Models\Shop\Catalog;
+use Vvintage\Models\Cart\Cart;
+
+/** Сервисы */
+use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Cart\CartService;
+use Vvintage\Services\Messages\FlashMessage;
+
+/** Хранилище */
 use Vvintage\Store\Cart\GuestCartStore;
 use Vvintage\Store\Cart\UserCartStore;
 use Vvintage\Store\Cart\CartStoreInterface;
-use Vvintage\Models\User\UserInterface;
-use Vvintage\Repositories\UserRepository;
-use Vvintage\Services\Messages\FlashMessage;
 
 require_once ROOT . './libs/functions.php';
 
 final class CartController
 {
+    private CartService $cartService;
     private UserInterface $userModel;
     private Cart $cartModel;
     private array $cart;
     private CartStoreInterface $cartStore;
     private FlashMessage $notes;
 
-    public function __construct(UserInterface $userModel, Cart $cartModel, array $cart, CartStoreInterface $cartStore, FlashMessage $notes)
+    public function __construct(CartService $cartService, UserInterface $userModel, Cart $cartModel, array $cart, CartStoreInterface $cartStore, FlashMessage $notes)
     {
+      $this->cartService = $cartService;
       $this->userModel = $userModel;
       $this->cartModel = $cartModel;
       $this->cart = $cart;
@@ -68,8 +83,8 @@ final class CartController
     public function index(RouteData $routeData): void
     {
       // Получаем продукты
-      $products = !empty($this->cart) ? ProductRepository::findByIds($this->cart) : [];
-      $totalPrice = !empty($products) ? $this->cartModel->getTotalPrice($products) : 0;
+      $products = $this->cartService->getListItems();
+      $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
 
       // Показываем страницу
       self::renderPage($routeData, $products, $this->cartModel, $totalPrice);
@@ -78,10 +93,11 @@ final class CartController
     public function addItem(int $productId, $routeData): void
     {
       // Добавляем новый продукт
-      $this->cartModel->addItem($productId);
+      $this->cartService->addItem($productId);
+      // $this->cartModel->addItem($productId);
 
       // Сохраняем в хранилище
-      $this->cartStore->save($this->cartModel, $this->userModel);
+      // $this->cartStore->save($this->cartModel, $this->userModel);
 
       // Переадресация обратно на страницу товара
       header('Location: ' . HOST . 'shop/' . $productId);
@@ -91,9 +107,10 @@ final class CartController
     public function removeItem(int $productId): void
     {
         // Удаляем товар
-        $this->cartModel->removeItem($productId);
+        $this->cartService->removeItem($productId);
+        // $this->cartModel->removeItem($productId);
 
-        $this->cartStore->save($this->cartModel, $this->userModel);
+        // $this->cartStore->save($this->cartModel, $this->userModel);
 
         // Переадресация обратно на страницу товара
         header('Location: ' . HOST . 'cart');
