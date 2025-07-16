@@ -4,24 +4,26 @@
   use Vvintage\Routing\RouteData;
 
   /**  Сервисы */
-  use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\Auth\SessionManager;
+  use Vvintage\Services\Page\PageService;
+  use Vvintage\Services\Messages\FlashMessage;
 
   /** Контроллеры */
   use Vvintage\Controllers\Auth\AuthController;
+  use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
   use Vvintage\Controllers\Favorites\FavoritesController;
 
   /** Модели */
-  use Vvintage\Models\Cart\Cart;
   use Vvintage\Models\User\User;
+  use Vvintage\Models\Cart\Cart;
   use Vvintage\Models\Favorites\Favorites;
 
   /** Хранилища */
-  use Vvintage\Store\Cart\GuestCartStore;
   use Vvintage\Store\Cart\UserCartStore;
-  use Vvintage\Store\Favorites\GuestFavoritesStore;
   use Vvintage\Store\Favorites\UserFavoritesStore;
+  use Vvintage\Store\Cart\GuestCartStore;
+  use Vvintage\Store\Favorites\GuestFavoritesStore;
 
   /** Интерфейсы */
   use Vvintage\Models\User\UserInterface;
@@ -268,13 +270,18 @@
     /**********************/
     private static function routePages(RouteData $routeData)
     {
+      $pageService = new PageService();
+      $pageModel = $pageService->getPageBySlug($routeData->uriModule);
+
+      $controller = new PageController($pageModel, $pageService);
+
       switch ($routeData->uriModule) {
         case 'contacts':
-          \Vvintage\Controllers\Page\PageController::index($routeData, $routeData->uriModule);
+          $controller->index($routeData);
           break;
           
         case 'contacts':
-          \Vvintage\Controllers\Page\PageController::index($routeData, $routeData->uriModule);
+          $controller->index($routeData);
           break;
       }
     }

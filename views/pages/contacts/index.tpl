@@ -3,7 +3,7 @@
     <div class="container">
       <div class="contacts__header">
         <div class="section-title">
-          <h1 class="h1"><?php echo $pageModel->getTitle();?></h1>
+          <h1 class="h1"><?php echo $pageTitle;?></h1>
         </div>
         <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
       </div>

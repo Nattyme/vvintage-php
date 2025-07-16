@@ -29,6 +29,11 @@ final class Page
     return $this->id;
   }
 
+  public function getSlug(): string
+  {
+    return $this->slug;
+  }
+
   public function getTitle(): string
   {
     if ($this->title === '') {
