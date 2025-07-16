@@ -29,13 +29,15 @@ final class CartController
     private UserInterface $userModel;
     private Cart $cartModel;
     private array $cart;
+    private CartStoreInterface $cartStore;
     private FlashMessage $notes;
 
-    public function __construct(UserInterface $userModel, Cart $cartModel, array $cart, FlashMessage $notes)
+    public function __construct(UserInterface $userModel, Cart $cartModel, array $cart, CartStoreInterface $cartStore, FlashMessage $notes)
     {
       $this->userModel = $userModel;
       $this->cartModel = $cartModel;
       $this->cart = $cart;
+      $this->cartStore = $cartStore;
       $this->notes = $notes;
     }
 
@@ -63,7 +65,6 @@ final class CartController
     }
 
 
-
     public function index(RouteData $routeData): void
     {
       // Получаем продукты
@@ -79,15 +80,8 @@ final class CartController
       // Добавляем новый продукт
       $this->cartModel->addItem($productId);
 
-      /**
-       * Сохраняем в нужное хранилище
-       * @var CartStoreInterface $cartStore;
-       */
-      $cartStore = ($this->userModel instanceof User) 
-                    ? new UserCartStore( new UserRepository() ) 
-                    : new GuestCartStore();
-
-      $cartStore->save($this->cartModel, $this->userModel);
+      // Сохраняем в хранилище
+      $this->cartStore->save($this->cartModel, $this->userModel);
 
       // Переадресация обратно на страницу товара
       header('Location: ' . HOST . 'shop/' . $productId);
@@ -99,15 +93,7 @@ final class CartController
         // Удаляем товар
         $this->cartModel->removeItem($productId);
 
-        /**
-         * Сохраняем в нужное хранилище
-         * @var CartStoreInterface $cartStore;
-         */
-        $cartStore = ($this->userModel instanceof User) 
-                     ? new UserCartStore( new UserRepository() ) 
-                     : new GuestCartStore();
-
-        $cartStore->save($this->cartModel, $this->userModel);
+        $this->cartStore->save($this->cartModel, $this->userModel);
 
         // Переадресация обратно на страницу товара
         header('Location: ' . HOST . 'cart');

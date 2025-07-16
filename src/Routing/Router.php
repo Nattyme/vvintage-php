@@ -14,8 +14,13 @@
   /** Модели */
   use Vvintage\Models\Cart\Cart;
 
+  /** Хранилища */
+  use Vvintage\Store\Cart\GuestCartStore;
+  use Vvintage\Store\Cart\UserCartStore;
+
   /** Интерфейсы */
   use Vvintage\Models\User\UserInterface;
+  use Vvintage\Store\Cart\CartStoreInterface;
 
 
   class Router {
@@ -177,7 +182,19 @@
       $cartModel = $userModel->getCartModel();
       $cart = $userModel->getCart();
 
-      $controller  = new CartController( $userModel, $cartModel, $cart, new FlashMessage() );
+      /**
+       * Получаем хранилище
+       * @var CartStoreInterface $cartStore;
+       */
+      $cartStore = ($userModel instanceof User) 
+                    ? new UserCartStore( new UserRepository() ) 
+                    : new GuestCartStore();
+
+      $notes = new FlashMessage();
+
+
+
+      $controller  = new CartController( $userModel, $cartModel, $cart, $cartStore, $notes );
 
       switch ($routeData->uriModule) {
         case 'cart':
