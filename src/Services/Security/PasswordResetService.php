@@ -6,13 +6,16 @@ use Vvintage\Repositories\UserRepository;
 
 use RedBeanPHP\R;
 use Vvintage\Config\Config;
+use Vvintage\Services\Messages\FlashMessage;
 
 final class PasswordResetService 
 {
   private UserRepository $userRepository;
+  private FlashMessage $notes;
 
-  public function __construct (UserRepository $userRepository) {
+  public function __construct (UserRepository $userRepository, FlashMessage $notes) {
     $this->userRepository = $userRepository;
+    $this->notes = $notes;
   }
 
   // Генерируем случайную строку заданной длины 
@@ -67,17 +70,15 @@ final class PasswordResetService
   // Главный метод, объединяющий все шаги
   public function processPasswordResetRequest(string $email): array
   {
-      $errors = [];
-
       if (trim($email) === '') {
-          $errors[] = ['title' => 'Введите email', 'desc' => '<p>Email - обязательное поле</p>'];
+        $this->notes->pushError('Введите email', 'Email - обязательное поле');
       } elseif (!filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
-          $errors[] = ['title' => 'Введите корректный Email'];
+        $this->notes->pushError('Введите корректный Email');
       } elseif (!$this->userExists($email)) {
-          $errors[] = ['title' => 'Пользователя с таким email не существует'];
+        $this->notes->pushError('Пользователя с таким email не существует');
       }
 
-      if ($errors) {
+      if ($$_SESSION['errors']) {
           return ['success' => false, 'errors' => $errors];
       }
 

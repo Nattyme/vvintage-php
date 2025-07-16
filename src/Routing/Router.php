@@ -91,7 +91,6 @@
 
         case 'registration':
           $controller->register($routeData);
-          // \Vvintage\Controllers\Security\RegistrationController::index($routeData);
           break;
 
         case 'logout':
@@ -99,7 +98,7 @@
           break;
 
         case 'lost-password':
-          \Vvintage\Controllers\Security\PasswordResetController::index($routeData);
+          $controller->resetPassword($routeData);
           break;
 
         case 'set-new-password':

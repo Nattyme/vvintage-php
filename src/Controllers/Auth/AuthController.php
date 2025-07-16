@@ -39,6 +39,8 @@ use Vvintage\Store\Favorites\FavoritesStoreInterface;
 /** Контролеры */
 use Vvintage\Controllers\Cart\CartController;
 use Vvintage\Controllers\Security\RegistrationController;
+use Vvintage\Controllers\Security\PasswordResetController;
+
 
 require_once ROOT . './libs/functions.php';
 
@@ -163,5 +165,11 @@ final class AuthController
     public static function setNewPassword()
     {
 
+    }
+
+    public function resetPassword(RouteData $routeData)
+    {
+      $regController = new PasswordResetController( $this->notes );
+      $regController->index($routeData);
     }
 }

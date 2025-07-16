@@ -87,7 +87,7 @@ final class PasswordSetNewController {
     $content = ob_get_contents();
     ob_end_clean();
 
-    include ROOT . "views/_page-parts/_head.tpl";
+    include ROOT . "templates/_page-parts/_head.tpl";
     include ROOT . "views/login/login-page.tpl";
     include ROOT . "views/_page-parts/_foot.tpl";
   }

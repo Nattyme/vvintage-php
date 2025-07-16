@@ -10,12 +10,18 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Routing\RouteData;
 
 final class PasswordResetController {
-  public static function index ($routeData) 
+  private FlashMessage $notes;
+
+  public function __construct(FlashMessage $notes)
+  {
+      $this->notes = $notes;
+  }
+
+  public function index ($routeData) 
   {
     if (isset($_POST['lost-password'])) {
-      $resetPassService = new PasswordResetService( new UserRepository);
-      $notes = new FlashMessage ();   
-      $validator = new PasswordResetValidator($resetPassService, $notes);
+      $resetPassService = new PasswordResetService( new UserRepository(), $this->notes);
+      $validator = new PasswordResetValidator($resetPassService, $this->notes);
       $resultEmail = false;
 
       if ($validator->validate($_POST)) {
@@ -23,11 +29,11 @@ final class PasswordResetController {
 
         if ($result['success']) {
           $resultEmail = true;
-          $notes->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
+          $this->notes->pushError('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
    
         } else {
           foreach ($result['errors'] as $error) {
-            $notes->pushError($error['title']);
+            $this->notes->pushError($error['title']);
           }
         }
 
@@ -38,7 +44,7 @@ final class PasswordResetController {
     self::renderForm($routeData, $resultEmail ?? null);
   }
 
-  private static function renderForm (RouteData $routeData, ?bool $resultEmail = false) {
+  private function renderForm (RouteData $routeData, ?bool $resultEmail = false) {
     $pageTitle = "Восстановить пароль";
     $pageClass = "authorization-page";
  
@@ -51,7 +57,7 @@ final class PasswordResetController {
     ob_end_clean();
 
 
-    include ROOT . "views/_page-parts/_head.tpl";
+    include ROOT . "templates/_page-parts/_head.tpl";
     include ROOT . "views/login/login-page.tpl";
     include ROOT . "views/_page-parts/_foot.tpl";
 
