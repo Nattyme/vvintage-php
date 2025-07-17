@@ -10,10 +10,10 @@ interface UserInterface
 {
   public function getId(): ?int;
   public function getCart(): array;
-  public function setCart(array $cart): void;
+  public function set($itemKey, array $items): void;
   public function getCartModel(): Cart;
 
   public function getFavList(): array;
-  public function setFav(array $fav): void;
+  // public function setFav(array $fav): void;
   public function getFavModel(): Favorites;
 }

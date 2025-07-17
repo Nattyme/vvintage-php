@@ -13,25 +13,48 @@ use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
-use Vvintage\Store\Favorites\GuestFavoritesStore;
-use Vvintage\Store\Favorites\UserFavoritesStore;
-use Vvintage\Store\Favorites\FavoritesStoreInterface;
-use Vvintage\Models\User\UserInterface;
+// use Vvintage\Store\Favorites\GuestFavoritesStore;
+// use Vvintage\Store\Favorites\UserFavoritesStore;
+// use Vvintage\Store\Favorites\FavoritesStoreInterface;
+/** Хранилище */
+use Vvintage\Store\UserItemsList\GuestItemsListStore;
+use Vvintage\Store\UserItemsList\UserItemsListStore;
+
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Services\Messages\FlashMessage;
+
+/** Сервисы */
+use Vvintage\Services\Favorites\FavoritesService;
+
+
+/** Абстракции */
+use Vvintage\Models\Shared\AbstractUserItemsList;
+
+/** Интерфейсы */
+use Vvintage\Models\User\UserInterface;
+use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
+
 
 require_once ROOT . './libs/functions.php';
 
 final class FavoritesController
 {
+    private FavoritesService $favService;
     private UserInterface $userModel;
     private Favorites $favModel;
     private array $fav;
-    private FavoritesStoreInterface $favStore;
+    private ItemsListStoreInterface $favStore;
     private FlashMessage $notes;
 
-    public function __construct(UserInterface $userModel, Favorites $favModel, array $fav, FavoritesStoreInterface $favStore, FlashMessage $notes)
+    public function __construct(
+      FavoritesService $favService, 
+      UserInterface $userModel, 
+      Favorites $favModel, 
+      array $fav, 
+      ItemsListStoreInterface $favStore, 
+      FlashMessage $notes)
     {
+      $this->favService = $favService;
       $this->userModel = $userModel;
       $this->favModel = $favModel;
       $this->fav = $fav;
@@ -74,9 +97,12 @@ final class FavoritesController
 
     public function addItem(int $productId, $routeData): void
     {
+      // Передаем ключ для сохранения куки и id продукта
+      $this->favService->addItem('fav_list', $productId);
+
       // Добавляем новый продукт
-      $this->favModel->addItem($productId);
-      $this->favStore->save($this->favModel, $this->userModel);
+      // $this->favModel->addItem($productId);
+      // $this->favStore->save($this->favModel, $this->userModel);
 
       // Переадресация обратно на страницу товара
       header('Location: ' . HOST . 'shop/' . $productId);
@@ -84,10 +110,11 @@ final class FavoritesController
     }
 
     public function removeItem(int $productId): void
-    {
+    {      
+
         // Удаляем товар
-        $this->favModel->removeItem($productId);
-        $this->favStore->save($this->favModel, $this->userModel);
+        $this->favService->removeItem('fav_list', $productId);
+        // $this->favStore->save($this->favModel, $this->userModel);
 
         // Переадресация обратно на страницу товара
         header('Location: ' . HOST . 'favorites');

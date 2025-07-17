@@ -37,6 +37,7 @@ abstract class AbstractUserItemsListService
     public function addItem($itemKey, $itemId)
     {
       $this->itemsModel->addItem($itemId);
+
       // Сохраняем в хранилище
       $this->itemsStore->save($itemKey, $this->itemsModel, $this->userModel);
     }

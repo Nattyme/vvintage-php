@@ -35,9 +35,9 @@ class GuestUser implements UserInterface
     return new Cart($this->cart);
   }
 
-  public function setCart(array $cart): void
+  public function set($itemKey, array $products): void
   {
-    $this->cart = $cart;
+    $this->$itemKey = $products;
   }
 
   public function setFav(array $fav): void

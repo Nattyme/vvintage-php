@@ -26,13 +26,13 @@ class UserItemsListStore implements ItemsListStoreInterface
 // public function save($itemKey, $itemModel, ?UserInterface $userModel = null): void;
   public function save ($itemKey, $itemModel, ?UserInterface $userModel = null): void 
   {
-    $cart = $itemModel->getItems();
+    $items = $itemModel->getItems();
 
     // Записываем в БД
-    $this->userRepository->saveUserCart($userModel, $cart);
+    $this->userRepository->saveUserItemsList($itemKey, $userModel, $items);
 
     // Обновляем объект User в сессии
-    $userModel->setCart( $itemModel->getItems() );
+    $userModel->set( $itemKey, $itemModel->getItems() );
 
     //  Обновляем данные пользователя в сессии
     SessionManager::setUserSession($userModel);  // обновляем logged_user

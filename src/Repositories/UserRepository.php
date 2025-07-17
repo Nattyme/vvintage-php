@@ -194,14 +194,14 @@ final class UserRepository
      * Метод обновляет корзину
      * @return void
      */
-    public function saveUserCart(User $userModel, array $cartItems): void
+    public function saveUserItemsList($itemKey, User $userModel, array $items): void
     {
         // Находим bean пользователя по id из модели
         $userId = $userModel->getId();
         $userBean = R::load('users', $userId);
 
         // Обновляем корзину
-        $userBean->cart = json_encode($cartItems);
+        $userBean->$itemKey = json_encode($items);
         R::store($userBean);
     }
 

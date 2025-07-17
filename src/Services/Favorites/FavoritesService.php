@@ -14,7 +14,7 @@ final class FavoritesService extends AbstractUserItemsListService
 {
   public function getSessionKey(): string
   {
-      return 'fav_list';
+    return 'fav_list';
   }
 
    

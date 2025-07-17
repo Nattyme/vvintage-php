@@ -16,7 +16,7 @@ final class User implements UserInterface
     private string $email;
     private string $name;
     private string $role;
-    private array $fav;
+    private array $fav_list;
     private array $cart;
     private int $address;
 
@@ -30,7 +30,7 @@ final class User implements UserInterface
 
       // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
       $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
-      $this->fav = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
+      $this->fav_list = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
       $this->address = (int) $bean->address;
     }
 
@@ -47,7 +47,7 @@ final class User implements UserInterface
           'role' => $this->role,
           'password' => $this->password,
           'cart' => $this->cart,
-          'fav' => $this->fav,
+          'fav' => $this->fav_list,
           'address' => $this->address
         ];
     }
@@ -98,15 +98,15 @@ final class User implements UserInterface
         return $this->cart;
     }
 
-    public function setCart(array $cart): void
+    public function set($itemKey, array $items): void
     {
-      $this->cart = $cart;
+      $this->$itemKey = $items;
     }
 
-    public function setFav(array $fav): void 
-    {
-      $this->fav = $fav;
-    }
+    // public function setFav(array $fav): void 
+    // {
+    //   $this->fav = $fav;
+    // }
 
     public function getCartModel(): Cart
     {
@@ -115,12 +115,12 @@ final class User implements UserInterface
 
     public function getFavList(): array
     {
-        return $this->fav;
+        return $this->fav_list;
     }
 
     public function getFavModel(): Favorites
     {      
-      return new Favorites ($this->fav);
+      return new Favorites ($this->fav_list);
     }
 
     public function getAddress() {

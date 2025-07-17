@@ -22,6 +22,7 @@
   /** Сервисы */
   use Vvintage\Services\Security\PasswordSetNewService;
   use Vvintage\Services\Cart\CartService;
+  use Vvintage\Services\Favorites\FavoritesService;
 
   /** Модели */
   use Vvintage\Models\User\User;
@@ -247,27 +248,29 @@
     }
 
     private static function routeFav(RouteData $routeData) {
-      $notes = new FlashMessage();
-
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
       */
       $userModel = SessionManager::getLoggedInUser();
+      $notes = new FlashMessage();
 
-      // Получаем корзину и ее модель
+      // Получаем избранное и ее модель
       $favModel = $userModel->getFavModel();
       $fav = $userModel->getFavList();
+
+      $productRepository = new ProductRepository();
 
       /**
        * Получаем хранилище
        * @var FavoritesStoreInterface $cartStore;
       */
       $favStore = ($userModel instanceof User) 
-                    ? new UserFavoritesStore( new UserRepository() ) 
-                    : new GuestFavoritesStore();
-
-                    $controller  = new FavoritesController($userModel, $favModel, $fav, $favStore, $notes);
+                    ? new UserItemsListStore( new UserRepository() ) 
+                    : new GuestItemsListStore();
+                    
+      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productRepository, $notes);
+      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $notes );
 
       switch ($routeData->uriModule) {
         case 'favorites':
