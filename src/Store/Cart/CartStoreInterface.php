@@ -9,5 +9,5 @@ use Vvintage\Models\Cart\Cart;
 interface CartStoreInterface 
 {
   public function save(Cart $cartModel, ?UserInterface $userModel = null): void;
-
+  
 }

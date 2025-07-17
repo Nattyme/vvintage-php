@@ -7,13 +7,20 @@
   use Vvintage\Services\Auth\SessionManager;
   use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Cart\CartService;
+  use Vvintage\Services\Favorites\FavoritesService;
   use Vvintage\Services\Messages\FlashMessage;
+  use Vvintage\Services\Validation\LoginValidator;
+
 
   /** Контроллеры */
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
   use Vvintage\Controllers\Favorites\FavoritesController;
+  use Vvintage\Controllers\Security\RegistrationController;
+  use Vvintage\Controllers\Security\PasswordResetController;
+  use Vvintage\Controllers\Security\PasswordSetNewController;
+  use Vvintage\Services\Security\PasswordSetNewService;
 
   /** Модели */
   use Vvintage\Models\User\User;
@@ -112,15 +119,26 @@
 
 
     private static function routeAuth(RouteData $routeData) {
-      $controller  = new AuthController( new FlashMessage());
+      $userRepository = new UserRepository();
+      $cartService = new CartService();
+      $favService = new FavoritesService();
+      $setNewPassService = new PasswordSetNewService($userRepository);
 
+      $notes = new FlashMessage();
+      $validator = new LoginValidator($userRepository,  $notes);
+
+      $controller = new AuthController( $userRepository, $cartService, $favService, $notes, $validator);
+      $regController = new RegistrationController($notes);
+      $setNewPassController = new PasswordSetNewController( $setNewPassService, $notes );
+      $resetController = new PasswordResetController($notes);
+   
       switch ($routeData->uriModule) {
         case 'login':
           $controller->login($routeData);
           break;
 
         case 'registration':
-          $controller->register($routeData);
+          $controller->register($regController, $routeData);
           break;
 
         case 'logout':
@@ -128,11 +146,11 @@
           break;
 
         case 'lost-password':
-          $controller->resetPassword($routeData);
+          $controller->resetPassword($resetController, $routeData);
           break;
 
         case 'set-new-password':
-          $controller->setNewPassword($routeData);
+          $controller->setNewPassword( $setNewPassController, $routeData);
           break;
       }
     }

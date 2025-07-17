@@ -10,38 +10,38 @@ use Vvintage\Services\Messages\FlashMessage;
 abstract class AbstractUserItemsListService
 {
     private $userModel;
-    private $model;
+    private $itemsModel;
     private $items;
     private $itemsStore;
     private $itemsRepository;
     private FlashMessage $notes;
 
-    public function __construct($userModel, $model, $items, $itemsStore, $itemsRepository, FlashMessage $notes)
+    public function __construct(UserInterface $userModel, $itemsModel, $items, $itemsStore, ProductRepository $productRepository, FlashMessage $notes)
     {
       $this->userModel = $userModel;
-      $this->model = $model;
+      $this->itemsModel = $itemsModel;
       $this->items = $items;
       $this->itemsStore = $itemsStore;
-      $this->itemsRepository = $itemsRepository;
+      $this->productRepository = $productRepository;
       $this->notes = $notes;
     }
 
     public function getListItems ()
     {
-      return !empty($this->items) ? $this->itemsRepository->findByIds($this->items) : [];
+      return !empty($this->items) ? $this->productRepository->findByIds($this->items) : [];
     }
 
     public function addItem($itemId)
     {
-      $this->model->addItem($itemId);
+      $this->itemsModel->addItem($itemId);
       // Сохраняем в хранилище
-      $this->itemsStore->save($this->model, $this->userModel);
+      $this->itemsStore->save($this->itemsModel, $this->userModel);
     }
 
     public function removeItem(int $itemId)
     {
-      $this->model->removeItem($itemId);
-      $this->itemsStore->save($this->model, $this->userModel);
+      $this->itemsModel->removeItem($itemId);
+      $this->itemsStore->save($this->itemsModel, $this->userModel);
     }
 
     public function mergeItemsListAfterLogin($userItemsModel, $guestItemsModel): void
@@ -66,17 +66,13 @@ abstract class AbstractUserItemsListService
 
     
 
-    // private function clearGuestCookies()
-    // {
-    //   if (isset($_COOKIE[$this->getSessionKey()])) {
-    //     setcookie($this->getSessionKey(), '', time() - 3600, '/');
-    //   }
-
-    //   // if (isset($_COOKIE['fav_list'])) {
-    //   //     setcookie('fav_list', '', time() - 3600, '/');
-    //   // }
-    // }
+    private function clearGuestCookies()
+    {
+      if (isset($_COOKIE[$this->getSessionKey()])) {
+        setcookie($this->getSessionKey(), '', time() - 3600, '/');
+      }
+    }
 
 
-    // abstract public function getSessionKey(): string; // обязательно для наследников
+    abstract public function getSessionKey(): string; // обязательно для наследников
 }

@@ -45,15 +45,9 @@ final class CartService extends AbstractUserItemsListService
     //   // $this->setWelcomeMessage();
     // }
 
-    // private function clearGuestCookies()
-    // {
-    //   if (isset($_COOKIE['cart'])) {
-    //          setcookie('cart', '', time() - 3600, '/');
-    //   }
-
-    //   if (isset($_COOKIE['fav_list'])) {
-    //       setcookie('fav_list', '', time() - 3600, '/');
-    //   }
-    // }
+  public function getSessionKey(): string
+  {
+      return 'cart';
+  }
 
 }

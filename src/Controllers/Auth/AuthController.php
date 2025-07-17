@@ -46,12 +46,26 @@ use Vvintage\Services\Security\PasswordSetNewService;
 require_once ROOT . './libs/functions.php';
 
 final class AuthController
-{
+{   
+    private UserRepository $userRepository;
+    private LoginValidator $validator;
+    private CartService $cartService;
+    private FavoritesService $favService;
     private FlashMessage $notes;
 
-    public function __construct(FlashMessage $notes)
+    public function __construct(
+      UserRepository $userRepository, 
+      LoginValidator $validator,
+      CartService $cartService,
+      FavoritesService $favService,
+      FlashMessage $notes
+    )
     {
-        $this->notes = $notes;
+      $this->userRepository = $userRepository;
+      $this->cartService = $cartService;
+      $this->favService = $favService;
+      $this->notes = $notes;
+      $this->validator = $validator;
     }
 
     public function login(RouteData $routeData): void
@@ -59,16 +73,12 @@ final class AuthController
 
       //1. Проверяем массив POST
       if (isset($_POST['login'])) {
-        $userRepository = new UserRepository();
-        $validator = new LoginValidator( $userRepository, $this->notes);
-        $cartService = new CartService();
-        $favService = new FavoritesService();
 
           // Если ошибок нет
           if (empty($_SESSION['errors'])) {
 
             // Ищем нужного пользователя в базе данных
-            $userModel = $userRepository->findUserByEmail($_POST['email']);
+            $userModel = $this->userRepository->findUserByEmail($_POST['email']);
 
             if (!$userModel) {
               $this->notes->pushError('Неверный email');
@@ -76,7 +86,7 @@ final class AuthController
 
             if (empty($_SESSION['errors'])) {
 
-                /** Получаем модель с корзиной гостя
+                /** Получаем модель с корзиной гостя В АБСТРАКЦИЮ
                   * @var UserInterface $guestCartData 
                 */
                 $guestCartData = (new GuestCartStore())->load();
@@ -91,14 +101,14 @@ final class AuthController
                   /** Получаем корзину пользователя из БД
                    * @var UserInterface  $userCartData
                   */
-                  $userCartData = ( new UserCartStore($userRepository) ) -> load(); 
-                  $userFavData = ( new UserFavoritesStore($userRepository) ) -> load(); 
+                  $userCartData = ( new UserCartStore($this->userRepository) ) -> load(); 
+                  $userFavData = ( new UserFavoritesStore($this->userRepository) ) -> load(); 
 
-                  // Создаем модель корзины пользователя
+                  // Создаем модель корзины пользователя В АБСТРАКЦИЮ
                   $cartModel = new Cart( $userCartData );
                   $favModel = new Favorites( $userFavData );
 
-                  // Выполняем слияние cart и fav через Service
+                  // Выполняем слияние cart и fav через Service МЕТОЖ УЖЕ В АБСТРАКЦИИ ПРОВЕРИТЬ 
                   $cartService->mergeCartAfterLogin($cartModel, $guestCartModel);
                   $favService->mergeFavAfterLogin($favModel, $guestFavModel);
           
@@ -106,8 +116,8 @@ final class AuthController
                   $mergedFav = $favModel->getItems();
 
                   // Сохраняем в БД
-                  $userRepository->saveUserCart($userModel, $mergedCart);
-                  $userRepository->saveUserFav($userModel, $mergedFav);
+                  $this->userRepository->saveUserCart($userModel, $mergedCart);
+                  $this->userRepository->saveUserFav($userModel, $mergedFav);
 
                   
                   if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {
@@ -163,22 +173,18 @@ final class AuthController
 
     }
 
-    public function register(RouteData $routeData)
+    public function register( RegistrationController $controller, RouteData $routeData)
     {
-      $controller = new RegistrationController( $this->notes );
       $controller->index($routeData);
     }
 
-    public function setNewPassword(RouteData $routeData)
+    public function setNewPassword( PasswordSetNewController $controller, RouteData $routeData)
     {
-      $setNewPassService = new PasswordSetNewService( new UserRepository() );
-      $controller = new PasswordSetNewController( $setNewPassService, $this->notes );
       $controller->index($routeData);
     }
 
-    public function resetPassword(RouteData $routeData)
+    public function resetPassword(PasswordResetController $controller, RouteData $routeData)
     {
-      $controller = new PasswordResetController( $this->notes );
       $controller->index($routeData);
     }
 }
