@@ -17,6 +17,7 @@ use Vvintage\Models\Shared\AbstractUserItemsList;
 
 /** Интерфейсы */
 use Vvintage\Models\User\UserInterface;
+use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -31,9 +32,11 @@ use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Messages\FlashMessage;
 
 /** Хранилище */
-use Vvintage\Store\Cart\GuestCartStore;
-use Vvintage\Store\Cart\UserCartStore;
-use Vvintage\Store\Cart\CartStoreInterface;
+use Vvintage\Store\UserItemsList\GuestItemsListStore;
+use Vvintage\Store\UserItemsList\UserItemsListStore;
+// use Vvintage\Store\Cart\GuestCartStore;
+// use Vvintage\Store\Cart\UserCartStore;
+// use Vvintage\Store\Cart\CartStoreInterface;
 
 require_once ROOT . './libs/functions.php';
 
@@ -43,10 +46,10 @@ final class CartController
     private UserInterface $userModel;
     private Cart $cartModel;
     private array $cart;
-    private CartStoreInterface $cartStore;
+    private ItemsListStoreInterface $cartStore;
     private FlashMessage $notes;
 
-    public function __construct(CartService $cartService, UserInterface $userModel, Cart $cartModel, array $cart, CartStoreInterface $cartStore, FlashMessage $notes)
+    public function __construct(CartService $cartService, UserInterface $userModel, Cart $cartModel, array $cart, ItemsListStoreInterface $cartStore, FlashMessage $notes)
     {
       $this->cartService = $cartService;
       $this->userModel = $userModel;
@@ -92,12 +95,7 @@ final class CartController
 
     public function addItem(int $productId, $routeData): void
     {
-      // Добавляем новый продукт
-      $this->cartService->addItem($productId);
-      // $this->cartModel->addItem($productId);
-
-      // Сохраняем в хранилище
-      // $this->cartStore->save($this->cartModel, $this->userModel);
+      $this->cartService->addItem('cart', $productId);
 
       // Переадресация обратно на страницу товара
       header('Location: ' . HOST . 'shop/' . $productId);
@@ -106,15 +104,11 @@ final class CartController
 
     public function removeItem(int $productId): void
     {
-        // Удаляем товар
-        $this->cartService->removeItem($productId);
-        // $this->cartModel->removeItem($productId);
+      $this->cartService->removeItem('cart', $productId);
 
-        // $this->cartStore->save($this->cartModel, $this->userModel);
-
-        // Переадресация обратно на страницу товара
-        header('Location: ' . HOST . 'cart');
-        exit();
+      // Переадресация обратно на страницу товара
+      header('Location: ' . HOST . 'cart');
+      exit();
     }
 
 }

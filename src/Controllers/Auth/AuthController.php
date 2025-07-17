@@ -16,10 +16,12 @@ use Vvintage\Models\Favorites\Favorites;
 
 /** Интерфейсы */
 use Vvintage\Models\User\UserInterface;
+use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
 
 /** Репозитории */
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\CartRepository;
+use Vvintage\Repositories\ProductRepository;
 
 /** Сервисы */
 use Vvintage\Services\Auth\SessionManager;
@@ -29,12 +31,14 @@ use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Favorites\FavoritesService;
 
 /** Store */
-use Vvintage\Store\Cart\GuestCartStore;
-use Vvintage\Store\Cart\UserCartStore;
-use Vvintage\Store\Cart\CartStoreInterface;
-use Vvintage\Store\Favorites\GuestFavoritesStore;
-use Vvintage\Store\Favorites\UserFavoritesStore;
-use Vvintage\Store\Favorites\FavoritesStoreInterface;
+// use Vvintage\Store\Cart\GuestCartStore;
+// use Vvintage\Store\Cart\UserCartStore;
+// use Vvintage\Store\Cart\CartStoreInterface;
+// use Vvintage\Store\Favorites\GuestFavoritesStore;
+// use Vvintage\Store\Favorites\UserFavoritesStore;
+// use Vvintage\Store\Favorites\FavoritesStoreInterface;
+use Vvintage\Store\UserItemsList\GuestItemsListStore;
+use Vvintage\Store\UserItemsList\UserItemsListStore;
 
 /** Контролеры */
 use Vvintage\Controllers\Cart\CartController;
@@ -49,26 +53,20 @@ final class AuthController
 {   
     private UserRepository $userRepository;
     private LoginValidator $validator;
-    private CartService $cartService;
-    private FavoritesService $favService;
     private FlashMessage $notes;
 
     public function __construct(
       UserRepository $userRepository, 
       LoginValidator $validator,
-      CartService $cartService,
-      FavoritesService $favService,
       FlashMessage $notes
     )
     {
       $this->userRepository = $userRepository;
-      $this->cartService = $cartService;
-      $this->favService = $favService;
-      $this->notes = $notes;
       $this->validator = $validator;
+      $this->notes = $notes;
     }
 
-    public function login(RouteData $routeData): void
+    public function login(ProductRepository $productRepository, RouteData $routeData): void
     {
 
       //1. Проверяем массив POST
@@ -79,20 +77,32 @@ final class AuthController
 
             // Ищем нужного пользователя в базе данных
             $userModel = $this->userRepository->findUserByEmail($_POST['email']);
-
+            
             if (!$userModel) {
               $this->notes->pushError('Неверный email');
             }
 
             if (empty($_SESSION['errors'])) {
-
                 /** Получаем модель с корзиной гостя В АБСТРАКЦИЮ
                   * @var UserInterface $guestCartData 
                 */
-                $guestCartData = (new GuestCartStore())->load();
-                $guestFavData = (new GuestFavoritesStore())->load();
-                $guestCartModel = new Cart( $guestCartData);
-                $guestFavModel = new Favorites( $guestFavData);
+                $guestCartStore = new GuestItemsListStore();
+                $guestFavStore = new GuestItemsListStore();
+
+                $guestCart = $guestCartStore->load('cart');
+                $guestFav = $guestFavStore->load('fav_list');
+
+                // $guestCartData = (new GuestCartStore())->load();
+                // $guestFavData = (new GuestFavoritesStore())->load();
+                $guestCartModel = new Cart( $guestCart);
+                $guestFavModel = new Favorites($guestFav);
+
+                $cartService = new CartService(
+                  $userModel, $guestCartModel, $guestCartModel->getItems(), $guestCartStore, $productRepository, $this->notes
+                );
+                $favService = new FavoritesService(
+                  $userModel, $guestFavModel, $guestFavModel->getItems(), $guestFavStore, $productRepository, $this->notes
+                );
 
                 // Проверить пароль
                 if (password_verify($_POST['password'], $userModel->getPassword())) {
@@ -101,20 +111,23 @@ final class AuthController
                   /** Получаем корзину пользователя из БД
                    * @var UserInterface  $userCartData
                   */
-                  $userCartData = ( new UserCartStore($this->userRepository) ) -> load(); 
-                  $userFavData = ( new UserFavoritesStore($this->userRepository) ) -> load(); 
+                  $userCartStore = new UserItemsListStore($this->userRepository); 
+                  $userFavStore = new UserItemsListStore($this->userRepository);
+                  
+                  $userCart = $userCartStore->load('cart');
+                  $userFav =  $userFavStore->load('fav');
 
                   // Создаем модель корзины пользователя В АБСТРАКЦИЮ
-                  $cartModel = new Cart( $userCartData );
-                  $favModel = new Favorites( $userFavData );
+                  $cartModel = new Cart( $userCart);
+                  $favModel = new Favorites(  $userFav );
 
                   // Выполняем слияние cart и fav через Service МЕТОЖ УЖЕ В АБСТРАКЦИИ ПРОВЕРИТЬ 
-                  $cartService->mergeCartAfterLogin($cartModel, $guestCartModel);
-                  $favService->mergeFavAfterLogin($favModel, $guestFavModel);
-          
+                  $cartService->mergeItemsListAfterLogin($cartModel, $guestCartModel);
+                  $favService->mergeItemsListAfterLogin($favModel, $guestFavModel);
+   
                   $mergedCart = $cartModel->getItems();
                   $mergedFav = $favModel->getItems();
-
+    
                   // Сохраняем в БД
                   $this->userRepository->saveUserCart($userModel, $mergedCart);
                   $this->userRepository->saveUserFav($userModel, $mergedFav);

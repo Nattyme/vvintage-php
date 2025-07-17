@@ -15,28 +15,6 @@ final class Favorites extends AbstractUserItemsList
     {
         return 'fav_list';
     }
-
-    public function getQuantity(int $productId): int
-    {
-        return $this->items[$productId] ?? 0;
-    }
-
-    public function getTotalPrice(array $products): int
-    {
-        $total = 0;
-        foreach ($this->items as $id => $quantity) {
-            if (isset($products[$id])) {
-                $total += $products[$id]['price'] * $quantity;
-            }
-        }
-        return $total;
-    }
-
-    public function isSessionFavStale(): bool
-    {
-        $sessionFav = json_decode($_SESSION['fav_list'] ?? '[]', true);
-        return $sessionFav !== $this->items;
-    }
 }
 
 

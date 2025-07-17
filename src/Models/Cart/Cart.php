@@ -17,10 +17,6 @@ final class Cart extends AbstractUserItemsList
         return 'cart';
     }
 
-    public function getQuantity(int $productId): int
-    {
-        return $this->items[$productId] ?? 0;
-    }
 
     public function getTotalPrice(array $products): int
     {
@@ -33,11 +29,6 @@ final class Cart extends AbstractUserItemsList
         return $total;
     }
 
-    public function isSessionCartStale(): bool
-    {
-        $sessionCart = json_decode($_SESSION['cart'] ?? '[]', true);
-        return $sessionCart !== $this->items;
-    }
 }
 
 

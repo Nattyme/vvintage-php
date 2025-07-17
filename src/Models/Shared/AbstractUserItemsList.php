@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Shared;
 
+use Vvintage\Models\User\User;
+use Vvintage\Models\User\UserInterface;
+use Vvintage\Repositories\UserRepository;
+
 abstract class AbstractUserItemsList
 {
     protected array $items; //  protected - чтобы наследники могли обращаться
@@ -30,6 +34,12 @@ abstract class AbstractUserItemsList
             unset($this->items[$productId]);
         }
     }
+
+    public function getQuantity(int $productId): int
+    {
+        return $this->items[$productId] ?? 0;
+    }
+
 
     abstract public function getSessionKey(): string; // обязательно для наследников
 }

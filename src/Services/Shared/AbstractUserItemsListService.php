@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace Vvintage\Services\Shared;
 
 use Vvintage\Repositories\ProductRepository;
+use Vvintage\Models\User\UserInterface;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Models\Shared\AbstractUserItemsList;
+use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
 
 
 abstract class AbstractUserItemsListService
@@ -13,10 +16,10 @@ abstract class AbstractUserItemsListService
     private $itemsModel;
     private $items;
     private $itemsStore;
-    private $itemsRepository;
+    private $productRepository;
     private FlashMessage $notes;
 
-    public function __construct(UserInterface $userModel, $itemsModel, $items, $itemsStore, ProductRepository $productRepository, FlashMessage $notes)
+    public function __construct( UserInterface $userModel, AbstractUserItemsList $itemsModel, array $items, ItemsListStoreInterface $itemsStore, ProductRepository $productRepository, FlashMessage $notes)
     {
       $this->userModel = $userModel;
       $this->itemsModel = $itemsModel;
@@ -31,17 +34,17 @@ abstract class AbstractUserItemsListService
       return !empty($this->items) ? $this->productRepository->findByIds($this->items) : [];
     }
 
-    public function addItem($itemId)
+    public function addItem($itemKey, $itemId)
     {
       $this->itemsModel->addItem($itemId);
       // Сохраняем в хранилище
-      $this->itemsStore->save($this->itemsModel, $this->userModel);
+      $this->itemsStore->save($itemKey, $this->itemsModel, $this->userModel);
     }
 
-    public function removeItem(int $itemId)
+    public function removeItem($itemKey, int $itemId)
     {
       $this->itemsModel->removeItem($itemId);
-      $this->itemsStore->save($this->itemsModel, $this->userModel);
+      $this->itemsStore->save($itemKey, $this->itemsModel, $this->userModel);
     }
 
     public function mergeItemsListAfterLogin($userItemsModel, $guestItemsModel): void
@@ -59,9 +62,8 @@ abstract class AbstractUserItemsListService
       $this->clearGuestCookies();
 
       // Обновляем сессию
-      $_SESSION['logged_user']['cart'] = $userCartModel->getItems();
-      $_SESSION['cart'] =  $userCartModel->getItems();
-      // $_SESSION['fav_list'] = $merged['fav_list'];
+      $_SESSION['logged_user']['cart'] = $userItemsModel->getItems();
+      $_SESSION['cart'] =  $userItemsModel->getItems();
     }
 
     

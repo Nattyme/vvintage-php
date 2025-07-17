@@ -6,8 +6,6 @@
   /**  Сервисы */
   use Vvintage\Services\Auth\SessionManager;
   use Vvintage\Services\Page\PageService;
-  use Vvintage\Services\Cart\CartService;
-  use Vvintage\Services\Favorites\FavoritesService;
   use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\Validation\LoginValidator;
 
@@ -20,7 +18,10 @@
   use Vvintage\Controllers\Security\RegistrationController;
   use Vvintage\Controllers\Security\PasswordResetController;
   use Vvintage\Controllers\Security\PasswordSetNewController;
+
+  /** Сервисы */
   use Vvintage\Services\Security\PasswordSetNewService;
+  use Vvintage\Services\Cart\CartService;
 
   /** Модели */
   use Vvintage\Models\User\User;
@@ -28,10 +29,12 @@
   use Vvintage\Models\Favorites\Favorites;
 
   /** Хранилища */
-  use Vvintage\Store\Cart\UserCartStore;
-  use Vvintage\Store\Favorites\UserFavoritesStore;
-  use Vvintage\Store\Cart\GuestCartStore;
-  use Vvintage\Store\Favorites\GuestFavoritesStore;
+  // use Vvintage\Store\Cart\UserCartStore;
+  // use Vvintage\Store\Favorites\UserFavoritesStore;
+  // use Vvintage\Store\Cart\GuestCartStore;
+  // use Vvintage\Store\Favorites\GuestFavoritesStore;
+  use Vvintage\Store\UserItemsList\GuestItemsListStore;
+  use Vvintage\Store\UserItemsList\UserItemsListStore;
 
   /** Интерфейсы */
   use Vvintage\Models\User\UserInterface;
@@ -120,21 +123,24 @@
 
     private static function routeAuth(RouteData $routeData) {
       $userRepository = new UserRepository();
-      $cartService = new CartService();
-      $favService = new FavoritesService();
       $setNewPassService = new PasswordSetNewService($userRepository);
+
+      // $cartModel = new Cart();
+      // $favModel = new Favorites();
 
       $notes = new FlashMessage();
       $validator = new LoginValidator($userRepository,  $notes);
+      $productRepository = new ProductRepository();
 
-      $controller = new AuthController( $userRepository, $cartService, $favService, $notes, $validator);
+      $controller = new AuthController( $userRepository, $validator, $notes);
       $regController = new RegistrationController($notes);
       $setNewPassController = new PasswordSetNewController( $setNewPassService, $notes );
       $resetController = new PasswordResetController($notes);
+
    
       switch ($routeData->uriModule) {
         case 'login':
-          $controller->login($routeData);
+          $controller->login($productRepository, $routeData);
           break;
 
         case 'registration':
@@ -220,10 +226,10 @@
        * @var CartStoreInterface $cartStore;
        */
       $cartStore = ($userModel instanceof User) 
-                    ? new UserCartStore( new UserRepository() ) 
-                    : new GuestCartStore();
+                    ? new UserItemsListStore( new UserRepository() ) 
+                    : new GuestItemsListStore();
 
-      $cartService = new CartService($userModel, $cartModel, $cart, $cartStore, $productRepository, $notes);
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
 
       $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $notes );
 
