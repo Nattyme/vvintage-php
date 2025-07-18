@@ -45,9 +45,9 @@ final class CartService extends AbstractUserItemsListService
     //   // $this->setWelcomeMessage();
     // }
 
-  public function getSessionKey(): string
-  {
-      return 'cart';
-  }
+  // public function getSessionKey(): string
+  // {
+  //     return 'cart';
+  // }
 
 }

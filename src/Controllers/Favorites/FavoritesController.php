@@ -98,7 +98,7 @@ final class FavoritesController
     public function addItem(int $productId, $routeData): void
     {
       // Передаем ключ для сохранения куки и id продукта
-      $this->favService->addItem('fav_list', $productId);
+      $this->favService->addItem($productId);
 
       // Добавляем новый продукт
       // $this->favModel->addItem($productId);
@@ -113,7 +113,7 @@ final class FavoritesController
     {      
 
         // Удаляем товар
-        $this->favService->removeItem('fav_list', $productId);
+        $this->favService->removeItem($productId);
         // $this->favStore->save($this->favModel, $this->userModel);
 
         // Переадресация обратно на страницу товара

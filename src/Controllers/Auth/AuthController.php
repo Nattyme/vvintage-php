@@ -129,8 +129,8 @@ final class AuthController
                   $mergedFav = $favModel->getItems();
     
                   // Сохраняем в БД
-                  $this->userRepository->saveUserCart($userModel, $mergedCart);
-                  $this->userRepository->saveUserFav($userModel, $mergedFav);
+                  $this->userRepository->saveUserItemsList('cart', $userModel, $mergedCart);
+                  $this->userRepository->saveUserItemsList('fav_list', $userModel, $mergedFav);
 
                   
                   if (isset($_SESSION['logged_user']['name']) && trim($_SESSION['logged_user']['name']) !== '') {

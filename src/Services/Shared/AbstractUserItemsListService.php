@@ -34,21 +34,23 @@ abstract class AbstractUserItemsListService
       return !empty($this->items) ? $this->productRepository->findByIds($this->items) : [];
     }
 
-    public function addItem($itemKey, $itemId)
+    public function addItem($itemId)
     {
       $this->itemsModel->addItem($itemId);
+      $sessionKey = $this->itemsModel->getSessionKey();
 
       // Сохраняем в хранилище
-      $this->itemsStore->save($itemKey, $this->itemsModel, $this->userModel);
+      $this->itemsStore->save($sessionKey, $this->itemsModel, $this->userModel);
     }
 
-    public function removeItem($itemKey, int $itemId)
+    public function removeItem(int $itemId)
     {
       $this->itemsModel->removeItem($itemId);
-      $this->itemsStore->save($itemKey, $this->itemsModel, $this->userModel);
+      $sessionKey = $this->itemsModel->getSessionKey();
+      $this->itemsStore->save($sessionKey, $this->itemsModel, $this->userModel);
     }
 
-    public function mergeItemsListAfterLogin($userItemsModel, $guestItemsModel): void
+    public function mergeItemsListAfterLogin(AbstractUserItemsList $userItemsModel, AbstractUserItemsList $guestItemsModel): void
     {
       $userItems = $userItemsModel->getItems();
       $guestItems = $guestItemsModel->getItems();
@@ -59,23 +61,29 @@ abstract class AbstractUserItemsListService
           }
       }
 
-      // Очищаем cookies
-      $this->clearGuestCookies();
+      $sessionKey = $this->itemsModel->getSessionKey();
+      // Обновляем даннные пользователя 
+      $this->itemsStore->save( $sessionKey, $userItemsModel, $this->userModel);
 
       // Обновляем сессию
-      $_SESSION['logged_user']['cart'] = $userItemsModel->getItems();
-      $_SESSION['cart'] =  $userItemsModel->getItems();
+      $_SESSION['logged_user'][ $sessionKey] = $userItemsModel->getItems();
+      $_SESSION[  $sessionKey] =  $userItemsModel->getItems();
+
+      // Очищаем cookies
+      $this->clearGuestCookies();
     }
 
     
 
     private function clearGuestCookies()
     {
-      if (isset($_COOKIE[$this->getSessionKey()])) {
-        setcookie($this->getSessionKey(), '', time() - 3600, '/');
+      $sessionKey = $this->itemsModel->getSessionKey();
+
+      if (isset($_COOKIE[$sessionKey])) {
+        setcookie($sessionKey, '', time() - 3600, '/');
       }
     }
 
 
-    abstract public function getSessionKey(): string; // обязательно для наследников
+    // abstract public function getSessionKey(): string; // обязательно для наследников
 }

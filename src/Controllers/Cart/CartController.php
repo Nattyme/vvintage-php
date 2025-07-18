@@ -95,7 +95,7 @@ final class CartController
 
     public function addItem(int $productId, $routeData): void
     {
-      $this->cartService->addItem('cart', $productId);
+      $this->cartService->addItem($productId);
 
       // Переадресация обратно на страницу товара
       header('Location: ' . HOST . 'shop/' . $productId);
@@ -104,7 +104,7 @@ final class CartController
 
     public function removeItem(int $productId): void
     {
-      $this->cartService->removeItem('cart', $productId);
+      $this->cartService->removeItem($productId);
 
       // Переадресация обратно на страницу товара
       header('Location: ' . HOST . 'cart');
