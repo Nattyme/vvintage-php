@@ -83,3 +83,19 @@ function dump($data): void {
   print_r($data);
   echo '</pre>';
 }
+
+// Безопасное получение значения из $_GET с проверкой допустимых значений
+// $lang = get('lang', ['ru', 'en', 'fr'], 'ru');
+// $_SESSION['lang'] = $lang;
+function get(string $key, array $allowed = [], string $default = ''): string {
+  $value = $_GET[$key] ?? $default;
+  $value = trim(strip_tags($value));
+  $value = mb_substr($value, 0, 10); // ограничение длинны
+
+  if (!empty($allowed) && !in_array($value, $allowed)) {
+    return $default;
+  }
+
+  return $value;
+}
+

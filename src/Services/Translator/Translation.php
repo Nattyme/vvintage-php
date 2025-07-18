@@ -54,7 +54,7 @@ final class Translation
 
   public function setLocale(string $locale): void
   {
-    $this->translator->setLocale($locale);
+    $this->translator->setLocale($_GET['lang'] ?? $locale);
     $this->loadTranslations($locale);
   }
 

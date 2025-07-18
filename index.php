@@ -19,11 +19,27 @@ $_SESSION['success'] = [];
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
 
+// Выбор языка
+$lang = $_GET['lang'] ?? $_SESSION['lang'] ?? 'ru';
+$_SESSION['lang'] = $lang;
+
+require_once ROOT . 'libs/functions.php'; // подключаем пользовательскте ф-ции
+
+// Подключение перводчика
+use Vvintage\Services\Translation\Translation;
+$translator = new Translation($lang); // объект переводчика доступен глобально
+setTranslator($translator); // устанавливаем переводчик
+
+// function __(string $key, array $params = [], string $domain = 'messages'): string
+// {
+//   global $translator;
+//   return $translator->trans($key, $params, $domain);
+// }
+
 
 Database::connect(); // Подключение БД:
 Settings::init(); // Загружаем и сохраняем настройки
 
-require_once ROOT . 'libs/functions.php'; // подключаем пользовательскте ф-ции
 
 // Получаем части URI и создаем переменные (например: /shop/product/1)
 $uriModule = getModuleName();    // первая часть пути — модуль
