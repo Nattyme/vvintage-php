@@ -1,12 +1,12 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Translation;
+namespace Vvintage\Services\Translator;
 
 use Symfony\Component\Translation\Translator as SymfonyTranslator;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 
-final class Translation 
+final class Translator 
 {
   private SymfonyTranslator $translator;
 
@@ -25,18 +25,18 @@ final class Translation
    */
   private function loadTranslations(string $locale): void
   {
-    $langPath = ROOT . 'lang/' . $locale; 
+    $langPath = ROOT . 'src/lang' . DIRECTORY_SEPARATOR  . $locale; 
 
     // Выбираем все файлы .php в папке текущего lang
     $files = glob($langPath . '/*.php');
     // $files = ['buttons.php', 'messages.php', 'navigation.php', 'validation.php'];
+
 
     foreach($files as $filePath) {
       $translations = require $filePath;
       $domain = pathinfo($filePath, PATHINFO_FILENAME); // например 'messages'
       $this->translator->addResource('array', $translations, $locale, $domain);
     }
-
     // foreach($files as $file) {
     //   // Для каждого файла задаем путь
     //   $translations = require $langPath . '/' . $file;
@@ -57,6 +57,12 @@ final class Translation
     $this->translator->setLocale($_GET['lang'] ?? $locale);
     $this->loadTranslations($locale);
   }
+
+  public function getTranslator(): SymfonyTranslator
+  {
+      return $this->translator;
+  }
+
 
 }
 

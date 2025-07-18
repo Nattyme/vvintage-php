@@ -1,5 +1,5 @@
 <?php
-declare(strick_types=1);
+declare(strict_types=1);
 
 return [
   'welcome' => 'Здравствуйте!', 'Вы успешно зарегестрировались на сайте.',

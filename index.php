@@ -26,9 +26,10 @@ $_SESSION['lang'] = $lang;
 require_once ROOT . 'libs/functions.php'; // подключаем пользовательскте ф-ции
 
 // Подключение перводчика
-use Vvintage\Services\Translation\Translation;
-$translator = new Translation($lang); // объект переводчика доступен глобально
-setTranslator($translator); // устанавливаем переводчик
+use Vvintage\Services\Translator\Translator;
+$translator = new Translator($lang); // создаем объект переводчика доступен глобально
+setTranslator($translator); // сохраняем его
+// setTranslator()->getTranslator()->getCatalogue(); // устанавливаем переводчик
 
 // function __(string $key, array $params = [], string $domain = 'messages'): string
 // {
@@ -36,7 +37,7 @@ setTranslator($translator); // устанавливаем переводчик
 //   return $translator->trans($key, $params, $domain);
 // }
 
-
+// dd($translator);
 Database::connect(); // Подключение БД:
 Settings::init(); // Загружаем и сохраняем настройки
 
