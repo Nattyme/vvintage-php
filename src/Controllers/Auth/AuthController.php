@@ -31,12 +31,6 @@ use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Favorites\FavoritesService;
 
 /** Store */
-// use Vvintage\Store\Cart\GuestCartStore;
-// use Vvintage\Store\Cart\UserCartStore;
-// use Vvintage\Store\Cart\CartStoreInterface;
-// use Vvintage\Store\Favorites\GuestFavoritesStore;
-// use Vvintage\Store\Favorites\UserFavoritesStore;
-// use Vvintage\Store\Favorites\FavoritesStoreInterface;
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 
@@ -83,7 +77,7 @@ final class AuthController
             }
 
             if (empty($_SESSION['errors'])) {
-                /** Получаем модель с корзиной гостя В АБСТРАКЦИЮ
+                /** Получаем модель с корзиной гостя 
                   * @var UserInterface $guestCartData 
                 */
                 $guestCartStore = new GuestItemsListStore();
@@ -92,8 +86,6 @@ final class AuthController
                 $guestCart = $guestCartStore->load('cart');
                 $guestFav = $guestFavStore->load('fav_list');
 
-                // $guestCartData = (new GuestCartStore())->load();
-                // $guestFavData = (new GuestFavoritesStore())->load();
                 $guestCartModel = new Cart( $guestCart);
                 $guestFavModel = new Favorites($guestFav);
 
@@ -177,13 +169,7 @@ final class AuthController
 
     public static function logout()
     {
-      if (empty($_SESSION['errors'])) {
-        session_destroy();
-        setcookie(session_name(), '', time() - 60);
-
-        header("Location: " . HOST);
-      }
-
+      SessionManager::logout();
     }
 
     public function register( RegistrationController $controller, RouteData $routeData)
