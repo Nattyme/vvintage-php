@@ -42,7 +42,7 @@ final class FavoritesController
     private FavoritesService $favService;
     private UserInterface $userModel;
     private Favorites $favModel;
-    private array $fav;
+    private array $fav_list;
     private ItemsListStoreInterface $favStore;
     private FlashMessage $notes;
 
@@ -50,14 +50,14 @@ final class FavoritesController
       FavoritesService $favService, 
       UserInterface $userModel, 
       Favorites $favModel, 
-      array $fav, 
+      array $fav_list, 
       ItemsListStoreInterface $favStore, 
       FlashMessage $notes)
     {
       $this->favService = $favService;
       $this->userModel = $userModel;
       $this->favModel = $favModel;
-      $this->fav = $fav;
+      $this->fav_list = $fav_list;
       $this->favStore = $favStore;
       $this->notes = $notes;
     }
@@ -65,7 +65,7 @@ final class FavoritesController
     public function index(RouteData $routeData): void
     {
       // Получаем продукты
-      $products = !empty($this->fav) ? ProductRepository::findByIds($this->fav) : [];
+      $products = !empty($this->fav_list) ? ProductRepository::findByIds($this->fav_list) : [];
       // $totalPrice = !empty($products) ? $favModel->getTotalPrice($products) : 0;
 
       // Показываем страницу
