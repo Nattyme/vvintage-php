@@ -26,8 +26,8 @@ final class Settings
     // Инициализация: получаем и загружаем настройки из БД
     public static function init(): void
     {
-        $settings = Database::getSettingsArray();
-        self::load($settings);
+      $settings = Database::getSettingsArray();
+      self::load($settings);
     }
 
 
@@ -39,7 +39,7 @@ final class Settings
      */
     public static function get(string $key): ?string
     {
-        return self::$settings[$key] ?? null;
+      return self::$settings[$key] ?? null;
     }
 
 

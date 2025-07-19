@@ -41,23 +41,6 @@ class Product
     }
 
 
-    // public static function findById (int $id) : ?self
-    // {
-    //     $row = Database::getProductRow($id);
-    //     if(!$row) return null;
-
-    //     $product = new self();
-    //     $product->id = (int) $row['id'];
-    //     $product->title = $row['title'];
-    //     $product->content = $row['content'];
-    //     $product->category = $row['cat_title'];
-    //     $product->brand = $row['brand_title'];
-    //     $product->price = (float)$row['price'];
-    //     $product->timestamp = $row['timestamp'];
-
-    //     return $product;
-    // }
-
     // Ф-ция возвращает изображения продукта
     public function getImages(): array
     {
@@ -150,7 +133,4 @@ class Product
         }
         return $this->imagesTotal;
     }
-    /**
-    * // Getters
-    */
 }
