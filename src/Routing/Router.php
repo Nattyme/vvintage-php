@@ -134,7 +134,7 @@
       $validator = new LoginValidator($userRepository,  $notes);
       $productRepository = new ProductRepository();
 
-      $loginController = new LoginController($userRepository, $notes);
+      $loginController = new LoginController($userRepository, $productRepository, $notes);
       $regController = new RegistrationController($notes);
       $resetController = new PasswordResetController($notes);
       $setNewPassController = new PasswordSetNewController( $setNewPassService, $notes );
@@ -142,7 +142,7 @@
    
       switch ($routeData->uriModule) {
         case 'login':
-          $loginController->index($productRepository, $routeData);
+          $loginController->index($routeData);
           break;
 
         case 'registration':
