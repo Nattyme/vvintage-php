@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+         colors="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
+
+<!-- 
+Настройка для PHPUnit: 
+-где искать тесты;
+-как их запускать;
+-что подключить перед запуском (автозагрузку vendor/autoload.php). 
+-->
