@@ -29,13 +29,13 @@
                     <div class="form-order__table-row">
                       <p><?php echo h($product['title']);?></p>
                       <p><?php echo h($product['price']);?></p>
-                      <p><?php echo h($cart[$product['id']]);?></p>
+                      <p><?php echo h($cartModel->getQuantity($product['id'])); ?></p>
                     </div>
                   <?php endforeach; ?>
                 <div class="form-order__total form-order__table-row">
                   <p>Итого</p>
-                  <p><?php echo  h($cartTotalPrice); ?></p>
-                  <p><?php echo  h($cartCount); ?></p>
+                  <p><?php echo h($totalPrice); ?></p>
+                  <p><?php echo h(count($products));?></p>
                 </div>
               </div>
             </fieldset>
@@ -73,7 +73,7 @@
               </fieldset>
               <fieldset class="form-order__block">
                   <legend class="form-order__title form-order__title-wrapper form-order__title-block">
-                    <h3>Данные доставки</h3>
+                    <h3>Данные по доставке</h3>
                   </legend>
 
                  <div class="form-order__field">

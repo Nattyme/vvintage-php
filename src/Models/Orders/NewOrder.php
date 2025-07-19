@@ -6,7 +6,7 @@ namespace Vvintage\Models\Orders;
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
-final class Orders
+final class NewOrder
 {
   private int $id;
   private string $name;

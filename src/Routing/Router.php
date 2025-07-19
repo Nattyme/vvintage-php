@@ -14,6 +14,7 @@
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
+  use Vvintage\Controllers\Orders\OrdersController;
   use Vvintage\Controllers\Favorites\FavoritesController;
   use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
@@ -287,9 +288,30 @@
     }
 
     private static function routeOrders(RouteData $routeData) {
+      /**
+       * Получаем модель пользователя - гость или залогиненный
+       * @var UserInreface $userModel
+      */
+      $userModel = SessionManager::getLoggedInUser();
+      $notes = new FlashMessage();
+
+      // Получаем корзину и ее модель
+      $cartModel = $userModel->getCartModel();
+      $cart = $userModel->getCart();
+
+      $productRepository = new ProductRepository();
+
+      $cartStore = ($userModel instanceof User) 
+                    ? new UserItemsListStore( new UserRepository() ) 
+                    : new GuestItemsListStore();
+
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
+
+      $controller = new OrdersController($cartService, $userModel, $cartModel, $cart, $cartStore, $notes );
+
       switch ($routeData->uriModule) {
         case 'neworder':
-          require ROOT . 'modules/orders/new.php';
+          $controller->index($routeData);
           break;
         case 'ordercreated':
           require ROOT . 'modules/orders/created.php';

@@ -34,9 +34,6 @@ use Vvintage\Services\Messages\FlashMessage;
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
-// use Vvintage\Store\Cart\GuestCartStore;
-// use Vvintage\Store\Cart\UserCartStore;
-// use Vvintage\Store\Cart\CartStoreInterface;
 
 require_once ROOT . './libs/functions.php';
 
@@ -49,7 +46,13 @@ final class CartController
     private ItemsListStoreInterface $cartStore;
     private FlashMessage $notes;
 
-    public function __construct(CartService $cartService, UserInterface $userModel, Cart $cartModel, array $cart, ItemsListStoreInterface $cartStore, FlashMessage $notes)
+    public function __construct(
+      CartService $cartService, 
+      UserInterface $userModel, 
+      Cart $cartModel, 
+      array $cart, 
+      ItemsListStoreInterface $cartStore, 
+      FlashMessage $notes)
     {
       $this->cartService = $cartService;
       $this->userModel = $userModel;
