@@ -10,7 +10,7 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
 
 
-final class FavoritesService extends AbstractUserItemsListService
+class FavoritesService extends AbstractUserItemsListService
 {
   // public function getSessionKey(): string
   // {

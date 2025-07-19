@@ -26,6 +26,7 @@ final class UserItemsMergeService
     AbstractUserItemsList $guestFavoritesModel,
   ): void
   {
+
     $this->cartService->mergeItemsListAfterLogin($userCartModel, $guestCartModel);
     $this->favService->mergeItemsListAfterLogin($userFavoritesModel, $guestFavoritesModel);
   }

@@ -10,7 +10,7 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
 
 
-final class CartService extends AbstractUserItemsListService
+class CartService extends AbstractUserItemsListService
 {
     public function getCartTotalPrice($products, $cartModel)
     {

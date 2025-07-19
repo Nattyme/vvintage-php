@@ -14,6 +14,7 @@ use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\Auth\LoginService;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\User\UserItemsMergeService;
 
 /** Хранилища */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
@@ -97,9 +98,7 @@ final class LoginController
     $userCartModel = new Cart( $userCart );
     $userFavoritesModel = new Favorites( $userFav );
 
-
-
-    $userItemsMergeService = new UserItemsMergeService ($cartService, $favService);
+    $userItemsMergeService = new UserItemsMergeService($cartService, $favService);
     
     $userItemsMergeService->mergeAllAfterLogin(
       $userCartModel,
