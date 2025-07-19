@@ -8,6 +8,7 @@
   use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\Validation\LoginValidator;
+  use Vvintage\Services\Validation\NewOrderValidator;
 
 
   /** Контроллеры */
@@ -293,27 +294,32 @@
        * @var UserInreface $userModel
       */
       $userModel = SessionManager::getLoggedInUser();
+      $userRepository = $userModel->getRepository();
+      $productRepository = new ProductRepository();
       $notes = new FlashMessage();
+      $validator = new NewOrderValidator($userRepository, $notes);
+
 
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
       $cart = $userModel->getCart();
 
-      $productRepository = new ProductRepository();
 
       $cartStore = ($userModel instanceof User) 
-                    ? new UserItemsListStore( new UserRepository() ) 
+                    ? new UserItemsListStore( $userRepository ) 
                     : new GuestItemsListStore();
 
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
 
-      $controller = new OrdersController($cartService, $userModel, $cartModel, $cart, $cartStore, $notes );
+
+      $controller = new OrdersController($cartService, $userModel, $cartModel, $cart, $cartStore, $validator, $notes );
 
       switch ($routeData->uriModule) {
         case 'neworder':
           $controller->index($routeData);
           break;
         case 'ordercreated':
+          $controller->index($routeData);
           require ROOT . 'modules/orders/created.php';
           break;
       }
