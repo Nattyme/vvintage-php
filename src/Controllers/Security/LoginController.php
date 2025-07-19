@@ -71,59 +71,61 @@ final class LoginController
     exit();
   }
 
-  private function handleItemsMerge(User $userModel): void
+  /**
+   * Метод совмещает списки пользователя
+   * @return void
+  */
+  private function handleItemsMerge(User $user): void
   {
-    $guestCartStore = new GuestItemsListStore();
-    $guestFavStore = new GuestItemsListStore();
-
-    $guestCart = $guestCartStore->load('cart');
-    $guestFav = $guestFavStore->load('fav_list');
-
-    $guestCartModel = new Cart($guestCart);
-    $guestFavoritesModel = new Favorites($guestFav);
+    $guest = $this->createGuestModels();
+    $user = $this->createUserModels();
 
     $cartService = new CartService(
-      $userModel, $guestCartModel, $guestCartModel->getItems(), $guestCartStore, $this->productRepository, $this->notes
+      $userModel, $guest['cart'], $guest['cart']->getItems(), $guest['store'], $this->productRepository, $this->notes
     );
+
     $favService = new FavoritesService(
-      $userModel, $guestFavoritesModel, $guestFavoritesModel->getItems(), $guestFavStore, $this->productRepository, $this->notes
+      $userModel, $guest['fav'], $guest['fav']->getItems(), $guest['store'], $this->productRepository, $this->notes
     );
-
-    $userCartStore = new UserItemsListStore($this->userRepository); 
-    $userFavStore = new UserItemsListStore($this->userRepository);
-
-    $userCart = $userCartStore->load('cart');
-    $userFav =  $userFavStore->load('fav');
-
-    $userCartModel = new Cart( $userCart );
-    $userFavoritesModel = new Favorites( $userFav );
 
     $userItemsMergeService = new UserItemsMergeService($cartService, $favService);
-    
+
     $userItemsMergeService->mergeAllAfterLogin(
-      $userCartModel,
-      $guestCartModel,
-      $userFavoritesModel,
-      $guestFavoritesModel
+      $user['cart'],
+      $guest['cart'],
+      $user['fav'],
+      $guest['fav']
     );
-    
-
-
-    // $userCartStore = new UserItemsListStore($this->userRepository); 
-    // $userFavStore = new UserItemsListStore($this->userRepository);
-
-    // $userCart = $userCartStore->load('cart');
-    // $userFav =  $userFavStore->load('fav');
-
-    // $cartModel = new Cart( $userCart );
-    // $favModel = new Favorites( $userFav );
-
-    // $cartService->mergeItemsListAfterLogin($cartModel, $guestCartModel);
-    // $favService->mergeItemsListAfterLogin($favModel, $guestFavModel);
-
-    // $this->userRepository->saveUserItemsList('cart', $userModel, $cartModel->getItems());
-    // $this->userRepository->saveUserItemsList('fav_list', $userModel, $favModel->getItems());
   }
+
+  /**
+   * Создаёт и возвращает модели корзины и избранного гостя + хранилище
+   *
+   * @return array{GuestItemsListStore, Cart, Favorites}
+ */
+  private function createGuestModels(): array
+  {
+    $store = new GuestItemsListStore();
+    $cart = new Cart($guestStore->load('cart'));
+    $fav = new Favorites($guestStore->load('fav_list'));
+
+    return ['store' => $store, 'cart' => $cart, 'fav' => $fav];
+  }
+
+  /**
+   * Создаёт и возвращает модели корзины и избранного пользователя + хранилище
+   *
+   * @return array{UserItemsListStore, Cart, Favorites}
+ */
+  private function createUserModels(): array
+  {
+    $store = new UserItemsListStore($this->userRepository);
+    $cart = new Cart($userStore->load('cart'));
+    $fav = new Favorites($userStore->load('fav'));
+
+    return ['store' => $store, 'cart' => $cart, 'fav' => $fav];
+  }
+
 
 
   private function renderForm(RouteData $routeData): void
