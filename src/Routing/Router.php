@@ -15,6 +15,7 @@
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
   use Vvintage\Controllers\Favorites\FavoritesController;
+  use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
   use Vvintage\Controllers\Security\PasswordResetController;
   use Vvintage\Controllers\Security\PasswordSetNewController;
@@ -133,31 +134,31 @@
       $validator = new LoginValidator($userRepository,  $notes);
       $productRepository = new ProductRepository();
 
-      $controller = new AuthController( $userRepository, $validator, $notes);
+      $loginController = new LoginController($userRepository, $notes);
       $regController = new RegistrationController($notes);
-      $setNewPassController = new PasswordSetNewController( $setNewPassService, $notes );
       $resetController = new PasswordResetController($notes);
+      $setNewPassController = new PasswordSetNewController( $setNewPassService, $notes );
 
    
       switch ($routeData->uriModule) {
         case 'login':
-          $controller->login($productRepository, $routeData);
+          $loginController->index($productRepository, $routeData);
           break;
 
         case 'registration':
-          $controller->register($regController, $routeData);
-          break;
-
-        case 'logout':
-          $controller->logout($routeData);
+          $regController->index($routeData);
           break;
 
         case 'lost-password':
-          $controller->resetPassword($resetController, $routeData);
+          $resetController->index($routeData);
           break;
 
         case 'set-new-password':
-          $controller->setNewPassword( $setNewPassController, $routeData);
+          $setNewPassController->index($routeData);
+          break;
+        
+        case 'logout':
+          SessionManager::logout();
           break;
       }
     }
