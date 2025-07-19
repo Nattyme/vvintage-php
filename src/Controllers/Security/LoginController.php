@@ -79,13 +79,13 @@ final class LoginController
     $guestFav = $guestFavStore->load('fav_list');
 
     $guestCartModel = new Cart($guestCart);
-    $guestFavModel = new Favorites($guestFav);
+    $guestFavoritesModel = new Favorites($guestFav);
 
     $cartService = new CartService(
       $userModel, $guestCartModel, $guestCartModel->getItems(), $guestCartStore, $this->productRepository, $this->notes
     );
     $favService = new FavoritesService(
-      $userModel, $guestFavModel, $guestFavModel->getItems(), $guestFavStore, $this->productRepository, $this->notes
+      $userModel, $guestFavoritesModel, $guestFavoritesModel->getItems(), $guestFavStore, $this->productRepository, $this->notes
     );
 
     $userCartStore = new UserItemsListStore($this->userRepository); 
@@ -94,14 +94,36 @@ final class LoginController
     $userCart = $userCartStore->load('cart');
     $userFav =  $userFavStore->load('fav');
 
-    $cartModel = new Cart( $userCart );
-    $favModel = new Favorites( $userFav );
+    $userCartModel = new Cart( $userCart );
+    $userFavoritesModel = new Favorites( $userFav );
 
-    $cartService->mergeItemsListAfterLogin($cartModel, $guestCartModel);
-    $favService->mergeItemsListAfterLogin($favModel, $guestFavModel);
 
-    $this->userRepository->saveUserItemsList('cart', $userModel, $cartModel->getItems());
-    $this->userRepository->saveUserItemsList('fav_list', $userModel, $favModel->getItems());
+
+    $userItemsMergeService = new UserItemsMergeService ($cartService, $favService);
+    
+    $userItemsMergeService->mergeAllAfterLogin(
+      $userCartModel,
+      $guestCartModel,
+      $userFavoritesModel,
+      $guestFavoritesModel
+    );
+    
+
+
+    // $userCartStore = new UserItemsListStore($this->userRepository); 
+    // $userFavStore = new UserItemsListStore($this->userRepository);
+
+    // $userCart = $userCartStore->load('cart');
+    // $userFav =  $userFavStore->load('fav');
+
+    // $cartModel = new Cart( $userCart );
+    // $favModel = new Favorites( $userFav );
+
+    // $cartService->mergeItemsListAfterLogin($cartModel, $guestCartModel);
+    // $favService->mergeItemsListAfterLogin($favModel, $guestFavModel);
+
+    // $this->userRepository->saveUserItemsList('cart', $userModel, $cartModel->getItems());
+    // $this->userRepository->saveUserItemsList('fav_list', $userModel, $favModel->getItems());
   }
 
 
