@@ -7,7 +7,7 @@ namespace Vvintage\Repositories;
 use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\User\User;
-use Vvintage\Models\Cart\Cart;
+use Vvintage\Models\Order\Order;
 use Vvintage\Repositories\AddressRepository;
 
 final class OrderRepository
@@ -16,8 +16,8 @@ final class OrderRepository
 
     public function __construct()
     {
-      // $this->cart = $cart;
-      $this->addressRepository = new AddressRepository();
+        // $this->cart = $cart;
+        $this->addressRepository = new AddressRepository();
     }
 
     private function fillOrderBean(OODBBean $bean, array $postData, User $user)
@@ -35,12 +35,12 @@ final class OrderRepository
 
     private function loadBean(int $id)
     {
-      return  R::load('orders', $id);
+        return  R::load('orders', $id);
     }
 
     private function saveBean(OODBBean $bean)
     {
-      return R::store($bean);
+        return R::store($bean);
     }
 
 
@@ -62,58 +62,58 @@ final class OrderRepository
     }
 
     /**
-     * Метод ищет все заказы по id пользователя 
+     * Метод ищет все заказы по id пользователя
      * @param int $id
      * @return @return OODBBean[]
      */
     public function findOrdersByUserId(int $id): array
     {
-      $beans = R::findAll('orders', 'user_id = ?', [$id]);
+        $beans = R::findAll('orders', 'user_id = ?', [$id]);
 
-      return is_array($beans) ? $beans : [];
+        return is_array($beans) ? $beans : [];
     }
 
 
     /**
      * Метод возвращает все заказы
-     * 
+     *
      * @return array
      */
     public function findAll(): array
     {
-      return R::findAll( 'orders' );
+        return R::findAll('orders');
     }
 
 
     /**
-     * Метод создает новый заказ 
-     * 
+     * Метод создает новый заказ
+     *
      * @return User|null
     */
-    public function createOrder(User $user, array $postData): ?Order
+    public function create(array $postData, $userId): ?Order
     {
         $bean = R::dispense('orders');
 
         // Записываем параметры в bean
-        $this->fillOrderBean($bean, $postData, $user);   
+        $this->fillOrderBean($bean, $postData, $user);
 
         // Привязываем заказ к пользователю
-        $userBean = R::load('users', $user->getId());
+        $userBean = R::load('users', $userId);
         $bean->user = $userBean;
 
         // Сохраняем в БД
         $orderId = $this->saveBean($bean);
 
-      if (!is_int($orderId) || $orderId === 0) {
-        return null;
-      }
+        if (!is_int($orderId) || $orderId === 0) {
+            return null;
+        }
 
-      return new Order ($bean);
+        return new Order($bean);
     }
 
 
     /**
-     * Метод редактирует пользователя 
+     * Метод редактирует пользователя
      * @param User $userModel, array $newUserData
      * @return Order|null
      */
@@ -122,38 +122,38 @@ final class OrderRepository
         $id = $order->getId();
         $bean = $this->loadBean($id);
 
-        if($bean->id !== 0 && $user->getRole() === 'admin') {
-          // Записываем параметры в bean и сохраняем в БД   
-          $this->fillOrderBean($bean, $postData, $user);   
-          $orderId = $this->saveBean($bean);      
+        if ($bean->id !== 0 && $user->getRole() === 'admin') {
+            // Записываем параметры в bean и сохраняем в БД
+            $this->fillOrderBean($bean, $postData, $user);
+            $orderId = $this->saveBean($bean);
 
-          if (!is_int($orderId) || $orderId === 0) {
-            return null;
-          }
+            if (!is_int($orderId) || $orderId === 0) {
+                return null;
+            }
 
-          return new Order ($bean);
+            return new Order($bean);
 
         } else {
-          return null;
+            return null;
         }
     }
 
-    
+
     /**
-     * Метод удаления заказа 
-     * 
+     * Метод удаления заказа
+     *
      * @return void
     */
     public function removeOrder(Order $order, User $userModel): void
     {
-      $order_id = $order->getId();
-      $user_id = $userModel->getId();
+        $order_id = $order->getId();
+        $user_id = $userModel->getId();
 
-      $bean = $this->loadBean($order_id);
+        $bean = $this->loadBean($order_id);
 
-      if ($bean->id !== 0 && ($user_id === $bean->user_id || $userModel->getRole() === 'admin')) {
-        R::trash( $bean ); 
-      }
+        if ($bean->id !== 0 && ($user_id === $bean->user_id || $userModel->getRole() === 'admin')) {
+            R::trash($bean);
+        }
 
     }
 

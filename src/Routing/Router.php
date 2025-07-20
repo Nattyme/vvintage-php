@@ -15,7 +15,7 @@
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
-  use Vvintage\Controllers\Orders\OrdersController;
+  use Vvintage\Controllers\Order\OrderController;
   use Vvintage\Controllers\Favorites\FavoritesController;
   use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
@@ -26,6 +26,7 @@
   use Vvintage\Services\Security\PasswordSetNewService;
   use Vvintage\Services\Cart\CartService;
   use Vvintage\Services\Favorites\FavoritesService;
+  use Vvintage\Services\Order\OrderService;
 
   /** Модели */
   use Vvintage\Models\User\User;
@@ -48,6 +49,7 @@
   /** Репозитории */
   use Vvintage\Repositories\UserRepository;
   use Vvintage\Repositories\ProductRepository;
+  use Vvintage\Repositories\OrderRepository;
 
   class Router {
      /*****************************
@@ -311,8 +313,9 @@
 
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
 
-
-      $controller = new OrdersController($cartService, $userModel, $cartModel, $cart, $cartStore, $validator, $notes );
+      $orderRepository = new OrderRepository();
+      $orderService = new OrderService($orderRepository, $userModel);
+      $controller = new OrderController($orderService, $cartService, $userModel, $cartModel, $cart, $cartStore, $validator, $notes );
 
       switch ($routeData->uriModule) {
         case 'neworder':

@@ -6,7 +6,7 @@ namespace Vvintage\Models\Orders;
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
-final class NewOrder
+final class Order
 {
   private int $id;
   private string $name;
@@ -19,7 +19,7 @@ final class NewOrder
   private bool $paid;
   private array $cart;
 
-  public function __construct(OODBBean $bean)
+  public function __construct(array $order)
   {
     $this->id = (int) $bean->id;
     $this->name = $bean->name;

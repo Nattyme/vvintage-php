@@ -12,12 +12,14 @@ use Vvintage\Models\User\UserInterface;
 use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
 
 /** Сервисы */
+use Vvintage\Services\Order\OrderService;
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Validation\NewOrderValidator;
 
 /** Модели */
 use Vvintage\Models\Cart\Cart;
+use Vvintage\Models\Order\Order;
 use Vvintage\Models\Settings\Settings;
 
 /** Хранилище */
@@ -27,6 +29,7 @@ require_once ROOT . './libs/functions.php';
 
 final class OrdersController
 {
+    private OrderService $orderService;
     private CartService $cartService;
     private UserInterface $userModel;
     private Cart $cartModel;
@@ -37,6 +40,7 @@ final class OrdersController
   
 
     public function __construct(
+      OrderService $orderService, 
       CartService $cartService, 
       UserInterface $userModel,
       Cart $cartModel,
@@ -78,19 +82,32 @@ final class OrdersController
           $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
           return;
         }
+// Вызывать функцию сервиса котора готовит данные 
+        // Валидируем данные для записи в БД
+        $order = $this->orderService->createNewOrder($_POST);
+       
+// if ($order !== null) {
+//     // redirect на страницу успешного оформления
+//     header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
+//     exit();
+// } else {
+//     // сообщение об ошибке
+//     $this->notes->add("Произошла ошибка при создании заказа.");
+//     $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
+//     return;
+// }
+        // // Сделать orderRepository Если массив ошибок пуст
+        // $order = R::dispense('orders');
+        // $order->name = h(trim($_POST['name']));
+        // $order->surname = h(trim($_POST['surname']));
+        // $order->email = filter_var(h(trim($_POST['email'])), FILTER_VALIDATE_EMAIL);
+        // $order->phone = h(trim($_POST['phone']));
+        // $order->address = h(trim($_POST['address']));
+        // $order->timestamp = time();
+        // $order->status = 'new';
+        // $order->paid = false;
 
-        // Сделать orderRepository Если массив ошибок пуст
-        $order = R::dispense('orders');
-        $order->name = htmlentities(trim($_POST['name']));
-        $order->surname = htmlentities(trim($_POST['surname']));
-        $order->email = filter_var(htmlentities(trim($_POST['email'])), FILTER_VALIDATE_EMAIL);
-        $order->phone = trim($_POST['phone']);
-        $order->address = htmlentities(trim($_POST['address']));
-        $order->timestamp = time();
-        $order->status = 'new';
-        $order->paid = false;
-
-        $order->cart = json_encode($cart);
+        // $order->cart = json_encode($cart);
 
         // Если пользователь вошел в профиль
         if ( isLoggedIn() ) { $order->user = $_SESSION['logged_user']; }
