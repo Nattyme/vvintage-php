@@ -20,14 +20,39 @@ final class OrderRepository
       $this->addressRepository = new AddressRepository();
     }
 
+    private function fillOrderBean(OODBBean $bean, array $postData, User $user)
+    {
+        $bean->name = htmlentities(trim($postData['name']));
+        $bean->surname = htmlentities(trim($postData['surname']));
+        $bean->email = filter_var(htmlentities(trim($postData['email'])), FILTER_VALIDATE_EMAIL);
+        $bean->phone = trim($postData['phone']);
+        $bean->address = htmlentities(trim($postData['address']));
+        $bean->timestamp = time();
+        $bean->status = 'new';
+        $bean->paid = false;
+        $bean->cart = json_encode($user->getCart());
+    }
+
+    private function loadBean(int $id)
+    {
+      return  R::load('orders', $id);
+    }
+
+    private function saveBean(OODBBean $bean)
+    {
+      return R::store($bean);
+    }
+
+
+
     /**
      * Метод ищет заказ по id
      * @param int $id
-     * @return Order|null
+     * @return OODBBean[]
      */
     public function findOrderById(int $id): ?Order
     {
-        $bean = R::load('orders', $id);
+        $bean = $this->loadBean($id);
 
         if ($bean->id === 0) {
             return null;
@@ -38,14 +63,14 @@ final class OrderRepository
 
     /**
      * Метод ищет все заказы по id пользователя 
-     * @param int id
-     * @return OODBBean
+     * @param int $id
+     * @return @return OODBBean[]
      */
     public function findOrdersByUserId(int $id): array
     {
       $beans = R::findAll('orders', 'user_id = ?', [$id]);
 
-      return $beans ?? [];
+      return is_array($beans) ? $beans : [];
     }
 
 
@@ -60,7 +85,6 @@ final class OrderRepository
     }
 
 
-
     /**
      * Метод создает новый заказ 
      * 
@@ -69,29 +93,16 @@ final class OrderRepository
     public function createOrder(User $user, array $postData): ?Order
     {
         $bean = R::dispense('orders');
-        $bean->name = htmlentities(trim($postData['name']));
-        $bean->surname = htmlentities(trim($postData['surname']));
-        $bean->email = filter_var(htmlentities(trim($postData['email'])), FILTER_VALIDATE_EMAIL);
-        $bean->phone = trim($postData['phone']);
-        $bean->address = htmlentities(trim($postData['address']));
-        $bean->timestamp = time();
-        $bean->status = 'new';
-        $bean->paid = false;
 
-        $bean->cart = json_encode($user->getCart());
+        // Записываем параметры в bean
+        $this->fillOrderBean($bean, $postData, $user);   
 
-      // Проверить в таблице адресов если адреса нет добавить новый? или не нужно?
-        // $addressModel = $this->addressRepository->createAddress(); // создаем новый адрес
-        // $addressId = $addressModel->getId();
+        // Привязываем заказ к пользователю
+        $userBean = R::load('users', $user->getId());
+        $bean->user = $userBean;
 
-      // if (!is_int($addressId) || $addressId === 0) {
-      //   return null;
-      // }
-
-      // $addressBean = R::load('address', $addressId);
-      // $bean->address = $addressBean;
-
-      $orderId = R::store($bean);
+        // Сохраняем в БД
+        $orderId = $this->saveBean($bean);
 
       if (!is_int($orderId) || $orderId === 0) {
         return null;
@@ -109,21 +120,12 @@ final class OrderRepository
     public function editOrder(User $user, Order $order, array $postData): ?Order
     {
         $id = $order->getId();
-        $bean = R::load('orders', $id);
+        $bean = $this->loadBean($id);
 
         if($bean->id !== 0 && $user->getRole() === 'admin') {
-          $bean = R::load('orders', $order->getId());
-          $bean->name = htmlentities(trim($postData['name']));
-          $bean->surname = htmlentities(trim($postData['surname']));
-          $bean->email = filter_var(htmlentities(trim($postData['email'])), FILTER_VALIDATE_EMAIL);
-          $bean->phone = trim($postData['phone']);
-          $bean->address = htmlentities(trim($postData['address']));
-          $bean->timestamp = time();
-          $bean->status = 'new';
-          $bean->paid = false;
-
-          $bean->cart = json_encode($user->getCart());
-          $orderId = R::store($bean);
+          // Записываем параметры в bean и сохраняем в БД   
+          $this->fillOrderBean($bean, $postData, $user);   
+          $orderId = $this->saveBean($bean);      
 
           if (!is_int($orderId) || $orderId === 0) {
             return null;
@@ -134,13 +136,9 @@ final class OrderRepository
         } else {
           return null;
         }
+    }
 
-
-        return null;
-      }
-
-
-
+    
     /**
      * Метод удаления заказа 
      * 
@@ -151,7 +149,7 @@ final class OrderRepository
       $order_id = $order->getId();
       $user_id = $userModel->getId();
 
-      $bean = R::load('orders', $order_id);
+      $bean = $this->loadBean($order_id);
 
       if ($bean->id !== 0 && ($user_id === $bean->user_id || $userModel->getRole() === 'admin')) {
         R::trash( $bean ); 
