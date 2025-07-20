@@ -117,14 +117,13 @@ final class OrderRepository
      * @param User $userModel, array $newUserData
      * @return Order|null
      */
-    public function editOrder(User $user, Order $order, array $postData): ?Order
+    public function edit(int $orderId, array $order): ?Order
     {
-        $id = $order->getId();
-        $bean = $this->loadBean($id);
+        $bean = $this->loadBean($orderId);
 
-        if ($bean->id !== 0 && $user->getRole() === 'admin') {
+        if ($bean->id !== 0) {
             // Записываем параметры в bean и сохраняем в БД
-            $this->fillOrderBean($bean, $postData, $user);
+            $this->fillOrderBean($bean, $order, $user);
             $orderId = $this->saveBean($bean);
 
             if (!is_int($orderId) || $orderId === 0) {

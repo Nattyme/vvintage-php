@@ -24,6 +24,9 @@ use Vvintage\Models\Settings\Settings;
 
 /** Хранилище */
 
+/** DTO */
+use Vvintage\DTO\Order\OrderDTO;
+
 
 require_once ROOT . './libs/functions.php';
 
@@ -82,79 +85,41 @@ final class OrdersController
           $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
           return;
         }
-// Вызывать функцию сервиса котора готовит данные 
-        // Валидируем данные для записи в БД
-        $order = $this->orderService->createNewOrder($_POST);
+        // Вызываем DTO
+        $orderDTO = new OrderDTO($_POST['submit']);
+        // $orderDTO->validate();
+        
+        $order = $this->orderService->create($_POST);
        
-// if ($order !== null) {
-//     // redirect на страницу успешного оформления
-//     header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
-//     exit();
-// } else {
-//     // сообщение об ошибке
-//     $this->notes->add("Произошла ошибка при создании заказа.");
-//     $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
-//     return;
-// }
-        // // Сделать orderRepository Если массив ошибок пуст
-        // $order = R::dispense('orders');
-        // $order->name = h(trim($_POST['name']));
-        // $order->surname = h(trim($_POST['surname']));
-        // $order->email = filter_var(h(trim($_POST['email'])), FILTER_VALIDATE_EMAIL);
-        // $order->phone = h(trim($_POST['phone']));
-        // $order->address = h(trim($_POST['address']));
-        // $order->timestamp = time();
-        // $order->status = 'new';
-        // $order->paid = false;
+      if ($order !== null) {
+          // redirect на страницу успешного оформления
+          // header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
+          exit();
+      } else {
+          // сообщение об ошибке
+          $this->notes->pushError("Произошла ошибка при создании заказа.");
+          $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
+          return;
+      }
 
-        // $order->cart = json_encode($cart);
+        // // Очищаем корзину
+        // if ( isLoggedIn() ) {
+        //   $_SESSION['cart'] = array();
+        //   $_SESSION['logged_user']->cart = '';
 
-        // Если пользователь вошел в профиль
-        if ( isLoggedIn() ) { $order->user = $_SESSION['logged_user']; }
+        //   R::store($_SESSION['logged_user']);
 
-        $order_cart = array();
-        $total_price = 0;
+        // } else {
+        //   setcookie('cart', '', time() - 3600);
+        // }
 
-        foreach ($this->cart as $key => $value) {
-          $current_item = array();
-
-          $current_item['id'] = $key;
-          $current_item['amount'] = $value;
-
-          $product = R::load('products', $key); 
-          $current_item['title'] = $product['title'];
-          $current_item['price'] = $product['price'];
-          
-          $total_price = $total_price + ( $product['price'] * $value );
-
-          $order_cart[] = $current_item;
-        }
-
-        $order->price = $total_price;
-        $order->cart = json_encode($order_cart);
-        // Сохраняем заказ
-        $new_order_id = R::store($order);
-
-        // Очищаем корзину
-        if ( isLoggedIn() ) {
-          $_SESSION['cart'] = array();
-          $_SESSION['logged_user']->cart = '';
-
-          R::store($_SESSION['logged_user']);
-
-        } else {
-          setcookie('cart', '', time() - 3600);
-        }
-
-        header('Location: ' . HOST . 'ordercreated?id=' . $new_order_id);
-        exit();
 
       }
     }
 
-    private function new()
+    private function edit(Order $order, array $postData)
     {
-
+      $this->orderService->edit($order, $postData);
     }
 
     private function created($routeData) 

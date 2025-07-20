@@ -314,7 +314,7 @@
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
 
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $userModel);
+      $orderService = new OrderService($orderRepository, $userModel, $notes);
       $controller = new OrderController($orderService, $cartService, $userModel, $cartModel, $cart, $cartStore, $validator, $notes );
 
       switch ($routeData->uriModule) {

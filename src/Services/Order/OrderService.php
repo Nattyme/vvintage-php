@@ -13,10 +13,11 @@ use Vvintage\Services\Shared\AbstractUserItemsListService;
 
 class OrderService extends AbstractUserItemsListService
 {
-    public function __construct(OrderRepository $orderRepository, User $user)
+    public function __construct(OrderRepository $orderRepository, User $user, FlashMessages $note)
     {
       $this->orderRepository=$orderRepository;
       $this->user=$user;
+      $this->note=$note;
     }
 
     public function getOrderTotalPrice($products, $cartModel)
@@ -24,15 +25,33 @@ class OrderService extends AbstractUserItemsListService
         return !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
 
-    public function createNewOrder(array $postData)
+    public function create(array $postData)
     {
       $order = $this->prepareDataForBean($postData);
       $this->orderRepository->create($order, $this->user->getId());
     }
 
-    private function setModel(){
+    public function edit(Order $order, array $postData)
+    {
+      // Проверяем, что заказ редактирует админ
+      if($this->user->getRole() !== 'admin') {
+        $this->note->pushError('Нет прав на редатирование заказа');
+        return;
+      }
 
+      // Подготавливаем данные из POST
+      $order = $this->prepareDataForBean($postData);
+
+      // Сохраняем заказ
+      $result = $this->orderRepository->edit($order->getId(), $order);
+
+      if (!$result) {
+        $this->note->pushError('Ошибка при сохранении заказа.');
+        return;
+      }
+      $this->note->pushSuccess('Заказ успешно изменён');
     }
+
 
     private function prepareDataForBean(array $postData): ?Order
     {
