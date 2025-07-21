@@ -205,17 +205,6 @@ final class UserRepository
         R::store($userBean);
     }
 
-    // public function saveUserFav(User $userModel, array $favItems): void
-    // {
-    //     // Находим bean пользователя по id из модели
-    //     $userId = $userModel->getId();
-    //     $userBean = R::load('users', $userId);
-
-    //     // Обновляем корзину
-    //     $userBean->fav_list = json_encode($favItems);
-    //     R::store($userBean);
-    // }
-
 
     /**
      * Метод удаления пользователя 
@@ -238,14 +227,14 @@ final class UserRepository
      * Метод возвращает корзину user из БД
      * @return array
     */
-    // public function getUserCart(int $userId): array
-    // {
-    //     // Находим bean пользователя по id из модели
-    //     $userBean = R::load('users', $userId);
+    public function getItemsList(int $userId, $itemsKey): array
+    {
+        // Находим bean пользователя по id из модели
+        $userBean = R::load('users', $userId);
 
-    //     // Получаем корзину из БД и переводим в массив
-    //     $userCart = !empty($userBean->cart) ? json_decode($userBean->cart, true) : [];
-    //     return $userCart;
-    // }
+        // Получаем корзину из БД и переводим в массив
+        $userItems = !empty($userBean->$itemsKey) ? json_decode($userBean->$itemsKey, true) : [];
+        return $userItems;
+    }
 
 }

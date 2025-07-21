@@ -75,20 +75,20 @@ final class LoginController
    * Метод совмещает списки пользователя
    * @return void
   */
-  private function handleItemsMerge(User $user): void
+  private function handleItemsMerge(User $userModel): void
   {
     $guest = $this->createGuestModels();
+   
     $user = $this->createUserModels();
-
+    // Здесь возвращается guest Store
     $cartService = new CartService(
-      $userModel, $guest['cart'], $guest['cart']->getItems(), $guest['store'], $this->productRepository, $this->notes
+      $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productRepository, $this->notes
     );
 
     $favService = new FavoritesService(
-      $userModel, $guest['fav'], $guest['fav']->getItems(), $guest['store'], $this->productRepository, $this->notes
+      $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productRepository, $this->notes
     );
-
-    $userItemsMergeService = new UserItemsMergeService($cartService, $favService);
+    $userItemsMergeService = new UserItemsMergeService($favService, $cartService);
 
     $userItemsMergeService->mergeAllAfterLogin(
       $user['cart'],
@@ -96,6 +96,7 @@ final class LoginController
       $user['fav'],
       $guest['fav']
     );
+    
   }
 
   /**
@@ -106,8 +107,9 @@ final class LoginController
   private function createGuestModels(): array
   {
     $store = new GuestItemsListStore();
-    $cart = new Cart($guestStore->load('cart'));
-    $fav = new Favorites($guestStore->load('fav_list'));
+
+    $cart = new Cart($store->load('cart'));
+    $fav = new Favorites($store->load('fav_list'));
 
     return ['store' => $store, 'cart' => $cart, 'fav' => $fav];
   }
@@ -120,9 +122,9 @@ final class LoginController
   private function createUserModels(): array
   {
     $store = new UserItemsListStore($this->userRepository);
-    $cart = new Cart($userStore->load('cart'));
-    $fav = new Favorites($userStore->load('fav'));
-
+    $cart = new Cart($store->load('cart'));
+    $fav = new Favorites($store->load('fav_list'));
+    
     return ['store' => $store, 'cart' => $cart, 'fav' => $fav];
   }
 

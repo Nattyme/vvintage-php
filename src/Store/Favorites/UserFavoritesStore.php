@@ -25,7 +25,7 @@ class UserFavoritesStore implements FavoritesStoreInterface
 
   public function save (Favorites $favModel, ?UserInterface $userModel = null): void 
   {
-
+dd('сораняем');
     $fav = $favModel->getItems();
 
     // Записываем в БД

@@ -18,6 +18,7 @@ class GuestItemsListStore implements ItemsListStoreInterface {
 
   public function save($itemKey, $itemModel, ?UserInterface $userModel = null): void 
   {
+    
     $items = $itemModel->getItems(); // получаем массив корзины
     setcookie($itemKey, json_encode( $items), time() + 3600 * 24 * 7, '/');
   }

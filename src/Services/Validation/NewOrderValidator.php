@@ -28,7 +28,8 @@ final class NewOrderValidator
       $valid = false;
     } 
 
-    $email = trim( strtolower($data['email']) ?? '');
+    $email = isset($data['email']) ? trim(strtolower($data['email'])) : '';
+
     if ($email === '') {
       $this->notes->renderError('Введите email');
       $valid = false;

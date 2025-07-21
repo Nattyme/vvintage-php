@@ -13,10 +13,10 @@ final class UserItemsMergeService
   private CartService $cartService;
   private FavoritesService $favService;
 
-  public function __construct(CartService $cartService, FavoritesService $favService)
+  public function __construct(FavoritesService $favService, CartService $cartService)
   {
-    $this->cartService = $cartService;
     $this->favService = $favService;
+    $this->cartService = $cartService;
   }
 
   public function mergeAllAfterLogin(
@@ -27,7 +27,7 @@ final class UserItemsMergeService
   ): void
   {
 
-    $this->cartService->mergeItemsListAfterLogin($userCartModel, $guestCartModel);
     $this->favService->mergeItemsListAfterLogin($userFavoritesModel, $guestFavoritesModel);
+    $this->cartService->mergeItemsListAfterLogin($userCartModel, $guestCartModel);
   }
 }

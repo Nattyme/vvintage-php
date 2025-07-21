@@ -20,9 +20,11 @@ class UserItemsListStore implements ItemsListStoreInterface
 
   public function load($itemKey): array
   {
-    $user = $this->userRepository->findUserById((int) $_SESSION['user_id']);
-    return $user->getCart() ?? [];
+    $userId = (int) $_SESSION['user_id'];
+
+    return $this->userRepository->getItemsList($userId, $itemKey) ?? [];
   }
+
 // public function save($itemKey, $itemModel, ?UserInterface $userModel = null): void;
   public function save ($itemKey, $itemModel, ?UserInterface $userModel = null): void 
   {

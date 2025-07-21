@@ -18,6 +18,8 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Validation\NewOrderValidator;
 
 /** Модели */
+use Vvintage\Models\User\User;
+use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Order\Order;
 use Vvintage\Models\Settings\Settings;
@@ -64,52 +66,53 @@ final class OrdersController
 
     public function index(RouteData $routeData): void
     {
-      if ( !empty($this->cart) ) {
-        // Получаем продукты
-        $products = $this->cartService->getListItems();
-        $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
-       
-      } else {
-        $products = array();
+      if(empty($this->cart)) {
+        header('Location: ' . HOST . 'cart');
+        exit();
       }
+    
+      // Получаем продукты
+      $products = $this->cartService->getListItems();
+      $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
+       
 
-      if (!isset($_POST['submit'])) {
+      if (!isRequestMethod('post') || !$this->validator->validate($_POST)) {
         // Показываем страницу
         $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
         return;
+      } 
+      
+      if($this->userModel instanceof GuestUser) {
+        header('Location: ' . HOST . 'login');
+        exit();
       }
 
-      if (isset($_POST['submit'])) {
-        if (!$this->validator->validate($_POST)) {
-          // Показываем страницу
-          $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
-          return;
-        }
+    
+      // if (!$this->validator->validate($_POST)) {
+      //   // Показываем страницу
+      //   $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
+      //   return;
+      // }
 
-        if($this->userModel instanceof Guest) {
-          header('Location: ' . HOST . 'login');
+      
+
+      // Вызываем DTO
+      $orderDTO = new OrderDTO($_POST);
+      // $orderDTO->validate();
+      
+      $order = $this->orderService->create($orderDTO);
+      
+      if ($order !== null) {
+          // Очищаем корзину
+          $this->cartModel->clear();
+
+          header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
           exit();
-        }
+      } 
 
-        // Вызываем DTO
-        $orderDTO = new OrderDTO($_POST);
-        // $orderDTO->validate();
-        
-        $order = $this->orderService->create($orderDTO);
-        
-        if ($order !== null) {
-            // Очищаем корзину
-            $this->cart->clear();
-
-            header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
-            exit();
-        } else {
-            // сообщение об ошибке
-            $this->notes->pushError("Произошла ошибка при создании заказа.");
-            $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
-            return;
-        }
-      }
+      // сообщение об ошибке
+      $this->notes->pushError("Произошла ошибка при создании заказа.");
+      $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
     }
 
     private function edit(Order $order, array $postData)
@@ -117,7 +120,7 @@ final class OrdersController
       $this->orderService->edit($order, $postData);
     }
 
-    private function created($routeData) 
+    public function created($routeData) 
     {
       $pageTitle = "Заказ оформлен!";
 
@@ -125,10 +128,15 @@ final class OrdersController
       $breadcrumbs = [
         ['title' => $pageTitle, 'url' => '#'],
       ];
-      // $lang = get('lang', ['ru', 'en', 'fr'], 'ru');
 
       // Получаем GET['id] 
-      $new_order_id = get('id', int);
+      $new_order_id = get('id', 'int');
+
+      if (!$new_order_id || $new_order_id <= 0) {
+        $this->notes->pushError('ID заказа не найден');
+        header('Location: ' . HOST);
+        exit();
+      }
 
       include ROOT . "templates/_page-parts/_head.tpl";
       include ROOT . "templates/_parts/_header.tpl";

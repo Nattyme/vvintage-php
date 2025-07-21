@@ -30,6 +30,7 @@
 
   /** Модели */
   use Vvintage\Models\User\User;
+  use Vvintage\Models\User\GuestUser;
   use Vvintage\Models\Cart\Cart;
   use Vvintage\Models\Favorites\Favorites;
 
@@ -234,7 +235,6 @@
       $cartStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
-
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
 
       $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $notes );
@@ -296,6 +296,13 @@
        * @var UserInreface $userModel
       */
       $userModel = SessionManager::getLoggedInUser();
+
+      // Если гость - перенаправляем на страницу входа
+      if($userModel instanceof GuestUser) {
+        header('Location: ' . HOST . 'login');
+        exit();
+      }
+
       $userRepository = $userModel->getRepository();
       $productRepository = new ProductRepository();
       $notes = new FlashMessage();

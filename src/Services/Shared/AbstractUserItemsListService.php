@@ -52,6 +52,7 @@ abstract class AbstractUserItemsListService
 
     public function mergeItemsListAfterLogin(AbstractUserItemsList $userItemsModel, AbstractUserItemsList $guestItemsModel): void
     {
+   
       $userItems = $userItemsModel->getItems();
       $guestItems = $guestItemsModel->getItems();
 
@@ -60,8 +61,9 @@ abstract class AbstractUserItemsListService
             $userItemsModel->addItem($itemId);
           }
       }
-
+      
       $sessionKey = $this->itemsModel->getSessionKey();
+
       // Обновляем даннные пользователя 
       $this->itemsStore->save( $sessionKey, $userItemsModel, $this->userModel);
 
