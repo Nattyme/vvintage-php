@@ -15,6 +15,7 @@ final class Favorites extends AbstractUserItemsList
     {
         return 'fav_list';
     }
+
 }
 
 

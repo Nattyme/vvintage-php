@@ -27,18 +27,17 @@ class OrderService extends AbstractUserItemsListService
 
     public function create(array $postData)
     {
-    //       $dto = new OrderDTO($postData);
+      // Передаем данные из POST в DTO
+      $dto = new OrderDTO($postData);
+      if (!$dto->isValid()) {
+          $this->note->pushError('Пожалуйста, заполните все поляю');
+          return;
+      }
 
-    // if (!$dto->isValid()) {
-    //     $this->note->pushError('Пожалуйста, заполните все поля корректно');
-    //     return;
-    // }
+      // Создаем объект заказа через метод 
+      $order = Order::fromDTO($dto);
 
-    // $order = Order::fromDTO($dto);
-    // $this->orderRepository->create($order, $this->user->getId());
-
-    // $this->note->pushSuccess('Заказ успешно оформлен!');
-      $order = $this->prepareDataForBean($postData);
+      // Сохраняем заказ в БД
       $this->orderRepository->create($order, $this->user->getId());
     }
 
@@ -50,10 +49,17 @@ class OrderService extends AbstractUserItemsListService
         return;
       }
 
-      // Подготавливаем данные из POST
-      $order = $this->prepareDataForBean($postData);
+      // Передаем данные из POST в DTO
+      $dto = new OrderDTO($postData);
+      if (!$dto->isValid()) {
+          $this->note->pushError('Пожалуйста, заполните все поляю');
+          return;
+      }
 
-      // Сохраняем заказ
+      // Создаем объект заказа через метод 
+      $order = Order::fromDTO($dto);
+
+      // Сохраняем заказ в БД
       $result = $this->orderRepository->edit($order->getId(), $order);
 
       if (!$result) {
@@ -62,24 +68,6 @@ class OrderService extends AbstractUserItemsListService
       }
       $this->note->pushSuccess('Заказ успешно изменён');
     }
-
-
-    // private function prepareDataForBean(array $postData): ?Order
-    // {
-
-    //     $order['name'] = h(trim($_POST['name']));
-    //     $order['surname'] = h(trim($_POST['surname']));
-    //     $order['email'] = filter_var(h(trim($_POST['email'])), FILTER_VALIDATE_EMAIL);
-    //     $order['phone'] = h(trim($_POST['phone']));
-    //     $order['address'] = h(trim($_POST['address']));
-    //     $order['timestamp'] = time();
-    //     $order['status'] = 'new';
-    //     $order['paid'] = false;
-    //     $order['cart'] = json_encode($cart);
-
-
-    //     return $order;
-    // }
 
 
 }

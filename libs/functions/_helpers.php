@@ -87,15 +87,58 @@ function dump($data): void {
 // Безопасное получение значения из $_GET с проверкой допустимых значений
 // $lang = get('lang', ['ru', 'en', 'fr'], 'ru');
 // $_SESSION['lang'] = $lang;
-function get(string $key, array $allowed = [], string $default = ''): string {
-  $value = $_GET[$key] ?? $default;
-  $value = trim(strip_tags($value));
-  $value = mb_substr($value, 0, 10); // ограничение длинны
+// function get(string $key, array $allowed = [], string $default = ''): string {
+//   $value = $_GET[$key] ?? $default;
+//   $value = trim(strip_tags($value));
+//   $value = mb_substr($value, 0, 10); // ограничение длинны
 
-  if (!empty($allowed) && !in_array($value, $allowed)) {
-    return $default;
-  }
+//   if (!empty($allowed) && !in_array($value, $allowed)) {
+//     return $default;
+//   }
+  
 
-  return $value;
+//   return $value;
+// }
+/**
+ * Безопасно получает значение из $_GET с фильтрацией
+ *
+ * @param string $key — имя ключа в $_GET
+ * @param string $type — тип значения: 'string', 'int', 'float', 'bool'
+ * @param mixed $default — значение по умолчанию
+ * @return mixed — отфильтрованное значение
+ */
+function get(string $key, string $type = 'string', $default = '')
+{
+    if (!isset($_GET[$key])) {
+        return $default;
+    }
+
+    $value = $_GET[$key];
+
+    switch ($type) {
+        case 'int':
+            $value = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+            return is_numeric($value) ? (int)$value : $default;
+
+        case 'float':
+            $value = filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            return is_numeric($value) ? (float)$value : $default;
+
+        case 'bool':
+            return filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $default;
+
+        case 'string':
+        default:
+            $value = trim(strip_tags($value));
+            return mb_substr($value, 0, 255); // ограничим длину строки
+    }
 }
+
+//Ф-ция проверяет метод отрпавки 
+// isRequestMethod('post') 
+function isRequestMethod(string $method): bool 
+{
+    return $_SERVER['REQUEST_METHOD'] === strtoupper($method);
+}
+
 

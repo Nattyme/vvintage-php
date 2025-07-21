@@ -28,7 +28,6 @@ final class Cart extends AbstractUserItemsList
         }
         return $total;
     }
-
 }
 
 

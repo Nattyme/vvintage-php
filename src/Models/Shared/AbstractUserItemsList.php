@@ -40,6 +40,12 @@ abstract class AbstractUserItemsList
         return $this->items[$productId] ?? 0;
     }
 
+    
+    public function clear(): void
+    {
+      $this->items = [];
+    }
 
-    abstract public function getSessionKey(): string; // обязательно для наследников
-}
+    // обязательно для наследников
+    abstract public function getSessionKey(): string;  
+  }

@@ -80,40 +80,35 @@ final class OrdersController
       }
 
       if (isset($_POST['submit'])) {
-        if (!$this->$validator->validate($_POST)) {
+        if (!$this->validator->validate($_POST)) {
           // Показываем страницу
           $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
           return;
         }
+
+        if($this->userModel instanceof Guest) {
+          header('Location: ' . HOST . 'login');
+          exit();
+        }
+
         // Вызываем DTO
-        $orderDTO = new OrderDTO($_POST['submit']);
+        $orderDTO = new OrderDTO($_POST);
         // $orderDTO->validate();
         
-        $order = $this->orderService->create($_POST);
-       
-      if ($order !== null) {
-          // redirect на страницу успешного оформления
-          // header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
-          exit();
-      } else {
-          // сообщение об ошибке
-          $this->notes->pushError("Произошла ошибка при создании заказа.");
-          $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
-          return;
-      }
+        $order = $this->orderService->create($orderDTO);
+        
+        if ($order !== null) {
+            // Очищаем корзину
+            $this->cart->clear();
 
-        // // Очищаем корзину
-        // if ( isLoggedIn() ) {
-        //   $_SESSION['cart'] = array();
-        //   $_SESSION['logged_user']->cart = '';
-
-        //   R::store($_SESSION['logged_user']);
-
-        // } else {
-        //   setcookie('cart', '', time() - 3600);
-        // }
-
-
+            header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
+            exit();
+        } else {
+            // сообщение об ошибке
+            $this->notes->pushError("Произошла ошибка при создании заказа.");
+            $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
+            return;
+        }
       }
     }
 
@@ -130,7 +125,10 @@ final class OrdersController
       $breadcrumbs = [
         ['title' => $pageTitle, 'url' => '#'],
       ];
-      $new_order_id = $_GET['id'];
+      // $lang = get('lang', ['ru', 'en', 'fr'], 'ru');
+
+      // Получаем GET['id] 
+      $new_order_id = get('id', int);
 
       include ROOT . "templates/_page-parts/_head.tpl";
       include ROOT . "templates/_parts/_header.tpl";
