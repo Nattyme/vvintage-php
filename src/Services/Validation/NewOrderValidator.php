@@ -31,25 +31,25 @@ final class NewOrderValidator
     $email = isset($data['email']) ? trim(strtolower($data['email'])) : '';
 
     if ($email === '') {
-      $this->notes->renderError('Введите email');
+      $this->notes->pushError('Введите email');
       $valid = false;
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->notes->renderError('Некорректный формат email');
+      $this->notes->pushError('Некорректный формат email');
       $valid = false;
     } elseif ($email) {
       $isUserInBlock = $this->userData->findBlockedUserByEmail($email);
 
       if ($isUserInBlock) {
-        $this->notes->renderError('Ошибка, невозможно оформить заказ для этого email.');
+        $this->notes->pushError('Ошибка, невозможно оформить заказ для этого email.');
         $valid = false;
       }
 
     } elseif ( empty(trim($data['name'])) ) {
-      $_SESSION['errors'][] = ['title' => 'Поле "Имя" пустое. Заполните данные для отправки.'];
+      $this->notes->pushError('Поле "Имя" пустое. Заполните данные для отправки.');
     } elseif ( empty(trim($data['phone'])) ) {
-        $_SESSION['errors'][] = ['title' => 'Поле "Телефон" пустое. Заполните данные для отправки.'];
+        $this->notes->pushError('Поле "Телефон" пустое. Заполните данные для отправки.');
     }  else if ( empty(trim($data['address'])) ) {
-        $_SESSION['errors'][] = ['title' => 'Поле "Адрес" пустое. Заполните данные для отправки.'];
+        $this->notes->pushError('Поле "Адрес" пустое. Заполните данные для отправки.');
     } 
 
     return $valid;

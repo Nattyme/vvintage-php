@@ -12,16 +12,16 @@ final class OrderDTO
     public string $address;
     public array $cart;
 
-    public function __construct(array $data)
+    public function __construct(array $data, array $cart)
     {
         $this->name = trim($data['name'] ?? '');
         $this->surname = trim($data['surname'] ?? '');
         $this->email = filter_var(trim($data['email'] ?? ''), FILTER_VALIDATE_EMAIL) ?: '';
         $this->phone = trim($data['phone'] ?? '');
         $this->address = trim($data['address'] ?? '');
-        $this->cart = is_array($data['cart'] ?? null)
-            ? $data['cart']
-            : json_decode($data['cart'] ?? '[]', true) ?? [];
+        $this->cart = is_array($cart ?? [])
+            ? $cart
+            : [];
     }
 
     public function isValid(): bool
@@ -32,4 +32,5 @@ final class OrderDTO
             && $this->phone !== ''
             && $this->address !== '';
     }
+
 }

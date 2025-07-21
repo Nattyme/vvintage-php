@@ -321,7 +321,7 @@
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
 
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $userModel, $notes);
+      $orderService = new OrderService($orderRepository, $userModel, $productRepository, $notes);
       $controller = new OrderController($orderService, $cartService, $userModel, $cartModel, $cart, $cartStore, $validator, $notes );
 
       switch ($routeData->uriModule) {
@@ -329,8 +329,7 @@
           $controller->index($routeData);
           break;
         case 'ordercreated':
-          $controller->index($routeData);
-          require ROOT . 'modules/orders/created.php';
+          $controller->created($routeData);
           break;
       }
     }

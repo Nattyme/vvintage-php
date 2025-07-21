@@ -20,17 +20,17 @@ final class OrderRepository
         $this->addressRepository = new AddressRepository();
     }
 
-    private function fillOrderBean(OODBBean $bean, array $postData, User $user)
+    private function fillOrderBean(OODBBean $bean, Order $order, User $user)
     {
-        $bean->name = htmlentities(trim($postData['name']));
-        $bean->surname = htmlentities(trim($postData['surname']));
-        $bean->email = filter_var(htmlentities(trim($postData['email'])), FILTER_VALIDATE_EMAIL);
-        $bean->phone = trim($postData['phone']);
-        $bean->address = htmlentities(trim($postData['address']));
-        $bean->timestamp = time();
-        $bean->status = 'new';
-        $bean->paid = false;
-        $bean->cart = json_encode($user->getCart());
+        $bean->name = $order->getName();
+        $bean->surname = $order->getSurname();
+        $bean->email = $order->getEmail();
+        $bean->phone = $order->getPhone();
+        $bean->address = $order->getAddress();
+        $bean->timestamp = $order->getTimestamp();
+        $bean->status = $order->getStatus();
+        $bean->paid = $order->getPaid();
+        $bean->cart = json_encode($order->getCart());
     }
 
     private function loadBean(int $id)
@@ -90,15 +90,15 @@ final class OrderRepository
      *
      * @return User|null
     */
-    public function create(array $postData, $userId): ?Order
+    public function create( Order $order, User $user): ?Order
     {
         $bean = R::dispense('orders');
 
         // Записываем параметры в bean
-        $this->fillOrderBean($bean, $postData, $user);
+        $this->fillOrderBean($bean, $order, $user);
 
         // Привязываем заказ к пользователю
-        $userBean = R::load('users', $userId);
+        $userBean = R::load('users', $user->getId());
         $bean->user = $userBean;
 
         // Сохраняем в БД
@@ -108,7 +108,7 @@ final class OrderRepository
             return null;
         }
 
-        return new Order($bean);
+        return Order::fromBean($bean);
     }
 
 
@@ -117,7 +117,7 @@ final class OrderRepository
      * @param User $userModel, array $newUserData
      * @return Order|null
      */
-    public function edit(int $orderId, array $order): ?Order
+    public function edit(int $orderId, array $order, User $user): ?Order
     {
         $bean = $this->loadBean($orderId);
 

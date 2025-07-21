@@ -1,10 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Models\Orders;
+namespace Vvintage\Models\Order;
 
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
+
+/** DTO */
+use Vvintage\DTO\Order\OrderDTO;
 
 final class Order
 {
@@ -16,7 +19,7 @@ final class Order
   private string $address = '';
   private string $timestamp = '';
   private string $status = '';
-  private bool $paid = false;
+  private string $paid = 'false';
   private array $cart = [];
 
   // Приватный пустой конструктор
@@ -33,7 +36,7 @@ final class Order
     $order->address = $dto->address;
     $order->timestamp = (string) time();
     $order->status = 'new';
-    $order->paid = false;
+    $order->paid = 'false';
     $order->cart = $dto->cart;
     return $order;
   }
@@ -82,6 +85,57 @@ final class Order
   public function getId(): int
   {
     return $this->id;
+  }
+
+
+  public function getName(): string
+  {
+    return $this->name;
+  }
+
+  public function getSurname(): string
+  {
+    return $this->surname;
+  }
+
+  public function getEmail(): string
+  {
+    return $this->email;
+  }
+
+  public function getPhone(): string
+  {
+    return $this->phone;
+  }
+
+  public function getAddress(): string
+  {
+    return $this->address;
+  }
+
+  public function getTimestamp(): string
+  {
+    return $this->timestamp;
+  }
+
+  public function getStatus(): string
+  {
+    return $this->status;
+  }
+
+  public function getPaid(): string
+  {
+    return $this->paid;
+  }
+
+  public function getCart(): array
+  {
+    return $this->cart;
+  }
+
+  public function setCart (array $data): void
+  {
+    $this->cart = $data;
   }
    
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Orders;
+namespace Vvintage\Controllers\Order;
 
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
@@ -32,7 +32,7 @@ use Vvintage\DTO\Order\OrderDTO;
 
 require_once ROOT . './libs/functions.php';
 
-final class OrdersController
+final class OrderController
 {
     private OrderService $orderService;
     private CartService $cartService;
@@ -55,6 +55,7 @@ final class OrdersController
       FlashMessage $notes
     )
     {
+      $this->orderService = $orderService;
       $this->cartService = $cartService;
       $this->userModel = $userModel;
       $this->cartModel = $cartModel;
@@ -66,6 +67,7 @@ final class OrdersController
 
     public function index(RouteData $routeData): void
     {
+      
       if(empty($this->cart)) {
         header('Location: ' . HOST . 'cart');
         exit();
@@ -87,19 +89,11 @@ final class OrdersController
         exit();
       }
 
-    
-      // if (!$this->validator->validate($_POST)) {
-      //   // Показываем страницу
-      //   $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
-      //   return;
-      // }
-
-      
 
       // Вызываем DTO
-      $orderDTO = new OrderDTO($_POST);
+      $orderDTO = new OrderDTO($_POST, $this->cart);
       // $orderDTO->validate();
-      
+
       $order = $this->orderService->create($orderDTO);
       
       if ($order !== null) {
