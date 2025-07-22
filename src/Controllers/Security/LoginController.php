@@ -137,7 +137,7 @@ final class LoginController
     include ROOT . 'views/login/form-login.tpl';
     $content = ob_get_clean();
 
-    include ROOT . "templates/_page-parts/_head.tpl";
+    include ROOT . "views/_page-parts/_head.tpl";
     include ROOT . "views/login/login-page.tpl";
     include ROOT . "views/_page-parts/_foot.tpl";
   }

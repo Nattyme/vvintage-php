@@ -130,7 +130,7 @@
       // $favModel = new Favorites();
 
       $notes = new FlashMessage();
-      $validator = new LoginValidator($userRepository,  $notes);
+      $validator = new LoginValidator($userRepository, $notes);
       $productRepository = new ProductRepository();
 
       $loginController = new LoginController($userRepository, $productRepository, $notes);
