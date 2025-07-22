@@ -58,7 +58,7 @@ final class BlogController extends BaseController
     $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
     // Подключение шаблонов страницы
-    $this->renderLayout('shop/catalog', [
+    $this->renderLayout('blog/blog', [
           'pagination' => $pagination,
           'pageTitle' => $pageTitle,
           'routeData' => $routeData,
