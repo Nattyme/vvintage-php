@@ -18,7 +18,7 @@ class BaseController
   protected function renderLayout(string $viewPath, array $vars = []): void
   {
     // Превращаем элементы массива в переменные
-    extract( array_merge($vars, $this->settings) );
+    extract( array_merge($vars, ['settings' => $this->settings]) );
 
     ob_start();
     include ROOT . "views/{$viewPath}/{$viewPath}.tpl"; // views/cart/cart.tpl

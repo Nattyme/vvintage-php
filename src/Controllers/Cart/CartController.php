@@ -73,18 +73,11 @@ final class CartController extends BaseController
 
     private function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
     {  
-      /**
-        * Проверяем вход пользователя в профиль
-        * @var bool
-      */
       // Название страницы
       $pageTitle = 'Корзина товаров';
 
       // Хлебные крошки
-      // $breadcrumbs = [
-      //   ['title' => $pageTitle, 'url' => '#'],
-      // ];
-      $breadcrumbs = $this->breadcrumbsService->generate($routeData, 'Корзина товаров');
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       // Подключение шаблонов страницы
       $this->renderLayout('cart', [
@@ -95,11 +88,6 @@ final class CartController extends BaseController
             'products' => $products,
             'totalPrice' => $totalPrice
       ]);
-      // include ROOT . "templates/_page-parts/_head.tpl";
-      // include ROOT . "views/_parts/_header.tpl";
-      // include ROOT . "views/cart/cart.tpl";
-      // include ROOT . "views/_parts/_footer.tpl";
-      // include ROOT . "views/_page-parts/_foot.tpl";
     }
 
 

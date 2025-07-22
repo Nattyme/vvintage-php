@@ -257,6 +257,7 @@
       */
       $userModel = SessionManager::getLoggedInUser();
       $notes = new FlashMessage();
+      $breadcrumbs = new Breadcrumbs();
 
       // Получаем избранное и ее модель
       $favModel = $userModel->getFavModel();
@@ -273,7 +274,7 @@
                     : new GuestItemsListStore();
                     
       $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productRepository, $notes);
-      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $notes );
+      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $notes, $breadcrumbs );
 
       switch ($routeData->uriModule) {
         case 'favorites':
