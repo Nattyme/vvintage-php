@@ -18,6 +18,8 @@
   use Vvintage\Controllers\Order\OrderController;
   use Vvintage\Controllers\Shop\CatalogController;
   use Vvintage\Controllers\Shop\ProductController;
+  use Vvintage\Controllers\Blog\PostController;
+  use Vvintage\Controllers\Blog\BlogController;
   use Vvintage\Controllers\Favorites\FavoritesController;
   use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
@@ -29,6 +31,7 @@
   use Vvintage\Services\Cart\CartService;
   use Vvintage\Services\Favorites\FavoritesService;
   use Vvintage\Services\Order\OrderService;
+  use Vvintage\Services\Blog\BlogService;
   use Vvintage\Services\Page\Breadcrumbs;
 
 
@@ -36,6 +39,7 @@
   use Vvintage\Models\User\User;
   use Vvintage\Models\User\GuestUser;
   use Vvintage\Models\Cart\Cart;
+  use Vvintage\Models\Blog\Post;
   use Vvintage\Models\Favorites\Favorites;
 
   /** Хранилища */
@@ -51,6 +55,7 @@
   use Vvintage\Repositories\UserRepository;
   use Vvintage\Repositories\ProductRepository;
   use Vvintage\Repositories\OrderRepository;
+
 
   class Router {
      /*****************************
@@ -207,14 +212,21 @@
     }
 
     private static function routeBlog(RouteData $routeData) {
+      $breadcrumbs = new Breadcrumbs();
+      $notes = new FlashMessage();
+  
+      $blogController = new BlogController($notes, $breadcrumbs);
+      $postController = new PostController($breadcrumbs);
+    
+
         if ($routeData->uriModule === 'add-comment') {
           require ROOT . 'modules/blog/add-comment.php';
         } elseif ($routeData->uriGet === 'cat' && !empty($routeData->uriGetParam)) {
           require ROOT . 'modules/blog/categories.php';
         } elseif (!empty($routeData->uriGet)) {
-          require ROOT . 'modules/blog/single.php';
+          $postController->index($routeData);
         } else {
-          require ROOT . 'modules/blog/all.php';
+          $blogController->index($routeData);
         }
     }
 
