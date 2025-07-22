@@ -1,6 +1,6 @@
 <?php
 include ROOT . 'views/_page-parts/_head.tpl';
-include ROOT . 'views/parts/_header.tpl';
+include ROOT . 'views/_parts/_header.tpl';
 
 echo $content;
 

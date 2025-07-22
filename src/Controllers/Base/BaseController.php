@@ -1,23 +1,27 @@
 <?php
-declare(stricts_types=1);
+declare(strict_types=1);
 
 namespace Vvintage\Controllers\Base;
 
+use Vvintage\Models\Settings\Settings;
 
-final class BaseController
-{
+
+class BaseController
+{    
+  protected array $settings;
+
   public function __construct()
   {
-
+      $this->settings = Settings::all(); // Получаем 1 раз массив всех настроек 
   }
 
   protected function renderLayout(string $viewPath, array $vars = []): void
   {
     // Превращаем элементы массива в переменные
-    extract($vars);
+    extract( array_merge($vars, $this->settings) );
 
     ob_start();
-    include ROOT . 'views/{$viewPath}/{$viewPath}.tpl'; // views/cart/cart.tpl
+    include ROOT . "views/{$viewPath}/{$viewPath}.tpl"; // views/cart/cart.tpl
     $content = ob_get_clean();
 
     include ROOT . 'views/layout.php';

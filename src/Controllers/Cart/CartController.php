@@ -25,13 +25,13 @@ use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
 /** Модели */
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
-use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
 
 /** Сервисы */
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Cart\CartService;
+use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
 
 /** Хранилище */
@@ -49,15 +49,26 @@ final class CartController extends BaseController
     private array $cart;
     private ItemsListStoreInterface $cartStore;
     private FlashMessage $notes;
+    private Breadcrumbs $breadcrumbsService;
 
-    public function __construct(CartService $cartService, UserInterface $userModel, Cart $cartModel, array $cart, ItemsListStoreInterface $cartStore, FlashMessage $notes)
+    public function __construct(
+      CartService $cartService, 
+      UserInterface $userModel, 
+      Cart $cartModel, 
+      array $cart, 
+      ItemsListStoreInterface $cartStore, 
+      FlashMessage $notes,
+      Breadcrumbs $breadcrumbs
+    )
     {
+      parent::__construct(); // Важно!
       $this->cartService = $cartService;
       $this->userModel = $userModel;
       $this->cartModel = $cartModel;
       $this->cart = $cart;
       $this->cartStore = $cartStore;
       $this->notes = $notes;
+      $this->breadcrumbsService = $breadcrumbs;
     }
 
     private function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
@@ -66,19 +77,23 @@ final class CartController extends BaseController
         * Проверяем вход пользователя в профиль
         * @var bool
       */
-      $settings = Settings::all(); // Получаем массив всех настроек
-      
-      $pageTitle = "Корзина товаров";
+      // Название страницы
+      $pageTitle = 'Корзина товаров';
 
       // Хлебные крошки
-      $breadcrumbs = [
-        ['title' => $pageTitle, 'url' => '#'],
-      ];
+      // $breadcrumbs = [
+      //   ['title' => $pageTitle, 'url' => '#'],
+      // ];
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, 'Корзина товаров');
 
       // Подключение шаблонов страницы
-      $this->renderLayout('cart/cart', [
+      $this->renderLayout('cart', [
+            'cartModel' => $this->cartModel,
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+            'breadcrumbs' => $breadcrumbs,
             'products' => $products,
-            'pageTitle' => 'Корзина',
+            'totalPrice' => $totalPrice
       ]);
       // include ROOT . "templates/_page-parts/_head.tpl";
       // include ROOT . "views/_parts/_header.tpl";
@@ -95,10 +110,10 @@ final class CartController extends BaseController
       $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
 
       // Показываем страницу
-      self::renderPage($routeData, $products, $this->cartModel, $totalPrice);
+      $this->renderPage($routeData, $products, $this->cartModel, $totalPrice);
     }
 
-    public function addItem(int $productId, $routeData): void
+    public function addItem(int $productId, RouteData $routeData): void
     {
       $this->cartService->addItem($productId);
 
@@ -107,7 +122,7 @@ final class CartController extends BaseController
       exit();
     }
 
-    public function removeItem(int $productId): void
+    public function removeItem(int $productId, RouteData $routeData): void
     {
       $this->cartService->removeItem($productId);
 

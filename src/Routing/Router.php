@@ -24,6 +24,7 @@
   use Vvintage\Services\Security\PasswordSetNewService;
   use Vvintage\Services\Cart\CartService;
   use Vvintage\Services\Favorites\FavoritesService;
+  use Vvintage\Services\Page\Breadcrumbs;
 
   /** Модели */
   use Vvintage\Models\User\User;
@@ -216,6 +217,7 @@
       */
       $userModel = SessionManager::getLoggedInUser();
       $notes = new FlashMessage();
+      $breadcrumbs = new Breadcrumbs();
 
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
@@ -233,7 +235,7 @@
 
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
 
-      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $notes );
+      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $notes, $breadcrumbs );
 
       switch ($routeData->uriModule) {
         case 'cart':
