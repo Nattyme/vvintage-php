@@ -15,6 +15,7 @@
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
   use Vvintage\Controllers\Shop\CatalogController;
+  use Vvintage\Controllers\Shop\ProductController;
   use Vvintage\Controllers\Favorites\FavoritesController;
   use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
@@ -181,6 +182,7 @@
     private static function routeShop(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
       $catalogController  = new CatalogController( $breadcrumbs );
+      $productController = new ProductController( $breadcrumbs );
 
       if ( isset($routeData->uriGet) && $routeData->uriGet === 'cat' && !empty($routeData->uriGetParam) ) {
         require ROOT . 'modules/shop/categories.php';
@@ -189,7 +191,7 @@
       } else if ( isset($routeData->uriGet) && $routeData->uriGet === 'subcat' && !empty($routeData->uriGetParam)) {
         require ROOT . 'modules/shop/subcat.php';
       } else if ( isset($routeData->uriGet) && $routeData->uriGet !== 'cat' && $routeData->uriGet !== 'subcat') {
-        \Vvintage\Controllers\Shop\ProductController::index($routeData);
+        $productController->index($routeData);
       } else if (isset($routeData->uriGet) && $routeData->uriGet === 'shop') {
         $catalogController->index($routeData);
       }

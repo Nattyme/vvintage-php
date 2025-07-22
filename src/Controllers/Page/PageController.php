@@ -57,14 +57,6 @@ final class PageController extends BaseController
         'breadcrumbs' => $breadcrumbs,
         'pageTitle' => $pageTitle
     ]);
-
-    // Шаблон страницы
-    // ob_start();
-    // include ROOT . 'views/pages/' . $slug . '/index.tpl';
-    // $content = ob_get_clean();
-    
-
-    // include ROOT . 'views/layout.php';
   }
 
 }

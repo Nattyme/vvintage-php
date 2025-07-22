@@ -11,6 +11,7 @@ class Breadcrumbs
     private array $titlesMap = [
         'catalog' => 'Каталог',
         'cart' => 'Корзина',
+        'shop' => 'Каталог',
         'product' => 'Товар',
         // добавляй свои названия
     ];
