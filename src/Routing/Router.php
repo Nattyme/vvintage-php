@@ -15,12 +15,9 @@
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
-<<<<<<< HEAD
   use Vvintage\Controllers\Order\OrderController;
-=======
   use Vvintage\Controllers\Shop\CatalogController;
   use Vvintage\Controllers\Shop\ProductController;
->>>>>>> adminpanel
   use Vvintage\Controllers\Favorites\FavoritesController;
   use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
@@ -31,11 +28,9 @@
   use Vvintage\Services\Security\PasswordSetNewService;
   use Vvintage\Services\Cart\CartService;
   use Vvintage\Services\Favorites\FavoritesService;
-<<<<<<< HEAD
   use Vvintage\Services\Order\OrderService;
-=======
   use Vvintage\Services\Page\Breadcrumbs;
->>>>>>> adminpanel
+
 
   /** Модели */
   use Vvintage\Models\User\User;
