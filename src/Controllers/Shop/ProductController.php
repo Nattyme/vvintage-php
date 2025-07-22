@@ -4,18 +4,26 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Shop;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Repositories\ProductRepository;
 use Vvintage\Models\Shop\Product;
-use Vvintage\Models\Settings\Settings;
 use Vvintage\Routing\RouteData;
+use Vvintage\Services\Page\Breadcrumbs;
 
-final class ProductController
+
+final class ProductController extends BaseController
 {
-    public static function index(RouteData $routeData): void
-    {
-        // Получаем массив всех настроек
-        $settings = Settings::all();
+    private Breadcrumbs $breadcrumbsService;
 
+    public function __construct(Breadcrumbs $breadcrumbs)
+    {
+        parent::__construct(); // Важно!
+        $this->breadcrumbsService = $breadcrumbs;
+    }
+
+    public function index(RouteData $routeData): void
+    {   
         $id = (int) $routeData->uriGet; // получаем id товара из URL
         $product = ProductRepository::findById($id);
 
@@ -27,13 +35,19 @@ final class ProductController
 
         $relatedProducts = $product->getRelated();
 
+        // Название страницы
         $pageTitle = $product->getTitle();
 
-        // Передаем данные в view
-        require ROOT . 'templates/_page-parts/_head.tpl';
-        require ROOT . 'views/_parts/_header.tpl';
-        require ROOT . 'views/shop/product.tpl';
-        require ROOT . 'views/_parts/_footer.tpl';
-        require ROOT . 'views/_page-parts/_foot.tpl';
+        // Хлебные крошки
+        $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+
+        // Подключение шаблонов страницы
+        $this->renderLayout('shop/product', [
+              'pageTitle' => $pageTitle,
+              'routeData' => $routeData,
+              'breadcrumbs' => $breadcrumbs,
+              'product' => $product,
+              'relatedProducts' => $relatedProducts
+        ]);
     }
 }

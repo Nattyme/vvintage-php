@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Favorites;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 use Vvintage\Repositories\ProductRepository;
-use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Services\Auth\SessionManager;
@@ -25,6 +27,7 @@ use Vvintage\Services\Messages\FlashMessage;
 
 /** Сервисы */
 use Vvintage\Services\Favorites\FavoritesService;
+use Vvintage\Services\Page\Breadcrumbs;
 
 
 /** Абстракции */
@@ -37,7 +40,7 @@ use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
 
 require_once ROOT . './libs/functions.php';
 
-final class FavoritesController
+final class FavoritesController extends BaseController
 {
     private FavoritesService $favService;
     private UserInterface $userModel;
@@ -45,6 +48,7 @@ final class FavoritesController
     private array $fav_list;
     private ItemsListStoreInterface $favStore;
     private FlashMessage $notes;
+    private Breadcrumbs $breadcrumbsService;
 
     public function __construct(
       FavoritesService $favService, 
@@ -52,47 +56,49 @@ final class FavoritesController
       Favorites $favModel, 
       array $fav_list, 
       ItemsListStoreInterface $favStore, 
-      FlashMessage $notes)
+      FlashMessage $notes,
+      Breadcrumbs $breadcrumbs
+      )
     {
+      parent::__construct(); // Важно!
       $this->favService = $favService;
       $this->userModel = $userModel;
       $this->favModel = $favModel;
       $this->fav_list = $fav_list;
       $this->favStore = $favStore;
       $this->notes = $notes;
+      $this->breadcrumbsService = $breadcrumbs;
     }
 
     public function index(RouteData $routeData): void
     {
       // Получаем продукты
       $products = !empty($this->fav_list) ? ProductRepository::findByIds($this->fav_list) : [];
-      // $totalPrice = !empty($products) ? $favModel->getTotalPrice($products) : 0;
 
       // Показываем страницу
-      self::renderPage($routeData, $products, $this->favModel);
+      $this->renderPage($routeData, $products, $this->favModel);
     }
 
     private function renderPage (RouteData $routeData, array $products, Favorites $favModel): void 
     {  
-      /**
-        * Проверяем вход пользователя в профиль
-        * @var bool
-      */
-      $settings = Settings::all(); // Получаем массив всех настроек
-      
-      $pageTitle = "Избранное";
+      // Название страницы
+      $pageTitle = 'Избранное';
 
       // Хлебные крошки
-      $breadcrumbs = [
-        ['title' => $pageTitle, 'url' => '#'],
-      ];
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       // Подключение шаблонов страницы
-      include ROOT . "templates/_page-parts/_head.tpl";
-      include ROOT . "views/_parts/_header.tpl";
-      include ROOT . "views/favorites/favorites.tpl";
-      include ROOT . "views/_parts/_footer.tpl";
-      include ROOT . "views/_page-parts/_foot.tpl";
+      $this->renderLayout('favorites/favorites', [
+            'favModel' => $this->favModel,
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+            'breadcrumbs' => $breadcrumbs,
+            'products' => $products
+      ]);
+  
+      // Подключение шаблонов страницы
+      // include ROOT . "views/favorites/favorites.tpl";
+     
     }
 
     public function addItem(int $productId, $routeData): void

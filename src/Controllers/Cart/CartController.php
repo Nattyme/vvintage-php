@@ -8,6 +8,9 @@ use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 /** Репозитории */
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\ProductRepository;
@@ -22,22 +25,23 @@ use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
 /** Модели */
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
-use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
 
 /** Сервисы */
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Cart\CartService;
+use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
 
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 
+
 require_once ROOT . './libs/functions.php';
 
-final class CartController
+final class CartController extends BaseController
 {
     private CartService $cartService;
     private UserInterface $userModel;
@@ -45,44 +49,51 @@ final class CartController
     private array $cart;
     private ItemsListStoreInterface $cartStore;
     private FlashMessage $notes;
+    private Breadcrumbs $breadcrumbsService;
 
     public function __construct(
+      
       CartService $cartService, 
+      
       UserInterface $userModel, 
+      
       Cart $cartModel, 
+      
       array $cart, 
+      
       ItemsListStoreInterface $cartStore, 
-      FlashMessage $notes)
+      
+      FlashMessage $notes,
+      Breadcrumbs $breadcrumbs
+    )
     {
+      parent::__construct(); // Важно!
       $this->cartService = $cartService;
       $this->userModel = $userModel;
       $this->cartModel = $cartModel;
       $this->cart = $cart;
       $this->cartStore = $cartStore;
+      $this->breadcrumbsService = $breadcrumbs;
       $this->notes = $notes;
     }
 
     private function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
     {  
-      /**
-        * Проверяем вход пользователя в профиль
-        * @var bool
-      */
-      $settings = Settings::all(); // Получаем массив всех настроек
-      
-      $pageTitle = "Корзина товаров";
+      // Название страницы
+      $pageTitle = 'Корзина товаров';
 
       // Хлебные крошки
-      $breadcrumbs = [
-        ['title' => $pageTitle, 'url' => '#'],
-      ];
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       // Подключение шаблонов страницы
-      include ROOT . "templates/_page-parts/_head.tpl";
-      include ROOT . "views/_parts/_header.tpl";
-      include ROOT . "views/cart/cart.tpl";
-      include ROOT . "views/_parts/_footer.tpl";
-      include ROOT . "views/_page-parts/_foot.tpl";
+      $this->renderLayout('cart/cart', [
+            'cartModel' => $this->cartModel,
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+            'breadcrumbs' => $breadcrumbs,
+            'products' => $products,
+            'totalPrice' => $totalPrice
+      ]);
     }
 
 
@@ -93,10 +104,10 @@ final class CartController
       $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
 
       // Показываем страницу
-      self::renderPage($routeData, $products, $this->cartModel, $totalPrice);
+      $this->renderPage($routeData, $products, $this->cartModel, $totalPrice);
     }
 
-    public function addItem(int $productId, $routeData): void
+    public function addItem(int $productId, RouteData $routeData): void
     {
       $this->cartService->addItem($productId);
 
@@ -105,7 +116,7 @@ final class CartController
       exit();
     }
 
-    public function removeItem(int $productId): void
+    public function removeItem(int $productId, RouteData $routeData): void
     {
       $this->cartService->removeItem($productId);
 

@@ -4,7 +4,6 @@
   } 
 
   $isBlogPage = isset($data->uriModule) && $data->uriModule === 'blog' ? true : false;
-
 ?>
 
 <header class="<?php echo (isset($_SESSION['login']) && $_SESSION['login'] === 1) ? 'header header--with-admin-panel' : 'header';?>">

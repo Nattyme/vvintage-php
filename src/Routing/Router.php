@@ -15,7 +15,12 @@
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
+<<<<<<< HEAD
   use Vvintage\Controllers\Order\OrderController;
+=======
+  use Vvintage\Controllers\Shop\CatalogController;
+  use Vvintage\Controllers\Shop\ProductController;
+>>>>>>> adminpanel
   use Vvintage\Controllers\Favorites\FavoritesController;
   use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
@@ -26,7 +31,11 @@
   use Vvintage\Services\Security\PasswordSetNewService;
   use Vvintage\Services\Cart\CartService;
   use Vvintage\Services\Favorites\FavoritesService;
+<<<<<<< HEAD
   use Vvintage\Services\Order\OrderService;
+=======
+  use Vvintage\Services\Page\Breadcrumbs;
+>>>>>>> adminpanel
 
   /** Модели */
   use Vvintage\Models\User\User;
@@ -35,10 +44,6 @@
   use Vvintage\Models\Favorites\Favorites;
 
   /** Хранилища */
-  // use Vvintage\Store\Cart\UserCartStore;
-  // use Vvintage\Store\Favorites\UserFavoritesStore;
-  // use Vvintage\Store\Cart\GuestCartStore;
-  // use Vvintage\Store\Favorites\GuestFavoritesStore;
   use Vvintage\Store\UserItemsList\GuestItemsListStore;
   use Vvintage\Store\UserItemsList\UserItemsListStore;
 
@@ -136,7 +141,7 @@
       // $favModel = new Favorites();
 
       $notes = new FlashMessage();
-      $validator = new LoginValidator($userRepository,  $notes);
+      $validator = new LoginValidator($userRepository, $notes);
       $productRepository = new ProductRepository();
 
       $loginController = new LoginController($userRepository, $productRepository, $notes);
@@ -186,6 +191,10 @@
 
     // ::::::::::::: SHOP :::::::::::::::::::
     private static function routeShop(RouteData $routeData) {
+      $breadcrumbs = new Breadcrumbs();
+      $catalogController  = new CatalogController( $breadcrumbs );
+      $productController = new ProductController( $breadcrumbs );
+
       if ( isset($routeData->uriGet) && $routeData->uriGet === 'cat' && !empty($routeData->uriGetParam) ) {
         require ROOT . 'modules/shop/categories.php';
       } else if ( isset($routeData->uriGet) && $routeData->uriGet === 'brand' && !empty($routeData->uriGetParam) ) {
@@ -193,12 +202,12 @@
       } else if ( isset($routeData->uriGet) && $routeData->uriGet === 'subcat' && !empty($routeData->uriGetParam)) {
         require ROOT . 'modules/shop/subcat.php';
       } else if ( isset($routeData->uriGet) && $routeData->uriGet !== 'cat' && $routeData->uriGet !== 'subcat') {
-        \Vvintage\Controllers\Shop\ProductController::index($routeData);
+        $productController->index($routeData);
       } else if (isset($routeData->uriGet) && $routeData->uriGet === 'shop') {
-        \Vvintage\Controllers\Shop\CatalogController::index($routeData);
+        $catalogController->index($routeData);
       }
       else {
-        \Vvintage\Controllers\Shop\CatalogController::index($routeData);
+        $catalogController->index($routeData);
       }
     }
 
@@ -221,6 +230,7 @@
       */
       $userModel = SessionManager::getLoggedInUser();
       $notes = new FlashMessage();
+      $breadcrumbs = new Breadcrumbs();
 
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
@@ -237,7 +247,7 @@
                     : new GuestItemsListStore();
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
 
-      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $notes );
+      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $notes, $breadcrumbs );
 
       switch ($routeData->uriModule) {
         case 'cart':
@@ -259,6 +269,7 @@
       */
       $userModel = SessionManager::getLoggedInUser();
       $notes = new FlashMessage();
+      $breadcrumbs = new Breadcrumbs();
 
       // Получаем избранное и ее модель
       $favModel = $userModel->getFavModel();
@@ -275,7 +286,7 @@
                     : new GuestItemsListStore();
                     
       $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productRepository, $notes);
-      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $notes );
+      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $notes, $breadcrumbs );
 
       switch ($routeData->uriModule) {
         case 'favorites':
@@ -340,9 +351,11 @@
     private static function routePages(RouteData $routeData)
     {
       $pageService = new PageService();
+      $notes = new FlashMessage();
+      $breadcrumbs = new Breadcrumbs();
       $pageModel = $pageService->getPageBySlug($routeData->uriModule);
 
-      $controller = new PageController($pageModel, $pageService);
+      $controller = new PageController($pageModel, $pageService, $notes, $breadcrumbs);
 
       switch ($routeData->uriModule) {
         case 'contacts':

@@ -48,7 +48,7 @@ final class RegistrationController
     //Окончание буфера, очищаем вывод
     ob_end_clean();
 
-    include ROOT . "templates/_page-parts/_head.tpl";
+    include ROOT . "views/_page-parts/_head.tpl";
     include ROOT . "views/login/login-page.tpl";
     include ROOT . "views/_page-parts/_foot.tpl";
 

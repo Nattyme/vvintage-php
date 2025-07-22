@@ -3,20 +3,29 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Page;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 use Vvintage\Models\Page\Page;
-use Vvintage\Models\Settings\Settings;
 use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Messages\FlashMessage;
 
-final class PageController
+final class PageController extends BaseController
 {
   private Page $pageModel;
   private PageService $pageService;
+  private Breadcrumbs $breadcrumbsService;
+  private FlashMessage $notes;
 
-  public function __construct (Page $pageModel, PageService $pageService)
+  public function __construct (Page $pageModel, PageService $pageService, FlashMessage $notes, Breadcrumbs $breadcrumbs)
   {
+    parent::__construct(); // Важно!
     $this->pageModel = $pageModel;
     $this->pageService = $pageService;
+    $this->breadcrumbsService = $breadcrumbs;
+    $this->notes = $notes;
   }
 
   public function index($routeData)
@@ -35,26 +44,21 @@ final class PageController
       $fields[$field->getName()] = $field->getValue();
     }
 
-    // Получаем массив всех настроек
-    $settings = Settings::all();
-
-    // Хлебные крошки
-    $breadcrumbs = [
-      ['title' => $this->pageModel->getTitle(), 'url' => '#'],
-    ];
-
     $slug = $this->pageModel->getSlug();
+    // Название страницы
     $pageTitle = $this->pageModel->getTitle();
 
-    // Шаблон страницы
-    include ROOT . 'views/_page-parts/_head.tpl';
-    include ROOT . 'views/_parts/_header.tpl';
+    // Хлебные крошки
+    $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-    include ROOT . 'views/pages/' . $slug . '/index.tpl';
-
-    include ROOT . 'views/_parts/_footer.tpl';
-    include ROOT . 'views/_page-parts/_foot.tpl';
-
+    // Общий рендер
+    $this->renderLayout("pages/{$slug}/index", [
+        'page' => $page,
+        'routeData' => $routeData,
+        'fields' => $fields,
+        'breadcrumbs' => $breadcrumbs,
+        'pageTitle' => $pageTitle
+    ]);
   }
 
 }

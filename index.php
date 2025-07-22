@@ -43,12 +43,13 @@ Settings::init(); // Загружаем и сохраняем настройки
 
 
 // Получаем части URI и создаем переменные (например: /shop/product/1)
+$uri = $_SERVER['REQUEST_URI'];
 $uriModule = getModuleName();    // первая часть пути — модуль
 $uriGet = getUriGet();           // вторая часть — подстраница/id
 $uriGetParam = getUriGetParam(); // третья часть — параметр get
 
 // Передаем данные маршрутизатору
-$routeData = new RouteData($uriModule, $uriGet, $uriGetParam);
+$routeData = new RouteData($uri, $uriModule, $uriGet, $uriGetParam);
 Router::route($routeData);
 
 // require ROOT . 'modules/settings/settings.php';
