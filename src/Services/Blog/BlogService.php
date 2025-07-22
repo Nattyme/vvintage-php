@@ -4,27 +4,40 @@ declare(strict_types=1);
 namespace Vvintage\Services\Blog;
 
 use Vvintage\Repositories\PostRepository;
-use Vvintage\Models\Blog;
+use Vvintage\Models\Blog\Post;
+use Vvintage\DTO\Post\PostDTO;
 
 final class BlogService
 {
-  private PostRepository $postRepository;
-  private Blog $blogModel;
+    private PostRepository $postRepository;
 
-  public function __construct( PostRepository $postRepository)
-  {
-    $this->postRepository = $postRepository;
-    $this->blogModel = new Blog();
-  }
-// $productsPerPage = 9;
-      // Получаем параметры пагинации
-      // $pagination = pagination($productsPerPage, 'products');
-  public function getAll(array $pagination): array
-  {
-   $beans = $this->postRepository->findAll($pagination);
-   return $this->blogModel->getAll($beans);
-  }
+    public function __construct(PostRepository $postRepository)
+    {
+        $this->postRepository = $postRepository;
+    }
+
+    public function getAll(array $pagination): array
+    {
+        $beans = $this->postRepository->findAll($pagination);
+
+        return array_map(
+            fn($bean) => Post::fromBean($bean),
+            $beans
+        );
+    }
+
+    public function getTotalCount(): int
+    {
+        return $this->postRepository->countAll();
+    }
+
+    public function add(PostDTO $dto): int
+    {
+        $post = Post::fromDTO($dto);
+        return $this->postRepository->save($post);
+    }
 
 
-
+    // public function getById(int $id): ?Post {}
+    // public function getByCategory(string $slug): array {}
 }

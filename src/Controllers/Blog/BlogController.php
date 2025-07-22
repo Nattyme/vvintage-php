@@ -3,74 +3,70 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Blog;
 
-
 use Vvintage\Routing\RouteData;
-
-/** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
-
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Blog\BlogService;
-
-use Vvintage\Models\Blog\Blog;
-use Vvintage\Repositories\PostRepository;
 
 require_once ROOT . './libs/functions.php';
 
 final class BlogController extends BaseController
 {
-  private PostRepository $postRepository;
-  private BlogService $blogService;
-  private Blog $blogModel;
-  // private array $posts;
-  private FlashMessage $notes;
-  private Breadcrumbs $breadcrumbsService;
-  
-  public function __construct(
-    FlashMessage $notes,
-    Breadcrumbs $breadcrumbs
-  )
-  {
-    $this->postRepository = new PostRepository();
-    $this->blogService = new BlogService($this->postRepository);
-    $this->blogModel = new Blog();
-    $this->notes = $notes;
-    $this->breadcrumbsService = $breadcrumbs;
-  }
+    private BlogService $blogService;
+    private FlashMessage $notes;
+    private Breadcrumbs $breadcrumbsService;
 
-  public function index(RouteData $routeData): void
-  {
-    // Название страницы
-    $pageTitle = 'Блог';
+    public function __construct(
+        BlogService $blogService,
+        FlashMessage $notes,
+        Breadcrumbs $breadcrumbs
+    ) {
+        $this->blogService = $blogService;
+        $this->notes = $notes;
+        $this->breadcrumbsService = $breadcrumbs;
+    }
 
-    $postsPerPage = 9;
-    // Получаем параметры пагинации
-    $pagination = pagination($postsPerPage, 'posts');
+    public function index(RouteData $routeData): void
+    {
+        $pageTitle = 'Блог';
+        $postsPerPage = 9;
 
-    // Получаем продукты с учётом пагинации
-    $posts =  $this->blogService->getAll($pagination);
+        $pagination = pagination($postsPerPage, 'posts');
+        $posts = $this->blogService->getAll($pagination);
+        $totalPosts = $this->blogService->getTotalCount();
+
+        $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
+        $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+
+        $this->renderLayout('blog/blog', [
+            'pagination' => $pagination,
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+            'breadcrumbs' => $breadcrumbs,
+            'posts' => $posts,
+            'totalPosts' => $totalPosts,
+            'shownPosts' => $shownPosts,
+        ]);
+    }
+
     
-    // Считаем, сколько всего товаров в базе (для отображения "Показано N из M")
-    $totalPosts = $this->blogModel->getTotalPostsCount();
-    
-    // Это кол-во товаров, показанных на этой странице
-    // $shownProducts = $totalProducts - count($products);
-    $shownPosts = (($pagination['page_number'] - 1) * 9) + count($posts);
+    // метод получает $_POST, создаёт DTO, передаёт в сервис
+    public function add(RouteData $routeData): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $dto = new PostDTO($_POST);
+            $this->blogService->add($dto);
+            $this->notes->success('Пост добавлен');
+            redirect('/admin/blog'); // или куда нужно
+        }
 
-    // Хлебные крошки
-    $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+        $pageTitle = 'Добавить пост';
 
-    // Подключение шаблонов страницы
-    $this->renderLayout('blog/blog', [
-          'pagination' => $pagination,
-          'pageTitle' => $pageTitle,
-          'routeData' => $routeData,
-          'breadcrumbs' => $breadcrumbs,
-          'posts' => $posts,
-          'totalPosts' => $totalPosts,
-          'shownPosts' => $shownPosts,
-    ]);
-  }
+        $this->renderLayout('blog/add', [
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+        ]);
+    }
 
 }

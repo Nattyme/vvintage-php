@@ -4,93 +4,55 @@ declare(strict_types=1);
 
 namespace Vvintage\Repositories;
 
-use RedBeanPHP\R; // Подключаем readbean
-use Vvintage\Models\Blog\Post;
+use RedBeanPHP\R;
+use RedBeanPHP\OODBBean;
 
 final class PostRepository
 {
-    public static function findById(int $id): ?Post
+    public function findById(int $id): ?OODBBean
     {
-        // Запрашиваем информацию по продукту
-        $sqlQuery = 'SELECT
-                        p.id, 
-                        p.title, 
-                        p.cat, 
-                        p.description, 
-                        p.content, 
-                        p.timestamp, 
-                        p.views,
-                        p.cover,
-                        p.cover_small,
-                        p.edit_time
-                      FROM `posts` p
-                      LEFT JOIN `post_categories` c ON  p.cat = c.id
-                      WHERE p.id = ? LIMIT 1
-                    ';
-        $row = R::getRow($sqlQuery, [$id]);
+        $bean = R::findOne('posts', 'id = ?', [$id]);
+        return $bean ?: null;
+    }
 
-        if (!$row) {
-            return null;
+    public function findAll(array $pagination): array
+    {
+        return R::findAll('posts', 'ORDER BY id DESC ' . $pagination['sql_page_limit']);
+    }
+
+    public function findByIds(array $ids): array
+    {
+        if (empty($ids)) {
+            return [];
         }
 
-        $post = new Post();
-        $post->loadFromArray($row);
-        return $post;
+        // Подготовим placeholders (?, ?, ?) и массив параметров
+        $placeholders = R::genSlots($ids);
+        $sql = "id IN ($placeholders) ORDER BY id DESC";
+
+        return R::find('posts', $sql, $ids);
     }
 
-    public static function findAll(array $pagination): array
+    public function countAll(): int
     {
-        $sqlQuery = 'SELECT
-                p.id, 
-                p.title, 
-                p.cat, 
-                p.description, 
-                p.content, 
-                p.timestamp, 
-                p.views,
-                p.cover,
-                p.cover_small,
-                p.edit_time
-            FROM `posts` p
-            LEFT JOIN `posts_categories` c ON p.cat = c.id
-            ORDER BY p.id DESC ' . $pagination["sql_page_limit"];
-
-        return R::getAll($sqlQuery);
+        return R::count('posts');
     }
 
-    public static function findByIds(array $idsData): array
+    public function save(Post $post): int
     {
+        $bean = R::dispense('posts');
 
-        // Массив ids
-        $ids = array_keys($idsData);
+        $bean->title = $post->title;
+        $bean->cat = $post->cat;
+        $bean->description = $post->description;
+        $bean->content = $post->content;
+        $bean->timestamp = $post->timestamp;
+        $bean->views = $post->views;
+        $bean->cover = $post->cover;
+        $bean->cover_small = $post->cover_small;
+        $bean->edit_time = $post->edit_time;
 
-        // Плейсхолдеры для запроса
-        $slotString = R::genSlots($ids);
-
-        // Находим продукты и их главное изображение
-        $sql = "SELECT 
-                  p.id, 
-                  p.title, 
-                  p.cat, 
-                  p.description, 
-                  p.content, 
-                  p.timestamp, 
-                  p.views,
-                  p.cover,
-                  p.cover_small,
-                  p.edit_time
-            FROM `posts` p
-            LEFT JOIN `posts_categories` c ON p.cat = c.id
-            WHERE p.id IN ($slotString)";
-
-        $postssData = R::getAll($sql, $ids);
-
-        $posts = [];
-
-        foreach ($postsData as $key => $value) {
-            $posts[$value['id']] = $value;
-        }
-
-        return $posts;
+        return (int) R::store($bean);
     }
+
 }

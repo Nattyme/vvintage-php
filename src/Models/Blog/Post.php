@@ -60,4 +60,21 @@ final class Post
         return $this->title;
     }
 
+    public static function fromDTO(PostDTO $dto): self
+    {
+        $post = new self();
+        $post->title = $dto->title;
+        $post->cat = $dto->cat;
+        $post->description = $dto->description;
+        $post->content = $dto->content;
+        $post->timestamp = (float) time();
+        $post->views = $dto->views;
+        $post->cover = $dto->cover;
+        $post->cover_small = $dto->cover_small;
+        $post->edit_time = (string) time();
+
+        return $post;
+    }
+
+
 }

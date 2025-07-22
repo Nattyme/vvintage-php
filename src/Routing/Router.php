@@ -214,8 +214,10 @@
     private static function routeBlog(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
       $notes = new FlashMessage();
+      $postRepository = new PostRepository();
+      $blogService = new BlogService( $postRepository );
   
-      $blogController = new BlogController($notes, $breadcrumbs);
+      $blogController = new BlogController($blogService, $notes, $breadcrumbs);
       $postController = new PostController($breadcrumbs);
     
 
