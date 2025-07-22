@@ -14,6 +14,7 @@
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
+  use Vvintage\Controllers\Shop\CatalogController;
   use Vvintage\Controllers\Favorites\FavoritesController;
   use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
@@ -32,10 +33,6 @@
   use Vvintage\Models\Favorites\Favorites;
 
   /** Хранилища */
-  // use Vvintage\Store\Cart\UserCartStore;
-  // use Vvintage\Store\Favorites\UserFavoritesStore;
-  // use Vvintage\Store\Cart\GuestCartStore;
-  // use Vvintage\Store\Favorites\GuestFavoritesStore;
   use Vvintage\Store\UserItemsList\GuestItemsListStore;
   use Vvintage\Store\UserItemsList\UserItemsListStore;
 
@@ -182,6 +179,9 @@
 
     // ::::::::::::: SHOP :::::::::::::::::::
     private static function routeShop(RouteData $routeData) {
+      $breadcrumbs = new Breadcrumbs();
+      $catalogController  = new CatalogController( $breadcrumbs );
+
       if ( isset($routeData->uriGet) && $routeData->uriGet === 'cat' && !empty($routeData->uriGetParam) ) {
         require ROOT . 'modules/shop/categories.php';
       } else if ( isset($routeData->uriGet) && $routeData->uriGet === 'brand' && !empty($routeData->uriGetParam) ) {
@@ -191,10 +191,10 @@
       } else if ( isset($routeData->uriGet) && $routeData->uriGet !== 'cat' && $routeData->uriGet !== 'subcat') {
         \Vvintage\Controllers\Shop\ProductController::index($routeData);
       } else if (isset($routeData->uriGet) && $routeData->uriGet === 'shop') {
-        \Vvintage\Controllers\Shop\CatalogController::index($routeData);
+        $catalogController->index($routeData);
       }
       else {
-        \Vvintage\Controllers\Shop\CatalogController::index($routeData);
+        $catalogController->index($routeData);
       }
     }
 

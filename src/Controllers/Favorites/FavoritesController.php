@@ -10,7 +10,6 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 use Vvintage\Repositories\ProductRepository;
-use Vvintage\Models\Settings\Settings;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Services\Auth\SessionManager;
@@ -75,10 +74,9 @@ final class FavoritesController extends BaseController
     {
       // Получаем продукты
       $products = !empty($this->fav_list) ? ProductRepository::findByIds($this->fav_list) : [];
-      // $totalPrice = !empty($products) ? $favModel->getTotalPrice($products) : 0;
 
       // Показываем страницу
-      self::renderPage($routeData, $products, $this->favModel);
+      $this->renderPage($routeData, $products, $this->favModel);
     }
 
     private function renderPage (RouteData $routeData, array $products, Favorites $favModel): void 
@@ -90,7 +88,7 @@ final class FavoritesController extends BaseController
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       // Подключение шаблонов страницы
-      $this->renderLayout('favorites', [
+      $this->renderLayout('favorites/favorites', [
             'favModel' => $this->favModel,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,

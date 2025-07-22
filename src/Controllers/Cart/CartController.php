@@ -80,7 +80,7 @@ final class CartController extends BaseController
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       // Подключение шаблонов страницы
-      $this->renderLayout('cart', [
+      $this->renderLayout('cart/cart', [
             'cartModel' => $this->cartModel,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,

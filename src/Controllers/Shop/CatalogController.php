@@ -1,48 +1,62 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Vvintage\Controllers\Shop;
 
+
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Routing\RouteData;
-use Vvintage\Models\Settings\Settings;
+
+use Vvintage\Services\Page\Breadcrumbs;
 
 require_once ROOT . "./libs/functions.php";
 
-final class CatalogController
+
+
+final class CatalogController extends BaseController
 {
-    public static function index(RouteData $routeData): void
+    private Breadcrumbs $breadcrumbsService;
+
+    public function __construct(Breadcrumbs $breadcrumbs)
     {
-        // Получаем массив всех настроек
-        $settings = Settings::all();
+      parent::__construct(); // Важно!
+      $this->breadcrumbsService=$breadcrumbs;
+    }
 
-        $productsPerPage = 9;
+    public function index(RouteData $routeData): void
+    {
+      // Название страницы
+      $pageTitle = 'Каталог товаров';
 
-        // Получаем параметры пагинации
-        $pagination = pagination($productsPerPage, 'products');
+      $productsPerPage = 9;
+      // Получаем параметры пагинации
+      $pagination = pagination($productsPerPage, 'products');
 
-        // Получаем продукты с учётом пагинации
-        $products = Catalog::getAll($pagination);
+      // Получаем продукты с учётом пагинации
+      $products = Catalog::getAll($pagination);
+      
+      // Считаем, сколько всего товаров в базе (для отображения "Показано N из M")
+      $totalProducts = Catalog::getTotalProductsCount();
+      
+      // Это кол-во товаров, показанных на этой странице
+      // $shownProducts = $totalProducts - count($products);
+      $shownProducts = (($pagination['page_number'] - 1) * 9) + count($products);
 
-        // Считаем, сколько всего товаров в базе (для отображения "Показано N из M")
-        $totalProducts = Catalog::getTotalProductsCount();
+      // Хлебные крошки
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-        // Это кол-во товаров, показанных на этой странице
-        // $shownProducts = $totalProducts - count($products);
-        $shownProducts = (($pagination['page_number'] - 1) * 9) + count($products);
-
-        $pageTitle = "Каталог товаров";
-
-        // Хлебные крошки
-        $breadcrumbs = [];
-
-
-        // Передаем данные в view
-        require ROOT . 'templates/_page-parts/_head.tpl';
-        require ROOT . 'views/_parts/_header.tpl';
-        require ROOT . 'views/shop/catalog.tpl';
-        require ROOT . 'views/_parts/_footer.tpl';
-        require ROOT . 'views/_page-parts/_foot.tpl';
+      // Подключение шаблонов страницы
+      $this->renderLayout('shop/catalog', [
+            'pagination' => $pagination,
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+            'breadcrumbs' => $breadcrumbs,
+            'products' => $products,
+            'totalProducts' => $totalProducts,
+            'shownProducts' => $shownProducts,
+      ]);
     }
 }

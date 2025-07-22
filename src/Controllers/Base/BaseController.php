@@ -21,7 +21,7 @@ class BaseController
     extract( array_merge($vars, ['settings' => $this->settings]) );
 
     ob_start();
-    include ROOT . "views/{$viewPath}/{$viewPath}.tpl"; // views/cart/cart.tpl
+    include ROOT . "views/{$viewPath}.tpl"; // views/cart/cart.tpl
     $content = ob_get_clean();
 
     include ROOT . 'views/layout.php';
