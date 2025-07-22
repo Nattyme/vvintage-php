@@ -67,8 +67,8 @@ final class CartController extends BaseController
       $this->cartModel = $cartModel;
       $this->cart = $cart;
       $this->cartStore = $cartStore;
-      $this->notes = $notes;
       $this->breadcrumbsService = $breadcrumbs;
+      $this->notes = $notes;
     }
 
     private function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 

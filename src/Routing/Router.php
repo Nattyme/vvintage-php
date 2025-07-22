@@ -308,9 +308,11 @@
     private static function routePages(RouteData $routeData)
     {
       $pageService = new PageService();
+      $notes = new FlashMessage();
+      $breadcrumbs = new Breadcrumbs();
       $pageModel = $pageService->getPageBySlug($routeData->uriModule);
 
-      $controller = new PageController($pageModel, $pageService);
+      $controller = new PageController($pageModel, $pageService, $notes, $breadcrumbs);
 
       switch ($routeData->uriModule) {
         case 'contacts':
