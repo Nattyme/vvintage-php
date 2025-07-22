@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Page;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 use Vvintage\Models\Page\Page;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Services\Page\PageService;
 
-final class PageController
+final class PageController extends BaseController
 {
   private Page $pageModel;
   private PageService $pageService;
@@ -46,15 +49,22 @@ final class PageController
     $slug = $this->pageModel->getSlug();
     $pageTitle = $this->pageModel->getTitle();
 
+    // Общий рендер
+    $this->renderLayout("pages/{$slug}/index", [
+        'page' => $page,
+        'fields' => $fields,
+        'settings' => $settings,
+        'breadcrumbs' => $breadcrumbs,
+        'pageTitle' => $pageTitle
+    ]);
+
     // Шаблон страницы
-    include ROOT . 'views/_page-parts/_head.tpl';
-    include ROOT . 'views/_parts/_header.tpl';
+    // ob_start();
+    // include ROOT . 'views/pages/' . $slug . '/index.tpl';
+    // $content = ob_get_clean();
+    
 
-    include ROOT . 'views/pages/' . $slug . '/index.tpl';
-
-    include ROOT . 'views/_parts/_footer.tpl';
-    include ROOT . 'views/_page-parts/_foot.tpl';
-
+    // include ROOT . 'views/layout.php';
   }
 
 }

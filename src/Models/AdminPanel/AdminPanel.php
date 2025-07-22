@@ -15,16 +15,11 @@ final class AdminPanel
     $this->commentsCount = $commentsCount;
   }
 
-  public function index () 
+  public function render()
   {
-    $this->render();
-  }
-
-  private function render()
-  {
-      // ob_start();
-      include __DIR__ . '/../templates/admin_panel.php';
-      // return ob_get_clean();
+      ob_start();
+      include ROOT . 'views/admin_panel.php';
+      return ob_get_clean();
     
   }
 }

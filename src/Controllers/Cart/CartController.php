@@ -8,6 +8,9 @@ use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 /** Репозитории */
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\ProductRepository;
@@ -34,13 +37,11 @@ use Vvintage\Services\Messages\FlashMessage;
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
-// use Vvintage\Store\Cart\GuestCartStore;
-// use Vvintage\Store\Cart\UserCartStore;
-// use Vvintage\Store\Cart\CartStoreInterface;
+
 
 require_once ROOT . './libs/functions.php';
 
-final class CartController
+final class CartController extends BaseController
 {
     private CartService $cartService;
     private UserInterface $userModel;
@@ -75,11 +76,15 @@ final class CartController
       ];
 
       // Подключение шаблонов страницы
-      include ROOT . "templates/_page-parts/_head.tpl";
-      include ROOT . "views/_parts/_header.tpl";
-      include ROOT . "views/cart/cart.tpl";
-      include ROOT . "views/_parts/_footer.tpl";
-      include ROOT . "views/_page-parts/_foot.tpl";
+      $this->renderLayout('cart/cart', [
+            'products' => $products,
+            'pageTitle' => 'Корзина',
+      ]);
+      // include ROOT . "templates/_page-parts/_head.tpl";
+      // include ROOT . "views/_parts/_header.tpl";
+      // include ROOT . "views/cart/cart.tpl";
+      // include ROOT . "views/_parts/_footer.tpl";
+      // include ROOT . "views/_page-parts/_foot.tpl";
     }
 
 
