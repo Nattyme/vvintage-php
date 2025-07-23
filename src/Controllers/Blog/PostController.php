@@ -26,11 +26,15 @@ final class PostController extends BaseController
         $this->breadcrumbsService = $breadcrumbs;
     }
 
+    private function getPost(RouteData $routeData)
+    {
+      $id = (int) $routeData->uriGet; // получаем id товара из URL
+      return $this->blogService->getPost($id);
+    }
+
     public function index(RouteData $routeData): void
     {   
-        $id = (int) $routeData->uriGet; // получаем id товара из URL
-        // $post = PostRepository::findById($id);
-        $post = $this->blogService->getPost($id);
+        $post = $this->getPost($routeData);
 
         if (!$post) {
             http_response_code(404);
@@ -39,7 +43,7 @@ final class PostController extends BaseController
         }
 
         // Получаем похожие посты
-        $postsPerPage = 9;
+        $postsPerPage = $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);;
         $pagination = pagination($postsPerPage, 'posts');
         $relatedPosts = $this->blogService->getAll($pagination);
         // $relatedPosts = $post->getRelated();
@@ -50,22 +54,13 @@ final class PostController extends BaseController
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-         //Сохраняем код ниже в буфер
-        ob_start();
-        include ROOT . 'views/blog/post.tpl';
-        //Записываем вывод из буфера в пепеменную
-        $content = ob_get_contents();
-        //Окончание буфера, очищаем вывод
-        ob_end_clean();
-
         // Подключение шаблонов страницы
-        $this->renderLayout('blog/template', [
+        $this->renderLayout('blog/post', [
               'pageTitle' => $pageTitle,
               'routeData' => $routeData,
               'breadcrumbs' => $breadcrumbs,
               'post' => $post,
-              'relatedPosts' => $relatedPosts,
-              'content' => $content
+              'relatedPosts' => $relatedPosts
         ]);
     }
 }

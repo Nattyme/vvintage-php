@@ -30,10 +30,39 @@ final class BlogController extends BaseController
         $this->breadcrumbsService = $breadcrumbs;
     }
 
-    public function index(RouteData $routeData): void
+    private function renderPosts(RouteData $routeData)
+    {
+        $data = $this->prepareDataForRender($routeData);
+        
+        $this->renderLayout('blog/blog', [
+            'pagination' => $data['pagination'],
+            'pageTitle' => $data['pageTitle'],
+            'routeData' => $data['routeData'],
+            'breadcrumbs' => $data['breadcrumbs'],
+            'posts' => $data['posts'],
+            'totalPosts' => $data['totalPosts'],
+            'shownPosts' => $data['shownPosts'],
+            'relatedPosts' => $data['relatedPosts']
+        ]);
+
+    }
+
+    /**
+     * @return array{
+     *   pagination: array,
+     *   pageTitle: string,
+     *   routeData: RouteData,
+     *   breadcrumbs: array,
+     *   posts: array,
+     *   totalPosts: int,
+     *   shownPosts: int,
+     *   relatedPosts: array
+     * }
+     */
+    private function prepareDataForRender(RouteData $routeData): array
     {
         $pageTitle = 'Блог';
-        $postsPerPage = 9;
+        $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
         $pagination = pagination($postsPerPage, 'posts');
         $posts = $this->blogService->getAll($pagination);
         $totalPosts = $this->blogService->getTotalCount();
@@ -45,15 +74,7 @@ final class BlogController extends BaseController
         // $relatedPosts = get_related_posts($post->getTitle());
         $relatedPosts = $posts;
 
-        //Сохраняем код ниже в буфер
-        ob_start();
-        include ROOT . 'views/blog/blog.tpl';
-        //Записываем вывод из буфера в пепеменную
-        $content = ob_get_contents();
-        //Окончание буфера, очищаем вывод
-        ob_end_clean();
-        
-        $this->renderLayout('blog/template', [
+        return [
             'pagination' => $pagination,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
@@ -61,9 +82,13 @@ final class BlogController extends BaseController
             'posts' => $posts,
             'totalPosts' => $totalPosts,
             'shownPosts' => $shownPosts,
-            'content' => $content,
             'relatedPosts' => $relatedPosts
-        ]);
+        ];
+    }
+
+    public function index(RouteData $routeData): void
+    {
+      $this->renderPosts($routeData);
     }
 
     

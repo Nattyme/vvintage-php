@@ -24,6 +24,7 @@ class BaseController
     include ROOT . "views/{$viewPath}.tpl"; // views/cart/cart.tpl
     $content = ob_get_clean();
 
+    extract( array_merge($vars, ['settings' => $this->settings]) );
     include ROOT . 'views/layout.php';
 
   }
