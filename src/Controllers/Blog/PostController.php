@@ -25,6 +25,7 @@ final class PostController extends BaseController
 
     public function index(RouteData $routeData): void
     {   
+      dd('одиночный пост');
         $id = (int) $routeData->uriGet; // получаем id товара из URL
         $post = PostRepository::findById($id);
 
@@ -42,13 +43,22 @@ final class PostController extends BaseController
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
+         //Сохраняем код ниже в буфер
+        ob_start();
+        include ROOT . 'views/blog/post.tpl';
+        //Записываем вывод из буфера в пепеменную
+        $content = ob_get_contents();
+        //Окончание буфера, очищаем вывод
+        ob_end_clean();
+
         // Подключение шаблонов страницы
-        $this->renderLayout('blog/post', [
+        $this->renderLayout('blog/template', [
               'pageTitle' => $pageTitle,
               'routeData' => $routeData,
               'breadcrumbs' => $breadcrumbs,
               'post' => $post,
-              'relatedProducts' => $relatedProducts
+              'relatedProducts' => $relatedProducts,
+              'content' => $content
         ]);
     }
 }

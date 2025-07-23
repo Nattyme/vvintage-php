@@ -13,9 +13,9 @@ final class Post
     private string $description;
     private string $content;
     private float $timestamp;
-    private string $views;
-    private ?array $cover = null;
-    private ?array $cover_small = null;
+    private ?string $views = null;
+    private ?string $cover = null;
+    private ?string $cover_small = null;
     private ?string $edit_time = null;
 
     private function __construct() {}
@@ -54,12 +54,6 @@ final class Post
         return $post;
     }
 
-    // Геттеры 
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
     public static function fromDTO(PostDTO $dto): self
     {
         $post = new self();
@@ -76,5 +70,52 @@ final class Post
         return $post;
     }
 
+    
+    // Геттеры 
+    public function getId(): int
+    {
+      return $this->id;
+    }
 
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getCat(): int
+    {
+      return $this->cat();
+    }
+
+    public function getDesc(): string
+    {
+      return $this->description;
+    }
+
+    public function getContent(): string
+    {
+      return $this->content;
+    }
+    
+    public function getTime(): ?float
+    {
+      return $this->timestamp;
+    }
+    public function getViews(): ?string 
+    {
+      return $this->views;
+    }
+    public function getCover(): ?string 
+    {
+      return $this->cover;
+    }
+    public function getCoverSmall(): ?string 
+    {
+      return $this->cover_small;
+    }
+    public function getEditTime(): string 
+    {
+      return $this->edit_time;
+    }
+    
 }

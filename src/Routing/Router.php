@@ -55,6 +55,7 @@
   use Vvintage\Repositories\UserRepository;
   use Vvintage\Repositories\ProductRepository;
   use Vvintage\Repositories\OrderRepository;
+  use Vvintage\Repositories\PostRepository;
 
 
   class Router {

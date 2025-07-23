@@ -1,11 +1,11 @@
 <?php
-  $params = ['coverKey' => 'cover', 'rusDateFormat' => 'j F Y'];
-  include ROOT . 'templates/blog/_parts/_post-display-details.tpl';
+  $params = ['rusDateFormat' => 'j F Y'];
+  include ROOT . 'views/blog/_parts/_post-display-details.tpl';
 ;?>
 
 <article class="post-card">
   <div class="post-card__img-wrapper">
-    <img src="<?php echo $coverPath . $coverFile;?>" alt="<?php echo $title;?>">
+    <img src="<?php echo $coverPath . $coverFile;?>" alt="<?php echo $post->getTitle();?>">
   </div>
   <div class="post-card__text">
     <div class="post-card__title">

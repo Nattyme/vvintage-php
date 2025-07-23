@@ -5,9 +5,9 @@
       <?php if ( isset($posts) && !empty($posts)) : ?>
         <?php foreach ($posts as $post) : ?>
           <li class="posts__item">
-            <a href="<?php echo HOST . "blog/{$post['id']}"?>" class="posts__link">
+            <a href="<?php echo HOST . "blog/{$post->getId()}"?>" class="posts__link">
               <!-- CARD -->
-              <?php include ROOT . 'templates/blog/_parts/_post-card.tpl';?>
+              <?php include ROOT . 'views/blog/_parts/_post-card.tpl';?>
               <!-- // CARD -->
             </a>
           </li>
@@ -21,7 +21,7 @@
 
   <!-- pagination -->
   <div class="page-blog__pagination">
-    <?php include ROOT . "templates/_parts/pagination/_pagination.tpl";?>
+    <?php include ROOT . "views/_parts/pagination/_pagination.tpl";?>
   </div>
   <!-- pagination -->
 </section>
