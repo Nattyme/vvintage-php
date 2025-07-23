@@ -177,9 +177,10 @@
 
     private static function routeProfile(RouteData $routeData) {
       $sessionManager = new SessionManager();
+      $breadcrumbs = new Breadcrumbs();
       $notes = new FlashMessage();
 
-      $profileController = new ProfileController($sessionManager, $notes);
+      $profileController = new ProfileController($sessionManager, $breadcrumbs, $notes);
 
       switch ($routeData->uriModule) {
         case 'profile':
