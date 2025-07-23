@@ -5,8 +5,8 @@
 
   /**  Сервисы */
   use Vvintage\Services\Auth\SessionManager;
-  use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Messages\FlashMessage;
+  use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Validation\LoginValidator;
 
 
@@ -14,6 +14,7 @@
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
+  use Vvintage\Controllers\Profile\ProfileController;
   use Vvintage\Controllers\Favorites\FavoritesController;
   use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
@@ -164,9 +165,14 @@
     }
 
     private static function routeProfile(RouteData $routeData) {
+      $sessionManager = new SessionManager();
+      $notes = new FlashMessage();
+
+      $profileController = new ProfileController($sessionManager, $notes);
+
       switch ($routeData->uriModule) {
         case 'profile':
-          require ROOT . 'modules/profile/profile.php';
+          $profileController->index($routeData);
           break;
 
         case 'profile-edit':
