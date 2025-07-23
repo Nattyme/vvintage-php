@@ -34,7 +34,6 @@ final class BlogController extends BaseController
     {
         $pageTitle = 'Блог';
         $postsPerPage = 9;
-
         $pagination = pagination($postsPerPage, 'posts');
         $posts = $this->blogService->getAll($pagination);
         $totalPosts = $this->blogService->getTotalCount();

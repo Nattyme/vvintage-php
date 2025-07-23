@@ -11,23 +11,26 @@ use Vvintage\Repositories\PostRepository;
 use Vvintage\Models\Blog\Post;
 use Vvintage\Routing\RouteData;
 use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Blog\BlogService;
 
 
 final class PostController extends BaseController
 {
+    private BlogService $blogService;
     private Breadcrumbs $breadcrumbsService;
 
-    public function __construct(Breadcrumbs $breadcrumbs)
+    public function __construct(BlogService $blogService, Breadcrumbs $breadcrumbs)
     {
         parent::__construct(); // Важно!
+        $this->blogService = $blogService;
         $this->breadcrumbsService = $breadcrumbs;
     }
 
     public function index(RouteData $routeData): void
     {   
-      dd('одиночный пост');
         $id = (int) $routeData->uriGet; // получаем id товара из URL
-        $post = PostRepository::findById($id);
+        // $post = PostRepository::findById($id);
+        $post = $this->blogService->getPost($id);
 
         if (!$post) {
             http_response_code(404);
@@ -35,7 +38,11 @@ final class PostController extends BaseController
             return;
         }
 
-        $relatedPosts = $post->getRelated();
+        // Получаем похожие посты
+        $postsPerPage = 9;
+        $pagination = pagination($postsPerPage, 'posts');
+        $relatedPosts = $this->blogService->getAll($pagination);
+        // $relatedPosts = $post->getRelated();
 
         // Название страницы
         $pageTitle = $post->getTitle();
@@ -57,7 +64,7 @@ final class PostController extends BaseController
               'routeData' => $routeData,
               'breadcrumbs' => $breadcrumbs,
               'post' => $post,
-              'relatedProducts' => $relatedProducts,
+              'relatedPosts' => $relatedPosts,
               'content' => $content
         ]);
     }

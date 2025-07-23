@@ -219,7 +219,7 @@
       $blogService = new BlogService( $postRepository );
   
       $blogController = new BlogController($blogService, $notes, $breadcrumbs);
-      $postController = new PostController($breadcrumbs);
+      $postController = new PostController($blogService, $breadcrumbs);
     
 
         if ($routeData->uriModule === 'add-comment') {

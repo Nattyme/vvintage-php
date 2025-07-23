@@ -1,17 +1,17 @@
 <?php
-  $params = ['coverKey' => 'cover', 'rusDateFormat' => 'j F Y'];
-  include ROOT . 'templates/blog/_parts/_post-display-details.tpl';
+  $params = ['rusDateFormat' => 'j F Y'];
+  include ROOT . 'views/blog/_parts/_post-display-details.tpl';
 ;?>
 
 <section class="post">
   <article class="post__body" itemscope itemtype="https://schema.org/BlogPosting"?>
     <div class="post__title">
-      <h1 class="h1" itemprop="headline"><?php echo $title;?></h1>
+      <h1 class="h1" itemprop="headline"><?php echo $post->getTitle();?></h1>
     </div>
 
     <!-- image -->
     <div class="post__img">
-      <img src="<?php echo  $coverPath . $coverFile;?>" alt="<?php echo $title;?>" />
+      <img src="<?php echo  $coverPath . $coverFile;?>" alt="<?php echo $post->getTitle();?>" />
     </div>
     <!-- // image -->
 
@@ -35,7 +35,7 @@
         <div class="post-meta__item">
           <p class="post-meta__text">Просмотров</p>
           <span class="post-meta__counter">
-            <?php echo $views;?>
+            <?php echo $post->getViews();?>
           </span>
         </div>
       </li>
@@ -62,7 +62,7 @@
   
     <div class="post__content">
       <!-- Как применить здесь Htmlspecialchair? Здесь вывод из эдитора -->
-      <?php echo $post['content'];?>
+      <?php echo $post->getContent();?>
     </div>
   </article>
 </section>

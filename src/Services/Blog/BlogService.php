@@ -37,6 +37,12 @@ final class BlogService
         return $this->postRepository->save($post);
     }
 
+    public function getPost(int $id)
+    {
+      $bean = $this->postRepository->findById($id);
+      return Post::fromBean($bean);
+    }
+
 
     // public function getById(int $id): ?Post {}
     // public function getByCategory(string $slug): array {}

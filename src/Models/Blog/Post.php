@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Blog;
 
+
 use RedBeanPHP\OODBBean;
 
 final class Post
