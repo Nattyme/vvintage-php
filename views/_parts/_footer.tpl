@@ -43,7 +43,7 @@
       <div class="footer__column">
         <div class="footer__logo">
         <a href="
-              <?php if ($uriModule === '' || $uriModule === 'main') {
+              <?php if ($routeData->uriModule === '' || $routeData->uriModule === 'main') {
                       echo '#';
                     } else {
                       echo 'main';
