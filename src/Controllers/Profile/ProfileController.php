@@ -16,13 +16,15 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Repositories\UserRepository;
 // use Vvintage\Models\Orders\Orders;
 
 require_once ROOT . './libs/functions.php';
 
 
 final class ProfileController extends BaseController
-{  
+{ 
+  private UserRepository $userRepository;
   private SessionManager $sessionManager;
   private Breadcrumbs $breadcrumbsService;
   private FlashMessage $notes;
@@ -30,13 +32,14 @@ final class ProfileController extends BaseController
   public function __construct(SessionManager $sessionManager, Breadcrumbs $breadcrumbs, FlashMessage $notes)
   {
     parent::__construct(); // Важно!
+    $this->userRepository = new UserRepository();
     $this->sessionManager = $sessionManager;
     $this->breadcrumbsService = $breadcrumbs;
     $this->notes = $notes;
   }
 
-  private function renderPage (RouteData $routeData): void 
-    {  
+  private function renderPage (RouteData $routeData, User $userModel): void 
+  {  
       // Название страницы
       $pageTitle = 'Профиль пользователя';
       $pageClass = "profile-page";
@@ -49,13 +52,21 @@ final class ProfileController extends BaseController
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'pageClass' => $pageClass
+            'pageClass' => $pageClass,
+            'userModel' => $userModel
       ]);
   }
 
 
   public function index(RouteData $routeData)
   {
-    $this->renderPage($routeData);
+
+    $userModel = $this->userRepository->findUserById($_SESSION['logged_user']['id']);
+    $this->renderPage($routeData, $userModel);
+  }
+
+  public function edit(RouteData $routeData)
+  {
+
   }
 }

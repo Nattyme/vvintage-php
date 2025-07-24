@@ -14,7 +14,7 @@
 			</div>
 		</div>
   <!-- Если пользователя с таким ID не существует -->
-  <?php elseif ($user['id'] === 0) : ?>
+  <?php elseif (!$userModel || isset($userModel) && $userModel->getId() === 0) : ?>
     <div class="profile">
 			<div class="container">
 				<div class="profile__title">
@@ -67,12 +67,12 @@
               </div>
               <div class="profile__column profile__column--desc ">
                 <div class="profile__definition-list">
-                  <?php if (!empty($user->name)) : ?>
+                  <?php if (!empty($user->getName())) : ?>
                     <dl class="definition">
                       <dt class="definition__term">имя и фамилия</dt>
                       <dd class="definition__description">
-                        <?php echo $user->name; ?> 
-                        <?php echo $user->surname; ?>
+                        <?php echo $user->getName(); ?> 
+                        <?php echo $user->getSurname(); ?>
                       </dd>
                     </dl>
                   <?php endif; ?>
