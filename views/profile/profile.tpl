@@ -35,13 +35,13 @@
 				<div class="profile__body">
           <div class="notifications-wrapper">
             <div class="notifications-wrapper__row">
-              <?php include ROOT . "templates/components/errors.tpl"; ?>
-              <?php include ROOT . "templates/components/success.tpl"; ?>
+              <?php include ROOT . "views/components/errors.tpl"; ?>
+              <?php include ROOT . "views/components/success.tpl"; ?>
             </div>
           </div>
 
           <!-- Блок пустого профиля -->
-          <?php if (empty($user->name)) : ?>
+          <?php if (empty($userModel->getName())) : ?>
             <div class="profile__row profile__wrapper">
               <div class="col-md-6">
                 <div class="enter-or-reg flex-column flex-row-gap">
@@ -49,7 +49,7 @@
                       Пустой профиль 😑 
                   </div>
                   <!-- Кнопка редактирования профиля -->
-                  <?php include ROOT . "templates/profile/_parts/_button-edit-profile.tpl"; ?>
+                  <?php include ROOT . "views/profile/_parts/_button-edit-profile.tpl"; ?>
                 </div>
               </div>
             </div>
@@ -58,8 +58,8 @@
             <div class="profile__row">
               <div class="profile__column profile__column--img">
                 <div class="avatar-big avatar-big-wrapper">
-                  <?php if ( !empty($user->avatar)) : ?>
-                    <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $user->avatar; ?>" alt="Аватарка" />
+                  <?php if ( !empty($userModel->getAvatar())) : ?>
+                    <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="Аватарка" />
                   <?php else : ?>
                     <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="Аватарка" />
                   <?php endif; ?>
@@ -67,37 +67,37 @@
               </div>
               <div class="profile__column profile__column--desc ">
                 <div class="profile__definition-list">
-                  <?php if (!empty($user->getName())) : ?>
+                  <?php if (!empty($userModel->getName())) : ?>
                     <dl class="definition">
                       <dt class="definition__term">имя и фамилия</dt>
                       <dd class="definition__description">
-                        <?php echo $user->getName(); ?> 
-                        <?php echo $user->getSurname(); ?>
+                        <?php echo $userModel->getName(); ?> 
+                        <?php echo $userModel->getSurname(); ?>
                       </dd>
                     </dl>
                   <?php endif; ?>
 
-                  <?php if (!empty($user->country) || !empty($user->city)) : ?>
+                  <?php if (!empty($userModel->getCountry) || !empty($userModel->getCity)) : ?>
                     <dl class="definition">
                       <dt class="definition__term">
-                        <?php if (!empty($user->country)) : ?>
+                        <?php if (!empty($userModel->getCountry)) : ?>
                           Страна
                         <?php endif; ?>
 
-                        <?php if (!empty($user->country) && !empty($user->city)) : ?>
+                        <?php if (!empty($userModel->getCountry()) && !empty($userModel->getCity())) : ?>
                           ,
                         <?php endif; ?>
 
-                        <?php if (!empty($user->city)) : ?>
+                        <?php if (!empty($userModel->getCity())) : ?>
                           город
                         <?php endif; ?>
                       </dt>
                       <dd class="definition__description">
-                        <?php echo $user->country; ?> 
-                        <?php if (!empty($user->country) && !empty($user->city)) : ?>
+                        <?php echo $userModel->getCountry(); ?> 
+                        <?php if (!empty($userModel->getCountry()) && !empty($userModel->getCity())) : ?>
                           ,
                         <?php endif; ?>
-                        <?php echo $user->city; ?>
+                        <?php echo $userModel->getCity(); ?>
                       </dd>
                     </dl>
                   <?php endif; ?>
@@ -114,17 +114,17 @@
                             Номер телефона
                           </dt>
                           <dd class="definition__description">
-                            <?php echo $user->phone; ?> 
+                            <?php echo $userModel->getPhone(); ?> 
                           </dd>
                         <?php endif; ?>
                       </dl>
                       <dl class="definition">
-                        <?php if ( !empty($user->address) ) : ?>
+                        <?php if ( !empty($userModel->getAddress()) ) : ?>
                           <dt class="definition__term">
                             Адрес доставки заказов
                           </dt>
                           <dd class="definition__description">
-                            <?php echo $user->address; ?> 
+                            <?php echo $userModel->getAddress(); ?> 
                           </dd>
                         <?php endif;?>
                       </dl>
@@ -134,11 +134,11 @@
                   <!-- // Видно только владельцу профиля или админу-->
                 </div>
                 <!-- Кнопка редактирования профиля -->
-                <?php include ROOT . "templates/profile/_parts/_button-edit-profile.tpl"; ?>
+                <?php include ROOT . "views/profile/_parts/_button-edit-profile.tpl"; ?>
               </div>
                 <!-- // Выводим заказы пользователя (если есть) -->
             <?php if ( isset($orders) && !empty($orders) ) { 
-              include ROOT . 'templates/profile/_parts/user-orders.tpl'; 
+              include ROOT . 'views/profile/_parts/user-orders.tpl'; 
             };?>
 					  </div>
           <?php endif; ?>
