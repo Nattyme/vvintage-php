@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Vvintage\Models\User;
 
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Repositories\AddressRepository;
 use Vvintage\Models\User\UserInterface;
+use Vvintage\Models\Address\Address;
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
@@ -23,7 +25,8 @@ final class User implements UserInterface
     private string $phone;
     private string $avatar;
     private string $avatarSmall;
-    private int $address;
+    private int $addressId;
+    private AddressRepository $addressRepository;
 
     public function __construct(OODBBean $bean)
     {
@@ -36,20 +39,22 @@ final class User implements UserInterface
       // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
       $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
       $this->fav_list = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
-      $this->address = (int) $bean->address;
+      $this->addressId = (int) $bean->address->id ?? 0;
         
       $this->country= $bean->country ?? '';
       $this->city= $bean->city ?? '';
       $this->phone= $bean->phone ?? '';
       $this->avatar= $bean->avatar ?? '';
       $this->avatarSmall = $bean->avatar_small ?? '';
+
+      $this->addressRepository = new AddressRepository();
     }
 
     public function getRepository(): UserRepository {
       return new UserRepository();
     }
 
-    public function export($user): array
+    public function export(): array
     {
         return [
           'id' => $this->id,
@@ -62,7 +67,7 @@ final class User implements UserInterface
           'country' => $this->country,
           'city' => $this->city,
           'phone' => $this->phone,
-          'address' => $this->address,
+          'address' => $this->getAddress(),
           'avatar' => $this->avatar
         ];
     }
@@ -125,7 +130,7 @@ final class User implements UserInterface
         return $this->role;
     }
 
-    public function getAvatar()
+    public function getAvatar(): string
     {
       return $this->avatar;
     }
@@ -163,8 +168,14 @@ final class User implements UserInterface
       return new Favorites ($this->fav_list);
     }
 
-    public function getAddress() {
-      return $this->address;
+    public function getAddress(): ?Address
+    {
+      if (!$this->addressId) {
+        return null; // или пустой объект / исключение
+      }
+      
+      return $this->addressRepository->findAddressById($this->addressId);
     }
+
 
 }

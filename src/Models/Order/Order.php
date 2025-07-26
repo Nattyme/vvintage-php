@@ -56,7 +56,11 @@ final class Order
     $order->timestamp = $bean->timestamp;
     $order->status = $bean->status;
     $order->paid = $bean->paid;
-    $order->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
+  
+    $cartJson = $bean->cart;
+    $decodedCart = json_decode($cartJson, true);
+    $order->cart = is_array($decodedCart) ? $decodedCart : [];
+
     return $order;
   }
 

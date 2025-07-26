@@ -6,6 +6,7 @@ namespace Vvintage\Repositories;
 
 use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
+
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Repositories\AddressRepository;

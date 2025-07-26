@@ -16,7 +16,6 @@ final class OrderRepository
 
     public function __construct()
     {
-        // $this->cart = $cart;
         $this->addressRepository = new AddressRepository();
     }
 
@@ -68,9 +67,14 @@ final class OrderRepository
      */
     public function findOrdersByUserId(int $id): array
     {
+        $orders = [];
         $beans = R::findAll('orders', 'user_id = ?', [$id]);
 
-        return is_array($beans) ? $beans : [];
+        foreach($beans as $bean) {
+          $orders[] = Order::fromBean($bean);
+        }
+
+        return $orders;
     }
 
 
@@ -124,6 +128,7 @@ final class OrderRepository
         if ($bean->id !== 0) {
             // Записываем параметры в bean и сохраняем в БД
             $this->fillOrderBean($bean, $order, $user);
+
             $orderId = $this->saveBean($bean);
 
             if (!is_int($orderId) || $orderId === 0) {

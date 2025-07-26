@@ -17,13 +17,15 @@ use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Repositories\UserRepository;
-// use Vvintage\Models\Orders\Orders;
+use Vvintage\Repositories\OrderRepository;
+use Vvintage\Models\Order\Order;
 
 require_once ROOT . './libs/functions.php';
 
 
 final class ProfileController extends BaseController
 { 
+  private OrderRepository $orderRepository;
   private UserRepository $userRepository;
   private SessionManager $sessionManager;
   private Breadcrumbs $breadcrumbsService;
@@ -32,6 +34,7 @@ final class ProfileController extends BaseController
   public function __construct(SessionManager $sessionManager, Breadcrumbs $breadcrumbs, FlashMessage $notes)
   {
     parent::__construct(); // Важно!
+    $this->orderRepository = new OrderRepository();
     $this->userRepository = new UserRepository();
     $this->sessionManager = $sessionManager;
     $this->breadcrumbsService = $breadcrumbs;
@@ -53,7 +56,8 @@ final class ProfileController extends BaseController
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'pageClass' => $pageClass,
-            'userModel' => $userModel
+            'userModel' => $userModel,
+            'orders' => $orders
       ]);
   }
 
@@ -79,12 +83,14 @@ final class ProfileController extends BaseController
 
   public function index(RouteData $routeData)
   {
-    $userModle = null;
+    $userModel = null;
     $id = isset($_SESSION['logged_user']) ? $_SESSION['logged_user']['id'] : null;
 
     if($id !== null) {
       $userModel = $this->userRepository->findUserById($id);
     }
+
+    $orders = $this->orderRepository->findOrdersByUserId($id);
     $this->renderProfile($routeData, $userModel);
   }
 
@@ -99,6 +105,9 @@ final class ProfileController extends BaseController
         $this->userRepository->ensureUserHasAddress($userModel);
       }
     }
+
+    $addressModel = $userModel->getAddress();
+
     $this->renderProfileEdit($routeData, $userModel);
 
   }

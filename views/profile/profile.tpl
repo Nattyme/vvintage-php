@@ -79,15 +79,15 @@
                   <?php if (!empty($userModel->getCountry()) || !empty($userModel->getCity())) : ?>
                     <dl class="definition">
                       <dt class="definition__term">
-                        <?php if (!empty($userModel->getCountry())) : ?>
+                        <?php if ($userModel->getCountry()) : ?>
                           Страна
                         <?php endif; ?>
 
-                        <?php if (!empty($userModel->getCountry()) && !empty($userModel->getCity())) : ?>
+                        <?php if ($userModel->getCountry() && $userModel->getCity()) : ?>
                           ,
                         <?php endif; ?>
 
-                        <?php if (!empty($userModel->getCity())) : ?>
+                        <?php if ($userModel->getCity()) : ?>
                           город
                         <?php endif; ?>
                       </dt>
@@ -108,26 +108,16 @@
                       ) : 
                   ?>
                       <dl class="definition">
-                        <!-- <?php if ( !empty($userModel->getPhone())) : ?> -->
-                          <!-- <dt class="definition__term">
+          
+                        <?php if ( $userModel->getPhone()) : ?>
+                          <dt class="definition__term"> 
                             Номер телефона
                           </dt>
                           <dd class="definition__description">
                             <?php echo $userModel->getPhone(); ?> 
-                          </dd> -->
-                        <!-- <?php endif; ?> -->
+                          </dd> 
+                        <?php endif; ?>
                       </dl>
-                      <!-- <dl class="definition">
-
-                        <?php if ( !empty($userModel->getAddress()) ) : ?>
-                          <dt class="definition__term">
-                            Адрес доставки заказов
-                          </dt>
-                          <dd class="definition__description">
-                            <?php echo $userModel->getAddress(); ?> 
-                          </dd>
-                        <?php endif;?>
-                      </dl> -->
                   <?php 
                     endif; 
                   ?>
@@ -137,9 +127,9 @@
                 <?php include ROOT . "views/profile/_parts/_button-edit-profile.tpl"; ?>
               </div>
                 <!-- // Выводим заказы пользователя (если есть) -->
-            <!-- <?php if ( isset($orders) && !empty($orders) ) { 
-              // include ROOT . 'views/profile/_parts/user-orders.tpl'; 
-            };?> -->
+            <?php if ( $orders) { 
+              include ROOT . 'views/profile/_parts/user-orders.tpl'; 
+            };?> 
 					  </div>
           <?php endif; ?>
 				</div>
