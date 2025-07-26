@@ -38,7 +38,7 @@ final class ProfileController extends BaseController
     $this->notes = $notes;
   }
 
-  private function renderPage (RouteData $routeData, User $userModel): void 
+  private function renderPage (RouteData $routeData, ?User $userModel): void 
   {  
       // Название страницы
       $pageTitle = 'Профиль пользователя';
@@ -60,8 +60,12 @@ final class ProfileController extends BaseController
 
   public function index(RouteData $routeData)
   {
+    $id = isset($_SESSION['logged_user']) ? $_SESSION['logged_user']['id'] : null;
 
-    $userModel = $this->userRepository->findUserById($_SESSION['logged_user']['id']);
+    if($id !== null) {
+      $userModel = $this->userRepository->findUserById($id);
+    }
+// dd($userModel);
     $this->renderPage($routeData, $userModel);
   }
 

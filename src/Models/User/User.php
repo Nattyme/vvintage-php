@@ -18,6 +18,9 @@ final class User implements UserInterface
     private string $role;
     private array $fav_list;
     private array $cart;
+    private string $country;
+    private string $city;
+    private string $phone;
     private string $avatar;
     private string $avatarSmall;
     private int $address;
@@ -35,8 +38,11 @@ final class User implements UserInterface
       $this->fav_list = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
       $this->address = (int) $bean->address;
         
-      $this->avatar= $bean->avatar;
-      $this->$avatarSmall = $bean->avatar_small;
+      $this->country= $bean->country ?? '';
+      $this->city= $bean->city ?? '';
+      $this->phone= $bean->phone ?? '';
+      $this->avatar= $bean->avatar ?? '';
+      $this->avatarSmall = $bean->avatar_small ?? '';
     }
 
     public function getRepository(): UserRepository {
@@ -53,6 +59,9 @@ final class User implements UserInterface
           'password' => $this->password,
           'cart' => $this->cart,
           'fav' => $this->fav_list,
+          'country' => $this->country,
+          'city' => $this->city,
+          'phone' => $this->phone,
           'address' => $this->address,
           'avatar' => $this->avatar
         ];
@@ -84,6 +93,26 @@ final class User implements UserInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getSurname(): string
+    {
+      return $this->name;
+    }
+
+    public function getCountry(): string
+    {
+      return $this->country;
+    }
+
+    public function getCity(): string
+    {
+      return $this->city;
+    }
+
+    public function phone():string
+    {
+      return $this->phone;
     }
 
     public function isAdmin(): bool

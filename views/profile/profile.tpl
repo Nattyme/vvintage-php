@@ -77,10 +77,10 @@
                     </dl>
                   <?php endif; ?>
 
-                  <?php if (!empty($userModel->getCountry) || !empty($userModel->getCity)) : ?>
+                  <?php if (!empty($userModel->getCountry()) || !empty($userModel->getCity())) : ?>
                     <dl class="definition">
                       <dt class="definition__term">
-                        <?php if (!empty($userModel->getCountry)) : ?>
+                        <?php if (!empty($userModel->getCountry())) : ?>
                           Страна
                         <?php endif; ?>
 
@@ -105,20 +105,20 @@
                   <!-- Видно только владельцу профиля или админу -->
                   <?php 
                     if ( isset($_SESSION['logged_user']) && 
-                        ($_SESSION['logged_user']['id'] === $user['id'] || $_SESSION['logged_user']['role'] === 'admin') 
+                        ($_SESSION['logged_user']['id'] === $userModel->getId() || $_SESSION['logged_user']['role'] === 'admin') 
                       ) : 
                   ?>
                       <dl class="definition">
-                        <?php if ( !empty($user->phone)) : ?>
-                          <dt class="definition__term">
+                        <!-- <?php if ( !empty($userModel->getPhone())) : ?> -->
+                          <!-- <dt class="definition__term">
                             Номер телефона
                           </dt>
                           <dd class="definition__description">
                             <?php echo $userModel->getPhone(); ?> 
-                          </dd>
-                        <?php endif; ?>
+                          </dd> -->
+                        <!-- <?php endif; ?> -->
                       </dl>
-                      <dl class="definition">
+                      <!-- <dl class="definition">
                         <?php if ( !empty($userModel->getAddress()) ) : ?>
                           <dt class="definition__term">
                             Адрес доставки заказов
@@ -127,7 +127,7 @@
                             <?php echo $userModel->getAddress(); ?> 
                           </dd>
                         <?php endif;?>
-                      </dl>
+                      </dl> -->
                   <?php 
                     endif; 
                   ?>
@@ -137,9 +137,9 @@
                 <?php include ROOT . "views/profile/_parts/_button-edit-profile.tpl"; ?>
               </div>
                 <!-- // Выводим заказы пользователя (если есть) -->
-            <?php if ( isset($orders) && !empty($orders) ) { 
-              include ROOT . 'views/profile/_parts/user-orders.tpl'; 
-            };?>
+            <!-- <?php if ( isset($orders) && !empty($orders) ) { 
+              // include ROOT . 'views/profile/_parts/user-orders.tpl'; 
+            };?> -->
 					  </div>
           <?php endif; ?>
 				</div>
@@ -153,9 +153,9 @@
       // }
 
       // Выводим комментарии пользователя (если есть)
-      if ( isset($comments) && !empty($comments) ) { 
-        include ROOT . 'templates/profile/_parts/user-comments.tpl'; 
-      }
+      // if ( isset($comments) && !empty($comments) ) { 
+        // include ROOT . 'templates/profile/_parts/user-comments.tpl'; 
+      // }
       
     ?>
   <?php endif; ?>
