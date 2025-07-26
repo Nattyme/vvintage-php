@@ -188,7 +188,7 @@
           break;
 
         case 'profile-edit':
-          require ROOT . 'modules/profile/profile-edit.php';
+          $profileController->edit($routeData);
           break;
 
         case 'profile-order':

@@ -27,7 +27,7 @@
                 type="text" 
                 placeholder="Имя"
                 name="name"
-                value="<?php echo isset($_POST['name']) ? $_POST['name'] : $user->name; ?>" 
+                value="<?php echo isset($_POST['name']) ? $_POST['name'] : $userModel->getName(); ?>" 
               />
             </label>
           </div>
@@ -39,7 +39,7 @@
                 type="text" 
                 placeholder="Фамилия"
                 name="surname"
-                value="<?php echo isset($_POST['surname']) ? $_POST['surname'] : $user->surname; ?>"
+                value="<?php echo isset($_POST['surname']) ? $_POST['surname'] : $userModel->getSurname(); ?>"
               />
             </label>
           </div>
@@ -49,7 +49,7 @@
                 class="profile-input" 
                 type="text" placeholder="Email"
                 name="email"
-                value="<?php echo isset($_POST['email']) ? $_POST['email'] : $user->email; ?>"
+                value="<?php echo isset($_POST['email']) ? $_POST['email'] : $userModel->getEmail(); ?>"
               />
             </label>
           </div>
@@ -59,8 +59,8 @@
       <div class="profile-form__row">
         <div class="profile-form__img profile-form__column">
           <div class="avatar-big">
-            <?php if ( !empty($user->avatar)) : ?>
-              <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $user->avatar; ?>" alt="Аватарка" />
+            <?php if ( !empty($userModel->getAvatar())) : ?>
+              <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="Аватарка" />
             <?php else : ?>
               <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="Аватарка" />
             <?php endif; ?>
@@ -95,7 +95,7 @@
                 type="text" 
                 placeholder="Страна"
                 name="country"
-                value="<?php echo isset($_POST['country']) ? $_POST['country'] : $user->country; ?>"
+                value="<?php echo isset($_POST['country']) ? $_POST['country'] : $userModel->getCountry(); ?>"
               />
             </label>
           </div>
@@ -107,7 +107,7 @@
                 type="text" 
                 placeholder="Город"
                 name="city"
-                value="<?php echo isset($_POST['city']) ? $_POST['city'] : $user->city; ?>"
+                value="<?php echo isset($_POST['city']) ? $_POST['city'] : $userModel->getCity(); ?>"
               />
             </label>
           </div>

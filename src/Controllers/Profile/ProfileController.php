@@ -38,7 +38,7 @@ final class ProfileController extends BaseController
     $this->notes = $notes;
   }
 
-  private function renderPage (RouteData $routeData, ?User $userModel): void 
+  private function renderProfile (RouteData $routeData, ?User $userModel): void 
   {  
       // Название страницы
       $pageTitle = 'Профиль пользователя';
@@ -57,6 +57,25 @@ final class ProfileController extends BaseController
       ]);
   }
 
+  private function renderProfileEdit (RouteData $routeData, ?User $userModel): void 
+  {  
+      // Название страницы
+      $pageTitle = 'Редкатирование профиля пользователя';
+      $pageClass = "profile-page";
+
+      // Хлебные крошки
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+
+      // Подключение шаблонов страницы
+      $this->renderLayout('profile/profile-edit', [
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+            'breadcrumbs' => $breadcrumbs,
+            'pageClass' => $pageClass,
+            'userModel' => $userModel
+      ]);
+  }
+
 
   public function index(RouteData $routeData)
   {
@@ -65,12 +84,18 @@ final class ProfileController extends BaseController
     if($id !== null) {
       $userModel = $this->userRepository->findUserById($id);
     }
-// dd($userModel);
-    $this->renderPage($routeData, $userModel);
+    $this->renderProfile($routeData, $userModel);
   }
 
   public function edit(RouteData $routeData)
   {
+    
+    $id = isset($_SESSION['logged_user']) ? $_SESSION['logged_user']['id'] : null;
+
+    if($id !== null) {
+      $userModel = $this->userRepository->findUserById($id);
+    }
+    $this->renderProfileEdit($routeData, $userModel);
 
   }
 }

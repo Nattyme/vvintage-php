@@ -1,5 +1,5 @@
 <main class="page-profile">
-  <?php if ( $user['id'] === 0) : ?>
+  <?php if ( $userModel->getId() === 0) : ?>
   <section class="profile">
     <div class="container">
       <div class="profile__title">
@@ -26,7 +26,7 @@
           <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile-edit" method="POST">
         <?php endif; ?>
          
-        <?php include ROOT . 'templates/profile/_parts/_profile-edit-tabs.tpl';?>
+        <?php include ROOT . 'views/profile/_parts/_profile-edit-tabs.tpl';?>
           
          
           </form>
