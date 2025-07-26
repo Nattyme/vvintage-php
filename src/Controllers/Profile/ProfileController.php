@@ -96,7 +96,7 @@ final class ProfileController extends BaseController
     if($id !== null) {
       $userModel = $this->userRepository->findUserById($id);
       if( ! $userModel->getAddress()) {
-        $this->userRepository->caseUserHasAddress($userModel);
+        $this->userRepository->ensureUserHasAddress($userModel);
       }
     }
     $this->renderProfileEdit($routeData, $userModel);

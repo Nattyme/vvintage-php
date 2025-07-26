@@ -12,6 +12,10 @@ use Vvintage\Repositories\AddressRepository;
 
 final class UserRepository
 {
+    private const TABLE_USERS = 'users';
+    private const TABLE_ADDRESSES = 'address';
+    private const TABLE_BLOCKED_USERS = 'blockedusers';
+
     private AddressRepository $addressRepository;
 
     public function __construct()
@@ -29,6 +33,16 @@ final class UserRepository
       return R::store($bean);
     }
 
+    private function findUserBeanByEmail(string $tableName, string $email): ?OODBBean
+    {
+      return R::findOne($tableName, 'email = ?', [strtolower($email)]);
+    }
+
+    private function hashPassword(string $password): string
+    {
+      return password_hash($password, PASSWORD_DEFAULT);
+    }
+
     /**
      * Метод ищет пользователя по id
      * @param int $id
@@ -36,7 +50,7 @@ final class UserRepository
      */
     public function findUserById(int $id): ?User
     {
-        $bean = $this->loadBean('users', $id);
+        $bean = $this->loadBean(self::TABLE_USERS, $id);
 
         if ($bean->id === 0) {
             return null;
@@ -51,7 +65,7 @@ final class UserRepository
      */
     public function findUserByEmail(string $email): ?User
     {
-      $bean = R::findOne('users', 'email = ?', [strtolower($email)]);
+      $bean = $this->findUserBeanByEmail(self::TABLE_USERS, $email);
 
       if (!$bean) {
           return null;
@@ -62,7 +76,7 @@ final class UserRepository
 
     public function findBlockedUserByEmail (string $email): bool 
     {
-      $bean  = R::findOne('blockedusers', ' email = ? ', [ strtolower($email) ]);
+      $bean = $this->findUserBeanByEmail(self::TABLE_BLOCKED_USERS, $email);
       return $bean ? true : false;
     }
 
@@ -73,7 +87,7 @@ final class UserRepository
      */
     public function findAll(): array
     {
-      return R::findAll( 'users' );
+      return R::findAll(self::TABLE_USERS);
     }
 
 
@@ -85,24 +99,18 @@ final class UserRepository
     */
     public function createUser(array $postData): ?User
     {
-      $bean = R::dispense( 'users' );
+      $bean = R::dispense(self::TABLE_USERS);
 
       $bean->role = 'user';
-      $bean->email = $postData['email'];
+      $bean->email = strtolower($postData['email']);;
 
       // Сохраняем пароль в зашифрованном виде функцией password_hash
-      $bean->password = password_hash($postData['password'], PASSWORD_DEFAULT);
+      $bean->password = $this->hashPassword($postData['password']);
 
-      $bean->name = null;
-      $bean->cart = null;
-      $bean->fav_list = null;
-      $bean->surname = null;
-      $bean->country = null;
-      $bean->city = null;
-      $bean->phone = null;
-      $bean->avatar = null;
-      $bean->avatar_small = null;
-      $bean->recovery_code = null;
+      $fields = ['name', 'surname', 'country', 'city', 'phone', 'avatar', 'avatar_small', 'cart', 'fav_list', 'recovery_code'];
+      foreach($fields as $field) {
+        $bean->$field = null;
+      }
       
       $addressModel = $this->addressRepository->createAddress(); // создаем новый адрес
       $addressId = $addressModel->getId();
@@ -111,7 +119,7 @@ final class UserRepository
         return null;
       }
 
-      $addressBean = $this->loadBean('address', $addressId);
+      $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
       $bean->address = $addressBean;
 
       $userId = $this->saveUser($bean);
@@ -128,7 +136,7 @@ final class UserRepository
     public function editUser(User $userModel, array $postData): ?User
     {
       $id = $userModel->getId();
-      $bean = $this->loadBean('users', $id);
+      $bean = $this->loadBean(self::TABLE_USERS, $id);
 
       if ($bean->id !== 0) {
         // Заполнить пар-ры
@@ -151,7 +159,7 @@ final class UserRepository
     public function setRecoveryCode (User $userModel, string $recoveryCode): void
     {
       $id = $userModel->getId();
-      $bean = $this->loadBean('users', $id);
+      $bean = $this->loadBean(self::TABLE_USERS, $id);
 
       if ($bean->id !== 0) {
         $bean->recovery_code = $recoveryCode;
@@ -163,7 +171,7 @@ final class UserRepository
     public function getRecoveryCode (User $userModel): ?string
     {
       $id = $userModel->getId();
-      $bean = $this->loadBean('users', $id);
+      $bean = $this->loadBean(self::TABLE_USERS, $id);
 
       if ($bean->id !== 0) {
         return $bean->recovery_code;
@@ -175,10 +183,10 @@ final class UserRepository
     public function updateUserPassword (User $userModel, string $password): void
     {
       $id = $userModel->getId();
-      $bean = $this->loadBean('users', $id);
+      $bean = $this->loadBean(self::TABLE_USERS, $id);
 
       if ($bean->id !== 0) {
-        $bean->password = password_hash($password, PASSWORD_DEFAULT);
+        $bean->password = $this->hashPassword($password);
         $this->saveUser($bean);
       }
     }
@@ -187,8 +195,8 @@ final class UserRepository
      * Метод сохраняет id адреса в поле теблицы User
     */
     public function updateUserAddressId(int $userId, int $addressId): void {
-      $userBean = $this->loadBean('users', $userId);
-      $addressBean = $this->loadBean('address',  $addressId);
+      $userBean = $this->loadBean(self::TABLE_USERS, $userId);
+      $addressBean = $this->loadBean(self::TABLE_ADDRESSES,  $addressId);
 
       if ($userBean->id !== 0) {
         $userBean->address = $addressBean;
@@ -196,9 +204,9 @@ final class UserRepository
       }
     }
 
-    public function caseUserHasAddress(User $userModel): ?int
+    public function ensureUserHasAddress(User $userModel): ?int
     {
-      $bean = $this->loadBean('users', $userModel->getId());
+      $bean = $this->loadBean(self::TABLE_USERS, $userModel->getId());
 
       if ($bean->address_id !== null) {
         return null;
@@ -211,7 +219,7 @@ final class UserRepository
         return null;
       }
 
-      $addressBean = R::load('address', $addressId);
+      $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
       $bean->address = $addressBean;
 
       return $this->saveUser($bean);
@@ -223,11 +231,11 @@ final class UserRepository
      * Метод обновляет корзину
      * @return void
      */
-    public function saveUserItemsList($itemKey, User $userModel, array $items): void
+    public function saveUserItemsList(string $itemKey, User $userModel, array $items): void
     {
         // Находим bean пользователя по id из модели
         $userId = $userModel->getId();
-        $userBean = $this->loadBean('users', $userId);
+        $userBean = $this->loadBean(self::TABLE_USERS, $userId);
 
         // Обновляем корзину
         $userBean->$itemKey = json_encode($items);
@@ -243,7 +251,7 @@ final class UserRepository
     public function removeUser(User $userModel): void
     {
       $id = $userModel->getId();
-      $bean = $this->loadBean('users', $id);
+      $bean = $this->loadBean(self::TABLE_USERS, $id);
 
       if ($bean->id !== 0) {
         R::trash( $bean ); 
@@ -256,10 +264,10 @@ final class UserRepository
      * Метод возвращает корзину user из БД
      * @return array
     */
-    public function getItemsList(int $userId, $itemsKey): array
+    public function getItemsList(int $userId, string $itemsKey): array
     {
         // Находим bean пользователя по id из модели
-        $bean = $this->loadBean('users', $userId);
+        $bean = $this->loadBean(self::TABLE_USERS, $userId);
 
         // Получаем корзину из БД и переводим в массив
         $userItems = !empty($bean->$itemsKey) ? json_decode($bean->$itemsKey, true) : [];
