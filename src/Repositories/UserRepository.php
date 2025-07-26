@@ -19,6 +19,16 @@ final class UserRepository
       $this->addressRepository = new AddressRepository();
     }
 
+    private function loadBean (string $tableName, int $id): OODBBean
+    {
+      return R::load($tableName, $id);
+    }
+
+    private function saveUser(OODBBean $bean): int
+    {
+      return R::store($bean);
+    }
+
     /**
      * Метод ищет пользователя по id
      * @param int $id
@@ -26,12 +36,11 @@ final class UserRepository
      */
     public function findUserById(int $id): ?User
     {
-        $bean = R::load('users', $id);
+        $bean = $this->loadBean('users', $id);
 
         if ($bean->id === 0) {
             return null;
         }
-
         return new User($bean);
     }
 
@@ -102,10 +111,10 @@ final class UserRepository
         return null;
       }
 
-      $addressBean = R::load('address', $addressId);
+      $addressBean = $this->loadBean('address', $addressId);
       $bean->address = $addressBean;
 
-      $userId = R::store($bean);
+      $userId = $this->saveUser($bean);
 
       return new User ($bean);
     }
@@ -119,7 +128,7 @@ final class UserRepository
     public function editUser(User $userModel, array $postData): ?User
     {
       $id = $userModel->getId();
-      $bean = R::load('users', $id);
+      $bean = $this->loadBean('users', $id);
 
       if ($bean->id !== 0) {
         // Заполнить пар-ры
@@ -131,10 +140,8 @@ final class UserRepository
         $bean->avatar = $postData['avatar'] ?? '';
         $bean->avatar_small = $postData['avatar_small'] ?? '';
 
-        $userId = R::store($bean);
-    
-        R::store( $bean );
-
+        $userId = $this->saveUser($bean);
+  
         return new User ($bean);
       }
 
@@ -144,19 +151,19 @@ final class UserRepository
     public function setRecoveryCode (User $userModel, string $recoveryCode): void
     {
       $id = $userModel->getId();
-      $bean = R::load('users', $id);
+      $bean = $this->loadBean('users', $id);
 
       if ($bean->id !== 0) {
         $bean->recovery_code = $recoveryCode;
 
-        R::store( $bean );
+        $this->saveUser($bean);
       }
     }
 
     public function getRecoveryCode (User $userModel): ?string
     {
       $id = $userModel->getId();
-      $bean = R::load('users', $id);
+      $bean = $this->loadBean('users', $id);
 
       if ($bean->id !== 0) {
         return $bean->recovery_code;
@@ -168,11 +175,11 @@ final class UserRepository
     public function updateUserPassword (User $userModel, string $password): void
     {
       $id = $userModel->getId();
-      $bean = R::load('users', $id);
+      $bean = $this->loadBean('users', $id);
 
       if ($bean->id !== 0) {
         $bean->password = password_hash($password, PASSWORD_DEFAULT);
-        R::store( $bean );
+        $this->saveUser($bean);
       }
     }
 
@@ -180,14 +187,36 @@ final class UserRepository
      * Метод сохраняет id адреса в поле теблицы User
     */
     public function updateUserAddressId(int $userId, int $addressId): void {
-      $userBean = R::load('users', $userId);
-      $addressBean = R::load('address',  $addressId);
+      $userBean = $this->loadBean('users', $userId);
+      $addressBean = $this->loadBean('address',  $addressId);
 
       if ($userBean->id !== 0) {
         $userBean->address = $addressBean;
-        R::store( $userBean);
+        $this->saveUser($userBean);
       }
     }
+
+    public function caseUserHasAddress(User $userModel): ?int
+    {
+      $bean = $this->loadBean('users', $userModel->getId());
+
+      if ($bean->address_id !== null) {
+        return null;
+      }
+
+      $addressModel = $this->addressRepository->createAddress(); // создаем новый адрес
+      $addressId = $addressModel->getId();
+
+      if (!is_int($addressId) || $addressId === 0) {
+        return null;
+      }
+
+      $addressBean = R::load('address', $addressId);
+      $bean->address = $addressBean;
+
+      return $this->saveUser($bean);
+    }
+
 
   
     /**
@@ -198,11 +227,11 @@ final class UserRepository
     {
         // Находим bean пользователя по id из модели
         $userId = $userModel->getId();
-        $userBean = R::load('users', $userId);
+        $userBean = $this->loadBean('users', $userId);
 
         // Обновляем корзину
         $userBean->$itemKey = json_encode($items);
-        R::store($userBean);
+        $this->saveUser($userBean);
     }
 
 
@@ -214,7 +243,7 @@ final class UserRepository
     public function removeUser(User $userModel): void
     {
       $id = $userModel->getId();
-      $bean = R::load('users', $id);
+      $bean = $this->loadBean('users', $id);
 
       if ($bean->id !== 0) {
         R::trash( $bean ); 
@@ -230,10 +259,10 @@ final class UserRepository
     public function getItemsList(int $userId, $itemsKey): array
     {
         // Находим bean пользователя по id из модели
-        $userBean = R::load('users', $userId);
+        $bean = $this->loadBean('users', $userId);
 
         // Получаем корзину из БД и переводим в массив
-        $userItems = !empty($userBean->$itemsKey) ? json_decode($userBean->$itemsKey, true) : [];
+        $userItems = !empty($bean->$itemsKey) ? json_decode($bean->$itemsKey, true) : [];
         return $userItems;
     }
 

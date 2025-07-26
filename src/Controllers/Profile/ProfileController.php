@@ -60,7 +60,7 @@ final class ProfileController extends BaseController
   private function renderProfileEdit (RouteData $routeData, ?User $userModel): void 
   {  
       // Название страницы
-      $pageTitle = 'Редкатирование профиля пользователя';
+      $pageTitle = 'Редактирование профиля пользователя';
       $pageClass = "profile-page";
 
       // Хлебные крошки
@@ -79,6 +79,7 @@ final class ProfileController extends BaseController
 
   public function index(RouteData $routeData)
   {
+    $userModle = null;
     $id = isset($_SESSION['logged_user']) ? $_SESSION['logged_user']['id'] : null;
 
     if($id !== null) {
@@ -88,12 +89,15 @@ final class ProfileController extends BaseController
   }
 
   public function edit(RouteData $routeData)
-  {
-    
+  {    
+    $userModel = null;
     $id = isset($_SESSION['logged_user']) ? $_SESSION['logged_user']['id'] : null;
 
     if($id !== null) {
       $userModel = $this->userRepository->findUserById($id);
+      if( ! $userModel->getAddress()) {
+        $this->userRepository->caseUserHasAddress($userModel);
+      }
     }
     $this->renderProfileEdit($routeData, $userModel);
 
