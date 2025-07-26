@@ -110,7 +110,7 @@ final class User implements UserInterface
       return $this->city;
     }
 
-    public function phone():string
+    public function getPhone():string
     {
       return $this->phone;
     }

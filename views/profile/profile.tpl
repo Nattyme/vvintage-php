@@ -76,7 +76,6 @@
                       </dd>
                     </dl>
                   <?php endif; ?>
-
                   <?php if (!empty($userModel->getCountry()) || !empty($userModel->getCity())) : ?>
                     <dl class="definition">
                       <dt class="definition__term">
@@ -119,6 +118,7 @@
                         <!-- <?php endif; ?> -->
                       </dl>
                       <!-- <dl class="definition">
+
                         <?php if ( !empty($userModel->getAddress()) ) : ?>
                           <dt class="definition__term">
                             Адрес доставки заказов
