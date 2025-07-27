@@ -71,8 +71,6 @@ final class OrderController extends BaseController
       $this->validator = $validator;
       $this->notes = $notes;
       $this->breadcrumbsService = $breadcrumbs;
-;
-
     }
 
     public function index(RouteData $routeData): void
@@ -124,29 +122,31 @@ final class OrderController extends BaseController
       $this->orderService->edit($order, $postData);
     }
 
-    public function created($routeData) 
+    public function renderCreated($routeData) 
     {
-      $pageTitle = "Заказ оформлен!";
+      // Название страницы
+      $pageTitle = 'Заказ оформлен!';
 
-       // Хлебные крошки
-      $breadcrumbs = [
-        ['title' => $pageTitle, 'url' => '#'],
-      ];
+      // Хлебные крошки
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
+      
       // Получаем GET['id] 
       $new_order_id = get('id', 'int');
 
+      // Если заказ не создан
       if (!$new_order_id || $new_order_id <= 0) {
         $this->notes->pushError('ID заказа не найден');
         header('Location: ' . HOST);
         exit();
       }
 
-      include ROOT . "templates/_page-parts/_head.tpl";
-      include ROOT . "templates/_parts/_header.tpl";
-      include ROOT . "templates/orders/created.tpl";
-      include ROOT . "templates/_parts/_footer.tpl";
-      include ROOT . "templates/_page-parts/_foot.tpl";
+      // Подключение шаблонов страницы
+      $this->renderLayout('orders/created', [
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+            'breadcrumbs' => $breadcrumbs
+      ]);
     }
 
     private function renderForm ($routeData, array $products, Cart $cartModel, int $totalPrice): void 

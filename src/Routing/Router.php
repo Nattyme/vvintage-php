@@ -367,7 +367,7 @@
           $controller->index($routeData);
           break;
         case 'ordercreated':
-          $controller->created($routeData);
+          $controller->renderCreated($routeData);
           break;
       }
     }
