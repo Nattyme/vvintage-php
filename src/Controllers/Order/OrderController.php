@@ -106,7 +106,8 @@ final class OrderController extends BaseController
 
       if ($order !== null) {
           // Очищаем корзину
-          $this->cartModel->clear();
+          $cartModel = new Cart($this->cart);
+          $this->cartModel->clear($this->userModel, $cartModel);
 
           header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
           exit();

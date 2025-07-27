@@ -13,11 +13,9 @@ class GuestUser implements UserInterface
   private array $fav;
 
   public function __construct($data)
-  // public function __construct(array $cart, array $fav=[])
+
   {
     $this->cart = $data['cart'] ?? [];
-    // $this->cart = $cart ?? [];
-    // $this->fav = $fav ?? [];
     $this->fav = $data['fav'] ?? [];
   }
 

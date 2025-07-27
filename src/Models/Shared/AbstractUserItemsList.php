@@ -6,6 +6,9 @@ namespace Vvintage\Models\Shared;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Repositories\UserRepository;
+use Vvintage\Store\UserItemsList\UserItemsListStore;
+use Vvintage\Store\UserItemsList\GuestItemsListStore;
+
 
 abstract class AbstractUserItemsList
 {
@@ -40,11 +43,26 @@ abstract class AbstractUserItemsList
         return $this->items[$productId] ?? 0;
     }
 
-    
-    public function clear(): void
+    public function clearItems(): void
     {
-      $this->items = [];
+      $this->items =[];
     }
+
+    
+    public function clear($userModel, $itemModel): void
+    {
+      $itemModel->clearItems();
+      $itemKey = $itemModel->getSessionKey();
+
+      if($userModel instanceof User) {
+        $store = new UserItemsListStore( new UserRepository());
+        $store->save($itemKey, $itemModel, $userModel);
+      } else {
+        $store = new GuestItemsListStore();
+        $store->save($itemKey, $itemModel, $userModel);
+      }
+    }
+
 
     // обязательно для наследников
     abstract public function getSessionKey(): string;  
