@@ -24,7 +24,7 @@ final class User implements UserInterface
     private string $city;
     private string $phone;
     private string $avatar;
-    private string $avatarSmall;
+    private string $avatar_small;
     private int $addressId;
     private AddressRepository $addressRepository;
 
@@ -45,7 +45,7 @@ final class User implements UserInterface
       $this->city= $bean->city ?? '';
       $this->phone= $bean->phone ?? '';
       $this->avatar= $bean->avatar ?? '';
-      $this->avatarSmall = $bean->avatar_small ?? '';
+      $this->avatar_small = $bean->avatar_small ?? '';
 
       $this->addressRepository = new AddressRepository();
     }
@@ -68,7 +68,8 @@ final class User implements UserInterface
           'city' => $this->city,
           'phone' => $this->phone,
           'address' => $this->getAddress(),
-          'avatar' => $this->avatar
+          'avatar' => $this->avatar,
+          'avatar_small' => $this->avatar_small
         ];
     }
 
@@ -133,6 +134,11 @@ final class User implements UserInterface
     public function getAvatar(): string
     {
       return $this->avatar;
+    }
+
+    public function getAvatarSmall(): string
+    {
+      return $this->avatar_small;
     }
 
     /**

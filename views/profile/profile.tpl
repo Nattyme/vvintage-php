@@ -32,6 +32,7 @@
 				<div class="profile__title">
 					<h2 class="h2">Профиль пользователя </h2>
 				</div>
+
 				<div class="profile__body">
           <div class="notifications-wrapper">
             <div class="notifications-wrapper__row">

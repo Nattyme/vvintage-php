@@ -1,8 +1,4 @@
 <?php 
-  if (isset($_SESSION['login']) && $_SESSION['login'] === 1 ) {
-    // include ROOT . "views/_parts/_admin-panel.tpl";
-  } 
-
   $isBlogPage = isset($routeData->uriModule) && $routeData->uriModule === 'blog' ? true : false;
 ?>
 

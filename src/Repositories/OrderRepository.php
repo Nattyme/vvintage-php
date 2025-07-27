@@ -68,7 +68,6 @@ final class OrderRepository
      */
     public function findOrdersByUserId(int $id): array
     {
-   
         $orders = [];
         $beans = R::findAll('orders', 'user_id = ?', [$id]);
 
@@ -161,6 +160,17 @@ final class OrderRepository
             R::trash($bean);
         }
 
+    }
+
+    public static function countNew(): int
+    {
+        $beans = R::findAll('orders', 'status = ?', ['new']);
+
+        foreach($beans as $bean) {
+          $orders[] = Order::fromBean($bean);
+        }
+
+        return count($beans);
     }
 
 
