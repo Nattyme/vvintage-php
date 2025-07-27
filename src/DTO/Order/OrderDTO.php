@@ -10,6 +10,9 @@ final class OrderDTO
     public string $email;
     public string $phone;
     public string $address;
+    public \DateTime $datetime;
+    public string $status;
+    public bool $paid;
     public array $cart;
     public int $price;
     public int $user_id;
@@ -21,11 +24,16 @@ final class OrderDTO
         $this->email = filter_var(trim($data['email'] ?? ''), FILTER_VALIDATE_EMAIL) ?: '';
         $this->phone = trim($data['phone'] ?? '');
         $this->address = trim($data['address'] ?? '');
+
+        $this->datetime = new \DateTime();
+        $this->status = 'new';
+        $this->paid = false;
+
         $this->cart = is_array($cart ?? [])
             ? $cart
             : [];
         $this->price = (int) $totalPrice;
-        $this->user_id = $userId;
+        $this->user_id = (int) $userId;
     }
 
     public function isValid(): bool

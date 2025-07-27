@@ -23,7 +23,6 @@
             <tbody>
               <?php 
                 foreach ($orders as $order) {
-                      dd($order);
                   include ROOT . 'views/profile/_parts/_order-small.tpl';
                 }
               ?>

@@ -26,7 +26,7 @@ final class OrderRepository
         $bean->email = $order->getEmail();
         $bean->phone = $order->getPhone();
         $bean->address = $order->getAddress();
-        $bean->timestamp = $order->getTimestamp();
+        $bean->datetime = $order->getDateTime();
         $bean->status = $order->getStatus();
         $bean->paid = $order->getPaid();
         $bean->cart = json_encode($order->getCart());

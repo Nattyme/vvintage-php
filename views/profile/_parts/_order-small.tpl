@@ -1,7 +1,7 @@
 <tr>
   <td>
     <a class="link-to-page" href="<?php echo HOST . 'profile-order?id=' . $order->getId();?>">
-        <?php if ( $order->getTimestamp() ) echo rus_date("j F Y в G:i", $order->getTimestamp());  ?>
+        <?php if ( $order->getDateTime() ) echo rus_date("j F Y в G:i", $order->getDateTime()->getTimestamp());  ?>
     </a>
   </td>
   <td>
@@ -18,6 +18,6 @@
     ?>
   </td>
   <td>
-    <?php echo format_price($order['price']);?> руб.
+    <?php echo format_price($order->getPrice());?> руб.
   </td>
 </tr>

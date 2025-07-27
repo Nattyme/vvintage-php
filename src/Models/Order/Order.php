@@ -17,12 +17,12 @@ final class Order
   private string $email = '';
   private string $phone = '';
   private string $address = '';
-  private string $timestamp = '';
+  private \DateTime $datetime;
   private string $status = '';
-  private string $paid = 'false';
+  private bool $paid = false;
   private array $cart = [];
   private int $price = 0;
-  private $user_id = null;
+  private ?int $user_id = null;
 
   // Приватный пустой конструктор
   private function __construct() {}
@@ -36,12 +36,12 @@ final class Order
     $order->email = $dto->email;
     $order->phone = $dto->phone;
     $order->address = $dto->address;
-    $order->timestamp = (string) time();
-    $order->status = 'new';
-    $order->paid = 'false';
+    $order->datetime = $dto->datetime;
+    $order->status = $dto->status;
+    $order->paid = $dto->paid;
     $order->cart = $dto->cart;
     $order->price = $dto->price;
-    $order->id = $dto->user_id;
+    $order->user_id = $dto->user_id;
 
     return $order;
   }
@@ -58,16 +58,16 @@ final class Order
     $order->email = $bean->email;
     $order->phone = $bean->phone;
     $order->address = $bean->address;
-    $order->timestamp = $bean->timestamp;
+    $order->datetime = new \DateTime($bean->datetime);
     $order->status = $bean->status;
-    $order->paid = $bean->paid;
+    $order->paid = (bool) $bean->paid;
   
     $cartJson = $bean->cart;
     $decodedCart = json_decode($cartJson, true);
     $order->cart = is_array($decodedCart) ? $decodedCart : [];
 
-    $order->price = $bean->price;
-    $order->user_id = $bean->user_id;
+    $order->price = (int) $bean->price;
+    $order->user_id =(int) $bean->user_id;
 
     return $order;
   }
@@ -84,7 +84,7 @@ final class Order
       'email' => $this->email,
       'phone' => $this->phone,
       'address' => $this->address,
-      'timestamp' => $this->timestamp,
+      'datetime' => $this->datetime,
       'status' => $this->status,
       'paid' => $this->paid,
       'cart' => $this->cart,
@@ -125,9 +125,9 @@ final class Order
     return $this->address;
   }
 
-  public function getTimestamp(): string
+  public function getDateTime(): \DateTime
   {
-    return $this->timestamp;
+    return $this->datetime;
   }
 
   public function getStatus(): string
@@ -135,7 +135,7 @@ final class Order
     return $this->status;
   }
 
-  public function getPaid(): string
+  public function getPaid(): bool
   {
     return $this->paid;
   }
@@ -156,3 +156,4 @@ final class Order
   }
    
 }
+
