@@ -335,6 +335,7 @@
       $productRepository = new ProductRepository();
       $notes = new FlashMessage();
       $validator = new NewOrderValidator($userRepository, $notes);
+      $breadcrumbs = new Breadcrumbs();
 
 
       // Получаем корзину и ее модель
@@ -350,7 +351,16 @@
 
       $orderRepository = new OrderRepository();
       $orderService = new OrderService($orderRepository, $userModel, $productRepository, $notes);
-      $controller = new OrderController($orderService, $cartService, $userModel, $cartModel, $cart, $cartStore, $validator, $notes );
+      $controller = new OrderController(
+        $orderService, 
+        $cartService, 
+        $userModel, 
+        $cartModel, 
+        $cart, 
+        $cartStore, 
+        $validator, 
+        $notes,
+        $breadcrumbs);
 
       switch ($routeData->uriModule) {
         case 'neworder':

@@ -7,6 +7,9 @@ namespace Vvintage\Controllers\Order;
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 /** Интерфейсы */
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
@@ -16,6 +19,7 @@ use Vvintage\Services\Order\OrderService;
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Validation\NewOrderValidator;
+use Vvintage\Services\Page\Breadcrumbs;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -32,7 +36,7 @@ use Vvintage\DTO\Order\OrderDTO;
 
 require_once ROOT . './libs/functions.php';
 
-final class OrderController
+final class OrderController extends BaseController
 {
     private OrderService $orderService;
     private CartService $cartService;
@@ -42,6 +46,7 @@ final class OrderController
     private ItemsListStoreInterface $cartStore;
     private NewOrderValidator $validator;
     private FlashMessage $notes;
+    private Breadcrumbs $breadcrumbsService;
   
 
     public function __construct(
@@ -52,9 +57,11 @@ final class OrderController
       array $cart,
       ItemsListStoreInterface $cartStore,
       NewOrderValidator $validator,
-      FlashMessage $notes
+      FlashMessage $notes,
+      Breadcrumbs $breadcrumbs
     )
     {
+      parent::__construct(); // Важно!
       $this->orderService = $orderService;
       $this->cartService = $cartService;
       $this->userModel = $userModel;
@@ -63,6 +70,9 @@ final class OrderController
       $this->cartStore = $cartStore;
       $this->validator = $validator;
       $this->notes = $notes;
+      $this->breadcrumbsService = $breadcrumbs;
+;
+
     }
 
     public function index(RouteData $routeData): void
@@ -95,7 +105,7 @@ final class OrderController
       // $orderDTO->validate();
 
       $order = $this->orderService->create($orderDTO);
-      dd($orderDTO);
+
       if ($order !== null) {
           // Очищаем корзину
           $this->cartModel->clear();
@@ -141,24 +151,20 @@ final class OrderController
 
     private function renderForm ($routeData, array $products, Cart $cartModel, int $totalPrice): void 
     {  
-      /**
-        * Проверяем вход пользователя в профиль
-        * @var bool
-      */
-      $settings = Settings::all(); // Получаем массив всех настроек
-      
-      $pageTitle = "Оформление нового заказа";
+      // Название страницы
+      $pageTitle = 'Оформление нового заказа';
 
       // Хлебные крошки
-      $breadcrumbs = [
-        ['title' => $pageTitle, 'url' => '#'],
-      ];
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       // Подключение шаблонов страницы
-      include ROOT . "templates/_page-parts/_head.tpl";
-      include ROOT . "views/_parts/_header.tpl";
-      include ROOT . "views/orders/new.tpl";
-      include ROOT . "views/_parts/_footer.tpl";
-      include ROOT . "views/_page-parts/_foot.tpl";
+      $this->renderLayout('orders/new', [
+            'pageTitle' => $pageTitle,
+            'cartModel' => $cartModel,
+            'routeData' => $routeData,
+            'products' => $products,
+            'totalPrice' => $totalPrice,
+            'breadcrumbs' => $breadcrumbs
+      ]);
     }
 }
