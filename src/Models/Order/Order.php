@@ -61,7 +61,6 @@ final class Order
     $order->datetime = new \DateTime($bean->datetime);
     $order->status = $bean->status;
     $order->paid = (bool) $bean->paid;
-  
     $cartJson = $bean->cart;
     $decodedCart = json_decode($cartJson, true);
     $order->cart = is_array($decodedCart) ? $decodedCart : [];
@@ -153,6 +152,11 @@ final class Order
   public function setCart (array $data): void
   {
     $this->cart = $data;
+  }
+
+  public function getUserId(): int
+  {
+    return $this->user_id;
   }
    
 }

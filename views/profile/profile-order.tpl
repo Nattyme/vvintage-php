@@ -2,7 +2,7 @@
   <section class="section">
     <div class="section__title">
       <div class="container">
-        <h2 class="h2">Заказ &#8470;<?php echo $order['id'];?></h2>
+        <h2 class="h2">Заказ &#8470;<?php echo $order->getId();?></h2>
       </div>
     </div>
 
@@ -12,24 +12,25 @@
           <tr>
               <th>Дата создания</th>
               <td>
-                <?php if ($order['timestamp']) echo rus_date('j F Y в G:i', $order['timestamp']);?>
+                <?php if ($order->getDateTime()) echo rus_date('j F Y в G:i', $order->getDateTime()->getTimestamp());?>
               </td>
+
           </tr>  
           <tr>
               <th>Статус</th>
               <td>
-                <?php echo $order['status'];?>
+                <?php echo $order->getStatus();?>
               </td>
           </tr>  
           <tr>
             <th>Оплата</th>
             <td>
               <?php 
-                if ($order['paid']) {
-                  echo 'Оплачен' . rus_date('j F Y в G:i', $payment['timestamp']);
+                if ($order->getPaid()) {
+                  // echo 'Оплачен' . rus_date('j F Y в G:i', $payment['timestamp']);
                 } else {
                   echo 'Не оплачен<br>';
-                  echo '<a href="' . HOST . 'orderselectpayment?id=' . $order['id'] .'" class="secondary-button">Оплатить</a>';
+                  echo '<a href="' . HOST . 'orderselectpayment?id=' . $order->getId() .'" class="secondary-button">Оплатить</a>';
                 }
                 
               ?>
@@ -38,19 +39,19 @@
           <tr>
             <th>Общая стоимость</th>
             <td>
-              <?php echo format_price($order['price']);?> руб.
+              <?php echo format_price($order->getPrice());?> руб.
             </td>
           </tr>   
           <tr>
             <th>Имя Фамилия</th>
             <td>
-              <?php echo $order['name'] . ' ' . $order['surname'];?>
+              <?php echo $order->getName() . ' ' . $order->getSurname();?>
             </td>
           </tr>   
           <tr>
             <th>Email</th>
             <td>
-              <?php echo $order['email'];?>
+              <?php echo $order->getEmail();?>
             </td>
           </tr>   
         </table>
@@ -63,9 +64,10 @@
             <th>Количество</th>
           </tr>
           <?php foreach($products as $product) : ?>
+
             <tr>
               <td>
-                <img src="<?php echo HOST . 'usercontent/products/' . $productsData[$product['id']]['filename_small'];?>" alt="<?php echo $product['title'] ;?>">
+                <img src="<?php echo HOST . 'usercontent/products/' . $product['filename_small'];?>" alt="<?php echo $product['title'] ;?>">
               </td>
               <td><?php echo $product['title'];?></td>
 

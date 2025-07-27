@@ -18,6 +18,7 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\OrderRepository;
+use Vvintage\Repositories\ProductRepository;
 use Vvintage\Models\Order\Order;
 
 require_once ROOT . './libs/functions.php';
@@ -80,6 +81,27 @@ final class ProfileController extends BaseController
       ]);
   }
 
+  private function renderOrder (RouteData $routeData, ?Order $order, array $products): void 
+  {  
+      // Название страницы
+      $pageTitle = "Заказ &#8470;" . $order->getId() . "&#160; от &#160;" . rus_date('j F Y', $order->getDateTime()->getTimestamp());
+      $pageClass = "profile-page";
+
+      // Хлебные крошки
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+
+      // Подключение шаблонов страницы
+      $this->renderLayout('profile/profile-order', [
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+            'breadcrumbs' => $breadcrumbs,
+            'pageClass' => $pageClass,
+            'order' => $order,
+            'products' => $products
+      ]);
+
+  }
+
 
   public function index(RouteData $routeData)
   {
@@ -123,5 +145,56 @@ final class ProfileController extends BaseController
 
     $this->renderProfileEdit($routeData, $userModel);
 
+  }
+
+  public function order(RouteData $routeData)
+  {
+      // Если ID нет - выходим
+      if ( !isset($_GET['id']) || empty($_GET['id'])) {
+        header('Location: ' . HOST . 'profile');
+        exit();
+      }
+
+      $userModel = null;
+      $isLoggedUser = $this->sessionManager->isLoggedIn();
+
+      if(!$isLoggedUser) {
+        header('Location: ' . HOST . 'login');
+      }
+
+      $userModel = $this->sessionManager->getLoggedInUser();
+      $userId = $userModel->getId();
+
+      // Если есть ID  - получаем данные заказа, проверя, что это заказ вошедшего в свой профиль пользователя
+      $order = $this->orderRepository->findOrderById((int) $_GET['id']);
+
+      // Проверка, что заказ принадлежит текущему пользователю
+      if ( $order->getUserId() !== $userId) {
+        header('Location: ' . HOST . 'profile');
+        exit();
+      }
+
+      // Получаем массив товаров из JSON формата
+      $products = $order->getCart();
+      // Обходим массив с товарами и создаем новый массив с id товаров 
+      foreach ( $products as $product) {
+        $ids[] = $product['id'];
+      }
+
+      // Запрос продуктов и соответствующих им изображений
+      $productRepository = new ProductRepository();
+      // Пересобирем в новый массив $productsData с ключами - Id товара
+      $productsData = $productRepository->findByIds($ids);
+
+      // Создаём ассоциативный массив из cart: [id => amount]
+      $amountMap = array_column($products, 'amount', 'id');
+
+      foreach ($productsData as &$product) {
+          $productId = $product['id'];
+          $product['amount'] = $amountMap[$productId] ?? 0;
+      }
+      unset($product);
+
+      $this->renderOrder($routeData, $order, $productsData);
   }
 }

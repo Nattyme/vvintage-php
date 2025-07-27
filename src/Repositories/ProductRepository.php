@@ -12,7 +12,7 @@ final class ProductRepository
     public static function findById(int $id): ?Product
     {
         // Запрашиваем информацию по продукту
-        $sqlQuery = 'SELECT
+      $sqlQuery = 'SELECT
         p.id, 
         p.title, 
         p.content, 
@@ -22,11 +22,11 @@ final class ProductRepository
         p.timestamp,
         c.title AS cat_title,
         b.title AS brand_title
-      FROM `products` p
-      LEFT JOIN `categories` c ON  p.category = c.id
-      LEFT JOIN `brands` b ON p.brand = b.id
-      WHERE p.id = ? LIMIT 1
-    ';
+        FROM `products` p
+        LEFT JOIN `categories` c ON  p.category = c.id
+        LEFT JOIN `brands` b ON p.brand = b.id
+        WHERE p.id = ? LIMIT 1
+      ';
         $row = R::getRow($sqlQuery, [$id]);
 
         if (!$row) {
@@ -73,12 +73,8 @@ final class ProductRepository
         return $products;
     }
 
-    public static function findByIds(array $idsData): array
+    public static function findByIds(array $ids): array
     {
-
-        // Массив ids
-        $ids = array_keys($idsData);
-
         // Плейсхолдеры для запроса
         $slotString = R::genSlots($ids);
 
@@ -90,13 +86,13 @@ final class ProductRepository
                   p.category,
                   p.brand,
                   p.price,
-                  pi.filename
+                  pi.filename,
+                  pi.filename_small
             FROM `products` p 
             LEFT JOIN `productimages` pi ON p.id = pi.product_id AND pi.image_order = 1
             WHERE p.id IN ($slotString)";
 
         $productsData = R::getAll($sql, $ids);
-
         $products = [];
 
         foreach ($productsData as $key => $value) {

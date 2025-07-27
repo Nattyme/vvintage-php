@@ -192,7 +192,8 @@
           break;
 
         case 'profile-order':
-          require ROOT . 'modules/profile/profile-order.php';
+          $profileController->order($routeData);
+          // require ROOT . 'modules/profile/profile-order.php';
           break;
       }
     }

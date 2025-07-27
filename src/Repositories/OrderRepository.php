@@ -58,7 +58,7 @@ final class OrderRepository
             return null;
         }
 
-        return new Order($bean);
+        return Order::fromBean($bean);
     }
 
     /**
