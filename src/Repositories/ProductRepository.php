@@ -75,8 +75,10 @@ final class ProductRepository
 
     public static function findByIds(array $ids): array
     {
+        $idsData = array_keys($ids);
+
         // Плейсхолдеры для запроса
-        $slotString = R::genSlots($ids);
+        $slotString = R::genSlots($idsData);
 
         // Находим продукты и их главное изображение
         $sql = "SELECT 
@@ -92,7 +94,7 @@ final class ProductRepository
             LEFT JOIN `productimages` pi ON p.id = pi.product_id AND pi.image_order = 1
             WHERE p.id IN ($slotString)";
 
-        $productsData = R::getAll($sql, $ids);
+        $productsData = R::getAll($sql, $idsData);
         $products = [];
 
         foreach ($productsData as $key => $value) {

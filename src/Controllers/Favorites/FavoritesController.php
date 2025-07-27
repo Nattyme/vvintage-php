@@ -72,6 +72,7 @@ final class FavoritesController extends BaseController
 
     public function index(RouteData $routeData): void
     {
+     
       // Получаем продукты
       $products = !empty($this->fav_list) ? ProductRepository::findByIds($this->fav_list) : [];
 

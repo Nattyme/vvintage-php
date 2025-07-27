@@ -176,10 +176,9 @@ final class ProfileController extends BaseController
 
       // Получаем массив товаров из JSON формата
       $products = $order->getCart();
-      // Обходим массив с товарами и создаем новый массив с id товаров 
-      foreach ( $products as $product) {
-        $ids[] = $product['id'];
-      }
+      
+      // Обходим массив с товарами и создаем ассоциативный массив с id => 1
+      $ids = array_fill_keys(array_column($products, 'id'), 1);
 
       // Запрос продуктов и соответствующих им изображений
       $productRepository = new ProductRepository();
