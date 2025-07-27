@@ -19,7 +19,7 @@ final class OrderRepository
         $this->addressRepository = new AddressRepository();
     }
 
-    private function fillOrderBean(OODBBean $bean, Order $order, User $user)
+    private function fillOrderBean(OODBBean $bean, Order $order)
     {
         $bean->name = $order->getName();
         $bean->surname = $order->getSurname();
@@ -30,6 +30,7 @@ final class OrderRepository
         $bean->status = $order->getStatus();
         $bean->paid = $order->getPaid();
         $bean->cart = json_encode($order->getCart());
+        $bean->price = $order->getPrice();
     }
 
     private function loadBean(int $id)
@@ -100,7 +101,7 @@ final class OrderRepository
         $bean = R::dispense('orders');
 
         // Записываем параметры в bean
-        $this->fillOrderBean($bean, $order, $user);
+        $this->fillOrderBean($bean, $order);
 
         // Привязываем заказ к пользователю
         $userBean = R::load('users', $user->getId());
@@ -128,7 +129,7 @@ final class OrderRepository
 
         if ($bean->id !== 0) {
             // Записываем параметры в bean и сохраняем в БД
-            $this->fillOrderBean($bean, $order, $user);
+            $this->fillOrderBean($bean, $order);
 
             $orderId = $this->saveBean($bean);
 

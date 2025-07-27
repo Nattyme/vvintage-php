@@ -145,6 +145,11 @@ final class Order
     return $this->cart;
   }
 
+  public function getPrice(): int
+  {
+    return $this->price;
+  }
+
   public function setCart (array $data): void
   {
     $this->cart = $data;

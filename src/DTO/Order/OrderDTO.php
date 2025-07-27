@@ -14,7 +14,7 @@ final class OrderDTO
     public int $price;
     public int $user_id;
 
-    public function __construct(array $data, array $cart, int $userId)
+    public function __construct(array $data, array $cart, int $totalPrice, int $userId)
     {
         $this->name = trim($data['name'] ?? '');
         $this->surname = trim($data['surname'] ?? '');
@@ -24,7 +24,7 @@ final class OrderDTO
         $this->cart = is_array($cart ?? [])
             ? $cart
             : [];
-        $this->price = (int) $data['price'];
+        $this->price = (int) $totalPrice;
         $this->user_id = $userId;
     }
 

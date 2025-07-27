@@ -91,11 +91,11 @@ final class OrderController
 
 
       // Вызываем DTO
-      $orderDTO = new OrderDTO($_POST, $this->cart, $this->userModel->getId());
+      $orderDTO = new OrderDTO($_POST, $this->cart, $totalPrice, $this->userModel->getId());
       // $orderDTO->validate();
 
       $order = $this->orderService->create($orderDTO);
-      
+      dd($orderDTO);
       if ($order !== null) {
           // Очищаем корзину
           $this->cartModel->clear();
