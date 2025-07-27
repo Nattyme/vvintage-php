@@ -91,7 +91,7 @@ final class OrderController
 
 
       // Вызываем DTO
-      $orderDTO = new OrderDTO($_POST, $this->cart);
+      $orderDTO = new OrderDTO($_POST, $this->cart, $this->userModel->getId());
       // $orderDTO->validate();
 
       $order = $this->orderService->create($orderDTO);

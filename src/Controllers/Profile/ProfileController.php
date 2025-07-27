@@ -92,7 +92,6 @@ final class ProfileController extends BaseController
       $id = $userModel->getId();
 
       $orders = $this->orderRepository->findOrdersByUserId($id);
-      dd($orders);
     } else {
       header('Location: ' . HOST . 'login');
     }
@@ -102,14 +101,22 @@ final class ProfileController extends BaseController
 
   public function edit(RouteData $routeData)
   {    
+    $orders = null;
     $userModel = null;
-    $id = isset($_SESSION['logged_user']) ? $_SESSION['logged_user']['id'] : null;
+    $isLoggedUser = $this->sessionManager->isLoggedIn();
 
-    if($id !== null) {
-      $userModel = $this->userRepository->findUserById($id);
-      if( ! $userModel->getAddress()) {
+    if($isLoggedUser) {
+      $userModel = $this->sessionManager->getLoggedInUser();
+      $id = $userModel->getId();
+      $address = $userModel->getAddress();
+
+      if(!$address) {
         $this->userRepository->ensureUserHasAddress($userModel);
       }
+
+      $orders = $this->orderRepository->findOrdersByUserId($id);
+    } else {
+      header('Location: ' . HOST . 'login');
     }
 
     $addressModel = $userModel->getAddress();

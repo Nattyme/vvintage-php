@@ -67,6 +67,7 @@ final class OrderRepository
      */
     public function findOrdersByUserId(int $id): array
     {
+   
         $orders = [];
         $beans = R::findAll('orders', 'user_id = ?', [$id]);
 

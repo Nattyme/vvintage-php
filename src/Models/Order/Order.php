@@ -21,6 +21,8 @@ final class Order
   private string $status = '';
   private string $paid = 'false';
   private array $cart = [];
+  private int $price = 0;
+  private $user_id = null;
 
   // Приватный пустой конструктор
   private function __construct() {}
@@ -38,6 +40,9 @@ final class Order
     $order->status = 'new';
     $order->paid = 'false';
     $order->cart = $dto->cart;
+    $order->price = $dto->price;
+    $order->id = $dto->user_id;
+
     return $order;
   }
 
@@ -60,6 +65,9 @@ final class Order
     $cartJson = $bean->cart;
     $decodedCart = json_decode($cartJson, true);
     $order->cart = is_array($decodedCart) ? $decodedCart : [];
+
+    $order->price = $bean->price;
+    $order->user_id = $bean->user_id;
 
     return $order;
   }

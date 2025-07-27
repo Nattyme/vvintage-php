@@ -11,8 +11,10 @@ final class OrderDTO
     public string $phone;
     public string $address;
     public array $cart;
+    public int $price;
+    public int $user_id;
 
-    public function __construct(array $data, array $cart)
+    public function __construct(array $data, array $cart, int $userId)
     {
         $this->name = trim($data['name'] ?? '');
         $this->surname = trim($data['surname'] ?? '');
@@ -22,6 +24,8 @@ final class OrderDTO
         $this->cart = is_array($cart ?? [])
             ? $cart
             : [];
+        $this->price = (int) $data['price'];
+        $this->user_id = $userId;
     }
 
     public function isValid(): bool

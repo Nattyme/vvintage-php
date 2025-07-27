@@ -23,7 +23,8 @@
             <tbody>
               <?php 
                 foreach ($orders as $order) {
-                  include ROOT . 'templates/profile/_parts/_order-small.tpl';
+                      dd($order);
+                  include ROOT . 'views/profile/_parts/_order-small.tpl';
                 }
               ?>
             </tbody>
