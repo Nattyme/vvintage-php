@@ -13,7 +13,8 @@ use Vvintage\Controllers\Base\BaseController;
 
 /** Репозитории */
 // use Vvintage\Repositories\UserRepository;
-// use Vvintage\Repositories\ProductRepository;
+use Vvintage\Repositories\ProductRepository;
+use Vvintage\Repositories\PostRepository;
 
 /** Абстракции */
 // use Vvintage\Models\Shared\AbstractUserItemsList;
@@ -59,7 +60,7 @@ final class HomeController extends BaseController
     private function renderPage (RouteData $routeData): void 
     {  
       // Название страницы
-      $pageTitle = 'Главная';
+      $pageTitle = 'Vvintage - интернет магазин. Главная страница';
 
       // Подключение шаблонов страницы
       $this->renderLayout('main/index', [
@@ -71,12 +72,41 @@ final class HomeController extends BaseController
 
     public function index(RouteData $routeData): void
     {
-      // Получаем продукты
-      // $products = $this->cartService->getListItems();
-      // $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
-
+            // Получим категории
+      $categories = R::find('categories', 'parent_id IS NULL');
+dd($categories);
+      $products = $this->getNewProducts();
+dd($products);
+      // Делаем запрос в БД для получения постов
+      $posts = $this->getNewPosts();
+dd($posts);
       // Показываем страницу
       $this->renderPage($routeData);
+    }
+
+    private function getCategories(): array
+    {
+
+    } 
+
+    private function getNewProducts(): array
+    {
+      
+      $productsAtHome = 4;
+      $repository = new ProductRepository();
+      $pagination = pagination($productsAtHome, 'products');
+
+      // Получим новинки магазина
+      return $repository->findAll($pagination);
+    }
+
+    private function getNewPosts(): array
+    {
+      $postsAtHome = 4;
+      $repository = new PostRepository();
+      $pagination = pagination($postsAtHome, 'posts');
+
+      return $repository->findAll($pagination);
     }
 
 }
