@@ -11,6 +11,7 @@
 
 
   /** Контроллеры */
+  use Vvintage\Controllers\Home\HomeController;
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
@@ -70,7 +71,8 @@
       switch ($routeData->uriModule) {
         case '':
         case 'main':
-          require ROOT . 'modules/main/index.php';
+          self::routeHome($routeData);
+          // require ROOT . 'modules/main/index.php';
           break;
 
         // ::::::::::::: USERS :::::::::::::::::::
@@ -404,6 +406,12 @@
       }
     }
 
+    private static function routeHome(RouteData $routeData)
+    {
+      $controller = new HomeController();
+      $controller->index($routeData);
+    }
+
 
     
     /*************************/
@@ -412,7 +420,6 @@
     private static function routeAdminPages(RouteData $routeData)
     {
       $controller = new HomeAdminController();
-dd('admin');
       switch ($routeData->uriModule) {
         case '/admin':
           $controller->index($routeData);
