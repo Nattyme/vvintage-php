@@ -16,6 +16,7 @@
       </header>
       <div class="dashboard__content" id="dashboard__content">
         <div class="dashboard__container">
+          <?php dd('Админ');?>
           <?php echo $content; ?>
         </div>
       </div>

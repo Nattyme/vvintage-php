@@ -12,7 +12,7 @@ use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
 
-final class PageController extends BaseController
+class PageController extends BaseController
 {
   private Page $pageModel;
   private PageService $pageService;
@@ -45,6 +45,7 @@ final class PageController extends BaseController
     }
 
     $slug = $this->pageModel->getSlug();
+    
     // Название страницы
     $pageTitle = $this->pageModel->getTitle();
 

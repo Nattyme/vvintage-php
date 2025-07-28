@@ -30,6 +30,7 @@ final class User implements UserInterface
 
     public function __construct(OODBBean $bean)
     {
+
       $this->id = (int) $bean->id;
       $this->email = $bean->email;
       $this->password = $bean->password;

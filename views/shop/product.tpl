@@ -97,8 +97,8 @@
             <div class="product-card__item">
               <dt>Обновлено</dt>
               <dd>
-                <time datetime="<?php echo h($product->getTimestamp());?>">
-                <?php echo rus_date("j. m. Y", h($product->getTimestamp()) ); ?>
+                <time datetime="<?php /** echo h($product->getTimestamp()); */?>">
+                <!-- <?php /** echo rus_date("j. m. Y", h($product->getTimestamp()) ); */ ?> -->
               </dd>
             </div>
           

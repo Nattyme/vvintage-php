@@ -16,10 +16,10 @@ final class ProductRepository
         p.id, 
         p.title, 
         p.content, 
+        p.datetime,
+        p.price, 
         p.brand, 
         p.category, 
-        p.price, 
-        p.timestamp,
         c.title AS cat_title,
         b.title AS brand_title
         FROM `products` p

@@ -1,6 +1,5 @@
 <?php
   namespace Vvintage\Routing;
-
   use Vvintage\Routing\RouteData;
 
   /**  Сервисы */
@@ -58,6 +57,9 @@
   use Vvintage\Repositories\OrderRepository;
   use Vvintage\Repositories\PostRepository;
 
+  /** Админ контроллеры */
+  use Vvintage\Controllers\Admin\HomeAdminController;
+
 
   class Router {
      /*****************************
@@ -68,7 +70,6 @@
       switch ($routeData->uriModule) {
         case '':
         case 'main':
-          require ROOT . 'modules/admin-panel/admin-panel.php';
           require ROOT . 'modules/main/index.php';
           break;
 
@@ -118,7 +119,12 @@
           break;
 
         case 'about':
-          require ROOT . 'modules/about/index.php';
+          self::routePages($routeData);
+          // require ROOT . 'modules/about/index.php';
+          break;
+
+        case 'admin':
+          self::routeAdminPages($routeData);
           break;
 
         default:
@@ -389,7 +395,28 @@
         case 'contacts':
           $controller->index($routeData);
           break;
+
+        case 'about':
+          $controller->index($routeData);
+          break;
+
         
+      }
+    }
+
+
+    
+    /*************************/
+    /******** ADMIN  *********/
+    /**********************/
+    private static function routeAdminPages(RouteData $routeData)
+    {
+      $controller = new HomeAdminController();
+dd('admin');
+      switch ($routeData->uriModule) {
+        case '/admin':
+          $controller->index($routeData);
+          break;
       }
     }
   }

@@ -111,6 +111,10 @@ final class ProfileController extends BaseController
 
     if($isLoggedUser) {
       $userModel = $this->sessionManager->getLoggedInUser();
+      if(!$userModel) 
+      {
+        header("Location: " . HOST . 'login');
+      };
       $id = $userModel->getId();
 
       $orders = $this->orderRepository->findOrdersByUserId($id);

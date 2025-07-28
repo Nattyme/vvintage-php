@@ -27,23 +27,6 @@ final class AddressRepository
     }
 
     /**
-     * Метод ищет пользователя по email
-     * @param string $email
-     * @return OODBBean
-     */
-    public function findAddressByUserId(int $user_id): ?Address
-    {
-      $bean = R::findOne('address', 'user_id = ?', [$user_id]);
-
-      if (!$bean) {
-          return null;
-      }
-
-      return new Address($bean);
-    }
-
-
-    /**
      * Метод возвращает все адреса
      * 
      * @return array

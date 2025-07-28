@@ -1,5 +1,6 @@
 <section class="stats">
-  <div class="stats__item">
+  <?php dd('admin panel');?>
+  <!-- <div class="stats__item">
     <div class="stats__item-row">
       <div class="stats-item__title">
         <a href="<?php echo HOST . 'admin/blog';?>">
@@ -65,5 +66,5 @@
       <div class="stats-item__value"><?php echo h($messagesTotalCount);?></div>
     </div>
  
-  </div>
+  </div> -->
 </section>

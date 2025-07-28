@@ -16,7 +16,7 @@ class Product
     private string $brand;
     private string $category;
     private float $price;
-    private string $timestamp;
+    private string $datetime;
     private ?array $images = null; // изначально изображения не загружены
     private ?int $imagesTotal = null;
 
@@ -30,7 +30,7 @@ class Product
         $this->content = $row['content'] ?? '';
         $this->category = $row['cat_title'] ?? '';
         $this->brand = $row['brand_title'] ?? '';
-        $this->timestamp = $row['timestamp'] ?? '';
+        $this->datetime = $row['datetime'];
         $this->getImages();
     }
 
@@ -122,7 +122,7 @@ class Product
 
     public function getTimestamp(): string
     {
-        return $this->timestamp;
+        return $this->datetime;
     }
 
     // Ленивая загрузка изображений, если они ещё не загружены

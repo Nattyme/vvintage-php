@@ -20,6 +20,7 @@ abstract class BaseController
   protected function renderLayout(string $viewPath, array $vars = []): void
   {
     $isAdminLoggedIn = $this->isAdmin();
+    $adminData = [];
 
     if($isAdminLoggedIn) {
       $panel = new AdminPanelController();

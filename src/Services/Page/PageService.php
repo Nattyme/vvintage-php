@@ -18,7 +18,6 @@ final class PageService
     if($slug === '') {
       return null;
     }
-
     $pageModel = PageRepository::getBySlug($slug);
     if(!$pageModel) {
       return null;
