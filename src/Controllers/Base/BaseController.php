@@ -8,7 +8,7 @@ use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Controllers\AdminPanel\AdminPanelController;
 
 
-class BaseController
+abstract class BaseController
 {    
   protected array $settings;
 
