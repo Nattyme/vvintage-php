@@ -7,17 +7,21 @@ namespace Vvintage\Repositories;
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
+/** Модели */
+use Vvintage\Models\Blog\Post;
+
 final class PostRepository
 {
     public function findById(int $id): ?OODBBean
     {
         $bean = R::findOne('posts', 'id = ?', [$id]);
-        return $bean ?: null;
+        return $bean ? Post::fromBean($bean) : null;
     }
 
     public function findAll(array $pagination): array
     {
-        return R::findAll('posts', 'ORDER BY id DESC ' . $pagination['sql_page_limit']);
+        $beans = R::findAll('posts', 'ORDER BY id DESC ' . $pagination['sql_page_limit']);
+        return array_map(fn($bean) => Post::fromBean($bean), $beans);
     }
 
     public function findByIds(array $ids): array
@@ -30,7 +34,8 @@ final class PostRepository
         $placeholders = R::genSlots($ids);
         $sql = "id IN ($placeholders) ORDER BY id DESC";
 
-        return R::find('posts', $sql, $ids);
+        $beans = R::find('posts', $sql, $ids);
+        return array_map(fn($bean) => Post::fromBean($bean), $beans);
     }
 
     public function countAll(): int

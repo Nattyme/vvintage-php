@@ -8,7 +8,7 @@
       <div class="posts__cards-wrapper">
         <div class="cards-row">
           <?php foreach($posts as $post) : ?>
-            <?php /** include ROOT . 'views/main/_parts/_post-card.tpl'; */?>
+            <?php include ROOT . 'views/main/_parts/_post-card.tpl'; ?>
           <?php endforeach; ?>
         </div>
       </div>

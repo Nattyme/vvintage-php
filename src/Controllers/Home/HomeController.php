@@ -29,6 +29,7 @@ use Vvintage\Repositories\CategoryRepository;
 // use Vvintage\Models\User\GuestUser;
 // use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Category\Category;
+use Vvintage\Models\Blog\Post;
 
 /** Сервисы */
 // use Vvintage\Services\Auth\SessionManager;
