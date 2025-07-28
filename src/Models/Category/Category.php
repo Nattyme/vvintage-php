@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Category;
 
+use Vvintage\Models\Category\Category;
+
 
 use RedBeanPHP\OODBBean;
 
@@ -18,7 +20,10 @@ final class Category
     public static function fromBean(OODBBean $bean): self
     {
         $category = new self();
-        $post->id = (int) $bean->id;
+        $category->id = (int) $bean->id;
+        $category->title = (int) $bean->title;
+        $category->parent_id = (int) $bean->parent_id;
+        $category->image = (int) $bean->image;
         
         return $category;
     }
