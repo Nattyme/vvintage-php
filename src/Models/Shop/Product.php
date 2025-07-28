@@ -30,7 +30,7 @@ class Product
         $this->content = $row['content'] ?? '';
         $this->category = $row['cat_title'] ?? '';
         $this->brand = $row['brand_title'] ?? '';
-        $this->datetime = $row['datetime'];
+        $this->datetime = (string) $row['datetime'];
         $this->getImages();
     }
 

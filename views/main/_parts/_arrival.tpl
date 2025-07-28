@@ -7,8 +7,8 @@
 
       <div class="arrival__cards-wrapper">
         <div class="cards-row">
-          <?php foreach($newProducts as $product) : ?>
-            <?php include ROOT . 'templates/main/_parts/_product-card.tpl';?>
+          <?php foreach($products as $product) : ?>
+            <?php /**  include ROOT . 'views/main/_parts/_product-card.tpl'; */?>
           <?php endforeach; ?>
         </div>
       </div>

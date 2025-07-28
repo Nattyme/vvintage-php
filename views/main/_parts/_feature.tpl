@@ -1,7 +1,7 @@
 <section class="feature">
     <div class="container">
       <div class="section-title">
-        <h2 class="h2 text-bold"><?php echo h($main['features_header']);?></h2>
+        <!-- <h2 class="h2 text-bold"><?php /* echo h($main['features_header']); */?></h2> -->
       </div>
 
       <div class="feature__content">

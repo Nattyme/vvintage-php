@@ -46,6 +46,7 @@ final class ProductRepository
                 p.article, 
                 p.price, 
                 p.url, 
+                p.datetime,
                 b.title AS brand, 
                 c.title AS category,
                 pi.filename 

@@ -15,6 +15,7 @@ use Vvintage\Controllers\Base\BaseController;
 // use Vvintage\Repositories\UserRepository;
 use Vvintage\Repositories\ProductRepository;
 use Vvintage\Repositories\PostRepository;
+use Vvintage\Repositories\CategoryRepository;
 
 /** Абстракции */
 // use Vvintage\Models\Shared\AbstractUserItemsList;
@@ -27,7 +28,7 @@ use Vvintage\Repositories\PostRepository;
 // use Vvintage\Models\User\User;
 // use Vvintage\Models\User\GuestUser;
 // use Vvintage\Models\Shop\Catalog;
-// use Vvintage\Models\Cart\Cart;
+use Vvintage\Models\Category\Category;
 
 /** Сервисы */
 // use Vvintage\Services\Auth\SessionManager;
@@ -57,13 +58,16 @@ final class HomeController extends BaseController
       parent::__construct(); // Важно!
     }
 
-    private function renderPage (RouteData $routeData): void 
+    private function renderPage (RouteData $routeData, $categories, $products, $posts): void 
     {  
       // Название страницы
       $pageTitle = 'Vvintage - интернет магазин. Главная страница';
 
       // Подключение шаблонов страницы
       $this->renderLayout('main/index', [
+            'categories' => $categories,
+            'products' => $products,
+            'posts' => $posts,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData
       ]);
@@ -72,21 +76,23 @@ final class HomeController extends BaseController
 
     public function index(RouteData $routeData): void
     {
-            // Получим категории
-      $categories = R::find('categories', 'parent_id IS NULL');
-dd($categories);
+      // Получим категории
+      $categories = $this->getCategories();
+
+      // Получим продукты
       $products = $this->getNewProducts();
-dd($products);
-      // Делаем запрос в БД для получения постов
+
+      // Полученим посты
       $posts = $this->getNewPosts();
-dd($posts);
+
       // Показываем страницу
-      $this->renderPage($routeData);
+      $this->renderPage($routeData, $categories, $products, $posts);
     }
 
     private function getCategories(): array
     {
-
+      $repository = new CategoryRepository();
+      return $repository->getMainCats();
     } 
 
     private function getNewProducts(): array

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Vvintage\Repositories;
 
+use Vvintage\Models\Category\Category;
+
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
@@ -17,7 +19,7 @@ final class CategoryRepository
 
     public function findAll(): array
     {
-        return R::findAll('posts', 'ORDER BY id DESC ');
+        return R::findAll('categories', 'ORDER BY id DESC ');
     }
 
     public function findByIds(array $ids): array
@@ -33,6 +35,20 @@ final class CategoryRepository
         return R::find('categories', $sql, $ids);
     }
 
+    public function getMainCats (): array
+    {
+      return $this->findCatsByParentId();
+    }
+
+    public function findCatsByParentId (?int $parentId = null): array
+    {
+      if ($parentId === null) {
+        return R::findAll('categories', 'parent_id IS NULL');
+      }
+
+      return R::findAll('categories', 'parent_id = ?', [$parentId]);
+    }
+
     public function countAll(): int
     {
         return R::count('categories');
@@ -40,7 +56,7 @@ final class CategoryRepository
 
     public function save(Category $cat): int
     {
-        $bean = R::dispense('categories');
+        $bean = $cat->id ? R::load('categories', $cat->id) : R::dispense('categories');
 
         $bean->title = $cat->title;
         $bean->parent_id = $cat->parent_id;

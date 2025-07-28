@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Category;
 
-use Vvintage\Models\Category\Category;
-
-
 use RedBeanPHP\OODBBean;
 
 final class Category
