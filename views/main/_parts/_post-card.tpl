@@ -1,5 +1,4 @@
 <div class="card">
-
   <div class="card__img">
     <svg class="icon icon--arrow-right">
       <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#arrow-right';?>"></use>
