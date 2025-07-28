@@ -105,7 +105,12 @@
 
     <div class="admin-panel__block-list">
       <a class="admin-panel__link admin-panel__link--avatar" href="<?php echo HOST; ?>profile" title="Перейти на страницу своего профиля">
-          <img src="<?php echo HOST . 'usercontent/avatars/' . h($_SESSION['logged_user']['avatar_small']);?>" alt="Перейти на страницу своего профиля">
+          <?php if ( !empty($_SESSION['logged_user']['avatar_small'])) : ?>
+            <img src="<?php echo HOST . 'usercontent/avatars/' . h($_SESSION['logged_user']['avatar_small']);?>" alt="Перейти на страницу своего профиля">
+            <!-- <img src="<?php /** echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); */ ?>" alt="Аватарка" /> -->
+          <?php else : ?>
+            <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="Аватарка" />
+          <?php endif; ?>
       </a>
       <a class="admin-panel__link" href="<?php echo HOST . 'logout';?>" title="Выйти">
         <svg class="icon icon--logout">
