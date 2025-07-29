@@ -1,6 +1,5 @@
 <?php
- $stats = $this->adminStatsService->getSummary();
- ?>
+ $stats = $this->adminStatsService->getSummary(); ?>
 
 <section class="stats">
   <div class="stats__item">
@@ -47,17 +46,31 @@
     </div>
  
   </div> -->
-<!-- 
+
   <div class="stats__item">
     <div class="stats__item-row">
       <div class="stats-item__title">
         <a href="<?php echo HOST;?>">
-          <?php echo h(num_decline( $userCount, ['Пользователь', 'Пользователя', 'Пользователей'])); ?> 
+          <?php echo h(num_decline( $stats['users'], ['Пользователь', 'Пользователя', 'Пользователей'])); ?> 
         </a>
       </div>
-      <div class="stats-item__value"><?php echo h($userCount);?></div>
+      <div class="stats-item__value"><?php echo h($stats['users']);?></div>
     </div>
-  </div> -->
+  </div>
+
+  <div class="stats__item">
+    <div class="stats__item-row">
+      <div class="stats-item__title">
+        <a href="<?php echo HOST;?>">
+          <?php echo h(num_decline( $stats['products'], ['Товар', 'Товара', 'Товаров'])); ?> 
+        </a>
+      </div>
+      <div class="stats-item__value"><?php echo h($stats['products']);?></div>
+    </div>
+    <div class="stats-item__action">
+      <a href="<?php echo HOST . 'admin/product-new';?>" class="button button--m button--primary">Новый товар</a>
+    </div>
+  </div>
 <!-- 
   <div class="stats__item">
     <div class="stats__item-row">

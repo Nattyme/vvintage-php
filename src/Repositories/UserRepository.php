@@ -275,4 +275,10 @@ final class UserRepository
         return $userItems;
     }
 
+    
+    public function countAll(): int
+    {
+      return (int) R::count(self::TABLE_USERS);
+    }
+
 }
