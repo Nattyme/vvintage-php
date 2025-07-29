@@ -173,6 +173,11 @@ final class OrderRepository
         return count($beans);
     }
 
+    public function countAll(): int
+    {
+      return (int) R::count('orders');
+    }
+
 
 
 }

@@ -40,11 +40,6 @@ final class PostRepository
         return array_map(fn($bean) => Post::fromBean($bean), $beans);
     }
 
-    public function countAll(): int
-    {
-        return R::count('posts');
-    }
-
     public function save(Post $post): int
     {
         $bean = R::dispense('posts');
@@ -60,6 +55,11 @@ final class PostRepository
         $bean->edit_time = $post->edit_time;
 
         return (int) R::store($bean);
+    }
+
+    public function countAll(): int
+    {
+      return (int) R::count('posts');
     }
 
 }

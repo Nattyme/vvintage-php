@@ -104,4 +104,9 @@ final class ProductRepository
 
         return $products;
     }
+
+    public function countAll(): int
+    {
+      return (int) R::count('products');
+    }
 }

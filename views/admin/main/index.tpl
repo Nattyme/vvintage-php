@@ -1,21 +1,24 @@
+<?php
+ $stats = $this->adminStatsService->getSummary();
+ ?>
+
 <section class="stats">
-  <?php dd('admin panel');?>
-  <!-- <div class="stats__item">
+  <div class="stats__item">
     <div class="stats__item-row">
       <div class="stats-item__title">
         <a href="<?php echo HOST . 'admin/blog';?>">
-          <?php echo h(num_decline( $postCount, ['Запись', 'Записи', 'Записей'])); ?> 
+          <?php echo h(num_decline( $stats['posts'], ['Запись', 'Записи', 'Записей'])); ?> 
           в блоге
         </a>
       </div>
-      <div class="stats-item__value"><?php echo h($postCount);?></div>
+      <div class="stats-item__value"><?php echo h($stats['posts']);?></div>
     </div>
 
     <div class="stats-item__action">
       <a href="<?php echo HOST . 'admin/post-new';?>" class="button button--m button--primary">Новый пост</a>
     </div>
   </div>
-
+<!-- 
   <div class="stats__item">
     <div class="stats__item-row">
       <div class="stats-item__title">
@@ -30,8 +33,8 @@
     <div class="stats-item__action">
       <a href="<?php echo HOST . 'admin/category-new';?>" class="button button--m button--primary">Новая категория</a>
     </div>
-  </div>
-
+  </div> -->
+<!-- 
   <div class="stats__item">
     <div class="stats__item-row">
       <div class="stats-item__title">
@@ -43,19 +46,19 @@
       <div class="stats-item__value"><?php echo h($commentsCount);?></div>
     </div>
  
-  </div>
-
+  </div> -->
+<!-- 
   <div class="stats__item">
     <div class="stats__item-row">
       <div class="stats-item__title">
-        <a href="<?php echo HOST . 'admin/portfolio';?>">
+        <a href="<?php echo HOST;?>">
           <?php echo h(num_decline( $userCount, ['Пользователь', 'Пользователя', 'Пользователей'])); ?> 
         </a>
       </div>
       <div class="stats-item__value"><?php echo h($userCount);?></div>
     </div>
-  </div>
-
+  </div> -->
+<!-- 
   <div class="stats__item">
     <div class="stats__item-row">
       <div class="stats-item__title">

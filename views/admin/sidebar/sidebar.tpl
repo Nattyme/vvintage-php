@@ -2,7 +2,7 @@
   // Подключаем readbean
   use RedBeanPHP\R; 
 
-  $messages = R::find('messages', 'ORDER BY id DESC'); 
+  // $messages = R::find('messages', 'ORDER BY id DESC'); 
 ;?>
 <section class="sidebar" id="sidebar-tab">
 
@@ -19,15 +19,15 @@
       
       </a>
       <ul class="sidebar__list" id="sidebar">
-        <?php include ROOT . "admin/templates/sidebar/links/_stats.tpl";?>
-        <?php include ROOT . "admin/templates/sidebar/links/_shop.tpl";?> 
-        <?php include ROOT . "admin/templates/sidebar/links/_orders.tpl";?> 
-        <?php include ROOT . "admin/templates/sidebar/links/_messages.tpl";?>
-        <?php include ROOT . "admin/templates/sidebar/links/_blog.tpl";?>
-        <?php include ROOT . "admin/templates/sidebar/links/_settings.tpl";?>
-        <?php include ROOT . "admin/templates/sidebar/links/_pages.tpl";?>
-        <?php include ROOT . "admin/templates/sidebar/links/_profile.tpl";?>
-        <?php include ROOT . "admin/templates/sidebar/links/_exit.tpl";?>
+        <?php include ROOT . "views/admin/sidebar/links/_stats.tpl";?>
+        <?php include ROOT . "views/admin/sidebar/links/_shop.tpl";?>  
+        <?php include ROOT . "views/admin/sidebar/links/_orders.tpl";?> 
+        <?php include ROOT . "views/admin/sidebar/links/_messages.tpl";?>
+        <?php include ROOT . "views/admin/sidebar/links/_blog.tpl";?>
+        <?php include ROOT . "views/admin/sidebar/links/_settings.tpl";?>
+        <?php include ROOT . "views/admin/sidebar/links/_pages.tpl";?>
+        <?php include ROOT . "views/admin/sidebar/links/_profile.tpl";?>
+        <?php include ROOT . "views/admin/sidebar/links/_exit.tpl";?> 
       </ul>
     </div>
 
