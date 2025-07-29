@@ -8,6 +8,7 @@ use Vvintage\Models\Favorites\Favorites;
 
 interface UserInterface 
 {
+  public function getRole(): string;
   public function getId(): ?int;
   public function getCart(): array;
   public function set($itemKey, array $items): void;

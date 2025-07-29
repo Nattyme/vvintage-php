@@ -67,7 +67,7 @@
             РОУТЕР
     *****************************/
     public static function route(RouteData $routeData) {
- 
+
       switch ($routeData->uriModule) {
         case '':
         case 'main':
@@ -421,7 +421,7 @@
     {
       $controller = new HomeAdminController();
       switch ($routeData->uriModule) {
-        case '/admin':
+        case 'admin':
           $controller->index($routeData);
           break;
       }

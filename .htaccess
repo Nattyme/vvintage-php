@@ -26,13 +26,10 @@ php_value error_reporting -1
   # Не трогать прямой доступ к index.php
   RewriteRule ^index\.php$ - [L]
 
-  # Не переписывать запросы в /admin
-  RewriteCond %{REQUEST_URI} !^/admin(/|$)
-
   # Не переписывать, если файл или папка существует
   RewriteCond %{REQUEST_FILENAME} !-f 
   RewriteCond %{REQUEST_FILENAME} !-d
 
-  # Всё остальное идёт в index.php
-  RewriteRule . /index.php [L]
+  # Всё остальное идёт в index.php, но избегаем зацикливания
+  RewriteRule ^.*$ index.php [QSA,L]
 </IfModule>

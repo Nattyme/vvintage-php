@@ -12,7 +12,9 @@ use Vvintage\Models\Blog\Post;
 
 final class PostRepository
 {
-    public function findById(int $id): ?OODBBean
+
+  
+    public function findById(int $id): ?Post
     {
         $bean = R::findOne('posts', 'id = ?', [$id]);
         return $bean ? Post::fromBean($bean) : null;

@@ -3,8 +3,13 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Admin;
 
+
 abstract class BaseAdminController
 {
+  
+  public function __construct()
+  {
+  }
 
   protected function renderLayout(string $viewPath, array $vars = []): void
   {

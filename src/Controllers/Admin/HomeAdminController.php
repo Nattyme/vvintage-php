@@ -2,11 +2,14 @@
 declare(strict_types=1);
 
 namespace Vvintage\Controllers\Admin;
+use Vvintage\Routing\RouteData;
 
 class HomeAdminController extends BaseAdminController 
 {
   public function __construct()
-  {}
+  {
+    
+  }
 
   public function index (RouteData $routeData)
   {
@@ -19,7 +22,7 @@ class HomeAdminController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = 'Панель управления - статистика сайта';
-dd('Панель управления - статистика сайта');
+
     $this->renderLayout('admin/main/index',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,

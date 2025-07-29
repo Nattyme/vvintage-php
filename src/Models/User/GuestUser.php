@@ -54,6 +54,12 @@ class GuestUser implements UserInterface
     return $this->fav;
   }
 
+  public function getRole(): string
+  {
+    return 'guest';
+  }
+
+
 
   
 

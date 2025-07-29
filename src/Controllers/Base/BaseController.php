@@ -5,6 +5,7 @@ namespace Vvintage\Controllers\Base;
 
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Models\User\User;
 use Vvintage\Controllers\AdminPanel\AdminPanelController;
 
 
@@ -20,6 +21,7 @@ abstract class BaseController
   protected function renderLayout(string $viewPath, array $vars = []): void
   {
     $isAdminLoggedIn = $this->isAdmin();
+
     $adminData = [];
 
     if($isAdminLoggedIn) {
@@ -42,8 +44,12 @@ abstract class BaseController
   {
     $sessionManager = new SessionManager();
     $userModel = $sessionManager->getLoggedInUser();
+    
+    if( $userModel instanceof User) {
+      return $userModel && $userModel->getRole() === 'admin';
+    }
 
-    return $userModel && $userModel->getRole() === 'admin';
+    return false;
   }
 
   
