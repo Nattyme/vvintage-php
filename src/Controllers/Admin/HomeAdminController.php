@@ -2,13 +2,15 @@
 declare(strict_types=1);
 
 namespace Vvintage\Controllers\Admin;
+
 use Vvintage\Routing\RouteData;
+use Vvintage\Controllers\Admin\BaseAdminController;
 
 class HomeAdminController extends BaseAdminController 
 {
   public function __construct()
   {
-    
+    parent::__construct();
   }
 
   public function index (RouteData $routeData)
