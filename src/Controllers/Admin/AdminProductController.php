@@ -6,6 +6,7 @@ namespace Vvintage\Controllers\Admin;
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Repositories\CategoryRepository;
+use Vvintage\Repositories\BrandRepository;
 use Vvintage\Repositories\ProductRepository;
 
 class AdminProductController extends BaseAdminController
@@ -30,51 +31,30 @@ class AdminProductController extends BaseAdminController
     $this->renderAddProduct($routeData);
   }
 
-  public function edit(Route $routeData)
+  public function edit(RouteData $routeData)
   {
-    $productId = $routeData->uriGetParam;
+    // Получаем продукт 
+    $productId = $_GET['id'];
+    $product = $this->productRepository->findById((int) $productId);
+dd($product);
+    // Репозитории
+    $catsRepository = new CategoryRepository();
+    $brandsRepository = new BrandRepository();
 
-  // Подкатегории
-  $catsRepository = new CategoryRepository();
-  $subCats = R::find('categories', 'parent_id IS NOT NULL');
-  
-  $sqlQuery =  'SELECT 
-                  p.id,
-                  p.title,
-                  p.price,
-                  p.content,
-                  p.article,
-                  p.url,
-                  p.category,
-                  p.brand,
-                  p.timestamp,
-                  c.title as cat_title,
-                  b.title as brand_title
-              
-                FROM `products` as p
-                LEFT JOIN `categories` as c ON p.category = c.id
-                LEFT JOIN `brands` as b ON p.brand = b.id
-                WHERE p.id = ? LIMIT 1';
-  $product = R::getRow($sqlQuery, [$_GET['id']]);
+    // Получаем главные категориии, подкатегории и бренды
+    $mainCats = $catsRepository->getMainCats();
+    $subCats = $catsRepository->getSubCats();
+    $brands = $brandsRepository->findAll();
 
-  // Загружаем объект категории
-  $subCatBean = R::load('categories', $product['category']);
-  $selectedSubCat =  $subCatBean->id;
 
-  // Главный раздел
-  $selectedMaiCat = $subCatBean->parent_id;
+    // Загружаем объект категории
+    $subCatBean = R::load('categories', $product['category']);
+    $selectedSubCat =  $product->getCategory();
 
-  // Получаем список брендов
-  $brands = R::find('brands', 'ORDER BY title ASC');
+    // Главный раздел
+    $selectedMaiCat = $subCatBean->parent_id;
 
-  // Запрашиваем информацию по изображениям продукта
-  $sqlImages = 'SELECT 
-                  pi.filename_small,
-                  pi.image_order
-                FROM `productimages` pi
-                WHERE product_id = ?
-                ORDER BY image_order ASC';
-  $productImages = R::getAll($sqlImages, [$product['id']]);
+
 
   if( isset($_POST['submit'])) {
     // Проверка токена

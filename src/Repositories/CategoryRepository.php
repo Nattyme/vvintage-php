@@ -40,6 +40,11 @@ final class CategoryRepository
       return $this->findCatsByParentId();
     }
 
+    public function getSubCats(): array
+    {
+      return R::findAll('categories', 'parent_id IS NOT NULL');
+    }
+
     public function findCatsByParentId (?int $parentId = null): array
     {
       if ($parentId === null) {
