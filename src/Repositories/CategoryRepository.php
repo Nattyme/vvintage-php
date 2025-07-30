@@ -11,10 +11,23 @@ use RedBeanPHP\OODBBean;
 
 final class CategoryRepository
 {
-    public function findById(int $id): ?OODBBean
+    public function findById(int $id): ?Category
     {
         $bean = R::findOne('categories', 'id = ?', [$id]);
-        return $bean ?: null;
+
+        if (!$bean->id) {
+            return null;
+        }
+
+        return Category::fromArray([
+            'id' => (int) $bean->id,
+            'title' => (string) $bean->title,
+            'parent_id' => (int) $bean->parent_id,
+            'image' => (string) $bean->image,
+            'translations' => json_decode($bean->translations, true) ?? [],
+            'seo_title' => $bean->seo_title ?? '',
+            'seo_description' => $bean->seo_description ?? '',
+        ]);
     }
 
     public function findAll(): array
