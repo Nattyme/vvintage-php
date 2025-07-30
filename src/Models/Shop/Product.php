@@ -4,22 +4,86 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Shop;
 
-use Vvintage\Database\Database;
+use Vvintage\DTO\Product\ProductDTO;
 
 require_once ROOT . "./libs/functions.php";
 
 class Product
 {
-    private int $id;
-    private string $title;
-    private string $content;
-    private string $brand;
-    private string $url;
-    private string $category;
-    private float $price;
-    private string $datetime;
-    private ?array $images = null; // изначально изображения не загружены
-    private ?int $imagesTotal = null;
+    public int $id;
+    public int $categoryId;  
+    public string $brand;
+    public string $slug;
+    public string $title;
+    public string $content;
+    public float $price;
+    public string $url;
+    public string $article;
+    public string $stock;
+    public string $datetime;
+    public ?array $images;      // массив изображений
+    public ?int $imagesTotal;
+
+    public array $translations;
+    public string $seoTitle;
+    public string $seoDescription;
+
+    private string $currentLocale = 'ru';
+
+    private function __construct() {}
+
+    public static function fromDTO(ProductDTO $dto): self
+    {
+      $product = new self();
+
+      $product->id = $dto->id;
+      $product->categoryId = $dto->categoryId;
+      $product->brand = $dto->brand;
+      $product->slug = $dto->slug;
+      $product->title = $dto->title;
+      $product->content = $dto->content;
+      $product->price = $dto->price;
+      $product->url = $dto->url;
+      $product->article = $dto->article;
+      $product->stock = $dto->stock;
+      $product->datetime = $dto->datetime;
+
+      $product->images = $dto->images;
+      $product->imagesTotal = $dto->imagesTotal;
+
+      $product->translations = $dto->translations;
+      $product->seoTitle = $dto->seoTitle;
+      $product->seoDescription = $dto->seoDescription;
+
+      return $product;
+    }
+
+    public static function fromArray(array $data): self
+    {
+      $product = new self();
+
+      $product->id = (int) ($data['id'] ?? 0);
+      $product->categoryId = (int) ($data['categoryId'] ?? 0);
+      $product->brand = (string) ($data['brand'] ?? '');
+      $product->slug = (string) ($data['slug'] ?? '');
+      $product->title = (string) ($data['title'] ?? '');
+      $product->content = (string) ($data['content'] ?? '');
+      $product->price = (string) ($data['price'] ?? '');
+      $product->url = (string) ($data['url'] ?? '');
+      $product->article =  (string) ($data['article'] ?? '');
+      $product->stock =  (int) ($data['stock'] ?? 0);
+      $product->datetime =  (string) ($data['datetime'] ?? '');
+
+      $product->images = $data['images'] ?? [];
+      // $product->imagesTotal = $dto->imagesTotal;
+
+      $product->translations = $data['translations'] ?? [];
+      $product->seoTitle = (string) ($data['seo_title'] ?? '');
+      $product->seoDescription = (string) ($data['seo_description'] ?? '');
+      $product->currentLocale = (string) ($data['locale'] ?? 'ru');
+
+      return $product;
+    }
 
     public function loadFromArray(array $row): void
     {
