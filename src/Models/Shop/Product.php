@@ -12,14 +12,14 @@ class Product
 {
     public int $id;
     public int $categoryId;  
-    public string $brand;
+    public int $brand_id;
     public string $slug;
     public string $title;
     public string $content;
-    public float $price;
+    public int $price;
     public string $url;
     public string $article;
-    public string $stock;
+    public int $stock;
     public string $datetime;
     public ?array $images;      // массив изображений
     public ?int $imagesTotal;
@@ -38,7 +38,7 @@ class Product
 
       $product->id = $dto->id;
       $product->categoryId = $dto->categoryId;
-      $product->brand = $dto->brand;
+      $product->brand_id = $dto->brand_id;
       $product->slug = $dto->slug;
       $product->title = $dto->title;
       $product->content = $dto->content;
@@ -61,14 +61,14 @@ class Product
     public static function fromArray(array $data): self
     {
       $product = new self();
-
+dd($data);
       $product->id = (int) ($data['id'] ?? 0);
-      $product->categoryId = (int) ($data['categoryId'] ?? 0);
-      $product->brand = (string) ($data['brand'] ?? '');
+      $product->category_id = (int) ($data['category_id'] ?? 0);
+      $product->brand_id = (int) ($data['brand_id'] ?? '');
       $product->slug = (string) ($data['slug'] ?? '');
       $product->title = (string) ($data['title'] ?? '');
       $product->content = (string) ($data['content'] ?? '');
-      $product->price = (string) ($data['price'] ?? '');
+      $product->price = (int) ($data['price'] ?? '');
       $product->url = (string) ($data['url'] ?? '');
       $product->article =  (string) ($data['article'] ?? '');
       $product->stock =  (int) ($data['stock'] ?? 0);
@@ -85,20 +85,20 @@ class Product
       return $product;
     }
 
-    public function loadFromArray(array $row): void
-    {
-        $this->id = (int) $row['id'];
-        $this->title = $row['title'];
-        $this->price = (float)$row['price'];
+    // public function loadFromArray(array $row): void
+    // {
+    //     $this->id = (int) $row['id'];
+    //     $this->title = $row['title'];
+    //     $this->price = (float)$row['price'];
 
-        // Опциональные поля
-        $this->content = $row['content'] ?? '';
-        $this->category = $row['cat_title'] ?? '';
-        $this->brand = $row['brand_title'] ?? '';
-        $this->url = (string)$row['url'];
-        $this->datetime = (string) $row['datetime'];
-        $this->getImages();
-    }
+    //     // Опциональные поля
+    //     $this->content = $row['content'] ?? '';
+    //     $this->category = $row['cat_title'] ?? '';
+    //     $this->brand = $row['brand_title'] ?? '';
+    //     $this->url = (string)$row['url'];
+    //     $this->datetime = (string) $row['datetime'];
+    //     $this->getImages();
+    // }
 
     public function getMainImage(): ?string
     {

@@ -14,7 +14,8 @@ final class Catalog
 {
     public static function getAll($pagination): array
     {
-        $products = ProductRepository::findAll($pagination);
+        $productRepository = new ProductRepository();
+        $products = $productRepository->findAll($pagination);
         return $products;
     }
 

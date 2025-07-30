@@ -6,7 +6,7 @@ namespace Vvintage\DTO\Post;
 final class PostDTO
 {
     public string $title;
-    public string $cat;
+    public int $category_id;
     public string $description;
     public string $content;
     public string $views = '0';
@@ -16,7 +16,7 @@ final class PostDTO
     public function __construct(array $data)
     {
         $this->title = trim($data['title'] ?? '');
-        $this->cat = trim($data['cat'] ?? '');
+        $this->category_id = trim($data['category_id'] ?? '');
         $this->description = trim($data['description'] ?? '');
         $this->content = trim($data['content'] ?? '');
         $this->views = $data['views'] ?? '0';
