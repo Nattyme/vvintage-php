@@ -3,25 +3,24 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Category;
 
-
 final class CategoryDTO
 {
     public int $id;
     public string $title;
     public int $parent_id;
     public string $image;
-    public array $translations;
+    public array $translations; // ['ru' => [...], 'en' => [...]]
     public string $seoTitle;
     public string $seoDescription;
 
     public function __construct(array $data)
     {
-        $this->id = (int) $data['id'];
-        $this->title = $data['title'];
-        $this->parent_id = (int) $data['parent_id'];
-        $this->image = $data['image'];
-        $this->translations = $data['translations'];
-        $this->seoTitle = $data['seo_title'];
-        $this->seoDescription = $data['seo_description'];
+        $this->id = (int) ($data['id'] ?? 0);
+        $this->title = (string) ($data['title'] ?? '');
+        $this->parent_id = (int) ($data['parent_id'] ?? 0);
+        $this->image = (string) ($data['image'] ?? '');
+        $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
+        $this->seoTitle = (string) ($data['seo_title'] ?? '');
+        $this->seoDescription = (string) ($data['seo_description'] ?? '');
     }
 }

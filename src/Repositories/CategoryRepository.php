@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vvintage\Repositories;
 
 use Vvintage\Models\Category\Category;
+use Vvintage\DTO\Category\CategoryDTO;
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
@@ -74,34 +75,64 @@ final class CategoryRepository
         $bean->title = $cat->getTitle(); // по умолчанию ru
         $bean->parent_id = $cat->getParentId();
         $bean->image = $cat->getImage();
-        $bean->translations = json_encode([
-            'ru' => [
-                'title' => $cat->getTitle('ru'),
-            ],
-            'en' => [
-                'title' => $cat->getTitle('en'),
-            ],
-        ]);
         $bean->seo_title = $cat->getSeoTitle();
         $bean->seo_description = $cat->getSeoDescription();
 
-        return (int) R::store($bean);
+        $id = (int) R::store($bean);
+
+        // Сохраняем переводы в отдельную таблицу
+        R::exec('DELETE FROM categories_translation WHERE category_id = ?', [$id]);
+        foreach ($cat->getAllTranslations() as $locale => $translation) {
+            $transBean = R::dispense('categories_translation');
+            $transBean->category_id = $id;
+            $transBean->locale = $locale;
+            $transBean->title = $translation['title'] ?? '';
+            $transBean->description = $translation['description'] ?? '';
+            $transBean->meta_title = $translation['meta_title'] ?? '';
+            $transBean->meta_description = $translation['meta_description'] ?? '';
+            R::store($transBean);
+        }
+
+        return $id;
     }
 
     /**
-     * Приватный вспомогательный метод:
-     * Преобразует OODBBean в модель Category
+     * Загружает переводы из categories_translation
      */
+    private function loadTranslations(int $categoryId): array
+    {
+        $rows = R::getAll(
+            'SELECT locale, title, description, meta_title, meta_description FROM categories_translation WHERE category_id = ?',
+            [$categoryId]
+        );
+
+        $translations = [];
+        foreach ($rows as $row) {
+            $translations[$row['locale']] = [
+                'title' => $row['title'],
+                'description' => $row['description'],
+                'meta_title' => $row['meta_title'],
+                'meta_description' => $row['meta_description'],
+            ];
+        }
+
+        return $translations;
+    }
+
     private function mapBeanToCategory(OODBBean $bean): Category
     {
-        return Category::fromArray([
+        $translations = $this->loadTranslations((int) $bean->id);
+
+        $dto = new CategoryDTO([
             'id' => (int) $bean->id,
             'title' => (string) $bean->title,
             'parent_id' => (int) $bean->parent_id,
             'image' => (string) $bean->image,
-            'translations' => json_decode($bean->translations, true) ?? [],
+            'translations' => $translations,
             'seo_title' => $bean->seo_title ?? '',
             'seo_description' => $bean->seo_description ?? '',
         ]);
+
+        return Category::fromDTO($dto);
     }
 }

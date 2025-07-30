@@ -11,11 +11,13 @@ final class Category
     private string $title;
     private int $parent_id;
     private string $image;
-    private array $translations;
-    private string $seoTitle;
-    private string $seoDescription;
 
-    private function __construct() {} // запрет внешнего new
+    private array $translations = [];
+    private string $seoTitle = '';
+    private string $seoDescription = '';
+    private string $currentLocale = 'ru';
+
+    private function __construct() {}
 
     public static function fromDTO(CategoryDTO $dto): self
     {
@@ -43,29 +45,49 @@ final class Category
         $category->translations = $data['translations'] ?? [];
         $category->seoTitle = (string) ($data['seo_title'] ?? '');
         $category->seoDescription = (string) ($data['seo_description'] ?? '');
+        $category->currentLocale = (string) ($data['locale'] ?? 'ru');
 
         return $category;
     }
 
-    // Геттеры
+    // Получение названия в нужной локали, иначе fallback title
+    public function getTitle(?string $locale = null): string
+    {
+        $locale = $locale ?? $this->currentLocale;
+
+        return $this->translations[$locale]['title']
+            ?? $this->translations['ru']['title']
+            ?? $this->title;
+    }
+
+    public function getDescription(?string $locale = null): string
+    {
+        $locale = $locale ?? $this->currentLocale;
+
+        return $this->translations[$locale]['description']
+            ?? $this->translations['ru']['description']
+            ?? '';
+    }
+
+    public function getSeoTitle(?string $locale = null): string
+    {
+        $locale = $locale ?? $this->currentLocale;
+
+        return $this->translations[$locale]['seo_title']
+            ?? $this->seoTitle;
+    }
+
+    public function getSeoDescription(?string $locale = null): string
+    {
+        $locale = $locale ?? $this->currentLocale;
+
+        return $this->translations[$locale]['seo_description']
+            ?? $this->seoDescription;
+    }
+
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getTitle(string $locale = 'ru'): string
-    {
-        return $this->translations[$locale]['title'] ?? $this->translations['ru']['title'] ?? $this->title;
-    }
-
-    public function getSeoTitle(): string
-    {
-        return $this->seoTitle;
-    }
-
-    public function getSeoDescription(): string
-    {
-        return $this->seoDescription;
     }
 
     public function getParentId(): int
@@ -76,5 +98,21 @@ final class Category
     public function getImage(): string
     {
         return $this->image;
+    }
+
+    public function getAllTranslations(): array
+    {
+        return $this->translations;
+    }
+
+    public function getCurrentLocale(): string
+    {
+        return $this->currentLocale;
+    }
+
+    // Позволяет задать локаль один раз, чтобы не передавать её в каждый геттер.
+    public function setCurrentLocale(string $locale): void
+    {
+        $this->currentLocale = $locale;
     }
 }
