@@ -60,6 +60,7 @@
 
   /** Админ контроллеры */
   use Vvintage\Controllers\Admin\HomeAdminController;
+  use Vvintage\Controllers\Admin\AdminProductController;
 
 
   class Router {
@@ -419,11 +420,36 @@
     /**********************/
     private static function routeAdminPages(RouteData $routeData)
     {
-      $controller = new HomeAdminController();
-      switch ($routeData->uriModule) {
-        case 'admin':
-          $controller->index($routeData);
+      $homeAdminController = new HomeAdminController();
+      $adminProductController = new AdminProductController();
+
+      switch ($routeData->uriGet) {
+        case '':
+          $homeAdminController->index($routeData);
           break;
+
+        case 'shop':
+          $adminProductController->all($routeData);
+          break;
+          
+
+        // ::::::::::::: SHOP :::::::::::::::::::
+        // case 'shop':
+        //   // require ROOT . "admin/modules/shop/all.php";
+        //   break;
+
+        // case 'shop-new':
+        //   require ROOT . "admin/modules/shop/new.php";
+        //   break;
+
+        // case 'shop-edit':
+        //   require ROOT . "admin/modules/shop/edit.php";
+        //   break;
+
+        // case 'shop-delete':
+        //   require ROOT . "admin/modules/shop/delete.php";
+        //   break;
+
       }
     }
   }
