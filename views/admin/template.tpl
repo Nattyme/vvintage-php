@@ -10,7 +10,7 @@
   
       <header class="dashboard__header">
         <div class="dashboard-title dashboard__title--wrapper">
-          <span class="h3"><?php echo $pageTitle;?></span>
+          <!-- <span class="h3"><?php echo $pageTitle;?></span> -->
           <!-- <h2><span>VVintage</span> Панель управления</h2> -->
         </div>
       </header>

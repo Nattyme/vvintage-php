@@ -19,6 +19,7 @@ class AdminProductController extends BaseAdminController
 
   public function all (RouteData $routeData)
   {
+    $this->isAdmin();
     $this->renderAllProducts($routeData);
   }
 
@@ -36,6 +37,7 @@ class AdminProductController extends BaseAdminController
     $this->renderLayout('shop/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
+      'products' => $products
     ]);
   }
 }

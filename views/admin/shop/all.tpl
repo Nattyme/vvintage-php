@@ -1,6 +1,6 @@
 <div class="admin-page__content-form">
 
-  <?php include ROOT . "admin/templates/components/success.tpl"; ?>
+  <?php include ROOT . "views/components/success.tpl"; ?>
 
   <header class="admin-form__header admin-form__row">
     <a href="<?php HOST . 'shop-new';?>" class="button button--m button--primary" data-btn="add">
@@ -13,7 +13,7 @@
         name="query" 
         type="text" 
         placeholder="Найти" 
-        value="<?php echo h($searchQuery);?>"
+        value="<?php /** echo h($searchQuery); */?>"
       > 
       <button type="search-submit">
         <svg class="icon icon--loupe">
@@ -59,43 +59,43 @@
 
       <!-- body -->
       <tbody class="product-table__body">
-        
+
         <?php foreach ($products as $product) : ?>
           <tr>
             <td class="product-table__img">
-            <?php if (file_exists(ROOT . 'usercontent/products/' . $product['cover'])) : ?>
+            <?php if (file_exists(ROOT . 'usercontent/products/' . $product->getMainImage())) : ?>
               <img 
-                src="<?php echo HOST . 'usercontent/products/' . h($product['cover']);?>" 
-                srcset="<?php echo HOST . 'usercontent/products/' . h($product['cover']);?>" 
-                alt="<?php echo h($product['title']);?>" loading="lazy"
+                src="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>" 
+                srcset="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>" 
+                alt="<?php echo h($product->getTitle());?>" loading="lazy"
               >
             <?php else : ?>
               <img 
                 src="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" 
-                srcset="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" alt="<?php echo h($product['title']);?>"
+                srcset="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" alt="<?php echo h($product->getTitle());?>"
               >
             <?php endif; ?>
             </td>
             <td class="product-table__item product-table__item--title">
               <!-- link-to-page -->
-              <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit?id=<?php echo u($product['id']); ?>">
-                <?php echo htmlspecialchars($product['title'] ? h($product['title']) : ''); ?>
+              <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit?id=<?php echo u($product->getId()); ?>">
+                <?php echo htmlspecialchars($product->getTitle() ? h($product->getTitle()) : ''); ?>
               </a>
             </td>
             <td>
-              <?php echo h($product['brand']); ?>
+              <?php echo h($product->getBrand()); ?>
             </td>
             <td>
-              <?php echo h($product['category'] ?? '');?>
+              <?php echo h($product->getCategory() ?? '');?>
             </td>
             <td>
-              <?php echo h($product['price'] ?? ''); ?>  &euro;
+              <?php echo h($product->getPrice() ?? ''); ?>  &euro;
             </td>
             <td>
-              <a class="link" href="<?php echo u($product['url']);?>">vinted.fr</a>
+              <a class="link" href="<?php echo !empty($product->getUrl()) ? u($product->getUrl()) : '';?>">vinted.fr</a>
             </td>
             <td>
-                <?php echo h(rus_date("j. m. Y", $product['timestamp'])); ?>
+                <?php /** echo h(rus_date("j. m. Y", $product->getTimestamp())); */ ?>
               <!-- <button class="button-dropdownMenu" data-btn="menu">
                 <svg class="icon icon--menu">
                   <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#menu';?>"></use>
@@ -136,7 +136,7 @@
                 </li>
                 <li class="dropdownMenu__item">
               
-                  <a class="dropdownMenu__link" href="<?php echo HOST . "admin/";?>shop-delete?id=<?php echo $product['id'];?>" role="menuitem">
+                  <a class="dropdownMenu__link" href="<?php echo HOST . "admin/";?>shop-delete?id=<?php echo $product->getId();?>" role="menuitem">
                     <svg class="icon icon--delete">
                       <use href="./img/svgsprite/sprite.symbol.svg#delete"></use>
                     </svg>
@@ -163,9 +163,9 @@
 
 
   <div class="section-pagination">
-    <?php if (count($products) > 0 ) : ?>
-      <?php include ROOT . 'templates/_parts/pagination/_pagination.tpl';?>
-    <?php endif; ?>
+    <?php /** if (count($products) > 0 ) : */
+      /** include ROOT . 'templates/_parts/pagination/_pagination.tpl'; */
+    /** endif; */ ?>
   </div>
   
 </div>

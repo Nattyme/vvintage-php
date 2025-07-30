@@ -14,6 +14,7 @@ class Product
     private string $title;
     private string $content;
     private string $brand;
+    private string $url;
     private string $category;
     private float $price;
     private string $datetime;
@@ -30,6 +31,7 @@ class Product
         $this->content = $row['content'] ?? '';
         $this->category = $row['cat_title'] ?? '';
         $this->brand = $row['brand_title'] ?? '';
+        $this->url = (string)$row['url'];
         $this->datetime = (string) $row['datetime'];
         $this->getImages();
     }
@@ -110,6 +112,11 @@ class Product
         return $this->brand;
     }
 
+    public function getUrl(): string
+    {
+      return $this->url;
+    }
+
     public function getPrice(): float
     {
         return $this->price;
@@ -132,5 +139,10 @@ class Product
             $this->getImages(); // автоматически загружает изображения и считает images
         }
         return $this->imagesTotal;
+    }
+
+    public function getCategory(): string
+    {
+      return $this->category;
     }
 }

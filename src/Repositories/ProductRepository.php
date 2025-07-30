@@ -19,6 +19,7 @@ final class ProductRepository
         p.datetime,
         p.price, 
         p.brand, 
+        p.url,
         p.category, 
         c.title AS cat_title,
         b.title AS brand_title
