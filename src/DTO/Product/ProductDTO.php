@@ -3,23 +3,21 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Product;
 
-
 final class ProductDTO
 {
-  
-    private int $id;
-    private string $category;
-    private string $brand;
-    private string $slug;
-    private string $title;
-    private string $content;
-    private float $price;
-    private string $url;
-    private string $article;
-    private string $stock;
-    private string $datetime;
-    private ?array $images = null; // изначально изображения не загружены
-    private ?int $imagesTotal = null;
+    public int $id;
+    public int $categoryId;    // Обычно категория — это ID
+    public string $brand;
+    public string $slug;
+    public string $title;
+    public string $content;
+    public float $price;
+    public string $url;
+    public string $article;
+    public string $stock;
+    public string $datetime;
+    public ?array $images;      // массив изображений
+    public ?int $imagesTotal;
 
     public array $translations;
     public string $seoTitle;
@@ -27,14 +25,22 @@ final class ProductDTO
 
     public function __construct(array $data)
     {
-        $this->id = (int) ($data['id'] ?? null);
+        $this->id = (int) ($data['id'] ?? 0);
+        $this->categoryId = isset($data['category_id']) ? (int) $data['category_id'] : 0;
+        $this->brand = (string) ($data['brand'] ?? '');
+        $this->slug = (string) ($data['slug'] ?? '');
         $this->title = (string) ($data['title'] ?? '');
-        $this->image = (string) ($data['image'] ?? '');
+        $this->content = (string) ($data['content'] ?? '');
+        $this->price = isset($data['price']) ? (float) $data['price'] : 0;
+        $this->url = (string) ($data['url'] ?? '');
+        $this->article = (string) ($data['article'] ?? '');
+        $this->stock = (string) ($data['stock'] ?? '');
+        $this->datetime = (string) ($data['datetime'] ?? '');
+        $this->images = is_array($data['images'] ?? null) ? $data['images'] : null;
+        $this->imagesTotal = isset($data['images_total']) ? (int) $data['images_total'] : null;
+
         $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
         $this->seoTitle = (string) ($data['seo_title'] ?? '');
         $this->seoDescription = (string) ($data['seo_description'] ?? '');
     }
-     
-  
- 
 }
