@@ -4,17 +4,17 @@
     <?php if (file_exists(ROOT . 'usercontent/products/' . $product->getMainImage())) : ?>
       <picture>
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . $product->getMainImage();?>"
           type="image/webp"
         />
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . $product->getMainImage();?>"
           type="image/jpeg"
       
           />
           <img 
-            src="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>" 
-            srcset="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>" alt="" loading="lazy"
+            src="<?php echo HOST . 'usercontent/products/' . $product->getMainImage();?>" 
+            srcset="<?php echo HOST . 'usercontent/products/' . $product->getMainImage();?>" alt="" loading="lazy"
           >
     
       </picture>

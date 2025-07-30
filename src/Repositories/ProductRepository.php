@@ -13,7 +13,7 @@ final class ProductRepository
     public function findAll(array $pagination = []): array
     {
         $rows = $this->uniteProductBeanData(); // без аргумента — возвращает список
-        dd($rows);
+        
         return array_map([$this, 'mapBeanToProduct'], $rows);
     }
 
@@ -71,7 +71,6 @@ final class ProductRepository
           return R::getRow($sql, $bindings);
       } else {
           $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
-          dd(R::getAll($sql, $bindings));
           return R::getAll($sql, $bindings);
       }
 
@@ -125,7 +124,7 @@ final class ProductRepository
             'slug' => (string) $bean['slug'],
             'title' => (string) $bean['title'],
             'content' => (string) $bean['content'],
-            'price' => (int) $bean['price'],
+            'price' => (string) $bean['price'],
             'url' => (string) $bean['url'],
             'article' => (string) $bean['article'],
             'stock' => (int) $bean['stock'],

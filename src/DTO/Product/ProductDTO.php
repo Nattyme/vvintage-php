@@ -7,14 +7,14 @@ final class ProductDTO
 {
     public int $id;
     public int $category_id;
-    public string $brand;
+    public int $brand_id;
     public string $slug;
     public string $title;
     public string $content;
     public string $price;
     public string $url;
     public string $article;
-    public string $stock;
+    public int $stock;
     public string $datetime;
 
     public ?array $images;
@@ -29,11 +29,11 @@ final class ProductDTO
     {
         $this->id = (int) ($data['id'] ?? 0);
         $this->category_id = isset($data['category_id']) ? (int) $data['category_id'] : 0;
-        $this->brand = (string) ($data['brand'] ?? '');
+        $this->brand_id = (int) ($data['brand_id'] ?? '');
         $this->slug = (string) ($data['slug'] ?? '');
         $this->title = (string) ($data['title'] ?? '');
         $this->content = (string) ($data['content'] ?? '');
-        $this->price = isset($data['price']) ? (int) $data['price'] : '0';
+        $this->price = isset($data['price']) ? (string) $data['price'] : '0';
         $this->url = (string) ($data['url'] ?? '');
         $this->article = (string) ($data['article'] ?? '');
         $this->stock = (int) ($data['stock'] ?? '');

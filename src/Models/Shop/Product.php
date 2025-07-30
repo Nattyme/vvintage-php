@@ -11,12 +11,12 @@ require_once ROOT . "./libs/functions.php";
 class Product
 {
     public int $id;
-    public int $categoryId;  
+    public int $category_id;  
     public int $brand_id;
     public string $slug;
     public string $title;
     public string $content;
-    public int $price;
+    public string $price;
     public string $url;
     public string $article;
     public int $stock;
@@ -37,7 +37,7 @@ class Product
       $product = new self();
 
       $product->id = $dto->id;
-      $product->categoryId = $dto->categoryId;
+      $product->category_id = $dto->category_id;
       $product->brand_id = $dto->brand_id;
       $product->slug = $dto->slug;
       $product->title = $dto->title;
@@ -61,14 +61,13 @@ class Product
     public static function fromArray(array $data): self
     {
       $product = new self();
-dd($data);
       $product->id = (int) ($data['id'] ?? 0);
       $product->category_id = (int) ($data['category_id'] ?? 0);
       $product->brand_id = (int) ($data['brand_id'] ?? '');
       $product->slug = (string) ($data['slug'] ?? '');
       $product->title = (string) ($data['title'] ?? '');
       $product->content = (string) ($data['content'] ?? '');
-      $product->price = (int) ($data['price'] ?? '');
+      $product->price = (string) ($data['price'] ?? '');
       $product->url = (string) ($data['url'] ?? '');
       $product->article =  (string) ($data['article'] ?? '');
       $product->stock =  (int) ($data['stock'] ?? 0);
@@ -103,7 +102,7 @@ dd($data);
     public function getMainImage(): ?string
     {
         $this->getImages(); // на случай, если изображения ещё не загружены
-        return $this->images['main'] ?? null;
+        return $this->images[0] ?? null;
     }
 
 
@@ -171,9 +170,9 @@ dd($data);
         return $this->title;
     }
 
-    public function getBrand(): string
+    public function getBrand(): int
     {
-        return $this->brand;
+        return $this->brand_id;
     }
 
     public function getUrl(): string
@@ -181,7 +180,7 @@ dd($data);
       return $this->url;
     }
 
-    public function getPrice(): float
+    public function getPrice(): string
     {
         return $this->price;
     }
@@ -205,8 +204,8 @@ dd($data);
         return $this->imagesTotal;
     }
 
-    public function getCategory(): string
+    public function getCategory(): int
     {
-      return $this->category;
+      return $this->category_id;
     }
 }
