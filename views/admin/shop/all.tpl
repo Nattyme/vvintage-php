@@ -163,9 +163,9 @@
 
 
   <div class="section-pagination">
-    <?php /** if (count($products) > 0 ) : */
-      /** include ROOT . 'templates/_parts/pagination/_pagination.tpl'; */
-    /** endif; */ ?>
+    <?php  if (count($products) > 0 ) : 
+      include ROOT . 'templates/_parts/pagination/_pagination.tpl'; 
+     endif;  ?>
   </div>
   
 </div>

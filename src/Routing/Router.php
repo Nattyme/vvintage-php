@@ -424,12 +424,21 @@
       $adminProductController = new AdminProductController();
 
       switch ($routeData->uriGet) {
+         // ::::::::::::: SHOP :::::::::::::::::::
         case '':
           $homeAdminController->index($routeData);
           break;
 
         case 'shop':
           $adminProductController->all($routeData);
+          break;
+
+        case 'shop-new':
+          $adminProductController->add($routeData);
+          break;
+
+        case 'shop-edit':
+          $adminProductController->edit($routeData);
           break;
           
 
