@@ -33,7 +33,9 @@ final class ProductController extends BaseController
             echo 'Товар не найден';
             return;
         }
-
+    
+        // $imagesTotal = $product->getImagesTotal();
+        $images = $product->getGalleryVars();
         $relatedProducts = $product->getRelated();
 
         // Название страницы
@@ -48,6 +50,7 @@ final class ProductController extends BaseController
               'routeData' => $routeData,
               'breadcrumbs' => $breadcrumbs,
               'product' => $product,
+              'images' => $images,
               'relatedProducts' => $relatedProducts
         ]);
     }

@@ -146,19 +146,29 @@ class Product
     // Ф-ция формирует массивы дляя галереи изображений
     public function getGalleryVars(): array
     {
-        // Если загружены изображения - возвращаем
         if ($this->images === null) {
             $this->getImages();
         }
-dd($this->getImages());
-        // Найдем изображения для галлереи
-        $visibleImages = array_slice($this->images['others'], 0, 4);
-        $hiddenImages = array_slice($this->images['others'], 4);
 
-        $galleryVars = ['visible' =>  $visibleImages, 'hidden' => $hiddenImages];
+        $total = count($this->images);
+        $mainImage = $total > 0 ? $this->images[0] : null;
 
-        return  $galleryVars;
+        if ($total > 4) {
+            $visibleImages = array_slice($this->images, 1, 4);
+            $hiddenImages = array_slice($this->images, 4);
+        } else {
+            // Если изображений 4 или меньше — все показываем, скрытых нет
+            $visibleImages = $this->images;
+            $hiddenImages = [];
+        }
+
+        return [
+            'main' => $mainImage,
+            'visible' => $visibleImages,
+            'hidden' => $hiddenImages,
+        ];
     }
+
 
     // Ф-ция возвращает похожие продукты
     public function getRelated(): array

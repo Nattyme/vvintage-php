@@ -7,12 +7,6 @@
       <div class="product__content">
           
         <div class="product__gallery-container">
-          <?php
-            $imagesTotal = $product->getImagesTotal();
-            $images = $product->getImages();
-            $related = $product->getRelated();
-            $galleryVars = $product->getGalleryVars();
-          ?>
           <div class="gallery gallery--<?php echo h($imagesTotal); ?>">
            
             <figure class="gallery__item gallery__item--1">
@@ -31,7 +25,7 @@
               </a>
             </figure>
         
-            <?php foreach ($galleryVars['visible'] as $i => $image) : ?>
+            <?php foreach ($images['visible'] as $i => $image) : ?>
               <figure class="gallery__item gallery__item--<?php echo $i + 2; ?>">
                 <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
                     data-thumb="<?php echo HOST . 'usercontent/products/' . h($image);?>">
@@ -46,7 +40,7 @@
               </figure>
             <?php endforeach; ?>
 
-            <?php foreach($galleryVars['hidden'] as $image) : ?>
+            <?php foreach($images['hidden'] as $image) : ?>
               <a 
                 data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image);?>" 
                 data-thumb="<?php echo HOST . 'usercontent/products/' . h($image);?>">
