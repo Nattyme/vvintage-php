@@ -27,7 +27,7 @@ final class ProductController extends BaseController
         $id = (int) $routeData->uriGet; // получаем id товара из URL
         $productRepository = new ProductRepository();
         $product = $productRepository->findById($id);
-
+dd($product);
         if (!$product) {
             http_response_code(404);
             echo 'Товар не найден';

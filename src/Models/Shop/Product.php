@@ -26,8 +26,11 @@ class Product
     private string $article;
     private int $stock;
     private string $datetime;
+
     private ?array $images;      // массив изображений
-    private ?int $imagesTotal;
+    private ?int $imagesTotal = null;
+    private ?string $mainImage = null;  // одно главное изображение
+    private array $otherImages = [];    // массив остальных изображений
 
     private array $translations;
     private string $seoTitle;
@@ -42,11 +45,14 @@ class Product
       $product = new self();
 
       $product->id = $dto->id;
+
       $product->category_id = $dto->category_id;
       $product->category_title = $dto->category_title;
       $product->category = Category::fromDTO($dto->categoryDTO);
+
       $product->brand_id = $dto->brand_id;
       $product->brand_title = $dto->brand_title;
+
       $product->slug = $dto->slug;
       $product->title = $dto->title;
       $product->content = $dto->content;
@@ -69,10 +75,13 @@ class Product
     public static function fromArray(array $data): self
     {
       $product = new self();
+
       $product->id = (int) ($data['id'] ?? 0);
       $product->category_id = (int) ($data['category_id'] ?? 0);
-      $product->brand_id = (int) ($data['brand_id'] ?? '');
+
+      $product->brand_id = (int) ($data['brand_id'] ?? 0);
       $product->brand_title = (int) ($data['brand_title'] ?? '');
+
       $product->slug = (string) ($data['slug'] ?? '');
       $product->title = (string) ($data['title'] ?? '');
       $product->content = (string) ($data['content'] ?? '');
@@ -83,7 +92,7 @@ class Product
       $product->datetime =  (string) ($data['datetime'] ?? '');
 
       $product->images = $data['images'] ?? [];
-      // $product->imagesTotal = $dto->imagesTotal;
+      $product->imagesTotal = $dto->imagesTotal;
 
       $product->translations = $data['translations'] ?? [];
       $product->seoTitle = (string) ($data['seo_title'] ?? '');
@@ -91,6 +100,25 @@ class Product
       $product->currentLocale = (string) ($data['locale'] ?? 'ru');
 
       return $product;
+    }
+
+    private function loadImages(): void
+    {
+      $rows = $productRepository->getProductImagesRows($this->id);
+      $this->imagesTotal = count($rows);
+
+      foreach ($rows as $row) {
+          if ((int)$row['image_order'] === 1 && $this->mainImage === null) {
+              $this->mainImage = $row['filename'];
+          } else {
+              $this->otherImages[] = $row['filename'];
+          }
+      }
+
+        // fallback: если не было image_order = 1, берём первое из остальных
+        if ($this->mainImage === null && !empty($this->otherImages)) {
+            $this->mainImage = array_shift($this->otherImages);
+        }
     }
 
     // public function loadFromArray(array $row): void
@@ -110,8 +138,46 @@ class Product
 
     public function getMainImage(): ?string
     {
-        $this->getImages(); // на случай, если изображения ещё не загружены
-        return $this->images[0] ?? null;
+        if ($this->mainImage === null) {
+            $this->loadImages();
+        }
+        return $this->mainImage;
+    }
+
+    public function getOtherImages(): array
+    {
+        if (empty($this->otherImages) && $this->mainImage === null) {
+            $this->loadImages();
+        }
+        return $this->otherImages;
+    }
+
+    public function getGalleryVars(): array
+    {
+        $main = $this->getMainImage();
+        $others = $this->getOtherImages();
+
+        $visible = array_slice($others, 0, 4);
+        $hidden = array_slice($others, 4);
+
+        return [
+            'main' => $main,
+            'visible' => $visible,
+            'hidden' => $hidden,
+        ];
+    }
+
+    public function getImagesTotal(): int
+    {
+        if ($this->imagesTotal === null) {
+            $this->loadImages();
+        }
+        return $this->imagesTotal ?? 0;
+    }
+
+    public function getRelated(): array
+    {
+        return get_related_products($this->title, $this->brand_title, $this->category);
     }
 
 
@@ -144,37 +210,41 @@ class Product
     }
 
     // Ф-ция формирует массивы дляя галереи изображений
-    public function getGalleryVars(): array
-    {
-        if ($this->images === null) {
-            $this->getImages();
-        }
+    // public function getGalleryVars(): array
+    // {
+    //     if ($this->images === null) {
+    //         $this->getImages();
+    //     }
 
-        $total = count($this->images);
-        $mainImage = $total > 0 ? $this->images[0] : null;
+    //     // $total = count($this->images);
+    //     // Главное изобрадение
+    //     $mainImage = $this->images[0] ?? null;
 
-        if ($total > 4) {
-            $visibleImages = array_slice($this->images, 1, 4);
-            $hiddenImages = array_slice($this->images, 4);
-        } else {
-            // Если изображений 4 или меньше — все показываем, скрытых нет
-            $visibleImages = $this->images;
-            $hiddenImages = [];
-        }
+    //     // Удалим его из массива остальных, чтобы не повторялось
+    //     $otherImages = array_slice($this->images, 1); // все, кроме первого
 
-        return [
-            'main' => $mainImage,
-            'visible' => $visibleImages,
-            'hidden' => $hiddenImages,
-        ];
-    }
+    //     if ($total > 4) {
+    //         $visibleImages = array_slice($this->images, 1, 4);
+    //         $hiddenImages = array_slice($this->images, 4);
+    //     } else {
+    //         // Если изображений 4 или меньше — все показываем, скрытых нет
+    //         $visibleImages = $this->images;
+    //         $hiddenImages = [];
+    //     }
+
+    //     return [
+    //         'main' => $mainImage,
+    //         'visible' => $visibleImages,
+    //         'hidden' => $hiddenImages,
+    //     ];
+    // }
 
 
     // Ф-ция возвращает похожие продукты
-    public function getRelated(): array
-    {
-        return get_related_products($this->title, $this->brand_title, $this->category);
-    }
+    // public function getRelated(): array
+    // {
+    //     return get_related_products($this->title, $this->brand_title, $this->category);
+    // }
 
     /**
      * Getters
@@ -212,15 +282,6 @@ class Product
     public function getTimestamp(): string
     {
         return $this->datetime;
-    }
-
-    // Ленивая загрузка изображений, если они ещё не загружены
-    public function getImagesTotal(): int
-    {
-        if ($this->imagesTotal === null) {
-            $this->getImages(); // автоматически загружает изображения и считает images
-        }
-        return $this->imagesTotal;
     }
 
     public function getCategory(): int

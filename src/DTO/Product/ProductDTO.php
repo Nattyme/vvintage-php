@@ -8,9 +8,11 @@ final class ProductDTO
     public int $id;
     public int $category_id;
     public string $category_title;
-    public $categoryDTO;
+    public CategoryDTO $categoryDTO;
+
     public int $brand_id;
     public string $brand_title;
+
     public string $slug;
     public string $title;
     public string $content;
@@ -22,6 +24,7 @@ final class ProductDTO
 
     public ?array $images;
     public ?int $imagesTotal;
+    
 
     public array $translations;
     public string $seoTitle;
@@ -31,35 +34,38 @@ final class ProductDTO
     public function __construct(array $data)
     {
         $this->id = (int) ($data['id'] ?? 0);
+
         $this->category_id = isset($data['category_id']) ? (int) $data['category_id'] : 0;
         $this->category_title = isset($data['category_title']) ? (string) $data['category_title'] : '';
         $this->categoryDTO = $data['categoryDTO'];
-        $this->brand_id = (int) ($data['brand_id'] ?? '');
+
+        $this->brand_id = (int) ($data['brand_id'] ?? 0);
         $this->brand_title = (string) ($data['brand_title'] ?? '');
+
         $this->slug = (string) ($data['slug'] ?? '');
         $this->title = (string) ($data['title'] ?? '');
         $this->content = (string) ($data['content'] ?? '');
         $this->price = isset($data['price']) ? (string) $data['price'] : '';
         $this->url = (string) ($data['url'] ?? '');
+        
         $this->article = (string) ($data['article'] ?? '');
-        $this->stock = (int) ($data['stock'] ?? '');
+        $this->stock = (int) ($data['stock'] ?? 0);
         $this->datetime = (string) ($data['datetime'] ?? '');
 
-        // 🖼️ Обработка изображений
-        if (is_array($data['images'] ?? null)) {
-            $this->images = $data['images'];
-        } elseif (is_string($data['images'] ?? null)) {
-            $this->images = array_filter(explode(',', $data['images']));
+        $imagesRaw = $data['images'] ?? null;
+        if (is_array($imagesRaw)) {
+            $this->images = $imagesRaw;
+        } elseif (is_string($imagesRaw)) {
+            $this->images = array_filter(explode(',', $imagesRaw));
         } else {
             $this->images = null;
         }
 
-        $this->imagesTotal = isset($data['images_total']) ? (int) $data['images_total'] : null;
+        $this->imagesTotal = isset($this->images) ? count($this->images) : null;
 
         $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
-
-        $this->seoTitle = (string) ($data['seo_title'] ?? '');
-        $this->seoDescription = (string) ($data['seo_description'] ?? '');
+        $this->seo_title = (string) ($data['seo_title'] ?? '');
+        $this->seo_description = (string) ($data['seo_description'] ?? '');
         $this->locale = (string) ($data['locale'] ?? 'ru'); // локаль по умолчанию
     }
 }

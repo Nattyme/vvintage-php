@@ -129,6 +129,15 @@ final class ProductRepository
         // return Category::fromDTO($dto);
     }
 
+    private function fetchImageRows(int $productId): array
+    {
+        return R::getAll(
+            'SELECT filename, image_order FROM productimages WHERE product_id = ? ORDER BY image_order',
+            [$productId]
+        );
+    }
+
+
     private function mapBeanToProduct(array $bean): Product
     {
         $translations = $this->loadTranslations((int) $bean['id']);
