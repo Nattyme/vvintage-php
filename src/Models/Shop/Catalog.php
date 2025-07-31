@@ -19,10 +19,10 @@ final class Catalog
         return $products;
     }
 
-    public static function getTotalProductsCount(): int
-    {
-        return R::count('products');
-    }
+    // public static function getTotalProductsCount(): int
+    // {
+    //     return R::count('products');
+    // }
 
 
 }

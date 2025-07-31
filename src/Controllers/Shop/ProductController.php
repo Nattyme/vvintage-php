@@ -25,7 +25,8 @@ final class ProductController extends BaseController
     public function index(RouteData $routeData): void
     {   
         $id = (int) $routeData->uriGet; // получаем id товара из URL
-        $product = ProductRepository::findById($id);
+        $productRepository = new ProductRepository();
+        $product = $productRepository->findById($id);
 
         if (!$product) {
             http_response_code(404);

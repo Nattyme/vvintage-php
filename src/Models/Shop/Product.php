@@ -5,28 +5,32 @@ declare(strict_types=1);
 namespace Vvintage\Models\Shop;
 
 use Vvintage\DTO\Product\ProductDTO;
+use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\Models\Category\Category;
 
 require_once ROOT . "./libs/functions.php";
 
 class Product
 {
-    public int $id;
-    public int $category_id;  
-    public int $brand_id;
-    public string $slug;
-    public string $title;
-    public string $content;
-    public string $price;
-    public string $url;
-    public string $article;
-    public int $stock;
-    public string $datetime;
-    public ?array $images;      // массив изображений
-    public ?int $imagesTotal;
+    private int $id;
+    private int $category_id;  
+    private Category $category;  
+    private int $brand_id;
+    private string $brand_title;
+    private string $slug;
+    private string $title;
+    private string $content;
+    private string $price;
+    private string $url;
+    private string $article;
+    private int $stock;
+    private string $datetime;
+    private ?array $images;      // массив изображений
+    private ?int $imagesTotal;
 
-    public array $translations;
-    public string $seoTitle;
-    public string $seoDescription;
+    private array $translations;
+    private string $seoTitle;
+    private string $seoDescription;
 
     private string $currentLocale = 'ru';
 
@@ -38,7 +42,9 @@ class Product
 
       $product->id = $dto->id;
       $product->category_id = $dto->category_id;
+      $product->category = Category::fromDTO($dto->categoryDTO);
       $product->brand_id = $dto->brand_id;
+      $product->brand_title = $dto->brand_title;
       $product->slug = $dto->slug;
       $product->title = $dto->title;
       $product->content = $dto->content;
@@ -64,6 +70,7 @@ class Product
       $product->id = (int) ($data['id'] ?? 0);
       $product->category_id = (int) ($data['category_id'] ?? 0);
       $product->brand_id = (int) ($data['brand_id'] ?? '');
+      $product->brand_title = (int) ($data['brand_title'] ?? '');
       $product->slug = (string) ($data['slug'] ?? '');
       $product->title = (string) ($data['title'] ?? '');
       $product->content = (string) ($data['content'] ?? '');
@@ -154,7 +161,7 @@ class Product
     // Ф-ция возвращает похожие продукты
     public function getRelated(): array
     {
-        return get_related_products($this->title, $this->brand, $this->category);
+        return get_related_products($this->title, $this->brand_title, $this->category);
     }
 
     /**
@@ -208,4 +215,9 @@ class Product
     {
       return $this->category_id;
     }
+
+    public function getCategoryTitle(): string {
+        return $this->category->getTitle();
+    }
+
 }

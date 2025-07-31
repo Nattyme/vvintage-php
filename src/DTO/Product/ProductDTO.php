@@ -7,7 +7,9 @@ final class ProductDTO
 {
     public int $id;
     public int $category_id;
+    public $categoryDTO;
     public int $brand_id;
+    public string $brand_title;
     public string $slug;
     public string $title;
     public string $content;
@@ -23,13 +25,15 @@ final class ProductDTO
     public array $translations;
     public string $seoTitle;
     public string $seoDescription;
-    public string $locale; // 👈 добавлено
+    public string $locale; 
 
     public function __construct(array $data)
     {
         $this->id = (int) ($data['id'] ?? 0);
         $this->category_id = isset($data['category_id']) ? (int) $data['category_id'] : 0;
+        $this->categoryDTO = $data['categoryDTO'];
         $this->brand_id = (int) ($data['brand_id'] ?? '');
+        $this->brand_title = (string) ($data['brand_title'] ?? '');
         $this->slug = (string) ($data['slug'] ?? '');
         $this->title = (string) ($data['title'] ?? '');
         $this->content = (string) ($data['content'] ?? '');
