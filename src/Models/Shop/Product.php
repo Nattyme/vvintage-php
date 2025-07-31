@@ -14,6 +14,7 @@ class Product
 {
     private int $id;
     private int $category_id;  
+    private string $category_title;  
     private Category $category;  
     private int $brand_id;
     private string $brand_title;
@@ -42,6 +43,7 @@ class Product
 
       $product->id = $dto->id;
       $product->category_id = $dto->category_id;
+      $product->category_title = $dto->category_title;
       $product->category = Category::fromDTO($dto->categoryDTO);
       $product->brand_id = $dto->brand_id;
       $product->brand_title = $dto->brand_title;
@@ -148,7 +150,7 @@ class Product
         if ($this->images === null) {
             $this->getImages();
         }
-
+dd($this->getImages());
         // Найдем изображения для галлереи
         $visibleImages = array_slice($this->images['others'], 0, 4);
         $hiddenImages = array_slice($this->images['others'], 4);

@@ -7,6 +7,7 @@ final class ProductDTO
 {
     public int $id;
     public int $category_id;
+    public string $category_title;
     public $categoryDTO;
     public int $brand_id;
     public string $brand_title;
@@ -31,13 +32,14 @@ final class ProductDTO
     {
         $this->id = (int) ($data['id'] ?? 0);
         $this->category_id = isset($data['category_id']) ? (int) $data['category_id'] : 0;
+        $this->category_title = isset($data['category_title']) ? (string) $data['category_title'] : '';
         $this->categoryDTO = $data['categoryDTO'];
         $this->brand_id = (int) ($data['brand_id'] ?? '');
         $this->brand_title = (string) ($data['brand_title'] ?? '');
         $this->slug = (string) ($data['slug'] ?? '');
         $this->title = (string) ($data['title'] ?? '');
         $this->content = (string) ($data['content'] ?? '');
-        $this->price = isset($data['price']) ? (string) $data['price'] : '0';
+        $this->price = isset($data['price']) ? (string) $data['price'] : '';
         $this->url = (string) ($data['url'] ?? '');
         $this->article = (string) ($data['article'] ?? '');
         $this->stock = (int) ($data['stock'] ?? '');

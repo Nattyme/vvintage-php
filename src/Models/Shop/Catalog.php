@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Shop;
 
-use RedBeanPHP\R;
 use Vvintage\Repositories\ProductRepository;
 use Vvintage\Database\Database;
 
@@ -18,11 +17,5 @@ final class Catalog
         $products = $productRepository->findAll($pagination);
         return $products;
     }
-
-    // public static function getTotalProductsCount(): int
-    // {
-    //     return R::count('products');
-    // }
-
 
 }

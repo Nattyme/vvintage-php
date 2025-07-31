@@ -53,6 +53,7 @@ final class ProductRepository
                 pt.meta_description,
                 b.title AS brand_title,
                 c.id AS category_id,
+                c.title AS category_title,
                 c.parent_id AS category_parent_id,
                 c.image AS category_image,
                 ct.title AS category_title_translation,
@@ -136,6 +137,7 @@ final class ProductRepository
         $dto = new ProductDTO([
             'id' => (int) $bean['id'],
             'category_id' => $bean['category_id'],
+            'category_title' => $bean['category_title'],
             'categoryDTO' => $categoryDTO,
             'brand_id' => (int) $bean['brand_id'],
             'brand_title' => (string) $bean['brand_title'],

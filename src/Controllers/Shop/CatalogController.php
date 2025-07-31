@@ -6,10 +6,10 @@ namespace Vvintage\Controllers\Shop;
 
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
+use Vvintage\Repositories\ProductRepository;
 
-use Vvintage\Models\Shop\Catalog;
 use Vvintage\Routing\RouteData;
-
+use Vvintage\Models\Shop\Catalog;
 use Vvintage\Services\Page\Breadcrumbs;
 
 require_once ROOT . "./libs/functions.php";
@@ -28,6 +28,8 @@ final class CatalogController extends BaseController
 
     public function index(RouteData $routeData): void
     {
+      $productRepository = new ProductRepository();
+
       // Название страницы
       $pageTitle = 'Каталог товаров';
 
@@ -39,7 +41,7 @@ final class CatalogController extends BaseController
       $products = Catalog::getAll($pagination);
       
       // Считаем, сколько всего товаров в базе (для отображения "Показано N из M")
-      $totalProducts = Catalog::getTotalProductsCount();
+      $totalProducts = $productRepository->countAll();
       
       // Это кол-во товаров, показанных на этой странице
       // $shownProducts = $totalProducts - count($products);
