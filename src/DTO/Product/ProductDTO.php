@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Product;
 use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Brand\BrandDTO;
 
 final class ProductDTO
 {
@@ -13,6 +14,7 @@ final class ProductDTO
 
     public int $brand_id;
     public string $brand_title;
+    public BrandDTO $brandDTO;
 
     public string $slug;
     public string $title;
@@ -42,6 +44,7 @@ final class ProductDTO
 
         $this->brand_id = (int) ($data['brand_id'] ?? 0);
         $this->brand_title = (string) ($data['brand_title'] ?? '');
+        $this->brandDTO = $data['brandDTO'];
 
         $this->slug = (string) ($data['slug'] ?? '');
         $this->title = (string) ($data['title'] ?? '');

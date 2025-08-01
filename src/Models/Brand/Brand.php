@@ -10,6 +10,7 @@ final class Brand
 {
     private int $id;
     private string $title;
+    private ?string $image;
 
     private function __construct() {}
     
@@ -17,7 +18,8 @@ final class Brand
     {
         $brand = new self();
         $brand->id = (int) $bean->id;
-        $brand->title = (int) $bean->title;
+        $brand->title = (string) $bean->title;
+        $brand->image = (string) $bean->image;
         
         return $brand;
     }
@@ -26,7 +28,8 @@ final class Brand
     {
         $brand = new self();
         $brand->id = (int) $data['id'];
-        $brand->title = $data['title'];
+        $brand->title = (string) $data['title'];
+        $brand->image = (string) $data['image'];
         
         return $brand;
     }
@@ -40,5 +43,10 @@ final class Brand
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function getImage(): string
+    {
+      return $this->image;
     }
 }

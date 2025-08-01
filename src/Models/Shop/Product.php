@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Shop;
 
+/** DTO */
 use Vvintage\DTO\Product\ProductDTO;
 use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Brand\BrandDTO;
+
+/** Модели */
 use Vvintage\Models\Category\Category;
+use Vvintage\Models\Brand\Brand;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -16,6 +21,7 @@ class Product
     private int $category_id;  
     private string $category_title;  
     private Category $category;  
+    private Brand $brand;  
     private int $brand_id;
     private string $brand_title;
     private string $slug;
@@ -128,7 +134,7 @@ class Product
         $this->images = ['main' => $main, 'others' => $others];
         return $this->images;
     }
-    
+
     /**
      * Getters
     */

@@ -13,8 +13,8 @@ final class Category
     private string $image;
 
     private array $translations = [];
-    private string $seoTitle = '';
-    private string $seoDescription = '';
+    private string $seo_title = '';
+    private string $seo_description = '';
     private string $currentLocale = 'ru';
 
     private function __construct() {}
@@ -28,8 +28,8 @@ final class Category
         $category->parent_id = $dto->parent_id;
         $category->image = $dto->image;
         $category->translations = $dto->translations;
-        $category->seoTitle = $dto->seoTitle;
-        $category->seoDescription = $dto->seoDescription;
+        $category->seo_title = $dto->seo_title;
+        $category->seo_description = $dto->seo_description;
 
         return $category;
     }
