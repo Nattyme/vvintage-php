@@ -33,8 +33,8 @@ class Product
     private array $otherImages = [];    // массив остальных изображений
 
     private array $translations;
-    private string $seoTitle;
-    private string $seoDescription;
+    private string $seo_title;
+    private string $seo_description;
 
     private string $currentLocale = 'ru';
 
@@ -66,8 +66,8 @@ class Product
       $product->imagesTotal = $dto->imagesTotal;
 
       $product->translations = $dto->translations;
-      $product->seoTitle = $dto->seoTitle;
-      $product->seoDescription = $dto->seoDescription;
+      $product->seo_title = $dto->seo_title;
+      $product->seo_description = $dto->seo_description;
 
       return $product;
     }
@@ -95,31 +95,31 @@ class Product
       $product->imagesTotal = $dto->imagesTotal;
 
       $product->translations = $data['translations'] ?? [];
-      $product->seoTitle = (string) ($data['seo_title'] ?? '');
-      $product->seoDescription = (string) ($data['seo_description'] ?? '');
+      $product->seo_title = (string) ($data['seo_title'] ?? '');
+      $product->seo_description = (string) ($data['seo_description'] ?? '');
       $product->currentLocale = (string) ($data['locale'] ?? 'ru');
 
       return $product;
     }
 
-    private function loadImages(): void
-    {
-      $rows = $productRepository->getProductImagesRows($this->id);
-      $this->imagesTotal = count($rows);
+    // private function loadImages(): void
+    // {
+    //   $rows = $productRepository->getProductImagesRows($this->id);
+    //   $this->imagesTotal = count($rows);
 
-      foreach ($rows as $row) {
-          if ((int)$row['image_order'] === 1 && $this->mainImage === null) {
-              $this->mainImage = $row['filename'];
-          } else {
-              $this->otherImages[] = $row['filename'];
-          }
-      }
+    //   foreach ($rows as $row) {
+    //       if ((int)$row['image_order'] === 1 && $this->mainImage === null) {
+    //           $this->mainImage = $row['filename'];
+    //       } else {
+    //           $this->otherImages[] = $row['filename'];
+    //       }
+    //   }
 
-        // fallback: если не было image_order = 1, берём первое из остальных
-        if ($this->mainImage === null && !empty($this->otherImages)) {
-            $this->mainImage = array_shift($this->otherImages);
-        }
-    }
+    //     // fallback: если не было image_order = 1, берём первое из остальных
+    //     if ($this->mainImage === null && !empty($this->otherImages)) {
+    //         $this->mainImage = array_shift($this->otherImages);
+    //     }
+    // }
 
     // public function loadFromArray(array $row): void
     // {

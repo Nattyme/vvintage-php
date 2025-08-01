@@ -7,15 +7,23 @@ namespace Vvintage\Repositories;
 use RedBeanPHP\R;
 use Vvintage\Models\Shop\Product;
 use Vvintage\DTO\Product\ProductDTO;
+use Vvintage\DTO\Product\ProductImageDTO;
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryDTO;
 
 final class ProductRepository
 {
+  
+    public function findById(int $id): ?Product
+    {
+        $rows = $this->uniteProductRawData($id);
+        return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
+    }
+
     public function findAll(array $pagination = []): array
     {
-        $rows = $this->uniteProductBeanData();
-        return array_map([$this, 'mapBeanToProduct'], $rows);
+        $rows = $this->uniteProductRawData();
+        return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
 
     public function findByIds(array $ids): array
@@ -26,22 +34,17 @@ final class ProductRepository
 
         $products = [];
         foreach ($ids as $id) {
-            $bean = $this->uniteProductBeanData($id);
+            $bean = $this->uniteProductRawData($id);
             if ($bean) {
-                $products[] = $this->mapBeanToProduct($bean);
+                $products[] = $this->fetchProductWithJoins($bean);
             }
         }
 
         return $products;
     }
 
-    public function findById(int $id): ?Product
-    {
-        $bean = $this->uniteProductBeanData($id);
-        return $bean ? $this->mapBeanToProduct($bean) : null;
-    }
 
-    private function uniteProductBeanData(?int $productId = null): array|\RedBeanPHP\OODBBean|null
+    private function uniteProductRawData(?int $productId = null): array
     {
         $sql = '
             SELECT 
@@ -75,12 +78,15 @@ final class ProductRepository
         if ($productId !== null) {
             $sql .= ' WHERE p.id = ? GROUP BY p.id LIMIT 1';
             $bindings[] = $productId;
-            return R::getRow($sql, $bindings);
+            // ⬇Заворачиваем в массив
+            $row = R::getRow($sql, $bindings);
+            return $row ? [$row] : [];
         } else {
             $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
             return R::getAll($sql, $bindings);
         }
     }
+
 
     private function loadTranslations(int $productId): array
     {
@@ -104,70 +110,76 @@ final class ProductRepository
         return $translations;
     }
 
-    private function createCategoryDTOFromBean(array $bean): CategoryDTO
+    private function createCategoryDTOFromArray(array $row): CategoryDTO
     {
-        $locale = $bean['locale'] ?? 'ru';
+        $locale = $row['locale'] ?? 'ru';
 
         return new CategoryDTO([
-            'id' => (int) $bean['category_id'],
-            'title' => (string) ($bean['category_title_translation'] ?? ''),
-            'parent_id' => (int) ($bean['category_parent_id'] ?? 0),
-            'image' => (string) ($bean['category_image'] ?? ''),
+            'id' => (int) $row['category_id'],
+            'title' => (string) ($row['category_title_translation'] ?? ''),
+            'parent_id' => (int) ($row['category_parent_id'] ?? 0),
+            'image' => (string) ($row['category_image'] ?? ''),
             'translations' => [
                 $locale => [
-                    'title' => $bean['category_title_translation'] ?? '',
-                    'description' => $bean['category_description'] ?? '',
-                    'seo_title' => $bean['category_meta_title'] ?? '',
-                    'seo_description' => $bean['category_meta_description'] ?? '',
+                    'title' => $row['category_title_translation'] ?? '',
+                    'description' => $row['category_description'] ?? '',
+                    'seo_title' => $row['category_meta_title'] ?? '',
+                    'seo_description' => $row['category_meta_description'] ?? '',
                 ]
             ],
-            'seoTitle' => $bean['category_meta_title'] ?? '',
-            'seoDescription' => $bean['category_meta_description'] ?? '',
+            'seoTitle' => $row['category_meta_title'] ?? '',
+            'seoDescription' => $row['category_meta_description'] ?? '',
             'locale' => $locale,
         ]);
-
-        // return Category::fromDTO($dto);
     }
 
-    private function fetchImageRows(int $productId): array
+    private function fetchImageDTOs(array $row): array
     {
-        return R::getAll(
-            'SELECT filename, image_order FROM productimages WHERE product_id = ? ORDER BY image_order',
-            [$productId]
+        $imagesRows = R::getAll(
+            'SELECT id, product_id, filename, image_order 
+            FROM productimages 
+            WHERE product_id = ? 
+            ORDER BY image_order',
+            [$row['id']]
         );
+
+        return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
     }
 
-
-    private function mapBeanToProduct(array $bean): Product
+    private function fetchProductWithJoins(array $row): Product
     {
-        $translations = $this->loadTranslations((int) $bean['id']);
-        $categoryDTO = $this->createCategoryDTOFromBean($bean);
+        $productId = (int) $row['id'];
+
+        $translations = $this->loadTranslations($productId);
+        $categoryDTO = $this->createCategoryDTOFromArray($row);
+        $imagesDTO = $this->fetchImageDTOs($row);
 
         $dto = new ProductDTO([
-            'id' => (int) $bean['id'],
-            'category_id' => $bean['category_id'],
-            'category_title' => $bean['category_title'],
+            'id' => (int) $row['id'],
+            'category_id' => (int) $row['category_id'],
+            'category_title' => (string) $row['category_title'],
             'categoryDTO' => $categoryDTO,
-            'brand_id' => (int) $bean['brand_id'],
-            'brand_title' => (string) $bean['brand_title'],
-            'slug' => (string) $bean['slug'],
-            'title' => (string) $bean['title'],
-            'content' => (string) $bean['content'],
-            'price' => (string) $bean['price'],
-            'url' => (string) $bean['url'],
-            'article' => (string) $bean['article'],
-            'stock' => (int) $bean['stock'],
-            'datetime' => (string) $bean['datetime'],
-            'images' => $bean['images'],
-            'images_total' => isset($bean['images']) ? count(explode(',', $bean['images'])) : 0,
+            'brand_id' => (int) $row['brand_id'],
+            'brand_title' => (string) $row['brand_title'],
+            'slug' => (string) $row['slug'],
+            'title' => (string) $row['title'],
+            'content' => (string) $row['content'],
+            'price' => (string) $row['price'],
+            'url' => (string) $row['url'],
+            'article' => (string) $row['article'],
+            'stock' => (int) $row['stock'],
+            'datetime' => (string) $row['datetime'],
+            'images' => $imagesDTO,
+            'images_total' => count($imagesDTO),
             'translations' => $translations,
-            'seo_title' => $bean['seo_title'] ?? '',
-            'seo_description' => $bean['seo_description'] ?? '',
-            'locale' => $bean['locale'] ?? 'ru',
+            'seo_title' => $row['seo_title'] ?? '',
+            'seo_description' => $row['seo_description'] ?? '',
+            'locale' => $row['locale'] ?? 'ru',
         ]);
-
+dd($dto);
         return Product::fromDTO($dto);
     }
+
 
     public function countAll(): int
     {

@@ -35,6 +35,8 @@ dd($product);
         }
     
         // $imagesTotal = $product->getImagesTotal();
+        $product->setImages($this->fetchImageDTOs($productId)); // где $images — массив объектов ProductImageDTO
+        dd($products);
         $images = $product->getGalleryVars();
         $relatedProducts = $product->getRelated();
 

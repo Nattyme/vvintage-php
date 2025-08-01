@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Vvintage\DTO\Product;
+use Vvintage\DTO\Category\CategoryDTO;
 
 final class ProductDTO
 {
@@ -27,8 +28,8 @@ final class ProductDTO
     
 
     public array $translations;
-    public string $seoTitle;
-    public string $seoDescription;
+    public string $seo_title;
+    public string $seo_description;
     public string $locale; 
 
     public function __construct(array $data)

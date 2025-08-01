@@ -8,6 +8,7 @@ use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Models\Shop\Product;
 use Vvintage\DTO\Product\ProductDTO;
 
+
 final class ProductRepository
 {
     public static function findById(int $id): ?Product
