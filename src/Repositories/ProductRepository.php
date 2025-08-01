@@ -192,12 +192,8 @@ final class ProductRepository
 
         $dto = new ProductDTO([
             'id' => (int) $row['id'],
-            'category_id' => (int) $row['category_id'],
-            'category_title' => (string) $row['category_title'],
             'categoryDTO' => $categoryDTO,
             'brandDTO' => $brandDTO,
-            'brand_id' => (int) $row['brand_id'],
-            'brand_title' => (string) $row['brand_title'],
             'slug' => (string) $row['slug'],
             'title' => (string) $row['title'],
             'content' => (string) $row['content'],

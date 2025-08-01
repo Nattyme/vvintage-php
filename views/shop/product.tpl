@@ -70,7 +70,7 @@
             </div>
             <div class="product-card__row">
               <p>New without tegs</p>
-              <a href="#" class="product-card__brand"><?php echo h($productViewModel['product']->getBrand());?></a>
+              <a href="#" class="product-card__brand"><?php echo h($productViewModel['product']->getBrandTitle());?></a>
             </div>
             <div class="product-card__row">
               <div class="product-card__price">
@@ -83,7 +83,7 @@
           <dl class="product-card__list">
             <div class="product-card__item  product-card__item--title">
               <dt>Бренд</dt>
-              <dd><a href=""><?php echo h($productViewModel['product']->getBrand());?></a></dd>
+              <dd><a href=""><?php echo h($productViewModel['product']->getBrandTitle());?></a></dd>
             </div>
             <div class="product-card__item">
               <dt>Состоние</dt>
@@ -121,6 +121,6 @@
     </div>
   </section>
 
-  <?php include ROOT. 'views/shop/_parts/_related-products.tpl';?>
+  <?php /** include ROOT. 'views/shop/_parts/_related-products.tpl'; */?>
 
 </main>

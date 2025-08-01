@@ -18,12 +18,10 @@ require_once ROOT . "./libs/functions.php";
 class Product
 {
     private int $id;
-    private int $category_id;  
-    private string $category_title;  
+
     private Category $category;  
     private Brand $brand;  
-    private int $brand_id;
-    private string $brand_title;
+    
     private string $slug;
     private string $title;
     private string $content;
@@ -46,13 +44,8 @@ class Product
       $product = new self();
 
       $product->id = $dto->id;
-
-      $product->category_id = $dto->category_id;
-      $product->category_title = $dto->category_title;
+      
       $product->category = Category::fromDTO($dto->categoryDTO);
-
-      $product->brand_id = $dto->brand_id;
-      $product->brand_title = $dto->brand_title;
       $product->brand = Brand::fromDTO($dto->brandDTO);
 
       $product->slug = $dto->slug;
@@ -78,10 +71,6 @@ class Product
       $product = new self();
 
       $product->id = (int) ($data['id'] ?? 0);
-      $product->category_id = (int) ($data['category_id'] ?? 0);
-
-      $product->brand_id = (int) ($data['brand_id'] ?? 0);
-      $product->brand_title = (int) ($data['brand_title'] ?? '');
 
       $product->slug = (string) ($data['slug'] ?? '');
       $product->title = (string) ($data['title'] ?? '');
@@ -104,7 +93,7 @@ class Product
 
     public function getRelated(): array
     {
-        return get_related_products($this->title, $this->brand_title, $this->category);
+        return get_related_products($this->title, $this->brand->getTitle(), $this->category);
     }
 
 
@@ -149,9 +138,14 @@ class Product
         return $this->title;
     }
 
-    public function getBrand(): int
+    public function getBrandId(): string
     {
-        return $this->brand_id;
+        return $this->brand->getId();
+    }
+
+    public function getBrandTitle(): string
+    {
+        return $this->brand->getTitle();
     }
 
     public function getUrl(): string
