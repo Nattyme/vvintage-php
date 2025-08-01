@@ -9,26 +9,31 @@
           <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
         </header>
 
-        <?php if ($totalProducts > 0 ) : ?>
+        <?php if ($productViewModel['total'] > 0 ) : ?>
           <?php include ROOT . 'views/shop/_parts/_pages-shown.tpl';?>
         <?php endif; ?>
 
         <div class="products__cards-wrapper">
           <div class="products__cards-row">
-            <?php foreach ($products as $product) : ?>
+            <?php foreach ($productViewModel['products'] as $product) : ?>
+              <?php 
+                  $images = $productViewModel['imagesByProductId'][$product->getId()] ?? null;
+                  $mainImage = $images['main'] ?? null;
+              ?>
+    
               <?php include ROOT . 'views/shop/_parts/_card.tpl';?>
             <?php endforeach; ?>  
           </div>
         </div>
 
-        <?php if ($totalProducts > 0 ) : ?>
+        <?php if ($productViewModel['total'] > 0 ) : ?>
           <?php include ROOT . 'views/shop/_parts/_pages-shown.tpl';?>
         <?php endif; ?>
     
         
         <div class="products__pagination">
           <div class="section-pagination">
-            <?php if ($totalProducts > 0 ) : ?>
+            <?php if ($productViewModel['total'] > 0 ) : ?>
               <?php include ROOT . 'views/_parts/pagination/_pagination.tpl';?>
             <?php endif; ?>
           </div>

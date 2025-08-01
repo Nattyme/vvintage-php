@@ -26,12 +26,7 @@ class Product
     private string $article;
     private int $stock;
     private string $datetime;
-
     private ?array $images;      // массив изображений
-    private ?int $imagesTotal = null;
-    private ?string $mainImage = null;  // одно главное изображение
-    private array $otherImages = [];    // массив остальных изображений
-
     private array $translations;
     private string $seo_title;
     private string $seo_description;
@@ -63,7 +58,6 @@ class Product
       $product->datetime = $dto->datetime;
 
       $product->images = $dto->images;
-      $product->imagesTotal = $dto->imagesTotal;
 
       $product->translations = $dto->translations;
       $product->seo_title = $dto->seo_title;
@@ -92,7 +86,6 @@ class Product
       $product->datetime =  (string) ($data['datetime'] ?? '');
 
       $product->images = $data['images'] ?? [];
-      $product->imagesTotal = $dto->imagesTotal;
 
       $product->translations = $data['translations'] ?? [];
       $product->seo_title = (string) ($data['seo_title'] ?? '');
@@ -100,79 +93,6 @@ class Product
       $product->currentLocale = (string) ($data['locale'] ?? 'ru');
 
       return $product;
-    }
-
-    // private function loadImages(): void
-    // {
-    //   $rows = $productRepository->getProductImagesRows($this->id);
-    //   $this->imagesTotal = count($rows);
-
-    //   foreach ($rows as $row) {
-    //       if ((int)$row['image_order'] === 1 && $this->mainImage === null) {
-    //           $this->mainImage = $row['filename'];
-    //       } else {
-    //           $this->otherImages[] = $row['filename'];
-    //       }
-    //   }
-
-    //     // fallback: если не было image_order = 1, берём первое из остальных
-    //     if ($this->mainImage === null && !empty($this->otherImages)) {
-    //         $this->mainImage = array_shift($this->otherImages);
-    //     }
-    // }
-
-    // public function loadFromArray(array $row): void
-    // {
-    //     $this->id = (int) $row['id'];
-    //     $this->title = $row['title'];
-    //     $this->price = (float)$row['price'];
-
-    //     // Опциональные поля
-    //     $this->content = $row['content'] ?? '';
-    //     $this->category = $row['cat_title'] ?? '';
-    //     $this->brand = $row['brand_title'] ?? '';
-    //     $this->url = (string)$row['url'];
-    //     $this->datetime = (string) $row['datetime'];
-    //     $this->getImages();
-    // }
-
-    public function getMainImage(): ?string
-    {
-        if ($this->mainImage === null) {
-            // $this->loadImages();
-        }
-        return $this->mainImage;
-    }
-
-    public function getOtherImages(): array
-    {
-        if (empty($this->otherImages) && $this->mainImage === null) {
-            // $this->loadImages();
-        }
-        return $this->otherImages;
-    }
-
-    public function getGalleryVars(): array
-    {
-        $main = $this->getMainImage();
-        $others = $this->getOtherImages();
-
-        $visible = array_slice($others, 0, 4);
-        $hidden = array_slice($others, 4);
-
-        return [
-            'main' => $main,
-            'visible' => $visible,
-            'hidden' => $hidden,
-        ];
-    }
-
-    public function getImagesTotal(): int
-    {
-        if ($this->imagesTotal === null) {
-            $this->loadImages();
-        }
-        return $this->imagesTotal ?? 0;
     }
 
     public function getRelated(): array
@@ -208,44 +128,7 @@ class Product
         $this->images = ['main' => $main, 'others' => $others];
         return $this->images;
     }
-
-    // Ф-ция формирует массивы дляя галереи изображений
-    // public function getGalleryVars(): array
-    // {
-    //     if ($this->images === null) {
-    //         $this->getImages();
-    //     }
-
-    //     // $total = count($this->images);
-    //     // Главное изобрадение
-    //     $mainImage = $this->images[0] ?? null;
-
-    //     // Удалим его из массива остальных, чтобы не повторялось
-    //     $otherImages = array_slice($this->images, 1); // все, кроме первого
-
-    //     if ($total > 4) {
-    //         $visibleImages = array_slice($this->images, 1, 4);
-    //         $hiddenImages = array_slice($this->images, 4);
-    //     } else {
-    //         // Если изображений 4 или меньше — все показываем, скрытых нет
-    //         $visibleImages = $this->images;
-    //         $hiddenImages = [];
-    //     }
-
-    //     return [
-    //         'main' => $mainImage,
-    //         'visible' => $visibleImages,
-    //         'hidden' => $hiddenImages,
-    //     ];
-    // }
-
-
-    // Ф-ция возвращает похожие продукты
-    // public function getRelated(): array
-    // {
-    //     return get_related_products($this->title, $this->brand_title, $this->category);
-    // }
-
+    
     /**
      * Getters
     */
