@@ -27,15 +27,14 @@ class Product
     private string $content;
     private string $price;
     private string $url;
-    private string $article;
+    private string $sku;
     private int $stock;
     private string $datetime;
-    private ?array $images;      // массив изображений
     private array $translations;
     private string $seo_title;
     private string $seo_description;
-
     private string $currentLocale = 'ru';
+    private ?array $images;      // массив изображений
 
     private function __construct() {}
 
@@ -53,15 +52,13 @@ class Product
       $product->content = $dto->content;
       $product->price = $dto->price;
       $product->url = $dto->url;
-      $product->article = $dto->article;
+      $product->sku = $dto->sku;
       $product->stock = $dto->stock;
       $product->datetime = $dto->datetime;
-
-      $product->images = $dto->images;
-
       $product->translations = $dto->translations;
       $product->seo_title = $dto->seo_title;
       $product->seo_description = $dto->seo_description;
+      $product->images = $dto->images;
 
       return $product;
     }
@@ -77,7 +74,7 @@ class Product
       $product->content = (string) ($data['content'] ?? '');
       $product->price = (string) ($data['price'] ?? '');
       $product->url = (string) ($data['url'] ?? '');
-      $product->article =  (string) ($data['article'] ?? '');
+      $product->sku =  (string) ($data['sku'] ?? '');
       $product->stock =  (int) ($data['stock'] ?? 0);
       $product->datetime =  (string) ($data['datetime'] ?? '');
 

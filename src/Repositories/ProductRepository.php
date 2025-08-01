@@ -199,15 +199,15 @@ final class ProductRepository
             'content' => (string) $row['content'],
             'price' => (string) $row['price'],
             'url' => (string) $row['url'],
-            'article' => (string) $row['article'],
+            'sku' => (string) $row['sku'],
             'stock' => (int) $row['stock'],
             'datetime' => (string) $row['datetime'],
-            'images' => $imagesDTO,
             'images_total' => count($imagesDTO),
             'translations' => $translations,
             'seo_title' => $row['seo_title'] ?? '',
             'seo_description' => $row['seo_description'] ?? '',
             'locale' => $row['locale'] ?? 'ru',
+            'images' => $imagesDTO,
         ]);
 
         return Product::fromDTO($dto);
