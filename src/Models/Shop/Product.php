@@ -53,6 +53,7 @@ class Product
 
       $product->brand_id = $dto->brand_id;
       $product->brand_title = $dto->brand_title;
+      $product->brand = Brand::fromDTO($dto->brandDTO);
 
       $product->slug = $dto->slug;
       $product->title = $dto->title;

@@ -50,4 +50,9 @@ class ProductImageService
             'hidden' => $hidden,
         ];
     }
+
+    public function countAll(array $images): int
+    {
+      return count($images);
+    }
 }

@@ -2,9 +2,7 @@
 declare(strict_types=1);
 
 namespace Vvintage\Models\Brand;
-
-
-use RedBeanPHP\OODBBean;
+use Vvintage\DTO\Brand\BrandDTO;
 
 final class Brand
 {
@@ -12,14 +10,23 @@ final class Brand
     private string $title;
     private ?string $image;
 
+    private array $translations = [];
+    private string $seo_title = '';
+    private string $seo_description = '';
+    private string $currentLocale = 'ru';
+
     private function __construct() {}
-    
-    public static function fromBean(OODBBean $bean): self
+
+    public static function fromDTO(BrandDTO $dto): self
     {
         $brand = new self();
-        $brand->id = (int) $bean->id;
-        $brand->title = (string) $bean->title;
-        $brand->image = (string) $bean->image;
+        $brand->id = (int) $dto->id;
+        $brand->title = (string) $dto->title;
+        $brand->image = (string) $dto->image;
+
+        $brand->translations = $dto->translations;
+        $brand->seo_title = $dto->seo_title;
+        $brand->seo_description = $dto->seo_description;
         
         return $brand;
     }
@@ -27,12 +34,17 @@ final class Brand
     public static function fromArray(array $data): self
     {
         $brand = new self();
-        $brand->id = (int) $data['id'];
-        $brand->title = (string) $data['title'];
-        $brand->image = (string) $data['image'];
+        $brand->id = (int) ($data['id'] ?? 0);
+        $brand->title = (string) ($data['title'] ?? '');
+        $brand->image = (string) ($data['image'] ?? '');
+        $brand->translations = $data['translations'] ?? [];
+        $brand->seoTitle = (string) ($data['seo_title'] ?? '');
+        $brand->seoDescription = (string) ($data['seo_description'] ?? '');
+        $brand->currentLocale = (string) ($data['locale'] ?? 'ru');
         
         return $brand;
     }
+    
     
     // Геттеры 
     public function getId(): int

@@ -146,26 +146,24 @@ final class ProductRepository
         ]);
     }
 
-
     private function createBrandDTOFromArray(array $row): BrandDTO
     {
         $locale = $row['locale'] ?? 'ru';
-dd($row);
+
         return new BrandDTO([
-            'id' => (int) $row['category_id'],
-            'title' => (string) ($row['category_title_translation'] ?? ''),
-            'parent_id' => (int) ($row['category_parent_id'] ?? 0),
-            'image' => (string) ($row['category_image'] ?? ''),
+            'id' => (int) $row['brand_id'],
+            'title' => (string) ($row['brand_title_translation'] ?? ''),
+            'image' => (string) ($row['brand_image'] ?? ''),
             'translations' => [
                 $locale => [
-                    'title' => $row['category_title_translation'] ?? '',
-                    'description' => $row['category_description'] ?? '',
-                    'seo_title' => $row['category_meta_title'] ?? '',
-                    'seo_description' => $row['category_meta_description'] ?? '',
+                    'title' => $row['brand_title_translation'] ?? '',
+                    'description' => $row['brand_description'] ?? '',
+                    'seo_title' => $row['brand_meta_title'] ?? '',
+                    'seo_description' => $row['brand_meta_description'] ?? '',
                 ]
             ],
-            'seo_title' => $row['category_meta_title'] ?? '',
-            'seo_description' => $row['category_meta_description'] ?? '',
+            'seo_title' => $row['brand_meta_title'] ?? '',
+            'seo_description' => $row['brand_meta_description'] ?? '',
             'locale' => $locale,
         ]);
     }
@@ -186,7 +184,7 @@ dd($row);
     private function fetchProductWithJoins(array $row): Product
     {
         $productId = (int) $row['id'];
-dd($row);
+
         $translations = $this->loadTranslations($productId);
         $categoryDTO = $this->createCategoryDTOFromArray($row);
         $brandDTO = $this->createBrandDTOFromArray($row);

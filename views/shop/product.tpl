@@ -7,13 +7,9 @@
       <div class="product__content">
           
         <div class="product__gallery-container">
+
           <div class="gallery gallery--<?php echo h($productViewModel['imagesTotal']); ?>">
-           <!-- $productViewModel = [
-            'product' => $product,
-            'mainImage' => $imagesMainAndOthers['main'],
-            'gallery' => $imageService->splitVisibleHidden($imagesMainAndOthers['others']),
-            'related' => $relatedProducts,
-        ]; -->
+          
             <figure class="gallery__item gallery__item--1">
               <a 
                 href="<?php echo HOST . 'usercontent/products/' . u($productViewModel['main']->getFilename());?>" 
