@@ -38,7 +38,7 @@ final class ProductController extends BaseController
         $imageService = new ProductImageService();
         // Делим массив изобрадений на два массива - главное и другие
         $imagesMainAndOthers = $imageService->splitImages($product->getImages());
-        $relatedProducts = $product->getRelated();
+        $related = $product->getRelated();
 
         // Формируем единую модель для передачи в шаблон
         $productViewModel = [
@@ -46,8 +46,9 @@ final class ProductController extends BaseController
             'imagesTotal' => $product->getImagesTotal(),
             'main' => $imagesMainAndOthers['main'],
             'gallery' => $imageService->splitVisibleHidden($imagesMainAndOthers['others']),
-            'related' => $relatedProducts,
+            'related' => $related,
         ];
+
         // Название страницы
         $pageTitle = $product->getTitle();
 
