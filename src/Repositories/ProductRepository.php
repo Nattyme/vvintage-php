@@ -176,7 +176,7 @@ final class ProductRepository
             'seo_description' => $row['seo_description'] ?? '',
             'locale' => $row['locale'] ?? 'ru',
         ]);
-dd($dto);
+
         return Product::fromDTO($dto);
     }
 

@@ -19,4 +19,9 @@ final class ProductImageDTO
         $this->filename = (string) ($data['filename'] ?? '');
         $this->image_order = (int) ($data['image_order'] ?? 0);
     }
+
+    public function getFilename()
+    {
+      return $this->filename;
+    }
 }

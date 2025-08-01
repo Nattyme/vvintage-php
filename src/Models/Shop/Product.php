@@ -139,7 +139,7 @@ class Product
     public function getMainImage(): ?string
     {
         if ($this->mainImage === null) {
-            $this->loadImages();
+            // $this->loadImages();
         }
         return $this->mainImage;
     }
@@ -147,7 +147,7 @@ class Product
     public function getOtherImages(): array
     {
         if (empty($this->otherImages) && $this->mainImage === null) {
-            $this->loadImages();
+            // $this->loadImages();
         }
         return $this->otherImages;
     }

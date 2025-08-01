@@ -7,6 +7,7 @@ namespace Vvintage\Controllers\Shop;
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Repositories\ProductRepository;
+use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Models\Shop\Product;
 use Vvintage\Routing\RouteData;
 use Vvintage\Services\Page\Breadcrumbs;
@@ -27,19 +28,26 @@ final class ProductController extends BaseController
         $id = (int) $routeData->uriGet; // получаем id товара из URL
         $productRepository = new ProductRepository();
         $product = $productRepository->findById($id);
-dd($product);
+
         if (!$product) {
             http_response_code(404);
             echo 'Товар не найден';
             return;
         }
-    
-        // $imagesTotal = $product->getImagesTotal();
-        $product->setImages($this->fetchImageDTOs($productId)); // где $images — массив объектов ProductImageDTO
-        dd($products);
-        $images = $product->getGalleryVars();
+
+        $imageService = new ProductImageService();
+        // Делим массив изобрадений на два массива - главное и другие
+        $imagesMainAndOthers = $imageService->splitImages($product->getImages());
         $relatedProducts = $product->getRelated();
 
+        // Формируем единую модель для передачи в шаблон
+        $productViewModel = [
+            'product' => $product,
+            'imagesTotal' => $product->getImagesTotal(),
+            'main' => $imagesMainAndOthers['main'],
+            'gallery' => $imageService->splitVisibleHidden($imagesMainAndOthers['others']),
+            'related' => $relatedProducts,
+        ];
         // Название страницы
         $pageTitle = $product->getTitle();
 
@@ -51,9 +59,7 @@ dd($product);
               'pageTitle' => $pageTitle,
               'routeData' => $routeData,
               'breadcrumbs' => $breadcrumbs,
-              'product' => $product,
-              'images' => $images,
-              'relatedProducts' => $relatedProducts
+              'productViewModel' => $productViewModel
         ]);
     }
 }
