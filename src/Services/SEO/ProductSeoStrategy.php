@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\SEO;
 
 use Vvintage\Contracts\SeoStrategyInterface;
+use Vvintage\DTO\Common\SeoDTO;
 
 
 class ProductSeoStrategy implements SeoStrategyInterface
@@ -17,12 +18,15 @@ class ProductSeoStrategy implements SeoStrategyInterface
 
     public function getSeo(): SeoDTO
     {
-        // Используем данные из продукта, например, его поля
-        $meta = $this->product->translations[$this->product->currentLocale] ?? [];
+      $locale = $this->product->getCurrentLocale();
+      $translations = $this->product->getTranslations();
+
+        // Используем данные из продукта
+        $meta = $translations [ $locale ] ?? [];
 
         return new SeoDTO(
-            $meta['meta_title'] ?? $this->product->seo_title ?? '',
-            $meta['meta_description'] ?? $this->product->seo_description ?? ''
+            $meta['meta_title'] ?? $meta['title'] ?? '',
+            $meta['meta_description'] ?? $meta['description'] ?? ''
         );
     }
 }

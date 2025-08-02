@@ -20,6 +20,30 @@
         echo '';
       } 
     ?> 
+
+    <!-- SEO: description -->
+    <meta name="description" content="<?php echo h($seo->getDescription() ?? ''); ?>">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="<?php echo h(HOST . ltrim($_SERVER['REQUEST_URI'], '/')); ?>">
+    <!-- <link rel="canonical" href="<?php echo h($_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']); ?>"> -->
+
+    <!-- Meta language -->
+    <meta name="language" content="<?php echo h($locale ?? 'ru'); ?>">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="<?php echo h($seo->getTitle() ?? ''); ?>">
+    <meta property="og:description" content="<?php echo h($seo->getDescription() ?? ''); ?>">
+    <meta property="og:type" content="website">
+    <!-- <meta property="og:url" content="<?php echo h($_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']); ?>"> -->
+    <!-- <meta property="og:image" content="<?php echo h($ogImage ?? HOST . 'static/img/default-og.png'); ?>">  -->
+
+    <!-- Twitter Meta -->
+    <!-- <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php echo h($pageTitle); ?>">
+    <meta name="twitter:description" content="<?php echo h($pageDescription ?? ''); ?>">
+    <meta name="twitter:image" content="<?php echo h($ogImage ?? HOST . 'static/img/default-og.png'); ?>"> -->
+
    
 	</head>
 

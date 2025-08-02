@@ -174,4 +174,14 @@ class Product
         return $this->category->getTitle();
     }
 
+    public function getCurrentLocale(): string 
+    {
+      return $this->currentLocale;
+    }
+
+    public function getTranslations(): array 
+    {
+      return $this->translations;
+    }
+
 }
