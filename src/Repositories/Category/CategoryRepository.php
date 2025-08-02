@@ -6,14 +6,16 @@ namespace Vvintage\Repositories;
 
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\Contracts\Repositories\CategoryRepositoryInterface;
+
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
-final class CategoryRepository
+final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
 {
-    public function findById(int $id): ?Category
+    public function getCategoryById(int $id): ?Category
     {
-        $bean = R::findOne('categories', 'id = ?', [$id]);
+        $bean = $this->findById('categories', $id);
 
         if (!$bean || !$bean->id) {
             return null;
@@ -22,22 +24,17 @@ final class CategoryRepository
         return $this->mapBeanToCategory($bean);
     }
 
-    public function findAll(): array
+    public function getAllCategories(): array
     {
-        $beans = R::findAll('categories', 'ORDER BY id DESC');
+        $beans = $this->findAll('categories');
+
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
-    public function findByIds(array $ids): array
+    public function getCategoriesByIds(array $ids): array
     {
-        if (empty($ids)) {
-            return [];
-        }
+        $beans = $this->findByIds('categories', $ids);
 
-        $placeholders = R::genSlots($ids);
-        $sql = "id IN ($placeholders) ORDER BY id DESC";
-
-        $beans = R::find('categories', $sql, $ids);
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
@@ -48,29 +45,24 @@ final class CategoryRepository
 
     public function getSubCats(): array
     {
-        $beans = R::findAll('categories', 'parent_id IS NOT NULL');
+        $beans = $this->findAll('categories', 'parent_id IS NOT NULL');
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
     public function findCatsByParentId(?int $parentId = null): array
     {
         if ($parentId === null) {
-            $beans = R::findAll('categories', 'parent_id IS NULL');
+            $beans = $this->findAll('categories', 'parent_id IS NULL');
         } else {
-            $beans = R::findAll('categories', 'parent_id = ?', [$parentId]);
+            $beans = $this->findAll('categories', 'parent_id = ?', [$parentId]);
         }
 
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
-    public function countAll(): int
+    public function saveCategory(Category $cat): int
     {
-        return R::count('categories');
-    }
-
-    public function save(Category $cat): int
-    {
-        $bean = $cat->getId() ? R::load('categories', $cat->getId()) : R::dispense('categories');
+        $bean = $cat->getId() ? $this->loadBean('categories', $cat->getId()) : $this->createBean('categories');
 
         $bean->title = $cat->getTitle(); // по умолчанию ru
         $bean->parent_id = $cat->getParentId();
@@ -78,19 +70,19 @@ final class CategoryRepository
         $bean->seo_title = $cat->getSeoTitle();
         $bean->seo_description = $cat->getSeoDescription();
 
-        $id = (int) R::store($bean);
+        $id = (int) $this->saveBean($bean);
 
         // Сохраняем переводы в отдельную таблицу
         R::exec('DELETE FROM categories_translation WHERE category_id = ?', [$id]);
         foreach ($cat->getAllTranslations() as $locale => $translation) {
-            $transBean = R::dispense('categories_translation');
+            $transBean = $this->createBean('categories_translation');
             $transBean->category_id = $id;
             $transBean->locale = $locale;
             $transBean->title = $translation['title'] ?? '';
             $transBean->description = $translation['description'] ?? '';
             $transBean->meta_title = $translation['meta_title'] ?? '';
             $transBean->meta_description = $translation['meta_description'] ?? '';
-            R::store($transBean);
+            $this->saveBean($transBean);
         }
 
         return $id;
@@ -134,18 +126,20 @@ final class CategoryRepository
         return Category::fromDTO($dto);
     }
 
-        public function getCategoryWithChildren(int $id): array
+    public function getCategoryWithChildren(int $id): array
     {
         if ($id <= 0) {
             return [];
         }
 
         $parentBean = R::findOne('categories', 'id = ?', [$id]);
+
         if (!$parentBean) {
             return [];
         }
 
-        $childrenBeans = R::findAll('categories', 'parent_id = ?', [$id]);
+        $childrenBeans = $this->findAll('categories', 'parent_id = ?', [$id]);
+        // $childrenBeans = R::findAll('categories', 'parent_id = ?', [$id]);
 
         $result = [$this->mapBeanToCategory($parentBean)];
         foreach ($childrenBeans as $childBean) {
@@ -161,7 +155,7 @@ final class CategoryRepository
             return false;
         }
 
-        return R::count('categories', 'parent_id = ?', [$id]) > 0;
+        return $this->countAll('categories', 'parent_id = ?', [$id]) > 0;
     }
 
 }

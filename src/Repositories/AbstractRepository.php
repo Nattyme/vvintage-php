@@ -36,10 +36,19 @@ abstract class AbstractRepository
         return $bean ?: null;
     }
     
-    protected function findAll(string $table): array
+
+    /**
+     * @param string $table Название таблицы
+     * @param string|null $sql Дополнительные условия (например, WHERE, ORDER BY и т.д.)
+     * @param array $params Параметры для SQL-запроса
+     * @return OODBBean[]
+     */
+    protected function findAll(string $table, ?string $sql = null, array $params = []): array
     {
-        return R::findAll($table, 'ORDER BY id DESC ');
+        $sql = $sql ?? 'ORDER BY id DESC';
+        return R::findAll($table, $sql, $params);
     }
+
 
     protected function findByIds(string $table, array $ids): array
     {
@@ -55,9 +64,11 @@ abstract class AbstractRepository
     }
 
 
-    protected function countAll(string $table): int
+    protected function countAll(string $table, ?string $sql = null, array $params = []): int
     {
-        return (int) R::count($table);
+        $sql = $sql ?? '';
+
+        return (int) R::count($table, $sql, $params);
     }
 
 

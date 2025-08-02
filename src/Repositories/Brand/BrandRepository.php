@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Vvintage\Repositories;
 
-use Vvintage\Models\Brand\Brand;
-use Vvintage\DTO\Brand\BrandDTO;
-use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
 
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
+
+use Vvintage\Models\Brand\Brand;
+use Vvintage\DTO\Brand\BrandDTO;
+use Vvintage\Repositories\AbstractRepository;
+
+/** Контракты */
+use Vvintage\Contracts\Brand\BrandRepositoryInterface;
+
+
+
 
 final class BrandRepository extends AbstractRepository implements BrandRepositoryInterface
 {

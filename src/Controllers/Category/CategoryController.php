@@ -51,7 +51,7 @@ final class CategoryController
      */
     public function show(int $id, string $locale = 'ru'): ?array
     {
-        $category = $this->categoryRepository->findById($id);
+        $category = $this->categoryRepository->getCategoryById($id);
 
         if (!$category) {
             return null; // или можно бросить исключение
@@ -105,7 +105,7 @@ final class CategoryController
      */
     public function update(int $id, array $data): bool
     {
-        $existingCategory = $this->categoryRepository->findById($id);
+        $existingCategory = $this->categoryRepository->getCategoryById($id);
 
         if (!$existingCategory) {
             return false;

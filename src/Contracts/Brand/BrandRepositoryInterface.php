@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Repositories\Contracts;
+namespace Vvintage\Contracts\Brand;
 
 use Vvintage\Models\Brand\Brand;
 

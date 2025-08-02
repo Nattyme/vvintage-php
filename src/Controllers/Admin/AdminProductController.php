@@ -12,8 +12,8 @@ use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
 use Vvintage\Controllers\Admin\BaseAdminController;
 
 /** Репозитории */
-use Vvintage\Repositories\CategoryRepository;
-use Vvintage\Repositories\BrandRepository;
+use Vvintage\Repositories\Category\CategoryRepository;
+use Vvintage\Repositories\Brand\BrandRepository;
 use Vvintage\Repositories\ProductRepository;
 
 /** Сервисы */
