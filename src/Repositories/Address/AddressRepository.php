@@ -6,18 +6,24 @@ namespace Vvintage\Repositories;
 
 use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
+
+/** Контракты */
+use Vvintage\Contracts\Brand\BrandRepositoryInterface;
+
 use Vvintage\Models\Address\Address;
 
-final class AddressRepository
+
+
+final class AddressRepository extends AbstractRepository implements AddressRepositoryInterface
 {
     /**
      * Метод ищет адрес по id
      * @param int $id
      * @return Address|null
      */
-    public function findAddressById(int $id): ?Address
+    public function getAddressById(int $id): ?Address
     {
-        $bean = R::load('address', $id);
+        $bean = $this->loadBean('address', $id);
 
         if ($bean->id === 0) {
             return null;
@@ -27,26 +33,13 @@ final class AddressRepository
     }
 
     /**
-     * Метод возвращает все адреса
-     * 
-     * @return array
-     */
-    public function findAll(): array
-    {
-      return R::findAll( 'address' );
-    }
-
-
-
-    /**
      * Метод создает нового пользователя 
      * 
      * @return Address|null
     */
     public function createAddress(): ?Address
     {
-      // $userBean = R::load('users', $user_id);
-      $bean = R::dispense( 'address' );
+      $bean = $this->createBean( 'address' );
 
       $bean->name = null;
       $bean->surname = null;
@@ -62,15 +55,16 @@ final class AddressRepository
       
 
       // Сохраняем 
-      $addressId = R::store($bean);
+      $id = $this->saveBean($bean);
 
-      if ( !is_int(  $addressId  )) {
+      if ( !is_int(  $id  )) {
         return null;
       }
 
       return new Address($bean);
   
     }
+
     /**
      * Метод редактирует пользователя 
      * @param Address $addressrModel array $postData
@@ -79,7 +73,7 @@ final class AddressRepository
     public function editAddress(Address $addressModel, array $postData): ?Address
     {
       $id = $addressModel->getId();
-      $bean = R::load('address', $id);
+      $bean = $this->loadBean('address', $id);
 
       if ($bean->id !== 0) {
         $bean->name = $postData['name'] ?? '';
@@ -95,7 +89,7 @@ final class AddressRepository
         $bean->phone = $postData['phone'] ?? '';
 
         // Сохраняем 
-        $addressId = R::store($bean);
+        $addressId = $this->saveBean($bean);
     
         return new Address ($bean) ?? null;       
       }
@@ -113,10 +107,10 @@ final class AddressRepository
     public function removeAddress(Address $addressModel): void
     {
       $id = $addressModel->getId();
-      $bean = R::load('address', $id);
+      $bean = $this->loadBean('address', $id);
 
       if ($bean->id !== 0) {
-        R::trash( $bean ); 
+        $this->deleteBean( $bean ); 
       }
 
     }
