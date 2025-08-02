@@ -40,7 +40,7 @@ final class ProductController extends BaseController
         // Делим массив изобрадений на два массива - главное и другие
         $imagesMainAndOthers = $imageService->splitImages($product->getImages());
         $related = $product->getRelated();
-dd($product);
+
         // Формируем единую модель для передачи в шаблон
         $productViewModel = [
             'product' => $product,
