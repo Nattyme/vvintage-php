@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Shared;
 
-use Vvintage\Repositories\ProductRepository;
+use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Models\Shared\AbstractUserItemsList;
@@ -31,7 +31,7 @@ abstract class AbstractUserItemsListService
 
     public function getListItems ()
     {
-      return !empty($this->items) ? $this->productRepository->findByIds($this->items) : [];
+      return !empty($this->items) ? $this->productRepository->findProductsByIds($this->items) : [];
     }
 
     public function addItem($itemId)

@@ -16,8 +16,6 @@ use Vvintage\Repositories\AbstractRepository;
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 
 
-
-
 final class BrandRepository extends AbstractRepository implements BrandRepositoryInterface
 {
     private function uniteProductRawData(?int $id = null): array

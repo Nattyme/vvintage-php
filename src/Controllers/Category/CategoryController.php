@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers;
 
+use Vvintage\Contracts\Category\CategoryRepositoryInterfave;
 use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryDTO;
@@ -24,7 +25,7 @@ final class CategoryController
      */
     public function index(string $locale = 'ru'): array
     {
-        $rawCategories = $this->categoryRepository->getAll(); // массив из БД
+        $rawCategories = $this->categoryRepository->getAllCategories(); // массив из БД
 
         $categories = [];
 
@@ -92,7 +93,7 @@ final class CategoryController
     {
         $category = Category::fromArray($data);
 
-        return $this->categoryRepository->save($category);
+        return $this->categoryRepository->saveCategory($category);
     }
 
     /**
@@ -120,7 +121,7 @@ final class CategoryController
 
         $updatedCategory = Category::fromArray($updatedData);
 
-        $this->categoryRepository->save($updatedCategory);
+        $this->categoryRepository->saveCategory($updatedCategory);
 
         return true;
     }

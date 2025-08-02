@@ -82,7 +82,7 @@ class OrderService
         $result = [];
 
         // 1. Получаем продукты по id-шникам
-        $productData = $this->productRepository->findByIds($cart);
+        $productData = $this->productRepository->findProductsByIds($cart);
 
         // 2. Преобразуем корзину в массив с нужной информацией
         foreach ($cart as $productId => $amount) {

@@ -6,6 +6,9 @@ namespace Vvintage\Repositories;
 
 use RedBeanPHP\R;
 
+/** Контракты */
+use Vvintage\Repositories\AbstractRepository;
+
 /** Модели */
 use Vvintage\Models\Shop\Product;
 use Vvintage\Models\Category\Category;
@@ -17,10 +20,10 @@ use Vvintage\DTO\Product\ProductImageDTO;
 use Vvintage\DTO\Category\CategoryDTO;
 use Vvintage\DTO\Brand\BrandDTO;
 
-final class ProductRepository
+final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
   
-    public function findById(int $id): ?Product
+    public function getProductById(int $id): ?Product
     {
         $rows = $this->uniteProductRawData($id);
         return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
@@ -32,7 +35,7 @@ final class ProductRepository
         return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
 
-    public function findByIds(array $ids): array
+    public function findProductsByIds(array $ids): array
     {
         if (empty($ids)) {
             return [];
@@ -207,9 +210,4 @@ final class ProductRepository
         return Product::fromDTO($dto);
     }
 
-
-    public function countAll(): int
-    {
-        return (int) R::count('products');
-    }
 }

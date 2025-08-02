@@ -7,13 +7,13 @@ namespace Vvintage\Controllers\Shop;
 use Vvintage\Routing\RouteData;
 
 /** Контракты */
-use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
+use Vvintage\Contracts\Bramd\BrandRepositoryInterface;
 
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
 /** Репозитории */
-use Vvintage\Repositories\ProductRepository;
+use Vvintage\Repositories\Product\ProductRepository;
 
 /** Модель */
 use Vvintage\Models\Shop\Product;
@@ -42,7 +42,7 @@ final class ProductController extends BaseController
     {   
         $id = (int) $routeData->uriGet; // получаем id товара из URL
         $productRepository = new ProductRepository();
-        $product = $productRepository->findById($id);
+        $product = $productRepository->getProductById($id);
 
         if (!$product) {
             http_response_code(404);

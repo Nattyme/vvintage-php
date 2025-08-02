@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace Vvintage\Repositories;
 
+
+/** Контракты */
+use Vvintage\Contracts\Order\OrderRepositoryInterface;
+
 use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use Vvintage\Models\User\User;
 use Vvintage\Models\Order\Order;
-use Vvintage\Repositories\AddressRepository;
+use Vvintage\Repositories\Address\AddressRepository;
 
-final class OrderRepository
+
+
+final class OrderRepository extends AbstractRepository implements OrderRepositoryInterface
 {
     private AddressRepository $addressRepository;
 
@@ -33,17 +39,6 @@ final class OrderRepository
         $bean->price = $order->getPrice();
     }
 
-    private function loadBean(int $id)
-    {
-        return  R::load('orders', $id);
-    }
-
-    private function saveBean(OODBBean $bean)
-    {
-        return R::store($bean);
-    }
-
-
 
     /**
      * Метод ищет заказ по id
@@ -52,7 +47,7 @@ final class OrderRepository
      */
     public function findOrderById(int $id): ?Order
     {
-        $bean = $this->loadBean($id);
+        $bean = $this->loadBean('orders', $id);
 
         if ($bean->id === 0) {
             return null;
@@ -69,7 +64,7 @@ final class OrderRepository
     public function findOrdersByUserId(int $id): array
     {
         $orders = [];
-        $beans = R::findAll('orders', 'user_id = ?', [$id]);
+        $beans = $this->findAll('orders', 'user_id = ?', [$id]);
 
         foreach($beans as $bean) {
           $orders[] = Order::fromBean($bean);
@@ -78,38 +73,26 @@ final class OrderRepository
         return $orders;
     }
 
-
-    /**
-     * Метод возвращает все заказы
-     *
-     * @return array
-     */
-    public function findAll(): array
-    {
-        return R::findAll('orders');
-    }
-
-
     /**
      * Метод создает новый заказ
      *
      * @return User|null
     */
-    public function create( Order $order, User $user): ?Order
+    public function createOrder( Order $order, User $user): ?Order
     {
-        $bean = R::dispense('orders');
+        $bean = $this->createBean('orders');
 
         // Записываем параметры в bean
         $this->fillOrderBean($bean, $order);
 
         // Привязываем заказ к пользователю
-        $userBean = R::load('users', $user->getId());
+        $userBean = $this->loadBean('users', $user->getId());
         $bean->user = $userBean;
 
         // Сохраняем в БД
-        $orderId = $this->saveBean($bean);
+        $id = $this->saveBean($bean);
 
-        if (!is_int($orderId) || $orderId === 0) {
+        if (!is_int($id) || $id === 0) {
             return null;
         }
 
@@ -122,17 +105,17 @@ final class OrderRepository
      * @param User $userModel, array $newUserData
      * @return Order|null
      */
-    public function edit(int $orderId, array $order, User $user): ?Order
+    public function editOrder(int $id, array $order, User $user): ?Order
     {
-        $bean = $this->loadBean($orderId);
+        $bean = $this->loadBean('orders', $id);
 
         if ($bean->id !== 0) {
             // Записываем параметры в bean и сохраняем в БД
             $this->fillOrderBean($bean, $order);
 
-            $orderId = $this->saveBean($bean);
+            $id = $this->saveBean($bean);
 
-            if (!is_int($orderId) || $orderId === 0) {
+            if (!is_int($id) || $id === 0) {
                 return null;
             }
 
@@ -151,20 +134,20 @@ final class OrderRepository
     */
     public function removeOrder(Order $order, User $userModel): void
     {
-        $order_id = $order->getId();
+        $id = $order->getId();
         $user_id = $userModel->getId();
 
-        $bean = $this->loadBean($order_id);
+        $bean = $this->loadBean('orders', $id);
 
         if ($bean->id !== 0 && ($user_id === $bean->user_id || $userModel->getRole() === 'admin')) {
-            R::trash($bean);
+            $this->deleteBean($bean);
         }
 
     }
 
-    public static function countNew(): int
+    public static function countNewOrders(): int
     {
-        $beans = R::findAll('orders', 'status = ?', ['new']);
+        $beans = $this->findAll('orders', 'status = ?', ['new']);
 
         foreach($beans as $bean) {
           $orders[] = Order::fromBean($bean);
@@ -172,12 +155,5 @@ final class OrderRepository
 
         return count($beans);
     }
-
-    public function countAll(): int
-    {
-      return (int) R::count('orders');
-    }
-
-
 
 }
