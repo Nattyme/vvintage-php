@@ -140,8 +140,6 @@ final class ProductRepository
                     'seo_description' => $row['category_meta_description'] ?? '',
                 ]
             ],
-            'seo_title' => $row['category_meta_title'] ?? '',
-            'seo_description' => $row['category_meta_description'] ?? '',
             'locale' => $locale,
         ]);
     }
@@ -162,8 +160,6 @@ final class ProductRepository
                     'seo_description' => $row['brand_meta_description'] ?? '',
                 ]
             ],
-            'seo_title' => $row['brand_meta_title'] ?? '',
-            'seo_description' => $row['brand_meta_description'] ?? '',
             'locale' => $locale,
         ]);
     }
@@ -204,8 +200,6 @@ final class ProductRepository
             'datetime' => (string) $row['datetime'],
             'images_total' => count($imagesDTO),
             'translations' => $translations,
-            'seo_title' => $row['seo_title'] ?? '',
-            'seo_description' => $row['seo_description'] ?? '',
             'locale' => $row['locale'] ?? 'ru',
             'images' => $imagesDTO,
         ]);

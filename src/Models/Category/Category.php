@@ -13,8 +13,6 @@ final class Category
     private string $image;
 
     private array $translations = [];
-    private string $seo_title = '';
-    private string $seo_description = '';
     private string $currentLocale = 'ru';
 
     private function __construct() {}
@@ -28,8 +26,6 @@ final class Category
         $category->parent_id = $dto->parent_id;
         $category->image = $dto->image;
         $category->translations = $dto->translations;
-        $category->seo_title = $dto->seo_title;
-        $category->seo_description = $dto->seo_description;
 
         return $category;
     }
@@ -43,8 +39,6 @@ final class Category
         $category->parent_id = (int) ($data['parent_id'] ?? 0);
         $category->image = (string) ($data['image'] ?? '');
         $category->translations = $data['translations'] ?? [];
-        $category->seoTitle = (string) ($data['seo_title'] ?? '');
-        $category->seoDescription = (string) ($data['seo_description'] ?? '');
         $category->currentLocale = (string) ($data['locale'] ?? 'ru');
 
         return $category;
@@ -74,7 +68,7 @@ final class Category
         $locale = $locale ?? $this->currentLocale;
 
         return $this->translations[$locale]['seo_title']
-            ?? $this->seoTitle;
+            ?? '';
     }
 
     public function getSeoDescription(?string $locale = null): string
@@ -82,7 +76,7 @@ final class Category
         $locale = $locale ?? $this->currentLocale;
 
         return $this->translations[$locale]['seo_description']
-            ?? $this->seoDescription;
+            ?? '';
     }
 
     public function getId(): int

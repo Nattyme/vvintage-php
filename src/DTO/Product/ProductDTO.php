@@ -30,8 +30,6 @@ final class ProductDTO
     
 
     public array $translations;
-    public string $seo_title;
-    public string $seo_description;
     public string $locale; 
 
     public function __construct(array $data)
@@ -68,8 +66,6 @@ final class ProductDTO
         $this->imagesTotal = isset($this->images) ? count($this->images) : null;
 
         $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
-        $this->seo_title = (string) ($data['seo_title'] ?? '');
-        $this->seo_description = (string) ($data['seo_description'] ?? '');
         $this->locale = (string) ($data['locale'] ?? 'ru'); // локаль по умолчанию
     }
 }

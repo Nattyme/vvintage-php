@@ -31,8 +31,6 @@ class Product
     private int $stock;
     private string $datetime;
     private array $translations;
-    private string $seo_title;
-    private string $seo_description;
     private string $currentLocale = 'ru';
     private ?array $images;      // массив изображений
 
@@ -56,8 +54,6 @@ class Product
       $product->stock = $dto->stock;
       $product->datetime = $dto->datetime;
       $product->translations = $dto->translations;
-      $product->seo_title = $dto->seo_title;
-      $product->seo_description = $dto->seo_description;
       $product->images = $dto->images;
 
       return $product;
@@ -81,8 +77,6 @@ class Product
       $product->images = $data['images'] ?? [];
 
       $product->translations = $data['translations'] ?? [];
-      $product->seo_title = (string) ($data['seo_title'] ?? '');
-      $product->seo_description = (string) ($data['seo_description'] ?? '');
       $product->currentLocale = (string) ($data['locale'] ?? 'ru');
 
       return $product;

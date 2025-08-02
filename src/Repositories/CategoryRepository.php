@@ -128,9 +128,7 @@ final class CategoryRepository
             'title' => (string) $bean->title,
             'parent_id' => (int) $bean->parent_id,
             'image' => (string) $bean->image,
-            'translations' => $translations,
-            'seo_title' => $bean->seo_title ?? '',
-            'seo_description' => $bean->seo_description ?? '',
+            'translations' => $translations
         ]);
 
         return Category::fromDTO($dto);

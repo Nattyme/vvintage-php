@@ -9,9 +9,7 @@ final class CategoryDTO
     public string $title;
     public int $parent_id;
     public string $image;
-    public array $translations; // ['ru' => [...], 'en' => [...]]
-    public string $seo_title;
-    public string $seo_description;
+    public array $translations; // ['ru' => [...], 'en' => [...]
 
     public function __construct(array $data)
     {
@@ -20,7 +18,5 @@ final class CategoryDTO
         $this->parent_id = (int) ($data['parent_id'] ?? 0);
         $this->image = (string) ($data['image'] ?? '');
         $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
-        $this->seo_title = (string) ($data['seo_title'] ?? '');
-        $this->seo_description = (string) ($data['seo_description'] ?? '');
     }
 }
