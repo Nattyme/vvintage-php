@@ -8,12 +8,14 @@ namespace Vvintage\Repositories;
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
+
+/** Контракты */
+use Vvintage\Contracts\Brand\BrandRepositoryInterface;
+
 use Vvintage\Models\Brand\Brand;
 use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\Repositories\AbstractRepository;
 
-/** Контракты */
-use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 
 
 final class BrandRepository extends AbstractRepository implements BrandRepositoryInterface

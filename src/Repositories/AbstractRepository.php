@@ -35,7 +35,13 @@ abstract class AbstractRepository
         $bean = R::findOne($table, 'id = ?', [$id]);
         return $bean ?: null;
     }
-    
+
+    protected function findOneBy(string $table, string $sql, array $params): ?OODBBean
+    {
+        $bean = R::findOne($table, $sql, $params);
+        return $bean ?: null;
+    }
+
 
     /**
      * @param string $table Название таблицы

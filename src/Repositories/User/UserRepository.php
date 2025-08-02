@@ -7,11 +7,14 @@ namespace Vvintage\Repositories;
 use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 
+/** Контракты */
+use Vvintage\Contracts\User\UserRepositoryInterface;
+
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
-use Vvintage\Repositories\AddressRepository;
+use Vvintage\Repositories\Address\AddressRepository;
 
-final class UserRepository
+final class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
     private const TABLE_USERS = 'users';
     private const TABLE_ADDRESSES = 'address';
@@ -24,20 +27,6 @@ final class UserRepository
       $this->addressRepository = new AddressRepository();
     }
 
-    private function loadBean (string $tableName, int $id): OODBBean
-    {
-      return R::load($tableName, $id);
-    }
-
-    private function saveUser(OODBBean $bean): int
-    {
-      return R::store($bean);
-    }
-
-    private function findUserBeanByEmail(string $tableName, string $email): ?OODBBean
-    {
-      return R::findOne($tableName, 'email = ?', [strtolower($email)]);
-    }
 
     private function hashPassword(string $password): string
     {
@@ -49,7 +38,7 @@ final class UserRepository
      * @param int $id
      * @return User|null
      */
-    public function findUserById(int $id): ?User
+    public function getUserById(int $id): ?User
     {
         $bean = $this->loadBean(self::TABLE_USERS, $id);
 
@@ -64,9 +53,9 @@ final class UserRepository
      * @param string $email
      * @return OODBBean
      */
-    public function findUserByEmail(string $email): ?User
+    public function getUserByEmail(string $email): ?User
     {
-      $bean = $this->findUserBeanByEmail(self::TABLE_USERS, $email);
+      $bean = $this->findOneBy(self::TABLE_USERS, 'email = ?', [strtolower($email)]);
 
       if (!$bean) {
           return null;
@@ -77,7 +66,7 @@ final class UserRepository
 
     public function findBlockedUserByEmail (string $email): bool 
     {
-      $bean = $this->findUserBeanByEmail(self::TABLE_BLOCKED_USERS, $email);
+      $bean = $this->findOneBy(self::TABLE_BLOCKED_USERS, 'email = ?', [strtolower($email)]);
       return $bean ? true : false;
     }
 
@@ -86,12 +75,10 @@ final class UserRepository
      * 
      * @return array
      */
-    public function findAll(): array
+    public function getAllUsers(): array
     {
-      return R::findAll(self::TABLE_USERS);
+      return $this->findAll(self::TABLE_USERS);
     }
-
-
 
     /**
      * Метод создает нового пользователя 
@@ -100,7 +87,7 @@ final class UserRepository
     */
     public function createUser(array $postData): ?User
     {
-      $bean = R::dispense(self::TABLE_USERS);
+      $bean = $this->createBean(self::TABLE_USERS);
 
       $bean->role = 'user';
       $bean->email = strtolower($postData['email']);;
@@ -123,7 +110,7 @@ final class UserRepository
       $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
       $bean->address = $addressBean;
 
-      $userId = $this->saveUser($bean);
+      $userId = $this->saveBean($bean);
 
       return new User ($bean);
     }
@@ -149,7 +136,7 @@ final class UserRepository
         $bean->avatar = $postData['avatar'] ?? '';
         $bean->avatar_small = $postData['avatar_small'] ?? '';
 
-        $userId = $this->saveUser($bean);
+        $userId = $this->saveBean($bean);
   
         return new User ($bean);
       }
@@ -165,7 +152,7 @@ final class UserRepository
       if ($bean->id !== 0) {
         $bean->recovery_code = $recoveryCode;
 
-        $this->saveUser($bean);
+        $this->saveBean($bean);
       }
     }
 
@@ -188,7 +175,7 @@ final class UserRepository
 
       if ($bean->id !== 0) {
         $bean->password = $this->hashPassword($password);
-        $this->saveUser($bean);
+        $this->saveBean($bean);
       }
     }
 
@@ -201,7 +188,7 @@ final class UserRepository
 
       if ($userBean->id !== 0) {
         $userBean->address = $addressBean;
-        $this->saveUser($userBean);
+        $this->saveBean($userBean);
       }
     }
 
@@ -223,7 +210,7 @@ final class UserRepository
       $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
       $bean->address = $addressBean;
 
-      return $this->saveUser($bean);
+      return $this->saveBean($bean);
     }
 
 
@@ -240,7 +227,7 @@ final class UserRepository
 
         // Обновляем корзину
         $userBean->$itemKey = json_encode($items);
-        $this->saveUser($userBean);
+        $this->saveBean($userBean);
     }
 
 
@@ -274,11 +261,4 @@ final class UserRepository
         $userItems = !empty($bean->$itemsKey) ? json_decode($bean->$itemsKey, true) : [];
         return $userItems;
     }
-
-    
-    public function countAll(): int
-    {
-      return (int) R::count(self::TABLE_USERS);
-    }
-
 }
