@@ -28,7 +28,7 @@ class HomeAdminController extends BaseAdminController
   private function renderHomeAdmin(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Панель управления - статистика сайта';
+    $pageTitle = 'Cтатистика сайта';
 
     $this->renderLayout('main/index',  [
       'pageTitle' => $pageTitle,

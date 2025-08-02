@@ -59,14 +59,18 @@
 
       <!-- body -->
       <tbody class="product-table__body">
+        <?php foreach ($productViewModel['products'] as $product) : ?>
+          <?php 
+              $images = $productViewModel['imagesByProductId'][$product->getId()] ?? null;
+              $mainImage = $images['main'] ?? null;
+          ?>
 
-        <?php foreach ($products as $product) : ?>
           <tr>
             <td class="product-table__img">
-            <?php if (file_exists(ROOT . 'usercontent/products/' . $product->getMainImage())) : ?>
+            <?php if (file_exists(ROOT . 'usercontent/products/' . $mainImage->getFilename())) : ?>
               <img 
-                src="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>" 
-                srcset="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage());?>" 
+                src="<?php echo HOST . 'usercontent/products/' . h($mainImage->getFilename());?>" 
+                srcset="<?php echo HOST . 'usercontent/products/' . h($mainImage->getFilename());?>" 
                 alt="<?php echo h($product->getTitle());?>" loading="lazy"
               >
             <?php else : ?>
@@ -83,10 +87,10 @@
               </a>
             </td>
             <td>
-              <?php echo h($product->getBrand()); ?>
+              <?php echo h($product->getBrandTitle()); ?>
             </td>
             <td>
-              <?php echo h($product->getCategory() ?? '');?>
+              <?php echo h($product->getCategoryTitle() ?? '');?>
             </td>
             <td>
               <?php echo h($product->getPrice() ?? ''); ?>  &euro;
@@ -152,7 +156,10 @@
               </label>
             </td>
           </tr>
-        <?php endforeach; ?> 
+    
+              
+        <?php endforeach; ?>  
+
       </tbody>
       <!-- body -->
     </table>
@@ -163,8 +170,8 @@
 
 
   <div class="section-pagination">
-    <?php  if (count($products) > 0 ) : 
-      include ROOT . 'templates/_parts/pagination/_pagination.tpl'; 
+    <?php  if ( $productViewModel['total'] > 0 ) : 
+      include ROOT . 'views/_parts/pagination/_pagination.tpl'; 
      endif;  ?>
   </div>
   

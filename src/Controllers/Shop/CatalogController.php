@@ -36,6 +36,7 @@ final class CatalogController extends BaseController
       $pageTitle = 'Каталог товаров';
 
       $productsPerPage = 9;
+        
       // Получаем параметры пагинации
       $pagination = pagination($productsPerPage, 'products');
 
