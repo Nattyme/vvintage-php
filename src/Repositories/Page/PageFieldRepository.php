@@ -5,15 +5,24 @@ namespace Vvintage\Repositories\Page;
 
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 use RedBeanPHP\R; // Подключаем readbean
+
+
+/** Контракты */
+use Vvintage\Contracts\Page\PageFieldRepositoryInterface;
+
+/** Абстрактный репозиторий */
+use Vvintage\Repositories\AbstractRepository;
+
+/** Модели */
 use Vvintage\Models\Page\PageField;
 
 
-final class PageFieldRepository
+final class PageFieldRepository extends AbstractRepository implements PageFieldRepositoryInterface
 {
   public static function getFieldsByPageId (int $pageId): array
   {
     // Найдём страницу
-    $bean = R::load('pages', $pageId);
+    $bean = $this->loadBean('pages', $pageId);
   
     // Получить список всех связанных полей страницы
     $fields = $bean->ownPageFieldsList;
@@ -23,11 +32,11 @@ final class PageFieldRepository
 
   }
 
-  public static function saveFields (int $pageId, array $pageFields): void
+  public static function saveFields (int $id, array $pageFields): void
   {
     // Найдем страницу
-    $page = R::load('pages', $pageId);
-    $page->ownPageFieldsList = [];
+    $bean = $this->loadBean('pages', $id);
+    $bean->ownPageFieldsList = [];
 
     foreach ($pageFields as $name => $value) {
       $field = R::dispense('page_fields');
@@ -35,10 +44,10 @@ final class PageFieldRepository
       $field->value = $value;
 
       // Добавляем новое поле к странице.
-      $page->ownPageFieldsList[] = $field;
+      $bean->ownPageFieldsList[] = $field;
     }
 
-    R::store($page);
+    $this->saveBean($bean);
 
   }
 }
