@@ -7,6 +7,8 @@ namespace Vvintage\Repositories;
 use RedBeanPHP\R;
 
 /** Контракты */
+use Vvintage\Contracts\Product\ProductRepositoryInterface;
+
 use Vvintage\Repositories\AbstractRepository;
 
 /** Модели */

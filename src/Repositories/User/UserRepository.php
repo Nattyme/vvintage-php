@@ -10,6 +10,9 @@ use RedBeanPHP\OODBBean; // для обозначения типа даннны�
 /** Контракты */
 use Vvintage\Contracts\User\UserRepositoryInterface;
 
+/** Абстрактный репозиторий */
+use Vvintage\Repositories\AbstractRepository;
+
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Repositories\Address\AddressRepository;

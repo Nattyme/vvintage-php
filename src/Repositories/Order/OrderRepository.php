@@ -5,14 +5,20 @@ declare(strict_types=1);
 namespace Vvintage\Repositories;
 
 
+use RedBeanPHP\R; // Подключаем readbean
+use RedBeanPHP\OODBBean; // для обозначения типа даннных
+
 /** Контракты */
 use Vvintage\Contracts\Order\OrderRepositoryInterface;
 
-use RedBeanPHP\R; // Подключаем readbean
-use RedBeanPHP\OODBBean; // для обозначения типа даннных
+/** Абстрактный репозиторий */
+use Vvintage\Repositories\AbstractRepository;
+
+use Vvintage\Repositories\Address\AddressRepository;
+
+/** Модели */
 use Vvintage\Models\User\User;
 use Vvintage\Models\Order\Order;
-use Vvintage\Repositories\Address\AddressRepository;
 
 
 

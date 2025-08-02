@@ -8,7 +8,10 @@ use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
 
 /** Контракты */
-use Vvintage\Contracts\Brand\BrandRepositoryInterface;
+use Vvintage\Contracts\Address\AddressRepositoryInterface;
+
+/** Абстрактный репозиторий */
+use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\Address\Address;
 
