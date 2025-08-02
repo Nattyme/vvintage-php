@@ -17,7 +17,7 @@ use Vvintage\Repositories\AbstractRepository;
 use Vvintage\Models\Blog\Post;
 
 
-final class PostRepository extends AbstractRepository implements BrandRepositoryInterface
+final class PostRepository extends AbstractRepository implements PostRepositoryInterface
 {  
     public function getPostById(int $id): ?Post
     {

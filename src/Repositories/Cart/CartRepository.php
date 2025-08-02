@@ -6,9 +6,20 @@ namespace Vvintage\Repositories;
 
 use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
+
+
+/** Контракты */
+use Vvintage\Contracts\Cart\CartRepositoryInterface;
+
+/** Абстрактный репозиторий */
+use Vvintage\Repositories\AbstractRepository;
+
+/** Модели */
 use Vvintage\Models\Cart\Cart;
 
-final class CartRepository
+
+
+final class CartRepository extends AbstractRepository implements CartRepositoryInterface
 {
     public function getCart(User $user): Cart
     {
@@ -19,6 +30,6 @@ final class CartRepository
     public function saveCart(User $user, Cart $cart): void
     {
         $user->cart = json_encode($cart->getItems());
-        R::store($user);
+        $this->saveBean($user);
     }
 }

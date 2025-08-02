@@ -6,42 +6,44 @@ namespace Vvintage\Repositories;
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
+
+/** Контракты */
+use Vvintage\Contracts\PostCategory\PostCategoryRepositoryInterface;
+
+/** Абстрактный репозиторий */
+use Vvintage\Repositories\AbstractRepository;
+
 /** Модель */
 use Vvintage\Models\PostCategory\PostCategory;
 
 /** DTO */
 use Vvintage\DTO\PostCategory\PostCategoryDTO;
 
-final class PostCategoryRepository
+
+
+final class PostCategoryRepository extends AbstractRepository implements PostCategoryRepositoryInterface
 {
-    public function findById(int $id): ?PostCategory
+    public function getPostCatById(int $id): ?PostCategory
     {
-        $bean = R::findOne('posts_categories', 'id = ?', [$id]);
+        $bean = $this->findById('posts_categories', $id);
 
         if (!$bean || !$bean->id) {
             return null;
         }
 
-        return $this->mapBeanToCategory($bean);
+        return $this->mapBeanToPostCategory($bean);
     }
 
-    public function findAll(): array
+    public function getAllPostCats(): array
     {
-        $beans = R::findAll('posts_categories', 'ORDER BY id DESC');
-        return array_map([$this, 'mapBeanToCategory'], $beans);
+        $beans = $this->findAll('posts_categories');
+        return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
-    public function findByIds(array $ids): array
+    public function getPostCatsByIds(array $ids): array
     {
-        if (empty($ids)) {
-            return [];
-        }
-
-        $placeholders = R::genSlots($ids);
-        $sql = "id IN ($placeholders) ORDER BY id DESC";
-
-        $beans = R::find('posts_categories', $sql, $ids);
-        return array_map([$this, 'mapBeanToCategory'], $beans);
+        $beans = $this->findByIds('posts_categories', $ids);
+        return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
     public function getMainCats(): array
@@ -51,29 +53,26 @@ final class PostCategoryRepository
 
     public function getSubCats(): array
     {
-        $beans = R::findAll('posts_categories', 'parent_id IS NOT NULL');
-        return array_map([$this, 'mapBeanToCategory'], $beans);
+        $beans = $this->findAll('posts_categories', 'parent_id IS NOT NULL');
+
+        return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
-    public function findCatsByParentId(?int $parentId = null): array
+    public function getPostCatsByParentId(?int $id = null): array
     {
-        if ($parentId === null) {
-            $beans = R::findAll('posts_categories', 'parent_id IS NULL');
+        if ($id === null) {
+            $beans = $this->findAll('posts_categories', 'parent_id IS NULL');
         } else {
-            $beans = R::findAll('posts_categories', 'parent_id = ?', [$parentId]);
+            $beans = $this->findAll('posts_categories', 'parent_id = ?', [$id]);
         }
 
-        return array_map([$this, 'mapBeanToCategory'], $beans);
+        return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
-    public function countAll(): int
-    {
-        return R::count('posts_categories');
-    }
 
-    public function save(Category $cat): int
+    public function savePostCat(Category $cat): int
     {
-        $bean = $cat->getId() ? R::load('posts_categories', $cat->getId()) : R::dispense('posts_categories');
+        $bean = $cat->getId() ? $this->loadBean('posts_categories', $cat->getId()) : $this->createBean('posts_categories');
 
         $bean->title = $cat->getTitle(); // по умолчанию ru
         $bean->parent_id = $cat->getParentId();
@@ -81,19 +80,19 @@ final class PostCategoryRepository
         $bean->seo_title = $cat->getSeoTitle();
         $bean->seo_description = $cat->getSeoDescription();
 
-        $id = (int) R::store($bean);
+        $id = (int) $this->saveBean($bean);
 
         // Сохраняем переводы в отдельную таблицу
         R::exec('DELETE FROM categories_translation WHERE category_id = ?', [$id]);
         foreach ($cat->getAllTranslations() as $locale => $translation) {
-            $transBean = R::dispense('categories_translation');
+            $transBean = $this->createBean('categories_translation');
             $transBean->category_id = $id;
             $transBean->locale = $locale;
             $transBean->title = $translation['title'] ?? '';
             $transBean->description = $translation['description'] ?? '';
             $transBean->meta_title = $translation['meta_title'] ?? '';
             $transBean->meta_description = $translation['meta_description'] ?? '';
-            R::store($transBean);
+            $this->saveBean($transBean);
         }
 
         return $id;
@@ -122,7 +121,7 @@ final class PostCategoryRepository
         return $translations;
     }
 
-    private function mapBeanToCategory(OODBBean $bean): Category
+    private function mapBeanToPostCategory(OODBBean $bean): Category
     {
         $translations = $this->loadTranslations((int) $bean->id);
 
