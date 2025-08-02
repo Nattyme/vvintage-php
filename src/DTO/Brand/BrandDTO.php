@@ -9,8 +9,6 @@ final class BrandDTO
     public string $title;
     public string $image;
     public array $translations; // ['ru' => [...], 'en' => [...]]
-    public string $seo_title;
-    public string $seo_description;
 
     public function __construct(array $data)
     {
@@ -18,7 +16,5 @@ final class BrandDTO
         $this->title = (string) ($data['title'] ?? '');
         $this->image = (string) ($data['image'] ?? '');
         $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
-        $this->seo_title = (string) ($data['seo_title'] ?? '');
-        $this->seo_description = (string) ($data['seo_description'] ?? '');
     }
 }

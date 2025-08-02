@@ -13,11 +13,15 @@ use Vvintage\Services\Product\ProductImageService;
 class AdminProductController extends BaseAdminController
 {
   private ProductRepository $productRepository;
+  private CategoryRepository $categoryRepository;
+  private BrandRepository $brandRepository;
 
   public function __construct()
   {
     parent::__construct();
     $this->productRepository = new ProductRepository();
+    $this->categoryRepository = new CategoryRepository();
+    $this->brandRepository = new BrandRepository();
   }
 
   public function all (RouteData $routeData)
@@ -37,20 +41,19 @@ class AdminProductController extends BaseAdminController
     // Получаем продукт 
     $productId = $_GET['id'];
     $product = $this->productRepository->findById((int) $productId);
-    dd($product);
-    // Репозитории
-    $catsRepository = new CategoryRepository();
-    $brandsRepository = new BrandRepository();
+
+    dd($this->brandRepository->getBrandById(1));
+    dd($this->brandRepository->findAll());
 
     // Получаем главные категориии, подкатегории и бренды
-    $mainCats = $catsRepository->getMainCats();
-    $subCats = $catsRepository->getSubCats();
+    $mainCats = $this->categoryRepository->getMainCats();
+    $subCats = $this->categoryRepository->getSubCats();
     $brands = $brandsRepository->findAll();
 
 
     // Загружаем объект категории
-    $subCatBean = R::load('categories', $product['category']);
-    $selectedSubCat =  $product->getCategory();
+    // $subCatBean = R::load('categories', $product['category']);
+    // $selectedSubCat =  $product->getCategory();
 
     // Главный раздел
     $selectedMaiCat = $subCatBean->parent_id;

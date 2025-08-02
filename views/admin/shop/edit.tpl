@@ -17,14 +17,14 @@
         <div class="admin-form__field">
           <label class="admin-form__label" for="title">Название товара</label>
           <input id="title" name="title" class="admin-form__input input" type="text"
-                  value="<?php echo h($product['title']);?>"
+                  value="<?php echo h($product->getTitle());?>"
                   placeholder="Введите название" required/>
         </div>
 
         <div class="admin-form__field">
           <label class="admin-form__label" for="price">Цена</label>
           <input id="price" name="price" class="admin-form__input input" type="text"
-                  value="<?php echo h($product['price']);?>"
+                  value="<?php echo h($product->getPrice());?>"
                   placeholder="Введите цену в &euro;" required
           />
         </div>
@@ -32,7 +32,7 @@
         <div class="admin-form__field">
           <label class="admin-form__label" for="article">Артикул</label>
           <input id="article" name="article" class="admin-form__input input" type="text"
-                  value="<?php echo isset($product['article']) ? h($product['article']) : '';?>"
+                  value="<?php echo !empty($product->getSku()) ? h($product->getSku()) : '';?>"
                   placeholder="Введите артикул" 
           />
         </div>
@@ -40,7 +40,7 @@
         <div class="admin-form__field">
           <label class="admin-form__label" for="url">Ссылка</label>
           <input id="url" name="url" class="admin-form__input input" type="text"
-                  value="<?php echo isset($product['url']) ? h($product['url']) : '';?>"
+                  value="<?php echo !empty($product->getUrl()) ? h($product->getUrl()) : '';?>"
                   placeholder="Введите ссылку на vinted.fr" 
                   required
           />

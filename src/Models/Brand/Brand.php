@@ -11,8 +11,6 @@ final class Brand
     private ?string $image;
 
     private array $translations = [];
-    private string $seo_title = '';
-    private string $seo_description = '';
     private string $currentLocale = 'ru';
 
     private function __construct() {}
@@ -25,8 +23,6 @@ final class Brand
         $brand->image = (string) $dto->image;
 
         $brand->translations = $dto->translations;
-        $brand->seo_title = $dto->seo_title;
-        $brand->seo_description = $dto->seo_description;
         
         return $brand;
     }
