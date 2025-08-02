@@ -3,15 +3,20 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Shop;
 
+use Vvintage\Routing\RouteData;
+
+/** Контракты */
+use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
 
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Repositories\ProductRepository;
 
-use Vvintage\Services\Product\ProductImageService;
-
-use Vvintage\Routing\RouteData;
+/** Модели */
 use Vvintage\Models\Shop\Catalog;
+
+/** Сервисы */
+use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Page\Breadcrumbs;
 
 require_once ROOT . "./libs/functions.php";

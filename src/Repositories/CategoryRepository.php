@@ -133,4 +133,35 @@ final class CategoryRepository
 
         return Category::fromDTO($dto);
     }
+
+        public function getCategoryWithChildren(int $id): array
+    {
+        if ($id <= 0) {
+            return [];
+        }
+
+        $parentBean = R::findOne('categories', 'id = ?', [$id]);
+        if (!$parentBean) {
+            return [];
+        }
+
+        $childrenBeans = R::findAll('categories', 'parent_id = ?', [$id]);
+
+        $result = [$this->mapBeanToCategory($parentBean)];
+        foreach ($childrenBeans as $childBean) {
+            $result[] = $this->mapBeanToCategory($childBean);
+        }
+
+        return $result;
+    }
+
+    public function hasChildren(int $id): bool
+    {
+        if ($id <= 0) {
+            return false;
+        }
+
+        return R::count('categories', 'parent_id = ?', [$id]) > 0;
+    }
+
 }

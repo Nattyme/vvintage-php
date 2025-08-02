@@ -5,18 +5,14 @@ declare(strict_types=1);
 namespace Vvintage\Repositories;
 
 use Vvintage\Models\Brand\Brand;
+use Vvintage\DTO\Brand\BrandDTO;
+use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
 
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
-final class BrandRepository
+final class BrandRepository extends AbstractRepository implements BrandRepositoryInterface
 {
-    private function findById(int $id): ?OODBBean
-    {
-        $bean = R::findOne('brands', 'id = ?', [$id]);
-        return $bean ?: null;
-    }
-
     private function uniteProductRawData(?int $id = null): array
     {
         $sql = '
@@ -26,9 +22,10 @@ final class BrandRepository
                 bt.title,
                 bt.description,
                 bt.meta_title,
-                bt.meta_description,
+                bt.meta_description
             FROM brands b
-            LEFT JOIN brands_translation pt ON bt.brand_id = b.id AND bt.locale = ?
+            LEFT JOIN brands_translation bt ON bt.brand_id = b.id AND bt.locale = ?
+
         ';
 
         $locale = 'ru';
@@ -62,7 +59,7 @@ final class BrandRepository
     }
 
     /**
-     * Загружает переводы из categories_translation
+     * Загружает переводы из brands_translation
      */
     private function loadTranslations(int $id): array
     {
@@ -84,11 +81,11 @@ final class BrandRepository
         return $translations;
     }
 
+
     // Находит бренд по id и возвращает объект
-    
     public function getBrandById(int $id): ?Brand
     {
-        $bean = $this->findById($id);
+        $bean = $this->findById('brands', $id);
 
         if (!$bean || !$bean->id) {
             return null;
@@ -97,146 +94,72 @@ final class BrandRepository
         return $this->mapBeanToBrand($bean);
     }
 
-
-
-    private function findAll(): array
+    /** Находим все бренды и возвращаем в виде массива объектов */
+    public function getBrands (): array
     {
-        return R::findAll('brands', 'ORDER BY id DESC ');
+      $beans = $this->findAll('brands');
+
+      if (empty($beans)) {
+            return [];
+      }
+
+      return array_map([$this, 'mapBeanToBrand'], $beans);
     }
 
-    public function findByIds(array $ids): array
+    /** Возвращает массив объеков Brands по определенным id */
+    public function getBrandsByIds(array $ids): array
     {
         if (empty($ids)) {
             return [];
         }
 
-        // Подготовим placeholders (?, ?, ?) и массив параметров
-        $placeholders = R::genSlots($ids);
-        $sql = "id IN ($placeholders) ORDER BY id DESC";
+        $beans = $this->findByIds('brands', $ids);
 
-        return R::find('brands', $sql, $ids);
-    }
-
-    public function countAll(): int
-    {
-        return R::count('brands');
-    }
-
-    public function save(Brand $brand): int
-    {
-        $bean = R::dispense('brands');
-
-        $bean->title = $brand->title;
-
-        return (int) R::store($bean);
-    }
-
-    public function getBrands (): array
-    {
-
-    }
-
-
-
-    // public function findAll(): array
-    // {
-    //     $beans = R::findAll('categories', 'ORDER BY id DESC');
-    //     return array_map([$this, 'mapBeanToCategory'], $beans);
-    // }
-
-    // public function findByIds(array $ids): array
-    // {
-    //     if (empty($ids)) {
-    //         return [];
-    //     }
-
-    //     $placeholders = R::genSlots($ids);
-    //     $sql = "id IN ($placeholders) ORDER BY id DESC";
-
-    //     $beans = R::find('categories', $sql, $ids);
-    //     return array_map([$this, 'mapBeanToCategory'], $beans);
-    // }
-
-    public function getMainCats(): array
-    {
-        return $this->findCatsByParentId();
-    }
-
-    public function getSubCats(): array
-    {
-        $beans = R::findAll('categories', 'parent_id IS NOT NULL');
-        return array_map([$this, 'mapBeanToCategory'], $beans);
-    }
-
-    public function findCatsByParentId(?int $parentId = null): array
-    {
-        if ($parentId === null) {
-            $beans = R::findAll('categories', 'parent_id IS NULL');
-        } else {
-            $beans = R::findAll('categories', 'parent_id = ?', [$parentId]);
+        if (empty($beans)) {
+            return [];
         }
 
-        return array_map([$this, 'mapBeanToCategory'], $beans);
+        return array_map([$this, 'mapBeanToBrand'], $beans);
     }
 
-    // public function countAll(): int
-    // {
-    //     return R::count('categories');
-    // }
 
-    // public function save(Category $cat): int
-    // {
-    //     $bean = $cat->getId() ? R::load('categories', $cat->getId()) : R::dispense('categories');
+    public function saveBrand(Brand $brand): ?int
+    {
+        if (!$brand) {
+          return null;
+        }
 
-    //     $bean->title = $cat->getTitle(); // по умолчанию ru
-    //     $bean->parent_id = $cat->getParentId();
-    //     $bean->image = $cat->getImage();
-    //     $bean->seo_title = $cat->getSeoTitle();
-    //     $bean->seo_description = $cat->getSeoDescription();
+        $bean = $brand->getId() ? $this->loadBean('brands', $brand->getId()) : $this->createBean('brands');
 
-    //     $id = (int) R::store($bean);
+        if (!$bean) {
+          return null;
+        }
+ 
+        $bean->title = $brand->getTitle(); // по умолчанию ru
+        $bean->image = $brand->getImage();
 
-    //     // Сохраняем переводы в отдельную таблицу
-    //     R::exec('DELETE FROM categories_translation WHERE category_id = ?', [$id]);
-    //     foreach ($cat->getAllTranslations() as $locale => $translation) {
-    //         $transBean = R::dispense('categories_translation');
-    //         $transBean->category_id = $id;
-    //         $transBean->locale = $locale;
-    //         $transBean->title = $translation['title'] ?? '';
-    //         $transBean->description = $translation['description'] ?? '';
-    //         $transBean->meta_title = $translation['meta_title'] ?? '';
-    //         $transBean->meta_description = $translation['meta_description'] ?? '';
-    //         R::store($transBean);
-    //     }
+        $id = (int) $this->saveBean($bean);
 
-    //     return $id;
-    // }
+        if ( !$id) {
+          return null;
+        }
 
-    // /**
-    //  * Загружает переводы из categories_translation
-    //  */
-    // private function loadTranslations(int $categoryId): array
-    // {
-    //     $rows = R::getAll(
-    //         'SELECT locale, title, description, meta_title, meta_description FROM categories_translation WHERE category_id = ?',
-    //         [$categoryId]
-    //     );
+        // Сохраняем переводы в отдельную таблицу
+        R::exec('DELETE FROM brands_translation WHERE brand_id = ?', [$id]);
+        foreach ($brand->getAllTranslations() as $locale => $translation) {
+            $transBean = $this->createBean('brands_translation');
+            $transBean->brand_id = $id;
+            $transBean->locale = $locale;
+            $transBean->title = $translation['title'] ?? '';
+            $transBean->description = $translation['description'] ?? '';
+            $transBean->meta_title = $translation['meta_title'] ?? '';
+            $transBean->meta_description = $translation['meta_description'] ?? '';
 
-    //     $translations = [];
-    //     foreach ($rows as $row) {
-    //         $translations[$row['locale']] = [
-    //             'title' => $row['title'],
-    //             'description' => $row['description'],
-    //             'meta_title' => $row['meta_title'],
-    //             'meta_description' => $row['meta_description'],
-    //         ];
-    //     }
+            $this->saveBean($transBean);
+        }
 
-    //     return $translations;
-    // }
+        return $id;
+    }
 
-    
-
-    
 
 }

@@ -4,11 +4,22 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Admin;
 
 use Vvintage\Routing\RouteData;
+
+/** Контракты */
+use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
+
+/** Контроллеры */
 use Vvintage\Controllers\Admin\BaseAdminController;
+
+/** Репозитории */
 use Vvintage\Repositories\CategoryRepository;
 use Vvintage\Repositories\BrandRepository;
 use Vvintage\Repositories\ProductRepository;
+
+/** Сервисы */
 use Vvintage\Services\Product\ProductImageService;
+
+
 
 class AdminProductController extends BaseAdminController
 {
@@ -42,13 +53,12 @@ class AdminProductController extends BaseAdminController
     $productId = $_GET['id'];
     $product = $this->productRepository->findById((int) $productId);
 
-    dd($this->brandRepository->getBrandById(1));
-    dd($this->brandRepository->findAll());
+    dd($this->brandRepository->getBrands());
 
     // Получаем главные категориии, подкатегории и бренды
     $mainCats = $this->categoryRepository->getMainCats();
     $subCats = $this->categoryRepository->getSubCats();
-    $brands = $brandsRepository->findAll();
+    $brands = $this->brandRepository->getBrands();
 
 
     // Загружаем объект категории

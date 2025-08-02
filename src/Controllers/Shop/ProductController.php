@@ -6,6 +6,9 @@ namespace Vvintage\Controllers\Shop;
 
 use Vvintage\Routing\RouteData;
 
+/** Контракты */
+use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
+
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
@@ -50,8 +53,7 @@ final class ProductController extends BaseController
         // Инициализируем SEO-сервис и получаем SEO DTO
         $seoService = new SeoService();
         $seo = $seoService->getSeoForPage('product', $product);
-dd($product);
-dd($seo);
+
         // Делим массив изобрадений на два массива - главное и другие
         $imageService = new ProductImageService();
         $imagesMainAndOthers = $imageService->splitImages($product->getImages());
