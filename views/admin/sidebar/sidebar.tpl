@@ -24,6 +24,7 @@
         <?php include ROOT . "views/admin/sidebar/links/_orders.tpl";?> 
         <?php include ROOT . "views/admin/sidebar/links/_messages.tpl";?>
         <?php include ROOT . "views/admin/sidebar/links/_blog.tpl";?>
+        <?php include ROOT . "views/admin/sidebar/links/_users.tpl";?>
         <?php include ROOT . "views/admin/sidebar/links/_settings.tpl";?>
         <?php include ROOT . "views/admin/sidebar/links/_pages.tpl";?>
         <?php include ROOT . "views/admin/sidebar/links/_profile.tpl";?>

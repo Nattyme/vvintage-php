@@ -1,7 +1,11 @@
-<li class="control-panel__list-item">
-  <a class="control-panel__list-link" href="<?php HOST;?>users" title="Перейти к спику пользователей сайта">
-    <div class="control-panel__list-img-wrapper">
-      <img class="control-panel__list-img" src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#users';?>" alt="icon" />
-    </div>Пользователи
+<li class="sidebar__list-item">
+  <a href="<?php echo HOST;?>admin/users" class="sidebar__list-button" title="Перейти к спику пользователей сайта" data-section="">
+    <div class="sidebar__list-img-wrapper counter">
+      <svg class="icon icon--mail">
+        <use href="<?= HOST . 'static/img/svgsprite/sprite.symbol.svg#users' ?>"></use>
+      </svg>
+    </div>
+    Пользователи
+  </a>
   </a>
 </li>

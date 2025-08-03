@@ -65,6 +65,7 @@
   use Vvintage\Controllers\Admin\AdminProductController;
   use Vvintage\Controllers\Admin\AdminBrandController;
   use Vvintage\Controllers\Admin\AdminCategoryController;
+  use Vvintage\Controllers\Admin\AdminUsersController;
 
 
   class Router {
@@ -428,6 +429,7 @@
       $adminProductController = new AdminProductController();
       $adminBrandController = new AdminBrandController();
       $adminCategoryController = new AdminCategoryController();
+      $adminUsersController = new AdminUsersController();
 
       switch ($routeData->uriGet) {
          // ::::::::::::: SHOP :::::::::::::::::::
@@ -488,6 +490,24 @@
       case 'category-delete':
         $adminCategoryController->delete($routeData);
         // require ROOT . "admin/modules/categories/delete.php";
+        break;
+
+
+
+
+      // ::::::::::::: USERS :::::::::::::::::::
+      case 'users':
+        $adminUsersController->all($routeData);
+        break; 
+
+      case 'user-edit':
+        $adminUsersController->edit($routeData);
+        require ROOT . "admin/modules/users/edit.php";
+        break; 
+
+      case 'user-block':
+        $adminUsersController->block($routeData);
+        require ROOT . "admin/modules/users/block.php";
         break;
 
   // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
@@ -574,18 +594,7 @@
   //   require ROOT . "admin/modules/main/index.php";
   //   break;
 
-   // ::::::::::::: USERS :::::::::::::::::::
-  // case 'users':
-  //   require ROOT . "admin/modules/users/all.php";
-  //   break; 
-
-  // case 'user-edit':
-  //   require ROOT . "admin/modules/users/edit.php";
-  //   break; 
-
-  // case 'user-block':
-  //   require ROOT . "admin/modules/users/block.php";
-  //   break;
+     
       }
     }
   }

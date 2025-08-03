@@ -9,23 +9,20 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 
 /** Репозитории */
-use Vvintage\Repositories\Category\CategoryRepository;
+use Vvintage\Repositories\User\UserRepository;
 
-use Vvintage\Config\LanguageConfig;
 
 /** Сервисы */
 // use Vvintage\Services\Admin\AdminStatsService;
 
-class AdminCategoryController extends BaseAdminController 
+class AdminUsersController extends BaseAdminController 
 {
-  private CategoryRepository $categoryRepository;
-  private array $languages;
+  private UserRepository $userRepository;
 
   public function __construct()
   {
     parent::__construct();
-    $this->languages = LanguageConfig::getAvailableLanguages();
-    $this->categoryRepository = new CategoryRepository();
+    $this->userRepository = new UserRepository();
   }
 
   public function all(RouteData $routeData)
@@ -40,13 +37,13 @@ class AdminCategoryController extends BaseAdminController
     $this->renderEdit($routeData);
   }
 
-  public function new(RouteData $routeData)
-  {
-    $this->isAdmin();
-    $this->renderNew($routeData);
-  }
+  // public function new(RouteData $routeData)
+  // {
+  //   $this->isAdmin();
+  //   $this->renderNew($routeData);
+  // }
 
-  public function delete (RouteData $routeData)
+  public function block(RouteData $routeData)
   {
     $this->isAdmin();
     $this->renderDelete($routeData);
@@ -55,27 +52,26 @@ class AdminCategoryController extends BaseAdminController
   private function renderAll(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Категории';
+    $pageTitle = 'Пользователи';
 
     // Получаем данные из GET-запроса
     $searchQuery = $_GET['query'] ?? '';
     $filterSection = $_GET['action'] ?? ''; // имя селекта - action
 
-    $categoryPerPage = 9;
+    $usersPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($categoryPerPage, 'categories');
-    $cats = $this->categoryRepository->getAllCategories($pagination);
-    $mainCats = $this->categoryRepository->getMainCats();
-    $total = $this->categoryRepository->getAllCategoriesCount();
+    $pagination = pagination($usersPerPage, 'users');
+
+    $users = $this->userRepository->getAllUsers($pagination);
+    $total = $this->userRepository->getAllUsersCount();
         
-    $this->renderLayout('categories/all',  [
+    $this->renderLayout('users/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'cats' => $cats,
-      'mainCats' => $mainCats,
+      'users' => $users,
+      'total' => $total,
       'searchQuery' => $searchQuery,
-      'filterSection' => $filterSection,
       'pagination' => $pagination
     ]);
 
