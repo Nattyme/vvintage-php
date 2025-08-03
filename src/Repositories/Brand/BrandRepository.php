@@ -22,6 +22,9 @@ use Vvintage\DTO\Brand\BrandDTO;
 
 final class BrandRepository extends AbstractRepository implements BrandRepositoryInterface
 {
+    private const TABLE_BRANDS = 'brands';
+    private const TABLE_BRANDS_TRANSLATION = 'brands_translation';
+
     private function uniteProductRawData(?int $id = null): array
     {
         $sql = '
@@ -32,8 +35,8 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
                 bt.description,
                 bt.meta_title,
                 bt.meta_description
-            FROM brands b
-            LEFT JOIN brands_translation bt ON bt.brand_id = b.id AND bt.locale = ?
+            FROM ' . self::TABLE_BRANDS . ' b
+            LEFT JOIN ' . self::TABLE_BRANDS_TRANSLATION . ' bt ON bt.brand_id = b.id AND bt.locale = ?
 
         ';
 
@@ -73,7 +76,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     private function loadTranslations(int $id): array
     {
         $rows = R::getAll(
-            'SELECT locale, title, description, meta_title, meta_description FROM brands_translation WHERE brand_id = ?',
+            'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE_BRANDS_TRANSLATION .' WHERE brand_id = ?',
             [$id]
         );
 
@@ -94,7 +97,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     // Находит бренд по id и возвращает объект
     public function getBrandById(int $id): ?Brand
     {
-        $bean = $this->findById('brands', $id);
+        $bean = $this->findById(self::TABLE_BRANDS, $id);
 
         if (!$bean || !$bean->id) {
             return null;
@@ -106,7 +109,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     /** Находим все бренды и возвращаем в виде массива объектов */
     public function getAllBrands(): array
     {
-      $beans = $this->findAll('brands');
+      $beans = $this->findAll( self::TABLE_BRANDS );
 
       if (empty($beans)) {
             return [];
@@ -122,7 +125,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
             return [];
         }
 
-        $beans = $this->findByIds('brands', $ids);
+        $beans = $this->findByIds(self::TABLE_BRANDS, $ids);
 
         if (empty($beans)) {
             return [];
@@ -138,7 +141,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
           return null;
         }
 
-        $bean = $brand->getId() ? $this->loadBean('brands', $brand->getId()) : $this->createBean('brands');
+        $bean = $brand->getId() ? $this->loadBean(self::TABLE_BRANDS, $brand->getId()) : $this->createBean(self::TABLE_BRANDS);
 
         if (!$bean) {
           return null;
@@ -154,9 +157,9 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         }
 
         // Сохраняем переводы в отдельную таблицу
-        R::exec('DELETE FROM brands_translation WHERE brand_id = ?', [$id]);
+        R::exec('DELETE FROM ' . self::TABLE_BRANDS_TRANSLATION .' WHERE brand_id = ?', [$id]);
         foreach ($brand->getAllTranslations() as $locale => $translation) {
-            $transBean = $this->createBean('brands_translation');
+            $transBean = $this->createBean(self::TABLE_BRANDS_TRANSLATION);
             $transBean->brand_id = $id;
             $transBean->locale = $locale;
             $transBean->title = $translation['title'] ?? '';
@@ -173,7 +176,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     
     public function getAllBrandsCount(?string $sql = null, array $params = []): int
     {
-      return $this->countAll('brands', $sql, $params);
+      return $this->countAll(self::TABLE_BRANDS, $sql, $params);
     }
 
 }

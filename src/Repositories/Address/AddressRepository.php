@@ -18,7 +18,9 @@ use Vvintage\Models\Address\Address;
 
 
 final class AddressRepository extends AbstractRepository implements AddressRepositoryInterface
-{
+{   
+    private const TABLE_ADDRESSES = 'address';
+
     /**
      * Метод ищет адрес по id
      * @param int $id
@@ -26,7 +28,7 @@ final class AddressRepository extends AbstractRepository implements AddressRepos
      */
     public function getAddressById(int $id): ?Address
     {
-        $bean = $this->loadBean('address', $id);
+        $bean = $this->loadBean(self::TABLE_ADDRESSES, $id);
 
         if ($bean->id === 0) {
             return null;
@@ -42,7 +44,7 @@ final class AddressRepository extends AbstractRepository implements AddressRepos
     */
     public function createAddress(): ?Address
     {
-      $bean = $this->createBean( 'address' );
+      $bean = $this->createBean( self::TABLE_ADDRESSES );
 
       $bean->name = null;
       $bean->surname = null;
@@ -76,7 +78,7 @@ final class AddressRepository extends AbstractRepository implements AddressRepos
     public function editAddress(Address $addressModel, array $postData): ?Address
     {
       $id = $addressModel->getId();
-      $bean = $this->loadBean('address', $id);
+      $bean = $this->loadBean(self::TABLE_ADDRESSES, $id);
 
       if ($bean->id !== 0) {
         $bean->name = $postData['name'] ?? '';
@@ -110,7 +112,7 @@ final class AddressRepository extends AbstractRepository implements AddressRepos
     public function removeAddress(Address $addressModel): void
     {
       $id = $addressModel->getId();
-      $bean = $this->loadBean('address', $id);
+      $bean = $this->loadBean(self::TABLE_ADDRESSES, $id);
 
       if ($bean->id !== 0) {
         $this->deleteBean( $bean ); 
