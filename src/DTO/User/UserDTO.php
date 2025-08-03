@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 namespace Vvintage\DTO\User;
-use Vvintage\Repositories\Address\AddressRepository;
 
 final class UserDTO
 {
