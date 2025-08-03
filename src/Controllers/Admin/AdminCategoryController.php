@@ -9,23 +9,23 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 
 /** Репозитории */
-use Vvintage\Repositories\Brand\BrandRepository;
+use Vvintage\Repositories\Category\CategoryRepository;
 
 use Vvintage\Config\LanguageConfig;
 
 /** Сервисы */
 // use Vvintage\Services\Admin\AdminStatsService;
 
-class AdminBrandController extends BaseAdminController 
+class AdminCategoryController extends BaseAdminController 
 {
-  private BrandRepository $brandRepository;
+  private CategoryRepository $categoryRepository;
   private array $languages;
 
   public function __construct()
   {
     parent::__construct();
     $this->languages = LanguageConfig::getAvailableLanguages();
-    $this->brandRepository = new BrandRepository();
+    $this->categoryRepository = new CategoryRepository();
   }
 
   public function all(RouteData $routeData)
@@ -55,19 +55,19 @@ class AdminBrandController extends BaseAdminController
   private function renderAll(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Категории';
 
-    $brandsPerPage = 9;
+    $categoryPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+    $pagination = pagination($categoryPerPage, 'categories');
+    $categories = $this->categoryRepository->getAllCategories($pagination);
+    $total = $this->categoryRepository->getAllCategoriesCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout('categories/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brands' => $brands,
+      'categories' => $categories,
       'pagination' => $pagination
     ]);
 

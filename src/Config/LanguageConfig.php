@@ -17,6 +17,7 @@ class LanguageConfig
 
     public const DEFAULT_LANG = 'ru';
 
+
     public static function getAvailableLanguages(): array
     {
         return self::LANGUAGES;
@@ -30,5 +31,11 @@ class LanguageConfig
     public static function getDefault(): string
     {
         return self::DEFAULT_LANG;
+    }
+
+    // Получаем текущий язык (либо из сессии, либо дефолт)
+    public static function getCurrentLocale(): string
+    {
+        return $_SESSION['locale'] ?? LanguageConfig::getDefault();
     }
 }

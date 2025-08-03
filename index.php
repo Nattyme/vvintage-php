@@ -9,6 +9,7 @@ use Vvintage\Database\Database;
 use Vvintage\Routing\RouteData;
 use Vvintage\Routing\Router;
 use Vvintage\Models\Settings\Settings;
+use Vvintage\Config\LanguageConfig;
 
 // Старт сесии (хранение ошибок, уведомлений, данных пользователя)
 session_start();
@@ -16,18 +17,24 @@ session_start();
 $_SESSION['errors'] = [];
 $_SESSION['success'] = [];
 
+// Смена языка через ?lang=...
+if (isset($_GET['lang']) && LanguageConfig::isSupported($_GET['lang'])) {
+    $_SESSION['locale'] = $_GET['lang'];
+    header("Location: " . strtok($_SERVER["REQUEST_URI"], '?'));
+    exit;
+}
+
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
 
 // Выбор языка
-$lang = $_GET['lang'] ?? $_SESSION['lang'] ?? 'ru';
-$_SESSION['lang'] = $lang;
+$currentLang = LanguageConfig::getCurrentLocale();
 
 require_once ROOT . 'libs/functions.php'; // подключаем пользовательскте ф-ции
 
 // Подключение перводчика
 use Vvintage\Services\Translator\Translator;
-$translator = new Translator($lang); // создаем объект переводчика доступен глобально
+$translator = new Translator($currentLang); // создаем объект переводчика доступен глобально
 setTranslator($translator); // сохраняем его
 // setTranslator()->getTranslator()->getCatalogue(); // устанавливаем переводчик
 

@@ -64,6 +64,7 @@
   use Vvintage\Controllers\Admin\HomeAdminController;
   use Vvintage\Controllers\Admin\AdminProductController;
   use Vvintage\Controllers\Admin\AdminBrandController;
+  use Vvintage\Controllers\Admin\AdminCategoryController;
 
 
   class Router {
@@ -426,6 +427,7 @@
       $homeAdminController = new HomeAdminController();
       $adminProductController = new AdminProductController();
       $adminBrandController = new AdminBrandController();
+      $adminCategoryController = new AdminCategoryController();
 
       switch ($routeData->uriGet) {
          // ::::::::::::: SHOP :::::::::::::::::::
@@ -466,25 +468,124 @@
         // require ROOT . "admin/modules/brands/delete.php";
         break;
 
-          
 
-        // ::::::::::::: SHOP :::::::::::::::::::
-        // case 'shop':
-        //   // require ROOT . "admin/modules/shop/all.php";
-        //   break;
+      // ::::::::::::: CATEGORIES SHOP :::::::::::::::::::
+      case 'category':
+        $adminCategoryController->all($routeData);
+        // require ROOT . "admin/modules/categories/all.php";
+        break;
 
-        // case 'shop-new':
-        //   require ROOT . "admin/modules/shop/new.php";
-        //   break;
+      case 'category-new':
+        $adminCategoryController->new($routeData);
+        // require ROOT . "admin/modules/categories/new.php";
+        break;
 
-        // case 'shop-edit':
-        //   require ROOT . "admin/modules/shop/edit.php";
-        //   break;
+      case 'category-edit':
+        $adminCategoryController->edit($routeData);
+        // require ROOT . "admin/modules/categories/edit.php";
+        break;
 
-        // case 'shop-delete':
-        //   require ROOT . "admin/modules/shop/delete.php";
-        //   break;
+      case 'category-delete':
+        $adminCategoryController->delete($routeData);
+        // require ROOT . "admin/modules/categories/delete.php";
+        break;
 
+  // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
+  case 'category-blog':
+    // require ROOT . "admin/modules/categories-blog/all.php";
+    break;
+
+  case 'category-blog-new':
+    // require ROOT . "admin/modules/categories-blog/new.php";
+    break;
+
+  case 'category-blog-edit':
+    // require ROOT . "admin/modules/categories-blog/edit.php";
+    break;
+
+  case 'category-blog-delete':
+    // require ROOT . "admin/modules/categories-blog/delete.php";
+    break;
+
+   // ::::::::::::: MESSAGES :::::::::::::::::::
+
+  //  case 'messages':
+  //   require ROOT . "admin/modules/messages/all.php";
+  //   break;
+
+  // case 'message':
+  //   require ROOT . "admin/modules/messages/single.php";
+  //   break;
+
+  // case 'message-delete':
+  //   require ROOT . "admin/modules/messages/delete.php";
+  //   break;
+
+    
+  // // ::::::::::::: PAGES :::::::::::::::::::
+  // case 'main':
+  //   require ROOT . "admin/modules/pages/main.php";
+  //   break;
+
+  // case 'about':
+  // require ROOT . "admin/modules//pages/about.php";
+  //   break;
+
+  // case 'delivery':
+  // require ROOT . "admin/modules//pages/delivery.php";
+  //   break;
+
+  // case 'contacts':
+  //   require ROOT . "admin/modules//pages/contacts.php";
+  //   break;
+
+  // // ::::::::::::: OTHER :::::::::::::::::::
+  // case 'comments':
+  //   require ROOT . "admin/modules/comments/all.php";
+  //   break;
+
+  // case 'comment':
+  //   require ROOT . "admin/modules/comments/single.php";
+  //   break;
+
+  // // ::::::::::::: SETTINGS :::::::::::::::::::
+  // case 'settings':
+  //   require ROOT . "admin/modules/settings/settings.php";
+  //   break;
+
+  // case 'settings-main':
+  //   require ROOT . "admin/modules/settings/settings-main.php";
+  //   break;
+
+  // case 'settings-social':
+  //   require ROOT . "admin/modules/settings/settings-social.php";
+  //   break;
+
+  // case 'settings-cookies':
+  //   require ROOT . "admin/modules/settings/settings-cookies.php";
+  //   break;
+
+  // case 'settings-cards':
+  //   require ROOT . "admin/modules/settings/settings-cards.php";
+  //   break;
+  // // ::::::::::::: SETTINGS :::::::::::::::::::
+
+  // default: 
+  //   require ROOT . "admin/modules/main/index.php";
+  //   break;
+
+   // ::::::::::::: USERS :::::::::::::::::::
+  // case 'users':
+  //   require ROOT . "admin/modules/users/all.php";
+  //   break; 
+
+  // case 'user-edit':
+  //   require ROOT . "admin/modules/users/edit.php";
+  //   break; 
+
+  // case 'user-block':
+  //   require ROOT . "admin/modules/users/block.php";
+  //   break;
       }
     }
   }

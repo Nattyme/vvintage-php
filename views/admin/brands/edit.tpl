@@ -8,13 +8,11 @@
     <div class="admin-form__field admin-form__language-select">
       <label class="admin-form__label" for="language-select">Выберите язык</label>
       <select id="language-select" class="admin-form__input">
-        <option value="ru" selected>Русский (дефолтный)</option>
-        <option value="de">Deutsch</option>
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="fr">Français</option>
-        <option value="ja">日本語 / Японский</option>
-        <option value="zh">中文 / Китайский</option>
+        <?php foreach ($languages as $code => $label): ?>
+          <option value="<?php echo h($code) ?>" <?php echo ($code === $currentLang) ? 'selected' : '';?>>
+            <?php echo h($label);?>
+          </option>
+        <?php endforeach; ?>
       </select>
     </div>
 

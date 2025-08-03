@@ -176,4 +176,9 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return $this->countAll('categories', 'parent_id = ?', [$id]) > 0;
     }
 
+    public function getAllCategoriesCount(?string $sql = null, array $params = []): int
+    {
+      return $this->countAll('categories', $sql, $params);
+    }
+
 }
