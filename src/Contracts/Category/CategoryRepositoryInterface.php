@@ -22,10 +22,6 @@ interface CategoryRepositoryInterface
 
     public function saveCategory(Category $cat): int;
 
-    public function loadTranslations(int $categoryId): array;
-
-    public function mapBeanToCategory(OODBBean $bean): Category;
-
     public function getCategoryWithChildren(int $id): array;
 
     public function hasChildren(int $id): bool;

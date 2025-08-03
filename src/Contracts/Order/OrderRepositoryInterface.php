@@ -4,24 +4,23 @@ declare(strict_types=1);
 namespace Vvintage\Contracts\Order;
 
 use Vvintage\Models\Order\Order;
+use Vvintage\Models\User\User;
 
 interface OrderRepositoryInterface
  {    
-    public function fillOrderBean(OODBBean $bean, Order $order);
-
     /**
      * Метод ищет заказ по id
      * @param int $id
      * @return OODBBean[]
      */
-    public function findOrderById(int $id): ?Order;
+    public function getOrderById(int $id): ?Order;
 
     /**
      * Метод ищет все заказы по id пользователя
      * @param int $id
      * @return @return OODBBean[]
      */
-    public function findOrdersByUserId(int $id): array;
+    public function getOrdersByUserId(int $id): array;
 
     /**
      * Метод создает новый заказ

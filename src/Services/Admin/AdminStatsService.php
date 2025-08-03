@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Vvintage\Services\Admin;
 
 /** Репозитории */
-use Vvintage\Repositories\OrderRepository;
+use Vvintage\Repositories\Order\OrderRepository;
 // use Vvintage\Repositories\MessageRepository;
-use Vvintage\Repositories\PostRepository;
-use Vvintage\Repositories\ProductRepository;
-use Vvintage\Repositories\UserRepository;
+use Vvintage\Repositories\Post\PostRepository;
+use Vvintage\Repositories\Product\ProductRepository;
+use Vvintage\Repositories\User\UserRepository;
 
 class AdminStatsService {
   private PostRepository $postRepository;
@@ -26,11 +26,11 @@ class AdminStatsService {
 
   public function getSummary(): array {
       return [
-          'newOrders' => $this->orderRepository->countNew(),
+          'newOrders' => $this->orderRepository->countNew('orders'),
           // 'messages' => MessageRepository::countUnread(),
-          'posts' => $this->postRepository->countAll(),
-          'products' => $this->productRepository->countAll(),
-          'users' => $this->userRepository->countAll()
+          'posts' => $this->postRepository->countAll('posts'),
+          'products' => $this->productRepository->countAll('products'),
+          'users' => $this->userRepository->countAll('users')
       ];
   }
 }

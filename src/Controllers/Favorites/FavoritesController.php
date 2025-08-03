@@ -9,7 +9,7 @@ use Vvintage\Controllers\Base\BaseController;
 
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
-use Vvintage\Repositories\ProductRepository;
+use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Services\Auth\SessionManager;
@@ -22,7 +22,7 @@ use Vvintage\Models\User\GuestUser;
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 
-use Vvintage\Repositories\UserRepository;
+use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Messages\FlashMessage;
 
 /** Сервисы */
@@ -74,7 +74,7 @@ final class FavoritesController extends BaseController
     {
      
       // Получаем продукты
-      $products = !empty($this->fav_list) ? ProductRepository::findByIds($this->fav_list) : [];
+      $products = !empty($this->fav_list) ? ProductRepository::getProductsByIds($this->fav_list) : [];
 
       // Показываем страницу
       $this->renderPage($routeData, $products, $this->favModel);

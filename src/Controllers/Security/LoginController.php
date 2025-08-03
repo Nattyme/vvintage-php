@@ -12,7 +12,7 @@ use Vvintage\Services\Auth\SessionManager;
 /** Сервисы */
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Favorites\FavoritesService;
-use Vvintage\Services\Auth\LoginService;
+use Vvintage\Services\Security\LoginService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\User\UserItemsMergeService;
 
@@ -21,8 +21,8 @@ use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 
 /** Репозитории */
-use Vvintage\Repositories\UserRepository;
-use Vvintage\Repositories\ProductRepository;
+use Vvintage\Repositories\User\UserRepository;
+use Vvintage\Repositories\Product\ProductRepository;
 
 /** Роутинг */
 use Vvintage\Routing\RouteData;

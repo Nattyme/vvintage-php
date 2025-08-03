@@ -6,7 +6,7 @@ namespace Vvintage\Controllers\Admin;
 use Vvintage\Routing\RouteData;
 
 /** Контракты */
-use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
+use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 
 /** Контроллеры */
 use Vvintage\Controllers\Admin\BaseAdminController;
@@ -14,7 +14,7 @@ use Vvintage\Controllers\Admin\BaseAdminController;
 /** Репозитории */
 use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Repositories\Brand\BrandRepository;
-use Vvintage\Repositories\ProductRepository;
+use Vvintage\Repositories\Product\ProductRepository;
 
 /** Сервисы */
 use Vvintage\Services\Product\ProductImageService;
@@ -51,9 +51,7 @@ class AdminProductController extends BaseAdminController
   {
     // Получаем продукт 
     $productId = $_GET['id'];
-    $product = $this->productRepository->findById((int) $productId);
-
-    dd($this->brandRepository->getBrands());
+    $product = $this->productRepository->getProductById((int) $productId);
 
     // Получаем главные категориии, подкатегории и бренды
     $mainCats = $this->categoryRepository->getMainCats();
@@ -175,8 +173,8 @@ class AdminProductController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($productsPerPage, 'products');
-    $products = $this->productRepository->findAll($pagination);
-    $total = $this->productRepository->countAll();
+    $products = $this->productRepository->getAllProducts($pagination);
+    $total = $this->productRepository->countAll('products');
 
     // Получаем изображения товаров
     $imageService = new ProductImageService();

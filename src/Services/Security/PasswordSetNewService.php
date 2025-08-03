@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Security;
 use Vvintage\Models\User\User;
-use Vvintage\Repositories\UserRepository;
+use Vvintage\Repositories\User\UserRepository;
 
 use RedBeanPHP\R;
 

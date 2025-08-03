@@ -2,14 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Repositories;
+namespace Vvintage\Repositories\Category;
 
-use Vvintage\Models\Category\Category;
-use Vvintage\DTO\Category\CategoryDTO;
-use Vvintage\Contracts\Repositories\CategoryRepositoryInterface;
 
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
+
+/** Контракты */
+use Vvintage\Contracts\Category\CategoryRepositoryInterface;
+
+/** Абстрактный репозиторий */
+use Vvintage\Repositories\AbstractRepository;
+
+use Vvintage\Models\Category\Category;
+use Vvintage\DTO\Category\CategoryDTO;
+
 
 final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
 {

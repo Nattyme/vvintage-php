@@ -11,9 +11,9 @@ use Vvintage\Routing\RouteData;
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
-/** Репозитории */
-use Vvintage\Repositories\UserRepository;
-use Vvintage\Repositories\ProductRepository;
+// /** Репозитории */
+// use Vvintage\Repositories\User\UserRepository;
+// use Vvintage\Repositories\Product\ProductRepository;
 
 /** Абстракции */
 use Vvintage\Models\Shared\AbstractUserItemsList;

@@ -16,9 +16,9 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Repositories\UserRepository;
-use Vvintage\Repositories\OrderRepository;
-use Vvintage\Repositories\ProductRepository;
+use Vvintage\Repositories\User\UserRepository;
+use Vvintage\Repositories\Order\OrderRepository;
+use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Models\Order\Order;
 
 require_once ROOT . './libs/functions.php';
@@ -117,7 +117,7 @@ final class ProfileController extends BaseController
       };
       $id = $userModel->getId();
 
-      $orders = $this->orderRepository->findOrdersByUserId($id);
+      $orders = $this->orderRepository->getOrdersByUserId($id);
     } else {
       header('Location: ' . HOST . 'login');
     }
@@ -140,7 +140,7 @@ final class ProfileController extends BaseController
         $this->userRepository->ensureUserHasAddress($userModel);
       }
 
-      $orders = $this->orderRepository->findOrdersByUserId($id);
+      $orders = $this->orderRepository->getOrdersByUserId($id);
     } else {
       header('Location: ' . HOST . 'login');
     }
@@ -170,7 +170,7 @@ final class ProfileController extends BaseController
       $userId = $userModel->getId();
 
       // Если есть ID  - получаем данные заказа, проверя, что это заказ вошедшего в свой профиль пользователя
-      $order = $this->orderRepository->findOrderById((int) $_GET['id']);
+      $order = $this->orderRepository->getOrderById((int) $_GET['id']);
 
       // Проверка, что заказ принадлежит текущему пользователю
       if ( $order->getUserId() !== $userId) {
@@ -187,7 +187,7 @@ final class ProfileController extends BaseController
       // Запрос продуктов и соответствующих им изображений
       $productRepository = new ProductRepository();
       // Пересобирем в новый массив $productsData с ключами - Id товара
-      $productsData = $productRepository->findByIds($ids);
+      $productsData = $productRepository->getProductsByIds($ids);
 
       // Создаём ассоциативный массив из cart: [id => amount]
       $amountMap = array_column($products, 'amount', 'id');

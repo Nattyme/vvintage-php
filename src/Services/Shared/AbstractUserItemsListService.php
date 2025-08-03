@@ -3,12 +3,18 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Shared;
 
-use Vvintage\Repositories\Product\ProductRepository;
-use Vvintage\Models\User\UserInterface;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Models\Shared\AbstractUserItemsList;
-use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
+/** Контракты */
+use Vvintage\Contracts\User\UserInterface;
+use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
+/** Репозитории */
+use Vvintage\Repositories\Product\ProductRepository;
+
+/** Модели */
+use Vvintage\Models\Shared\AbstractUserItemsList;
+
+/** Сервисы */
+use Vvintage\Services\Messages\FlashMessage;
 
 abstract class AbstractUserItemsListService
 {
@@ -19,7 +25,13 @@ abstract class AbstractUserItemsListService
     private $productRepository;
     private FlashMessage $notes;
 
-    public function __construct( UserInterface $userModel, AbstractUserItemsList $itemsModel, array $items, ItemsListStoreInterface $itemsStore, ProductRepository $productRepository, FlashMessage $notes)
+    public function __construct( 
+      UserInterface $userModel, 
+      AbstractUserItemsList $itemsModel, 
+      array $items, 
+      UserItemsListStoreInterface $itemsStore, 
+      ProductRepository $productRepository, 
+      FlashMessage $notes)
     {
       $this->userModel = $userModel;
       $this->itemsModel = $itemsModel;

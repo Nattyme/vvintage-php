@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Repositories;
+namespace Vvintage\Repositories\User;
 
 use RedBeanPHP\R; // Подключаем readbean
 use RedBeanPHP\OODBBean; // для обозначения типа даннных

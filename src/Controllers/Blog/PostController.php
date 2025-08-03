@@ -7,7 +7,7 @@ namespace Vvintage\Controllers\Blog;
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
-use Vvintage\Repositories\PostRepository;
+// use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Models\Blog\Post;
 use Vvintage\Routing\RouteData;
 use Vvintage\Services\Page\Breadcrumbs;

@@ -7,7 +7,7 @@ namespace Vvintage\Controllers\Page;
 use Vvintage\Controllers\Base\BaseController;
 
 use Vvintage\Models\Page\Page;
-use Vvintage\Repositories\Page\PageRepository;
+// use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;

@@ -7,9 +7,6 @@ use Vvintage\Models\User\User;
 
 interface UserRepositoryInterface
  { 
-  
-    public function hashPassword(string $password): string;
-
     /**
      * Метод ищет пользователя по id
      * @param int $id

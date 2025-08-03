@@ -53,10 +53,10 @@
   use Vvintage\Store\Favorites\FavoritesStoreInterface;
 
   /** Репозитории */
-  use Vvintage\Repositories\UserRepository;
-  use Vvintage\Repositories\ProductRepository;
-  use Vvintage\Repositories\OrderRepository;
-  use Vvintage\Repositories\PostRepository;
+  use Vvintage\Repositories\User\UserRepository;
+  use Vvintage\Repositories\Product\ProductRepository;
+  use Vvintage\Repositories\Order\OrderRepository;
+  use Vvintage\Repositories\Post\PostRepository;
 
   /** Админ контроллеры */
   use Vvintage\Controllers\Admin\HomeAdminController;

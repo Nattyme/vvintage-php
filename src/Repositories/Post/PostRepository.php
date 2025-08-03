@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Repositories;
+namespace Vvintage\Repositories\Post;
 
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;

@@ -3,11 +3,17 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\User;
 
-use Vvintage\Repositories\UserRepository;
-use Vvintage\Repositories\AddressRepository;
-use Vvintage\Models\User\UserInterface;
-use Vvintage\Models\Address\Address;
 use RedBeanPHP\OODBBean; // для обозначения типа даннных
+
+/** Контракт */
+use Vvintage\Contracts\User\UserInterface;
+
+/** Репозитории */
+use Vvintage\Repositories\User\UserRepository;
+use Vvintage\Repositories\Address\AddressRepository;
+
+/** Модели */
+use Vvintage\Models\Address\Address;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
 
@@ -181,7 +187,7 @@ final class User implements UserInterface
         return null; // или пустой объект / исключение
       }
       
-      return $this->addressRepository->findAddressById($this->addressId);
+      return $this->addressRepository->getAddressById($this->addressId);
     }
 
 

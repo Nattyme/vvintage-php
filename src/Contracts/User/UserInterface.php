@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Models\User;
+namespace Vvintage\Contracts\User;
 
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;

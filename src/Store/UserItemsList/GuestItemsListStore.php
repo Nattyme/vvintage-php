@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace Vvintage\Store\UserItemsList;
 
-use Vvintage\Models\User\UserInterface;
-use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
+/** Контракты */
+use Vvintage\Contracts\User\UserInterface;
+use Vvintage\Contracts\User\UserItemsListStoreInterface;
+
+/** Модели */
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
 
-class GuestItemsListStore implements ItemsListStoreInterface {
+class GuestItemsListStore implements UserItemsListStoreInterface {
   public function load($itemKey): array {
     
     return isset($_COOKIE[$itemKey]) && is_string($_COOKIE[$itemKey])

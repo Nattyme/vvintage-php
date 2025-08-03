@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\AdminPanel;
 
 use Vvintage\Models\Order\Order;
-use Vvintage\Repositories\OrderRepository;
+use Vvintage\Repositories\Order\OrderRepository;
 // use Vvintage\Models\Message;
 // use Vvintage\Models\Comment;
 
@@ -21,7 +21,7 @@ final class AdminPanelController
 
   private function setAdminPanelData(): void
   {
-    $this->newOrders = OrderRepository::countNew();
+    $this->newOrders = OrderRepository::countNewOrders();
   }
 
   public function getPanelData(): array

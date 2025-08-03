@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\User;
 
+/** Контракт */
+use Vvintage\Contracts\User\UserInterface;
+
 use Vvintage\Models\Cart\Cart;
-use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Favorites\Favorites;
+
+
 
 class GuestUser implements UserInterface  
 {

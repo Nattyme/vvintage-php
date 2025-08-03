@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Auth;
+namespace Vvintage\Services\Security;
 
 use Vvintage\Models\User\User;
-use Vvintage\Repositories\UserRepository;
+use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Validation\LoginValidator;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Auth\SessionManager;
@@ -28,7 +28,7 @@ final class LoginService
       return null;
     }
 
-    $user = $this->userRepository->findUserByEmail($data['email']);
+    $user = $this->userRepository->getUserByEmail($data['email']);
 
     if (!$user || !password_verify($data['password'], $user->getPassword())) {
       $this->notes->pushError('Неверный email или пароль');

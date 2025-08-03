@@ -3,13 +3,21 @@ declare(strict_types=1);
 
 namespace Vvintage\Store\UserItemsList;
 
-use Vvintage\Repositories\UserRepository;
-use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
-use Vvintage\Models\User\UserInterface;
+
+/** Контракты */
+use Vvintage\Contracts\User\UserInterface;
+use Vvintage\Contracts\User\UserItemsListStoreInterface;
+
+/** Репозитории */
+use Vvintage\Repositories\User\UserRepository;
+
+/** Модели */
 use Vvintage\Models\Cart\Cart;
+
+/** Сервисы */
 use Vvintage\Services\Auth\SessionManager;
 
-class UserItemsListStore implements ItemsListStoreInterface
+class UserItemsListStore implements UserItemsListStoreInterface
 {
   private UserRepository $userRepository;
 
@@ -25,7 +33,6 @@ class UserItemsListStore implements ItemsListStoreInterface
     return $this->userRepository->getItemsList($userId, $itemKey) ?? [];
   }
 
-// public function save($itemKey, $itemModel, ?UserInterface $userModel = null): void;
   public function save ($itemKey, $itemModel, ?UserInterface $userModel = null): void 
   {
     $items = $itemModel->getItems();
@@ -38,6 +45,6 @@ class UserItemsListStore implements ItemsListStoreInterface
 
     //  Обновляем данные пользователя в сессии
     SessionManager::setUserSession($userModel);  // обновляем logged_user
-}
+  }
 
 } 

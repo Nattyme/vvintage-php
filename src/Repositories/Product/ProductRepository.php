@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Repositories;
+namespace Vvintage\Repositories\Product;
 
 use RedBeanPHP\R;
 
@@ -31,13 +31,13 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
     }
 
-    public function findAll(array $pagination = []): array
+    public function getAllProducts(array $pagination = []): array
     {
         $rows = $this->uniteProductRawData();
         return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
 
-    public function findProductsByIds(array $ids): array
+    public function getProductsByIds(array $ids): array
     {
         if (empty($ids)) {
             return [];

@@ -13,9 +13,9 @@ use Vvintage\Controllers\Base\BaseController;
 
 /** Репозитории */
 // use Vvintage\Repositories\UserRepository;
-use Vvintage\Repositories\ProductRepository;
-use Vvintage\Repositories\PostRepository;
-use Vvintage\Repositories\CategoryRepository;
+use Vvintage\Repositories\Product\ProductRepository;
+use Vvintage\Repositories\Post\PostRepository;
+use Vvintage\Repositories\Category\CategoryRepository;
 
 /** Абстракции */
 // use Vvintage\Models\Shared\AbstractUserItemsList;
@@ -104,7 +104,7 @@ final class HomeController extends BaseController
       $pagination = pagination($productsAtHome, 'products');
 
       // Получим новинки магазина
-      return $repository->findAll($pagination);
+      return $repository->getAllProducts($pagination);
     }
 
     private function getNewPosts(): array
@@ -113,7 +113,7 @@ final class HomeController extends BaseController
       $repository = new PostRepository();
       $pagination = pagination($postsAtHome, 'posts');
 
-      return $repository->findAll($pagination);
+      return $repository->getAllPosts($pagination);
     }
 
 }

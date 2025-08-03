@@ -8,7 +8,7 @@ use RedBeanPHP\R; // Подключаем readbean
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\User\UserInterface;
-use Vvintage\Repositories\UserRepository;
+use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Store\Cart\GuestCartStore;
 use Vvintage\Store\Favorites\GuestFavoritesStore;
 

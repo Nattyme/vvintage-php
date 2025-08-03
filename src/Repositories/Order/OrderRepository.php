@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Repositories;
+namespace Vvintage\Repositories\Order;
 
 
 use RedBeanPHP\R; // Подключаем readbean
@@ -51,7 +51,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
      * @param int $id
      * @return OODBBean[]
      */
-    public function findOrderById(int $id): ?Order
+    public function getOrderById(int $id): ?Order
     {
         $bean = $this->loadBean('orders', $id);
 
@@ -67,7 +67,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
      * @param int $id
      * @return @return OODBBean[]
      */
-    public function findOrdersByUserId(int $id): array
+    public function getOrdersByUserId(int $id): array
     {
         $orders = [];
         $beans = $this->findAll('orders', 'user_id = ?', [$id]);
