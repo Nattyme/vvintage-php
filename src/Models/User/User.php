@@ -34,28 +34,81 @@ final class User implements UserInterface
     private int $addressId;
     private AddressRepository $addressRepository;
 
-    public function __construct(OODBBean $bean)
+    private function __construct() {}
+
+    
+    public static function fromDTO(UserDTO $dto): self
     {
+        $user = new self();
+        $user->id = (int) $dto->id;
+        $user->password = (string) $dto->password;
+        $user->email = (string) $dto->email;
+        $user->name = (string) $dto->name;
+        $user->role = (string) $dto->role;
+      
+        $user->fav_list = $dto->fav_list;
+        $user->cart = $dto->cart;
 
-      $this->id = (int) $bean->id;
-      $this->email = $bean->email;
-      $this->password = $bean->password;
-      $this->name = $bean->name ?? 'Пользователь';
-      $this->role = $bean->role ?? 'user';
+        $user->country = (string) $dto->country;
+        $user->city = (string) $dto->city;
+        $user->phone = (string) $dto->phone;
+        $user->avatar = (string) $dto->avatar;
+        $user->avatar_small = (string) $dto->avatar_small;
+        $user->addressId = (string) $dto->addressId;
+        $user->addressRepository = $dto->$addressRepository;
 
-      // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
-      $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
-      $this->fav_list = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
-      $this->addressId = (int) $bean->address->id ?? 0;
-        
-      $this->country= $bean->country ?? '';
-      $this->city= $bean->city ?? '';
-      $this->phone= $bean->phone ?? '';
-      $this->avatar= $bean->avatar ?? '';
-      $this->avatar_small = $bean->avatar_small ?? '';
-
-      $this->addressRepository = new AddressRepository();
+        $brand->translations = $dto->translations;
+      
+        return $user;
     }
+
+    public static function fromArray(array $data): self
+    {
+        $user = new self();
+        $user->id = (int) ($data['id'] ?? 0);
+        $user->password = (string) ($data['password'] ?? '');
+        $user->email = (string) ($data['email'] ?? '');
+        $user->name = $data['name'] ?? '';
+        $user->role = (string) ($data['role'] ?? 'Пользователь');
+        $user->fav_list = (string) ($data['fav_list'] ?? []);
+        $user->cart = (string) ($data['cart'] ?? []);
+
+        $user->country = (string) ($data['country'] ?? '');
+        $user->city = (string) ($data['city'] ?? '');
+        $user->phone = (string) ($data['phone'] ?? '');
+         
+        $user->avatar = (string) ($data['avatar'] ?? '');
+        $user->avatar_small = (string) $dto->avatar_small;
+   
+        $user->addressId = (int) ($data['address_id'] ?? 0);
+        $user->addressRepository = $data['address'];
+
+        
+        return $user;
+    }
+
+    // public function __construct(OODBBean $bean)
+    // {
+    //   $this->id = (int) $bean->id;
+    //   $this->email = $bean->email;
+    //   $this->password = $bean->password;
+    //   $this->name = $bean->name ?? 'Пользователь';
+    //   $this->role = $bean->role ?? 'user';
+
+    //   // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
+    //   $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
+    //   $this->fav_list = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
+    //   $this->addressId = (int) $bean->address->id ?? 0;
+        
+    //   $this->country= $bean->country ?? '';
+    //   $this->city= $bean->city ?? '';
+    //   $this->phone= $bean->phone ?? '';
+    //   $this->avatar= $bean->avatar ?? '';
+    //   $this->avatar_small = $bean->avatar_small ?? '';
+
+    //   $this->addressRepository = new AddressRepository();
+    // }
+  
 
     public function getRepository(): UserRepository {
       return new UserRepository();

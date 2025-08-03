@@ -16,6 +16,7 @@ use Vvintage\Repositories\AbstractRepository;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Repositories\Address\AddressRepository;
+use Vvintage\DTO\User\UserDTO;
 
 final class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
@@ -34,6 +35,20 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     private function hashPassword(string $password): string
     {
       return password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    private function mapBeanToUser(OODBBean $bean): User
+    {
+        $translations = $this->loadTranslations((int) $bean->id);
+
+        $dto = new UserDTO([
+            'id' => (int) $bean->id,
+            'title' => (string) $bean->title,
+            'image' => (string) $bean->image,
+            'translations' => $translations
+        ]);
+
+        return Brand::fromDTO($dto);
     }
 
     /**
@@ -80,7 +95,13 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
      */
     public function getAllUsers(): array
     {
-      return $this->findAll(self::TABLE_USERS);
+        $this->findAll(self::TABLE_USERS);
+
+        if (empty($beans)) {
+          return [];
+        }
+
+        return array_map([$this, 'mapBeanToUser'], $beans);
     }
 
     /**
