@@ -24,7 +24,13 @@ use Vvintage\Models\Order\Order;
 
 final class OrderRepository extends AbstractRepository implements OrderRepositoryInterface
 {
+    private const TABLE_ORDERS = 'orders';
+    private const TABLE_USERS = 'users';
+    private const ROLE_ADMIN = 'admin';
+
     private AddressRepository $addressRepository;
+
+
 
     public function __construct()
     {
@@ -53,7 +59,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
      */
     public function getOrderById(int $id): ?Order
     {
-        $bean = $this->loadBean('orders', $id);
+        $bean = $this->loadBean(self::TABLE_ORDERS, $id);
 
         if ($bean->id === 0) {
             return null;
@@ -70,7 +76,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
     public function getOrdersByUserId(int $id): array
     {
         $orders = [];
-        $beans = $this->findAll('orders', 'user_id = ?', [$id]);
+        $beans = $this->findAll(self::TABLE_ORDERS, 'user_id = ?', [$id]);
 
         foreach($beans as $bean) {
           $orders[] = Order::fromBean($bean);
@@ -86,13 +92,13 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
     */
     public function createOrder( Order $order, User $user): ?Order
     {
-        $bean = $this->createBean('orders');
+        $bean = $this->createBean(self::TABLE_ORDERS);
 
         // Записываем параметры в bean
         $this->fillOrderBean($bean, $order);
 
         // Привязываем заказ к пользователю
-        $userBean = $this->loadBean('users', $user->getId());
+        $userBean = $this->loadBean(self::TABLE_USERS, $user->getId());
         $bean->user = $userBean;
 
         // Сохраняем в БД
@@ -113,7 +119,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
      */
     public function editOrder(int $id, array $order, User $user): ?Order
     {
-        $bean = $this->loadBean('orders', $id);
+        $bean = $this->loadBean(self::TABLE_ORDERS, $id);
 
         if ($bean->id !== 0) {
             // Записываем параметры в bean и сохраняем в БД
@@ -143,9 +149,9 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
         $id = $order->getId();
         $user_id = $userModel->getId();
 
-        $bean = $this->loadBean('orders', $id);
+        $bean = $this->loadBean(self::TABLE_ORDERS, $id);
 
-        if ($bean->id !== 0 && ($user_id === $bean->user_id || $userModel->getRole() === 'admin')) {
+        if ($bean->id !== 0 && ($user_id === $bean->user_id || $userModel->getRole() === self::ROLE_ADMIN)) {
             $this->deleteBean($bean);
         }
 
@@ -153,7 +159,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
 
     public function getAllOrdersCount (?string $sql = null, array $params = []): int
     {
-      return $this->countAll('orders', $sql, $params);
+      return $this->countAll(self::TABLE_ORDERS, $sql, $params);
     }
 
 }
