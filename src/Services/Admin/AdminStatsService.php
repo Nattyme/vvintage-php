@@ -25,12 +25,13 @@ class AdminStatsService {
   }
 
   public function getSummary(): array {
+
       return [
-          'newOrders' => $this->orderRepository->countNew('orders'),
+          'newOrders' => $this->orderRepository->getAllOrdersCount('status = ?', ['new']),
           // 'messages' => MessageRepository::countUnread(),
-          'posts' => $this->postRepository->countAll('posts'),
-          'products' => $this->productRepository->countAll('products'),
-          'users' => $this->userRepository->countAll('users')
+          'posts' => $this->postRepository->getAllPostsCount(),
+          'products' => $this->productRepository->getAllProductsCount(),
+          'users' => $this->userRepository->getAllUsersCount()
       ];
   }
 }

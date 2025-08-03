@@ -8,10 +8,8 @@ use Vvintage\Models\Blog\Post;
 interface PostRepositoryInterface
 {    
   public function getPostById(int $id): ?Post;
-
   public function getAllPosts(array $pagination): array;
-
   public function getPostsByIds(array $ids): array;
-
   public function savePost (Post $post): int;
+  public function getAllPostsCount (?string $sql = null, array $params = []): int;
 }

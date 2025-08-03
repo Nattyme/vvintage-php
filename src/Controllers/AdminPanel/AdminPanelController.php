@@ -21,7 +21,8 @@ final class AdminPanelController
 
   private function setAdminPanelData(): void
   {
-    $this->newOrders = OrderRepository::countNewOrders();
+    $orderRepository = new OrderRepository();
+    $orderRepository->getAllOrdersCount('status = ?', ['new']);
   }
 
   public function getPanelData(): array

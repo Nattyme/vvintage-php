@@ -1,6 +1,12 @@
 <?php
   namespace Vvintage\Routing;
+
   use Vvintage\Routing\RouteData;
+
+  /** Контракты */
+  use Vvintage\Contracts\User\UserInterface;
+  use Vvintage\Store\Cart\CartStoreInterface;
+  use Vvintage\Store\Favorites\FavoritesStoreInterface;
 
   /**  Сервисы */
   use Vvintage\Services\Auth\SessionManager;
@@ -47,10 +53,6 @@
   use Vvintage\Store\UserItemsList\GuestItemsListStore;
   use Vvintage\Store\UserItemsList\UserItemsListStore;
 
-  /** Интерфейсы */
-  use Vvintage\Models\User\UserInterface;
-  use Vvintage\Store\Cart\CartStoreInterface;
-  use Vvintage\Store\Favorites\FavoritesStoreInterface;
 
   /** Репозитории */
   use Vvintage\Repositories\User\UserRepository;

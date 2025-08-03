@@ -212,4 +212,9 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return Product::fromDTO($dto);
     }
 
+    public function getAllProductsCount(?string $sql = null, array $params = []): int
+    {
+      return $this->countAll('products', $sql, $params);
+    }
+
 }

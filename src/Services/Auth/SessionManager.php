@@ -5,10 +5,18 @@ declare(strict_types=1);
 namespace Vvintage\Services\Auth;
 
 use RedBeanPHP\R; // Подключаем readbean
+
+/** Контракт */
+use Vvintage\Contracts\User\UserInterface;
+
+/** Модели */
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
-use Vvintage\Models\User\UserInterface;
+
+/** Репозитории */
 use Vvintage\Repositories\User\UserRepository;
+
+/** Хранилище */
 use Vvintage\Store\Cart\GuestCartStore;
 use Vvintage\Store\Favorites\GuestFavoritesStore;
 
@@ -63,7 +71,7 @@ class SessionManager
 
         $userRepository = new UserRepository();
         
-        return $userRepository->findUserById((int) $_SESSION['user_id']);
+        return $userRepository->getUserById((int) $_SESSION['user_id']);
     }
 
 }

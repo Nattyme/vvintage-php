@@ -151,15 +151,9 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
 
     }
 
-    public static function countNewOrders(): int
+    public function getAllOrdersCount (?string $sql = null, array $params = []): int
     {
-        $beans = $this->findAll('orders', 'status = ?', ['new']);
-
-        foreach($beans as $bean) {
-          $orders[] = Order::fromBean($bean);
-        }
-
-        return count($beans);
+      return $this->countAll('orders', $sql, $params);
     }
 
 }

@@ -159,9 +159,9 @@ class Product
         return $this->datetime;
     }
 
-    public function getCategory(): int
+    public function getCategory(): Category
     {
-      return $this->category_id;
+      return $this->category;
     }
 
     public function getCategoryTitle(): string {

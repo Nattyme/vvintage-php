@@ -264,4 +264,9 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
         $userItems = !empty($bean->$itemsKey) ? json_decode($bean->$itemsKey, true) : [];
         return $userItems;
     }
+
+    public function getAllUsersCount(?string $sql = null, array $params = []): int
+    {
+      return $this->countAll('users', $sql, $params);
+    }
 }

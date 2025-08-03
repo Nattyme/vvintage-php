@@ -58,15 +58,14 @@ class AdminProductController extends BaseAdminController
     $subCats = $this->categoryRepository->getSubCats();
     $brands = $this->brandRepository->getBrands();
 
-
     // Загружаем объект категории
-    // $subCatBean = R::load('categories', $product['category']);
-    // $selectedSubCat =  $product->getCategory();
+    $selectedSubCat = $product->getCategory();
 
     // Главный раздел
-    $selectedMaiCat = $subCatBean->parent_id;
+    $selectedMaiCat = $this->categoryRepository->getParentCategory($selectedSubCat);
 
-
+dd($selectedSubCat);
+dd($selectedMaiCat);
 
     if( isset($_POST['submit'])) {
       // Проверка токена

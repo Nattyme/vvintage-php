@@ -67,8 +67,7 @@ final class Category
     {
         $locale = $locale ?? $this->currentLocale;
 
-        return $this->translations[$locale]['seo_title']
-            ?? '';
+        return $this->translations[$locale]['seo_title'] ?? '';
     }
 
     public function getSeoDescription(?string $locale = null): string

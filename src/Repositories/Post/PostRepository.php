@@ -55,4 +55,8 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
         return (int) $this->saveBean($bean);
     }
 
+    public function getAllPostsCount (?string $sql = null, array $params = []): int
+    {
+      return $this->countAll('posts', $sql, $params);
+    }
 }

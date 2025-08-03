@@ -133,6 +133,17 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return Category::fromDTO($dto);
     }
 
+    public function getParCategory(Category $category): ?Category
+    {
+      $parentId = $category->getParentId();
+
+      if(!$parentId) {
+        return null;
+      }
+
+      return $this->getCategoryById($parentId);
+    }
+
     public function getCategoryWithChildren(int $id): array
     {
         if ($id <= 0) {

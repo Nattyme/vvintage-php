@@ -45,5 +45,5 @@ interface OrderRepositoryInterface
     */
     public function removeOrder(Order $order, User $userModel): void;
 
-    public static function countNewOrders(): int;
+    public function getAllOrdersCount (?string $sql = null, array $params = []): int;
 }
