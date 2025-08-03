@@ -49,6 +49,8 @@ class AdminProductController extends BaseAdminController
 
   public function edit(RouteData $routeData)
   {
+    $this->isAdmin();
+
     // Получаем продукт 
     $productId = $_GET['id'];
     $product = $this->productRepository->getProductById((int) $productId);
@@ -56,16 +58,13 @@ class AdminProductController extends BaseAdminController
     // Получаем главные категориии, подкатегории и бренды
     $mainCats = $this->categoryRepository->getMainCats();
     $subCats = $this->categoryRepository->getSubCats();
-    $brands = $this->brandRepository->getBrands();
+    $brands = $this->brandRepository->getAllBrands();
 
     // Загружаем объект категории
     $selectedSubCat = $product->getCategory();
 
     // Главный раздел
     $selectedMaiCat = $this->categoryRepository->getParentCategory($selectedSubCat);
-
-dd($selectedSubCat);
-dd($selectedMaiCat);
 
     if( isset($_POST['submit'])) {
       // Проверка токена
@@ -173,7 +172,7 @@ dd($selectedMaiCat);
     // Устанавливаем пагинацию
     $pagination = pagination($productsPerPage, 'products');
     $products = $this->productRepository->getAllProducts($pagination);
-    $total = $this->productRepository->countAll('products');
+    $total = $this->productRepository->getAllProductsCount();
 
     // Получаем изображения товаров
     $imageService = new ProductImageService();

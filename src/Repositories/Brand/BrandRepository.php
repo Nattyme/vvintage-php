@@ -104,7 +104,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     }
 
     /** Находим все бренды и возвращаем в виде массива объектов */
-    public function getBrands (): array
+    public function getAllBrands(): array
     {
       $beans = $this->findAll('brands');
 
@@ -170,5 +170,10 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         return $id;
     }
 
+    
+    public function getAllBrandsCount(?string $sql = null, array $params = []): int
+    {
+      return $this->countAll('brands', $sql, $params);
+    }
 
 }

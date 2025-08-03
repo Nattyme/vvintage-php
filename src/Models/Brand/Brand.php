@@ -34,8 +34,6 @@ final class Brand
         $brand->title = (string) ($data['title'] ?? '');
         $brand->image = (string) ($data['image'] ?? '');
         $brand->translations = $data['translations'] ?? [];
-        $brand->seoTitle = (string) ($data['seo_title'] ?? '');
-        $brand->seoDescription = (string) ($data['seo_description'] ?? '');
         $brand->currentLocale = (string) ($data['locale'] ?? 'ru');
         
         return $brand;
@@ -57,4 +55,48 @@ final class Brand
     {
       return $this->image;
     }
+
+    public function getTranslations(): array
+    {
+      return $this->translations;
+    }
+
+
+
+    public function setLocale(string $locale): void
+    {
+        $this->currentLocale = $locale;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->currentLocale;
+    }
+
+    public function getTranslation(string $locale = null): ?array
+    {
+        $locale = $locale ?? $this->currentLocale;
+        return $this->translations[$locale] ?? null;
+    }
+
+    public function getTranslatedTitle(): string
+    {
+        return $this->getTranslation()['title'] ?? $this->title;
+    }
+
+    public function getTranslatedDescription(): string
+    {
+        return $this->getTranslation()['description'] ?? '';
+    }
+
+    public function getMetaTitle(): string
+    {
+        return $this->getTranslation()['meta_title'] ?? '';
+    }
+
+    public function getMetaDescription(): string
+    {
+        return $this->getTranslation()['meta_description'] ?? '';
+    }
+
 }

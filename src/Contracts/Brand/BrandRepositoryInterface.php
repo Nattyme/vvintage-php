@@ -9,7 +9,8 @@ use Vvintage\Models\Brand\Brand;
 interface BrandRepositoryInterface
 {
     public function getBrandById(int $id): ?Brand;
-    public function getBrands(): array;
+    public function getAllBrands(): array;
     public function getBrandsByIds(array $ids): array;
     public function saveBrand(Brand $brand): ?int;
+    public function getAllBrandsCount(?string $sql = null, array $params = []): int;
 }

@@ -63,6 +63,7 @@
   /** Админ контроллеры */
   use Vvintage\Controllers\Admin\HomeAdminController;
   use Vvintage\Controllers\Admin\AdminProductController;
+  use Vvintage\Controllers\Admin\AdminBrandController;
 
 
   class Router {
@@ -424,6 +425,7 @@
     {
       $homeAdminController = new HomeAdminController();
       $adminProductController = new AdminProductController();
+      $adminBrandController = new AdminBrandController();
 
       switch ($routeData->uriGet) {
          // ::::::::::::: SHOP :::::::::::::::::::
@@ -442,6 +444,25 @@
         case 'shop-edit':
           $adminProductController->edit($routeData);
           break;
+
+        
+      // ::::::::::::: BRANDS :::::::::::::::::::
+      case 'brand':
+        $adminBrandController->all($routeData);
+        break;
+
+      case 'brand-new':
+        require ROOT . "admin/modules/brands/new.php";
+        break;
+
+      case 'brand-edit':
+        require ROOT . "admin/modules/brands/edit.php";
+        break;
+
+      case 'brand-delete':
+        require ROOT . "admin/modules/brands/delete.php";
+        break;
+
           
 
         // ::::::::::::: SHOP :::::::::::::::::::
