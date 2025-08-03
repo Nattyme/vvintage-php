@@ -44,7 +44,7 @@
       </thead>
       <tbody>
         <?php foreach ($brands as $brand) : ?>
-<?php dd($brands);?>
+
           <tr>
             <td >
                 <?php echo h($brand->getId());?>
@@ -52,12 +52,12 @@
             
             <td>
               <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit?id=<?php echo u($brand->getId());?>">
-                <?php echo h($brand->getTitle());?>
+                <?php echo h($brand->getTranslatedTitle());?>
               </a>
             </td>
             <td>
               <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit?id=<?php echo u($brand->getId());?>">
-                <?php echo h($brand->getDescription());?>
+                <?php echo h($brand->getTranslatedDescription());?>
               </a>
             </td>
            

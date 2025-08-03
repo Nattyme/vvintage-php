@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Brand;
 use Vvintage\DTO\Brand\BrandDTO;
+use Vvintage\Traits\HasTranslations;
+;
 
 final class Brand
-{
+{   
+    use HasTranslations;
+
     private int $id;
     private string $title;
     private ?string $image;
@@ -14,6 +18,7 @@ final class Brand
     private string $currentLocale = 'ru';
 
     private function __construct() {}
+  
 
     public static function fromDTO(BrandDTO $dto): self
     {
@@ -61,42 +66,5 @@ final class Brand
       return $this->translations;
     }
 
-
-
-    public function setLocale(string $locale): void
-    {
-        $this->currentLocale = $locale;
-    }
-
-    public function getLocale(): string
-    {
-        return $this->currentLocale;
-    }
-
-    public function getTranslation(string $locale = null): ?array
-    {
-        $locale = $locale ?? $this->currentLocale;
-        return $this->translations[$locale] ?? null;
-    }
-
-    public function getTranslatedTitle(): string
-    {
-        return $this->getTranslation()['title'] ?? $this->title;
-    }
-
-    public function getTranslatedDescription(): string
-    {
-        return $this->getTranslation()['description'] ?? '';
-    }
-
-    public function getMetaTitle(): string
-    {
-        return $this->getTranslation()['meta_title'] ?? '';
-    }
-
-    public function getMetaDescription(): string
-    {
-        return $this->getTranslation()['meta_description'] ?? '';
-    }
 
 }
