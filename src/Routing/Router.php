@@ -452,15 +452,18 @@
         break;
 
       case 'brand-new':
-        require ROOT . "admin/modules/brands/new.php";
+        $adminBrandController->new($routeData);
+        // require ROOT . "admin/modules/brands/new.php";
         break;
 
       case 'brand-edit':
-        require ROOT . "admin/modules/brands/edit.php";
+        $adminBrandController->edit($routeData);
+        // require ROOT . "admin/modules/brands/edit.php";
         break;
 
       case 'brand-delete':
-        require ROOT . "admin/modules/brands/delete.php";
+        $adminBrandController->delete($routeData);
+        // require ROOT . "admin/modules/brands/delete.php";
         break;
 
           

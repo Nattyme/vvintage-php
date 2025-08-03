@@ -51,12 +51,12 @@
             </td>
             
             <td>
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit?id=<?php echo u($brand->getId());?>">
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit/<?php echo u($brand->getId());?>">
                 <?php echo h($brand->getTranslatedTitle());?>
               </a>
             </td>
             <td>
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit?id=<?php echo u($brand->getId());?>">
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit/<?php echo u($brand->getId());?>">
                 <?php echo h($brand->getTranslatedDescription());?>
               </a>
             </td>

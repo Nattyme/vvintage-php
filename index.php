@@ -31,11 +31,6 @@ $translator = new Translator($lang); // создаем объект перево
 setTranslator($translator); // сохраняем его
 // setTranslator()->getTranslator()->getCatalogue(); // устанавливаем переводчик
 
-// function __(string $key, array $params = [], string $domain = 'messages'): string
-// {
-//   global $translator;
-//   return $translator->trans($key, $params, $domain);
-// }
 
 // dd($translator);
 Database::connect(); // Подключение БД:
@@ -51,10 +46,3 @@ $uriGetParam = getUriGetParam(); // третья часть — параметр
 // Передаем данные маршрутизатору
 $routeData = new RouteData($uri, $uriModule, $uriGet, $uriGetParam);
 Router::route($routeData);
-
-// require ROOT . 'modules/settings/settings.php';
-// require ROOT . 'modules/admin-panel/admin-panel.php';
-// require ROOT . 'modules/navigation/navigation.php';
-// require ROOT . 'modules/cart/usercart.php';
-// require ROOT . 'modules/shop/get-nav-categories.php';
-// require ROOT . 'modules/favorite/userfavorite.php';
