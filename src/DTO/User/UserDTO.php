@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\User;
 
+use Vvintage\DTO\AddressDTO;
+
 final class UserDTO
 {
     private int $id;
@@ -18,7 +20,7 @@ final class UserDTO
     private string $avatar;
     private string $avatar_small;
     private int $addressId;
-    private AddressRepository $addressRepository;
+    public ?AddressDTO $address = null;
 
     public function __construct(array $data)
     {
@@ -38,7 +40,10 @@ final class UserDTO
         $this->avatar = (string) ($data['avatar'] ?? '');
         $this->avatar_small = (string) ($data['avatar_small'] ?? '');
         $this->addressId = (string) ($data['addressId'] ?? 0);
-        $this->addressRepository = new AddressRepository();
+        
+          if (isset($data['address']) && is_array($data['address'])) {
+          $this->address = new AddressDTO($data['address']);
+        }
 
     }
 }

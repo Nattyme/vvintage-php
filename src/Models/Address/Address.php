@@ -38,24 +38,67 @@ final class Address
         $this->phone = (string) $bean->phone;
     }
 
-    public function export(): array
+    public static function fromArray(array $data): self
     {
-        return [
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'name' => $this->name,
-            'surname' => $this->surname,
-            'fathername' => $this->fathername,
-            'country' => $this->country,
-            'area' => $this->area,
-            'city' => $this->city,
-            'street' => $this->street,
-            'building' => $this->building,
-            'flat' => $this->flat,
-            'post_index' => $this->post_index,
-            'phone' => $this->phone,
-        ];
+        $address = new self();
+        $address->id = (int) ($data['id'] ?? 0);
+        $address->user_id = (int) ($data['user_id'] ?? 0);
+
+        $address->name = (string) ($data['name'] ?? '');
+        $address->surname = (string) ($data['surname'] ?? '');
+        $address->fathername = (string) ($data['fathername'] ?? '');
+        $address->phone = (string) ($data['phone'] ?? '');
+
+        $address->country = (string) ($data['country'] ?? '');
+        $address->area = (string) ($data['area'] ?? '');
+        $address->city = (string) ($data['city'] ?? '');
+        $address->street = (string) ($data['street'] ?? '');
+        $address->building = (string) ($data['building'] ?? '');
+        $address->flat = (string) ($data['flat'] ?? '');
+        $address->post_index = (string) ($data['post_index'] ?? '');
+        
+        return $address;
     }
+
+    public static function fromDTO(AddressDTO $dto): self
+    {
+        $address = new self();
+        $address->id = $dto->id;
+        $address->user_id = 0; // или передавай отдельно, если нужно
+        $address->name = $dto->name;
+        $address->surname = $dto->surname;
+        $address->fathername = $dto->fathername;
+        $address->country = $dto->country;
+        $address->area = $dto->area;
+        $address->city = $dto->city;
+        $address->street = $dto->street;
+        $address->building = $dto->building;
+        $address->flat = $dto->flat;
+        $address->post_index = $dto->post_index;
+        $address->phone = $dto->phone;
+
+        return $address;
+    }
+
+
+    // public function export(): array
+    // {
+    //     return [
+    //         'id' => $this->id,
+    //         'user_id' => $this->user_id,
+    //         'name' => $this->name,
+    //         'surname' => $this->surname,
+    //         'fathername' => $this->fathername,
+    //         'country' => $this->country,
+    //         'area' => $this->area,
+    //         'city' => $this->city,
+    //         'street' => $this->street,
+    //         'building' => $this->building,
+    //         'flat' => $this->flat,
+    //         'post_index' => $this->post_index,
+    //         'phone' => $this->phone,
+    //     ];
+    // }
 
     public function getId(): int
     {

@@ -23,9 +23,13 @@ use Vvintage\DTO\PostCategory\PostCategoryDTO;
 
 final class PostCategoryRepository extends AbstractRepository implements PostCategoryRepositoryInterface
 {
+  // СОЗДАТЬ ТАБЛИЦУ ПЕРЕВОДО КАТЕГОРИЙ ПОСТОВ
+    // private const TABLE_POSTS_CATEGORIES = 'posts_categories';
+    private const TABLE_POSTS_CATEGORIES_TRANSLATION = 'categories_translation';
+
     public function getPostCatById(int $id): ?PostCategory
     {
-        $bean = $this->findById('posts_categories', $id);
+        $bean = $this->findById(self::TABLE_POSTS_CATEGORIES, $id);
 
         if (!$bean || !$bean->id) {
             return null;
@@ -36,13 +40,13 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
     public function getAllPostCats(): array
     {
-        $beans = $this->findAll('posts_categories');
+        $beans = $this->findAll(self::TABLE_POSTS_CATEGORIES);
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
     public function getPostCatsByIds(array $ids): array
     {
-        $beans = $this->findByIds('posts_categories', $ids);
+        $beans = $this->findByIds(self::TABLE_POSTS_CATEGORIES, $ids);
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
@@ -53,7 +57,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
     public function getSubCats(): array
     {
-        $beans = $this->findAll('posts_categories', 'parent_id IS NOT NULL');
+        $beans = $this->findAll(self::TABLE_POSTS_CATEGORIES, 'parent_id IS NOT NULL');
 
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
@@ -61,9 +65,9 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     public function getPostCatsByParentId(?int $id = null): array
     {
         if ($id === null) {
-            $beans = $this->findAll('posts_categories', 'parent_id IS NULL');
+            $beans = $this->findAll(self::TABLE_POSTS_CATEGORIES, 'parent_id IS NULL');
         } else {
-            $beans = $this->findAll('posts_categories', 'parent_id = ?', [$id]);
+            $beans = $this->findAll(self::TABLE_POSTS_CATEGORIES, 'parent_id = ?', [$id]);
         }
 
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
@@ -72,7 +76,9 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
     public function savePostCat(Category $cat): int
     {
-        $bean = $cat->getId() ? $this->loadBean('posts_categories', $cat->getId()) : $this->createBean('posts_categories');
+        $bean = $cat->getId() 
+        ? $this->loadBean(self::TABLE_POSTS_CATEGORIES, $cat->getId())
+        : $this->createBean(self::TABLE_POSTS_CATEGORIES);
 
         $bean->title = $cat->getTitle(); // по умолчанию ru
         $bean->parent_id = $cat->getParentId();
@@ -104,7 +110,8 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     private function loadTranslations(int $categoryId): array
     {
         $rows = R::getAll(
-            'SELECT locale, title, description, meta_title, meta_description FROM categories_translation WHERE category_id = ?',
+            'SELECT locale, title, description, meta_title, meta_description 
+             FROM ' . self::TABLE_POSTS_CATEGORIES_TRANSLATION . ' WHERE category_id = ?',
             [$categoryId]
         );
 

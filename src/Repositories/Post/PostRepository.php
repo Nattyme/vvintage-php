@@ -19,7 +19,7 @@ use Vvintage\Models\Blog\Post;
 
 final class PostRepository extends AbstractRepository implements PostRepositoryInterface
 {  
-    private const TABLE_POSTS = self::TABLE_POSTS;
+    private const TABLE_POSTS = 'posts';
 
     public function getPostById(int $id): ?Post
     {
