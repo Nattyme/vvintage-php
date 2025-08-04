@@ -24,7 +24,19 @@ use Vvintage\DTO\Brand\BrandDTO;
 
 final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
-  
+    private const TABLE_PRODUCTS = 'products';
+    private const TABLE_PRODUCTS_TRANSLATION = 'products_translation';
+    private const TABLE_PRODUCT_IMAGES = 'productimages';
+
+    private const TABLE_BRANDS = 'brands';
+    private const TABLE_BRANDS_TRANSLATION = 'brands_translation';
+
+    private const TABLE_CATEGORIES = 'categories';
+    private const TABLE_CATEGORIES_TRANSLATION = 'categories_translation';
+
+    private const DEFAULT_LOCALE = 'ru';
+            
+           
     public function getProductById(int $id): ?Product
     {
         $rows = $this->uniteProductRawData($id);
@@ -81,16 +93,16 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
                 bt.meta_title AS brand_meta_title,
                 bt.meta_description AS brand_meta_description,
                 GROUP_CONCAT(DISTINCT pi.filename ORDER BY pi.image_order) AS images
-            FROM products p
-            LEFT JOIN products_translation pt ON pt.product_id = p.id AND pt.locale = ?
-            LEFT JOIN productimages pi ON pi.product_id = p.id
-            LEFT JOIN categories c ON p.category_id = c.id
-            LEFT JOIN categories_translation ct ON ct.category_id = c.id AND ct.locale = ?
-            LEFT JOIN brands b ON p.brand_id = b.id
-            LEFT JOIN brands_translation bt ON bt.brand_id = b.id AND bt.locale = ?
+            FROM ' . self::TABLE_PRODUCTS .' p
+            LEFT JOIN ' . self::TABLE_PRODUCTS_TRANSLATION .' pt ON pt.product_id = p.id AND pt.locale = ?
+            LEFT JOIN ' . self::TABLE_PRODUCT_IMAGES .' pi ON pi.product_id = p.id
+            LEFT JOIN ' . self::TABLE_CATEGORIES .' c ON p.category_id = c.id
+            LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct ON ct.category_id = c.id AND ct.locale = ?
+            LEFT JOIN ' . self::TABLE_BRANDS . ' b ON p.brand_id = b.id
+            LEFT JOIN ' . self::TABLE_BRANDS_TRANSLATION . ' bt ON bt.brand_id = b.id AND bt.locale = ?
         ';
 
-        $locale = 'ru';
+        $locale = self::DEFAULT_LOCALE;
         $bindings = [$locale, $locale, $locale];
 
         if ($productId !== null) {
@@ -110,7 +122,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     {
         $rows = R::getAll(
             'SELECT locale, title, description, meta_title, meta_description 
-             FROM products_translation 
+             FROM ' . self::TABLE_PRODUCTS_TRANSLATION .' 
              WHERE product_id = ?',
             [$productId]
         );
@@ -130,7 +142,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     private function createCategoryDTOFromArray(array $row): CategoryDTO
     {
-        $locale = $row['locale'] ?? 'ru';
+        $locale = $row['locale'] ?? self::DEFAULT_LOCALE;
 
         return new CategoryDTO([
             'id' => (int) $row['category_id'],
@@ -151,7 +163,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     private function createBrandDTOFromArray(array $row): BrandDTO
     {
-        $locale = $row['locale'] ?? 'ru';
+        $locale = $row['locale'] ?? self::DEFAULT_LOCALE;
 
         return new BrandDTO([
             'id' => (int) $row['brand_id'],
@@ -173,7 +185,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     {
         $imagesRows = R::getAll(
             'SELECT id, product_id, filename, image_order 
-            FROM productimages 
+            FROM ' . self::TABLE_PRODUCT_IMAGES . '
             WHERE product_id = ? 
             ORDER BY image_order',
             [$row['id']]
@@ -205,7 +217,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             'datetime' => (string) $row['datetime'],
             'images_total' => count($imagesDTO),
             'translations' => $translations,
-            'locale' => $row['locale'] ?? 'ru',
+            'locale' => $row['locale'] ?? self::DEFAULT_LOCALE,
             'images' => $imagesDTO,
         ]);
 
@@ -214,7 +226,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     public function getAllProductsCount(?string $sql = null, array $params = []): int
     {
-      return $this->countAll('products', $sql, $params);
+      return $this->countAll(self::TABLE_PRODUCTS, $sql, $params);
     }
 
 }
