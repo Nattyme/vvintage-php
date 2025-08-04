@@ -12,14 +12,13 @@
           <th>ID</th>
           <th>Имя</th>
           <th>Эл. почта</th>
-          <th>Комментарии</th>
+          <!-- <th>Комментарии</th> -->
           <th>Роль</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($users as $user) : ?>
-          <?php dd($user); ?>
           <tr>
             <td><?php echo h( $user->getId() ) ;?></td>
             <td>
@@ -30,9 +29,9 @@
             <td>
                 <?php echo  h($user->getEmail());?>
             </td>
-            <td>
-                <!-- <?php echo $user['comments'];?> -->
-            </td>
+            <!-- <td> -->
+                <!-- <?php /** echo  $user['comments']; */?> -->
+            <!-- </td> -->
             <td>
                 <?php echo  h($user->getRole());?>
             </td>
