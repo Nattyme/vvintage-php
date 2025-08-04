@@ -24,4 +24,6 @@ final class ProductImageDTO
     {
       return $this->filename;
     }
+
+
 }

@@ -101,9 +101,8 @@ final class CartController extends BaseController
     {
       // Получаем продукты
       $products = $this->cartService->getListItems();
-    
       $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
-   dd( $totalPrice);
+ 
       // Показываем страницу
       $this->renderPage($routeData, $products, $this->cartModel, $totalPrice);
     }

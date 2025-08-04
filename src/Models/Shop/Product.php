@@ -6,6 +6,7 @@ namespace Vvintage\Models\Shop;
 
 /** DTO */
 use Vvintage\DTO\Product\ProductDTO;
+use Vvintage\DTO\Product\ProductImageDTO;
 use Vvintage\DTO\Category\CategoryDTO;
 use Vvintage\DTO\Brand\BrandDTO;
 
@@ -89,32 +90,53 @@ class Product
 
 
     // Ф-ция возвращает изображения продукта
-    public function getImages(): array
-    {
-        // Если загружены изображения - возвращаем
-        if ($this->images !== null) {
-            return $this->images;
-        }
+    // public function getImages(): array
+    // {
+    //     // Если загружены изображения - возвращаем
+    //     if ($this->images !== null) {
+    //         return $this->images;
+    //     }
 
-        $main = null;
-        $others = [];
-        $rows = Database::getProductImagesRow($this->id);
+    //     // $main = null;
+    //     // $others = [];
+    //     // $rows = Database::getProductImagesRow($this->id);
 
-        // Посчитаем общее кол-во изображений
-        $this->imagesTotal = count($rows);
+    //     // // Посчитаем общее кол-во изображений
+    //     // $this->imagesTotal = count($rows);
 
-        // Обходим массив изображении продукта и находим главное. Остальные сохраняем в массив
-        foreach ($rows as $row) {
-            if ((int) $row['image_order'] === 1 && $main === null) {
-                $main = $row['filename'];
-            } else {
-                $others[] = $row['filename'];
-            }
-        }
+    //     // // Обходим массив изображении продукта и находим главное. Остальные сохраняем в массив
+    //     // foreach ($rows as $row) {
+    //     //     if ((int) $row['image_order'] === 1 && $main === null) {
+    //     //         $main = $row['filename'];
+    //     //     } else {
+    //     //         $others[] = $row['filename'];
+    //     //     }
+    //     // }
 
-        $this->images = ['main' => $main, 'others' => $others];
-        return $this->images;
-    }
+    //     // $this->images = ['main' => $main, 'others' => $others];
+      
+    //     // return $this->images;
+    // }
+
+    // public function getMainImage(): ?string
+    // {
+    //     $main = null;
+    //     $others = [];
+
+    //     // Обходим массив изображении продукта и находим главное. Остальные сохраняем в массив
+    //     foreach ($rows as $row) {
+    //         if ((int) $row['image_order'] === 1 && $main === null) {
+    //             $main = $row['filename'];
+    //         } else {
+    //             $others[] = $row['filename'];
+    //         }
+    //     }
+
+    //     $this->images = ['main' => $main, 'others' => $others];
+    
+    //     return $images['main'] ?? null;
+    // }
+
 
     /**
      * Getters
@@ -177,5 +199,44 @@ class Product
     {
       return $this->translations;
     }
+
+    public function getAllImages(): array
+    {
+        return $this->images ?? [];
+    }
+
+    public function getImages(): array
+    {
+        if (is_array($this->images) && isset($this->images['main'], $this->images['others'])) {
+            return $this->images;
+        }
+
+        $main = null;
+        $others = [];
+
+        foreach ($this->images as $imageDTO) {
+            if (
+                $imageDTO instanceof \Vvintage\DTO\Product\ProductImageDTO &&
+                $imageDTO->image_order === 1 &&
+                $main === null
+            ) {
+                $main = $imageDTO;
+            } else {
+                $others[] = $imageDTO;
+            }
+        }
+
+        $this->images = ['main' => $main, 'others' => $others];
+
+        return $this->images;
+    }
+
+    public function getMainImage(): ?ProductImageDTO
+    {
+        $images = $this->getImages();
+        return $images['main'] ?? null;
+    }
+
+
 
 }
