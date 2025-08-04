@@ -22,7 +22,12 @@
 
             <div class="cart__body">
               <?php 
-                foreach ($products as $product) :
+                foreach ($productViewModel['products'] as $product) :
+
+                  // Получаем главное изображения 
+                  $images = $productViewModel['imagesByProductId'][$product->getId()] ?? null;
+                  $mainImage = $images['main'] ?? null;
+
                   include ROOT . 'views/cart/_parts/_product.tpl';
                 endforeach; 
               ?>
@@ -33,10 +38,10 @@
                 <div class="cart__summary">
                   <div class="cart__grid">
                     <p class="cart__total-amount">
-                      Количество товаров: <span class="text-bold"><?php echo count($products);?></span>
+                      Количество товаров: <span class="text-bold"><?php echo count($productViewModel['products']);?></span>
                     </p>
                     <p class="cart__total">
-                      Итого: <span class="text-bold"><?php echo h($totalPrice); ?>&nbsp;&euro;</span>
+                      Итого: <span class="text-bold"><?php echo h($productViewModel['totalPrice']); ?>&nbsp;&euro;</span>
                     </p>
             
                   </div>

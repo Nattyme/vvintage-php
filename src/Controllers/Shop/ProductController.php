@@ -58,6 +58,7 @@ final class ProductController extends BaseController
         $imageService = new ProductImageService();
         $imagesMainAndOthers = $imageService->splitImages($product->getImages());
 
+
         // Получаем похожие продукты
         $related = $product->getRelated();
 

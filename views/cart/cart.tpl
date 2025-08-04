@@ -13,7 +13,7 @@
 
        
         <?php 
-          if (!empty($products)) : 
+          if (!empty($productViewModel['products'])) :
             // <!-- cart table-->
             include ROOT . 'views/cart/_parts/_table.tpl';
        

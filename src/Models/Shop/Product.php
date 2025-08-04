@@ -200,42 +200,42 @@ class Product
       return $this->translations;
     }
 
-    public function getAllImages(): array
+    public function getImages(): array
     {
         return $this->images ?? [];
     }
 
-    public function getImages(): array
-    {
-        if (is_array($this->images) && isset($this->images['main'], $this->images['others'])) {
-            return $this->images;
-        }
+    // public function getImages(): array
+    // {
+    //     if (is_array($this->images) && isset($this->images['main'], $this->images['others'])) {
+    //         return $this->images;
+    //     }
 
-        $main = null;
-        $others = [];
+    //     $main = null;
+    //     $others = [];
 
-        foreach ($this->images as $imageDTO) {
-            if (
-                $imageDTO instanceof \Vvintage\DTO\Product\ProductImageDTO &&
-                $imageDTO->image_order === 1 &&
-                $main === null
-            ) {
-                $main = $imageDTO;
-            } else {
-                $others[] = $imageDTO;
-            }
-        }
+    //     foreach ($this->images as $imageDTO) {
+    //         if (
+    //             $imageDTO instanceof \Vvintage\DTO\Product\ProductImageDTO &&
+    //             $imageDTO->image_order === 1 &&
+    //             $main === null
+    //         ) {
+    //             $main = $imageDTO;
+    //         } else {
+    //             $others[] = $imageDTO;
+    //         }
+    //     }
 
-        $this->images = ['main' => $main, 'others' => $others];
+    //     $this->images = ['main' => $main, 'others' => $others];
 
-        return $this->images;
-    }
+    //     return $this->images;
+    // }
 
-    public function getMainImage(): ?ProductImageDTO
-    {
-        $images = $this->getImages();
-        return $images['main'] ?? null;
-    }
+    // public function getMainImage(): ?ProductImageDTO
+    // {
+    //     $images = $this->getImages();
+    //     return $images['main'] ?? null;
+    // }
 
 
 

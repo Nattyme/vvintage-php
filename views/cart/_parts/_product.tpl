@@ -6,8 +6,8 @@
     </a>
   
     <div class="cart__img">
-      <img src="<?php echo HOST;?>usercontent/products/<?php echo empty($product->getMainImage()->getFilename()) ? "no-photo.jpg" : h($product->getMainImage()->getFilename());?>" 
-      srcset="<?php echo HOST . 'usercontent/products/' . h($product->getMainImage()->getFilename());?>" 
+      <img src="<?php echo HOST;?>usercontent/products/<?php echo empty($mainImage->getFilename()) ? "no-photo.jpg" : h($mainImage->getFilename());?>" 
+      srcset="<?php echo HOST . 'usercontent/products/' . h($mainImage->getFilename());?>" 
       alt="<?php echo h($product->getTitle());?>">
     </div>
 

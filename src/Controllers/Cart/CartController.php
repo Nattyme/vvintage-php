@@ -33,6 +33,7 @@ use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Product\ProductImageService;
 
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
@@ -85,14 +86,29 @@ final class CartController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
+      $imageService = new ProductImageService();
+
+      $imagesByProductId = [];
+
+      foreach ($products as $product) {
+          $imagesMainAndOthers = $imageService->splitImages($product->getImages());
+          $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
+      }
+
+      // Формируем единую модель для передачи в шаблон
+      $productViewModel = [
+          'products' => $products,
+          'imagesByProductId' => $imagesByProductId,
+          'totalPrice' => $totalPrice
+      ];
+
       // Подключение шаблонов страницы
       $this->renderLayout('cart/cart', [
             'cartModel' => $this->cartModel,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'products' => $products,
-            'totalPrice' => $totalPrice
+            'productViewModel' => $productViewModel,
       ]);
     }
 
@@ -102,7 +118,7 @@ final class CartController extends BaseController
       // Получаем продукты
       $products = $this->cartService->getListItems();
       $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
- 
+
       // Показываем страницу
       $this->renderPage($routeData, $products, $this->cartModel, $totalPrice);
     }

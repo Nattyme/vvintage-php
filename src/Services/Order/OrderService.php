@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Vvintage\Services\Order;
 
 use RedBeanPHP\R;
+
 use Vvintage\Models\Order\Order;
-use Vvintage\Repositories\OrderRepository;
-use Vvintage\Repositories\ProductRepository;
 use Vvintage\Models\User\User;
+
+use Vvintage\Repositories\Order\OrderRepository;
+use Vvintage\Repositories\Product\ProductRepository;
 // use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
 use Vvintage\Services\Messages\FlashMessage;

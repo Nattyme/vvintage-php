@@ -6,12 +6,12 @@
           <h1 class="h1">Оформление заказа</h1>
         </div>
 
-        <?php include ROOT . 'templates/_parts/breadcrumbs/breadcrumbs.tpl';?>
+        <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl';?>
 
       </div>
 
-      <?php include ROOT . "templates/components/errors.tpl"; ?>
-      <?php include ROOT . "templates/components/success.tpl"; ?>
+      <?php include ROOT . "views/components/errors.tpl"; ?>
+      <?php include ROOT . "views/components/success.tpl"; ?>
 
          <div class="form-order__details">
             <fieldset class="form-order__block">
@@ -27,9 +27,9 @@
                 </div>
                 <?php foreach ($products as $product) : ?>
                     <div class="form-order__table-row">
-                      <p><?php echo h($product['title']);?></p>
-                      <p><?php echo h($product['price']);?></p>
-                      <p><?php echo h($cartModel->getQuantity($product['id'])); ?></p>
+                      <p><?php echo h($product->getTitle());?></p>
+                      <p><?php echo h($product->getTitle());?></p>
+                      <p><?php echo h($cartModel->getQuantity($product->getId())); ?></p>
                     </div>
                   <?php endforeach; ?>
                 <div class="form-order__total form-order__table-row">

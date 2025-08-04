@@ -11,8 +11,8 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Base\BaseController;
 
 /** Интерфейсы */
-use Vvintage\Models\User\UserInterface;
-use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
+use Vvintage\Contracts\User\UserInterface;
+use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
 /** Сервисы */
 use Vvintage\Services\Order\OrderService;
@@ -43,7 +43,7 @@ final class OrderController extends BaseController
     private UserInterface $userModel;
     private Cart $cartModel;
     private array $cart;
-    private ItemsListStoreInterface $cartStore;
+    private UserItemsListStoreInterface $cartStore;
     private NewOrderValidator $validator;
     private FlashMessage $notes;
     private Breadcrumbs $breadcrumbsService;
@@ -55,7 +55,7 @@ final class OrderController extends BaseController
       UserInterface $userModel,
       Cart $cartModel,
       array $cart,
-      ItemsListStoreInterface $cartStore,
+      UserItemsListStoreInterface $cartStore,
       NewOrderValidator $validator,
       FlashMessage $notes,
       Breadcrumbs $breadcrumbs
