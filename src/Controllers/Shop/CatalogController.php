@@ -10,7 +10,7 @@ use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
 
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
-use Vvintage\Repositories\ProductRepository;
+use Vvintage\Repositories\Product\ProductRepository;
 
 /** Модели */
 use Vvintage\Models\Shop\Catalog;
@@ -58,7 +58,7 @@ final class CatalogController extends BaseController
       }
 
       // Считаем, сколько всего товаров в базе (для отображения "Показано N из M")
-      $total = $productRepository->countAll();
+      $total = $productRepository->getAllProductsCount();
       
       // Это кол-во товаров, показанных на этой странице
       // $shownProducts = $totalProducts - count($products);

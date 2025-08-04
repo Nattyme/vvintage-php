@@ -50,8 +50,10 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
         if ($bean->id === 0) {
             return null;
         }
-        return new User($bean);
+
+        return $this->mapBeanToUser($bean);
     }
+
 
     /**
      * Метод ищет пользователя по email
@@ -68,6 +70,8 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
       return $this->mapBeanToUser($bean);;
     }
+
+
 
     private function mapBeanToUser(OODBBean $bean): User
     {
@@ -100,7 +104,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
         return User::fromDTO($dto);
     }
-
 
 
     public function findBlockedUserByEmail (string $email): bool 

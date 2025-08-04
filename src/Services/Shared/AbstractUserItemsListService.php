@@ -43,7 +43,7 @@ abstract class AbstractUserItemsListService
 
     public function getListItems ()
     {
-      return !empty($this->items) ? $this->productRepository->findProductsByIds($this->items) : [];
+      return !empty($this->items) ? $this->productRepository->getProductsByIds($this->items) : [];
     }
 
     public function addItem($itemId)

@@ -57,9 +57,11 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
         $products = [];
         foreach ($ids as $id) {
-            $bean = $this->uniteProductRawData($id);
-            if ($bean) {
-                $products[] = $this->fetchProductWithJoins($bean);
+            $beans = $this->uniteProductRawData($id);
+
+            if ($beans) {
+           
+                $products = array_map([$this, 'fetchProductWithJoins'], $beans);;
             }
         }
 
@@ -110,7 +112,9 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             $bindings[] = $productId;
             // ⬇Заворачиваем в массив
             $row = R::getRow($sql, $bindings);
-            return $row ? [$row] : [];
+           
+            return $row ?[$row] : [];
+            // return $row ? [$row] : [];
         } else {
             $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
             return R::getAll($sql, $bindings);
@@ -196,6 +200,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     private function fetchProductWithJoins(array $row): Product
     {
+
         $productId = (int) $row['id'];
 
         $translations = $this->loadTranslations($productId);

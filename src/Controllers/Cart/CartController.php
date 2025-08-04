@@ -19,8 +19,8 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Models\Shared\AbstractUserItemsList;
 
 /** Интерфейсы */
-use Vvintage\Models\User\UserInterface;
-use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
+use Vvintage\Contracts\User\UserInterface;
+use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -47,7 +47,7 @@ final class CartController extends BaseController
     private UserInterface $userModel;
     private Cart $cartModel;
     private array $cart;
-    private ItemsListStoreInterface $cartStore;
+    private UserItemsListStoreInterface $cartStore;
     private FlashMessage $notes;
     private Breadcrumbs $breadcrumbsService;
 
@@ -61,7 +61,7 @@ final class CartController extends BaseController
       
       array $cart, 
       
-      ItemsListStoreInterface $cartStore, 
+      UserItemsListStoreInterface $cartStore, 
       
       FlashMessage $notes,
       Breadcrumbs $breadcrumbs
@@ -101,8 +101,9 @@ final class CartController extends BaseController
     {
       // Получаем продукты
       $products = $this->cartService->getListItems();
+    
       $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
-
+   dd( $totalPrice);
       // Показываем страницу
       $this->renderPage($routeData, $products, $this->cartModel, $totalPrice);
     }
