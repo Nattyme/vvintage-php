@@ -20,7 +20,7 @@ final class AddressDTO
     public string $flat;
     public string $post_index;
 
-
+ 
     public function __construct(array $data)
     {
         $this->id = (int) ($data['id'] ?? 0);

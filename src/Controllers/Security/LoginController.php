@@ -50,6 +50,7 @@ final class LoginController
     $loginService = new LoginService($this->userRepository, $this->notes);
     $userModel = $loginService->login($_POST);
 
+
     if (!$userModel) {
       $this->renderForm($routeData);
       return;

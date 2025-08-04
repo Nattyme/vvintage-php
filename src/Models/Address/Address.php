@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Vvintage\Models\Address;
+use Vvintage\DTO\Address\AddressDTO;
 
 use RedBeanPHP\OODBBean;
 
@@ -21,22 +22,7 @@ final class Address
     private string $post_index;
     private string $phone;
 
-    public function __construct(OODBBean $bean)
-    {
-        $this->id = (int) $bean->id;
-        $this->user_id = (int) $bean->user_id;
-        $this->name = (string) $bean->name;
-        $this->surname = (string) $bean->surname;
-        $this->fathername = (string) $bean->fathername;
-        $this->country = (string) $bean->country;
-        $this->area = (string) $bean->area;
-        $this->city = (string) $bean->city;
-        $this->street = (string) $bean->street;
-        $this->building = (string) $bean->building;
-        $this->flat = (string) $bean->flat;
-        $this->post_index = (string) $bean->post_index;
-        $this->phone = (string) $bean->phone;
-    }
+    public function __construct(){}
 
     public static function fromArray(array $data): self
     {
@@ -64,18 +50,19 @@ final class Address
     {
         $address = new self();
         $address->id = $dto->id;
-        $address->user_id = 0; // или передавай отдельно, если нужно
         $address->name = $dto->name;
         $address->surname = $dto->surname;
         $address->fathername = $dto->fathername;
+        $address->phone = $dto->phone;
+
         $address->country = $dto->country;
         $address->area = $dto->area;
         $address->city = $dto->city;
         $address->street = $dto->street;
         $address->building = $dto->building;
+
         $address->flat = $dto->flat;
         $address->post_index = $dto->post_index;
-        $address->phone = $dto->phone;
 
         return $address;
     }

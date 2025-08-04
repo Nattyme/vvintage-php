@@ -14,7 +14,7 @@ use Vvintage\Contracts\Address\AddressRepositoryInterface;
 use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\Address\Address;
-
+use Vvintage\DTO\Address\AddressDTO;
 
 
 final class AddressRepository extends AbstractRepository implements AddressRepositoryInterface
@@ -119,6 +119,33 @@ final class AddressRepository extends AbstractRepository implements AddressRepos
       }
 
     }
+
+    public function getAddressDTOById(int $addressId): ?AddressDTO
+    {
+        $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
+
+        if ($addressBean->id === 0) {
+            return null;
+        }
+
+        return new AddressDTO([
+            'id' => $addressBean->id,
+            'name' => $addressBean->name,
+            'surname' => $addressBean->surname,
+            'fathername' => $addressBean->fathername,
+            'phone' => $addressBean->phone,
+
+            'country' => $addressBean->country,
+            'city' => $addressBean->city,
+            'area' => $addressBean->area,
+
+            'street' => $addressBean->street,
+            'building' => $addressBean->building,
+            'flat' => $addressBean->flat,
+            'post_index' => $addressBean->post_index
+        ]);
+    }
+
 
 
 }

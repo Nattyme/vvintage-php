@@ -17,6 +17,9 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
 
+use Vvintage\DTO\User\UserDTO;
+// use Vvintage\DTO\Address\AddressDTO;
+
 final class User implements UserInterface
 {
     private int $id;
@@ -66,7 +69,7 @@ final class User implements UserInterface
      
         // $user->addressId = (string) $dto->addressId;
 
-        $brand->translations = $dto->translations;
+        // $brand->translations = $dto->translations;
       
         return $user;
     }
@@ -89,7 +92,7 @@ final class User implements UserInterface
         $user->avatar = (string) ($data['avatar'] ?? '');
         $user->avatar_small = (string) $dto->avatar_small;
    
-        $user->addressId = (int) ($data['address_id'] ?? 0);
+        // $user->addressId = (int) ($data['address_id'] ?? 0);
         $user->addressRepository = $data['address'];
 
         
@@ -245,11 +248,13 @@ final class User implements UserInterface
 
     public function getAddress(): ?Address
     {
-      if (!$this->addressId) {
+      if (!$this->address) {
         return null; // или пустой объект / исключение
       }
       
-      return $this->addressRepository->getAddressById($this->addressId);
+
+      $addressRepository = new AddressRepository();
+      return $addressRepository->getAddressById($this->addressId);
     }
 
 

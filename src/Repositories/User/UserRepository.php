@@ -17,6 +17,7 @@ use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Repositories\Address\AddressRepository;
 use Vvintage\DTO\User\UserDTO;
+use Vvintage\DTO\Address\AddressDTO;
 
 final class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
@@ -35,20 +36,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     private function hashPassword(string $password): string
     {
       return password_hash($password, PASSWORD_DEFAULT);
-    }
-
-    private function mapBeanToUser(OODBBean $bean): User
-    {
-        $translations = $this->loadTranslations((int) $bean->id);
-
-        $dto = new UserDTO([
-            'id' => (int) $bean->id,
-            'title' => (string) $bean->title,
-            'image' => (string) $bean->image,
-            'translations' => $translations
-        ]);
-
-        return Brand::fromDTO($dto);
     }
 
     /**
@@ -79,8 +66,42 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
           return null;
       }
 
-      return new User($bean);
+      return $this->mapBeanToUser($bean);;
     }
+
+    private function mapBeanToUser(OODBBean $bean): User
+    {
+        // $translations = $this->loadTranslations((int) $bean->id);
+
+        // Получаем AddressDTO
+        $addressDTO = null;
+        if (!empty($bean->address_id)) {
+            $addressDTO = $this->addressRepository->getAddressDTOById((int)$bean->address_id);
+        }
+
+        $dto = new UserDTO([
+            'id' => (int) $bean->id,
+            'password' => (string) $bean->password,
+            'email' => (string) $bean->email,
+            'name' => (string) $bean->name,
+            'role' => (string) $bean->role,
+
+            'fav_list' => (string) $bean->fav_list,
+            'cart' => (string) $bean->cart,
+
+            'country' => (string) $bean->country,
+            'city' => (string) $bean->city,
+            'phone' => (string) $bean->phone,
+
+            'avatar' => (string) $bean->avatar,
+            'avatar_small' => (string) $bean->avatar_small,
+            'address' => $addressDTO, // передаём объект AddressDTO
+        ]);
+
+        return User::fromDTO($dto);
+    }
+
+
 
     public function findBlockedUserByEmail (string $email): bool 
     {

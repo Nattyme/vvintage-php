@@ -3,27 +3,32 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\User;
 
-use Vvintage\DTO\AddressDTO;
+use Vvintage\DTO\Address\AddressDTO;
+
 
 final class UserDTO
 {
-    private int $id;
-    private string $password;
-    private string $email;
-    private string $name;
-    private string $role;
-    private array $fav_list;
-    private array $cart;
-    private string $country;
-    private string $city;
-    private string $phone;
-    private string $avatar;
-    private string $avatar_small;
-    private int $addressId;
+    public int $id;
+    public string $password;
+    public string $email;
+    public string $name;
+    public string $role;
+
+    public array $fav_list;
+    public array $cart;
+
+    public string $country;
+    public string $city;
+    public string $phone;
+
+    public string $avatar;
+    public string $avatar_small;
+    // private int $addressId;
     public ?AddressDTO $address = null;
 
     public function __construct(array $data)
     {
+      
         $this->id = (int) ($data['id'] ?? 0);
         $this->password = (string) ($data['password'] ?? '');
         $this->email = (string) ($data['email'] ?? '');
@@ -39,10 +44,10 @@ final class UserDTO
         $this->phone = (string) ($data['phone'] ?? '');
         $this->avatar = (string) ($data['avatar'] ?? '');
         $this->avatar_small = (string) ($data['avatar_small'] ?? '');
-        $this->addressId = (string) ($data['addressId'] ?? 0);
-        
-          if (isset($data['address']) && is_array($data['address'])) {
-          $this->address = new AddressDTO($data['address']);
+        // $this->addressId = (string) ($data['addressId'] ?? 0);
+    
+        if (isset($data['address'])) {
+          $this->address = $data['address'];
         }
 
     }
