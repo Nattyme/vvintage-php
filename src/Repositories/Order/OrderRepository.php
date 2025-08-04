@@ -28,6 +28,10 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
     private const TABLE_USERS = 'users';
     private const ROLE_ADMIN = 'admin';
 
+    private const STATUS_NEW = 'new';
+    private const STATUS_PAID = 'paid';
+    private const STATUS_CANCELED = 'canceled';
+
     private AddressRepository $addressRepository;
 
 

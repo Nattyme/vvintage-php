@@ -19,28 +19,30 @@ use Vvintage\Models\Blog\Post;
 
 final class PostRepository extends AbstractRepository implements PostRepositoryInterface
 {  
+    private const TABLE_POSTS = self::TABLE_POSTS;
+
     public function getPostById(int $id): ?Post
     {
-        $bean = $this->findById('posts', 'id = ?', [$id]);
+        $bean = $this->findById(self::TABLE_POSTS, 'id = ?', [$id]);
         return $bean ? Post::fromBean($bean) : null;
     }
 
     public function getAllPosts(array $pagination): array
     {
-        $beans = $this->findAll('posts', 'ORDER BY id DESC ' . $pagination['sql_page_limit']);
+        $beans = $this->findAll(self::TABLE_POSTS, 'ORDER BY id DESC ' . $pagination['sql_page_limit']);
         return array_map(fn($bean) => Post::fromBean($bean), $beans);
     }
 
     public function getPostsByIds(array $ids): array
     {
-        $beans =  $this->findByIds('posts', $ids);
+        $beans =  $this->findByIds(self::TABLE_POSTS, $ids);
 
         return array_map(fn($bean) => Post::fromBean($bean), $beans);
     }
 
     public function savePost (Post $post): int
     {
-        $bean = $this->createBean('posts');
+        $bean = $this->createBean(self::TABLE_POSTS);
 
         $bean->title = $post->title;
         $bean->cat = $post->cat;
@@ -57,6 +59,6 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
 
     public function getAllPostsCount (?string $sql = null, array $params = []): int
     {
-      return $this->countAll('posts', $sql, $params);
+      return $this->countAll(self::TABLE_POSTS, $sql, $params);
     }
 }
