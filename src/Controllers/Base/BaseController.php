@@ -12,6 +12,7 @@ use Vvintage\Controllers\AdminPanel\AdminPanelController;
 
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
+use Vvintage\Services\Translator\Translator;
 
 
 abstract class BaseController
@@ -20,17 +21,25 @@ abstract class BaseController
   protected array $languages;
   protected string $currentLang;
   protected RouteData $routeData; 
+  protected Translator $translator;
 
   public function __construct()
   {
-      $this->settings = Settings::all(); // Получаем 1 раз массив всех настроек 
+      $this->translator = setTranslator(); // берём уже установленный переводчик
+      $this->settings = Settings::all(); 
       $this->languages = LanguageConfig::getAvailableLanguages();
       $this->currentLang = LanguageConfig::getCurrentLocale();
   }
 
+
   public function setRouteData(RouteData $routeData): void
   {
       $this->routeData = $routeData;
+  }
+
+  public function getTranslator(): Translator
+  {
+      return $this->translator;
   }
 
 

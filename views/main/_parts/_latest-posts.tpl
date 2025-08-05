@@ -14,7 +14,9 @@
       </div>
 
       <div class="posts__button">
-        <a href="<?php echo HOST . 'blog';?>" class="button button--l button--outline">Перейти в блог</a>
+        <a href="<?php echo HOST . 'blog';?>" class="button button--l button--outline">
+            <?php echo h(__('button.goto.blog', [], 'buttons'));?>: 
+        </a>
       </div>
     </div>
   </section>

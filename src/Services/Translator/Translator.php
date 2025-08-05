@@ -25,7 +25,7 @@ final class Translator
    */
   private function loadTranslations(string $locale): void
   {
-    $langPath = ROOT . 'src/lang' . DIRECTORY_SEPARATOR  . $locale; 
+    $langPath = ROOT . 'src/Lang' . DIRECTORY_SEPARATOR  . $locale; 
 
     // Выбираем все файлы .php в папке текущего lang
     $files = glob($langPath . '/*.php');
@@ -33,6 +33,7 @@ final class Translator
 
 
     foreach($files as $filePath) {
+   
       $translations = require $filePath;
       $domain = pathinfo($filePath, PATHINFO_FILENAME); // например 'messages'
       $this->translator->addResource('array', $translations, $locale, $domain);
@@ -54,8 +55,8 @@ final class Translator
 
   public function setLocale(string $locale): void
   {
-    $this->translator->setLocale($_GET['lang'] ?? $locale);
-    $this->loadTranslations($locale);
+      $this->translator->setLocale($locale);
+      $this->loadTranslations($locale);
   }
 
   public function getTranslator(): SymfonyTranslator

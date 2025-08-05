@@ -43,7 +43,9 @@
       </div>
 
       <div class="feature__button">
-        <a href="#" class="link">Подробнее</a>
+        <a href="#" class="link">
+            <?php echo h(__('button.readmore', [], 'buttons'));?>: 
+        </a>
       </div>
     </div>
   </section>

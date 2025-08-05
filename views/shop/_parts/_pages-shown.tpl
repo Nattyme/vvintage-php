@@ -1,6 +1,12 @@
 <div class="products__pages-shown">
   <div class="pages-shown">
-    <p>Показано: <span><?php echo h($productViewModel['shown']); ?></span>&#160;из&#160;
-    <span><?php echo h($productViewModel['total']); ?></span> товаров</p>
+    <p>
+      <?php 
+        echo h(__('shop.shown.items', [
+          '%count%' => $productViewModel['shown'],
+          '%total%' => $productViewModel['total']
+        ], 'shop'));
+      ;?>
+    </p>
   </div>
 </div>

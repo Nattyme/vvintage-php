@@ -15,11 +15,13 @@ import initNewProductForm from "./modules/shop/new/index.js";
 // import handlingNewProductForm from "./modules/handlingNewProductForm.js";
 // import addSubNavCats from "./modules/addSubNavCats.js";
 import addTab from "./modules/tab.js";
+import handleLangForm from "./modules/translation/handleLangForm.js";
 // import yMap from './modules/ymap.js';
 
 
 const initEverything = async () => {
-   await initCatalogEvents(); // запускаем каталог в навигации
+  console.log('index');
+  //  await initCatalogEvents(); // запускаем каталог в навигации
   // addSidebarControlPanel();
   // router();
   // if (window.location.pathname !== pageAdmin) {
@@ -27,7 +29,10 @@ const initEverything = async () => {
   //
   // }
   // addSubNavCats();
-  
+
+
+  // Слушаем клик по селекту перевода 
+  handleLangForm();
   addBackTopBtn();
   addTab();
   getCookiesFormData();

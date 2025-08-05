@@ -35,6 +35,7 @@ final class CatalogController extends BaseController
 
     public function index(RouteData $routeData): void
     {
+      $this->setRouteData($routeData); // <-- передаём routeData
       $productRepository = new ProductRepository();
 
       // Название страницы

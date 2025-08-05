@@ -108,9 +108,4 @@
     </div>
   <?php endif; ?>
 </header>
-<script>
-  document.getElementById('language-select').addEventListener('change', function() {
-    document.getElementById('language-selector').submit();
-  });
-</script>
-<?php dd($_SESSION);?>
+
