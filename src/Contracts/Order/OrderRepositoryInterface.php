@@ -22,6 +22,8 @@ interface OrderRepositoryInterface
      */
     public function getOrdersByUserId(int $id): array;
 
+    public function getAllOrders(): array;
+
     /**
      * Метод создает новый заказ
      *

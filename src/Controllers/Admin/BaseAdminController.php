@@ -7,14 +7,19 @@ use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Models\User\User;
 
+// Пеервод на другие языки
+use Vvintage\Config\LanguageConfig;
+
 
 abstract class BaseAdminController
 {
   protected array $settings;
+  protected array $languages;
 
   public function __construct()
   {
       $this->settings = Settings::all(); // Получаем 1 раз массив всех настроек 
+      $this->languages = LanguageConfig::getAvailableLanguages();
   }
 
   protected function isAdmin(): bool
@@ -40,7 +45,10 @@ abstract class BaseAdminController
     }
 
     // Превращаем элементы массива в переменные
-    extract( array_merge($vars, ['settings' => $this->settings]) );
+    extract( array_merge($vars, [
+      'settings' => $this->settings,
+      'languages' => $this->languages
+    ]) );
 
     ob_start();
     include ROOT . "views/admin/{$viewPath}.tpl"; // views/cart/cart.tpl

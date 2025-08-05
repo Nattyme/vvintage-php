@@ -6231,6 +6231,95 @@ main.product-page {
   margin-bottom: 30px;
 }
 
+.header__top-panel {
+  background: #f8f8f8;
+  padding: 5px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.header__top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__lang select {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: inherit;
+}
+
+.header__main-panel {
+  padding: 20px 0;
+  background-color: #fff;
+}
+
+.header__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lang-switcher {
+  position: relative;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.lang-switcher__btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-switcher__arrow {
+  width: 10px;
+  height: 6px;
+  transition: transform 0.3s ease;
+}
+
+.lang-switcher__list {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 5px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: none;
+  z-index: 10;
+  min-width: 80px;
+}
+
+.lang-switcher__list a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.lang-switcher__list a:hover {
+  background-color: #f0f0f0;
+}
+
+.lang-switcher:hover .lang-switcher__list {
+  display: block;
+}
+
+.flag-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+
 }
 /* No styles code below. Only in modules */
 /* Не пишите CSS код ниже. Только в подключаемых файлах */

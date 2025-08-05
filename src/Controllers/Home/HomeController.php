@@ -80,6 +80,8 @@ final class HomeController extends BaseController
       // Получим категории
       $categories = $this->getCategories();
 
+      $this->setRouteData($routeData); // <-- передаём routeData
+
       // Получим продукты
       $products = $this->getNewProducts();
 

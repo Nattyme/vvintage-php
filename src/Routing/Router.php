@@ -66,6 +66,7 @@
   use Vvintage\Controllers\Admin\AdminBrandController;
   use Vvintage\Controllers\Admin\AdminCategoryController;
   use Vvintage\Controllers\Admin\AdminUsersController;
+  use Vvintage\Controllers\Admin\AdminOrdersController;
 
 
   class Router {
@@ -430,6 +431,7 @@
       $adminBrandController = new AdminBrandController();
       $adminCategoryController = new AdminCategoryController();
       $adminUsersController = new AdminUsersController();
+      $adminOrdersController = new AdminOrdersController();
 
       switch ($routeData->uriGet) {
          // ::::::::::::: SHOP :::::::::::::::::::
@@ -447,6 +449,20 @@
 
         case 'shop-edit':
           $adminProductController->edit($routeData);
+          break;
+
+ 
+        // ::::::::::::: ORDERS :::::::::::::::::::
+        case 'orders':
+          $adminOrdersController->all($routeData);
+          break;
+      
+        case 'order':
+          $adminOrdersController->single($routeData);
+          break;
+      
+        case 'order-delete':
+          $adminOrdersController->delete($routeData);
           break;
 
         
@@ -510,22 +526,22 @@
         require ROOT . "admin/modules/users/block.php";
         break;
 
-  // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
-  case 'category-blog':
-    // require ROOT . "admin/modules/categories-blog/all.php";
-    break;
+      // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
+      case 'category-blog':
+        // require ROOT . "admin/modules/categories-blog/all.php";
+        break;
 
-  case 'category-blog-new':
-    // require ROOT . "admin/modules/categories-blog/new.php";
-    break;
+      case 'category-blog-new':
+        // require ROOT . "admin/modules/categories-blog/new.php";
+        break;
 
-  case 'category-blog-edit':
-    // require ROOT . "admin/modules/categories-blog/edit.php";
-    break;
+      case 'category-blog-edit':
+        // require ROOT . "admin/modules/categories-blog/edit.php";
+        break;
 
-  case 'category-blog-delete':
-    // require ROOT . "admin/modules/categories-blog/delete.php";
-    break;
+      case 'category-blog-delete':
+        // require ROOT . "admin/modules/categories-blog/delete.php";
+        break;
 
    // ::::::::::::: MESSAGES :::::::::::::::::::
 

@@ -98,6 +98,10 @@ final class OrderController extends BaseController
       }
 
 
+      $dataForDTO = [
+
+      ];
+      
       // Вызываем DTO
       $orderDTO = new OrderDTO($_POST, $this->cart, $totalPrice, $this->userModel->getId());
       // $orderDTO->validate();

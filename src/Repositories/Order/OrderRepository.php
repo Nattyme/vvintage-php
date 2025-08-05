@@ -20,6 +20,8 @@ use Vvintage\Repositories\Address\AddressRepository;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Order\Order;
 
+use Vvintage\DTO\Order\OrderDTO;
+
 
 
 final class OrderRepository extends AbstractRepository implements OrderRepositoryInterface
@@ -55,6 +57,36 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
         $bean->price = $order->getPrice();
     }
 
+    
+    private function mapBeanToOrder(OODBBean $bean): Order
+    {
+        // $translations = $this->loadTranslations((int) $bean->id);
+
+        // Получаем AddressDTO
+        // $addressDTO = null;
+        // if (!empty($bean->address_id)) {
+        //     $addressDTO = $this->addressRepository->getAddressDTOById((int)$bean->address_id);
+        // }
+
+        $dto = OrderDTO::fromDatabase([
+            'id' => (int) $bean->id,
+            'name' => (string) $bean->name,
+            'surname' => (string) $bean->surname,
+            'email' => (string) $bean->email,
+            'phone' => (string) $bean->phone,
+            'address' => (string) $bean->address,
+            'datetime' => (string) $bean->datetime,
+            'status' => (string) $bean->status,
+            'paid' => (string) $bean->paid,
+            'cart' => (string) $bean->cart,
+            'price' => (int) $bean->price,
+            'user_id' => (int) $bean->user_id
+        ]);
+dd($dto);
+        return Order::fromDTO($dto);
+    }
+
+
 
     /**
      * Метод ищет заказ по id
@@ -88,6 +120,18 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
 
         return $orders;
     }
+
+    public function getAllOrders(): array
+    {
+        $beans = $this->findAll(self::TABLE_ORDERS);
+
+        if (empty($beans)) {
+          return [];
+        }
+
+        return array_map([$this, 'mapBeanToOrder'], $beans);
+    }
+
 
     /**
      * Метод создает новый заказ

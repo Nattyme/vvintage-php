@@ -30,6 +30,7 @@ final class Order
   // Метод создает объект заказа для сохранения в БД
   public static function fromDTO(OrderDTO $dto): self
   {
+    dd($dto);
     $order = new self();
     $order->name = $dto->name;
     $order->surname = $dto->surname;

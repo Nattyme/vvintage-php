@@ -19,7 +19,7 @@ use Vvintage\Config\LanguageConfig;
 class AdminCategoryController extends BaseAdminController 
 {
   private CategoryRepository $categoryRepository;
-  private array $languages;
+  protected array $languages;
 
   public function __construct()
   {

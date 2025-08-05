@@ -16,4 +16,9 @@ class RouteData
         $this->uriGet = $uriGet;
         $this->uriGetParam = $uriGetParam;
     }
+
+    public function getUriModule(): string
+    {
+      return $this->uriModule;
+    }
 }

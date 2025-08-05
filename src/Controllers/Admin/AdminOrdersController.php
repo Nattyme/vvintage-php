@@ -9,19 +9,27 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 
 /** Репозитории */
-use Vvintage\Repositories\Brand\BrandRepository;
+use Vvintage\Repositories\Order\OrderRepository;
+
 
 /** Сервисы */
 // use Vvintage\Services\Admin\AdminStatsService;
 
-class AdminBrandController extends BaseAdminController 
-{
-  private BrandRepository $brandRepository;
+class AdminOrdersController extends BaseAdminController 
+{   
+  private const TABLE_ORDERS = 'orders';
+  private const PAGE_ORDERS_ALL = 'Все заказы';
+  private const PAGE_ORDERS_SINGLE = 'Заказ №';
+  private const PAGE_ORDERS_DELETE = 'Удаление заказа №';
+
+  private OrderRepository $orderRepository;
+
+
 
   public function __construct()
   {
     parent::__construct();
-    $this->brandRepository = new BrandRepository();
+    $this->orderRepository = new OrderRepository();
   }
 
   public function all(RouteData $routeData)
@@ -30,37 +38,59 @@ class AdminBrandController extends BaseAdminController
     $this->renderAll($routeData);
   }
 
-  public function edit(RouteData $routeData)
+  public function single(RouteData $routeData)
   {
     $this->isAdmin();
-    $this->renderEdit($routeData);
+    $this->renderSingle($routeData);
   }
 
-  public function new(RouteData $routeData)
+  public function delete(RouteData $routeData)
   {
     $this->isAdmin();
-    $this->renderNew($routeData);
+    $this->renderSingle($routeData);
   }
 
-  public function delete (RouteData $routeData)
-  {
-    $this->isAdmin();
-    $this->renderDelete($routeData);
-  }
 
   private function renderAll(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = self::PAGE_ORDERS_ALL;
 
-    $brandsPerPage = 9;
+    // Получаем данные из GET-запроса
+    $searchQuery = $_GET['query'] ?? '';
+    $filterSection = $_GET['action'] ?? ''; // имя селекта - action
+
+    $ordersPerPage = 9;
+
+    // Устанавливаем пагинацию
+    $pagination = pagination($ordersPerPage, self::TABLE_ORDERS);
+
+    $orders = $this->orderRepository->getAllOrders($pagination);
+    dd($orders);
+    $total = $this->orderRepository->getAllOrdersCount();
+        
+    $this->renderLayout('orders/all',  [
+      'pageTitle' => $pageTitle,
+      'routeData' => $routeData,
+      'orders' => $orders,
+      'total' => $total,
+      'searchQuery' => $searchQuery,
+      'pagination' => $pagination
+    ]);
+
+  }
+
+  private function renderSingle(RouteData $routeData): void
+  {
+    // Название страницы
+    $pageTitle = PAGE_ORDERS_SINGLE;
 
     // Устанавливаем пагинацию
     $pagination = pagination($brandsPerPage, 'brands');
     $brands = $this->brandRepository->getAllBrands($pagination);
     $total = $this->brandRepository->getAllBrandsCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout('orders/single',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'brands' => $brands,
@@ -69,29 +99,10 @@ class AdminBrandController extends BaseAdminController
 
   }
 
-  private function renderNew(RouteData $routeData): void
+  private function renderDelete(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды - новая запись';
-
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
-        
-    $this->renderLayout('brands/all',  [
-      'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
-    ]);
-
-  }
-
-  private function renderEdit(RouteData $routeData): void
-  {
-    // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = self::PAGE_ORDERS_DELETE;
 
     $pageClass = 'admin-page';
 
@@ -125,33 +136,12 @@ class AdminBrandController extends BaseAdminController
 
 
         
-    $this->renderLayout('brands/edit',  [
+    $this->renderLayout('orders/delete',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'brand' => $brand,
       'languages' => $this->languages,
       'currentLang' => $currentLang
-    ]);
-
-  }
-
-  private function renderDelete(RouteData $routeData): void
-  {
-    // Название страницы
-    $pageTitle = 'Бренды';
-
-    $brandsPerPage = 9;
-
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
-        
-    $this->renderLayout('brands/all',  [
-      'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
     ]);
 
   }
