@@ -20,15 +20,19 @@ $_SESSION['success'] = [];
 // Смена языка через ?lang=...
 if (isset($_GET['lang']) && LanguageConfig::isSupported($_GET['lang'])) {
     $_SESSION['locale'] = $_GET['lang'];
-    header("Location: " . strtok($_SERVER["REQUEST_URI"], '?'));
+    // Чтобы параметр lang не оставался в URI и не мешал, сделаем редирект без параметра
+    $url = strtok($_SERVER["REQUEST_URI"], '?'); // убирает все GET-параметры
+    header("Location: $url");
     exit;
 }
+
+
+// Выбор языка
+$currentLang = LanguageConfig::getCurrentLocale();
 
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
 
-// Выбор языка
-$currentLang = LanguageConfig::getCurrentLocale();
 
 require_once ROOT . 'libs/functions.php'; // подключаем пользовательскте ф-ции
 

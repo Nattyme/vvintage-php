@@ -5,29 +5,15 @@
     <div class="container">
       <div class="header__row">
         
-        <!-- 🌐 Язык -->
+        <!-- Язык -->
         <div class="header__lang">
           <form id="language-selector" method="GET">
-            <select name="lang">
-              <div class="lang-switcher">
-                <button class="lang-switcher__btn">
-                  <span class="flag-icon">🇷🇺</span> RU
-                  <svg class="lang-switcher__arrow" viewBox="0 0 10 6">
-                    <path d="M0 0L5 6L10 0H0Z" fill="currentColor"/>
-                  </svg>
-                </button>
-                <ul class="lang-switcher__list">
-                  <li><a href="?lang=ru"><span class="flag-icon">🇷🇺</span> RU</a></li>
-                  <li><a href="?lang=en"><span class="flag-icon">🇬🇧</span> EN</a></li>
-                  <li><a href="?lang=es"><span class="flag-icon">🇪🇸</span> ES</a></li>
-                </ul>
-              </div>
-
+            <select id="language-select" name="lang" class="admin-form__input">
               <?php foreach ($languages as $code => $label): ?>
-                <option value="<?php echo h($code) ?>" <?php echo ($code === $currentLang) ? 'selected' : ''; ?>>
-                  <?php echo h($label); ?>
+                <option value="<?php echo h($code) ?>" <?php echo ($code === $currentLang) ? 'selected' : '';?>>
+                  <?php echo h($label);?>
                 </option>
-              <?php endforeach; ?> -->
+              <?php endforeach; ?>
             </select>
           </form>
         </div>
@@ -122,3 +108,9 @@
     </div>
   <?php endif; ?>
 </header>
+<script>
+  document.getElementById('language-select').addEventListener('change', function() {
+    document.getElementById('language-selector').submit();
+  });
+</script>
+<?php dd($_SESSION);?>
