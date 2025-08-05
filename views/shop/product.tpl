@@ -5,68 +5,20 @@
         <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
       </header>
       <div class="product__content">
-          
+
+        <!-- Галерея изображений -->
         <div class="product__gallery-container">
-
-          <div class="gallery gallery--<?php echo h($productViewModel['imagesTotal']); ?>">
-          
-            <figure class="gallery__item gallery__item--1">
-              <a 
-                href="<?php echo HOST . 'usercontent/products/' . u($productViewModel['main']->getFilename());?>" 
-                data-thumb="<?php echo HOST . 'usercontent/products/' . h($productViewModel['main']->getFilename());?>"
-                data-fancybox="gallery">
-
-                <picture>
-                  <img 
-                    class="product__img product__img--main"
-                    src="<?php echo HOST . 'usercontent/products/' . u($productViewModel['main']->getFilename());?>" 
-                    srcset="<?php echo HOST . 'usercontent/products/' . u($productViewModel['main']->getFilename());?>" alt="" loading="lazy"
-                  >
-                </picture>
-              </a>
-            </figure>
-        
-            <?php foreach ($productViewModel['gallery']['visible'] as $i => $image) : ?>
-              <figure class="gallery__item gallery__item--<?php echo $i + 2; ?>">
-                <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
-                    data-thumb="<?php echo HOST . 'usercontent/products/' . h($image->getFilename());?>">
-                  <picture>
-                    <img 
-                      class="product__img"
-                      src="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
-                      srcset="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" alt="" loading="lazy"
-                    >
-                  </picture>
-                </a>
-              </figure>
-            <?php endforeach; ?>
-
-            <?php foreach($productViewModel['gallery']['visible'] as $image) : ?>
-              <a 
-                data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
-                data-thumb="<?php echo HOST . 'usercontent/products/' . h($image->getFilename());?>">
-              </a>
-            <?php endforeach; ?>
-
-            <div class="fav-button-wrapper">
-              <a 
-                href="<?php echo HOST . 'addtofav?id=' . u($productViewModel['product']->getId());?>" 
-                class="fav-button <?php echo isProductInFav($productViewModel['product']->getId()) ? 'fav-button--active' : '';?>"
-              >
-                  <svg class="icon icon--favorite">
-                    <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>"></use>
-                  </svg>
-
-              </a>
-            </div>
-           
-          </div>
+          <?php include ROOT . 'views/shop/_parts/_proudct-gallery.tpl'; ?>
         </div>
+        <!-- // Галерея изображений -->
+
         <div class="product-card">
           <header class="product-card__header">
      
             <div class="product-card__row">
-              <h1 class="h1 product-card__title"><?php echo h($productViewModel['product']->getTitle());?> </h1>
+         
+            
+              <h1 class="h1 product-card__title"><?php echo h($productViewModel['product']->getTitle());?></h1>
             </div>
             <div class="product-card__row">
               <p>New without tegs</p>
@@ -109,7 +61,7 @@
               <button type="button" class="button button--primary button--l" disabled>Товар в корзине</button>
             <?php  else : ?>
               <a href="<?php echo HOST . 'addtocart?id=' . u($productViewModel['product']->getId());?>" class="button button--primary button--xl">
-                Добавить&#160;в&#160;корзину
+                <?php echo h(__('button.cart.add', [], 'buttons'));?>: 
               </a>
             <?php endif;?>
           </div>   

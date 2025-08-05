@@ -40,8 +40,11 @@ final class ProductController extends BaseController
 
     public function index(RouteData $routeData): void
     {   
+        $this->setRouteData($routeData);
+     
         $id = (int) $routeData->uriGet; // получаем id товара из URL
-        $productRepository = new ProductRepository();
+        $productRepository = new ProductRepository($this->currentLang);
+      
         $product = $productRepository->getProductById($id);
 
         if (!$product) {
@@ -57,8 +60,7 @@ final class ProductController extends BaseController
         // Делим массив изобрадений на два массива - главное и другие
         $imageService = new ProductImageService();
         $imagesMainAndOthers = $imageService->splitImages($product->getImages());
-
-
+    
         // Получаем похожие продукты
         $related = $product->getRelated();
 

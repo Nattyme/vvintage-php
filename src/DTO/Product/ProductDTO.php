@@ -18,7 +18,7 @@ final class ProductDTO
 
     public string $slug;
     public string $title;
-    public string $content;
+    public string $description;
     public string $price;
     public string $url;
     public string $sku;
@@ -46,7 +46,7 @@ final class ProductDTO
 
         $this->slug = (string) ($data['slug'] ?? '');
         $this->title = (string) ($data['title'] ?? '');
-        $this->content = (string) ($data['content'] ?? '');
+        $this->description = (string) ($data['description'] ?? '');
         $this->price = isset($data['price']) ? (string) $data['price'] : '';
         $this->url = (string) ($data['url'] ?? '');
         

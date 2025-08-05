@@ -25,7 +25,7 @@ class Product
     
     private string $slug;
     private string $title;
-    private string $content;
+    private string $description;
     private string $price;
     private string $url;
     private string $sku;
@@ -48,7 +48,7 @@ class Product
 
       $product->slug = $dto->slug;
       $product->title = $dto->title;
-      $product->content = $dto->content;
+      $product->description = $dto->description;
       $product->price = $dto->price;
       $product->url = $dto->url;
       $product->sku = $dto->sku;
@@ -68,7 +68,7 @@ class Product
 
       $product->slug = (string) ($data['slug'] ?? '');
       $product->title = (string) ($data['title'] ?? '');
-      $product->content = (string) ($data['content'] ?? '');
+      $product->description = (string) ($data['description'] ?? '');
       $product->price = (string) ($data['price'] ?? '');
       $product->url = (string) ($data['url'] ?? '');
       $product->sku =  (string) ($data['sku'] ?? '');
@@ -82,6 +82,12 @@ class Product
 
       return $product;
     }
+
+    // private function getTranslated(string $key, string $fallbackProperty = ''): string
+    // {
+    //     return $this->translations[$this->currentLang][$key] ?? $this->{$fallbackProperty} ?? '';
+    // }
+
 
     public function getRelated(): array
     {
@@ -173,7 +179,7 @@ class Product
 
     public function getContent(): string
     {
-        return $this->content;
+        return $this->description;
     }
 
     public function getTimestamp(): string
@@ -204,6 +210,23 @@ class Product
     {
         return $this->images ?? [];
     }
+
+
+    // public function getDescription(): string
+    // {
+    //     return $this->translations[$this->currentLocale]['description'] ?? $this->content;
+    // }
+
+    // public function getMetaTitle(): string
+    // {
+    //     return $this->translations[$this->currentLocale]['meta_title'] ?? '';
+    // }
+
+    // public function getMetaDescription(): string
+    // {
+    //     return $this->translations[$this->currentLocale]['meta_description'] ?? '';
+    // }
+
 
     // public function getImages(): array
     // {

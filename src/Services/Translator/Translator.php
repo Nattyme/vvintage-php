@@ -15,7 +15,6 @@ final class Translator
     $this->translator = new SymfonyTranslator($locale);
     $this->translator->addLoader('array', new ArrayLoader());
 
-
     // Загружаем переводы из файлов
     $this->loadTranslations($locale);
   }

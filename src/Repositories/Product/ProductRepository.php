@@ -34,7 +34,17 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private const TABLE_CATEGORIES = 'categories';
     private const TABLE_CATEGORIES_TRANSLATION = 'categories_translation';
 
+    private string $currentLocale;
     private const DEFAULT_LOCALE = 'ru';
+
+
+    public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
+    {
+        $this->currentLocale = $currentLocale;
+    }
+
+    // ...
+
             
            
     public function getProductById(int $id): ?Product
@@ -104,7 +114,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             LEFT JOIN ' . self::TABLE_BRANDS_TRANSLATION . ' bt ON bt.brand_id = b.id AND bt.locale = ?
         ';
 
-        $locale = self::DEFAULT_LOCALE;
+        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
         $bindings = [$locale, $locale, $locale];
 
         if ($productId !== null) {
@@ -146,7 +156,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     private function createCategoryDTOFromArray(array $row): CategoryDTO
     {
-        $locale = $row['locale'] ?? self::DEFAULT_LOCALE;
+        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;;
 
         return new CategoryDTO([
             'id' => (int) $row['category_id'],
@@ -167,7 +177,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     private function createBrandDTOFromArray(array $row): BrandDTO
     {
-        $locale = $row['locale'] ?? self::DEFAULT_LOCALE;
+        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
 
         return new BrandDTO([
             'id' => (int) $row['brand_id'],
@@ -214,7 +224,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             'brandDTO' => $brandDTO,
             'slug' => (string) $row['slug'],
             'title' => (string) $row['title'],
-            'content' => (string) $row['content'],
+            'description' => (string) $row['description'],
             'price' => (string) $row['price'],
             'url' => (string) $row['url'],
             'sku' => (string) $row['sku'],
@@ -222,7 +232,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             'datetime' => (string) $row['datetime'],
             'images_total' => count($imagesDTO),
             'translations' => $translations,
-            'locale' => $row['locale'] ?? self::DEFAULT_LOCALE,
+            'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,
             'images' => $imagesDTO,
         ]);
 
