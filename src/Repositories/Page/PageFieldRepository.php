@@ -25,11 +25,10 @@ final class PageFieldRepository extends AbstractRepository implements PageFieldR
     $this->pageId = $pageId;
    }
 
-  public static function getFieldsByPageId (): array
+  public function getFieldsByPageId (): array
   {
-    dd( $this->pageId);
     // Найдём страницу
-    $bean = $this->loadBean('pages', $pageId);
+    $bean = $this->loadBean('pages', $this->pageId);
   
     // Получить список всех связанных полей страницы
     $fields = $bean->ownPageFieldsList;
@@ -39,7 +38,7 @@ final class PageFieldRepository extends AbstractRepository implements PageFieldR
 
   }
 
-  public static function saveFields (int $id, array $pageFields): void
+  public function saveFields (int $id, array $pageFields): void
   {
     // Найдем страницу
     $bean = $this->loadBean('pages', $id);

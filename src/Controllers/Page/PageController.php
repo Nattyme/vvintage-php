@@ -36,7 +36,7 @@ class PageController extends BaseController
       return;
     }
 
-    // $this->setRouteData($routeData); // <-- передаём routeData
+    $this->setRouteData($routeData); // <-- передаём routeData
 
     // Передаем данные  шаблон
     $page = $this->pageModel->export();
