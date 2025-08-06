@@ -16,7 +16,7 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Repositories\Product\ProductRepository;
 
 /** Модель */
-use Vvintage\Models\Shop\Product;
+use Vvintage\Models\Product\Product;
 
 /** Сервисы */
 use Vvintage\Services\Product\ProductImageService;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Contracts\Product;
 
-use Vvintage\Models\Shop\Product;
+use Vvintage\Models\Product\Product;
 
 interface ProductRepositoryInterface
  {

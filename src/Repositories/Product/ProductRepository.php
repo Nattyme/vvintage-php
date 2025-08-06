@@ -12,7 +12,7 @@ use Vvintage\Contracts\Product\ProductRepositoryInterface;
 use Vvintage\Repositories\AbstractRepository;
 
 /** Модели */
-use Vvintage\Models\Shop\Product;
+use Vvintage\Models\Product\Product;
 use Vvintage\Models\Category\Category;
 use Vvintage\Models\Brand\Brand;
 

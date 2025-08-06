@@ -13,7 +13,7 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Repositories\Product\ProductRepository;
 
 /** Модели */
-use Vvintage\Models\Shop\Catalog;
+use Vvintage\Services\Product\ProductCatalogService;
 
 /** Сервисы */
 use Vvintage\Services\Product\ProductImageService;
@@ -36,21 +36,24 @@ final class CatalogController extends BaseController
     public function index(RouteData $routeData): void
     {
       $this->setRouteData($routeData); // <-- передаём routeData
-      $productRepository = new ProductRepository();
 
       // Название страницы
       $pageTitle = 'Каталог товаров';
 
       $productsPerPage = 9;
-        
+      
       // Получаем параметры пагинации
       $pagination = pagination($productsPerPage, 'products');
 
+      $productRepository = new ProductRepository();
+      $catalogService = new ProductCatalogService( $productRepository );
+
       // Получаем продукты с учётом пагинации
-      $products = Catalog::getAll($pagination);
+      $products =  $catalogService->getAll($pagination);
+      // Считаем, сколько всего товаров в базе (для отображения "Показано N из M")
+      $total = $productRepository->getAllProductsCount();
 
       $imageService = new ProductImageService();
-
       $imagesByProductId = [];
 
       foreach ($products as $product) {
@@ -58,8 +61,7 @@ final class CatalogController extends BaseController
           $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
       }
 
-      // Считаем, сколько всего товаров в базе (для отображения "Показано N из M")
-      $total = $productRepository->getAllProductsCount();
+
       
       // Это кол-во товаров, показанных на этой странице
       // $shownProducts = $totalProducts - count($products);

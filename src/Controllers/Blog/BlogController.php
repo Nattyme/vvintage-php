@@ -30,69 +30,47 @@ final class BlogController extends BaseController
         $this->breadcrumbsService = $breadcrumbs;
     }
 
-    private function renderPosts(RouteData $routeData)
-    {
-        $data = $this->prepareDataForRender($routeData);
-        
-        $this->renderLayout('blog/blog', [
-            'pagination' => $data['pagination'],
-            'pageTitle' => $data['pageTitle'],
-            'routeData' => $data['routeData'],
-            'breadcrumbs' => $data['breadcrumbs'],
-            'posts' => $data['posts'],
-            'totalPosts' => $data['totalPosts'],
-            'shownPosts' => $data['shownPosts'],
-            'relatedPosts' => $data['relatedPosts']
-        ]);
-
-    }
-
-    /**
-     * @return array{
-     *   pagination: array,
-     *   pageTitle: string,
-     *   routeData: RouteData,
-     *   breadcrumbs: array,
-     *   posts: array,
-     *   totalPosts: int,
-     *   shownPosts: int,
-     *   relatedPosts: array
-     * }
-     */
-    private function prepareDataForRender(RouteData $routeData): array
-    {
-        $pageTitle = 'Блог';
-        $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
-        $pagination = pagination($postsPerPage, 'posts');
-        $posts = $this->blogService->getAll($pagination);
-        $totalPosts = $this->blogService->getTotalCount();
-
-        $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
-        $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
-
-        // Вывод похожих постов
-        // $relatedPosts = get_related_posts($post->getTitle());
-        $relatedPosts = $posts;
-
-        return [
-            'pagination' => $pagination,
-            'pageTitle' => $pageTitle,
-            'routeData' => $routeData,
-            'breadcrumbs' => $breadcrumbs,
-            'posts' => $posts,
-            'totalPosts' => $totalPosts,
-            'shownPosts' => $shownPosts,
-            'relatedPosts' => $relatedPosts
-        ];
-    }
-
+    
     public function index(RouteData $routeData): void
     {
       $this->setRouteData($routeData); // <-- передаём routeData
-      $this->renderPosts($routeData);
+
+
+      $pageTitle = 'Блог';
+      $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
+
+      $pagination = pagination($postsPerPage, 'posts');
+
+      $posts = $this->blogService->getAll($pagination);
+      $totalPosts = $this->blogService->getTotalCount();
+dd( $posts);
+      $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+
+      // Вывод похожих постов
+      // $relatedPosts = get_related_posts($post->getTitle());
+      $relatedPosts = $posts;
+
+      // Формируем единую модель для передачи в шаблон
+      $productViewModel = [
+          'post' => $post,
+          'totalPosts' => $totalPosts,
+          'shownPosts' => $shownPosts,
+          'relatedPosts' => $relatedPosts
+      ];
+
+
+      $this->renderLayout('blog/blog', [
+          'pagination' => $pagination,
+          'pageTitle' => $pageTitle,
+          'routeData' => $routeData,
+          'breadcrumbs' => $breadcrumbs,
+          'productViewModel' => $productViewModel
+        
+      ]);
     }
 
-    
+
     // метод получает $_POST, создаёт DTO, передаёт в сервис
     public function add(RouteData $routeData): void
     {

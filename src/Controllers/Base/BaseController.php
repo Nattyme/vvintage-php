@@ -42,8 +42,6 @@ abstract class BaseController
       return $this->translator;
   }
 
-
-
   protected function renderLayout(string $viewPath, array $vars = []): void
   {
     $isAdminLoggedIn = $this->isAdmin();

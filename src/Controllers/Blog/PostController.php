@@ -44,9 +44,9 @@ final class PostController extends BaseController
         }
 
         // Получаем похожие посты
-        $postsPerPage = $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);;
+        $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);;
         $pagination = pagination($postsPerPage, 'posts');
-        $relatedPosts = $this->blogService->getAll($pagination);
+        // $relatedPosts = $this->blogService->getAll($pagination);
         // $relatedPosts = $post->getRelated();
 
         // Название страницы

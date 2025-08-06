@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Models\Shop;
+namespace Vvintage\Models\Product;
 
 /** DTO */
 use Vvintage\DTO\Product\ProductDTO;
