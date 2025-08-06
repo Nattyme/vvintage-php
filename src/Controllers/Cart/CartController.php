@@ -18,7 +18,7 @@ use Vvintage\Controllers\Base\BaseController;
 /** Абстракции */
 use Vvintage\Models\Shared\AbstractUserItemsList;
 
-/** Интерфейсы */
+/** Контракты */
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Contracts\User\UserItemsListStoreInterface;
 

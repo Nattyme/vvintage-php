@@ -7,6 +7,10 @@ namespace Vvintage\Controllers\Favorites;
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
+/** Контракты */
+use Vvintage\Contracts\User\UserInterface;
+use Vvintage\Contracts\User\UserItemsListStoreInterface;
+
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 use Vvintage\Repositories\Product\ProductRepository;
@@ -28,14 +32,11 @@ use Vvintage\Services\Messages\FlashMessage;
 /** Сервисы */
 use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Product\ProductImageService;
 
 
 /** Абстракции */
 use Vvintage\Models\Shared\AbstractUserItemsList;
-
-/** Интерфейсы */
-use Vvintage\Models\User\UserInterface;
-use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
 
 
 require_once ROOT . './libs/functions.php';
@@ -46,7 +47,7 @@ final class FavoritesController extends BaseController
     private UserInterface $userModel;
     private Favorites $favModel;
     private array $fav_list;
-    private ItemsListStoreInterface $favStore;
+    private UserItemsListStoreInterface $favStore;
     private FlashMessage $notes;
     private Breadcrumbs $breadcrumbsService;
 
@@ -55,7 +56,7 @@ final class FavoritesController extends BaseController
       UserInterface $userModel, 
       Favorites $favModel, 
       array $fav_list, 
-      ItemsListStoreInterface $favStore, 
+      UserItemsListStoreInterface $favStore, 
       FlashMessage $notes,
       Breadcrumbs $breadcrumbs
       )
@@ -72,10 +73,12 @@ final class FavoritesController extends BaseController
 
     public function index(RouteData $routeData): void
     {
-     
-      // Получаем продукты
-      $products = !empty($this->fav_list) ? ProductRepository::getProductsByIds($this->fav_list) : [];
+      $this->setRouteData($routeData); // <-- передаём routeData
 
+      // Получаем продукты
+      $productRepo = new ProductRepository();
+      $products = !empty($this->fav_list) ?  $productRepo->getProductsByIds($this->fav_list) : [];
+   
       // Показываем страницу
       $this->renderPage($routeData, $products, $this->favModel);
     }
@@ -88,17 +91,29 @@ final class FavoritesController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
+         // Получаем изображения продуктов
+      $imageService = new ProductImageService();
+      $imagesByProductId = [];
+
+      foreach ($products as $product) {
+          $imagesMainAndOthers = $imageService->splitImages($product->getImages());
+          $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
+      }
+
+      // Формируем единую модель для передачи в шаблон
+      $productViewModel = [
+          'products' => $products,
+          'imagesByProductId' => $imagesByProductId
+      ];
+
       // Подключение шаблонов страницы
       $this->renderLayout('favorites/favorites', [
             'favModel' => $this->favModel,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'products' => $products
+            'productViewModel' => $productViewModel
       ]);
-  
-      // Подключение шаблонов страницы
-      // include ROOT . "views/favorites/favorites.tpl";
      
     }
 
@@ -106,10 +121,6 @@ final class FavoritesController extends BaseController
     {
       // Передаем ключ для сохранения куки и id продукта
       $this->favService->addItem($productId);
-
-      // Добавляем новый продукт
-      // $this->favModel->addItem($productId);
-      // $this->favStore->save($this->favModel, $this->userModel);
 
       // Переадресация обратно на страницу товара
       header('Location: ' . HOST . 'shop/' . $productId);

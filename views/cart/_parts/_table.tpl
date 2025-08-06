@@ -3,17 +3,17 @@
     <div class="cart__grid">
       <div class="cart__grid-block">
         <p class="cart__heading">
-          <?php echo h(__('cart.table.title', [], 'cart'));?>
+          <?php echo h(__('product-list.table.title', [], 'product-list'));?>
         </р>
       </div>
       <div class="cart__grid-block">
         <p class="cart__heading">
-          <?php echo h(__('cart.table.qty', [], 'cart'));?>
+          <?php echo h(__('product-list.table.qty', [], 'product-list'));?>
         </p>
       </div>
       <div class="cart__grid-block">
         <p class="cart__heading">
-          <?php echo h(__('cart.table.price', [], 'cart'));?>
+          <?php echo h(__('product-list.table.price', [], 'product-list'));?>
         </p>
       </div>
   
@@ -37,11 +37,11 @@
       <div class="cart__summary">
         <div class="cart__grid">
           <p class="cart__total-amount">
-            <?php echo h(__('cart.table.ttl', [], 'cart'));?>: 
+            <?php echo h(__('product-list.table.ttl', [], 'product-list'));?>: 
             <span class="text-bold"><?php echo count($productViewModel['products']);?></span>
           </p>
           <p class="cart__total">
-            <?php echo h(__('cart.table.ttl.price', [], 'cart'));?>: 
+            <?php echo h(__('product-list.table.ttl.price', [], 'product-list'));?>: 
             <span class="text-bold"><?php echo h($productViewModel['totalPrice']); ?>&nbsp;&euro;</span>
           </p>
         </div>
