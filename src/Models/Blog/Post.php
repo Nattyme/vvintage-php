@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Blog;
 
+use Vvintage\DTO\Post\PostDTO;
 
-use RedBeanPHP\OODBBean;
 
 final class Post
 {
@@ -21,22 +21,6 @@ final class Post
 
     private function __construct() {}
 
-    public static function fromBean(OODBBean $bean): self
-    {
-        $post = new self();
-        $post->id = (int) $bean->id;
-        $post->title = $bean->title;
-        $post->cat = $bean->cat;
-        $post->description = $bean->description;
-        $post->content = $bean->content;
-        $post->timestamp = (float) $bean->timestamp;
-        $post->views = $bean->views;
-        $post->cover = $bean->cover;
-        $post->cover_small = $bean->cover_small;
-        $post->edit_time = $bean->edit_time;
-
-        return $post;
-    }
 
     public static function fromArray(array $data): self
     {
@@ -67,6 +51,7 @@ final class Post
         $post->cover = $dto->cover;
         $post->cover_small = $dto->cover_small;
         $post->edit_time = (string) time();
+        $post->translations = $dto->translations;
 
         return $post;
     }

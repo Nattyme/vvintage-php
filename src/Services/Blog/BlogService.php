@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Blog;
 
-use Vvintage\Repositories\PostRepository;
+use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Models\Blog\Post;
 use Vvintage\DTO\Post\PostDTO;
 
@@ -18,7 +18,7 @@ final class BlogService
 
     public function getAll(array $pagination): array
     {
-        $beans = $this->postRepository->findAll($pagination);
+        $beans = $this->postRepository->getAllPosts($pagination);
 
         return array_map(
             fn($bean) => Post::fromBean($bean),

@@ -42,10 +42,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     {
         $this->currentLocale = $currentLocale;
     }
-
-    // ...
-
-            
+   
            
     public function getProductById(int $id): ?Product
     {
