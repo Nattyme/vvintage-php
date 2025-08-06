@@ -88,6 +88,7 @@ final class BlogController extends BaseController
 
     public function index(RouteData $routeData): void
     {
+      $this->setRouteData($routeData); // <-- передаём routeData
       $this->renderPosts($routeData);
     }
 

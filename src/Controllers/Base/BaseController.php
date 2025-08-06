@@ -92,8 +92,6 @@ abstract class BaseController
       if (!$routePath) return false;
 
       return $this->routeData->getUriModule() === 'blog';
-      // или используй preg_match если нужны более гибкие правила:
-      // return preg_match('#^/blog($|/)#', $routePath) === 1;
   }
 
   

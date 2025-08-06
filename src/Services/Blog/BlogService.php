@@ -28,7 +28,7 @@ final class BlogService
 
     public function getTotalCount(): int
     {
-        return $this->postRepository->countAll();
+        return $this->postRepository->getAllPostsCount();
     }
 
     public function add(PostDTO $dto): int

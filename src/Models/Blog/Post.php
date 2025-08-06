@@ -10,7 +10,7 @@ final class Post
 {
     private int $id;
     private string $title;
-    private string $cat;
+    private string $category;
     private string $description;
     private string $content;
     private float $timestamp;
@@ -27,7 +27,7 @@ final class Post
         $post = new self();
         $post->id = (int) $data['id'];
         $post->title = $data['title'];
-        $post->cat = $data['cat'];
+        $post->category = $data['category'];
         $post->description = $data['description'];
         $post->content = $data['content'];
         $post->timestamp = (float) $data['timestamp'];
@@ -39,11 +39,12 @@ final class Post
         return $post;
     }
 
+   
     public static function fromDTO(PostDTO $dto): self
     {
         $post = new self();
+        $post->category = PostCategory::fromDTO($dto->categoryDTO);
         $post->title = $dto->title;
-        $post->cat = $dto->cat;
         $post->description = $dto->description;
         $post->content = $dto->content;
         $post->timestamp = (float) time();
@@ -70,7 +71,7 @@ final class Post
 
     public function getCat(): int
     {
-      return $this->cat();
+      return $this->category();
     }
 
     public function getDesc(): string

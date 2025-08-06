@@ -19,11 +19,11 @@ use Vvintage\Models\Blog\Post;
 
 final class PostRepository extends AbstractRepository implements PostRepositoryInterface
 {  
-    private const TABLE_POSTS = 'posts';
-    private const TABLE_POSTS_TRANSLATION = 'posts_translation';
+    private const TABLE = 'posts';
+    private const TABLE_TRANSLATION = 'posts_translation';
 
-    private const TABLE_POSTS_CATEGORIES = 'posts_categories';
-    private const TABLE_POSTS_CATEGORIES_TRANSLATION = 'posts_categories_translation';
+    private const TABLE_CATEGORIES = 'posts_categories';
+    private const TABLE_CATEGORIES_TRANSLATION = 'posts_categories_translation';
 
     private string $currentLocale;
     private const DEFAULT_LOCALE = 'ru';
@@ -51,14 +51,14 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
                 ct.description AS category_description,
                 ct.meta_title AS category_meta_title,
                 ct.meta_description AS category_meta_description
-            FROM ' . self::TABLE_POSTS .' p
-            LEFT JOIN ' . self:: TABLE_POSTS_TRANSLATION .' pt ON pt.product_id = p.id AND pt.locale = ?
+            FROM ' . self::TABLE .' p
+            LEFT JOIN ' . self:: TABLE_TRANSLATION .' pt ON pt.product_id = p.id AND pt.locale = ?
             LEFT JOIN ' . self::TABLE_CATEGORIES .' c ON p.category_id = c.id
             LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct ON ct.category_id = c.id AND ct.locale = ?
         ';
 
         $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-        $bindings = [$locale, $locale, $locale];
+        $bindings = [$locale, $locale];
 
         if ($postId !== null) {
             $sql .= ' WHERE p.id = ? GROUP BY p.id LIMIT 1';
@@ -128,18 +128,16 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
         $dto = new PostDTO([
             'id' => (int) $row['id'],
             'categoryDTO' => $categoryDTO,
-            'slug' => (string) $row['slug'],
             'title' => (string) $row['title'],
             'description' => (string) $row['description'],
-            'price' => (string) $row['price'],
-            'url' => (string) $row['url'],
-            'sku' => (string) $row['sku'],
-            'stock' => (int) $row['stock'],
+            'content' => (string) $row['content'],
+            'slug' => (string) $row['slug'],
+            'views' => (int) $row['views'],
+            'cover' => (string) $row['cover'],
+            'cover_small' => (string) $row['cover_small'],
             'datetime' => (string) $row['datetime'],
-            'images_total' => count($imagesDTO),
             'translations' => $translations,
-            'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,
-            'images' => $imagesDTO,
+            'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE
         ]);
 
         return Post::fromDTO($dto);
@@ -195,6 +193,6 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
 
     public function getAllPostsCount (?string $sql = null, array $params = []): int
     {
-      return $this->countAll(self::TABLE_POSTS, $sql, $params);
+      return $this->countAll(self::TABLE, $sql, $params);
     }
 }
