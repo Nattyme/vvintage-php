@@ -9,5 +9,6 @@ return [
   'button.login' => 'Log in',
   'button.goto.shop' => 'Go to shop',
   'button.goto.blog' => 'Go to blog',
-  'button.cart.add' => 'Add to cart'
+  'button.cart.add' => 'Add to cart',
+  'button.cart.order' => 'Place Order'
 ];

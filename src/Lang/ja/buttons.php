@@ -9,5 +9,6 @@ return [
   'button.login' => 'ログイン',
   'button.goto.shop' => 'ショップへ',
   'button.goto.blog' => 'ブログへ',
-  'button.cart.add' => 'カートに追加'
+  'button.cart.add' => 'カートに追加',
+  'button.cart.order' => '注文する'
 ];

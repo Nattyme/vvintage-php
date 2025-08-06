@@ -9,5 +9,6 @@ return [
   'button.login' => 'Anmelden',
   'button.goto.shop' => 'Zum Shop',
   'button.goto.blog' => 'Zum Blog',
-  'button.cart.add' => 'In den Warenkorb'
+  'button.cart.add' => 'In den Warenkorb',
+  'button.cart.order' => 'Bestellung aufgeben'
 ];

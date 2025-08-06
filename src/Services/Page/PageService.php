@@ -18,13 +18,16 @@ final class PageService
     if($slug === '') {
       return null;
     }
-    $pageModel = PageRepository::getBySlug($slug);
+
+    $pageModel = PageRepository::getPageBySlug($slug);
     if(!$pageModel) {
       return null;
     }
 
     // Получаем поля страницы и задаем модели
-    $pageFields = PageFieldRepository::getFieldsByPageId( $pageModel->getId());
+    $pageFieldRepo = new PageFieldRepository( $pageModel->getId() );
+
+    $pageFields = $pageFieldRepo->getFieldsByPageId();
   
     $pageModel->setFields($pageFields);
 

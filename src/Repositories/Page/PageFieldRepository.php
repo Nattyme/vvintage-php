@@ -19,8 +19,15 @@ use Vvintage\Models\Page\PageField;
 
 final class PageFieldRepository extends AbstractRepository implements PageFieldRepositoryInterface
 {
-  public static function getFieldsByPageId (int $pageId): array
+   private int $pageId;
+
+   public function __construct(int $pageId) {
+    $this->pageId = $pageId;
+   }
+
+  public static function getFieldsByPageId (): array
   {
+    dd( $this->pageId);
     // Найдём страницу
     $bean = $this->loadBean('pages', $pageId);
   

@@ -16,8 +16,6 @@
           <header class="product-card__header">
      
             <div class="product-card__row">
-         
-            
               <h1 class="h1 product-card__title"><?php echo h($productViewModel['product']->getTitle());?></h1>
             </div>
             <div class="product-card__row">
@@ -34,15 +32,15 @@
 
           <dl class="product-card__list">
             <div class="product-card__item  product-card__item--title">
-              <dt>Бренд</dt>
+              <dt><?php echo h(__('product.brand.title', [], 'product'));?></dt>
               <dd><a href=""><?php echo h($productViewModel['product']->getBrandTitle());?></a></dd>
             </div>
             <div class="product-card__item">
-              <dt>Состоние</dt>
+              <dt><?php echo h(__('product.item.condition', [], 'product'));?></dt>
               <dd>New without tags</dd>
             </div>
             <div class="product-card__item">
-              <dt>Обновлено</dt>
+               <dt><?php echo h(__('product.item.update', [], 'product'));?></dt>
               <dd>
                 <time datetime="<?php /** echo h($product->getTimestamp()); */?>">
                 <!-- <?php /** echo rus_date("j. m. Y", h($product->getTimestamp()) ); */ ?> -->

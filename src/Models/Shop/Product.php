@@ -35,6 +35,18 @@ class Product
     private string $currentLocale = 'ru';
     private ?array $images;      // массив изображений
 
+    const PRODUCT_CONDITIONS = [
+        'new',
+        'withouttags',
+        'good',
+        'usedabit',
+        'hasdeffect',
+    ];
+
+
+    // <option value="new">{{ __('condition.' . $key) }}</option>
+    // Если 
+
     private function __construct() {}
 
     public static function fromDTO(ProductDTO $dto): self
