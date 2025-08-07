@@ -36,7 +36,8 @@ final class PostController extends BaseController
         $this->setRouteData($routeData); // <-- передаём routeData
 
         $id = (int) $routeData->uriGet; // получаем id плста из URL
-        $post = $this->postService->getPost($id);;
+
+        $post = $this->postService->getPost($id);
 
         if (!$post) {
             http_response_code(404);
@@ -44,10 +45,13 @@ final class PostController extends BaseController
             return;
         }
 
+        $mainCategories = $this->postService->getAllMainCategories();
+        $subCategories = $this->postService->getAllSubCategories();
+
         // Получаем похожие посты
         $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);;
         $pagination = pagination($postsPerPage, 'posts');
-        $relatedPosts = $post;
+        // $relatedPosts = $post;
         // $relatedPosts = $post->getRelated();
 
         // Название страницы
@@ -56,13 +60,19 @@ final class PostController extends BaseController
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
+        // Формируем единую модель для передачи в шаблон
+        $postViewModel = [
+            'mainCategories' => $mainCategories,
+            'subCategories' => $subCategories,
+            'breadcrumbs' => $breadcrumbs
+        ];
+
         // Подключение шаблонов страницы
         $this->renderLayout('blog/post', [
+              'post' => $post,
               'pageTitle' => $pageTitle,
               'routeData' => $routeData,
-              'breadcrumbs' => $breadcrumbs,
-              'post' => $post,
-              'relatedPosts' => $relatedPosts
+              'postViewModel' => $postViewModel,
         ]);
     }
 }

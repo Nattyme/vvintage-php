@@ -10,7 +10,7 @@
         <input 
           type="text" 
           name="query" 
-          placeholder="Найти" 
+          placeholder=" <?php echo h( __('widget.search.placholder', [], 'utils'));?>" 
           value=""
         >
 

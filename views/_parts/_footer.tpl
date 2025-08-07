@@ -3,7 +3,9 @@
     <?php if($isBlogPage) : ?>
       <div class="footer__top">
         <div class="footer__topics">
-          <div class="footer__topics-header">ПОСМОТРИТЕ ВСЕ РУБРИКИ БЛОГА</div>
+          <div class="footer__topics-header">
+              <?php echo h(__('blog.cats.sub.view.all', [], 'blog'));?>
+          </div>
             <ul class="topics-list">
 
               <?php foreach( $postViewModel['subCategories'] as $category) : ?>
