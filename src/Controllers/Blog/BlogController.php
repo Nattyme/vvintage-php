@@ -7,8 +7,8 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Blog\BlogService;
-use Vvintage\DTO\Blog\PostDTO;
+use Vvintage\Services\Post\PostService;
+use Vvintage\DTO\Post\PostDTO;
 
 
 require_once ROOT . './libs/functions.php';
@@ -17,8 +17,7 @@ final class BlogController extends BaseController
 {
   private FlashMessage $notes;
   private Breadcrumbs $breadcrumbsService;
-
-  private BlogService $blogService;
+  private PostService $postService;
 
     public function __construct(
         FlashMessage $notes,
@@ -27,24 +26,21 @@ final class BlogController extends BaseController
         parent::__construct(); // Важно!
         $this->notes = $notes;
         $this->breadcrumbsService = $breadcrumbs;
-        $this->postRepository = new PostRepository( $this->currentLang );
-        $this->blogService = new BlogService( $postRepository );
+        $this->postService = new PostService( $this->currentLang );
     }
 
     
     public function index(RouteData $routeData): void
     {
       $this->setRouteData($routeData); // <-- передаём routeData
-
-
       $pageTitle = 'Блог';
       $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
 
       $pagination = pagination($postsPerPage, 'posts');
 
-      $posts = $this->blogService->getAllPosts($pagination);
-      dd($posts);
-      $totalPosts = $this->blogService->getTotalCount();
+      $posts = $this->postService->getAllPosts($pagination);
+
+      $totalPosts = $this->postService->getTotalCount();
 
       $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);

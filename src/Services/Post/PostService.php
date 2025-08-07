@@ -1,13 +1,13 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Blog;
+namespace Vvintage\Services\Post;
 
 use Vvintage\Repositories\Post\PostRepository;
-use Vvintage\Models\Blog\Post;
+use Vvintage\Models\Post\Post;
 use Vvintage\DTO\Post\PostDTO;
 
-final class BlogService
+final class PostService
 {
     private string $currentLang;
     private PostRepository $postRepository;

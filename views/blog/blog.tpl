@@ -12,7 +12,7 @@
 
               <?php if ( $productViewModel['posts'] && !empty($productViewModel['posts'])) : ?>
                 <?php foreach ($productViewModel['posts'] as $post) : ?>
-                  <?php dd( $post);?>
+     
                   <li class="posts__item">
                     <a href="<?php echo HOST . "blog/{$post->getId()}"?>" class="posts__link">
                       <!-- CARD -->

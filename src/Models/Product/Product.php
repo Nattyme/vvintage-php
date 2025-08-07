@@ -95,65 +95,10 @@ class Product
       return $product;
     }
 
-    // private function getTranslated(string $key, string $fallbackProperty = ''): string
-    // {
-    //     return $this->translations[$this->currentLang][$key] ?? $this->{$fallbackProperty} ?? '';
-    // }
-
-
     public function getRelated(): array
     {
         return get_related_products($this->title, $this->brand->getTitle(), $this->category);
     }
-
-
-    // Ф-ция возвращает изображения продукта
-    // public function getImages(): array
-    // {
-    //     // Если загружены изображения - возвращаем
-    //     if ($this->images !== null) {
-    //         return $this->images;
-    //     }
-
-    //     // $main = null;
-    //     // $others = [];
-    //     // $rows = Database::getProductImagesRow($this->id);
-
-    //     // // Посчитаем общее кол-во изображений
-    //     // $this->imagesTotal = count($rows);
-
-    //     // // Обходим массив изображении продукта и находим главное. Остальные сохраняем в массив
-    //     // foreach ($rows as $row) {
-    //     //     if ((int) $row['image_order'] === 1 && $main === null) {
-    //     //         $main = $row['filename'];
-    //     //     } else {
-    //     //         $others[] = $row['filename'];
-    //     //     }
-    //     // }
-
-    //     // $this->images = ['main' => $main, 'others' => $others];
-      
-    //     // return $this->images;
-    // }
-
-    // public function getMainImage(): ?string
-    // {
-    //     $main = null;
-    //     $others = [];
-
-    //     // Обходим массив изображении продукта и находим главное. Остальные сохраняем в массив
-    //     foreach ($rows as $row) {
-    //         if ((int) $row['image_order'] === 1 && $main === null) {
-    //             $main = $row['filename'];
-    //         } else {
-    //             $others[] = $row['filename'];
-    //         }
-    //     }
-
-    //     $this->images = ['main' => $main, 'others' => $others];
-    
-    //     return $images['main'] ?? null;
-    // }
 
 
     /**
@@ -222,56 +167,4 @@ class Product
     {
         return $this->images ?? [];
     }
-
-
-    // public function getDescription(): string
-    // {
-    //     return $this->translations[$this->currentLocale]['description'] ?? $this->content;
-    // }
-
-    // public function getMetaTitle(): string
-    // {
-    //     return $this->translations[$this->currentLocale]['meta_title'] ?? '';
-    // }
-
-    // public function getMetaDescription(): string
-    // {
-    //     return $this->translations[$this->currentLocale]['meta_description'] ?? '';
-    // }
-
-
-    // public function getImages(): array
-    // {
-    //     if (is_array($this->images) && isset($this->images['main'], $this->images['others'])) {
-    //         return $this->images;
-    //     }
-
-    //     $main = null;
-    //     $others = [];
-
-    //     foreach ($this->images as $imageDTO) {
-    //         if (
-    //             $imageDTO instanceof \Vvintage\DTO\Product\ProductImageDTO &&
-    //             $imageDTO->image_order === 1 &&
-    //             $main === null
-    //         ) {
-    //             $main = $imageDTO;
-    //         } else {
-    //             $others[] = $imageDTO;
-    //         }
-    //     }
-
-    //     $this->images = ['main' => $main, 'others' => $others];
-
-    //     return $this->images;
-    // }
-
-    // public function getMainImage(): ?ProductImageDTO
-    // {
-    //     $images = $this->getImages();
-    //     return $images['main'] ?? null;
-    // }
-
-
-
 }

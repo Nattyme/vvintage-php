@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Models\Blog;
+namespace Vvintage\Models\Post;
 
 use Vvintage\DTO\Post\PostDTO;
 use Vvintage\Models\PostCategory\PostCategory;
@@ -22,7 +22,7 @@ final class Post
     private ?string $edit_time = null;
 
     private ?array $translations = null;
-    private string $currentLocale = 'ru';
+    private string $currentLang = 'ru';
 
     private function __construct() {}
 
@@ -42,7 +42,7 @@ final class Post
         $post->cover_small = $data['cover_small'] ?? null;
         $post->edit_time = $data['edit_time'] ?? null;
         $post->translations = $data['translations'] ?? [];
-        $post->currentLocale = (string) ($data['locale'] ?? 'ru');
+        $post->currentLang = (string) ($data['locale'] ?? 'ru');
 
         return $post;
     }
@@ -77,25 +77,40 @@ final class Post
       return $this->id;
     }
 
-    public function getTitle(): string
+    // Получение названия в нужной локали, иначе fallback title
+    public function getTitle(?string $locale = null): string
     {
-        return $this->title;
+      return $this->title;
+        // $locale = $locale ?? $this->currentLang;
+
+        // return $this->translations[$locale]['title']
+        //     ?? $this->translations['ru']['title']
+        //     ?? $this->title;
     }
+
 
     public function getCat(): int
     {
       return $this->category();
     }
 
-    public function getDesc(): string
+
+    // Получение названия в нужной локали, иначе fallback description
+    public function getDesc(?string $locale = null): string
     {
-      return $this->description;
+        $locale = $locale ?? $this->currentLang;
+
+        return $this->translations[$locale]['description']
+            ?? $this->translations['ru']['description']
+            ?? $this->description;
     }
 
-    public function getContent(): string
+     // Получение названия в нужной локали, иначе fallback description
+    public function getContent(?string $locale = null): string
     {
       return $this->content;
     }
+
     
     public function getTime(): ?float
     {
@@ -120,7 +135,29 @@ final class Post
 
     public function getTranslations(): ?array
     {
-      return $this->translations[$this->currentLocale];
+      return $this->translations[$this->currentLang];
     }
+
+    /** SEO */
+    public function getMetaTitle(?string $locale = null): ?string
+    {
+      return $this->meta_title;
+        // $locale = $locale ?? $this->currentLang;
+
+        // return $this->translations[$locale]['meta_title']
+        //     ?? $this->translations['ru']['meta_title']
+        //     ?? null;
+    }
+
+    public function getMetaDescription(?string $locale = null): ?string
+    {
+       return $this->meta_description;
+        // $locale = $locale ?? $this->currentLang;
+
+        // return $this->translations[$locale]['meta_description']
+        //     ?? $this->translations['ru']['meta_description']
+        //     ?? null;
+    }
+
     
 }

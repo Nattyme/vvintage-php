@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Models\Blog;
+// namespace Vvintage\Models\Blog;
 
-use RedBeanPHP\R;
-use Vvintage\Repositories\PostRepository;
-use Vvintage\Database\Database;
+// use RedBeanPHP\R;
+// use Vvintage\Repositories\PostRepository;
+// use Vvintage\Database\Database;
 
 require_once ROOT . "./libs/functions.php";
 

@@ -241,7 +241,7 @@
       $notes = new FlashMessage();
   
       $blogController = new BlogController($notes, $breadcrumbs);
-      $postController = new PostController($breadcrumbs);
+      $postController = new PostController($notes, $breadcrumbs);
     
 
         if ($routeData->uriModule === 'add-comment') {

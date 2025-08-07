@@ -14,7 +14,7 @@ use Vvintage\Contracts\Post\PostRepositoryInterface;
 use Vvintage\Repositories\AbstractRepository;
 
 /** Модели */
-use Vvintage\Models\Blog\Post;
+use Vvintage\Models\Post\Post;
 use Vvintage\DTO\PostCategory\PostCategoryDTO;
 use Vvintage\DTO\Post\PostDTO;
 
@@ -27,12 +27,12 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     private const TABLE_CATEGORIES = 'posts_categories';
     private const TABLE_CATEGORIES_TRANSLATION = 'posts_categories_translation';
 
-    private string $currentLocale;
-    private const DEFAULT_LOCALE = 'ru';
+    private string $currentLang;
+    private const DEFAULT_LANG = 'ru';
 
-    public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
+    public function __construct(string $currentLang = self::DEFAULT_LANG)
     {
-        $this->currentLocale = $currentLocale;
+        $this->currentLang = $currentLang;
     }
 
     private function unitePostRawData(?int $postId = null): array
@@ -60,7 +60,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct ON ct.category_id = c.id AND ct.locale = ?
         ';
 
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
+        $locale = $this->currentLang ?? self::DEFAULT_LANG;
         $bindings = [$locale, $locale];
 
         if ($postId !== null) {
@@ -80,7 +80,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     private function loadTranslations(int $postId): array
     {
         $rows = R::getAll(
-            'SELECT locale, title, description, content, meta_title, meta_description 
+            'SELECT locale, title, slug, description, content, meta_title, meta_description 
              FROM ' . self::TABLE_TRANSLATION .' 
              WHERE post_id = ?',
             [$postId]
@@ -90,6 +90,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
         foreach ($rows as $row) {
             $translations[$row['locale']] = [
                 'title' => $row['title'],
+                'slug' => $row['slug'],
                 'description' => $row['description'],
                 'content' => $row['content'],
                 'meta_title' => $row['meta_title'],
@@ -102,7 +103,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
 
     private function createCategoryDTOFromArray(array $row): PostCategoryDTO
     {
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;;
+        $locale = $this->currentLang ?? self::DEFAULT_LANG;;
 
         return new PostCategoryDTO([
             'id' => (int) $row['category_id'],
@@ -111,6 +112,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             'image' => (string) ($row['category_image'] ?? ''),
             'translations' => [
                 $locale => [
+                    'slug' => $row['category_slug_translation'] ?? '',
                     'title' => $row['category_title_translation'] ?? '',
                     'description' => $row['category_description'] ?? '',
                     'seo_title' => $row['category_meta_title'] ?? '',
@@ -142,7 +144,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             'cover_small' => (string) $row['cover_small'],
             'datetime' => (string) $row['datetime'],
             'translations' => $translations,
-            'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE
+            'locale' => $this->currentLang ?? self::DEFAULT_LANG
         ]);
 
         return Post::fromDTO($dto);

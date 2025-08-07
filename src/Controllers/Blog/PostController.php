@@ -8,30 +8,31 @@ namespace Vvintage\Controllers\Blog;
 use Vvintage\Controllers\Base\BaseController;
 
 // use Vvintage\Repositories\Post\PostRepository;
-use Vvintage\Models\Blog\Post;
+use Vvintage\Models\Post\Post;
 use Vvintage\Routing\RouteData;
 use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Blog\BlogService;
+use Vvintage\Services\Post\PostService;
+use Vvintage\Services\Messages\FlashMessage;
 
 
 final class PostController extends BaseController
 {
     private FlashMessage $notes;
     private Breadcrumbs $breadcrumbsService;
-    private BlogService $blogService;
+    private PostService $postService;
 
     public function __construct(FlashMessage $notes, Breadcrumbs $breadcrumbs)
     {
         parent::__construct(); // Важно!
         $this->notes = $notes;
         $this->breadcrumbsService = $breadcrumbs;
-        $this->blogService = new BlogService( $this->currentLang );
+        $this->postService = new PostService( $this->currentLang );
     }
 
     private function getPost(RouteData $routeData)
     {
       $id = (int) $routeData->uriGet; // получаем id товара из URL
-      return $this->blogService->getPost($id);
+      return $this->postService->getPost($id);
     }
 
     public function index(RouteData $routeData): void
