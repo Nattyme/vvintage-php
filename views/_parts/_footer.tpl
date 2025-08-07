@@ -5,36 +5,15 @@
         <div class="footer__topics">
           <div class="footer__topics-header">ПОСМОТРИТЕ ВСЕ РУБРИКИ БЛОГА</div>
             <ul class="topics-list">
-              <li class="topics-list__item">
-                <a class="topics-list__link" href="">Ароматы</a>
-              </li>
-              <li class="topics-list__item">
-                <a class="topics-list__link" href="">О Франции</a>
-              </li>
-              <li class="topics-list__item">
-                <a class="topics-list__link" href="">История бренда</a>
-              </li>
-              <li class="topics-list__item">
-                <a class="topics-list__link" href="">Бижутерия</a>
-              </li>
-              <li class="topics-list__item">
-                <a class="topics-list__link" href="">Коллекционное</a>
-              </li>
-               <li class="topics-list__item">
-                <a class="topics-list__link" href="">Легенда</a>
-              </li>
-              <li class="topics-list__item">
-                <a class="topics-list__link" href="">Интересное</a>
-              </li>
-              <li class="topics-list__item">
-                <a class="topics-list__link" href="">Путешествия</a>
-              </li>
-              <li class="topics-list__item">
-                <a class="topics-list__link" href="">Шали</a>
-              </li>
-              <li class="topics-list__item">
-                <a class="topics-list__link" href="">Очки</a>
-              </li>
+
+              <?php foreach( $postViewModel['subCategories'] as $category) : ?>
+                <li class="topics-list__item">
+                  <a class="topics-list__link" href="">
+                    <?php echo h($category->getTitle()); ?>
+                  </a>
+                </li>
+              <?php endforeach; ?>
+             
             </ul>
           </div> 
         </div>

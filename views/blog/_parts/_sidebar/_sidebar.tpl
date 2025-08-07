@@ -26,31 +26,13 @@
         </div>
 
         <ul class="widget__list widget__list--blog widget__list--categories" aria-labelledby="rubrics-title">
-          <li class="widget__item">
-            <a href="#!" class="widget__link widget__link--categories">О Франции</a>
-          </li>
-          <li class="widget__item">
-            <a href="#!" class="widget__link  widget__link--categories">Ароматы</a>
-          </li>
-          <li class="widget__item">
-            <a href="#!" class="widget__link  widget__link--categories">Бижутерия</a>
-          </li>
-          <li class="widget__item">
-            <a href="#!" class="widget__link  widget__link--categories">История бренда</a>
-          </li>
-          <li class="widget__item">
-            <a href="#!" class="widget__link  widget__link--categories">А вы знали?</a>
-          </li>
-          <li class="widget__item">
-            <a href="#!" class="widget__link  widget__link--categories">Я - легенда</a>
-          </li>
-          <li class="widget__item">
-            <a href="#!" class="widget__link  widget__link--categories">Тот самый аромат</a>
-          </li>
-          <li class="widget__item">
-            <a href="#!" class="widget__link  widget__link--categories">Этого нет в продаже?</a>
-          </li>
-
+          <?php foreach( $postViewModel['subCategories'] as $category) : ?>
+            <li class="widget__item">
+              <a href="#!" class="widget__link widget__link--categories">
+                <?php echo h($category->getTitle()) ;?>
+              </a>
+            </li>
+          <?php endforeach; ?>
         </ul>
       </div>
 
