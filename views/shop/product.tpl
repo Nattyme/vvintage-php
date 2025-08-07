@@ -56,7 +56,9 @@
           <div class="product-card__button">
             <?php if (isProductInCart($productViewModel['product']->getId())) : ?>
             
-              <button type="button" class="button button--primary button--l" disabled>Товар в корзине</button>
+              <button type="button" class="button button--primary button--l" disabled>
+                <?php echo h(__('button.item.incart', [], 'buttons',));?>
+              </button>
             <?php  else : ?>
               <a href="<?php echo HOST . 'addtocart?id=' . u($productViewModel['product']->getId());?>" class="button button--primary button--xl">
                 <?php echo h(__('button.cart.add', [], 'buttons'));?>: 

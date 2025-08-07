@@ -235,14 +235,13 @@
       }
     }
 
+      
     private static function routeBlog(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
       $notes = new FlashMessage();
-      $postRepository = new PostRepository();
-      $blogService = new BlogService( $postRepository );
   
-      $blogController = new BlogController($blogService, $notes, $breadcrumbs);
-      $postController = new PostController($blogService, $breadcrumbs);
+      $blogController = new BlogController($notes, $breadcrumbs);
+      $postController = new PostController($breadcrumbs);
     
 
         if ($routeData->uriModule === 'add-comment') {

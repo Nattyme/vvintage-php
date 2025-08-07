@@ -9,8 +9,10 @@
           <h1 class="visually-hidden">Посты блога</h1>
           <div class="posts__wrapper">
             <ul class="posts__list">
-              <?php if ( isset($posts) && !empty($posts)) : ?>
-                <?php foreach ($posts as $post) : ?>
+
+              <?php if ( $productViewModel['posts'] && !empty($productViewModel['posts'])) : ?>
+                <?php foreach ($productViewModel['posts'] as $post) : ?>
+                  <?php dd( $post);?>
                   <li class="posts__item">
                     <a href="<?php echo HOST . "blog/{$post->getId()}"?>" class="posts__link">
                       <!-- CARD -->

@@ -15,19 +15,20 @@ require_once ROOT . './libs/functions.php';
 
 final class BlogController extends BaseController
 {
-    private BlogService $blogService;
-    private FlashMessage $notes;
-    private Breadcrumbs $breadcrumbsService;
+  private FlashMessage $notes;
+  private Breadcrumbs $breadcrumbsService;
+
+  private BlogService $blogService;
 
     public function __construct(
-        BlogService $blogService,
         FlashMessage $notes,
         Breadcrumbs $breadcrumbs
     ) {
         parent::__construct(); // Важно!
-        $this->blogService = $blogService;
         $this->notes = $notes;
         $this->breadcrumbsService = $breadcrumbs;
+        $this->postRepository = new PostRepository( $this->currentLang );
+        $this->blogService = new BlogService( $postRepository );
     }
 
     
@@ -41,9 +42,10 @@ final class BlogController extends BaseController
 
       $pagination = pagination($postsPerPage, 'posts');
 
-      $posts = $this->blogService->getAll($pagination);
+      $posts = $this->blogService->getAllPosts($pagination);
+      dd($posts);
       $totalPosts = $this->blogService->getTotalCount();
-dd( $posts);
+
       $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
@@ -53,7 +55,7 @@ dd( $posts);
 
       // Формируем единую модель для передачи в шаблон
       $productViewModel = [
-          'post' => $post,
+          'posts' => $posts,
           'totalPosts' => $totalPosts,
           'shownPosts' => $shownPosts,
           'relatedPosts' => $relatedPosts

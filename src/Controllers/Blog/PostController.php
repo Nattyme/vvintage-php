@@ -16,14 +16,16 @@ use Vvintage\Services\Blog\BlogService;
 
 final class PostController extends BaseController
 {
-    private BlogService $blogService;
+    private FlashMessage $notes;
     private Breadcrumbs $breadcrumbsService;
+    private BlogService $blogService;
 
-    public function __construct(BlogService $blogService, Breadcrumbs $breadcrumbs)
+    public function __construct(FlashMessage $notes, Breadcrumbs $breadcrumbs)
     {
         parent::__construct(); // Важно!
-        $this->blogService = $blogService;
+        $this->notes = $notes;
         $this->breadcrumbsService = $breadcrumbs;
+        $this->blogService = new BlogService( $this->currentLang );
     }
 
     private function getPost(RouteData $routeData)

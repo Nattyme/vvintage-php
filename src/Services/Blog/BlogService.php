@@ -9,21 +9,23 @@ use Vvintage\DTO\Post\PostDTO;
 
 final class BlogService
 {
+    private string $currentLang;
     private PostRepository $postRepository;
 
-    public function __construct(PostRepository $postRepository)
+    public function __construct(string $currentLang)
     {
-        $this->postRepository = $postRepository;
+        $this->currentLang = $currentLang;
+        $this->postRepository = new PostRepository( $this->currentLang );
     }
 
-    public function getAll(array $pagination): array
+    public function getAllPosts(array $pagination): array
     {
-        $beans = $this->postRepository->getAllPosts($pagination);
+        return $this->postRepository->getAllPosts($pagination);
 
-        return array_map(
-            fn($bean) => Post::fromBean($bean),
-            $beans
-        );
+        // return array_map(
+        //     fn($bean) => Post::fromDTO($bean),
+        //     $beans
+        // );
     }
 
     public function getTotalCount(): int
@@ -42,8 +44,4 @@ final class BlogService
       $bean = $this->postRepository->findById($id);
       return Post::fromBean($bean);
     }
-
-
-    // public function getById(int $id): ?Post {}
-    // public function getByCategory(string $slug): array {}
 }

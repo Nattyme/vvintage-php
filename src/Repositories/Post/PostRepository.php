@@ -15,6 +15,8 @@ use Vvintage\Repositories\AbstractRepository;
 
 /** Модели */
 use Vvintage\Models\Blog\Post;
+use Vvintage\DTO\PostCategory\PostCategoryDTO;
+use Vvintage\DTO\Post\PostDTO;
 
 
 final class PostRepository extends AbstractRepository implements PostRepositoryInterface
@@ -35,6 +37,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
 
     private function unitePostRawData(?int $postId = null): array
     {
+
         $sql = '
             SELECT 
                 p.*,
@@ -52,7 +55,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
                 ct.meta_title AS category_meta_title,
                 ct.meta_description AS category_meta_description
             FROM ' . self::TABLE .' p
-            LEFT JOIN ' . self:: TABLE_TRANSLATION .' pt ON pt.product_id = p.id AND pt.locale = ?
+            LEFT JOIN ' . self::TABLE_TRANSLATION .' pt ON pt.post_id = p.id AND pt.locale = ?
             LEFT JOIN ' . self::TABLE_CATEGORIES .' c ON p.category_id = c.id
             LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct ON ct.category_id = c.id AND ct.locale = ?
         ';
@@ -65,7 +68,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             $bindings[] = $postId;
             // ⬇Заворачиваем в массив
             $row = R::getRow($sql, $bindings);
-           
+
             return $row ?[$row] : [];
         } else {
             $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
@@ -74,13 +77,13 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     }
 
 
-    private function loadTranslations(int $productId): array
+    private function loadTranslations(int $postId): array
     {
         $rows = R::getAll(
-            'SELECT locale, title, description, meta_title, meta_description 
-             FROM ' . self::TABLE_PRODUCTS_TRANSLATION .' 
-             WHERE product_id = ?',
-            [$productId]
+            'SELECT locale, title, description, content, meta_title, meta_description 
+             FROM ' . self::TABLE_TRANSLATION .' 
+             WHERE post_id = ?',
+            [$postId]
         );
 
         $translations = [];
@@ -88,6 +91,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             $translations[$row['locale']] = [
                 'title' => $row['title'],
                 'description' => $row['description'],
+                'content' => $row['content'],
                 'meta_title' => $row['meta_title'],
                 'meta_description' => $row['meta_description'],
             ];
@@ -122,7 +126,8 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     {
         $postId = (int) $row['id'];
 
-        $translations = $this->loadTranslations($productId);
+        $translations = $this->loadTranslations($postId);
+    
         $categoryDTO = $this->createCategoryDTOFromArray($row);
 
         $dto = new PostDTO([
@@ -153,6 +158,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     public function getAllPosts(array $pagination): array
     {
         $rows = $this->unitePostRawData();
+
         return array_map([$this, 'fetchPostWithJoins'], $rows);
     }
 

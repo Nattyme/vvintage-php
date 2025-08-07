@@ -2,25 +2,36 @@
 declare(strict_types=1);
 
 namespace Vvintage\DTO\Post;
+use Vvintage\DTO\PostCategory\PostCategoryDTO;
 
 final class PostDTO
 {
+    public int $id;
     public string $title;
-    public int $category_id;
+    public PostCategoryDTO $categoryDTO;
+    public string $slug;
     public string $description;
     public string $content;
-    public string $views = '0';
-    public ?array $cover = null;
-    public ?array $cover_small = null;
+    public int $views = 0;
+    public ?string $cover = '';
+    public ?string $cover_small = '';
+
+    public array $translations;
+    public string $locale; 
 
     public function __construct(array $data)
     {
+        $this->id = (int) ($data['id'] ?? 0);
         $this->title = trim($data['title'] ?? '');
-        $this->category_id = trim($data['category_id'] ?? '');
+        $this->categoryDTO = $data['categoryDTO'];
+        $this->slug = trim($data['slug'] ?? '');
         $this->description = trim($data['description'] ?? '');
         $this->content = trim($data['content'] ?? '');
-        $this->views = $data['views'] ?? '0';
-        $this->cover = $data['cover'] ?? null;
-        $this->cover_small = $data['cover_small'] ?? null;
+        $this->views = $data['views'] ?? 0;
+        $this->cover = $data['cover'] ?? '';
+        $this->cover_small = $data['cover_small'] ?? '';
+
+        $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
+        $this->locale = (string) ($data['locale'] ?? 'ru'); // локаль по умолчанию
     }
 }
