@@ -5,27 +5,16 @@ namespace Vvintage\Repositories\PostCategory;
 
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
-
-
-/** Контракты */
 use Vvintage\Contracts\PostCategory\PostCategoryRepositoryInterface;
-
-/** Абстрактный репозиторий */
 use Vvintage\Repositories\AbstractRepository;
-
-/** Модель */
 use Vvintage\Models\PostCategory\PostCategory;
-
-/** DTO */
 use Vvintage\DTO\PostCategory\PostCategoryDTO;
-
-
 
 final class PostCategoryRepository extends AbstractRepository implements PostCategoryRepositoryInterface
 {
-  // СОЗДАТЬ ТАБЛИЦУ ПЕРЕВОДО КАТЕГОРИЙ ПОСТОВ
-    private const TABLE_CATEGORIES = 'posts_categories';
-    private const TABLE_CATEGORIES_TRANSLATION = 'posts_categories_translation';
+    private const TABLE = 'posts_categories';
+    private const TABLE_TRANSLATION = 'posts_categories_translation';
+
     private string $currentLang;
     private const DEFAULT_LANG = 'ru';
 
@@ -34,10 +23,9 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         $this->currentLang = $currentLang;
     }
 
-
     public function getPostCatById(int $id): ?PostCategory
     {
-        $bean = $this->findById(self::TABLE_CATEGORIES, $id);
+        $bean = $this->findById(self::TABLE, $id);
 
         if (!$bean || !$bean->id) {
             return null;
@@ -48,46 +36,51 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
     public function getAllPostCats(): array
     {
-        $beans = $this->findAll(self::TABLE_CATEGORIES);
+        $beans = $this->findAll(self::TABLE);
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
     public function getPostCatsByIds(array $ids): array
     {
-        $beans = $this->findByIds(self::TABLE_CATEGORIES, $ids);
+        $beans = $this->findByIds(self::TABLE, $ids);
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
-    }
-
-    public function getMainCats(): array
-    {
-        return $this->findAll(self::TABLE_CATEGORIES, 'WHERE parent_id IS NULL', []);
     }
 
     public function getSubCats(): array
     {
-      return $this->findAll(self::TABLE_CATEGORIES, 'WHERE parent_id IS NOT NULL', []);
+        $beans = $this->findAll(self::TABLE, 'WHERE parent_id IS NOT NULL');
+        return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
-
 
     public function getPostCatsByParentId(?int $id = null): array
     {
         if ($id === null) {
-            $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id IS NULL');
-        } else { 
-            $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id = ?', [$id]);
+            $beans = $this->findAll(self::TABLE, 'parent_id IS NULL');
+        } else {
+            $beans = $this->findAll(self::TABLE, 'parent_id = ?', [$id]);
         }
 
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
-
-    public function savePostCat(Category $cat): int
+    public function getMainCats(): array
     {
-        $bean = $cat->getId() 
-        ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId())
-        : $this->createBean(self::TABLE_CATEGORIES);
+        $rows = $this->unitePostRawData();
 
-        $bean->title = $cat->getTitle(); // по умолчанию ru
+        $mainCategories = array_filter($rows, function ($row) {
+            return $row['parent_id'] === null;
+        });
+
+        return array_map([$this, 'mapArrayToPostCategory'], $mainCategories);
+    }
+
+    public function savePostCat(PostCategory $cat): int
+    {
+        $bean = $cat->getId()
+            ? $this->loadBean(self::TABLE, $cat->getId())
+            : $this->createBean(self::TABLE);
+
+        $bean->title = $cat->getTitle();
         $bean->parent_id = $cat->getParentId();
         $bean->image = $cat->getImage();
         $bean->seo_title = $cat->getSeoTitle();
@@ -95,10 +88,11 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
         $id = (int) $this->saveBean($bean);
 
-        // Сохраняем переводы в отдельную таблицу
-        R::exec('DELETE FROM categories_translation WHERE category_id = ?', [$id]);
+        // Сохраняем переводы
+        R::exec('DELETE FROM ' . self::TABLE_TRANSLATION . ' WHERE category_id = ?', [$id]);
+
         foreach ($cat->getAllTranslations() as $locale => $translation) {
-            $transBean = $this->createBean('categories_translation');
+            $transBean = $this->createBean(self::TABLE_TRANSLATION);
             $transBean->category_id = $id;
             $transBean->locale = $locale;
             $transBean->title = $translation['title'] ?? '';
@@ -111,18 +105,16 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return $id;
     }
 
-    /**
-     * Загружает переводы из categories_translation
-     */
     private function loadTranslations(int $categoryId): array
     {
         $rows = R::getAll(
             'SELECT locale, title, description, meta_title, meta_description 
-             FROM ' . self::TABLE_CATEGORIES_TRANSLATION . ' WHERE category_id = ?',
+             FROM ' . self::TABLE_TRANSLATION . ' WHERE category_id = ?',
             [$categoryId]
         );
 
         $translations = [];
+
         foreach ($rows as $row) {
             $translations[$row['locale']] = [
                 'title' => $row['title'],
@@ -135,6 +127,34 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return $translations;
     }
 
+    private function createCategoryDTOFromArray(array $row): PostCategoryDTO
+    {
+        $locale = $this->currentLang ?? self::DEFAULT_LANG;
+
+        return new PostCategoryDTO([
+            'id' => (int) $row['id'],
+            'title' => (string) ($row['category_title_translation'] ?? ''),
+            'parent_id' => (int) ($row['parent_id'] ?? 0),
+            'image' => (string) ($row['image'] ?? ''),
+            'slug' => (string) ($row['slug'] ?? ''),
+            'translations' => [
+                $locale => [
+                    'slug' => $row['slug'] ?? '',
+                    'title' => $row['category_title_translation'] ?? '',
+                    'description' => $row['category_description'] ?? '',
+                    'seo_title' => $row['category_meta_title'] ?? '',
+                    'seo_description' => $row['category_meta_description'] ?? '',
+                ]
+            ],
+        ]);
+    }
+
+    private function mapArrayToPostCategory(array $row): PostCategory
+    {
+        $dto = $this->createCategoryDTOFromArray($row);
+        return PostCategory::fromDTO($dto);
+    }
+
     private function mapBeanToPostCategory(OODBBean $bean): PostCategory
     {
         $translations = $this->loadTranslations((int) $bean->id);
@@ -144,11 +164,38 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
             'title' => (string) $bean->title,
             'parent_id' => (int) $bean->parent_id,
             'image' => (string) $bean->image,
+            'slug' => '', // можешь получить из translations при желании
             'translations' => $translations,
-            'seo_title' => $bean->seo_title ?? '',
-            'seo_description' => $bean->seo_description ?? '',
         ]);
 
         return PostCategory::fromDTO($dto);
+    }
+
+    private function unitePostRawData(?int $categoryId = null): array
+    {
+        $sql = '
+            SELECT 
+                c.*,
+                ct.title AS category_title_translation,
+                ct.description AS category_description,
+                ct.meta_title AS category_meta_title,
+                ct.meta_description AS category_meta_description
+            FROM ' . self::TABLE .' c
+            LEFT JOIN ' . self::TABLE_TRANSLATION .' ct ON ct.category_id = c.id AND ct.locale = ?
+        ';
+
+        $locale = $this->currentLang ?? self::DEFAULT_LANG;
+        $bindings = [$locale];
+
+        if ($categoryId !== null) {
+            $sql .= ' WHERE c.id = ? GROUP BY c.id LIMIT 1';
+            $bindings[] = $categoryId;
+            $row = R::getRow($sql, $bindings);
+
+            return $row ? [$row] : [];
+        } else {
+            $sql .= ' GROUP BY c.id ORDER BY c.id DESC';
+            return R::getAll($sql, $bindings);
+        }
     }
 }

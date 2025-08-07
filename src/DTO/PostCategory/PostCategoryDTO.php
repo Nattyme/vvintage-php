@@ -10,7 +10,7 @@ final class PostCategoryDTO
     public string $title;
     public string $slug;
     public string $image;
-    public array $translations; // ['ru' => [...], 'en' => [...]
+    public array $translations;
 
     public function __construct(array $data)
     {

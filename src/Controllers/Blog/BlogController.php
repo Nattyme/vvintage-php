@@ -43,7 +43,7 @@ final class BlogController extends BaseController
       $posts = $this->postService->getAllPosts($pagination);
       $categories = $this->postService->getAllMainCategories();
       $subCategories = $this->postService->getAllSubCategories();
-      dd($subCategories);
+  dd($categories);
       $totalPosts = $this->postService->getTotalCount();
       $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
 
