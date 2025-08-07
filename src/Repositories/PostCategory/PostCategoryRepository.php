@@ -46,11 +46,6 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
-    public function getSubCats(): array
-    {
-        $beans = $this->findAll(self::TABLE, 'WHERE parent_id IS NOT NULL');
-        return array_map([$this, 'mapBeanToPostCategory'], $beans);
-    }
 
     public function getPostCatsByParentId(?int $id = null): array
     {
@@ -72,6 +67,17 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         });
 
         return array_map([$this, 'mapArrayToPostCategory'], $mainCategories);
+    }
+
+    public function getSubCats(): array
+    {
+        $rows = $this->unitePostRawData();
+
+        $subCategories = array_filter($rows, function ($row) {
+            return $row['parent_id'] !== null;
+        });
+
+        return array_map([$this, 'mapArrayToPostCategory'], $subCategories);
     }
 
     public function savePostCat(PostCategory $cat): int
@@ -155,21 +161,21 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return PostCategory::fromDTO($dto);
     }
 
-    private function mapBeanToPostCategory(OODBBean $bean): PostCategory
-    {
-        $translations = $this->loadTranslations((int) $bean->id);
+    // private function mapBeanToPostCategory(OODBBean $bean): PostCategory
+    // {
+    //     $translations = $this->loadTranslations((int) $bean->id);
 
-        $dto = new PostCategoryDTO([
-            'id' => (int) $bean->id,
-            'title' => (string) $bean->title,
-            'parent_id' => (int) $bean->parent_id,
-            'image' => (string) $bean->image,
-            'slug' => '', // можешь получить из translations при желании
-            'translations' => $translations,
-        ]);
+    //     $dto = new PostCategoryDTO([
+    //         'id' => (int) $bean->id,
+    //         'title' => (string) $bean->title,
+    //         'parent_id' => (int) $bean->parent_id,
+    //         'image' => (string) $bean->image,
+    //         'slug' => '', 
+    //         'translations' => $translations,
+    //     ]);
 
-        return PostCategory::fromDTO($dto);
-    }
+    //     return PostCategory::fromDTO($dto);
+    // }
 
     private function unitePostRawData(?int $categoryId = null): array
     {
