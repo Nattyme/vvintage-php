@@ -41,7 +41,6 @@ final class PostService
 
     public function getPost(int $id)
     {
-      $bean = $this->postRepository->findById($id);
-      return Post::fromBean($bean);
+      return $this->postRepository->getPostById($id);
     }
 }

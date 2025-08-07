@@ -42,6 +42,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             SELECT 
                 p.*,
                 pt.locale,
+                pt.content,
                 pt.title,
                 pt.description,
                 pt.meta_title,
@@ -154,6 +155,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     public function getPostById(int $id): ?Post
     {
         $rows = $this->unitePostRawData($id);
+       
         return $rows ? $this->fetchPostWithJoins($rows[0]) : null;
     }
 

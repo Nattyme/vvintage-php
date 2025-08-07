@@ -29,16 +29,14 @@ final class PostController extends BaseController
         $this->postService = new PostService( $this->currentLang );
     }
 
-    private function getPost(RouteData $routeData)
-    {
-      $id = (int) $routeData->uriGet; // получаем id товара из URL
-      return $this->postService->getPost($id);
-    }
 
     public function index(RouteData $routeData): void
     {   
+    
         $this->setRouteData($routeData); // <-- передаём routeData
-        $post = $this->getPost($routeData);
+
+        $id = (int) $routeData->uriGet; // получаем id плста из URL
+        $post = $this->postService->getPost($id);;
 
         if (!$post) {
             http_response_code(404);
@@ -49,7 +47,7 @@ final class PostController extends BaseController
         // Получаем похожие посты
         $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);;
         $pagination = pagination($postsPerPage, 'posts');
-        // $relatedPosts = $this->blogService->getAll($pagination);
+        $relatedPosts = $post;
         // $relatedPosts = $post->getRelated();
 
         // Название страницы
