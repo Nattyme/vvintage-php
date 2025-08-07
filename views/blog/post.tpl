@@ -31,8 +31,13 @@
                 </svg>
 
                 <div class="post-meta__item">
-                  <p class="post-meta__text">На чтение</p>
-                  <p class="post-meta__counter">1 мин.</p>
+                  <p class="post-meta__text">
+                    <?php echo h(__('blog.read.time', [], 'blog'));?>
+                  </p>
+                  <p class="post-meta__counter">
+                    1 
+                    <?php echo h(__('time.minute.short', [], 'utils'));?>
+                  </p>
                 </div>
               
               </li>
@@ -41,7 +46,9 @@
                   <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#eye';?>"></use>
                 </svg>
                 <div class="post-meta__item">
-                  <p class="post-meta__text">Просмотров</p>
+                  <p class="post-meta__text">
+                    <?php echo h(__('blog.views', [], 'blog'));?>
+                  </p>
                   <span class="post-meta__counter">
                     <?php echo $post->getViews();?>
                   </span>
@@ -53,7 +60,9 @@
                   <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#calendar';?>"></use>
                 </svg>
                 <div class="post-meta__item">
-                  <p class="post-meta__text">Опубликовано</p>
+                  <p class="post-meta__text">
+                     <?php echo h(__('blog.article.published', [], 'blog'));?>
+                  </p>
                   <time datetime="<?php echo $datetime;?>"><?php echo $rusDate;?></time>
                 </div>
                 <div class="post-meta__item" itemprop="author" itemscope itemtype="https://schema.org/Organization">

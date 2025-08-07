@@ -8,4 +8,7 @@ return [
   'blog.posts.other' => 'Другие статьи',
   'blog.backto.shop' => ' Перейти в Магазин',
   'blog.cta.contact.us' => 'Написать нам',
+  'blog.read.time' => 'На чтение',
+  'blog.views' => 'Просмотров',
+  'blog.article.published' => 'Опубликовано'
 ];

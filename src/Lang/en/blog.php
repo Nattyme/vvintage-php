@@ -8,4 +8,7 @@ return [
   'blog.posts.other' => 'Other articles',
   'blog.backto.shop' => 'Go to Shop',
   'blog.cta.contact.us' => 'Contact us',
+  'blog.read.time' => 'Reading time',
+  'blog.views' => 'Views',
+  'blog.article.published' => 'Published'
 ];

@@ -3,7 +3,10 @@
     <div class="sidebar__search">
       <!-- SEARCH FORM-->
       <form method="GET" action="" class="search" role="search">
-        <label for="search" class="visually-hidden">Найти...</label>
+        <label for="search" class="visually-hidden">
+          <?php echo h( __('widget.search.placholder', [], 'utils'));?>
+          ...
+        </label>
         <input 
           type="text" 
           name="query" 
@@ -22,7 +25,9 @@
     <div class="sidebar__widget sidebar__widget--categories">
       <div class="widget widget--categories">
         <div class="widget__title">
-          <h4 class="h4 text-bold" id="rubrics-title">РУБРИКИ</h4>
+          <h4 class="h4 text-bold" id="rubrics-title">
+            <?php echo h( __('blog.cats.sub', [], 'blog'));?>
+          </h4>
         </div>
 
         <ul class="widget__list widget__list--blog widget__list--categories" aria-labelledby="rubrics-title">
@@ -41,7 +46,9 @@
     <div class="sidebar__widget sidebar__widget--related">
       <div class="widget widget--related">
         <div class="widget__title">
-          <h4 class="h4 text-bold" id="other-articles-title">ДРУГИЕ СТАТЬИ</h4>
+          <h4 class="h4 text-bold" id="other-articles-title">
+             <?php echo h( __('blog.posts.other', [], 'blog'));?>
+          </h4>
         </div>
         <ul class="widget__list" aria-labelledby="other-articles-title">
           <?php foreach ($relatedPosts as $post) : ?>
