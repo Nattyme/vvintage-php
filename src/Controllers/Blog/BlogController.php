@@ -41,7 +41,7 @@ final class BlogController extends BaseController
 
       // Получаем посты и категории
       $posts = $this->postService->getAllPosts($pagination);
-      $categories = $this->postService->getAllMainCategories();
+      $mainCategories = $this->postService->getAllMainCategories();
       $subCategories = $this->postService->getAllSubCategories();
 
       $totalPosts = $this->postService->getTotalCount();
@@ -54,8 +54,10 @@ final class BlogController extends BaseController
       $relatedPosts = $posts;
 
       // Формируем единую модель для передачи в шаблон
-      $productViewModel = [
+      $postViewModel = [
           'posts' => $posts,
+          'mainCategories' => $mainCategories,
+          'subCategories' => $subCategories,
           'totalPosts' => $totalPosts,
           'shownPosts' => $shownPosts,
           'relatedPosts' => $relatedPosts
@@ -67,7 +69,7 @@ final class BlogController extends BaseController
           'pageTitle' => $pageTitle,
           'routeData' => $routeData,
           'breadcrumbs' => $breadcrumbs,
-          'productViewModel' => $productViewModel
+          'postViewModel' => $postViewModel
         
       ]);
     }

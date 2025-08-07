@@ -10,8 +10,8 @@
           <div class="posts__wrapper">
             <ul class="posts__list">
 
-              <?php if ( $productViewModel['posts'] && !empty($productViewModel['posts'])) : ?>
-                <?php foreach ($productViewModel['posts'] as $post) : ?>
+              <?php if ( $postViewModel['posts'] && !empty($postViewModel['posts'])) : ?>
+                <?php foreach ($postViewModel['posts'] as $post) : ?>
      
                   <li class="posts__item">
                     <a href="<?php echo HOST . "blog/{$post->getId()}"?>" class="posts__link">
