@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Post;
 
 use Vvintage\Repositories\Post\PostRepository;
+use Vvintage\Repositories\PostCategory\PostCategoryRepository;
 use Vvintage\Models\Post\Post;
 use Vvintage\DTO\Post\PostDTO;
 
@@ -11,11 +12,13 @@ final class PostService
 {
     private string $currentLang;
     private PostRepository $postRepository;
+    private PostCategoryRepository $postCategoryRepository;
 
     public function __construct(string $currentLang)
     {
         $this->currentLang = $currentLang;
-        $this->postRepository = new PostRepository( $this->currentLang );
+        $this->postRepository = new PostRepository ( $this->currentLang );
+        $this->postCategoryRepository = new PostCategoryRepository ( $this->currentLang );
     }
 
     public function getAllPosts(array $pagination): array
@@ -42,5 +45,15 @@ final class PostService
     public function getPost(int $id)
     {
       return $this->postRepository->getPostById($id);
+    }
+
+    public function getAllMainCategories(): array
+    { 
+      return $this->postCategoryRepository->getMainCats();
+    }
+
+    public function getAllSubCategories(): array
+    { 
+      return $this->postCategoryRepository->getSubCats();
     }
 }

@@ -33,16 +33,20 @@ final class BlogController extends BaseController
     public function index(RouteData $routeData): void
     {
       $this->setRouteData($routeData); // <-- передаём routeData
+
       $pageTitle = 'Блог';
       $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
 
       $pagination = pagination($postsPerPage, 'posts');
 
+      // Получаем посты и категории
       $posts = $this->postService->getAllPosts($pagination);
-
+      $categories = $this->postService->getAllMainCategories();
+      $subCategories = $this->postService->getAllSubCategories();
+      dd($subCategories);
       $totalPosts = $this->postService->getTotalCount();
-
       $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
+
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       // Вывод похожих постов

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Repositories;
+namespace Vvintage\Repositories\PostCategory;
 
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
@@ -24,12 +24,20 @@ use Vvintage\DTO\PostCategory\PostCategoryDTO;
 final class PostCategoryRepository extends AbstractRepository implements PostCategoryRepositoryInterface
 {
   // СОЗДАТЬ ТАБЛИЦУ ПЕРЕВОДО КАТЕГОРИЙ ПОСТОВ
-    // private const TABLE_POSTS_CATEGORIES = 'posts_categories';
-    private const TABLE_POSTS_CATEGORIES_TRANSLATION = 'categories_translation';
+    private const TABLE_CATEGORIES = 'posts_categories';
+    private const TABLE_CATEGORIES_TRANSLATION = 'posts_categories_translation';
+    private string $currentLang;
+    private const DEFAULT_LANG = 'ru';
+
+    public function __construct(string $currentLang = self::DEFAULT_LANG)
+    {
+        $this->currentLang = $currentLang;
+    }
+
 
     public function getPostCatById(int $id): ?PostCategory
     {
-        $bean = $this->findById(self::TABLE_POSTS_CATEGORIES, $id);
+        $bean = $this->findById(self::TABLE_CATEGORIES, $id);
 
         if (!$bean || !$bean->id) {
             return null;
@@ -40,34 +48,33 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
     public function getAllPostCats(): array
     {
-        $beans = $this->findAll(self::TABLE_POSTS_CATEGORIES);
+        $beans = $this->findAll(self::TABLE_CATEGORIES);
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
     public function getPostCatsByIds(array $ids): array
     {
-        $beans = $this->findByIds(self::TABLE_POSTS_CATEGORIES, $ids);
+        $beans = $this->findByIds(self::TABLE_CATEGORIES, $ids);
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
     public function getMainCats(): array
     {
-        return $this->findCatsByParentId();
+        return $this->findAll(self::TABLE_CATEGORIES, 'WHERE parent_id IS NULL', []);
     }
 
     public function getSubCats(): array
     {
-        $beans = $this->findAll(self::TABLE_POSTS_CATEGORIES, 'parent_id IS NOT NULL');
-
-        return array_map([$this, 'mapBeanToPostCategory'], $beans);
+      return $this->findAll(self::TABLE_CATEGORIES, 'WHERE parent_id IS NOT NULL', []);
     }
+
 
     public function getPostCatsByParentId(?int $id = null): array
     {
         if ($id === null) {
-            $beans = $this->findAll(self::TABLE_POSTS_CATEGORIES, 'parent_id IS NULL');
-        } else {
-            $beans = $this->findAll(self::TABLE_POSTS_CATEGORIES, 'parent_id = ?', [$id]);
+            $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id IS NULL');
+        } else { 
+            $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id = ?', [$id]);
         }
 
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
@@ -77,8 +84,8 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     public function savePostCat(Category $cat): int
     {
         $bean = $cat->getId() 
-        ? $this->loadBean(self::TABLE_POSTS_CATEGORIES, $cat->getId())
-        : $this->createBean(self::TABLE_POSTS_CATEGORIES);
+        ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId())
+        : $this->createBean(self::TABLE_CATEGORIES);
 
         $bean->title = $cat->getTitle(); // по умолчанию ru
         $bean->parent_id = $cat->getParentId();
@@ -111,7 +118,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     {
         $rows = R::getAll(
             'SELECT locale, title, description, meta_title, meta_description 
-             FROM ' . self::TABLE_POSTS_CATEGORIES_TRANSLATION . ' WHERE category_id = ?',
+             FROM ' . self::TABLE_CATEGORIES_TRANSLATION . ' WHERE category_id = ?',
             [$categoryId]
         );
 
@@ -128,11 +135,11 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return $translations;
     }
 
-    private function mapBeanToPostCategory(OODBBean $bean): Category
+    private function mapBeanToPostCategory(OODBBean $bean): PostCategory
     {
         $translations = $this->loadTranslations((int) $bean->id);
 
-        $dto = new CategoryDTO([
+        $dto = new PostCategoryDTO([
             'id' => (int) $bean->id,
             'title' => (string) $bean->title,
             'parent_id' => (int) $bean->parent_id,
@@ -142,6 +149,6 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
             'seo_description' => $bean->seo_description ?? '',
         ]);
 
-        return Category::fromDTO($dto);
+        return PostCategory::fromDTO($dto);
     }
 }
