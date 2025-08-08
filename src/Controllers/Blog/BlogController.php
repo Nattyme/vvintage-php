@@ -93,4 +93,17 @@ final class BlogController extends BaseController
         ]);
     }
 
+    // Route::get('/posts/category/{slug}', [PostController::class, 'filterByCategory']);
+
+    // public function filterByCategory($slug)
+    // {
+    //     $category = Category::where('slug', $slug)->firstOrFail();
+
+        
+    //     $posts = $category->posts;
+
+    //     return view('posts.index', compact('posts', 'category'));
+    // }
+
+
 }

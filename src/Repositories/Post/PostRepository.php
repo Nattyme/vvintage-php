@@ -147,9 +147,6 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             'translations' => $translations,
             'locale' => $this->currentLang ?? self::DEFAULT_LANG
         ]);
-if (empty($row['title'])) {
-    echo "⚠️ Пост с ID {$row['id']} не имеет перевода на текущем языке ({$this->currentLang})\n";
-}
 
         return Post::fromDTO($dto);
     }
@@ -178,9 +175,8 @@ if (empty($row['title'])) {
         $posts = [];
         foreach ($ids as $id) {
             $beans = $this->unitePostRawData($id);
-
             if ($beans) {
-                $posts = array_map([$this, 'fetchPostWithJoins'], $beans);;
+                $posts[] = $this->fetchPostWithJoins($beans[0]);
             }
         }
 
@@ -207,5 +203,27 @@ if (empty($row['title'])) {
     public function getAllPostsCount (?string $sql = null, array $params = []): int
     {
       return $this->countAll(self::TABLE, $sql, $params);
+    }
+
+    /* :::::::: Категории :::::::: */
+
+    // Получаем категорию поста
+    public function getCategory(Post $post): PostCategoryDTO 
+    {
+        $row = $this->loadBean(self::TABLE_CATEGORIES, $post->category_id);
+        return $this->createCategoryDTOFromArray($row);
+    }
+
+    public function findBySlug(string $slug): PostCategoryDTO
+    {
+        $row = $this->findOneBy(self::TABLE_CATEGORIES, 'slug = ?', [$slug]);
+        return $this->createCategoryDTOFromArray($row);
+    }
+
+
+    public function getAll(): array
+    {
+        $rows = $this->findAll(self::TABLE_CATEGORIES);
+        return array_map([ $this, 'createCategoryDTOFromArray'], $rows);
     }
 }
