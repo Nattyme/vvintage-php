@@ -8,14 +8,6 @@
   use Vvintage\Store\Cart\CartStoreInterface;
   use Vvintage\Store\Favorites\FavoritesStoreInterface;
 
-  /**  Сервисы */
-  use Vvintage\Services\Auth\SessionManager;
-  use Vvintage\Services\Messages\FlashMessage;
-  use Vvintage\Services\Page\PageService;
-  use Vvintage\Services\Validation\LoginValidator;
-  use Vvintage\Services\Validation\NewOrderValidator;
-
-
   /** Контроллеры */
   use Vvintage\Controllers\Home\HomeController;
   use Vvintage\Controllers\Auth\AuthController;
@@ -39,7 +31,12 @@
   use Vvintage\Services\Favorites\FavoritesService;
   use Vvintage\Services\Order\OrderService;
   use Vvintage\Services\Blog\BlogService;
+  use Vvintage\Services\Auth\SessionManager;
+  use Vvintage\Services\Page\PageService;
+  use Vvintage\Services\Validation\LoginValidator;
+  use Vvintage\Services\Validation\NewOrderValidator;
   use Vvintage\Services\Page\Breadcrumbs;
+  use Vvintage\Services\Messages\FlashMessage;
 
 
   /** Модели */
@@ -59,6 +56,7 @@
   use Vvintage\Repositories\Product\ProductRepository;
   use Vvintage\Repositories\Order\OrderRepository;
   use Vvintage\Repositories\Post\PostRepository;
+  use Vvintage\Repositories\PostCategory\PostCategoryRepository;
 
   /** Админ контроллеры */
   use Vvintage\Controllers\Admin\HomeAdminController;
@@ -67,6 +65,7 @@
   use Vvintage\Controllers\Admin\AdminCategoryController;
   use Vvintage\Controllers\Admin\AdminUsersController;
   use Vvintage\Controllers\Admin\AdminOrdersController;
+  use Vvintage\Controllers\Admin\AdminPostController;
 
 
   class Router {
@@ -425,12 +424,20 @@
     /**********************/
     private static function routeAdminPages(RouteData $routeData)
     {
+      $notes = new FlashMessage();
+      $breadcrumbs = new Breadcrumbs();
+
+      $postRepository = new  PostRepository();
+      $categoryRepository = new PostCategoryRepository(); 
+
+
       $homeAdminController = new HomeAdminController();
       $adminProductController = new AdminProductController();
       $adminBrandController = new AdminBrandController();
       $adminCategoryController = new AdminCategoryController();
       $adminUsersController = new AdminUsersController();
       $adminOrdersController = new AdminOrdersController();
+      $adminPostController = new AdminPostController($postRepository, $categoryRepository, $notes, $breadcrumbs);
 
       switch ($routeData->uriGet) {
          // ::::::::::::: SHOP :::::::::::::::::::
@@ -523,6 +530,24 @@
       case 'user-block':
         $adminUsersController->block($routeData);
         require ROOT . "admin/modules/users/block.php";
+        break;
+
+        // ::::::::::::: BLOG :::::::::::::::::::
+      case 'blog':
+        $adminPostController->all($routeData);
+        // require ROOT . "admin/modules/blog/all.php";
+        break;
+
+      case 'post-new':
+        require ROOT . "admin/modules/blog/new.php";
+        break;
+
+      case 'post-edit':
+        require ROOT . "admin/modules/blog/edit.php";
+        break;
+
+      case 'post-delete':
+        require ROOT . "admin/modules/blog/delete.php";
         break;
 
       // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
