@@ -35,8 +35,8 @@ class AdminPostController extends BaseAdminController
   public function all (RouteData $routeData)
   {
     $this->isAdmin();
-    dd('blog');
-    $this->renderAllProducts($routeData);
+
+    $this->renderAllPosts($routeData);
   }
 
   public function add (RouteData $routeData)
@@ -160,40 +160,29 @@ class AdminPostController extends BaseAdminController
   }
 
   
-  private function renderAllProducts(RouteData $routeData): void
+  private function renderAllPosts(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Все товары';
+    $pageTitle = 'Блог - все записи';
 
-    $productsPerPage = 9;
+    $postsPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($productsPerPage, 'products');
-    $products = $this->productRepository->getAllProducts($pagination);
-    $total = $this->productRepository->getAllProductsCount();
-
-    // Получаем изображения товаров
-    $imageService = new ProductImageService();
-
-    $imagesByProductId = [];
-
-    foreach ($products as $product) {
-        $imagesMainAndOthers = $imageService->splitImages($product->getImages());
-        $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
-    }
+    $pagination = pagination($postsPerPage, 'posts');
+    $posts = $this->postRepository->getAllPosts($pagination);
+    $total = $this->postRepository->getAllPostsCount();
 
     // Формируем единую модель для передачи в шаблон
-    $productViewModel = [
-        'products' => $products,
+    $postViewModel = [
+        'posts' => $posts,
         'total' => $total,
-        'imagesByProductId' => $imagesByProductId
     ];
         
 
-    $this->renderLayout('shop/all',  [
+    $this->renderLayout('blog/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'productViewModel' => $productViewModel,
+      'postViewModel' => $postViewModel,
       'pagination' => $pagination
     ]);
   }
