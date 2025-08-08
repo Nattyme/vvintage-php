@@ -432,7 +432,7 @@
 
       $postRepository = new  PostRepository();
       $categoryRepository = new PostCategoryRepository(); 
-      $messageRepository = new messageRepository(); 
+      $messageRepository = new MessageRepository(); 
 
 
       $homeAdminController = new HomeAdminController();
@@ -442,7 +442,7 @@
       $adminUsersController = new AdminUsersController();
       $adminOrdersController = new AdminOrdersController();
       $adminPostController = new AdminPostController($postRepository, $categoryRepository, $notes, $breadcrumbs);
-      $adminMessageController = new AdminMessageController($postRepository, $categoryRepository, $notes, $breadcrumbs);
+      $adminMessageController = new AdminMessageController($messageRepository, $notes);
 
       switch ($routeData->uriGet) {
          // ::::::::::::: SHOP :::::::::::::::::::
@@ -575,11 +575,14 @@
    // ::::::::::::: MESSAGES :::::::::::::::::::
 
       case 'messages':
-        require ROOT . "admin/modules/messages/all.php";
+        $adminMessageController->all($routeData);
+
+        // require ROOT . "admin/modules/messages/all.php";
         break;
 
       case 'message':
-        require ROOT . "admin/modules/messages/single.php";
+        // $adminMessageController->all($routeData);
+        // require ROOT . "admin/modules/messages/single.php";
         break;
 
       case 'message-delete':

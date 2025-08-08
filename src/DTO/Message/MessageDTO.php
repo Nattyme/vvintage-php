@@ -5,14 +5,14 @@ namespace Vvintage\DTO\Message;
 
 final class MessageDTO
 {
-    private int $id;
-    private string $email;
-    private ?string $name;
-    private ?string $message;
-    private ?string $phone;
-    private ?string $datetime;
-    private ?string $status;
-    private ?int $user_id;
+    public int $id;
+    public string $email;
+    public ?string $name;
+    public ?string $message;
+    public ?string $phone;
+    public ?string $datetime;
+    public ?string $status;
+    public ?int $user_id;
 
     public function __construct(array $data)
     {

@@ -27,43 +27,48 @@ final class MessageRepository extends AbstractRepository implements MessageRepos
 
         $dto = new MessageDTO([
             'id' => (int) $bean->id,
-            'title' => (string) $bean->title,
-            'image' => (string) $bean->image,
-            'translations' => $translations
+            'email' => (string) $bean->email,
+            'name' => (string) $bean->name,
+            'message' => (string) $bean->message,
+            'phone' => (string) $bean->phone,
+            'datetime' => (string) $bean->datetime,
+            'status' => (string) $bean->status,
+            'user_id' => (string) $bean->user_id
+          
         ]);
 
-        return Brand::fromDTO($dto);
+        return Message::fromDTO($dto);
     }
 
 
     // Находит бренд по id и возвращает объект
     public function getMessageById(int $id): ?Message
     {
-        $bean = $this->findById(self::TABLE_BRANDS, $id);
+        $bean = $this->findById(self::TABLE, $id);
 
         if (!$bean || !$bean->id) {
             return null;
         }
 
-        return $this->mapBeanToBrand($bean);
+        return $this->mapBeanToMessage($bean);
     }
 
     /** Находим все бренды и возвращаем в виде массива объектов */
     public function getAllMessages(): array
     {
-      $beans = $this->findAll( self::TABLE_BRANDS );
+      $beans = $this->findAll( self::TABLE );
 
       if (empty($beans)) {
             return [];
       }
 
-      return array_map([$this, 'mapBeanToBrand'], $beans);
+      return array_map([$this, 'mapBeanToMessage'], $beans);
     }
 
     
     public function getAllMessagesCount(?string $sql = null, array $params = []): int
     {
-      return $this->countAll(self::TABLE_BRANDS, $sql, $params);
+      return $this->countAll(self::TABLE, $sql, $params);
     }
 
 }

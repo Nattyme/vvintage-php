@@ -9,19 +9,22 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 
 /** Репозитории */
-use Vvintage\Repositories\Message\MesssageRepository;
+use Vvintage\Repositories\Message\MessageRepository;
 
 /** Сервисы */
+use Vvintage\Services\Messages\FlashMessage;
 // use Vvintage\Services\Admin\AdminStatsService;
 
 class AdminMessageController extends BaseAdminController 
 {
   private MessageRepository $messageRepository;
+  private FlashMessage $notes;
 
-  public function __construct(MessageRepository $messageRepository)
+  public function __construct(MessageRepository $messageRepository, FlashMessage $notes)
   {
     parent::__construct();
     $this->messageRepository = $messageRepository;
+    $this->notes = $notes;
   }
 
   public function all(RouteData $routeData)
@@ -56,104 +59,104 @@ class AdminMessageController extends BaseAdminController
     $messagePerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'messages');
+    $pagination = pagination($messagePerPage, 'messages');
     $messages = $this->messageRepository->getAllMessages($pagination);
     $total = $this->messageRepository->getAllMessagesCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout('messages/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brands' => $brands,
+      'messages' => $messages,
       'pagination' => $pagination
     ]);
 
   }
 
-  private function renderNew(RouteData $routeData): void
-  {
-    // Название страницы
-    $pageTitle = 'Бренды - новая запись';
+  // private function renderNew(RouteData $routeData): void
+  // {
+  //   // Название страницы
+  //   $pageTitle = 'Бренды - новая запись';
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+  //   // Устанавливаем пагинацию
+  //   $pagination = pagination($brandsPerPage, 'brands');
+  //   $brands = $this->brandRepository->getAllBrands($pagination);
+  //   $total = $this->brandRepository->getAllBrandsCount();
         
-    $this->renderLayout('brands/all',  [
-      'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
-    ]);
+  //   $this->renderLayout('brands/all',  [
+  //     'pageTitle' => $pageTitle,
+  //     'routeData' => $routeData,
+  //     'brands' => $brands,
+  //     'pagination' => $pagination
+  //   ]);
 
-  }
+  // }
 
-  private function renderEdit(RouteData $routeData): void
-  {
-    // Название страницы
-    $pageTitle = 'Бренды';
+  // private function renderEdit(RouteData $routeData): void
+  // {
+  //   // Название страницы
+  //   $pageTitle = 'Бренды';
 
-    $pageClass = 'admin-page';
+  //   $pageClass = 'admin-page';
 
-    // Задаем название страницы и класс
-    if( isset($_POST['submit'])) {
-      // Проверка токена
-      if (!check_csrf($_POST['csrf'] ?? '')) {
-        $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
-      }
+  //   // Задаем название страницы и класс
+  //   if( isset($_POST['submit'])) {
+  //     // Проверка токена
+  //     if (!check_csrf($_POST['csrf'] ?? '')) {
+  //       $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+  //     }
 
-      // Проверка на заполненность названия
-      if( trim($_POST['title']) == '' ) {
-        $_SESSION['errors'][] = ['title' => 'Введите название бренда'];
-      } 
+  //     // Проверка на заполненность названия
+  //     if( trim($_POST['title']) == '' ) {
+  //       $_SESSION['errors'][] = ['title' => 'Введите название бренда'];
+  //     } 
 
-      // Если нет ошибок
-      if ( empty($_SESSION['errors'])) {
-        $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
-        // $brand->title = $_POST['title'];
+  //     // Если нет ошибок
+  //     if ( empty($_SESSION['errors'])) {
+  //       $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
+  //       // $brand->title = $_POST['title'];
 
-        // R::store($brand);
+  //       // R::store($brand);
 
-        $_SESSION['success'][] = ['title' => 'Бренд успешно обновлен.'];
-      }
-    }
+  //       $_SESSION['success'][] = ['title' => 'Бренд успешно обновлен.'];
+  //     }
+  //   }
 
-    $currentLang = LanguageConfig::getCurrentLocale();
+  //   $currentLang = LanguageConfig::getCurrentLocale();
 
-    // Запрос постов в БД с сортировкой id по убыванию
-    $brand = $this->brandRepository->getBrandById( (int) $routeData->uriGetParam);
+  //   // Запрос постов в БД с сортировкой id по убыванию
+  //   $brand = $this->brandRepository->getBrandById( (int) $routeData->uriGetParam);
 
 
         
-    $this->renderLayout('brands/edit',  [
-      'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brand' => $brand,
-      'languages' => $this->languages,
-      'currentLang' => $currentLang
-    ]);
+  //   $this->renderLayout('brands/edit',  [
+  //     'pageTitle' => $pageTitle,
+  //     'routeData' => $routeData,
+  //     'brand' => $brand,
+  //     'languages' => $this->languages,
+  //     'currentLang' => $currentLang
+  //   ]);
 
-  }
+  // }
 
-  private function renderDelete(RouteData $routeData): void
-  {
-    // Название страницы
-    $pageTitle = 'Бренды';
+  // private function renderDelete(RouteData $routeData): void
+  // {
+  //   // Название страницы
+  //   $pageTitle = 'Бренды';
 
-    $brandsPerPage = 9;
+  //   $brandsPerPage = 9;
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+  //   // Устанавливаем пагинацию
+  //   $pagination = pagination($brandsPerPage, 'brands');
+  //   $brands = $this->brandRepository->getAllBrands($pagination);
+  //   $total = $this->brandRepository->getAllBrandsCount();
         
-    $this->renderLayout('brands/all',  [
-      'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
-    ]);
+  //   $this->renderLayout('brands/all',  [
+  //     'pageTitle' => $pageTitle,
+  //     'routeData' => $routeData,
+  //     'brands' => $brands,
+  //     'pagination' => $pagination
+  //   ]);
 
-  }
+  // }
 
 }

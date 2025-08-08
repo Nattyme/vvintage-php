@@ -62,26 +62,31 @@ final class Message
       return $this->id;
     }
 
-    public function getEmail(): int
+    public function getEmail(): string
     {
       return $this->email;
     }
 
-    public function getMessage(): int
+    public function getName(): string
+    {
+      return $this->name;
+    }
+
+    public function getMessage(): string
     {
       return $this->message;
     }
-    public function getPhone(): int
+    public function getPhone(): string
     {
       return $this->phone;
     }
 
-    public function getDatetime(): int
+    public function getDatetime(): Datetime
     {
       return $this->datetime;
     }
 
-    public function getStatus(): int
+    public function getStatus(): string
     {
       return $this->status;
     }
