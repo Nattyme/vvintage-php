@@ -98,11 +98,7 @@ final class Post
     // Получение названия в нужной локали, иначе fallback description
     public function getDesc(?string $locale = null): string
     {
-        $locale = $locale ?? $this->currentLang;
-
-        return $this->translations[$locale]['description']
-            ?? $this->translations['ru']['description']
-            ?? $this->description;
+        return $this->description;
     }
 
      // Получение названия в нужной локали, иначе fallback description
@@ -139,24 +135,15 @@ final class Post
     }
 
     /** SEO */
-    public function getMetaTitle(?string $locale = null): ?string
+    public function getMetaTitle(): ?string
     {
       return $this->meta_title;
-        // $locale = $locale ?? $this->currentLang;
-
-        // return $this->translations[$locale]['meta_title']
-        //     ?? $this->translations['ru']['meta_title']
-        //     ?? null;
     }
 
-    public function getMetaDescription(?string $locale = null): ?string
+    public function getMetaDescription(): ?string
     {
        return $this->meta_description;
-        // $locale = $locale ?? $this->currentLang;
-
-        // return $this->translations[$locale]['meta_description']
-        //     ?? $this->translations['ru']['meta_description']
-        //     ?? null;
+  
     }
 
     

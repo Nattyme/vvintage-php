@@ -12,7 +12,6 @@
 
               <?php if ( $postViewModel['posts'] && !empty($postViewModel['posts'])) : ?>
                 <?php foreach ($postViewModel['posts'] as $post) : ?>
-     
                   <li class="posts__item">
                     <a href="<?php echo HOST . "blog/{$post->getId()}"?>" class="posts__link">
                       <!-- CARD -->

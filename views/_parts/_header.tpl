@@ -58,8 +58,12 @@
         <!-- Навигация -->
         <?php if ($isBlogPage) : ?>
           <ul class="menu">
-            <li class="menu__item"><a href="<?php echo HOST . 'shop'; ?>">Перейти в Магазин</a></li>
-            <li class="menu__item"><a href="<?php echo HOST . 'contacts'; ?>">Написать нам</a></li>
+            <li class="menu__item"><a href="<?php echo HOST . 'shop'; ?>">
+                <?php echo h(__('blog.backto.shop', [], 'blog'));?>
+            </a></li>
+            <li class="menu__item"><a href="<?php echo HOST . 'contacts'; ?>">
+              <?php echo h(__('blog.cta.contact.us', [], 'blog'));?>
+            </a></li>
           </ul>
           <ul class="social-list">
             <svg class="icon icon--zen">

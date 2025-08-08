@@ -65,7 +65,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
         $bindings = [$locale, $locale];
 
         if ($postId !== null) {
-            $sql .= ' WHERE p.id = ? GROUP BY p.id LIMIT 1';
+            $sql .= ' WHERE p.id = ? LIMIT 1';
             $bindings[] = $postId;
             // ⬇Заворачиваем в массив
             $row = R::getRow($sql, $bindings);
@@ -147,6 +147,9 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             'translations' => $translations,
             'locale' => $this->currentLang ?? self::DEFAULT_LANG
         ]);
+if (empty($row['title'])) {
+    echo "⚠️ Пост с ID {$row['id']} не имеет перевода на текущем языке ({$this->currentLang})\n";
+}
 
         return Post::fromDTO($dto);
     }
