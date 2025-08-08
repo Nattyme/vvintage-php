@@ -132,6 +132,8 @@ final class ProfileController extends BaseController
     $userModel = null;
     $isLoggedUser = $this->sessionManager->isLoggedIn();
 
+    $this->setRouteData($routeData); // <-- передаём routeData
+
     if($isLoggedUser) {
       $userModel = $this->sessionManager->getLoggedInUser();
       $id = $userModel->getId();

@@ -3,7 +3,7 @@
     <li class="nav-list__item nav-list__item--header">
       <a 
         class="nav-list__link nav-list__link--header" 
-        href="<?php echo HOST . "blog/{$post->getId()}"?>"
+        href="<?php echo HOST . "blog/{}"?>"
       >
         <?php echo  h($category->getTitle()) ;?>
       </a>

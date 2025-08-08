@@ -5670,7 +5670,7 @@ main.product-page {
 }
 
 .header__lang {
-   width: 140px;
+   width: 170px;
 }
 
 .custom-select {
@@ -5684,7 +5684,7 @@ main.product-page {
 }
 
 .custom-select__list {
-  width: 140px;
+  width: 170px;
   z-index: 9;
   position: absolute;
   background-color: #fff;
@@ -5700,6 +5700,7 @@ main.product-page {
 }
 
 .custom-select__item {
+  transition: background-color, 0.2s, ease-in;
   cursor: pointer;
 }
 
@@ -5716,6 +5717,8 @@ main.product-page {
   width: 25px;
   height: auto;
 }
+
+
 
 /*Media*/
 @media (max-width: 1500px) {

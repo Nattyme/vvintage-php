@@ -46,7 +46,6 @@
       </thead>
       <tbody>
         <?php foreach ($orders as $order) : ?>
-          <?php dd($order);?>
           <?php include(ROOT . 'views/orders/parts/_order-in-list.tpl'); ?>
         <?php endforeach; ?> 
       </tbody>

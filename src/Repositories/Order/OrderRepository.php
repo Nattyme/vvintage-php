@@ -60,6 +60,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
     
     private function mapBeanToOrder(OODBBean $bean): Order
     {
+      // dd($bean);
         // $translations = $this->loadTranslations((int) $bean->id);
 
         // Получаем AddressDTO
@@ -67,7 +68,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
         // if (!empty($bean->address_id)) {
         //     $addressDTO = $this->addressRepository->getAddressDTOById((int)$bean->address_id);
         // }
-
+    
         $dto = OrderDTO::fromDatabase([
             'id' => (int) $bean->id,
             'name' => (string) $bean->name,
@@ -82,7 +83,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
             'price' => (int) $bean->price,
             'user_id' => (int) $bean->user_id
         ]);
-dd($dto);
+
         return Order::fromDTO($dto);
     }
 

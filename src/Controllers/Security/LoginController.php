@@ -42,8 +42,7 @@ final class LoginController
 
   public function index(RouteData $routeData): void
   {
-    $this->setRouteData($routeData); // <-- передаём routeData
-
+    
     if (!isset($_POST['login'])) {
       $this->renderForm($routeData);
       return;

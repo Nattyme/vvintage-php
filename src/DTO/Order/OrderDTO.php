@@ -22,53 +22,60 @@ final class OrderDTO
      // Фабричный метод от формы
     public static function fromForm(array $data, array $cart, int $totalPrice, int $userId): self
     {
-        return new self(
-            trim($data['name'] ?? ''),
-            trim($data['surname'] ?? ''),
-            filter_var(trim($data['email'] ?? ''), FILTER_VALIDATE_EMAIL) ?: '',
-            trim($data['phone'] ?? ''),
-            trim($data['address'] ?? ''),
-            new \DateTime(),
-            'new',
-            false,
-            $cart,
-            $totalPrice,
-            $userId
-        );
+        $dto = new self();
+        $dto->name = trim($data['name'] ?? '');
+        $dto->surname = trim($data['surname'] ?? '');
+        $dto->email = filter_var(trim($data['email'] ?? ''), FILTER_VALIDATE_EMAIL) ?: '';
+        $dto->phone = trim($data['phone'] ?? '');
+        $dto->address = trim($data['address'] ?? '');
+        $dto->datetime = new \DateTime();
+        $dto->status = 'new';
+        $dto->paid = false;
+        $dto->cart = $cart;
+        $dto->price = $totalPrice;
+        $dto->user_id = $userId;
+
+        return $dto;
     }
+
 
     // Фабричный метод только корзина
     public static function fromCartOnly(array $cart): self
     {
-        return new self(
-            '', '', '', '', '',
-            new \DateTime(),
-            'new',
-            false,
-            $cart,
-            0,
-            0
-        );
+        $dto = new self();
+        $dto->name = '';
+        $dto->surname = '';
+        $dto->email = '';
+        $dto->phone = '';
+        $dto->address = '';
+        $dto->datetime = new \DateTime();
+        $dto->status = 'new';
+        $dto->paid = false;
+        $dto->cart = $cart;
+        $dto->price = 0;
+        $dto->user_id = 0;
+
+        return $dto;
     }
 
     // Фабричный метод из базы
     public static function fromDatabase(array $row): self
     {
-        return new self(
-            $row['name'],
-            $row['surname'],
-            $row['email'],
-            $row['phone'],
-            $row['address'],
-            new \DateTime($row['datetime']),
-            $row['status'],
-            (bool) $row['paid'],
-            json_decode($row['cart'], true) ?? [],
-            (int) $row['price'],
-            (int) $row['user_id']
-        );
-    }
+        $dto = new self();
+        $dto->name = $row['name'];
+        $dto->surname = $row['surname'];
+        $dto->email = $row['email'];
+        $dto->phone = $row['phone'];
+        $dto->address = $row['address'];
+        $dto->datetime = new \DateTime($row['datetime']);
+        $dto->status = $row['status'];
+        $dto->paid = (bool) $row['paid'];
+        $dto->cart = json_decode($row['cart'], true) ?? [];
+        $dto->price = (int) $row['price'];
+        $dto->user_id = (int) $row['user_id'];
 
+        return $dto;
+    }
 
 
     public function isValid(): bool

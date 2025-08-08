@@ -1,38 +1,6 @@
 <div class="header__top-panel">
   <div class="container">
     <div class="header__row">
-      
-      <!-- Язык -->
-      <!-- <div class="header__lang">
-        <form id="language-selector" method="GET">
-          <select id="language-select" name="lang" class="admin-form__input">
-            <?php foreach ($languages as $code => $label): ?>
-              <option value="<?php echo h($code) ?>" <?php echo ($code === $currentLang) ? 'selected' : '';?>>
-                <?php echo h($label);?>
-              </option>
-            <?php endforeach; ?>
-          </select>
-        </form>
-        
-      </div> -->
-<!-- 
-      <div class="header__lang" data-custom-select>
-        <form id="language-selector" method="GET">
-          <ul class="custom-select__list" role="listbox">
-            <?php foreach ($languages as $code => $label) : ?>
-              <li class="custom-select__item" data-value="<?php echo h($code) ?>" role="option">
-                <span class="custom-select__icon">
-                  <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . h($code); ?>" alt="<?php echo h($code) ?>">
-                </span>
-                <div class="custom-select__text">
-                  <?php echo h($label) ?>
-                </div>
-              </li>
-            <?php endforeach; ?>
-          </ul>
-        </form>
-        
-      </div> -->
 
       <div class="header__lang custom-select" data-custom-select>
         <form id="language-selector" method="GET" data-custom-select-form>
@@ -50,6 +18,9 @@
                     echo "Выберите язык";
                   }
                 ?>
+                <svg class="icon icon--arrow-down">
+
+                </svg>
           </div>
               
           <ul class="custom-select__list" role="listbox" tabindex="-1">
@@ -110,7 +81,7 @@
       </div>
 
 
-      <!-- 👤 Вход/Выход -->
+      <!-- Вход/Выход -->
       <div class="header__auth">
         <?php if (!isset($_SESSION['login']) || $_SESSION['login'] !== 1) : ?>
           <a href="<?php echo HOST . 'login'; ?>">

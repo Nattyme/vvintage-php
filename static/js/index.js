@@ -15,12 +15,12 @@ import initNewProductForm from "./modules/shop/new/index.js";
 // import handlingNewProductForm from "./modules/handlingNewProductForm.js";
 // import addSubNavCats from "./modules/addSubNavCats.js";
 import addTab from "./modules/tab.js";
-import handleLangForm from "./modules/translation/handleLangForm.js";
+// import handleLangForm from "./modules/translation/handleLangForm.js";
 // import yMap from './modules/ymap.js';
 
 
 const initEverything = async () => {
-  console.log('index');
+  
   //  await initCatalogEvents(); // запускаем каталог в навигации
   // addSidebarControlPanel();
   // router();
@@ -32,7 +32,7 @@ const initEverything = async () => {
 
 
   // Слушаем клик по селекту перевода 
-  handleLangForm();
+  // handleLangForm();
   addBackTopBtn();
   addTab();
   getCookiesFormData();
