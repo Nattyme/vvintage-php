@@ -44,6 +44,7 @@
   use Vvintage\Models\User\GuestUser;
   use Vvintage\Models\Cart\Cart;
   use Vvintage\Models\Blog\Post;
+  use Vvintage\Models\Message\Message;
   use Vvintage\Models\Favorites\Favorites;
 
   /** Хранилища */
@@ -57,6 +58,7 @@
   use Vvintage\Repositories\Order\OrderRepository;
   use Vvintage\Repositories\Post\PostRepository;
   use Vvintage\Repositories\PostCategory\PostCategoryRepository;
+  use Vvintage\Repositories\Message\MessageRepository;
 
   /** Админ контроллеры */
   use Vvintage\Controllers\Admin\HomeAdminController;
@@ -66,6 +68,7 @@
   use Vvintage\Controllers\Admin\AdminUsersController;
   use Vvintage\Controllers\Admin\AdminOrdersController;
   use Vvintage\Controllers\Admin\AdminPostController;
+  use Vvintage\Controllers\Admin\AdminMessageController;
 
 
   class Router {
@@ -429,6 +432,7 @@
 
       $postRepository = new  PostRepository();
       $categoryRepository = new PostCategoryRepository(); 
+      $messageRepository = new messageRepository(); 
 
 
       $homeAdminController = new HomeAdminController();
@@ -438,6 +442,7 @@
       $adminUsersController = new AdminUsersController();
       $adminOrdersController = new AdminOrdersController();
       $adminPostController = new AdminPostController($postRepository, $categoryRepository, $notes, $breadcrumbs);
+      $adminMessageController = new AdminMessageController($postRepository, $categoryRepository, $notes, $breadcrumbs);
 
       switch ($routeData->uriGet) {
          // ::::::::::::: SHOP :::::::::::::::::::
@@ -569,17 +574,17 @@
 
    // ::::::::::::: MESSAGES :::::::::::::::::::
 
-  //  case 'messages':
-  //   require ROOT . "admin/modules/messages/all.php";
-  //   break;
+      case 'messages':
+        require ROOT . "admin/modules/messages/all.php";
+        break;
 
-  // case 'message':
-  //   require ROOT . "admin/modules/messages/single.php";
-  //   break;
+      case 'message':
+        require ROOT . "admin/modules/messages/single.php";
+        break;
 
-  // case 'message-delete':
-  //   require ROOT . "admin/modules/messages/delete.php";
-  //   break;
+      case 'message-delete':
+        require ROOT . "admin/modules/messages/delete.php";
+        break;
 
     
   // // ::::::::::::: PAGES :::::::::::::::::::

@@ -3,9 +3,6 @@
     <?php include ROOT . "views/components/errors.tpl"; ?>
     <?php include ROOT . "views/components/success.tpl"; ?>
 
-    <div class="admin-form__item d-flex justify-content-between mb-20">
-      <h2 class="heading">Пользователи</h2>
-    </div>
     <table class="table">
       <thead>
         <tr>
