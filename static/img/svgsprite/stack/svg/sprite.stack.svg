@@ -127,7 +127,7 @@
     <path d="m9.223 17.115-.001-.002c-2.595-2.353-4.668-4.235-6.104-5.99C1.693 9.38 1 7.885 1 6.323c0-2.527 1.972-4.5 4.5-4.5 1.437 0 2.832.674 3.739 1.739l.761.894.761-.894c.907-1.065 2.302-1.739 3.739-1.739 2.528 0 4.5 1.972 4.5 4.5 0 1.562-.693 3.057-2.118 4.8-1.436 1.757-3.509 3.641-6.103 6h-.002l-.774.7-.78-.71Z" fill="#fff" stroke="#0C0C0C" stroke-width="2"/>
 </svg><svg viewBox="0 -960 960 960" fill="#1f1f1f" id="files" xmlns="http://www.w3.org/2000/svg">
     <path d="M760-200H320q-33 0-56.5-23.5T240-280v-560q0-33 23.5-56.5T320-920h280l240 240v400q0 33-23.5 56.5T760-200ZM560-640v-200H320v560h440v-360H560ZM160-40q-33 0-56.5-23.5T80-120v-560h80v560h440v80H160Zm160-800v200-200 560-560Z"/>
-</svg><svg viewBox="0 0 640 480" id="flag-cn" xmlns="http://www.w3.org/2000/svg">
+</svg><svg viewBox="0 0 640 480" id="flag-zh" xmlns="http://www.w3.org/2000/svg">
     <defs>
         <path id="bia" fill="#ff0" d="M-.6.8 0-1 .6.8-1-.3h2z"/>
     </defs>
@@ -688,13 +688,13 @@
     <path fill="#fff" d="M0 0h640v480H0z"/>
     <path fill="#000091" d="M0 0h213.3v480H0z"/>
     <path fill="#e1000f" d="M426.7 0H640v480H426.7z"/>
-</svg><svg viewBox="0 0 640 480" id="flag-gb" xmlns="http://www.w3.org/2000/svg">
+</svg><svg viewBox="0 0 640 480" id="flag-en" xmlns="http://www.w3.org/2000/svg">
     <path fill="#012169" d="M0 0h640v480H0z"/>
     <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0z"/>
     <path fill="#C8102E" d="m424 281 216 159v40L369 281zm-184 20 6 35L54 480H0zM640 0v3L391 191l2-44L590 0zM0 0l239 176h-60L0 42z"/>
     <path fill="#FFF" d="M241 0v480h160V0zM0 160v160h640V160z"/>
     <path fill="#C8102E" d="M0 193v96h640v-96zM273 0v480h96V0z"/>
-</svg><svg viewBox="0 0 640 480" id="flag-jp" xmlns="http://www.w3.org/2000/svg">
+</svg><svg viewBox="0 0 640 480" id="flag-ja" xmlns="http://www.w3.org/2000/svg">
     <defs>
         <clipPath id="bna">
             <path fill-opacity=".7" d="M-88 32h640v480H-88z"/>
