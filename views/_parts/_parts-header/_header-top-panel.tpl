@@ -3,7 +3,7 @@
     <div class="header__row">
       
       <!-- Язык -->
-      <div class="header__lang">
+      <!-- <div class="header__lang">
         <form id="language-selector" method="GET">
           <select id="language-select" name="lang" class="admin-form__input">
             <?php foreach ($languages as $code => $label): ?>
@@ -14,7 +14,7 @@
           </select>
         </form>
         
-      </div>
+      </div> -->
 <!-- 
       <div class="header__lang" data-custom-select>
         <form id="language-selector" method="GET">
@@ -34,11 +34,11 @@
         
       </div> -->
 
-      <div class="header__lang" data-custom-select>
+      <div class="header__lang custom-select" data-custom-select>
         <form id="language-selector" method="GET" data-custom-select-form>
           <input type="hidden" name="lang" id="selected-language" value="<?php echo h($currentLang ?? '') ?>" data-custom-select-input>
           
-          <div class="custom-select__selected" tabindex="0" aria-haspopup="listbox" aria-expanded="false" data-custom-select-selected>
+          <div class="custom-select__selected custom-select__item" tabindex="0" aria-haspopup="listbox" aria-expanded="false" data-custom-select-selected>
                 <?php 
                   // Показываем текущий выбранный язык
                   if (isset($currentLang) && isset($languages[$currentLang])) {
@@ -53,15 +53,24 @@
           </div>
               
           <ul class="custom-select__list" role="listbox" tabindex="-1">
-            <?php foreach ($languages as $code => $label) : ?>
-              <li class="custom-select__item" role="option" data-value="<?php echo h($code) ?>">
-                <span class="custom-select__icon">
-                  <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . h($code); ?>" alt="<?php echo h($code) ?>">
-                </span>
-                <div class="custom-select__text">
-                  <?php echo h($label) ?>
-                </div>
-              </li>
+            <?php foreach ($languages as $code => $label) : 
+              $isActive = ($code === $currentLang) ? 'custom-select__item--active' : '';
+            ?>
+
+              <?php if (! $isActive ) : ?>
+                <li 
+                  class="custom-select__item <?=$isActive;?>" 
+                  role="option" 
+                  aria-selected="<?= $code === $currentLang ? 'true' : 'false' ?>"
+                  data-value="<?php echo h($code) ?>">
+                      <span class="custom-select__icon">
+                        <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . h($code); ?>" alt="<?php echo h($code) ?>">
+                      </span>
+                      <span class="custom-select__text">
+                        <?php echo h($label) ?>
+                      </span>
+                </li>
+              <?php endif;?>
             <?php endforeach; ?>
           </ul>
         </form>
@@ -73,7 +82,7 @@
           const input = form.querySelector('[data-custom-select-input]');
           const selectList = form.querySelector('ul');
         
-//  <div class="custom-select__selected" tabindex="0" aria-haspopup="listbox" aria-expanded="false" data-custom-select-selected>
+          //  <div class="custom-select__selected" tabindex="0" aria-haspopup="listbox" aria-expanded="false" data-custom-select-selected>
           selectList.setAttribute('hidden', true);
 
           selected.addEventListener('click', (e) => {
