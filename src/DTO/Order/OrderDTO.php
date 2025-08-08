@@ -5,6 +5,7 @@ namespace Vvintage\DTO\Order;
 
 final class OrderDTO
 {
+    public int $id;
     public string $name;
     public string $surname;
     public string $email;
@@ -62,6 +63,7 @@ final class OrderDTO
     public static function fromDatabase(array $row): self
     {
         $dto = new self();
+        $dto->id = $row['id'];
         $dto->name = $row['name'];
         $dto->surname = $row['surname'];
         $dto->email = $row['email'];

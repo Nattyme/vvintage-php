@@ -66,7 +66,6 @@ class AdminOrdersController extends BaseAdminController
     $pagination = pagination($ordersPerPage, self::TABLE_ORDERS);
 
     $orders = $this->orderRepository->getAllOrders($pagination);
-   
     $total = $this->orderRepository->getAllOrdersCount();
         
     $this->renderLayout('orders/all',  [

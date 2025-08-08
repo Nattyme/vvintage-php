@@ -3,7 +3,7 @@
     <?php echo h($order->getId());?>
   </td>
   <td>
-    <?php if ($order->getDatetime()) { echo rus_date('j F Y G:i', h($order->getDatetime())); } ?>
+    <?php /* if ($order->getDatetime()) { echo rus_date('j F Y G:i', h($order->getDatetime())); } */?>
   </td>
   <td>
     <a class="link-to-page" href="<?php echo HOST . 'admin/order/' . u($order->getId());?>">

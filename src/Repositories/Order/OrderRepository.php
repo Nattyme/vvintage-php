@@ -60,7 +60,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
     
     private function mapBeanToOrder(OODBBean $bean): Order
     {
-      // dd($bean);
+    
         // $translations = $this->loadTranslations((int) $bean->id);
 
         // Получаем AddressDTO
