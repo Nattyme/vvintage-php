@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Security;
 
 use Vvintage\Services\Security\PasswordResetService;
-use Vvintage\Repositories\UserRepository;
+use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Validation\PasswordResetValidator;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Routing\RouteData;
