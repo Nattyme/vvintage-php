@@ -34,7 +34,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return $this->mapBeanToPostCategory($bean);
     }
 
-    public function getAllPostCats(): array
+    public function getAllCategories(): array
     {
         $beans = $this->findAll(self::TABLE);
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
@@ -161,21 +161,21 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return PostCategory::fromDTO($dto);
     }
 
-    // private function mapBeanToPostCategory(OODBBean $bean): PostCategory
-    // {
-    //     $translations = $this->loadTranslations((int) $bean->id);
+    private function mapBeanToPostCategory(OODBBean $bean): PostCategory
+    {
+        $translations = $this->loadTranslations((int) $bean->id);
 
-    //     $dto = new PostCategoryDTO([
-    //         'id' => (int) $bean->id,
-    //         'title' => (string) $bean->title,
-    //         'parent_id' => (int) $bean->parent_id,
-    //         'image' => (string) $bean->image,
-    //         'slug' => '', 
-    //         'translations' => $translations,
-    //     ]);
+        $dto = new PostCategoryDTO([
+            'id' => (int) $bean->id,
+            'title' => (string) $bean->title,
+            'parent_id' => (int) $bean->parent_id,
+            'image' => (string) $bean->image,
+            'slug' => '', 
+            'translations' => $translations,
+        ]);
 
-    //     return PostCategory::fromDTO($dto);
-    // }
+        return PostCategory::fromDTO($dto);
+    }
 
     private function unitePostRawData(?int $categoryId = null): array
     {
@@ -204,4 +204,11 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
             return R::getAll($sql, $bindings);
         }
     }
+
+    public function getAllCategoriesCount (?string $sql = null, array $params = []): int
+    {
+      return $this->countAll(self::TABLE, $sql, $params);
+    }
+
+    
 }

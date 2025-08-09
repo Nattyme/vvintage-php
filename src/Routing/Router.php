@@ -69,6 +69,7 @@
   use Vvintage\Controllers\Admin\AdminOrdersController;
   use Vvintage\Controllers\Admin\AdminPostController;
   use Vvintage\Controllers\Admin\AdminMessageController;
+  use Vvintage\Controllers\Admin\AdminPostCatController;
 
 
   class Router {
@@ -431,7 +432,7 @@
       $breadcrumbs = new Breadcrumbs();
 
       $postRepository = new  PostRepository();
-      $categoryRepository = new PostCategoryRepository(); 
+      $postCategoryRepository = new PostCategoryRepository(); 
       $messageRepository = new MessageRepository(); 
 
 
@@ -441,8 +442,9 @@
       $adminCategoryController = new AdminCategoryController();
       $adminUsersController = new AdminUsersController();
       $adminOrdersController = new AdminOrdersController();
-      $adminPostController = new AdminPostController($postRepository, $categoryRepository, $notes, $breadcrumbs);
+      $adminPostController = new AdminPostController($postRepository, $postCategoryRepository, $notes, $breadcrumbs);
       $adminMessageController = new AdminMessageController($messageRepository, $notes);
+      $adminPostCatController = new AdminPostCatController($postCategoryRepository, $notes);
 
       switch ($routeData->uriGet) {
          // ::::::::::::: SHOP :::::::::::::::::::
@@ -520,8 +522,6 @@
         break;
 
 
-
-
       // ::::::::::::: USERS :::::::::::::::::::
       case 'users':
         $adminUsersController->all($routeData);
@@ -557,6 +557,7 @@
 
       // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
       case 'category-blog':
+        $adminPostCatController->all($routeData);
         // require ROOT . "admin/modules/categories-blog/all.php";
         break;
 

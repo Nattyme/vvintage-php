@@ -8,7 +8,7 @@ use Vvintage\Models\PostCategory\PostCategory;
 interface PostCategoryRepositoryInterface
  {    
     public function getPostCatById(int $id): ?PostCategory;
-    public function getAllPostCats(): array;
+    public function getAllCategories(): array; 
     public function getPostCatsByIds(array $ids): array;
     public function getMainCats(): array;
     public function getSubCats(): array;

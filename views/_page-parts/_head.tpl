@@ -40,6 +40,9 @@
   <meta name="twitter:description" content="<?php echo h($pageDescription ?? ''); ?>">
   <meta name="twitter:image" content="<?php echo h($ogImage ?? HOST . 'static/img/default-og.png'); ?>">
   -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+	<script src="<?php echo HOST . 'static/js/index.js';?>" type="module"></script>
+
 </head>
 
 <?php if (isset($pageClass) && $pageClass === 'authorization-page'): ?> 
