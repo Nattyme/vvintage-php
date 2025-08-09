@@ -26,7 +26,7 @@ final class BlogController extends BaseController
         parent::__construct(); // Важно!
         $this->notes = $notes;
         $this->breadcrumbsService = $breadcrumbs;
-        $this->postService = new PostService( $this->currentLang );
+        $this->postService = new PostService( $this->languages, $this->currentLang );
     }
 
     
@@ -35,30 +35,23 @@ final class BlogController extends BaseController
       $this->setRouteData($routeData); // <-- передаём routeData
 
       $pageTitle = 'Блог';
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
       $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
-
       $pagination = pagination($postsPerPage, 'posts');
 
+
       // Получаем посты и категории
-      $posts = $this->postService->getAllPosts($pagination);
-      $mainCategories = $this->postService->getAllMainCategories();
-      $subCategories = $this->postService->getAllSubCategories();
+      $blogData = $this->postService->getBlogData( $pagination);
+      $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($blogData['posts']);
+      $relatedPosts = $blogData['posts'];
 
-      $totalPosts = $this->postService->getTotalCount();
-      $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
-
-      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
-
-      // Вывод похожих постов
-      // $relatedPosts = get_related_posts($post->getTitle());
-      $relatedPosts = $posts;
 
       // Формируем единую модель для передачи в шаблон
       $postViewModel = [
-          'posts' => $posts,
-          'mainCategories' => $mainCategories,
-          'subCategories' => $subCategories,
-          'totalPosts' => $totalPosts,
+          'posts' =>  $blogData['posts'],
+          'mainCategories' => $blogData['mainCategories'],
+          'subCategories' => $blogData['subCategories'],
+          'totalPosts' =>  $blogData['totalPosts'],
           'shownPosts' => $shownPosts,
           'relatedPosts' => $relatedPosts
       ];
@@ -73,37 +66,4 @@ final class BlogController extends BaseController
         
       ]);
     }
-
-
-    // метод получает $_POST, создаёт DTO, передаёт в сервис
-    public function add(RouteData $routeData): void
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $dto = new PostDTO($_POST);
-            $this->blogService->add($dto);
-            $this->notes->success('Пост добавлен');
-            redirect('/admin/blog'); // или куда нужно
-        }
-
-        $pageTitle = 'Добавить пост';
-
-        $this->renderLayout('blog/add', [
-            'pageTitle' => $pageTitle,
-            'routeData' => $routeData,
-        ]);
-    }
-
-    // Route::get('/posts/category/{slug}', [PostController::class, 'filterByCategory']);
-
-    // public function filterByCategory($slug)
-    // {
-    //     $category = Category::where('slug', $slug)->firstOrFail();
-
-        
-    //     $posts = $category->posts;
-
-    //     return view('posts.index', compact('posts', 'category'));
-    // }
-
-
 }

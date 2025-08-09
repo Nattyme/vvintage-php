@@ -26,7 +26,7 @@ final class PostController extends BaseController
         parent::__construct(); // Важно!
         $this->notes = $notes;
         $this->breadcrumbsService = $breadcrumbs;
-        $this->postService = new PostService( $this->currentLang );
+        $this->postService = new PostService( $this->languages, $this->currentLang);
     }
 
 

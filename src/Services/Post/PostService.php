@@ -63,4 +63,19 @@ final class PostService
     {
        return $this->postRepository->getPostsByIds([3, 2 , 1]);
     }
+
+    public function getBlogData ( array $pagination): array
+    {
+      $posts = $this->getAllPosts($pagination);
+      $mainCategories = $this->getAllMainCategories();
+      $subCategories = $this->getAllSubCategories();
+      $totalPosts = $this->getTotalCount();
+
+      return [
+        'posts' => $posts,
+        'mainCategories' => $mainCategories,
+        'subCategories' => $subCategories,
+        'totalPosts' => $totalPosts
+      ];
+    }
 }
