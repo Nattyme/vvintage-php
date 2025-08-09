@@ -18,16 +18,17 @@ use Vvintage\Config\LanguageConfig;
 
 class AdminPostCatController extends BaseAdminController 
 {
+  private const TABLE = 'post_categories';
   private PostCategoryRepository $categoryRepository;
-  protected FlashMessage $notes;
-  protected array $languages;
+  private FlashMessage $notes;
+  
 
   public function __construct(PostCategoryRepository $categoryRepository, FlashMessage $notes)
   {
     parent::__construct();
-    $this->languages = LanguageConfig::getAvailableLanguages();
     $this->categoryRepository = $categoryRepository;
     $this->notes = $notes;
+
   }
 
   public function all(RouteData $routeData)
@@ -66,7 +67,7 @@ class AdminPostCatController extends BaseAdminController
     $categoryPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($categoryPerPage, 'post_categories');
+    $pagination = pagination($categoryPerPage, self::TABLE);
     $cats = $this->categoryRepository->getAllCategories($pagination);
     $mainCats = $this->categoryRepository->getMainCats();
     $total = $this->categoryRepository->getAllCategoriesCount();
@@ -86,18 +87,13 @@ class AdminPostCatController extends BaseAdminController
   private function renderNew(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды - новая запись';
+    $pageTitle = 'Категории блога - новая';
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout('post-categories/new',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
+      'currentLang' => $this->currentLang,
     ]);
 
   }
@@ -105,7 +101,7 @@ class AdminPostCatController extends BaseAdminController
   private function renderEdit(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Редактирование категории';
 
     $pageClass = 'admin-page';
 
@@ -123,7 +119,7 @@ class AdminPostCatController extends BaseAdminController
 
       // Если нет ошибок
       if ( empty($_SESSION['errors'])) {
-        $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
+        $categories = $this->categoryRepository->getBrandById((int) $routeData->uriGetParam);
         // $brand->title = $_POST['title'];
 
         // R::store($brand);
@@ -132,17 +128,16 @@ class AdminPostCatController extends BaseAdminController
       }
     }
 
-    $currentLang = LanguageConfig::getCurrentLocale();
 
     // Запрос постов в БД с сортировкой id по убыванию
-    $brand = $this->brandRepository->getBrandById( (int) $routeData->uriGetParam);
+    $categories = $this->categoryRepository->getPostCatById( (int) $routeData->uriGetParam);
 
 
         
-    $this->renderLayout('brands/edit',  [
+    $this->renderLayout('post-categories/edit',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brand' => $brand,
+      'categories' => $categories,
       'languages' => $this->languages,
       'currentLang' => $currentLang
     ]);
@@ -152,19 +147,19 @@ class AdminPostCatController extends BaseAdminController
   private function renderDelete(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Удалить категорию';
 
-    $brandsPerPage = 9;
+    $categoriesPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+    $pagination = pagination($categoriesPerPage, self::TABLE);
+    $categories = $this->categoryRepository->getAllCategories($pagination);
+    $total = $this->categoryRepository->getAllBrandsCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout('post-categories/delete',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brands' => $brands,
+      'categories' => $categories,
       'pagination' => $pagination
     ]);
 

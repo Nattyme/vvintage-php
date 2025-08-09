@@ -14,6 +14,7 @@ class ProductImageService
      */
     public function splitImages(array $images): array
     {
+ 
         $mainImage = null;
         $otherImages = [];
 

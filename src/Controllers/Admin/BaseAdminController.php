@@ -15,11 +15,13 @@ abstract class BaseAdminController
 {
   protected array $settings;
   protected array $languages;
+  protected string $currentLang;
 
   public function __construct()
   {
       $this->settings = Settings::all(); // Получаем 1 раз массив всех настроек 
       $this->languages = LanguageConfig::getAvailableLanguages();
+      $this->currentLang = LanguageConfig::getCurrentLocale();
   }
 
   protected function isAdmin(): bool

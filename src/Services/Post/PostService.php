@@ -16,9 +16,9 @@ final class PostService
 
     public function __construct(string $currentLang)
     {
-        $this->currentLang = $currentLang;
-        $this->postRepository = new PostRepository ( $this->currentLang );
-        $this->postCategoryRepository = new PostCategoryRepository ( $this->currentLang );
+      $this->currentLang = $currentLang;
+      $this->postRepository = new PostRepository ( $this->currentLang );
+      $this->postCategoryRepository = new PostCategoryRepository ( $this->currentLang );
     }
 
     public function getAllPosts(array $pagination): array

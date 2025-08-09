@@ -12,6 +12,7 @@ import initDragDropController from "./modules/drag-and-drop/index.js";
 import initCategoriesController from "./modules/categories/index.js";
 import initBrandsController from "./modules/brands/index.js";
 import initNewProductForm from "./modules/shop/new/index.js";
+import addCustomSelect from "./modules/custom-select/cuinstom-select.js";
 // import handlingNewProductForm from "./modules/handlingNewProductForm.js";
 // import addSubNavCats from "./modules/addSubNavCats.js";
 import addTab from "./modules/tab.js";
@@ -34,6 +35,7 @@ const initEverything = async () => {
   // Слушаем клик по селекту перевода 
   // handleLangForm();
   addBackTopBtn();
+  addCustomSelect();
   addTab();
   getCookiesFormData();
   addAccordion("many", "#sidebar");

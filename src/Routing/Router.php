@@ -3,6 +3,9 @@
 
   use Vvintage\Routing\RouteData;
 
+  // Пеервод на другие языки
+  use Vvintage\Config\LanguageConfig;
+
   /** Контракты */
   use Vvintage\Contracts\User\UserInterface;
   use Vvintage\Store\Cart\CartStoreInterface;
@@ -32,6 +35,7 @@
   use Vvintage\Services\Order\OrderService;
   use Vvintage\Services\Blog\BlogService;
   use Vvintage\Services\Auth\SessionManager;
+  use Vvintage\Services\Product\ProductService;
   use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Validation\LoginValidator;
   use Vvintage\Services\Validation\NewOrderValidator;
@@ -218,9 +222,13 @@
 
     // ::::::::::::: SHOP :::::::::::::::::::
     private static function routeShop(RouteData $routeData) {
+      $languages = LanguageConfig::getAvailableLanguages();
+      $currentLang = LanguageConfig::getCurrentLocale();
       $breadcrumbs = new Breadcrumbs();
-      $catalogController  = new CatalogController( $breadcrumbs );
-      $productController = new ProductController( $breadcrumbs );
+
+      $productService = new ProductService( $languages, $currentLang);
+      $productController = new ProductController(  $productService, $breadcrumbs );
+      $catalogController  = new CatalogController(  $productService, $breadcrumbs );
 
       if ( isset($routeData->uriGet) && $routeData->uriGet === 'cat' && !empty($routeData->uriGetParam) ) {
         require ROOT . 'modules/shop/categories.php';
@@ -562,14 +570,17 @@
         break;
 
       case 'category-blog-new':
+        $adminPostCatController->new($routeData);
         // require ROOT . "admin/modules/categories-blog/new.php";
         break;
 
       case 'category-blog-edit':
+        $adminPostCatController->edit($routeData);
         // require ROOT . "admin/modules/categories-blog/edit.php";
         break;
 
       case 'category-blog-delete':
+         $adminPostCatController->delete($routeData);
         // require ROOT . "admin/modules/categories-blog/delete.php";
         break;
 

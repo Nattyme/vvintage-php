@@ -13,7 +13,7 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Repositories\Product\ProductRepository;
 
 /** Модели */
-use Vvintage\Services\Product\ProductCatalogService;
+use Vvintage\Services\Product\ProductService;
 
 /** Сервисы */
 use Vvintage\Services\Product\ProductImageService;
@@ -25,12 +25,14 @@ require_once ROOT . "./libs/functions.php";
 
 final class CatalogController extends BaseController
 {
+    private ProductService $productService;
     private Breadcrumbs $breadcrumbsService;
 
-    public function __construct(Breadcrumbs $breadcrumbs)
+    public function __construct(ProductService $productService, Breadcrumbs $breadcrumbs)
     {
       parent::__construct(); // Важно!
-      $this->breadcrumbsService=$breadcrumbs;
+      $this->productService = $productService;
+      $this->breadcrumbsService = $breadcrumbs;
     }
 
     public function index(RouteData $routeData): void
@@ -45,26 +47,12 @@ final class CatalogController extends BaseController
       // Получаем параметры пагинации
       $pagination = pagination($productsPerPage, 'products');
 
-      $productRepository = new ProductRepository();
-      $catalogService = new ProductCatalogService( $productRepository );
-
       // Получаем продукты с учётом пагинации
-      $products =  $catalogService->getAll($pagination);
-      // Считаем, сколько всего товаров в базе (для отображения "Показано N из M")
-      $total = $productRepository->getAllProductsCount();
+      $products =  $this->productService->getAll($pagination);
+      $total = $this->productService->countProducts();
+      $imagesByProductId = $this->productService->getProductsImages($products);
 
-      $imageService = new ProductImageService();
-      $imagesByProductId = [];
-
-      foreach ($products as $product) {
-          $imagesMainAndOthers = $imageService->splitImages($product->getImages());
-          $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
-      }
-
-
-      
       // Это кол-во товаров, показанных на этой странице
-      // $shownProducts = $totalProducts - count($products);
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
 
       // Хлебные крошки

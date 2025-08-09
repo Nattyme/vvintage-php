@@ -25,8 +25,8 @@ abstract class BaseController
 
   public function __construct()
   {
-      $this->translator = setTranslator(); // берём уже установленный переводчик
       $this->settings = Settings::all(); 
+      $this->translator = setTranslator(); // берём уже установленный переводчик
       $this->languages = LanguageConfig::getAvailableLanguages();
       $this->currentLang = LanguageConfig::getCurrentLocale();
   }

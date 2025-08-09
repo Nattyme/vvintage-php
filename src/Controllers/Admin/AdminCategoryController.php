@@ -26,6 +26,7 @@ class AdminCategoryController extends BaseAdminController
     parent::__construct();
     $this->languages = LanguageConfig::getAvailableLanguages();
     $this->categoryRepository = new CategoryRepository();
+    $this->categoryRepository = new CategoryRepository();
   }
 
   public function all(RouteData $routeData)
@@ -130,8 +131,6 @@ class AdminCategoryController extends BaseAdminController
       }
     }
 
-    $currentLang = LanguageConfig::getCurrentLocale();
-
     // Запрос постов в БД с сортировкой id по убыванию
     $brand = $this->brandRepository->getBrandById( (int) $routeData->uriGetParam);
 
@@ -142,7 +141,7 @@ class AdminCategoryController extends BaseAdminController
       'routeData' => $routeData,
       'brand' => $brand,
       'languages' => $this->languages,
-      'currentLang' => $currentLang
+      'currentLang' => $this->currentLang
     ]);
 
   }

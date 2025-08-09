@@ -22,6 +22,12 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 {
     private const TABLE_CATEGORIES = 'categories';
     private const TABLE_CATEGORIES_TRANSLATION = 'categories_translation';
+    private string $currentLang;
+
+    public function __construct(string $currentLang)
+    {
+       $this->currentLang = $currentLang;
+    }
 
     public function getCategoryById(int $id): ?Category
     {
