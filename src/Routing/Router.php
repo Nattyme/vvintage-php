@@ -41,6 +41,7 @@
   use Vvintage\Services\Validation\NewOrderValidator;
   use Vvintage\Services\Page\Breadcrumbs;
   use Vvintage\Services\Messages\FlashMessage;
+  use Vvintage\Services\Seo\SeoService;
 
 
   /** Модели */
@@ -153,10 +154,6 @@
     /*****************************
               // РОУТЕР 
     *****************************/
-
-
-
-
     private static function routeAuth(RouteData $routeData) {
       $userRepository = new UserRepository();
       $setNewPassService = new PasswordSetNewService($userRepository);
@@ -226,9 +223,11 @@
       $currentLang = LanguageConfig::getCurrentLocale();
       $breadcrumbs = new Breadcrumbs();
 
+      // Инициализируем SEO-сервис
+      $seoService = new SeoService();
       $productService = new ProductService( $languages, $currentLang);
-      $productController = new ProductController(  $productService, $breadcrumbs );
-      $catalogController  = new CatalogController(  $productService, $breadcrumbs );
+      $productController = new ProductController(  $productService, $seoService, $breadcrumbs );
+      $catalogController  = new CatalogController(  $productService, $seoService, $breadcrumbs );
 
       if ( isset($routeData->uriGet) && $routeData->uriGet === 'cat' && !empty($routeData->uriGetParam) ) {
         require ROOT . 'modules/shop/categories.php';

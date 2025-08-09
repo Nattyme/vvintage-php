@@ -17,6 +17,7 @@ use Vvintage\Services\Product\ProductService;
 
 /** Сервисы */
 use Vvintage\Services\Product\ProductImageService;
+use Vvintage\Services\Seo\SeoService;
 use Vvintage\Services\Page\Breadcrumbs;
 
 require_once ROOT . "./libs/functions.php";
@@ -26,12 +27,14 @@ require_once ROOT . "./libs/functions.php";
 final class CatalogController extends BaseController
 {
     private ProductService $productService;
+    private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
 
-    public function __construct(ProductService $productService, Breadcrumbs $breadcrumbs)
+    public function __construct(ProductService $productService, SeoService $seoService, Breadcrumbs $breadcrumbs)
     {
       parent::__construct(); // Важно!
       $this->productService = $productService;
+      $this->seoService = $seoService;
       $this->breadcrumbsService = $breadcrumbs;
     }
 
@@ -51,6 +54,12 @@ final class CatalogController extends BaseController
       $products =  $this->productService->getAll($pagination);
       $total = $this->productService->countProducts();
       $imagesByProductId = $this->productService->getProductsImages($products);
+
+      $seo = [];
+      // получаем SEO DTO
+      foreach($products as $product) {
+        $seo[$product->getId()] = $this->seoService->getSeoForPage('product', $product);
+      }
 
       // Это кол-во товаров, показанных на этой странице
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);

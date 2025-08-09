@@ -19,7 +19,6 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Models\Product\Product;
 
 /** Сервисы */
-use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Seo\SeoService;
@@ -29,12 +28,14 @@ use Vvintage\Services\Seo\SeoService;
 final class ProductController extends BaseController
 {
     private ProductService $productService;
+    private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
 
-    public function __construct(ProductService  $productService, Breadcrumbs $breadcrumbs)
+    public function __construct(ProductService  $productService, SeoService $seoService, Breadcrumbs $breadcrumbs)
     {
         parent::__construct(); // Важно!
         $this->productService = $productService;
+        $this->seoService = $seoService;
         $this->breadcrumbsService = $breadcrumbs;
     }
 
@@ -52,31 +53,21 @@ final class ProductController extends BaseController
             return;
         }
 
-        // Инициализируем SEO-сервис и получаем SEO DTO
-        $seoService = new SeoService();
-        $seo = $seoService->getSeoForPage('product', $product);
-
-        // Делим массив изображений на два массива - главное и другие
-        $imagesMainAndOthers = $this->productService->getProductImages($product);
-        $totalImages = $this->productService->countImages( $product->getImages() );
-    
-        // Получаем похожие продукты
+        $seo = $this->seoService->getSeoForPage('product', $product);
+        $productImagesData = $this->productService->getProductImagesData($product->getImages());
         $related = $product->getRelated();
-        $gallery = $this->productService->splitVisibleHidden($imagesMainAndOthers['others']);
 
         // Формируем единую модель для передачи в шаблон
         $productViewModel = [
             'product' => $product,
-            'imagesTotal' =>  $totalImages,
-            'main' => $imagesMainAndOthers['main'],
-            'gallery' => $gallery, 
+            'imagesTotal' =>  $productImagesData['total'],
+            'main' => $productImagesData['main'],
+            'gallery' => $productImagesData['gallery'], 
             'related' => $related,
         ];
 
-        // Название страницы
+        // Название страницы и хлебные крошки
         $pageTitle = $product->getTitle();
-
-        // Хлебные крошки
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
         // Подключение шаблонов страницы
