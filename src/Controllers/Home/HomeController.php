@@ -57,18 +57,11 @@ final class HomeController extends BaseController
     {
       $this->setRouteData($routeData); // <-- передаём routeData
 
-      // Получим категории
+      // Получим категории, продукты и посты
       $categories = $this->categoryService->getMainCategories();
-    
-
-      // Получим продукты
-      $newProducts = $this->productService->getLastProducts(4);
-      // $products = $this->getNewProducts();
-
-      // Полученим посты
-      // НАПСИАТЬ МЕТОД В СЕРВИС ПОСТОВ!!
+      $products = $this->productService->getLastProducts(4);
       $posts = $this->postService->getLastPosts(3);
-
+ 
       // Показываем страницу
       $this->renderPage($routeData, $categories, $products, $posts);
     }

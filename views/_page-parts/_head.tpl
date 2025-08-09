@@ -46,7 +46,7 @@
 </head>
 
 <?php if (isset($pageClass) && $pageClass === 'authorization-page'): ?> 
-<body class="authorization-page">
+<body class="authorization-page animated-gradient">
 <?php else: ?>
 <body class="sticky-footer main-page body-with-panel <?php echo isset($pageClass) ? h($pageClass) : ''; ?>">
 <?php endif; ?>

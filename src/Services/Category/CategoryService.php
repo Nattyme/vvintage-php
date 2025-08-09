@@ -15,14 +15,12 @@ final class CategoryService
     private array $languages;
     private string $currentLang;
     private CategoryRepository $repository;
-    private Category $category;
 
     public function __construct($languages, $currentLang)
     {
         $this->languages = $languages;
         $this->currentLang = $currentLang;
         $this->repository = new CategoryRepository($this->currentLang);
-        $this->category = new Category();
     }
 
 

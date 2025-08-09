@@ -10,7 +10,7 @@ use Vvintage\DTO\Post\PostDTO;
 
 final class PostService
 {
-    private string $languages;
+    private array $languages;
     private string $currentLang;
     private PostRepository $postRepository;
     private PostCategoryRepository $postCategoryRepository;
@@ -57,5 +57,10 @@ final class PostService
     public function getAllSubCategories(): array
     { 
       return $this->postCategoryRepository->getSubCats();
+    }
+
+    public function getLastPosts(int $count)
+    {
+       return $this->postRepository->getPostsByIds([3, 2 , 1]);
     }
 }
