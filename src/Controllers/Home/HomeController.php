@@ -12,51 +12,29 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Base\BaseController;
 
 /** Репозитории */
-// use Vvintage\Repositories\UserRepository;
-use Vvintage\Repositories\Product\ProductRepository;
-use Vvintage\Repositories\Post\PostRepository;
-use Vvintage\Repositories\Category\CategoryRepository;
+use Vvintage\Services\Category\CategoryService;
+use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Post\PostService;
 
-/** Абстракции */
-// use Vvintage\Models\Shared\AbstractUserItemsList;
-
-/** Интерфейсы */
-// use Vvintage\Models\User\UserInterface;
-// use Vvintage\Store\UserItemsList\ItemsListStoreInterface;
-
-/** Модели */
-// use Vvintage\Models\User\User;
-// use Vvintage\Models\User\GuestUser;
-// use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Category\Category;
 use Vvintage\Models\Blog\Post;
-
-/** Сервисы */
-// use Vvintage\Services\Auth\SessionManager;
-// use Vvintage\Services\Cart\CartService;
-// use Vvintage\Services\Page\Breadcrumbs;
-// use Vvintage\Services\Messages\FlashMessage;
-
-/** Хранилище */
-// use Vvintage\Store\UserItemsList\GuestItemsListStore;
-// use Vvintage\Store\UserItemsList\UserItemsListStore;
-
 
 require_once ROOT . './libs/functions.php';
 
 final class HomeController extends BaseController
 {
-    // private CartService $cartService;
-    // private UserInterface $userModel;
-    // private Cart $cartModel;
-    // private array $cart;
-    // private ItemsListStoreInterface $cartStore;
+    private CategoryService $categoryService;
+    private ProductService $productService;
+    private PostService $postService;
+
 
     public function __construct(
-      
     )
     {
       parent::__construct(); // Важно!
+      $this->categoryService = new CategoryService($this->languages, $this->currentLang);
+      $this->productService = new ProductService($this->languages, $this->currentLang);
+      $this->postService = new PostService($this->languages, $this->currentLang);
     }
 
     private function renderPage (RouteData $routeData, $categories, $products, $posts): void 
@@ -77,41 +55,31 @@ final class HomeController extends BaseController
 
     public function index(RouteData $routeData): void
     {
-      // Получим категории
-      $categories = $this->getCategories();
-
       $this->setRouteData($routeData); // <-- передаём routeData
 
+      // Получим категории
+      $categories = $this->categoryService->getMainCategories();
+    
+
       // Получим продукты
-      $products = $this->getNewProducts();
+      $newProducts = $this->productService->getLastProducts(4);
+      // $products = $this->getNewProducts();
 
       // Полученим посты
-      $posts = $this->getNewPosts();
+      // НАПСИАТЬ МЕТОД В СЕРВИС ПОСТОВ!!
+      $posts = $this->postService->getLastPosts(3);
 
       // Показываем страницу
       $this->renderPage($routeData, $categories, $products, $posts);
     }
 
-    private function getCategories(): array
-    {
-      $repository = new CategoryRepository();
-      return $repository->getMainCats();
-    } 
 
-    private function getNewProducts(): array
-    {
-      
-      $productsAtHome = 4;
-      $repository = new ProductRepository();
-      $pagination = pagination($productsAtHome, 'products');
 
-      // Получим новинки магазина
-      return $repository->getAllProducts($pagination);
-    }
 
     private function getNewPosts(): array
     {
       $postsAtHome = 4;
+      // ЗДЕСБ ВЫЗЫВАТЬ СЕРВИС  постов
       $repository = new PostRepository();
       $pagination = pagination($postsAtHome, 'posts');
 

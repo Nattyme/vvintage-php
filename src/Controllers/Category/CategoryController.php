@@ -10,9 +10,7 @@ use Vvintage\DTO\Category\CategoryDTO;
 
 final class CategoryController
 {
-    private CategoryRepository $categoryRepository;
-
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct()
     {
         $this->categoryRepository = $categoryRepository;
     }

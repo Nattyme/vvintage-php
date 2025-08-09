@@ -42,17 +42,16 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     {
         $this->currentLocale = $currentLocale;
     }
-   
-           
+
     public function getProductById(int $id): ?Product
     {
-        $rows = $this->uniteProductRawData($id);
+        $rows = $this->uniteProductRawData(['productId' => $id]);
         return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
     }
 
-    public function getAllProducts(array $pagination = []): array
+    public function getAllProducts(array $data = []): array
     {
-        $rows = $this->uniteProductRawData();
+        $rows = $this->uniteProductRawData($data);
         return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
 
@@ -64,19 +63,17 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
         $products = [];
         foreach ($ids as $id) {
-            $beans = $this->uniteProductRawData($id);
+            $beans = $this->uniteProductRawData(['productId' => $id]);
 
             if ($beans) {
-           
-                $products = array_map([$this, 'fetchProductWithJoins'], $beans);;
+                $products = array_map([$this, 'fetchProductWithJoins'], $beans);
             }
         }
 
         return $products;
     }
 
-
-    private function uniteProductRawData(?int $productId = null): array
+    private function uniteProductRawData(array $data): array
     {
         $sql = '
             SELECT 
@@ -114,20 +111,25 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
         $bindings = [$locale, $locale, $locale];
 
-        if ($productId !== null) {
+        if (isset($data['productId']) && $data['productId'] !== null) {
             $sql .= ' WHERE p.id = ? GROUP BY p.id LIMIT 1';
-            $bindings[] = $productId;
-            // ⬇Заворачиваем в массив
+            $bindings[] = $data['productId'];
             $row = R::getRow($sql, $bindings);
-           
-            return $row ?[$row] : [];
-            // return $row ? [$row] : [];
+            return $row ? [$row] : [];
         } else {
             $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
+
+            if (isset($data['limit'])) {
+                if (is_numeric($data['limit']) && (int)$data['limit'] > 0) {
+                    $sql .= ' LIMIT 0, ' . (int)$data['limit'];
+                } elseif (is_string($data['limit'])) {
+                    $sql .= ' ' . $data['limit'];
+                }
+            }
+
             return R::getAll($sql, $bindings);
         }
     }
-
 
     private function loadTranslations(int $productId): array
     {
@@ -153,7 +155,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     private function createCategoryDTOFromArray(array $row): CategoryDTO
     {
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;;
+        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
 
         return new CategoryDTO([
             'id' => (int) $row['category_id'],
@@ -207,7 +209,6 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     private function fetchProductWithJoins(array $row): Product
     {
-
         $productId = (int) $row['id'];
 
         $translations = $this->loadTranslations($productId);
@@ -216,7 +217,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         $imagesDTO = $this->fetchImageDTOs($row);
 
         $dto = new ProductDTO([
-            'id' => (int) $row['id'],
+            'id' => $productId,
             'categoryDTO' => $categoryDTO,
             'brandDTO' => $brandDTO,
             'slug' => (string) $row['slug'],
@@ -238,7 +239,12 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     public function getAllProductsCount(?string $sql = null, array $params = []): int
     {
-      return $this->countAll(self::TABLE_PRODUCTS, $sql, $params);
+        return $this->countAll(self::TABLE_PRODUCTS, $sql, $params);
     }
 
+    public function getLastProducts(int $count): array
+    {
+        $rows = $this->uniteProductRawData(['limit' => $count]);
+        return array_map([$this, 'fetchProductWithJoins'], $rows);
+    }
 }

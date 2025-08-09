@@ -57,7 +57,7 @@ class ProductImageService
       return count($images);
     }
 
-     public function getImagesViewData(array $images): array
+    public function getImageViewData(array $images): array
     {
       // Делим массив изображений на два массива - главное и другие
       $mainAndOthers = $this->splitImages($images);
@@ -71,5 +71,6 @@ class ProductImageService
         'total' => $total
       ];
     }
+
 
 }

@@ -10,12 +10,14 @@ use Vvintage\DTO\Post\PostDTO;
 
 final class PostService
 {
+    private string $languages;
     private string $currentLang;
     private PostRepository $postRepository;
     private PostCategoryRepository $postCategoryRepository;
 
-    public function __construct(string $currentLang)
+    public function __construct(array $languages, string $currentLang)
     {
+      $this->languages = $languages;
       $this->currentLang = $currentLang;
       $this->postRepository = new PostRepository ( $this->currentLang );
       $this->postCategoryRepository = new PostCategoryRepository ( $this->currentLang );

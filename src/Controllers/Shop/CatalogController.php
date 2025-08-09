@@ -44,28 +44,26 @@ final class CatalogController extends BaseController
 
       // Название страницы
       $pageTitle = 'Каталог товаров';
-
       $productsPerPage = 9;
-      
-      // Получаем параметры пагинации
       $pagination = pagination($productsPerPage, 'products');
 
       // Получаем продукты с учётом пагинации
       $products =  $this->productService->getAll($pagination);
-      $total = $this->productService->countProducts();
-      $imagesByProductId = $this->productService->getProductsImages($products);
-
+      
       $seo = [];
       // получаем SEO DTO
       foreach($products as $product) {
         $seo[$product->getId()] = $this->seoService->getSeoForPage('product', $product);
       }
 
+   
+      $total = $this->productService->countProducts();
+      $imagesByProductId = $this->productService->getProductsImages($products);
+
       // Это кол-во товаров, показанных на этой странице
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
-
-      // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+
 
       // Формируем единую модель для передачи в шаблон
       $productViewModel = [

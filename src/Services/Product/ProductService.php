@@ -9,7 +9,7 @@ use Vvintage\Models\Product\Product;
 use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Services\Product\ProductImageService;
-use Vvintage\Database\Database;
+// use Vvintage\Database\Database;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -35,9 +35,18 @@ final class ProductService
         return $this->repository->getProductById($id);
     }
 
+    //    $result['number_of_pages'] = $number_of_pages;
+    // $result['page_number'] = $page_number;
+    // $result['sql_page_limit'] =  $sql_page_limit;
     public function getAll($pagination): array
     {
-        return $this->repository->getAllProducts($pagination);
+
+        return $this->repository->getAllProducts(['limit' => $pagination['sql_page_limit']]);
+    }
+
+    public function getLastProducts(int $count): array
+    {
+      return $this->repository->getLastProducts($count);
     }
 
     public function countProducts(): int
@@ -54,8 +63,9 @@ final class ProductService
 
     public function getProductImagesData(array $images): array
     {
-        return $this->productImageService->getImagesViewData($images);
+        return $this->productImageService->getImageViewData($images);
     }
+
 
     public function countImages(array $images): int
     {
