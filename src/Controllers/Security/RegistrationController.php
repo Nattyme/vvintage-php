@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Security;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 use Vvintage\Services\Security\RegistrationService;
 use Vvintage\Services\Validation\RegistrationValidator;
 use Vvintage\Services\Messages\FlashMessage;
 
 
-final class RegistrationController 
+final class RegistrationController extends BaseController
 {
   private FlashMessage $notes;
 

@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Security;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 use Vvintage\Services\Security\PasswordResetService;
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Validation\PasswordResetValidator;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Routing\RouteData;
 
-final class PasswordResetController {
+final class PasswordResetController extends BaseController
+{
   private FlashMessage $notes;
 
   public function __construct(FlashMessage $notes)

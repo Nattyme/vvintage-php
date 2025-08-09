@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Security;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 use Vvintage\Services\Security\PasswordSetNewService;
 use Vvintage\Services\Validation\PasswordSetNewValidator;
 use Vvintage\Services\Messages\FlashMessage;
 
-final class PasswordSetNewController {
+final class PasswordSetNewController extends BaseController 
+{
   private FlashMessage $notes;
   private PasswordSetNewService $setNewPassService;
 

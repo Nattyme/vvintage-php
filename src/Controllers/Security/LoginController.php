@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Security;
 
+/** Базовый контроллер страниц*/
+use Vvintage\Controllers\Base\BaseController;
+
 /** Модели */
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
@@ -27,7 +30,7 @@ use Vvintage\Repositories\Product\ProductRepository;
 /** Роутинг */
 use Vvintage\Routing\RouteData;
 
-final class LoginController
+final class LoginController extends BaseController
 {
   private UserRepository $userRepository;
   private ProductRepository $productRepository;
@@ -35,6 +38,7 @@ final class LoginController
 
   public function __construct(UserRepository $userRepository, ProductRepository $productRepository, FlashMessage $notes) 
   {
+    parent::__construct(); // Важно!
     $this->userRepository = $userRepository;
     $this->productRepository = $productRepository;
     $this->notes = $notes;
@@ -42,7 +46,6 @@ final class LoginController
 
   public function index(RouteData $routeData): void
   {
-    
     if (!isset($_POST['login'])) {
       $this->renderForm($routeData);
       return;
