@@ -30,7 +30,7 @@ final class Message
         $message->name = (string) $dto->name;
         $message->message = (string) $dto->message;
         $message->phone = (string) $dto->phone;
-        $message->datetime = (string) $dto->datetime;
+        $message->datetime = $dto->datetime;
         $message->status = (string) $dto->status;
         $message->user_id = (int) $dto->user_id;
     
@@ -47,7 +47,8 @@ final class Message
         $message->name = (string) ($data['name'] ?? '');
         $message->message = (string) ($data['message'] ?? '');
         $message->phone = (string) ($data['phone'] ?? '');
-        $message->datetime = (string) ($data['datetime'] ?? '');
+        $datetimeString = $data['datetime'] ?? null;
+        $message->datetime = $datetimeString ? new \DateTime($datetimeString) : new \DateTime();
         $message->status = (string) ($data['status'] ?? '');
         $message->user_id =  (int) ($data['user_id'] ?? 0);
     
@@ -81,7 +82,7 @@ final class Message
       return $this->phone;
     }
 
-    public function getDatetime(): Datetime
+    public function getDatetime(): \Datetime
     {
       return $this->datetime;
     }

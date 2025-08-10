@@ -25,7 +25,7 @@ final class MessageRepository extends AbstractRepository implements MessageRepos
     private function mapBeanToMessage(OODBBean $bean): Message
     {
 
-        $dto = new MessageDTO([
+        $dto = MessageDTO::fromDatabase([
             'id' => (int) $bean->id,
             'email' => (string) $bean->email,
             'name' => (string) $bean->name,
