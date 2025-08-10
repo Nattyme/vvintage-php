@@ -10,9 +10,11 @@ return [
   'auth.restore.password' => 'Восстановить пароль',
   'auth.tooltip.not_registered' => 'Не зарегестрированы?',
   'auth.tooltip.registered' => 'Зарегестрированы?',
+  'auth.tooltip.set.new_password' => 'Установить новый пароль',
   'auth.login.tooltip' => 'Вход',
   'auth.label.email' => 'Email',
   'auth.label.password' => 'Пароль',
+  'auth.label.new_password' => 'Новый пароль',
   'auth.placeholder.email' => 'Введите ваш email',
   'auth.placeholder.password' => 'Введите ваш пароль',
   'auth.page.slogan' => 'интернет-магазин уникальных вещей'

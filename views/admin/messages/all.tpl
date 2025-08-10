@@ -50,13 +50,16 @@
               <p class="block-text__desc"><?php echo h($message->getMessage());?></p>
             </td>
             <td class="admin-form-table__unit">
-              <?php /* echo h(rus_date("j. m. Y. H:i", $message['timestamp'])); */ ?>
+       
+              <?php echo h(rus_date('j. m. Y. H:i', $message->getDateTime()->getTimestamp()));?>
+
             </td>
             <td class="admin-form-table__unit">
               <!-- <a target="_blank" 
                href="<?php /* echo HOST . 'usercontent/contact-form/' . h($message['fileNameSrc']);?>"><?php echo isset($message['fileNameOriginal']) ? h($message['fileNameOriginal']) : '-' */;?></a> -->
             </td>
             <td class="admin-form-table__unit">
+
               <!-- <a href="<?php /* echo HOST . 'admin/message-delete?id=' . u($message['id']); */?>" class="button button-close cross-wrapper cart__delete link-above-others " 
                 aria-label="Удалить товар <?php echo h($message->getId());?>">
                 <span class="leftright"></span><span class="rightleft"> </span>

@@ -12,7 +12,7 @@
           <tr>
               <th>Дата создания</th>
               <td>
-                <?php if ($order->getDateTime()) echo rus_date('j F Y в G:i', $order->getDateTime()->getTimestamp());?>
+                <?php echo h(rus_date('j F Y в G:i', $order->getDateTime()->getTimestamp()));?>
               </td>
 
           </tr>  

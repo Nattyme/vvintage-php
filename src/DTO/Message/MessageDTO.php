@@ -10,19 +10,50 @@ final class MessageDTO
     public ?string $name;
     public ?string $message;
     public ?string $phone;
-    public ?string $datetime;
+    public \DateTime $datetime;
     public ?string $status;
     public ?int $user_id;
 
-    public function __construct(array $data)
+    private function __construct(){}
+
+    public static function fromForm(array $data): self
     {
-        $this->id = (int) ($data['id'] ?? 0);
-        $this->email = (string) ($data['email'] ?? '');
-        $this->name = (string) ($data['name'] ?? '');
-        $this->message = (string) ($data['message'] ?? '');
-        $this->phone = (string) ($data['phone'] ?? '');
-        $this->datetime = (string) ($data['datetime'] ?? '');
-        $this->status = (string) ($data['status'] ?? '');
-        $this->user_id = (int) ($data['user_id'] ?? 0);
+        $dto = new self();
+        $dto->email = filter_var(trim($data['email'] ?? ''), FILTER_VALIDATE_EMAIL) ?: '';;
+        $dto->name = trim($data['name'] ?? '');
+        $dto->message = trim($data['message'] ?? '');
+        $dto->phone = trim($data['phone'] ?? '');
+        $dto->datetime = new \DateTime();
+        $dto->status = trim($data['status'] ?? 'new');
+        $dto->user_id = (int) ($data['user_id'] ?? 0);
+
+        return $dto;
     }
+
+    public static function fromDatabase(array $cart): self
+    {
+        $dto = new self();
+        $dto->id = $row['id'];
+        $dto->email = $row['email'];
+        $dto->name = $row['name'];
+        $dto->message = $row['message'];
+        $dto->phone = $row['phone'];
+        $dto->datetime = new \DateTime($row['datetime']);
+        $dto->status = $row['status'];
+        $dto->user_id = $row['user_id'];
+
+        return $dto;
+    }
+
+    
+    public function isValid(): bool
+    {
+        return $this->name !== ''
+            && $this->surname !== ''
+            && $this->email !== ''
+            && $this->phone !== ''
+            && $this->address !== '';
+    }
+
+
 }

@@ -7,7 +7,9 @@
   <?php include ROOT . "templates/components/success.tpl"; ?>
 
   <div class="authorization-form__field">
-    <label for="email" class="authorization-form__field-title">Email</label>
+    <label for="email" class="authorization-form__field-title">
+       <?php echo h(__('auth.label.email', [], 'auth')) ;?>
+    </label>
 
     <input 
       id="email"
@@ -15,19 +17,21 @@
       name="email" 
       type="text" 
       value="<?php echo isset($_POST['email']) ? h(trim($_POST['email'])) : ''; ?>"
-      placeholder="Введите email" 
+      placeholder="<?php echo h(__('auth.placeholder.email', [], 'auth')) ;?>" 
     />
   </div>
 
   <div class="authorization-form__field">
-    <label for="password" class="authorization-form__field-title">Пароль</label>
+    <label for="password" class="authorization-form__field-title">
+      <?php echo h(__('auth.label.password', [], 'auth')) ;?>
+    </label>
 
     <input 
       id="password"
       name="password" 
       class="input" 
       type="password" 
-      placeholder="Введите пароль" 
+      placeholder="<?php echo h(__('auth.placeholder.password', [], 'auth')) ;?>" 
     />
   </div>
 
@@ -44,14 +48,16 @@
 
 <!-- links -->
 <div class="authorization__links">
-  <h2 class="authorization__subtitle">Зарегестрированы?</h2>
+  <h2 class="authorization__subtitle">
+    <?php echo h(__('auth.tooltip.registered', [], 'auth')) ;?>
+  </h2>
 
   <div class="authorization-form__button">
     <a href="<?php echo HOST.'login'; ?>" class="button button--m button--outline button--outline-transparent button--with-icon">Войти</a>
   </div>
   <div class="authorization-form__button">
     <a href="<?php echo HOST . 'lost-password';?>" class="button button--m button--outline button--outline-transparent button--with-icon">
-      Восстановить
+       <?php echo h(__('auth.restore.password', [], 'auth')) ;?>
     </a>
   </div>
 </div>

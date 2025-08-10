@@ -25,8 +25,8 @@ class AdminCategoryController extends BaseAdminController
   {
     parent::__construct();
     $this->languages = LanguageConfig::getAvailableLanguages();
-    $this->categoryRepository = new CategoryRepository();
-    $this->categoryRepository = new CategoryRepository();
+    $this->categoryRepository = new CategoryRepository('ru');
+    $this->categoryRepository = new CategoryRepository('ru');
   }
 
   public function all(RouteData $routeData)

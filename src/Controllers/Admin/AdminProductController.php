@@ -31,8 +31,8 @@ class AdminProductController extends BaseAdminController
   {
     parent::__construct();
     $this->productRepository = new ProductRepository();
-    $this->categoryRepository = new CategoryRepository();
-    $this->brandRepository = new BrandRepository();
+    $this->categoryRepository = new CategoryRepository( 'ru');
+    $this->brandRepository = new BrandRepository('ru');
   }
 
   public function all (RouteData $routeData)

@@ -13,7 +13,7 @@ final class Message
     private ?string $name;
     private ?string $message;
     private ?string $phone;
-    private ?string $datetime;
+    private \DateTime $datetime;
     private ?string $status;
     private ?int $user_id;
 

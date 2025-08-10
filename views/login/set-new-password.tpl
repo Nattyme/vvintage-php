@@ -1,14 +1,18 @@
 <form class="authorization-form authorization-form--lost-pass" name="formLostPass" method="POST" action="">
   <div class="authorization-form__heading">
-    <h2 class="heading">Установить новый пароль</h2>
+    <h2 class="heading">
+      <?php echo h(__('  auth.tooltip.set.new_password', [], 'auth')) ;?>
+    </h2>
   </div>
 
-  <?php include ROOT . "templates/components/errors.tpl"; ?>
-  <?php include ROOT . "templates/components/success.tpl"; ?>
+  <?php include ROOT . "views/components/errors.tpl"; ?>
+  <?php include ROOT . "views/components/success.tpl"; ?>
 
   <?php if( !$newPasswordReady ) : ?>
   <div class="authorization-form__field">
-    <label for="password" class="authorization-form__field-title">Новый пароль</label>
+    <label for="password" class="authorization-form__field-title">
+      <?php echo h(__('  auth.tooltip.set.new_password', [], 'auth')) ;?>
+    </label>
     <input name="password" class="input" type="password" placeholder="Введите новый пароль" id="password"/>
   </div>
 

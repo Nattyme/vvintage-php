@@ -1,7 +1,9 @@
 <header class="authorization-page__header">
   <a class="authorization-page__link" href="<?php echo HOST; ?>">
     <h2 class="authorization-page__header-title">vvintage.ru</h2>
-    <p class="authorization-page__header-subtitle">интернет-магазин уникальных вещей</p>
+    <p class="authorization-page__header-subtitle">
+      <?php echo h(__('auth.page.slogan', [], 'auth')) ;?>
+    </p>
   </a>
   <div class="header__lang authorization-page__lang custom-select" data-custom-select>
     <form id="language-selector" method="GET" data-custom-select-form>
