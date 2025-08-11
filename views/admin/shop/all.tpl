@@ -82,7 +82,7 @@
             </td>
             <td class="product-table__item product-table__item--title">
               <!-- link-to-page -->
-              <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit?id=<?php echo u($product->getId()); ?>">
+              <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit/<?php echo u($product->getId()); ?>">
                 <?php echo htmlspecialchars($product->getTitle() ? h($product->getTitle()) : ''); ?>
               </a>
             </td>

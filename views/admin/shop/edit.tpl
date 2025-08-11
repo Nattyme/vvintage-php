@@ -17,22 +17,22 @@
         <div class="admin-form__field">
           <label class="admin-form__label" for="title">Название товара</label>
           <input id="title" name="title" class="admin-form__input input" type="text"
-                  value="<?php echo h($product->getTitle());?>"
+                  value="<?php echo isset($_POST['title']) ? h($_POST['title']) : h($product->getTitle()); ?>"
                   placeholder="Введите название" required/>
         </div>
 
         <div class="admin-form__field">
           <label class="admin-form__label" for="price">Цена</label>
           <input id="price" name="price" class="admin-form__input input" type="text"
-                  value="<?php echo h($product->getPrice());?>"
+                  value="<?php echo isset($_POST['getPrice']) ? h($_POST['getPrice']) : h($product->getPrice()); ?>"
                   placeholder="Введите цену в &euro;" required
           />
         </div>
 
         <div class="admin-form__field">
-          <label class="admin-form__label" for="article">Артикул</label>
-          <input id="article" name="article" class="admin-form__input input" type="text"
-                  value="<?php echo !empty($product->getSku()) ? h($product->getSku()) : '';?>"
+          <label class="admin-form__label" for="sku">Артикул</label>
+          <input id="sku" name="sku" class="admin-form__input input" type="text"
+                  value="<?php echo isset($_POST['sku']) ? h($_POST['sku']) : h($product->getSku()); ?>"
                   placeholder="Введите артикул" 
           />
         </div>
@@ -40,14 +40,14 @@
         <div class="admin-form__field">
           <label class="admin-form__label" for="url">Ссылка</label>
           <input id="url" name="url" class="admin-form__input input" type="text"
-                  value="<?php echo !empty($product->getUrl()) ? h($product->getUrl()) : '';?>"
+                  value="<?php echo isset($_POST['url']) ? h($_POST['url']) : h($product->getUrl()); ?>"
                   placeholder="Введите ссылку на vinted.fr" 
                   required
           />
                     
         </div>
 
-        <div class="admin-form__field">
+        <!-- <div class="admin-form__field">
           <label class="admin-form__label" for="mainCat">Категория</label>
           <div class="admin-form__row">
             <select class="select" name="mainCat" id="mainCat" data-selected="<?php echo h($selectedMaiCat);?>"></select>
@@ -58,8 +58,8 @@
                 Новая категория
             </a>
           </div>
-        </div>
-
+        </div> -->
+<!-- 
         <div class="admin-form__field">
           <label class="admin-form__label" for="subCat">Подкатегория</label>
           <div class="admin-form__row">
@@ -71,9 +71,9 @@
                 Новая категория
             </a>
           </div>
-        </div>
+        </div> -->
 
-        <div class="admin-form__field">
+        <!-- <div class="admin-form__field">
           <label class="admin-form__label" for="brands">Выберите бренд</label>
           <div class="admin-form__row">
             <select class="select" name="brand" id="brands">
@@ -90,12 +90,12 @@
                 Новый бренд
             </a>
           </div>
-        </div>
+        </div> -->
 
         <div class="admin-form__field">
           <label class="admin-form__label" for="editor">Описание товара</label>
           <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
-              <?php echo h($product['content']) ;?>
+            <?php echo isset($_POST['content']) ? h($_POST['ucontentrl']) : h($product->getContent()); ?>
           </textarea>
         </div>
       </div>
@@ -117,7 +117,7 @@
               </div>
 
               <!-- PREVIEW IMG -->
-              <div class="block-upload__preview active" data-preview="container" data-dragg-and-drop="">
+              <!-- <div class="block-upload__preview active" data-preview="container" data-dragg-and-drop="">
                 <?php foreach ($productImages as $image) : ?>
                   <div class="admin-form__img-wrapper" data-preview="image-wrapper" data-url="blob:https://vvintage/2932f5ed-3290-49ba-bfcd-09f199a163cd" draggable="true">
                     <img src="<?php echo HOST . 'usercontent/products/' . $image['filename_small'];?>" draggable="true" loading="lazy">
@@ -126,7 +126,7 @@
                     </button>
                   </div>
                 <?php endforeach;?>
-              </div>
+              </div> -->
               <!-- // PREVIEW IMG -->
             </div>
           </label>

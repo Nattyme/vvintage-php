@@ -464,7 +464,7 @@
           break;
 
         case 'shop-new':
-          $adminProductController->add($routeData);
+          $adminProductController->new($routeData);
           break;
 
         case 'shop-edit':

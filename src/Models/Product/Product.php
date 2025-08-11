@@ -168,4 +168,9 @@ class Product
     {
         return $this->images ?? [];
     }
+
+    public function getSku(): string 
+    {
+      return $this->sku;
+    }
 }

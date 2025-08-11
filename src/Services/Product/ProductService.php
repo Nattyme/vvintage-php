@@ -13,7 +13,7 @@ use Vvintage\Services\Product\ProductImageService;
 
 require_once ROOT . "./libs/functions.php";
 
-final class ProductService
+class ProductService
 {
     private array $languages;
     private string $currentLang;
