@@ -15,11 +15,11 @@ final class Post
     private string $slug;
     private string $description;
     private string $content;
-    private float $timestamp;
+    private \Datetime $datetime;
     private ?int $views = 0;
     private ?string $cover = null;
     private ?string $cover_small = null;
-    private ?string $edit_time = null;
+    private \Datetime  $edit_time;
 
     private ?array $translations = null;
     private string $currentLang = 'ru';
@@ -36,7 +36,7 @@ final class Post
         $post->slug = $data['slug'];
         $post->description = $data['description'];
         $post->content = $data['content'];
-        $post->timestamp = (float) $data['timestamp'];
+        $post->datetime = $data['datetime'];
         $post->views = $data['views'];
         $post->cover = $data['cover'] ?? null;
         $post->cover_small = $data['cover_small'] ?? null;
@@ -60,11 +60,11 @@ final class Post
         $post->description = $dto->description;
         $post->content = $dto->content;
 
-        $post->timestamp = (float) time();
+        $post->datetime = new \Datetime ();
         $post->views = $dto->views;
         $post->cover = $dto->cover;
         $post->cover_small = $dto->cover_small;
-        $post->edit_time = (string) time();
+        $post->edit_time = new \Datetime ();
         $post->translations = $dto->translations;
 
         return $post;
@@ -124,6 +124,11 @@ final class Post
     {
       return $this->cover_small;
     }
+    public function getDateTime(): \Datetime
+    {
+      return $this->datetime;
+    }
+
     public function getEditTime(): string 
     {
       return $this->edit_time;

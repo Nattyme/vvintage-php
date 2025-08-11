@@ -30,7 +30,7 @@ class Product
     private string $url;
     private string $sku;
     private int $stock;
-    private string $datetime;
+    private \Datetime $datetime;
     private array $translations;
     private string $currentLocale = 'ru';
     private ?array $images;      // массив изображений
@@ -65,9 +65,10 @@ class Product
       $product->url = $dto->url;
       $product->sku = $dto->sku;
       $product->stock = $dto->stock;
-      $product->datetime = $dto->datetime;
+      $product->datetime = new \Datetime ();
       $product->translations = $dto->translations;
       $product->images = $dto->images;
+      
 
       return $product;
     }
@@ -139,7 +140,7 @@ class Product
         return $this->description;
     }
 
-    public function getTimestamp(): string
+    public function getDatetime(): \Datetime
     {
         return $this->datetime;
     }

@@ -449,7 +449,7 @@
       $adminCategoryController = new AdminCategoryController();
       $adminUsersController = new AdminUsersController();
       $adminOrdersController = new AdminOrdersController();
-      $adminPostController = new AdminPostController($postRepository, $postCategoryRepository, $notes, $breadcrumbs);
+      $adminPostController = new AdminPostController($notes, $breadcrumbs);
       $adminMessageController = new AdminMessageController($messageRepository, $notes);
       $adminPostCatController = new AdminPostCatController($postCategoryRepository, $notes);
 
@@ -547,19 +547,18 @@
         // ::::::::::::: BLOG :::::::::::::::::::
       case 'blog':
         $adminPostController->all($routeData);
-        // require ROOT . "admin/modules/blog/all.php";
         break;
 
       case 'post-new':
-        require ROOT . "admin/modules/blog/new.php";
+         $adminPostController->new($routeData);
         break;
 
       case 'post-edit':
-        require ROOT . "admin/modules/blog/edit.php";
+        $adminPostController->edit($routeData);
         break;
 
       case 'post-delete':
-        require ROOT . "admin/modules/blog/delete.php";
+        $adminPostController->delete($routeData);
         break;
 
       // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::

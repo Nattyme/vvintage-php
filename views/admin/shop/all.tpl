@@ -99,7 +99,7 @@
               <a class="link" href="<?php echo !empty($product->getUrl()) ? u($product->getUrl()) : '';?>">vinted.fr</a>
             </td>
             <td>
-                <?php /** echo h(rus_date("j. m. Y", $product->getTimestamp())); */ ?>
+              <?php echo h(rus_date('j. m. Y. H:i', $product->getDateTime()->getTimestamp()));?>
               <!-- <button class="button-dropdownMenu" data-btn="menu">
                 <svg class="icon icon--menu">
                   <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#menu';?>"></use>

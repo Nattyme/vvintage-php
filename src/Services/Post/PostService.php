@@ -8,7 +8,7 @@ use Vvintage\Repositories\PostCategory\PostCategoryRepository;
 use Vvintage\Models\Post\Post;
 use Vvintage\DTO\Post\PostDTO;
 
-final class PostService
+class PostService
 {
     private array $languages;
     private string $currentLang;

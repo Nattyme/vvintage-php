@@ -34,6 +34,7 @@
           <th>Заголовок</th>
           <th>Содержание</th>
           <th>Обложка</th>
+          <th>Создан</th>
           <th></th>
         </tr>
       </thead>
@@ -53,6 +54,9 @@
               <img 
                 src="<?php echo HOST . 'usercontent/blog/' . h($post->getCoverSmall() );?>" 
                 alt="<?php echo h(shortText($post->getTitle(), $limit = 50));?>">
+            </td>
+            <td>
+              <?php echo h(rus_date('j. m. Y. H:i', $post->getDateTime()->getTimestamp()));?>
             </td>
             <td>
               <a href="<?php echo HOST . "admin/";?>post-delete?id=<?php echo h($post->getId());?>" class="icon-delete"></a>
