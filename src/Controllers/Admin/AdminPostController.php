@@ -279,9 +279,8 @@ class AdminPostController extends BaseAdminController
     $pageTitle = "Редактирование статьи";
     // $pageClass = "admin-page";
 
-    // Получаем продукт 
+    // Получаем пост по Id 
     $postId = $routeData->getUriGetParam();
-     // Получаем продукт по id
     $post = $this->adminPostService->getPost((int) $postId);
 
     $this->renderLayout('blog/edit',  [
@@ -297,9 +296,9 @@ class AdminPostController extends BaseAdminController
     $pageTitle = "Удалить статью";
     // $pageClass = "admin-page";
 
-    // Получаем продукт 
+    // Получаем пост по Id 
     $postId = $routeData->getUriGetParam();
-    $post = $this->adminPostService->getProductById((int) $postId);
+    $post = $this->adminPostService->getPost((int) $postId);
 
     // Получаем главные категориии, подкатегории и бренды
     // $mainCats = $this->categoryRepository->getMainCats();

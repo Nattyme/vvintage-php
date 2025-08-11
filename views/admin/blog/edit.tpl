@@ -82,7 +82,7 @@
       <?php else : ?>
         <a class="button button--m button--outline" href="<?php echo HOST . 'admin/blog';?>" title="Отмена">Отмена</a>
       <?php endif; ?>
-      <button name="postEdit" value="postEdit" class="button button--m button--primary" type="submit">Сохранить изменения</button>
+      <button name="postEdit" value="postEdit" class="button button--m button--primary " type="submit">Сохранить изменения</button>
     </div>
   </form>
 </div>
