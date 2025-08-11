@@ -22,7 +22,7 @@ import addTab from "./modules/tab.js";
 
 const initEverything = async () => {
   
-  //  await initCatalogEvents(); // запускаем каталог в навигации
+   await initCatalogEvents(); // запускаем каталог в навигации
   // addSidebarControlPanel();
   // router();
   // if (window.location.pathname !== pageAdmin) {

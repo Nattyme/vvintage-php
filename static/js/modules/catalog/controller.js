@@ -12,19 +12,21 @@ const initController = async () => {
   const catsData = await model.setCatsData();   // Получаем данные по категориям с сервера и задаем cats в модели
   const mainCats = model.getMainCats();  // Найдем основные категории
   if (!catsData || !nav || !navList || !mainCats) return;
-  
+
+ 
   view.addAdminActiveClass(); // Если нужно - задаем активный класс админ панели
   view.findAndRemoveAllSubNavs();  // Находим и удаляем все подменю
   const mainMenuMarkup = view.renderMenuTree(mainCats, 1);
   navList.innerHTML = mainMenuMarkup;
-  // view.fillNav(navList, mainCats);  // Добавляем разметку c основными категорими в навигацию
+  view.fillNav(navList, mainCats);  // Добавляем разметку c основными категорими в навигацию
   const catBlocksAll = navList.querySelectorAll('.nav__block');
   if (!catBlocksAll) return;
+
 
    // Ф-ция добавляет 2-й уровень меню
   const addSubNav = (catBlock) => {
     const catId = catBlock.id; // id категории
-     console.log(catId);
+     
     if (!catId) return;
     const currentCatData = model.getCatsByParent(catId); // получаем данные объекта по категории
     if(!currentCatData.length) return;

@@ -76,6 +76,11 @@
   use Vvintage\Controllers\Admin\AdminMessageController;
   use Vvintage\Controllers\Admin\AdminPostCatController;
 
+  // API
+  use Vvintage\Controllers\Api\Category\CategoryApiController;
+
+
+
 
   class Router {
      /*****************************
@@ -144,6 +149,10 @@
           self::routeAdminPages($routeData);
           break;
 
+        case 'api' : 
+          self::routeApi($routeData);
+          break;
+
         default:
           http_response_code(404);
           require ROOT . 'modules/404/404.php';
@@ -154,6 +163,29 @@
     /*****************************
               // РОУТЕР 
     *****************************/
+
+    private static function routeApi(RouteData $routeData)
+    {
+        $categoryApiController = new CategoryApiController();
+
+        switch ($routeData->uriGet) {
+            case 'category':
+                if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
+                    $categoryApiController->getMainCategories((int) $routeData->uriGetParam);
+                } else {
+                    // Если параметра нет, или он некорректен — возможно, вернуть все категории
+                    $categoryApiController->getMainCategories();
+                }
+                break;
+
+            default:
+                http_response_code(404);
+                echo json_encode(['error' => 'API endpoint not found']);
+                break;
+        }
+    }
+
+
     private static function routeAuth(RouteData $routeData) {
       $userRepository = new UserRepository();
       $setNewPassService = new PasswordSetNewService($userRepository);
@@ -429,6 +461,7 @@
     }
 
 
+
     
     /*************************/
     /******** ADMIN  *********/
@@ -582,7 +615,7 @@
         // require ROOT . "admin/modules/categories-blog/delete.php";
         break;
 
-   // ::::::::::::: MESSAGES :::::::::::::::::::
+      // ::::::::::::: MESSAGES :::::::::::::::::::
 
       case 'messages':
         $adminMessageController->all($routeData);
@@ -600,59 +633,61 @@
         break;
 
     
-  // // ::::::::::::: PAGES :::::::::::::::::::
-  // case 'main':
-  //   require ROOT . "admin/modules/pages/main.php";
-  //   break;
+        // // ::::::::::::: PAGES :::::::::::::::::::
+        // case 'main':
+        //   require ROOT . "admin/modules/pages/main.php";
+        //   break;
 
-  // case 'about':
-  // require ROOT . "admin/modules//pages/about.php";
-  //   break;
+        // case 'about':
+        // require ROOT . "admin/modules//pages/about.php";
+        //   break;
 
-  // case 'delivery':
-  // require ROOT . "admin/modules//pages/delivery.php";
-  //   break;
+        // case 'delivery':
+        // require ROOT . "admin/modules//pages/delivery.php";
+        //   break;
 
-  // case 'contacts':
-  //   require ROOT . "admin/modules//pages/contacts.php";
-  //   break;
+        // case 'contacts':
+        //   require ROOT . "admin/modules//pages/contacts.php";
+        //   break;
 
-  // // ::::::::::::: OTHER :::::::::::::::::::
-  // case 'comments':
-  //   require ROOT . "admin/modules/comments/all.php";
-  //   break;
+        // // ::::::::::::: OTHER :::::::::::::::::::
+        // case 'comments':
+        //   require ROOT . "admin/modules/comments/all.php";
+        //   break;
 
-  // case 'comment':
-  //   require ROOT . "admin/modules/comments/single.php";
-  //   break;
+        // case 'comment':
+        //   require ROOT . "admin/modules/comments/single.php";
+        //   break;
 
-  // // ::::::::::::: SETTINGS :::::::::::::::::::
-  // case 'settings':
-  //   require ROOT . "admin/modules/settings/settings.php";
-  //   break;
+        // // ::::::::::::: SETTINGS :::::::::::::::::::
+        // case 'settings':
+        //   require ROOT . "admin/modules/settings/settings.php";
+        //   break;
 
-  // case 'settings-main':
-  //   require ROOT . "admin/modules/settings/settings-main.php";
-  //   break;
+        // case 'settings-main':
+        //   require ROOT . "admin/modules/settings/settings-main.php";
+        //   break;
 
-  // case 'settings-social':
-  //   require ROOT . "admin/modules/settings/settings-social.php";
-  //   break;
+        // case 'settings-social':
+        //   require ROOT . "admin/modules/settings/settings-social.php";
+        //   break;
 
-  // case 'settings-cookies':
-  //   require ROOT . "admin/modules/settings/settings-cookies.php";
-  //   break;
+        // case 'settings-cookies':
+        //   require ROOT . "admin/modules/settings/settings-cookies.php";
+        //   break;
 
-  // case 'settings-cards':
-  //   require ROOT . "admin/modules/settings/settings-cards.php";
-  //   break;
-  // // ::::::::::::: SETTINGS :::::::::::::::::::
+        // case 'settings-cards':
+        //   require ROOT . "admin/modules/settings/settings-cards.php";
+        //   break;
+        // // ::::::::::::: SETTINGS :::::::::::::::::::
 
-  // default: 
-  //   require ROOT . "admin/modules/main/index.php";
-  //   break;
+        // default: 
+        //   require ROOT . "admin/modules/main/index.php";
+        //   break;
 
      
       }
     }
+
+
   }

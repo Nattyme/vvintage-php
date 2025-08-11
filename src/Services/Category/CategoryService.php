@@ -29,6 +29,11 @@ final class CategoryService
       return $this->repository->getMainCats();
     }
 
+    public function getMainCategoriesArray(): array
+    {
+      return $this->repository->getMainCategoriesArray();
+    }
+
     // public function countSubCats(): int
     // {
     // }

@@ -3,7 +3,7 @@ const initModel = () => {
 
   const loadCatsData = async () => {
     try {
-      const res = await fetch('/admin/api/categories/nav.php');
+      const res = await fetch('/api/category');
       if (!res.ok) throw new Error('Ошибка сети');
       const data = await res.json();
       return typeof data === 'object' ? Object.values(data) : [];
@@ -19,9 +19,9 @@ const initModel = () => {
   }
   
   // Ф-ция находит основные категории
-  const getMainCats = () => {
-    if (!Array.isArray(cats) || cats.length === 0) return [];
-    return cats.filter(cat => +cat.parentId === 0)
+  const getMainCats = () => {    
+    if (!Array.isArray(cats) || cats.length === 0) return [];    
+    return cats.filter(cat => +cat.parent_id === 0);
   };
 
   // Ф-ция получает категории по parent_id 

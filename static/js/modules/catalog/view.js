@@ -169,7 +169,7 @@ const initView = () => {
       <ul class="${ulClass}">
         ${cats.map(cat => `
           <li class="${liClass}" id="${cat.id}">
-            <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}">${cat.name}</a>
+            <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}">${cat.title}</a>
             ${cat.children ? renderMenuTree(cat.children, level + 1) : ''}
           </li>
         `).join('')}

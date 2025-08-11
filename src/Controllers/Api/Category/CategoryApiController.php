@@ -1,17 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Controllers\Api\Category;
+namespace Vvintage\Controllers\Api\Category;
 
+use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Category\CategoryService;
 
-class CategoriesApiController
+class CategoryApiController extends BaseController
 {
     private CategoryService $categoryService;
 
     public function __construct()
     {
-      $this->categoryService = new CategoryService(); 
+      parent::__construct(); // Важно!
+      $this->categoryService = new CategoryService($this->languages, $this->currentLang); 
     } 
 
     // public function getAll()
