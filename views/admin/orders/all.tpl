@@ -42,6 +42,7 @@
           <th>Оплата</th>
           <th>Стоимость</th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>

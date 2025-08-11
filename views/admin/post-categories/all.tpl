@@ -69,15 +69,17 @@
             <td class="admin-form-table__unit">
               <?php echo $cat->getParentId() > 0 ? h($cat->getTitle()) : '';?>
             </td>
-           
-            <td class="admin-form-table__unit">
-              <a href="<?php echo HOST . 'admin/category-delete?id=' . u($cat->getId());?>" class="icon-delete link-above-others">
-                <svg class="icon icon--delete">
-                  <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#delete';?>"></use>
-                </svg> 
+            <td>
+              <a 
+                class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
+                href="<?php echo HOST . "admin/";?>admin/post-category-delete/<?php echo u($cat->getId());?>"
+                aria-label="Удалить категорию <?php echo h($cat->getTitle());?>"
+              >
+
+                  <span class="leftright"></span><span class="rightleft"> </span>
               </a>
             </td>
-          </tr>
+
           
         <?php endforeach; ?> 
       </tbody>

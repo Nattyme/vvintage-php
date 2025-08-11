@@ -29,6 +29,15 @@
     <?php echo h(format_price($order->getPrice())); ?> руб.
   </td>
   <td>
-    <a href="<?php echo HOST . 'admin/order-delete/' . u($order->getId());?>" class="icon-delete"></a>
+  </td>
+  <td>
+    <a 
+      class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
+      href="<?php echo HOST . "admin/";?>order-delete/<?php echo u($order->getId());?>"
+      aria-label="Удалить заказ от  <?php echo h($order->getName());?>"
+    >
+
+        <span class="leftright"></span><span class="rightleft"> </span>
+    </a>
   </td>
 </tr>

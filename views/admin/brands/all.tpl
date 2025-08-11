@@ -60,12 +60,14 @@
                 <?php echo h($brand->getTranslatedDescription());?>
               </a>
             </td>
-           
             <td>
-              <a href="<?php echo HOST . "admin/";?>brand-delete?id=<?php echo u($brand->getId());?>" class="icon-delete link-above-others">
-                <svg class="icon icon--delete">
-                  <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#delete';?>"></use>
-                </svg> 
+              <a 
+                class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
+                href="<?php echo HOST . "admin/";?>admin/brand-delete/<?php echo u($brand->getId());?>"
+                aria-label="Удалить категорию <?php echo h($brand->getTitle());?>"
+              >
+
+                  <span class="leftright"></span><span class="rightleft"> </span>
               </a>
             </td>
           </tr>

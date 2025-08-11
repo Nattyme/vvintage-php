@@ -58,12 +58,15 @@
               <!-- <a target="_blank" 
                href="<?php /* echo HOST . 'usercontent/contact-form/' . h($message['fileNameSrc']);?>"><?php echo isset($message['fileNameOriginal']) ? h($message['fileNameOriginal']) : '-' */;?></a> -->
             </td>
-            <td class="admin-form-table__unit">
+               <td>
+              <a 
+                class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
+                href="<?php echo HOST . "admin/";?>message-delete/<?php echo h($message->getId());?>"
+                aria-label="Удалить сообщение от <?php echo h($message->getName());?>"
+              >
 
-              <!-- <a href="<?php /* echo HOST . 'admin/message-delete?id=' . u($message['id']); */?>" class="button button-close cross-wrapper cart__delete link-above-others " 
-                aria-label="Удалить товар <?php echo h($message->getId());?>">
-                <span class="leftright"></span><span class="rightleft"> </span>
-              </a> -->
+                  <span class="leftright"></span><span class="rightleft"> </span>
+              </a>
             </td>
           </tr>
           
