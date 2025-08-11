@@ -21,4 +21,9 @@ class RouteData
     {
       return $this->uriModule;
     }
+
+    public function getUriGetParam(): string
+    {
+      return $this->uriGetParam;
+    }
 }

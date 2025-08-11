@@ -96,7 +96,7 @@ final class Post
 
 
     // Получение названия в нужной локали, иначе fallback description
-    public function getDesc(?string $locale = null): string
+    public function getDescription(?string $locale = null): string
     {
         return $this->description;
     }

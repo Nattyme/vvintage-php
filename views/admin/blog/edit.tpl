@@ -1,12 +1,12 @@
 <script src="<?php echo HOST;?>libs/ckeditor/ckeditor.js"></script>
 
 <div class="admin-page__content-form">
-  <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
-  <?php include ROOT . "admin/templates/components/success.tpl"; ?>
+  <?php include ROOT . "views/components/errors.tpl"; ?>
+  <?php include ROOT . "views/components/success.tpl"; ?>
 
   <form class="admin-form" 
         method="POST" 
-        action="<?php echo HOST . 'admin/post-edit?id=' . u($post['id']); ?>" enctype="multipart/form-data">
+        action="<?php echo HOST . 'admin/post-edit?id=' . u($post->getId()); ?>" enctype="multipart/form-data">
 
     <div class="admin-form__field">
       <label class="admin-form__label" for="title">Введите название записи</label> 
@@ -14,7 +14,7 @@
              class="input input--width-label" 
              type="text" 
              placeholder="Заголовок поста" 
-             value="<?php echo h($post['title']); ?>"
+             value="<?php echo isset($_POST['title']) ? h($_POST['title']) : h($post->getTitle()); ?>"
       />
     </div>
 
@@ -25,13 +25,13 @@
              class="input" 
              type="text" 
              placeholder="Описание поста" 
-             value="<?php echo isset($_POST['description']) ? h($_POST['description']) : ''; ?>"
+             value="<?php echo isset($_POST['description']) ? h($_POST['description']) : h($post->getDescription()); ?>"
       />
     
     </div>
 
     
-    <div class="admin-form__field ">
+    <!-- <div class="admin-form__field ">
         <label class="admin-form__label" for="cat">Выберите категорию</label>
         <div class="admin-form__row">
           <select class="select" name="cat" id="cat">
@@ -41,12 +41,12 @@
           </select>
           <a class="button button--s button--primary" href="<?php echo HOST . 'admin/category-blog-new';?>">Создать</a>
         </div>
-    </div>
+    </div> -->
 
     <div class="admin-form__field">
       <label class="admin-form__label" name="editor" for="content">Содержимое поста </label>
       <textarea name="content" class="textarea textarea--width-label" placeholder="Введите текст" id="editor">
-        <?php echo $post['content'] ;?>
+        <?php echo isset($_POST['content']) ? h($_POST['content']) : h($post->getContent()); ?>
       </textarea>
     </div>
 
@@ -59,9 +59,9 @@
             <input name="cover" class="file-button" type="file">
           </div>
         </div>
-        <?php if (!empty($post->cover)) : ?>
+        <?php if (!empty($post->getCover())) : ?>
           <div class="block-upload__img block-upload__img--with-checkbox">
-            <img src="<?php echo HOST . 'usercontent/blog/' . $post['coverSmall'];?>" alt="Загрузка картинки" />
+            <img src="<?php echo HOST . 'usercontent/blog/' . h($post->getCover());?>" alt="Загрузка картинки" />
             <div class="block-upload__checkbox">
          
               <label class="admin-form__label admin-form__label--with-checkbox">

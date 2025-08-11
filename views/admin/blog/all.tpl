@@ -43,12 +43,12 @@
           <tr>
             <td><?php echo h( $post->getId() ); ?></td>
             <td>
-              <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>post-edit?id=<?php echo h( $post->getId() ); ?>">
+              <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>post-edit/<?php echo h( $post->getId() ); ?>">
                 <?php echo h(shortText($post->getTitle(), $limit = 50));?>"
               </a>
             </td>
             <td>
-              <?php echo h( shortText($post->getDesc(), $limit = 50) );?>"
+              <?php echo h( shortText($post->getDescription(), $limit = 50) );?>"
             </td>
             <td>
               <img 

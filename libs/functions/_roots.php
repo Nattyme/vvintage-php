@@ -61,7 +61,7 @@
     } else {
       $uriGet = NULL;
     }
-    // $uriGet = isset($uriArr[2]) ? $uriArr[2] : null; 
+    $uriGet = isset($uriArr[2]) ? $uriArr[2] : null; 
     return $uriGet; // ['blog/cat/5'] => 5
   }
   
