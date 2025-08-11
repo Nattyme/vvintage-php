@@ -49,6 +49,11 @@ class PostService
       return $this->postRepository->getPostById($id);
     }
 
+    // public function getPostMainCategory(int $id)
+    // {
+
+    // }
+
     public function getAllMainCategories(): array
     { 
       return $this->postCategoryRepository->getMainCats();
@@ -77,5 +82,25 @@ class PostService
         'subCategories' => $subCategories,
         'totalPosts' => $totalPosts
       ];
+    }
+
+    public function getPostViewData(int $id): array
+    {
+      $post = $this->getPost($id);
+      $category = $post->getCategory();
+
+      $mainCatId = $category->getParentId();
+      $mainCategory =  $this->postCategoryRepository->getPostCatById($mainCatId);
+      $allMainCategories = $this->getAllMainCategories();
+      $allSubCategories = $this->getAllSubCategories();
+
+      return [
+        'post' => $post,
+        'category' => $category,
+        'mainCategory' =>  $mainCategory,
+        'allMainCategories' => $allMainCategories,
+        'allSubCategories' => $allSubCategories,
+      ];
+
     }
 }

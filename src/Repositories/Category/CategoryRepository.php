@@ -142,6 +142,30 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return Category::fromDTO($dto);
     }
 
+    private function mapBeanToArray(OODBBean $bean): array
+    {
+      $translations = $this->loadTranslations((int) $bean->id);
+
+      return [
+          'id' => (int) $bean->id,
+          'title' => (string) $bean->title,
+          'parent_id' => (int) $bean->parent_id,
+          'image' => (string) $bean->image,
+          'translations' => $translations
+      ];
+    }
+
+    public function getMainCategoriesArray(): array
+    {
+        // Достаём все категории, у которых parent_id = NULL
+        $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id IS NULL');
+
+        // Превращаем каждую в массив
+        return array_map([$this, 'mapBeanToArray'], $beans);
+    }
+
+
+
     public function getParentCategory(Category $category): ?Category
     {
       $parentId = $category->getParentId();

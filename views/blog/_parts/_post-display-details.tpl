@@ -8,7 +8,7 @@
   $coverPath = HOST . 'usercontent/blog/';
 
   $title = $post->getTitle() ? h(shortText($post->getTitle(), $limit = 200)) : 'Статья блога "vvintage"';
-  $description = h(shortText($post->getDesc(), $limit = 50));
+  $description = h(shortText($post->getDescription(), $limit = 50));
 
   $views = $post->getViews() ?  h($post->getViews()) : '0';
 

@@ -89,9 +89,9 @@ final class Post
     }
 
 
-    public function getCat(): int
+    public function getCategory(): ?PostCategory
     {
-      return $this->category();
+      return $this->category;
     }
 
 

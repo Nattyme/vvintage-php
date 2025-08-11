@@ -69,6 +69,14 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return array_map([$this, 'mapArrayToPostCategory'], $mainCategories);
     }
 
+    public function getParentCategory(PostCategory $childCategrory): ?PostCategory
+    {
+      $mainCatId =  $childCategrory->getId();
+      return $this->getPostCatById($mainCatId);
+    }
+
+    
+
     public function getSubCats(): array
     {
         $rows = $this->unitePostRawData();
@@ -79,6 +87,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
         return array_map([$this, 'mapArrayToPostCategory'], $subCategories);
     }
+
 
     public function savePostCat(PostCategory $cat): int
     {

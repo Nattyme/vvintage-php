@@ -1,8 +1,16 @@
 <script src="<?php echo HOST;?>libs/ckeditor/ckeditor.js"></script>
 
 <div class="admin-page__content-form">
-  <?php include ROOT . "views/components/errors.tpl"; ?>
-  <?php include ROOT . "views/components/success.tpl"; ?>
+  <?php 
+    include ROOT . "views/components/errors.tpl"; 
+    include ROOT . "views/components/success.tpl"; 
+
+    $post = $postViewData['post'];
+    $curretCategory = $postViewData['category'];
+    $currentMainCategory = $postViewData['mainCategory'];
+    $allMainCategories = $postViewData['allMainCategories'];
+    $allSubCategories = $postViewData['allSubCategories'];
+  ?>
 
   <form class="admin-form" 
         method="POST" 
@@ -31,17 +39,38 @@
     </div>
 
     
-    <!-- <div class="admin-form__field ">
-        <label class="admin-form__label" for="cat">Выберите категорию</label>
+    <div class="admin-form__field ">
+        <label class="admin-form__label" for="cat">Выберите раздел</label>
         <div class="admin-form__row">
           <select class="select" name="cat" id="cat">
-            <?php foreach ($cats as $cat) : ?>
-              <option value="<?php echo h($cat['id']);?>"><?php echo h($cat['title']);?></option>
+            <?php foreach ($allMainCategories as $mainCaterory) : ?>
+              <option value="<?php echo h($mainCaterory->getId());?>" <?php $mainCaterory->getId() === $currentMainCategory->getId() ? 'selected' : '';?>>
+                <?php echo h($mainCaterory->getTitle());?>
+              </option>
             <?php endforeach; ?>
           </select>
           <a class="button button--s button--primary" href="<?php echo HOST . 'admin/category-blog-new';?>">Создать</a>
         </div>
-    </div> -->
+    </div>
+
+    <?php if ($currentMainCategory) : ?>
+    <div class="admin-form__field ">
+        <label class="admin-form__label" for="cat">Выберите категорию</label>
+        <div class="admin-form__row">
+          <select class="select" name="cat" id="cat">
+            <?php foreach ($allSubCategories as $category) : ?>
+
+              <?php if($category-getId() === $currentMainCategory->getId()) : ?>
+                <option value="<?php echo h($category->getId());?>" <?php $cat === $curretCategory->getId() ? 'selected' : '';?>>
+                  <?php echo h($cat->getTitle());?>
+                </option>
+              <?php endif;?>
+            <?php endforeach; ?>
+          </select>
+          <a class="button button--s button--primary" href="<?php echo HOST . 'admin/category-blog-new';?>">Создать</a>
+        </div>
+    </div>
+    <?php endif; ?>
 
     <div class="admin-form__field">
       <label class="admin-form__label" name="editor" for="content">Содержимое поста </label>

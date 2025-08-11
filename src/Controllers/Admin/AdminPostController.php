@@ -281,10 +281,11 @@ class AdminPostController extends BaseAdminController
 
     // Получаем пост по Id 
     $postId = $routeData->getUriGetParam();
-    $post = $this->adminPostService->getPost((int) $postId);
-
+    // $post = $this->adminPostService->getPost((int) $postId);
+    $postViewData =  $this->adminPostService->getPostViewData((int) $postId);
+dd($postViewData);
     $this->renderLayout('blog/edit',  [
-      'post' => $post,
+      'postViewData' => $postViewData,
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
     ]);

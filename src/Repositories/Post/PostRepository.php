@@ -208,11 +208,13 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     /* :::::::: Категории :::::::: */
 
     // Получаем категорию поста
-    public function getCategory(Post $post): PostCategoryDTO 
-    {
-        $row = $this->loadBean(self::TABLE_CATEGORIES, $post->category_id);
-        return $this->createCategoryDTOFromArray($row);
-    }
+    // public function getCategory(Post $post): PostCategoryDTO 
+    // {
+    //     $catId = $post->getCategory()->getId();
+    //     $row = $this->loadBean(self::TABLE_CATEGORIES, $catId);
+
+    //     return $this->createCategoryDTOFromArray($row);
+    // }
 
     public function findBySlug(string $slug): PostCategoryDTO
     {
