@@ -59,7 +59,14 @@
               <?php echo h(rus_date('j. m. Y. H:i', $post->getDateTime()->getTimestamp()));?>
             </td>
             <td>
-              <a href="<?php echo HOST . "admin/";?>post-delete?id=<?php echo h($post->getId());?>" class="icon-delete"></a>
+              <a 
+                class="button button-close cross-wrapper cart__delete link-above-others"   
+                href="<?php echo HOST . "admin/";?>post-delete/<?php echo h($post->getId());?>"
+                aria-label="Удалить статью <?php echo h($post->getTitle());?>"
+              >
+
+                  <span class="leftright"></span><span class="rightleft"> </span>
+              </a>
             </td>
           </tr>
         <?php endforeach; ?>
