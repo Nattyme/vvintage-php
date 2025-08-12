@@ -25,6 +25,7 @@ final class ProductDTO
     public string $sku;
     public int $stock;
     public string $datetime;
+    public string $edit_time;
 
     public ?array $images;
     public ?int $imagesTotal;
@@ -55,6 +56,7 @@ final class ProductDTO
         $this->sku = (string) ($data['sku'] ?? '');
         $this->stock = (int) ($data['stock'] ?? 0);
         $this->datetime = (string) ($data['datetime'] ?? '');
+        $this->edit_time = (string) ($data['edit_time'] ?? '');
 
         $imagesRaw = $data['images'] ?? null;
         if (is_array($imagesRaw)) {

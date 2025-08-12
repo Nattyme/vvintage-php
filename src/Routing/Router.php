@@ -490,7 +490,6 @@
 
       $postRepository = new  PostRepository();
       $postCategoryRepository = new PostCategoryRepository(); 
-      $messageRepository = new MessageRepository(); 
 
 
       $homeAdminController = new HomeAdminController();
@@ -500,7 +499,7 @@
       $adminUsersController = new AdminUsersController();
       $adminOrdersController = new AdminOrdersController();
       $adminPostController = new AdminPostController($notes, $breadcrumbs);
-      $adminMessageController = new AdminMessageController($messageRepository, $notes);
+      $adminMessageController = new AdminMessageController($notes);
       $adminPostCatController = new AdminPostCatController($postCategoryRepository, $notes);
 
       switch ($routeData->uriGet) {
@@ -636,17 +635,16 @@
 
       case 'messages':
         $adminMessageController->all($routeData);
-
-        // require ROOT . "admin/modules/messages/all.php";
         break;
 
       case 'message':
-        // $adminMessageController->all($routeData);
+        $adminMessageController->single($routeData);
         // require ROOT . "admin/modules/messages/single.php";
         break;
 
       case 'message-delete':
-        require ROOT . "admin/modules/messages/delete.php";
+        $adminMessageController->delete($routeData);
+        // require ROOT . "admin/modules/messages/delete.php";
         break;
 
     

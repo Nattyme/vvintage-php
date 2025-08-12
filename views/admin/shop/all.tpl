@@ -28,9 +28,9 @@
     <div class="admin-form__row">
       <select class="select" name="action">
         <option value="">— Выберите действие —</option>
-        <option value="delete">Удалить</option>
         <option value="hide">Скрыть</option>
         <option value="show">Показать</option>
+        <option value="archived">В архив</option>
       </select>
       <button type="select-submit" class="button button--s button--primary">Применить</button>
     </div>

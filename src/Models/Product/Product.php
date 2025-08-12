@@ -32,6 +32,7 @@ class Product
     private string $sku;
     private int $stock;
     private \Datetime $datetime;
+    private string $edit_time;
     private array $translations;
     private string $currentLocale = 'ru';
     private ?array $images;      // массив изображений
@@ -68,6 +69,7 @@ class Product
       $product->sku = $dto->sku;
       $product->stock = $dto->stock;
       $product->datetime = new \Datetime ();
+      $product->edit_time = $dto->edit_time;
       $product->translations = $dto->translations;
       $product->images = $dto->images;
       
@@ -90,6 +92,7 @@ class Product
       $product->sku =  (string) ($data['sku'] ?? '');
       $product->stock =  (int) ($data['stock'] ?? 0);
       $product->datetime =  (string) ($data['datetime'] ?? '');
+      $product->edit_time =  (string) ($data['edit_time'] ?? '');
 
       $product->images = $data['images'] ?? [];
 
@@ -146,6 +149,11 @@ class Product
     public function getDatetime(): \Datetime
     {
         return $this->datetime;
+    }
+
+    public function getEditTime(): string
+    {
+        return $this->edit_time;
     }
 
     public function getCategory(): Category

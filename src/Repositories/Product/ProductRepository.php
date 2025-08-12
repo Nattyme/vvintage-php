@@ -229,6 +229,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             'sku' => (string) $row['sku'],
             'stock' => (int) $row['stock'],
             'datetime' => (string) $row['datetime'],
+            'edit_time' => (string) $row['edit_time'],
             'images_total' => count($imagesDTO),
             'translations' => $translations,
             'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,

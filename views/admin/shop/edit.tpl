@@ -15,6 +15,13 @@
     <div class="admin-form__row">
       <div class="admin-form__column">
         <div class="admin-form__field">
+          <label class="admin-form__label" for="title">Дата последнего обновления</label>
+        
+          <input  id="title" name="title" class="admin-form__input input" type="text"
+                  value="<?php echo h(rus_date('j. m. Y. H:i', $product->getEditTime()));?>"
+                  placeholder="Введите название" disabled/>
+        </div>
+        <div class="admin-form__field">
           <label class="admin-form__label" for="title">Название товара</label>
           <input id="title" name="title" class="admin-form__input input" type="text"
                   value="<?php echo isset($_POST['title']) ? h($_POST['title']) : h($product->getTitle()); ?>"

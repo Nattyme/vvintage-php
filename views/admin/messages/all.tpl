@@ -39,7 +39,7 @@
               <?php echo h($message->getId());?>
             </td>
             <td class="admin-form-table__unit block-text">
-              <a class="link-to-page" href="<?php echo HOST;?>admin/message?id=<?php echo h($message->getId());?>">
+              <a class="link-to-page" href="<?php echo HOST;?>admin/message/<?php echo h($message->getId());?>">
                 <p class="block-text__desc"><?php echo h($message->getName());?></p>
               </a>
             </td>
