@@ -21,6 +21,7 @@ final class ProductDTO
     public string $description;
     public string $price;
     public string $url;
+    public string $status;
     public string $sku;
     public int $stock;
     public string $datetime;
@@ -49,6 +50,7 @@ final class ProductDTO
         $this->description = (string) ($data['description'] ?? '');
         $this->price = isset($data['price']) ? (string) $data['price'] : '';
         $this->url = (string) ($data['url'] ?? '');
+        $this->status = (string) ($data['status'] ?? '');
         
         $this->sku = (string) ($data['sku'] ?? '');
         $this->stock = (int) ($data['stock'] ?? 0);

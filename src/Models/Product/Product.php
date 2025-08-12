@@ -28,6 +28,7 @@ class Product
     private string $description;
     private string $price;
     private string $url;
+    private string $status;
     private string $sku;
     private int $stock;
     private \Datetime $datetime;
@@ -63,6 +64,7 @@ class Product
       $product->description = $dto->description;
       $product->price = $dto->price;
       $product->url = $dto->url;
+      $product->status = $dto->status;   
       $product->sku = $dto->sku;
       $product->stock = $dto->stock;
       $product->datetime = new \Datetime ();
@@ -84,6 +86,7 @@ class Product
       $product->description = (string) ($data['description'] ?? '');
       $product->price = (string) ($data['price'] ?? '');
       $product->url = (string) ($data['url'] ?? '');
+      $product->status = (string) ($data['status'] ?? '');
       $product->sku =  (string) ($data['sku'] ?? '');
       $product->stock =  (int) ($data['stock'] ?? 0);
       $product->datetime =  (string) ($data['datetime'] ?? '');
@@ -172,5 +175,15 @@ class Product
     public function getSku(): string 
     {
       return $this->sku;
+    }
+
+    public function getSlug(): string
+    {
+      return $this->slug;
+    }
+
+    public function getStatus(): string
+    {
+      return $this->status;
     }
 }

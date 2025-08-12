@@ -56,6 +56,7 @@ class AdminProductController extends BaseAdminController
     $pagination = pagination($productsPerPage, 'products');
     $products = $this->adminProductService->getAll($pagination);
     $total = $this->adminProductService->countProducts();
+    $statusList = $this->adminProductService->getStatusList();
 
     $imagesByProductId = [];
 
@@ -68,7 +69,8 @@ class AdminProductController extends BaseAdminController
     $productViewModel = [
         'products' => $products,
         'total' => $total,
-        'imagesByProductId' => $imagesByProductId
+        'imagesByProductId' => $imagesByProductId,
+        'statusList'=> $statusList
     ];
         
 
@@ -84,11 +86,13 @@ class AdminProductController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = "Добавить новый товар";
+    $statusList = $this->adminProductService->getStatusList();
     // $pageClass = "admin-page";
 
     $this->renderLayout('shop/new',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
+      'statusList' => $statusList
     ]);
   }
 
@@ -101,10 +105,10 @@ class AdminProductController extends BaseAdminController
     // Получаем продукт по Id 
     $productId = $routeData->getUriGetParam();
     $product = $this->adminProductService->getProductById((int) $productId);
-
+    $statusList = $this->adminProductService->getStatusList();
     // Получаем главные категориии, подкатегории и бренды
     // $mainCats = $this->categoryRepository->getMainCats();
-    // $subCats = $this->categoryRepository->getSubCats();
+    // $subCats = $this->/categoryRepository->getSubCats();
     // $brands = $this->brandRepository->getAllBrands();
 
     // Загружаем объект категории
@@ -194,13 +198,12 @@ class AdminProductController extends BaseAdminController
     //   }
     // }
 
-    // Получаем продукт по id
-    // $product = R::load('products', $_GET['id']);
 
     $this->renderLayout('shop/edit',  [
       'product' => $product,
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
+      'statusList' => $statusList
     ]);
   }
 }

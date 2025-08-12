@@ -12,9 +12,6 @@ use Vvintage\Contracts\Bramd\BrandRepositoryInterface;
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
-/** Репозитории */
-// use Vvintage\Repositories\Product\ProductRepository;
-
 /** Модель */
 use Vvintage\Models\Product\Product;
 
@@ -56,6 +53,7 @@ final class ProductController extends BaseController
         $seo = $this->seoService->getSeoForPage('product', $product);
         $productImagesData = $this->productService->getProductImagesData($product->getImages());
         $related = $product->getRelated();
+        $statusList = $this->productService->getStatusList();
 
         // Формируем единую модель для передачи в шаблон
         $productViewModel = [
@@ -64,6 +62,7 @@ final class ProductController extends BaseController
             'main' => $productImagesData['main'],
             'gallery' => $productImagesData['gallery'], 
             'related' => $related,
+            'statusList'=> $statusList
         ];
 
         // Название страницы и хлебные крошки

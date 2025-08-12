@@ -20,6 +20,7 @@ class ProductService
     private ProductRepository $repository;
     private CategoryRepository $categoryRepository;
     private ProductImageService $productImageService;
+    private array $status;
 
     public function __construct($languages, $currentLang)
     {
@@ -28,12 +29,19 @@ class ProductService
         $this->repository = new ProductRepository($this->currentLang);
         $this->categoryRepository = new CategoryRepository($this->currentLang);
         $this->productImageService = new ProductImageService();
+        $this->status = ['active'=> 'Активный', 'hidden'=>'Невидимый', 'archived'=>'В архиве'];
     }
+
+    public function getStatusList(): array {
+      return $this->status;
+    }
+
 
     public function getProductById(int $id): ?Product
     {
         return $this->repository->getProductById($id);
     }
+
 
     //    $result['number_of_pages'] = $number_of_pages;
     // $result['page_number'] = $page_number;

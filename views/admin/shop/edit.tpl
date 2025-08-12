@@ -22,6 +22,13 @@
         </div>
 
         <div class="admin-form__field">
+          <label class="admin-form__label" for="title">Название для страницы товара (латиницей: chasy-chanel)</label>
+          <input id="slug" name="slug" class="admin-form__input input" type="text"
+                  value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : h($product->getSlug()); ?>"
+                  placeholder="Введите название старницы" required/>
+        </div>
+
+        <div class="admin-form__field">
           <label class="admin-form__label" for="price">Цена</label>
           <input id="price" name="price" class="admin-form__input input" type="text"
                   value="<?php echo isset($_POST['getPrice']) ? h($_POST['getPrice']) : h($product->getPrice()); ?>"
@@ -47,30 +54,41 @@
                     
         </div>
 
-        <div class="admin-form__field">
-          <label class="admin-form__label" for="mainCat">Категория</label>
-          <div class="admin-form__row">
-            <select class="select" name="mainCat" id="mainCat" data-selected="<?php echo h($selectedMaiCat);?>"></select>
-      
-            <a 
-              class="button button--s button--primary" 
-              href="<?php echo HOST . 'category-new';?>">
-                Новая категория
-            </a>
-          </div>
+       
+
+       <div class="admin-form__field">
+            <label class="admin-form__label" for="mainCat">Категория</label>
+            <div class="admin-form__row">
+              <select class="select" name="mainCat" id="mainCat">
+                <?php if (isset($_POST['mainCat']) ) : ?>
+                  <option value="<?php echo h($_POST['mainCat']);?>"><?php echo h($_POST['mainCat']);?></option>
+                <?php else : ?>
+                  <option value="">Выберите категорию</option>
+                <?php endif;?>
+              </select>
+        
+              <a 
+                class="button button--s button--primary" 
+                href="<?php echo HOST . 'category-new';?>">
+                  Новая категория
+              </a>
+            </div>
         </div>
 
         <div class="admin-form__field">
-          <label class="admin-form__label" for="subCat">Подкатегория</label>
-          <div class="admin-form__row">
-            <select class="select" name="subCat" id="subCat" data-selected="<?php echo h($selectedSubCat);?>"></select>
+            <label class="admin-form__label" for="subCat">Подкатегория</label>
+            <div class="admin-form__row">
+                <select class="select" name="subCat" id="subCat">
+                  <option value="">Выберите подкатегорию</option>
+                </select>
     
-            <a 
-              class="button button--s button--primary" 
-              href="<?php echo HOST . 'category-new';?>">
-                Новая категория
-            </a>
-          </div>
+
+                <a 
+                  class="button button--s button--primary" 
+                  href="<?php echo HOST . 'category-new';?>">
+                    Новая категория
+                </a>
+            </div>
         </div>
 
         <div class="admin-form__field">
@@ -95,9 +113,24 @@
         <div class="admin-form__field">
           <label class="admin-form__label" for="editor">Описание товара</label>
           <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
-            <?php echo isset($_POST['content']) ? h($_POST['ucontentrl']) : h($product->getContent()); ?>
+            <?php echo isset($_POST['content']) ? h($_POST['content']) : h($product->getContent()); ?>
           </textarea>
         </div>
+
+          <div class="admin-form__field">
+              <label class="admin-form__label" for="status">Статус</label>
+              <div class="admin-form__row">
+              
+                <select class="select" name="status" id="status">
+                  <?php foreach ($statusList as $key => $value) : ?>
+                    <option <?php echo $product->getStatus() === $key ? 'selected' : '';?> value="<?php echo h($key);?>">
+                      <?php echo h($value);?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+                
+              </div>
+          </div>
       </div>
 
       <div class="admin-form__column admin-form__column--imgs">

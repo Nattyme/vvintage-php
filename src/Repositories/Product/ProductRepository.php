@@ -225,6 +225,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             'description' => (string) $row['description'],
             'price' => (string) $row['price'],
             'url' => (string) $row['url'],
+            'status' => (string) $row['status'],
             'sku' => (string) $row['sku'],
             'stock' => (int) $row['stock'],
             'datetime' => (string) $row['datetime'],

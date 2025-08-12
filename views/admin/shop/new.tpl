@@ -20,6 +20,13 @@
             required
           />
         </div>
+ 
+         <div class="admin-form__field">
+          <label class="admin-form__label" for="title">Название для страницы товара (латиницей: chasy-chanel)</label>
+          <input id="slug" name="slug" class="admin-form__input input" type="text"
+                  value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : ''; ?>"
+                  placeholder="Введите название старницы" required/>
+        </div>
 
         <div class="admin-form__field">
           <label class="admin-form__label" for="price">Цена</label>
@@ -113,6 +120,21 @@
           <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
             <?php echo isset($_POST['content']) ? h($_POST['content']) : 'Введите описание товара'; ?>
           </textarea>
+        </div>
+
+        <div class="admin-form__field">
+            <label class="admin-form__label" for="status">Статус</label>
+            <div class="admin-form__row">
+             
+               <select class="select" name="status" id="status">
+                <?php foreach ($statusList as $key => $value) : ?>
+                  <option <?php echo isset($_POST['status']) &&  $_POST['status'] === $key ? 'selected' : '';?> value="<?php echo h($key);?>">
+                    <?php echo h($value);?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+              
+            </div>
         </div>
       </div>
 
