@@ -92,7 +92,7 @@ final class Message
       return $this->status;
     }
 
-    public function getUser_id(): int
+    public function getUserId(): int
     {
       return $this->user_id;
     }

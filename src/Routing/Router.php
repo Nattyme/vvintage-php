@@ -639,12 +639,10 @@
 
       case 'message':
         $adminMessageController->single($routeData);
-        // require ROOT . "admin/modules/messages/single.php";
         break;
 
       case 'message-delete':
         $adminMessageController->delete($routeData);
-        // require ROOT . "admin/modules/messages/delete.php";
         break;
 
     

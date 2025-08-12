@@ -84,8 +84,7 @@ class AdminMessageController extends BaseAdminController
     $this->renderLayout('messages/single',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'messages' => $messages,
-      'pagination' => $pagination
+      'message' => $message
     ]);
   }
 
@@ -93,21 +92,40 @@ class AdminMessageController extends BaseAdminController
 
   private function renderDelete(RouteData $routeData): void
   {
+
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Удаление сообщения';
+    $messageId = (int) $routeData->uriGetParam;
+    $message = $this->adminMessageService->getMessage( $messageId);
 
-    $brandsPerPage = 9;
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+     if (!check_csrf($_POST['csrf'] ?? '')) {
+      $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+    }
+
+    // Если нет ошибок
+    if ( empty($_SESSION['errors'])) {
+
+      // Удаление файла
+      // if ( !empty($message['file_name_src']) ) {
+
+      //   // Удадить файлы с сервера
+      //   $fileFolderLocation = ROOT . 'usercontent/contact-form/';
+      //   unlink($fileFolderLocation . $message->file_name_src);
+      // }
+
+      // R::trash($message);
+      // $_SESSION['success'][] = ['title' => 'Сообщение было успешно удалено.'];
+     
+      header('Location: ' . HOST . 'admin/messages');
+      exit();
+    }
+
         
-    $this->renderLayout('messages/all',  [
+    $this->renderLayout('messages/delete',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
+      'message' => $message
     ]);
 
   }
