@@ -12,12 +12,13 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Address\Address;
 
-
+/** Сервисы */
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Repositories\Order\OrderRepository;
+use Vvintage\Services\User\UserService;
+
+// use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Models\Order\Order;
 
@@ -26,8 +27,9 @@ require_once ROOT . './libs/functions.php';
 
 final class ProfileController extends BaseController
 { 
-  private OrderRepository $orderRepository;
-  private UserRepository $userRepository;
+  // private OrderRepository $orderRepository;
+  // private UserRepository $userRepository;
+  private UserService $userService;
   private SessionManager $sessionManager;
   private Breadcrumbs $breadcrumbsService;
   private FlashMessage $notes;
@@ -35,8 +37,9 @@ final class ProfileController extends BaseController
   public function __construct(SessionManager $sessionManager, Breadcrumbs $breadcrumbs, FlashMessage $notes)
   {
     parent::__construct(); // Важно!
-    $this->orderRepository = new OrderRepository();
-    $this->userRepository = new UserRepository();
+    // $this->orderRepository = new OrderRepository();
+    // $this->userRepository = new UserRepository();
+    $this->userService = new UserService($this->languages, $this->currentLang);
     $this->sessionManager = $sessionManager;
     $this->breadcrumbsService = $breadcrumbs;
     $this->notes = $notes;
@@ -118,7 +121,8 @@ final class ProfileController extends BaseController
       };
       $id = $userModel->getId();
 
-      $orders = $this->orderRepository->getOrdersByUserId($id);
+      $orders = $this->userService->getOrdersByUserId($id);
+
     } else {
       header('Location: ' . HOST . 'login');
     }
@@ -143,7 +147,7 @@ final class ProfileController extends BaseController
         $this->userRepository->ensureUserHasAddress($userModel);
       }
 
-      $orders = $this->orderRepository->getOrdersByUserId($id);
+      $orders = $this->userService->getOrdersByUserId($id);
     } else {
       header('Location: ' . HOST . 'login');
     }
@@ -173,8 +177,7 @@ final class ProfileController extends BaseController
       $userId = $userModel->getId();
 
       // Если есть ID  - получаем данные заказа, проверя, что это заказ вошедшего в свой профиль пользователя
-      $order = $this->orderRepository->getOrderById((int) $_GET['id']);
-
+      $orders = $this->userService->getOrderById((int)$routeData->uriGetParam);
       // Проверка, что заказ принадлежит текущему пользователю
       if ( $order->getUserId() !== $userId) {
         header('Location: ' . HOST . 'profile');
@@ -188,9 +191,10 @@ final class ProfileController extends BaseController
       $ids = array_fill_keys(array_column($products, 'id'), 1);
 
       // Запрос продуктов и соответствующих им изображений
-      $productRepository = new ProductRepository();
+      // $productRepository = new ProductRepository();
       // Пересобирем в новый массив $productsData с ключами - Id товара
-      $productsData = $productRepository->getProductsByIds($ids);
+      $productsData = $this->userService->getProductsByIds($ids);
+      // $productsData = $productRepository->getProductsByIds($ids);
 
       // Создаём ассоциативный массив из cart: [id => amount]
       $amountMap = array_column($products, 'amount', 'id');

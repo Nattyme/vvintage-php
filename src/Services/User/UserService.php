@@ -3,20 +3,38 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\User;
 
+/** Модели */
 use Vvintage\Models\User\User;
 use Vvintage\Models\Address\Address;
-use Vvintage\Repositories\UserRepository;
-use Vvintage\Repositories\AddressRepository;
+use Vvintage\Models\Order\Order;
+
+/** Сервисы */
 use Vvintage\Services\Address\AddressService;
+use Vvintage\Services\Product\ProductService;
+use Vvintage\Repositories\AddressRepository;
+
+/** Репозитории */
+use Vvintage\Repositories\Order\OrderRepository;
+use Vvintage\Repositories\User\UserRepository;
 
 final class UserService
 {
   private UserRepository $userRepository;
   private AddressService $addressService;
+  private OrderRepository $orderRepository;
+  private ProductService $productService;
 
-  public function __construct (UserRepository $userRepository, AddressService $addressService) {
-    $this->userRepository = $userRepository;
-    $this->addressService = $addressService;
+  private array $languages;
+  private string $currentLang;
+
+  public function __construct (array $languages, string $currentLang) {
+    $this->languages = $languages;
+    $this->currentLang = $currentLang;
+    $this->userRepository = new UserRepository ();
+    $this->addressService = new AddressService();
+    $this->orderRepository = new OrderRepository();
+    $this->productService = new ProductService( $this->languages,  $this->currentLang);
+   
   }
   
 // createNewUser
@@ -39,5 +57,20 @@ final class UserService
     // }
 
     return $userModel;
+  }
+
+  public function getOrdersByUserId(int $id): array
+  {
+    return  $this->orderRepository->getOrdersByUserId($id);
+  }
+
+  public function getOrderById(int $id)
+  {
+     return $this->orderRepository->getOrderById($id);
+  }
+
+  public function getProductsByIds(array $ids)
+  {
+    return $this->productRepository->getProductsByIds($ids);
   }
 }

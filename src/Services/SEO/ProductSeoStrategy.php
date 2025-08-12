@@ -29,4 +29,26 @@ class ProductSeoStrategy implements SeoStrategyInterface
             $meta['meta_description'] ?? $meta['description'] ?? ''
         );
     }
+
+    public function getStructuredData(): string
+    {
+        $locale = $this->product->getCurrentLocale();
+        $translations = $this->product->getTranslations();
+        $meta = $translations[$locale] ?? [];
+
+        $data = [
+            "@context" => "https://schema.org",
+            "@type" => "Product",
+            "name" => $meta['title'] ?? '',
+            "description" => $meta['description'] ?? '',
+            "brand" => [
+                "@type" => "Brand",
+                "name" => $this->product->getBrandName()
+            ],
+            "image" => $this->product->getImageUrl(),
+        ];
+
+        return '<script type="application/ld+json">' . json_encode($data, JSON_UNESCAPED_UNICODE) . '</script>';
+    }
+
 }

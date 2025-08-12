@@ -181,7 +181,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     public function getAllCategoriesArray(): array
     {
         // Достаём все категории без фильтра
-        $beans = $this->findAll(self::TABLE_CATEGORIES, '');
+        $beans = $this->findAll(self::TABLE_CATEGORIES);
 
         // Сбрасываем ключи и преобразуем в массивы
         return array_values(array_map([$this, 'mapBeanToArray'], $beans));

@@ -52,7 +52,7 @@ abstract class AbstractRepository
     protected function findAll(string $table, ?string $sql = null, array $params = []): array
     {
         if ($sql === null) {
-            $sql = 'ORDER BY id DESC';
+            $sql = 'ORDER BY id ASC';
         } elseif (!preg_match('/^\s*(WHERE|ORDER BY)/i', $sql)) {
             $sql = 'WHERE ' . $sql;
         }
