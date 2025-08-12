@@ -17,18 +17,18 @@ class BrandApiController extends BaseController
     } 
 
     //  Метод сам выведет получит и выведет данные через echo и заголовки.
-    public function getBrands(): void
+    public function getAllBrands(): void
     {
         try {
             // Вызов метода сервиса, который возвращает массив главных категорий.
-            $brands = $this->brandService->getBrandArray();
+            $brands = $this->brandService->getBrandsArray();
 
             // Отправляем заголовок HTTP, говорящий браузеру (или клиенту API), что ответ — это JSON в кодировке UTF-8.
             header('Content-Type: application/json; charset=utf-8');
 
             // Преобразуем массив категорий в JSON-строку и отправляем клиенту.
             // Флаг JSON_UNESCAPED_UNICODE нужен, чтобы кириллица и другие юникод символы выводились "как есть", без \uXXXX кодирования
-            echo json_encode($categories, JSON_UNESCAPED_UNICODE);
+            echo json_encode($brands, JSON_UNESCAPED_UNICODE);
 
         } 
 

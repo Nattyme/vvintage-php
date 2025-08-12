@@ -78,6 +78,7 @@
 
   // API
   use Vvintage\Controllers\Api\Category\CategoryApiController;
+  use Vvintage\Controllers\Api\Brand\BrandApiController;
 
 
 
@@ -167,6 +168,7 @@
     private static function routeApi(RouteData $routeData)
     {
         $categoryApiController = new CategoryApiController();
+        $brandApiController = new BrandApiController();
 
         switch ($routeData->uriGet) {
             case 'category-main':
@@ -189,6 +191,9 @@
             case 'categories':
                $categoryApiController->getAllCategories();
                break;
+            case 'brands' :
+                $brandApiController->getAllBrands();
+                break;
 
             default:
                 http_response_code(404);

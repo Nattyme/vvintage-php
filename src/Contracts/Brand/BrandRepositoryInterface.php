@@ -13,4 +13,5 @@ interface BrandRepositoryInterface
     public function getBrandsByIds(array $ids): array;
     public function saveBrand(Brand $brand): ?int;
     public function getAllBrandsCount(?string $sql = null, array $params = []): int;
+    public function getBrandsArray(): array;
 }

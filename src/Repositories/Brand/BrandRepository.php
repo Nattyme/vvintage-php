@@ -70,6 +70,18 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         return Brand::fromDTO($dto);
     }
 
+    private function mapBeanToArray(OODBBean $bean): array
+    {
+      $translations = $this->loadTranslations((int) $bean->id);
+
+      return [
+          'id' => (int) $bean->id,
+          'title' => (string) $bean->title,
+          'image' => (string) $bean->image,
+          'translations' => $translations
+      ];
+    }
+
     /**
      * Загружает переводы из brands_translation
      */
@@ -177,6 +189,16 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     public function getAllBrandsCount(?string $sql = null, array $params = []): int
     {
       return $this->countAll(self::TABLE_BRANDS, $sql, $params);
+    }
+
+    // Для api
+    public function getBrandsArray(): array
+    {
+        // Достаём все категории, у которых parent_id = NULL
+        $beans = $this->findAll(self::TABLE_BRANDS);
+
+        // Сбрасываем ключи и преобразуем в массивы
+        return array_values(array_map([$this, 'mapBeanToArray'], $beans));
     }
 
 }

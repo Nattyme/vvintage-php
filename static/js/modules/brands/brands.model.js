@@ -3,7 +3,8 @@ const initModel = () => {
 
   const loadBrands = async () => {
     try {
-      const res = await fetch('/admin/api/brands/brands.php');
+      const res = await fetch('/api/brands');
+
       if (!res.ok) throw new Error('Ошибка сети');
       return await res.json();
     } catch (err) {
@@ -15,6 +16,7 @@ const initModel = () => {
 
   const setBrands = async () => {
     brands = await loadBrands();
+  
     return brands;
   }
 
