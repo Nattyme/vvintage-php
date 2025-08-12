@@ -35,6 +35,11 @@ final class CategoryService
       return $this->repository->getMainCategoriesArray();
     }
 
+    public function getSubCategoriesArray($parent_id = null): array
+    {
+      return $this->repository->getSubCategoriesArray($parent_id);
+    }
+
     public function getAllCategoriesArray(): array
     {
       return $this->repository->getAllCategoriesArray();

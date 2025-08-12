@@ -24,7 +24,8 @@ const initView = () => {
   const addAdminActiveClass = () => {
     if (header.classList.contains('header--with-admin-panel')) {
       navOverlay.classList.add('catalog-dropdown__background--with-admin-panel');
-      navList.classList.add('nav__list--with-admin-panel');
+      nav.classList.add('nav__list--with-admin-panel');
+      // navList.classList.add('nav__list--with-admin-panel');
     }
   }
 

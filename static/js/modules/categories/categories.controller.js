@@ -17,9 +17,9 @@ const initCategoriesEvents = async () => {
 
   // Если в селекте уже выбрана категория — редактируем, значит, надо загрузить и подкатегории
   const selectedMainCatId = view.getSelectedId(mainCatsBlock);
-
   if (selectedMainCatId) {
     const subCats = await model.setSubCats(selectedMainCatId);
+
     view.setCategoriesOptions(subCats, subCatsBlock);
   }
 
@@ -27,7 +27,10 @@ const initCategoriesEvents = async () => {
   // Повесим слушатель изменения селекта главных категорий 
   mainCatsBlock.addEventListener('change', async (e) => {
     subCatsBlock.innerHTML = '';
+        
     const subCats = await model.setSubCats(e.target.value);
+  console.log(subCats);
+      
     // Заполним опции для селекта подкатегорий.
     view.setCategoriesOptions(subCats, subCatsBlock);
   });

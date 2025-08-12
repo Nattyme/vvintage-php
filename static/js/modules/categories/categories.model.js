@@ -4,7 +4,7 @@ const iniModel = () => {
 
   const loadMainCats = async () => {
     try {
-      const res = await fetch('/admin/api/categories/main.php');
+      const res = await fetch('/api/category-main');
       if (!res.ok) throw new Error('Ошибка сети');
       return await res.json();
     } catch (err) {
@@ -15,7 +15,8 @@ const iniModel = () => {
 
   const loadSubCats = async (parentId) => {
     try {
-      const res = await fetch('/admin/api/categories/sub.php?parent_id=' + parentId);
+      const res = await fetch('/api/category-sub/' + parentId);
+      // const res = await fetch('/api/categories-sub?parent_id=' + parentId);
       if (!res.ok) throw new Error('Ошибка сети');
       return await res.json();
     } catch (err) {

@@ -169,12 +169,21 @@
         $categoryApiController = new CategoryApiController();
 
         switch ($routeData->uriGet) {
-            case 'category':
+            case 'category-main':
                 if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
                     $categoryApiController->getMainCategories((int) $routeData->uriGetParam);
                 } else {
                     // Если параметра нет, или он некорректен — возможно, вернуть все категории
                     $categoryApiController->getMainCategories();
+                }
+                break;
+            case 'category-sub':
+                if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
+                    $categoryApiController->getSubCategories((int) $routeData->uriGetParam);
+                } 
+                else {
+                    // Если параметра нет, или он некорректен — возможно, вернуть все категории
+                    $categoryApiController->getSubCategories();
                 }
                 break;
             case 'categories':

@@ -51,7 +51,11 @@ abstract class AbstractRepository
      */
     protected function findAll(string $table, ?string $sql = null, array $params = []): array
     {
-        $sql = $sql ?? 'ORDER BY id DESC';
+        if ($sql === null) {
+            $sql = 'ORDER BY id DESC';
+        } elseif (!preg_match('/^\s*(WHERE|ORDER BY)/i', $sql)) {
+            $sql = 'WHERE ' . $sql;
+        }
         return R::findAll($table, $sql, $params);
     }
 
