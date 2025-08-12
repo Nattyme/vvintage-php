@@ -8,18 +8,23 @@ const initController = async () => {
   if ( !view || !model) return;
 
   const nav = view.getNav();
-  const navList = view.getNavList();
+  // const navList = view.getNavList();
   const catsData = await model.setCatsData();   // Получаем данные по категориям с сервера и задаем cats в модели
   const mainCats = model.getMainCats();  // Найдем основные категории
-  if (!catsData || !nav || !navList || !mainCats) return;
-
+  if (!catsData || !nav ||  !mainCats) return;
+  // if (!catsData || !nav || !navList || !mainCats) return;
  
   view.addAdminActiveClass(); // Если нужно - задаем активный класс админ панели
   view.findAndRemoveAllSubNavs();  // Находим и удаляем все подменю
   const mainMenuMarkup = view.renderMenuTree(mainCats, 1);
-  navList.innerHTML = mainMenuMarkup;
-  view.fillNav(navList, mainCats);  // Добавляем разметку c основными категорими в навигацию
-  const catBlocksAll = navList.querySelectorAll('.nav__block');
+  nav.innerHTML = mainMenuMarkup;
+
+  
+  // navList.innerHTML = mainMenuMarkup;
+  view.fillNav(nav, mainCats);  // Добавляем разметку c основными категорими в навигацию
+  // view.fillNav(navList, mainCats);  // Добавляем разметку c основными категорими в навигацию
+  const catBlocksAll = nav.querySelectorAll('.nav__block');
+  // const catBlocksAll = navList.querySelectorAll('.nav__block');
   if (!catBlocksAll) return;
 
 
@@ -30,6 +35,7 @@ const initController = async () => {
     if (!catId) return;
     const currentCatData = model.getCatsByParent(catId); // получаем данные объекта по категории
     if(!currentCatData.length) return;
+console.log(currentCatData);
 
     view.findAndRemoveAllSubNavs(); // Находим все саб меню и удаляем их
     view.insertTemplate(catBlock, view.getSubNavContainerTemplate()); // Добавляем новое подменю на страницу
@@ -47,7 +53,8 @@ const initController = async () => {
     // Слушаем, когда курсор покинет навигацию
     nav.addEventListener('mouseleave', () => {
       // Находим все subNav в навигации и удаляем их. Убираем оверлей
-      view.findAndRemoveAllSubNavs(navList);
+      view.findAndRemoveAllSubNavs(nav);
+      // view.findAndRemoveAllSubNavs(navList);
       view.removeOverlay();
     });
   
@@ -81,6 +88,7 @@ const initController = async () => {
     const subSubNavMarkup = view.renderMenuTree(currentSubCatData, 3);
     subSubNav.innerHTML = subSubNavMarkup;
   }
+
 
   // На каждый блок главной навигации вешаем прослушку событий hover
   catBlocksAll.forEach(catBlock => catBlock.addEventListener('mouseenter', () => addSubNav(catBlock)));

@@ -164,6 +164,15 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return array_map([$this, 'mapBeanToArray'], $beans);
     }
 
+    public function getAllCategoriesArray(): array
+    {
+        // Достаём все категории, у которых parent_id = NULL
+        $beans = $this->findAll(self::TABLE_CATEGORIES, '');
+
+        // Превращаем каждую в массив
+        return array_map([$this, 'mapBeanToArray'], $beans);
+    }
+
 
 
     public function getParentCategory(Category $category): ?Category

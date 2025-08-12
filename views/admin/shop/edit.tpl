@@ -47,7 +47,7 @@
                     
         </div>
 
-        <!-- <div class="admin-form__field">
+        <div class="admin-form__field">
           <label class="admin-form__label" for="mainCat">Категория</label>
           <div class="admin-form__row">
             <select class="select" name="mainCat" id="mainCat" data-selected="<?php echo h($selectedMaiCat);?>"></select>
@@ -58,8 +58,8 @@
                 Новая категория
             </a>
           </div>
-        </div> -->
-<!-- 
+        </div>
+
         <div class="admin-form__field">
           <label class="admin-form__label" for="subCat">Подкатегория</label>
           <div class="admin-form__row">
@@ -71,9 +71,9 @@
                 Новая категория
             </a>
           </div>
-        </div> -->
+        </div>
 
-        <!-- <div class="admin-form__field">
+        <div class="admin-form__field">
           <label class="admin-form__label" for="brands">Выберите бренд</label>
           <div class="admin-form__row">
             <select class="select" name="brand" id="brands">
@@ -90,7 +90,7 @@
                 Новый бренд
             </a>
           </div>
-        </div> -->
+        </div>
 
         <div class="admin-form__field">
           <label class="admin-form__label" for="editor">Описание товара</label>

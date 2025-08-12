@@ -3,7 +3,7 @@ const initModel = () => {
 
   const loadCatsData = async () => {
     try {
-      const res = await fetch('/api/category');
+      const res = await fetch('/api/categories');
       if (!res.ok) throw new Error('Ошибка сети');
       const data = await res.json();
       return typeof data === 'object' ? Object.values(data) : [];
@@ -27,7 +27,7 @@ const initModel = () => {
   // Ф-ция получает категории по parent_id 
   const getCatsByParent = (id) => {
     if (!id) return []; 
-    return cats.filter(cat => +cat.parentId === +id); 
+    return cats.filter(cat => +cat.parent_id === +id); 
   }
 
   // Ф-ция строит дерево категорий
@@ -44,7 +44,7 @@ const initModel = () => {
 
     // Формируем дерево
     Object.values(map).forEach(cat => {
-      if(cat.parentId && map[cat.parentId]) {
+      if(cat.parentId && map[cat.parent_id]) {
         map[cat.parentId].children.push(cat);
       } else {
         tree.push(cat); // верхний уровень

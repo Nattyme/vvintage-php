@@ -1,14 +1,15 @@
 const initView = () => {
   const header = document.querySelector('.header');
   const nav = header?.querySelector('#nav');
-  const navList = nav?.querySelector('#nav__list');
+  // const navList = nav?.querySelector('#nav__list');
   const navOverlay = header?.querySelector('.catalog-dropdown__background');
 
-  if(!header || !nav || !navList || !navOverlay ) return;
+  if(!header || !nav || !navOverlay ) return;
+  // if(!header || !nav || !navList || !navOverlay ) return;
 
   const getNav = () => nav;
 
-  const getNavList = () => navList;
+  // const getNavList = () => navList;
 
   const getSubNavList = (catBlock) => {
     if (!catBlock) return null;
@@ -99,7 +100,8 @@ const initView = () => {
 
   // Ф-ция находит и удаляет все подменю
   const findAndRemoveAllSubNavs =  () => {
-    navList.querySelectorAll('.sub-nav').forEach(nav => nav.remove());
+    nav.querySelectorAll('.sub-nav').forEach(nav => nav.remove());
+    // navList.querySelectorAll('.sub-nav').forEach(nav => nav.remove());
   }
 
   const insertTemplate = (catBlock, template) => {
@@ -194,7 +196,7 @@ const initView = () => {
     getSubCatWrapper,
     getCurrentBlocksWrapper,
     getSubNavBlocksAll,
-    getNavList,
+    // getNavList,
     getCatBlocksAll,
     getSubNavList,
     getSubSubNav,

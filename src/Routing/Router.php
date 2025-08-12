@@ -177,6 +177,9 @@
                     $categoryApiController->getMainCategories();
                 }
                 break;
+            case 'categories':
+               $categoryApiController->getAllCategories();
+               break;
 
             default:
                 http_response_code(404);
