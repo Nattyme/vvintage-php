@@ -9,9 +9,9 @@ use Vvintage\Services\Product\ProductService;
 final class AdminProductService extends ProductService
 {
 
-    public function __construct(array $languages, string $currentLang)
+    public function __construct(string $currentLang)
     {
-      parent::__construct($languages, $currentLang);
+      parent::__construct($currentLang);
     }
 
     
@@ -35,6 +35,7 @@ final class AdminProductService extends ProductService
 
     public function publishProduct(int $productId): bool
     {
+
         return $this->repository->updateStatus($productId, 'active');
     }
 

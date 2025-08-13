@@ -24,7 +24,7 @@
   </header>
 
   
-  <form class="form-products-table">
+  <form class="form-products-table" method="POST">
     <div class="admin-form__row">
       <select class="select" name="action">
         <option value="">— Выберите действие —</option>
@@ -32,7 +32,7 @@
         <option value="show">Показать</option>
         <option value="archived">В архив</option>
       </select>
-      <button type="select-submit" class="button button--s button--primary">Применить</button>
+      <button name="action-submit" type="submit" class="button button--s button--primary">Применить</button>
     </div>
 
     <!-- table -->
@@ -49,7 +49,7 @@
           <th>Обновлён</th>
           <th class="product-table__item product-table__item--checkbox">
             <label>
-              <input class="table__checkbox-hidden real-checkbox" type="checkbox" name="product" data-check="all">
+              <input class="table__checkbox-hidden real-checkbox" type="checkbox" name="products[]" data-check="all">
               <span class="table__checkbox-fake custom-checkbox"></span>
             </label>
           </th>
@@ -65,7 +65,7 @@
               $mainImage = $images['main'] ?? null;
           ?>
 
-          <tr>
+          <tr data-status="<?php echo $product->getStatus();?>">
             <td class="product-table__img">
             <?php if (file_exists(ROOT . 'usercontent/products/' . $mainImage->getFilename())) : ?>
               <img 
@@ -103,7 +103,13 @@
             </td>
             <td class="product-table__item product-table__item--checkbox link-above-others">
               <label>
-                <input class="table__checkbox-hidden real-checkbox" type="checkbox" name="product" data-check="productId">
+                <input 
+                  class="table__checkbox-hidden real-checkbox" 
+                  type="checkbox" 
+                  name="products[]" 
+                  data-check="<?php echo h($product->getId());?>"
+                  value="<?php echo h($product->getId());?>"
+                >
                 <span class="table__checkbox-fake custom-checkbox"></span>
               </label>
             </td>
@@ -116,10 +122,10 @@
       <!-- body -->
     </table>
     <!-- table -->
-
   </form>
   
 
+<?php /* dd($_POST['products']); */?>
 
   <div class="section-pagination">
     <?php  if ( $productViewModel['total'] > 0 ) : 

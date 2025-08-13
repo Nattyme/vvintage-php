@@ -17,7 +17,7 @@ class ProductService
 {
     private array $languages;
     private string $currentLang;
-    private ProductRepository $repository;
+    protected ProductRepository $repository;
     private CategoryRepository $categoryRepository;
     private ProductImageService $productImageService;
 
@@ -33,9 +33,8 @@ class ProductService
         'archived' => 'В архив'
     ];
 
-    public function __construct($languages, $currentLang)
+    public function __construct($currentLang)
     {
-        $this->languages = $languages;
         $this->currentLang = $currentLang;
         $this->repository = new ProductRepository($this->currentLang);
         $this->categoryRepository = new CategoryRepository($this->currentLang);

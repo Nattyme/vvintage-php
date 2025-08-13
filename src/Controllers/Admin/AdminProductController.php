@@ -23,12 +23,25 @@ class AdminProductController extends BaseAdminController
   public function __construct()
   {
     parent::__construct();
-    $this->adminProductService = new AdminProductService($this->languages, $this->currentLang);
+    $this->adminProductService = new AdminProductService($this->currentLang);
   }
 
   public function all (RouteData $routeData)
   {
     $this->isAdmin();
+    if( 
+      isset($_POST['action-submit']) && 
+      (isset($_POST['action']) && !empty($_POST['action'])) &&
+      (isset($_POST['products']) && !empty($_POST['products'])) ) {
+      $action = $_POST['action'];
+
+
+      foreach ($_POST['products'] as $key=> $productId) {
+        $this->adminProductService->applyAction((int) $productId, $action);
+      }
+
+    }
+
     $this->renderAllProducts($routeData);
   }
 
@@ -65,6 +78,7 @@ class AdminProductController extends BaseAdminController
         $imagesMainAndOthers = $this->adminProductService->getProductImages($product);
         $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
     }
+
     // Формируем единую модель для передачи в шаблон
     $productViewModel = [
         'products' => $products,

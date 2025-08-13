@@ -33,7 +33,7 @@ final class HomeController extends BaseController
     {
       parent::__construct(); // Важно!
       $this->categoryService = new CategoryService($this->languages, $this->currentLang);
-      $this->productService = new ProductService($this->languages, $this->currentLang);
+      $this->productService = new ProductService($this->currentLang);
       $this->postService = new PostService($this->languages, $this->currentLang);
     }
 

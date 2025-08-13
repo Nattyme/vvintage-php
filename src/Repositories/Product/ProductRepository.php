@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Vvintage\Repositories\Product;
 
 use RedBeanPHP\R;
+use RuntimeException;
 
 /** Контракты */
 use Vvintage\Contracts\Product\ProductRepositoryInterface;
-
 use Vvintage\Repositories\AbstractRepository;
 
 /** Модели */
@@ -34,9 +34,8 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private const TABLE_CATEGORIES = 'categories';
     private const TABLE_CATEGORIES_TRANSLATION = 'categories_translation';
 
-    private string $currentLocale;
     private const DEFAULT_LOCALE = 'ru';
-
+    private string $currentLocale;
 
     public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
     {
@@ -60,27 +59,20 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         if (empty($ids)) {
             return [];
         }
-
-        $products = [];
-        foreach ($ids as $id) {
-            $beans = $this->uniteProductRawData(['productId' => $id]);
-
-            if ($beans) {
-                $products = array_map([$this, 'fetchProductWithJoins'], $beans);
-            }
-        }
-
-        return $products;
+        $rows = $this->uniteProductRawData(['productIds' => $ids]);
+        return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
 
     private function uniteProductRawData(array $data): array
     {
+        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
+
         $sql = '
             SELECT 
                 p.*,
                 pt.locale,
-                pt.title,
-                pt.description,
+                COALESCE(pt.title, p.title) AS title,
+                COALESCE(pt.description, p.description) AS description,
                 pt.meta_title,
                 pt.meta_description,
                 c.id AS category_id,
@@ -100,35 +92,43 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
                 bt.meta_description AS brand_meta_description,
                 GROUP_CONCAT(DISTINCT pi.filename ORDER BY pi.image_order) AS images
             FROM ' . self::TABLE_PRODUCTS .' p
-            LEFT JOIN ' . self::TABLE_PRODUCTS_TRANSLATION .' pt ON pt.product_id = p.id AND pt.locale = ?
-            LEFT JOIN ' . self::TABLE_PRODUCT_IMAGES .' pi ON pi.product_id = p.id
-            LEFT JOIN ' . self::TABLE_CATEGORIES .' c ON p.category_id = c.id
-            LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct ON ct.category_id = c.id AND ct.locale = ?
-            LEFT JOIN ' . self::TABLE_BRANDS . ' b ON p.brand_id = b.id
-            LEFT JOIN ' . self::TABLE_BRANDS_TRANSLATION . ' bt ON bt.brand_id = b.id AND bt.locale = ?
+            LEFT JOIN ' . self::TABLE_PRODUCTS_TRANSLATION .' pt 
+                ON pt.product_id = p.id AND pt.locale = ?
+            LEFT JOIN ' . self::TABLE_PRODUCT_IMAGES .' pi 
+                ON pi.product_id = p.id
+            LEFT JOIN ' . self::TABLE_CATEGORIES .' c 
+                ON p.category_id = c.id
+            LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct 
+                ON ct.category_id = c.id AND ct.locale = ?
+            LEFT JOIN ' . self::TABLE_BRANDS . ' b 
+                ON p.brand_id = b.id
+            LEFT JOIN ' . self::TABLE_BRANDS_TRANSLATION . ' bt 
+                ON bt.brand_id = b.id AND bt.locale = ?
         ';
 
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
         $bindings = [$locale, $locale, $locale];
 
-        if (isset($data['productId']) && $data['productId'] !== null) {
-            $sql .= ' WHERE p.id = ? GROUP BY p.id LIMIT 1';
+        // фильтры
+        if (!empty($data['productId'])) {
+            $sql .= ' WHERE p.id = ?';
             $bindings[] = $data['productId'];
-            $row = R::getRow($sql, $bindings);
-            return $row ? [$row] : [];
-        } else {
-            $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
-
-            if (isset($data['limit'])) {
-                if (is_numeric($data['limit']) && (int)$data['limit'] > 0) {
-                    $sql .= ' LIMIT 0, ' . (int)$data['limit'];
-                } elseif (is_string($data['limit'])) {
-                    $sql .= ' ' . $data['limit'];
-                }
-            }
-
-            return R::getAll($sql, $bindings);
+        } elseif (!empty($data['productIds']) && is_array($data['productIds'])) {
+            $placeholders = implode(',', array_fill(0, count($data['productIds']), '?'));
+            $sql .= " WHERE p.id IN ($placeholders)";
+            $bindings = array_merge($bindings, $data['productIds']);
         }
+
+        $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
+
+        if (isset($data['limit'])) {
+            if (is_numeric($data['limit']) && (int)$data['limit'] > 0) {
+                $sql .= ' LIMIT ' . (int)$data['limit'];
+            } elseif (is_string($data['limit'])) {
+                $sql .= ' ' . $data['limit'];
+            }
+        }
+
+        return R::getAll($sql, $bindings);
     }
 
     private function loadTranslations(int $productId): array
@@ -143,23 +143,21 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         $translations = [];
         foreach ($rows as $row) {
             $translations[$row['locale']] = [
-                'title' => $row['title'],
-                'description' => $row['description'],
-                'meta_title' => $row['meta_title'],
-                'meta_description' => $row['meta_description'],
+                'title' => $row['title'] ?? '',
+                'description' => $row['description'] ?? '',
+                'meta_title' => $row['meta_title'] ?? '',
+                'meta_description' => $row['meta_description'] ?? '',
             ];
         }
-
         return $translations;
     }
 
     private function createCategoryDTOFromArray(array $row): CategoryDTO
     {
         $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-
         return new CategoryDTO([
             'id' => (int) $row['category_id'],
-            'title' => (string) ($row['category_title_translation'] ?? ''),
+            'title' => (string) ($row['category_title_translation'] ?: $row['category_title']),
             'parent_id' => (int) ($row['category_parent_id'] ?? 0),
             'image' => (string) ($row['category_image'] ?? ''),
             'translations' => [
@@ -177,10 +175,9 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private function createBrandDTOFromArray(array $row): BrandDTO
     {
         $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-
         return new BrandDTO([
             'id' => (int) $row['brand_id'],
-            'title' => (string) ($row['brand_title_translation'] ?? ''),
+            'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
             'image' => (string) ($row['brand_image'] ?? ''),
             'translations' => [
                 $locale => [
@@ -198,19 +195,17 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     {
         $imagesRows = R::getAll(
             'SELECT id, product_id, filename, image_order 
-            FROM ' . self::TABLE_PRODUCT_IMAGES . '
-            WHERE product_id = ? 
-            ORDER BY image_order',
+             FROM ' . self::TABLE_PRODUCT_IMAGES . '
+             WHERE product_id = ? 
+             ORDER BY image_order',
             [$row['id']]
         );
-
         return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
     }
 
     private function fetchProductWithJoins(array $row): Product
     {
         $productId = (int) $row['id'];
-
         $translations = $this->loadTranslations($productId);
         $categoryDTO = $this->createCategoryDTOFromArray($row);
         $brandDTO = $this->createBrandDTOFromArray($row);
@@ -235,7 +230,6 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,
             'images' => $imagesDTO,
         ]);
-
         return Product::fromDTO($dto);
     }
 
@@ -252,25 +246,56 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     public function updateStatus(int $productId, string $status): bool
     {
-        return $this->update(
-            self::TABLE_PRODUCTS,
-            ['status' => $status],
-            ['id' => $productId]
-        );
+        return $this->updatePartial($productId, ['status' => $status], ['id' => $productId]);
     }
 
     public function deleteExtraImagesExceptMain(int $productId): void
     {
-        // Удалить все фото, кроме главного
-        R::exec(
-            'DELETE FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
-            WHERE product_id = ? 
-              AND id NOT IN (
-                  SELECT id FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
-                  WHERE product_id = ? AND is_main = 1
-              )',
-            [$productId, $productId]
+        $mainExists = R::getCell(
+            'SELECT COUNT(*) FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+             WHERE product_id = ? AND is_main = 1',
+            [$productId]
         );
+        if ($mainExists) {
+            R::exec(
+                'DELETE FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+                 WHERE product_id = ? 
+                   AND id NOT IN (
+                       SELECT id FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+                       WHERE product_id = ? AND is_main = 1
+                   )',
+                [$productId, $productId]
+            );
+        }
     }
 
+    private function updatePartial(int $id, array $data): bool
+    {     
+      
+        $productBean = $this->loadBean(self::TABLE_PRODUCTS, $id);
+     
+        if (!$productBean->id) {
+            throw new RuntimeException("Product with ID {$id} not found");
+        }
+        foreach ($data as $field => $value) {
+            $productBean->{$field} = $value;
+        }
+  
+
+        return !!$this->saveBean($productBean);
+      
+        // return $productBean->export();
+    }
+
+    public function updateFull(ProductDTO $dto): ?array
+    {
+        return $this->updatePartial($dto->getId(), $dto->toArray());
+    }
+
+    public function bulkUpdate(array $ids, array $data): void
+    {
+        foreach ($ids as $id) {
+            $this->updatePartial((int)$id, $data);
+        }
+    }
 }

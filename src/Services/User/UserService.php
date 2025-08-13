@@ -33,7 +33,7 @@ final class UserService
     $this->userRepository = new UserRepository ();
     $this->addressService = new AddressService();
     $this->orderRepository = new OrderRepository();
-    $this->productService = new ProductService( $this->languages,  $this->currentLang);
+    $this->productService = new ProductService( $this->currentLang);
    
   }
   
