@@ -27,6 +27,25 @@ class OrderService
     private ProductRepository $productRepository;
     private FlashMessage $note;
 
+    
+    private array $status = [
+      'new'   => 'Создан',
+      'confirmed'   => 'Подтверждён',
+      'pending' => 'Ожидает оплаты',
+      'paid' => 'Оплачен',
+      'in_progress' => 'В работе',
+      'shipped' => 'Отправлен',
+      'delivered' => 'Ожидает в месте вручения',
+      'completed' => 'Завершён',
+      'canceled' => 'Отменён'
+    ];
+
+    private array $actions = [
+        'hide'     => 'Скрыть',
+        'show'     => 'Показать',
+        'archived' => 'В архив'
+    ];
+
     public function __construct(OrderRepository $orderRepository, User $user, ProductRepository $productRepository, FlashMessage $note)
     {
       $this->orderRepository=$orderRepository;

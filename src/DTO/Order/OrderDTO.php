@@ -16,6 +16,10 @@ final class OrderDTO
     public bool $paid;
     public array $cart;
     public int $price;
+    public string $tracking_number;
+    public string $canceled_reason;
+    public string $comment;
+    public string $payment_type;
     public int $user_id;
 
     private function __construct(){}
@@ -34,6 +38,10 @@ final class OrderDTO
         $dto->paid = false;
         $dto->cart = $cart;
         $dto->price = $totalPrice;
+        $dto->tracking_number = trim($data['tracking_number'] ?? '');
+        $dto->canceled_reason = trim($data['canceled_reason'] ?? '');
+        $dto->comment = trim($data['comment'] ?? '');
+        $dto->payment_type = trim($data['payment_type'] ?? '');
         $dto->user_id = $userId;
 
         return $dto;
@@ -54,6 +62,10 @@ final class OrderDTO
         $dto->paid = false;
         $dto->cart = $cart;
         $dto->price = 0;
+        $dto->tracking_number = '';
+        $dto->canceled_reason = '';
+        $dto->comment = '';
+        $dto->payment_type = '';
         $dto->user_id = 0;
 
         return $dto;
@@ -74,6 +86,10 @@ final class OrderDTO
         $dto->paid = (bool) $row['paid'];
         $dto->cart = json_decode($row['cart'], true) ?? [];
         $dto->price = (int) $row['price'];
+        $dto->tracking_number = $row['tracking_number'];
+        $dto->canceled_reason = $row['canceled_reason'];
+        $dto->comment = $row['comment'];
+        $dto->payment_type = $row['payment_type'];
         $dto->user_id = (int) $row['user_id'];
 
         return $dto;

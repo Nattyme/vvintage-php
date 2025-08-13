@@ -22,6 +22,10 @@ final class Order
   private bool $paid = false;
   private array $cart = [];
   private int $price = 0;
+  private string $tracking_number = '';
+  private string $canceled_reason = '';
+  private string $comment = '';
+  private string $payment_type = '';
   private ?int $user_id = null;
 
   // Приватный пустой конструктор
@@ -43,6 +47,10 @@ final class Order
     $order->paid = $dto->paid;
     $order->cart = $dto->cart;
     $order->price = $dto->price;
+    $order->tracking_number = $dto->tracking_number;
+    $order->canceled_reason = $dto->canceled_reason;
+    $order->comment = $dto->comment;
+    $order->payment_type = $dto->payment_type;
     $order->user_id = $dto->user_id;
 
     return $order;
@@ -68,6 +76,10 @@ final class Order
     $order->cart = is_array($decodedCart) ? $decodedCart : [];
 
     $order->price = (int) $bean->price;
+    $order->tracking_number = (string) $bean->tracking_number;
+    $order->canceled_reason = (string) $bean->canceled_reason;
+    $order->comment = (string) $bean->comment;
+    $order->payment_type = (string) $bean->payment_type;
     $order->user_id =(int) $bean->user_id;
 
     return $order;
@@ -149,6 +161,26 @@ final class Order
   public function getPrice(): int
   {
     return $this->price;
+  }
+
+  public function getTrackingNumber(): string
+  {
+    return $this->tracking_number;
+  }
+
+  public function getCanceledReason (): string
+  {
+    return $this->canceled_reason;
+  }
+
+  public function getComment (): string
+  {
+    return $this->comment;
+  }
+
+  public function getPaymentType(): string
+  {
+    return $this->payment_type;
   }
 
   public function setCart (array $data): void

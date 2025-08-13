@@ -55,6 +55,10 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
         $bean->paid = $order->getPaid();
         $bean->cart = json_encode($order->getCart());
         $bean->price = $order->getPrice();
+        $bean->tracking_number = $order->getTrackingNumber();
+        $bean->canceled_reason = $order->getCanceledReason();
+        $bean->comment = $order->getComment();
+        $bean->payment_type = $order->getPaymentType();
     }
 
     
@@ -81,6 +85,10 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
             'paid' => (string) $bean->paid,
             'cart' => (string) $bean->cart,
             'price' => (int) $bean->price,
+            'tracking_number' => (string) $bean->tracking_number,
+            'canceled_reason' => (string) $bean->canceled_reason,
+            'comment' => (string) $bean->comment,
+            'payment_type' => (string) $bean->payment_type,
             'user_id' => (int) $bean->user_id
         ]);
 
