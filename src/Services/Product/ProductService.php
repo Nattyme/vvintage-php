@@ -99,4 +99,32 @@ class ProductService
 
         return  $imagesByProductId;
     }
+
+    public function publishProduct(int $productId): bool
+    {
+        return $this->repository->updateStatus($productId, 'active');
+    }
+
+    public function hideProduct(int $productId): bool
+    {
+        return $this->repository->updateStatus($productId, 'hidden');
+    }
+
+    public function archiveProduct(int $productId, bool $keepAllImages = true): bool
+    {
+        $result = $this->repository->updateStatus($productId, 'archived');
+
+        if ($result && !$keepAllImages) {
+            $this->repository->deleteExtraImagesExceptMain($productId);
+        }
+
+        return $result;
+    }
+
+    public function createProductDraft(array $data): int
+    {
+        $data['status'] = 'hidden'; // или draft
+        return $this->repository->create($data);
+    }
+
 }

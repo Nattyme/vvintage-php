@@ -249,4 +249,28 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         $rows = $this->uniteProductRawData(['limit' => $count]);
         return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
+
+    public function updateStatus(int $productId, string $status): bool
+    {
+        return $this->update(
+            self::TABLE_PRODUCTS,
+            ['status' => $status],
+            ['id' => $productId]
+        );
+    }
+
+    public function deleteExtraImagesExceptMain(int $productId): void
+    {
+        // Удалить все фото, кроме главного
+        R::exec(
+            'DELETE FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+            WHERE product_id = ? 
+              AND id NOT IN (
+                  SELECT id FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+                  WHERE product_id = ? AND is_main = 1
+              )',
+            [$productId, $productId]
+        );
+    }
+
 }
