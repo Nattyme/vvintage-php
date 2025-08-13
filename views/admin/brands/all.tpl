@@ -4,7 +4,7 @@
     <?php include ROOT . "views/components/errors.tpl"; ?>
 
     <header class="admin-form__header admin-form__row">
-      <a href="<?php echo HOST . 'admin/brand-new';?>" class="shop__button button button-primary" data-btn="add">Новый бренд</a>
+      <a href="<?php echo HOST . 'admin/brand-new';?>" class="button button--m button--primary" data-btn="add">Новый бренд</a>
 
       <div class="search-block">
         <!-- SEARCH FORM-->

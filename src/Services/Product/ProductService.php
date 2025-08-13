@@ -51,6 +51,21 @@ class ProductService
         return $this->repository->getProductById($id);
     }
 
+    public function getActiveProducts(): array 
+    {
+      return $this->repository->getProductsByParam('status = ?', ['active']);
+    }
+
+    public function getArchivedProducts(): array 
+    {
+      return $this->repository->getProductsByParam('status = ?', ['archived']);
+    }
+
+    public function getHiddenProducts(): array 
+    {
+      return $this->repository->getProductsByParam('status = ?', ['hidden']);
+    }
+
 
     //    $result['number_of_pages'] = $number_of_pages;
     // $result['page_number'] = $page_number;

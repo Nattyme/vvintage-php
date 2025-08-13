@@ -82,18 +82,16 @@ class AdminOrdersController extends BaseAdminController
   private function renderSingle(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = PAGE_ORDERS_SINGLE;
+    $pageTitle = self::PAGE_ORDERS_SINGLE;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+ 
+
+    // $total = $this->brandRepository->getAllBrandsCount();
         
     $this->renderLayout('orders/single',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
+      'routeData' => $routeData
     ]);
 
   }

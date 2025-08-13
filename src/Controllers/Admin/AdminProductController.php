@@ -29,19 +29,7 @@ class AdminProductController extends BaseAdminController
   public function all (RouteData $routeData)
   {
     $this->isAdmin();
-    if( 
-      isset($_POST['action-submit']) && 
-      (isset($_POST['action']) && !empty($_POST['action'])) &&
-      (isset($_POST['products']) && !empty($_POST['products'])) ) {
-      $action = $_POST['action'];
-
-
-      foreach ($_POST['products'] as $key=> $productId) {
-        $this->adminProductService->applyAction((int) $productId, $action);
-      }
-
-    }
-
+    $this->adminProductService->handleStatusAction($_POST);
     $this->renderAllProducts($routeData);
   }
 
@@ -54,6 +42,7 @@ class AdminProductController extends BaseAdminController
   public function edit(RouteData $routeData)
   {
     $this->isAdmin();
+    $this->adminProductService->handleStatusAction($_POST);
     $this->renderEditProduct($routeData);
   }
 

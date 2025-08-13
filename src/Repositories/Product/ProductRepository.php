@@ -48,6 +48,52 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
     }
 
+    public function getProductsByParam(string $sql ='', array $params = []): array
+    {
+        // Получаем все продукты по условию
+        $rows = $this->findAll(self::TABLE_PRODUCTS, $sql, $params);
+        if(!$rows) return [];
+ 
+        $fetchedProducts = $this->uniteProductRawData($rows);
+        // Применяем fetchProductWithJoins к каждому объекту OODBBean
+        $products = array_map([$this, 'fetchProductWithJoins'], $fetchedProducts);
+
+        return $products;
+    }
+
+
+    private function fetchProductWithJoins(array $row): Product
+    {
+        $productId = (int) $row['id'];
+        $translations = $this->loadTranslations($productId);
+        $categoryDTO = $this->createCategoryDTOFromArray($row);
+        $brandDTO = $this->createBrandDTOFromArray($row);
+        $imagesDTO = $this->fetchImageDTOs($row);
+
+        $dto = new ProductDTO([
+            'id' => $productId,
+            'categoryDTO' => $categoryDTO,
+            'brandDTO' => $brandDTO,
+            'slug' => (string) $row['slug'],
+            'title' => (string) $row['title'],
+            'description' => (string) $row['description'],
+            'price' => (string) $row['price'],
+            'url' => (string) $row['url'],
+            'status' => (string) $row['status'],
+            'sku' => (string) $row['sku'],
+            'stock' => (int) $row['stock'],
+            'datetime' => (string) $row['datetime'],
+            'edit_time' => (string) $row['edit_time'],
+            'images_total' => count($imagesDTO),
+            'translations' => $translations,
+            'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,
+            'images' => $imagesDTO,
+        ]);
+        return Product::fromDTO($dto);
+    }
+
+
+
     public function getAllProducts(array $data = []): array
     {
         $rows = $this->uniteProductRawData($data);
@@ -119,6 +165,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         }
 
         $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
+
 
         if (isset($data['limit'])) {
             if (is_numeric($data['limit']) && (int)$data['limit'] > 0) {
@@ -203,35 +250,6 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
     }
 
-    private function fetchProductWithJoins(array $row): Product
-    {
-        $productId = (int) $row['id'];
-        $translations = $this->loadTranslations($productId);
-        $categoryDTO = $this->createCategoryDTOFromArray($row);
-        $brandDTO = $this->createBrandDTOFromArray($row);
-        $imagesDTO = $this->fetchImageDTOs($row);
-
-        $dto = new ProductDTO([
-            'id' => $productId,
-            'categoryDTO' => $categoryDTO,
-            'brandDTO' => $brandDTO,
-            'slug' => (string) $row['slug'],
-            'title' => (string) $row['title'],
-            'description' => (string) $row['description'],
-            'price' => (string) $row['price'],
-            'url' => (string) $row['url'],
-            'status' => (string) $row['status'],
-            'sku' => (string) $row['sku'],
-            'stock' => (int) $row['stock'],
-            'datetime' => (string) $row['datetime'],
-            'edit_time' => (string) $row['edit_time'],
-            'images_total' => count($imagesDTO),
-            'translations' => $translations,
-            'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,
-            'images' => $imagesDTO,
-        ]);
-        return Product::fromDTO($dto);
-    }
 
     public function getAllProductsCount(?string $sql = null, array $params = []): int
     {

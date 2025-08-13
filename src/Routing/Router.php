@@ -35,7 +35,6 @@
   use Vvintage\Services\Order\OrderService;
   use Vvintage\Services\Blog\BlogService;
   use Vvintage\Services\Auth\SessionManager;
-  use Vvintage\Services\Product\ProductService;
   use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Validation\LoginValidator;
   use Vvintage\Services\Validation\NewOrderValidator;
@@ -274,9 +273,8 @@
 
       // Инициализируем SEO-сервис
       $seoService = new SeoService();
-      $productService = new ProductService( $languages, $currentLang);
-      $productController = new ProductController(  $productService, $seoService, $breadcrumbs );
-      $catalogController  = new CatalogController(  $productService, $seoService, $breadcrumbs );
+      $productController = new ProductController($seoService, $breadcrumbs );
+      $catalogController  = new CatalogController($seoService, $breadcrumbs );
 
       if ( isset($routeData->uriGet) && $routeData->uriGet === 'cat' && !empty($routeData->uriGetParam) ) {
         require ROOT . 'modules/shop/categories.php';

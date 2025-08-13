@@ -30,10 +30,10 @@ final class CatalogController extends BaseController
     private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
 
-    public function __construct(ProductService $productService, SeoService $seoService, Breadcrumbs $breadcrumbs)
+    public function __construct(SeoService $seoService, Breadcrumbs $breadcrumbs)
     {
       parent::__construct(); // Важно!
-      $this->productService = $productService;
+      $this->productService = new ProductService($this->currentLang);
       $this->seoService = $seoService;
       $this->breadcrumbsService = $breadcrumbs;
     }
@@ -48,22 +48,31 @@ final class CatalogController extends BaseController
       $pagination = pagination($productsPerPage, 'products');
 
       // Получаем продукты с учётом пагинации
-      $products =  $this->productService->getAll($pagination);
-      
+      // $products =  $this->productService->getAll($pagination);
+      $products =  $this->productService->getActiveProducts($pagination);
+
       $seo = [];
       // получаем SEO DTO
       foreach($products as $product) {
         $seo[$product->getId()] = $this->seoService->getSeoForPage('product', $product);
       }
 
-   
       $total = $this->productService->countProducts();
-      $imagesByProductId = $this->productService->getProductsImages($products);
+
+      $imagesByProductId = [];
+
+      foreach ($products as $product) {
+          // $imagesMainAndOthers = $imageService->splitImages($product->getImages());
+          $imagesMainAndOthers = $this->productService->getProductImages($product);
+          $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
+      }
+
+      // $imagesByProductId = $this->productService->getProductsImages($products);
 
       // Это кол-во товаров, показанных на этой странице
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
-
+        
 
       // Формируем единую модель для передачи в шаблон
       $productViewModel = [

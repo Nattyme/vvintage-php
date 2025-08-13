@@ -79,4 +79,20 @@ final class AdminProductService extends ProductService
     {
         return $this->actions;
     }
+
+    public function handleStatusAction(array $data): void 
+    {
+        if ( 
+          isset($data['action-submit']) && 
+          (isset($data['action']) && !empty($data['action'])) &&
+          (isset($data['products']) && !empty($data['products'])) ) {
+          $action = $data['action'];
+
+          foreach ($data['products'] as $key=> $productId) {
+            $this->applyAction((int) $productId, $action);
+          }
+
+        }
+
+    }
 }
