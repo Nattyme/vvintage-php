@@ -62,17 +62,10 @@
         </div>
 
        
-
        <div class="admin-form__field">
-            <label class="admin-form__label" for="mainCat">Категория</label>
+            <label class="admin-form__label" for="mainCat">Раздел</label>
             <div class="admin-form__row">
-              <select class="select" name="mainCat" id="mainCat">
-                <?php if (isset($_POST['mainCat']) ) : ?>
-                  <option value="<?php echo h($_POST['mainCat']);?>"><?php echo h($_POST['mainCat']);?></option>
-                <?php else : ?>
-                  <option value="">Выберите категорию</option>
-                <?php endif;?>
-              </select>
+              <select class="select" name="mainCat" id="mainCat" data-current-parent="<?php echo h($product->getCategory()->getParentId()) ?>"></select>
         
               <a 
                 class="button button--s button--primary" 
@@ -83,13 +76,10 @@
         </div>
 
         <div class="admin-form__field">
-            <label class="admin-form__label" for="subCat">Подкатегория</label>
+            <label class="admin-form__label" for="subCat">Категория</label>
             <div class="admin-form__row">
-                <select class="select" name="subCat" id="subCat">
-                  <option value="">Выберите подкатегорию</option>
-                </select>
+                <select class="select" name="subCat" id="subCat" data-current-cat="<?php echo h($product->getCategory()->getId()) ?>"></select>
     
-
                 <a 
                   class="button button--s button--primary" 
                   href="<?php echo HOST . 'category-new';?>">

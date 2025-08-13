@@ -9,29 +9,33 @@ const initCategoriesEvents = async () => {
   
   if (!mainCatsBlock || !subCatsBlock) return;
 
-  // Получаем главные катерии
-  const mainCats = await model.setMainCats();
+  // Читаем значения, которые PHP вставил в HTML
+  const currentParentId = mainCatsBlock.dataset.currentParent || '';
+  const currentCatId = subCatsBlock.dataset.currentCat || '';
 
-  // Заполним опции для селекта главных категорий.
+  // Загружаем главные категории
+  const mainCats = await model.setMainCats();
   view.setCategoriesOptions(mainCats, mainCatsBlock);
 
-  // Если в селекте уже выбрана категория — редактируем, значит, надо загрузить и подкатегории
-  const selectedMainCatId = view.getSelectedId(mainCatsBlock);
-  if (selectedMainCatId) {
-    const subCats = await model.setSubCats(selectedMainCatId);
+  // Если есть сохранённый раздел — выбираем его
+  if (currentParentId) {
+    mainCatsBlock.value = currentParentId;
 
+    // Загружаем подкатегории
+    const subCats = await model.setSubCats(currentParentId);
     view.setCategoriesOptions(subCats, subCatsBlock);
+
+    // Если есть сохранённая категория — выбираем её
+    if (currentCatId) {
+      subCatsBlock.value = currentCatId;
+    }
   }
 
-
-  // Повесим слушатель изменения селекта главных категорий 
+  // Слушатель изменения раздела
   mainCatsBlock.addEventListener('change', async (e) => {
     subCatsBlock.innerHTML = '';
-        
+
     const subCats = await model.setSubCats(e.target.value);
-  console.log(subCats);
-      
-    // Заполним опции для селекта подкатегорий.
     view.setCategoriesOptions(subCats, subCatsBlock);
   });
 };
