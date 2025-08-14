@@ -9,6 +9,12 @@ use Vvintage\Services\Product\ProductService;
 final class AdminProductService extends ProductService
 {
 
+    private array $actions = [
+      'hide'     => 'Скрыть',
+      'show'     => 'Показать',
+      'archived' => 'В архив'
+    ];
+
     public function __construct(string $currentLang)
     {
       parent::__construct($currentLang);
@@ -18,6 +24,11 @@ final class AdminProductService extends ProductService
     private function splitVisibleHidden(array $images): array
     {
         return  $this->productImageService->splitVisibleHidden($images);
+    }
+
+    public function getActions(): array 
+    {
+      return $this->actions;
     }
 
     public function getProductsImages(array $products): array

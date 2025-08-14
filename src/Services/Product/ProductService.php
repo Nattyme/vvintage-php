@@ -15,7 +15,6 @@ require_once ROOT . "./libs/functions.php";
 
 class ProductService
 {
-    private array $languages;
     private string $currentLang;
     protected ProductRepository $repository;
     private CategoryRepository $categoryRepository;
@@ -25,12 +24,6 @@ class ProductService
       'active'   => 'Активный',
       'hidden'   => 'Невидимый',
       'archived' => 'В архиве'
-    ];
-
-    private array $actions = [
-        'hide'     => 'Скрыть',
-        'show'     => 'Показать',
-        'archived' => 'В архив'
     ];
 
     public function __construct($currentLang)

@@ -421,8 +421,7 @@
 
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
 
-      $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $userModel, $productRepository, $notes);
+      $orderService = new OrderService($notes);
       $controller = new OrderController(
         $orderService, 
         $cartService, 
@@ -495,7 +494,7 @@
       $adminBrandController = new AdminBrandController();
       $adminCategoryController = new AdminCategoryController();
       $adminUsersController = new AdminUsersController();
-      $adminOrdersController = new AdminOrdersController();
+      $adminOrdersController = new AdminOrdersController($notes);
       $adminPostController = new AdminPostController($notes, $breadcrumbs);
       $adminMessageController = new AdminMessageController($notes);
       $adminPostCatController = new AdminPostCatController($postCategoryRepository, $notes);

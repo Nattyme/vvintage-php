@@ -6,9 +6,12 @@
     <header class="admin-form__header admin-form__row">
       <!-- SELECT -->
       <form method="GET" action="" class="form-products-table__actions">
-        <select class="select" name="action">
-          <option value="">— Все разделы —</option>
-        </select>
+          <select class="select" name="action">
+            <option value="">— Выберите действие —</option>
+            <?php foreach ($productViewModel['actions'] as $key => $value) : ?>
+              <option value="<?php echo $key;?>"><?php echo $value;?></option>
+            <?php endforeach;?>
+          </select>
         <button type="submit" class="button button--s button--primary">Применить</button>
       </form>
       <!-- // SELECT -->

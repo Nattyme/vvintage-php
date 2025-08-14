@@ -11,6 +11,9 @@ use Vvintage\Controllers\Admin\BaseAdminController;
 /** Репозитории */
 use Vvintage\Repositories\Order\OrderRepository;
 
+/** Сервис */
+use Vvintage\Services\Admin\AdminOrderService;
+use Vvintage\Services\Messages\FlashMessage;
 
 /** Сервисы */
 // use Vvintage\Services\Admin\AdminStatsService;
@@ -22,14 +25,15 @@ class AdminOrdersController extends BaseAdminController
   private const PAGE_ORDERS_SINGLE = 'Заказ №';
   private const PAGE_ORDERS_DELETE = 'Удаление заказа №';
 
-  private OrderRepository $orderRepository;
+  // private OrderRepository $orderRepository;
+  private AdminOrderService $adminOrderService;
 
 
 
-  public function __construct()
+  public function __construct(FlashMessage $notes)
   {
     parent::__construct();
-    $this->orderRepository = new OrderRepository();
+    $this->adminOrderService = new AdminOrderService($notes);
   }
 
   public function all(RouteData $routeData)
@@ -65,8 +69,11 @@ class AdminOrdersController extends BaseAdminController
     // Устанавливаем пагинацию
     $pagination = pagination($ordersPerPage, self::TABLE_ORDERS);
 
-    $orders = $this->orderRepository->getAllOrders($pagination);
-    $total = $this->orderRepository->getAllOrdersCount();
+    $orders = $this->adminOrderService->getAllOrders($pagination);
+    // $orders = $this->orderRepository->getAllOrders($pagination);
+    $total = $this->adminOrderService->getAllOrdersCount();
+    // $total = $this->orderRepository->getAllOrdersCount();
+    $actions = $this->adminOrderService->getActions();
         
     $this->renderLayout('orders/all',  [
       'pageTitle' => $pageTitle,
@@ -74,7 +81,8 @@ class AdminOrdersController extends BaseAdminController
       'orders' => $orders,
       'total' => $total,
       'searchQuery' => $searchQuery,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'actions' => $actions
     ]);
 
   }

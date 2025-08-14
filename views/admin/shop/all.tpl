@@ -23,14 +23,13 @@
     </form>
   </header>
 
-  
   <form class="form-products-table" method="POST">
     <div class="admin-form__row">
       <select class="select" name="action">
         <option value="">— Выберите действие —</option>
-        <option value="hide">Скрыть</option>
-        <option value="show">Показать</option>
-        <option value="archived">В архив</option>
+        <?php foreach ($productViewModel['actions'] as $key => $value) : ?>
+          <option value="<?php echo $key;?>"><?php echo $value;?></option>
+        <?php endforeach;?>
       </select>
       <button name="action-submit" type="submit" class="button button--s button--primary">Применить</button>
     </div>

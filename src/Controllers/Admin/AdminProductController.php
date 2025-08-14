@@ -58,7 +58,7 @@ class AdminProductController extends BaseAdminController
     $pagination = pagination($productsPerPage, 'products');
     $products = $this->adminProductService->getAll($pagination);
     $total = $this->adminProductService->countProducts();
-    $statusList = $this->adminProductService->getStatusList();
+    $actions = $this->adminProductService->getActions();
 
     $imagesByProductId = [];
 
@@ -73,7 +73,7 @@ class AdminProductController extends BaseAdminController
         'products' => $products,
         'total' => $total,
         'imagesByProductId' => $imagesByProductId,
-        'statusList'=> $statusList
+        'actions'=> $actions
     ];
         
 
