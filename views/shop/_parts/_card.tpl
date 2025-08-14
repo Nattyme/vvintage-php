@@ -1,5 +1,5 @@
-<div class="card">
-  <a href="<?php echo HOST . 'shop/' . u($product->getId());?>" class="card__img link-abs">
+<a href="<?php echo HOST . 'shop/' . u($product->getId());?>" class="card">
+  
     
     <?php if (file_exists(ROOT . 'usercontent/products/' . $mainImage->getFilename())) : ?>
       <picture>
@@ -48,21 +48,21 @@
 
       </div>
     </div>
-  </a>
 
-  <div class="card__desc">
-    <div class="card__title block__text">
-      <h4 class="h4 block__desc">
-        <?php echo $product->getTitle() !== null ? h($product->getTitle()) : 'Название продукта';?>
-      </h4>
-    </div>
-    <div class="card__row flex-block">
-      <div class="card__price">
-        <span><?php echo $product->getPrice() !== null ? h($product->getPrice()) : '5000';?>&nbsp;&euro;</span>
+
+    <div class="card__desc">
+      <div class="card__title block__text">
+        <h4 class="h4 block__desc">
+          <?php echo $product->getTitle() !== null ? h($product->getTitle()) : 'Название продукта';?>
+        </h4>
+      </div>
+      <div class="card__row flex-block">
+        <div class="card__price">
+          <span><?php echo $product->getPrice() !== null ? h($product->getPrice()) : '5000';?>&nbsp;&euro;</span>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+</a>
  
 
   

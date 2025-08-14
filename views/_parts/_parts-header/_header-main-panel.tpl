@@ -10,11 +10,11 @@
           <div class="blog-logo__text">Блог о винтажной Франции</div>
         </div>
       <?php else : ?>
-        <div class="header__logo">
+        <!-- <div class="header__logo">
           <a href="<?php echo HOST . 'main'; ?>" class="logo">
             <?php echo h($settings['site_title']); ?>
           </a>
-        </div>
+        </div> -->
       <?php endif; ?>
 
       <!-- Навигация -->

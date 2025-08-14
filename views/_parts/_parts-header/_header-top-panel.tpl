@@ -47,6 +47,12 @@
         </form>
       </div>
 
+      <div class="header__logo">
+        <a href="<?php echo HOST . 'main'; ?>" class="logo">
+          <?php echo h($settings['site_title']); ?>
+        </a>
+      </div>
+
 
       <!-- Вход/Выход -->
       <div class="header__auth">
