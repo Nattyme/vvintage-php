@@ -89,4 +89,9 @@ class OrderService extends BaseService
         return $result;
     }
 
+    public function getOrderById(int $id): ?Order
+    {
+      return $this->orderRepository->getOrderById($id);
+    }
+
 }

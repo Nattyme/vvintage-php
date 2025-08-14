@@ -12,10 +12,11 @@ use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
 use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Repositories\Product\ProductRepository;
 
-/** Модели */
-use Vvintage\Services\Product\ProductService;
+
 
 /** Сервисы */
+use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Seo\SeoService;
 use Vvintage\Services\Page\Breadcrumbs;
@@ -27,13 +28,15 @@ require_once ROOT . "./libs/functions.php";
 final class CatalogController extends BaseController
 {
     private ProductService $productService;
+    private CategoryService $categoryService;
     private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
 
     public function __construct(SeoService $seoService, Breadcrumbs $breadcrumbs)
     {
       parent::__construct(); // Важно!
-      $this->productService = new ProductService($this->currentLang);
+      $this->productService = new ProductService();
+      $this->categoryService = new CategoryService();
       $this->seoService = $seoService;
       $this->breadcrumbsService = $breadcrumbs;
     }
@@ -48,7 +51,6 @@ final class CatalogController extends BaseController
       $pagination = pagination($productsPerPage, 'products');
 
       // Получаем продукты с учётом пагинации
-      // $products =  $this->productService->getAll($pagination);
       $products =  $this->productService->getActiveProducts($pagination);
 
       $seo = [];
@@ -62,18 +64,20 @@ final class CatalogController extends BaseController
       $imagesByProductId = [];
 
       foreach ($products as $product) {
-          // $imagesMainAndOthers = $imageService->splitImages($product->getImages());
           $imagesMainAndOthers = $this->productService->getProductImages($product);
           $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
       }
 
-      // $imagesByProductId = $this->productService->getProductsImages($products);
 
       // Это кол-во товаров, показанных на этой странице
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
         
 
+      /** Категории */
+      $mainCategoryAll = $this->categoryService->getMainCategories();
+      $subCategoryAll = $this->categoryService->getSubCategories();
+dd( $mainCategoryAll);
       // Формируем единую модель для передачи в шаблон
       $productViewModel = [
           'products' => $products,

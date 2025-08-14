@@ -65,9 +65,8 @@ class AdminOrderController extends BaseAdminController
     $pagination = pagination($ordersPerPage, self::TABLE_ORDERS);
 
     $orders = $this->adminOrderService->getAllOrders($pagination);
-    // $orders = $this->orderRepository->getAllOrders($pagination);
     $total = $this->adminOrderService->getAllOrdersCount();
-    // $total = $this->orderRepository->getAllOrdersCount();
+ 
     $actions = $this->adminOrderService->getActions();
     $statusData = $this->adminOrderService->getStatusData();
 
@@ -93,14 +92,24 @@ class AdminOrderController extends BaseAdminController
     // Название страницы
     $pageTitle = self::PAGE_ORDERS_SINGLE;
 
-    // Устанавливаем пагинацию
- 
+    $order = $this->adminOrderService->getOrderById((int) $routeData->uriGetParam);
 
-    // $total = $this->brandRepository->getAllBrandsCount();
+
+    $actions = $this->adminOrderService->getActions();
+    $statusData = $this->adminOrderService->getStatusData();
+
+    $orderViewModel = [
+      'order' => $order,
+      'actions'=> $actions,
+      'statusData' => $statusData
+    ];
         
     $this->renderLayout('orders/single',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData
+      'routeData' => $routeData,
+        'order' => $order,
+      'actions'=> $actions,
+      'statusData' => $statusData
     ]);
 
   }

@@ -21,13 +21,6 @@ class CategoryService extends BaseService
         $this->repository = new CategoryRepository($this->currentLang);
     }
 
-
-    public function getMainCategories(): array
-    {
-      return $this->repository->getMainCats();
-    }
-
-
     public function getMainCategoriesArray(): array
     {
       return $this->repository->getMainCategoriesArray();
@@ -47,15 +40,24 @@ class CategoryService extends BaseService
     // {
     // }
 
+    
+    public function getMainCategories(): array
+    {
+      return $this->repository->getMainCats();
+    }
+    public function getSubCategories(): array
+    {
+      return $this->repository->getSubCats();
+    }
     public function getAllCategories($pagination = null): array
     {
       return $this->repository->getAllCategories($pagination);
     }
 
-    public function getMainCats(): array
-    {
-      return $this->repository->getMainCats();
-    }
+    // public function getMainCats(): array
+    // {
+    //   return $this->repository->getMainCats();
+    // }
 
 
 }

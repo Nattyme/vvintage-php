@@ -1,8 +1,8 @@
 <div class="admin-page_content-form">
   <div class="admin-form">
     
-    <?php include ROOT . 'admin/templates/components/errors.tpl'; ?>
-    <?php include ROOT . 'admin/templates/components/success.tpl'; ?>
+    <?php include ROOT . 'views/components/errors.tpl'; ?>
+    <?php include ROOT . 'views/components/success.tpl'; ?>
 
     <!-- table order info -->
     <div class="admin-form__field">
@@ -11,19 +11,19 @@
 
         <tr>
           <th>Дата создания</th>
-          <td><?php if ($order['timestamp']) echo rus_date("j F Y в G:i", h($order['timestamp'])) ;?></td>
+          <td><?php if ($order->getDateTime()->getTimestamp()) echo rus_date("j F Y в G:i", h($order->getDateTime()->getTimestamp())) ;?></td>
         </tr>
 
         <tr>
           <th>Статус</th>
-          <td><?php echo h($order['status']);?></td>
+          <td><?php echo h($statusData[$order->getStatus()]);?></td>
         </tr>
 
         <tr>
           <th>Оплата</th>
           <td>
             <?php 
-              if ( $order['paid']) {
+              if ( $order->getPaid()) {
                 echo 'Оплачен';
               } else {
                 echo 'Не оплачен';
@@ -35,18 +35,18 @@
         <tr>
           <th>Общая стоимость</th>
           <td>
-            <?php echo h(format_price($order['price']));?> руб.
+            <?php echo h(format_price($order->getPrice()));?> руб.
           </td>
         </tr>
 
         <tr>
           <th>Имя Фамилия</th>
-          <td><?php echo h($order['name']) . '' . h($order['surname']);?></td>
+          <td><?php echo h($order->getName()) . '' . h($order->getSurname());?></td>
         </tr>
 
         <tr>
           <th>Email</th>
-          <td><?php echo h($order['email']);?></td>
+          <td><?php echo h($order->getEmail());?></td>
         </tr>
 
       </table>
@@ -66,10 +66,10 @@
             <th>Количество</th>
           </tr>
         </thead>
-        <?php foreach($products as $product) : ?>
+        <?php foreach($order->getCart() as $product) : ?>
           <tr>
             <td>
-              <img src="<?php echo HOST . 'usercontent/products/' . h($productsDB[$product['id']]['cover_small']);?>" alt="<?php echo h($product['title']) ;?>">
+              <!-- <img src="<?php echo HOST . 'usercontent/products/' . h($productsDB[$product['id']]['cover_small']);?>" alt="<?php echo h($product['title']) ;?>"> -->
             </td>
             <td><?php echo h($product['id']);?></td>
             <td><?php echo h($product['title']);?></td>
@@ -91,7 +91,7 @@
         <a class="button button--s button--outline" href="<?php echo HOST . 'admin/orders';?>">
           К списку заказов
         </a>
-        <a href="<?php echo HOST . 'admin/order-delete?id=' . h($order['id']);?>" 
+        <a href="<?php echo HOST . 'admin/order-delete?id=' . h($order->getId());?>" 
            class="button button--s button--primary button--warning">
           Удалить
         </a>

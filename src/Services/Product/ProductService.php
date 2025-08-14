@@ -26,7 +26,7 @@ class ProductService extends BaseService
       'archived' => 'В архиве'
     ];
 
-    public function __construct($currentLang)
+    public function __construct()
     {
         parent::__construct();
         $this->repository = new ProductRepository($this->currentLang);
