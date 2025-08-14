@@ -9,6 +9,7 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Models\Order\Order;
 
 /** Сервисы */
+use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Address\AddressService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Repositories\AddressRepository;
@@ -17,24 +18,19 @@ use Vvintage\Repositories\AddressRepository;
 use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\User\UserRepository;
 
-final class UserService
+class UserService extends BaseService
 {
-  private UserRepository $userRepository;
-  private AddressService $addressService;
-  private OrderRepository $orderRepository;
-  private ProductService $productService;
+  protected UserRepository $userRepository;
+  protected AddressService $addressService;
+  protected OrderRepository $orderRepository;
+  protected ProductService $productService;
 
-  private array $languages;
-  private string $currentLang;
-
-  public function __construct (array $languages, string $currentLang) {
-    $this->languages = $languages;
-    $this->currentLang = $currentLang;
+  public function __construct () {
+    parent::__construct();
     $this->userRepository = new UserRepository ();
     $this->addressService = new AddressService();
     $this->orderRepository = new OrderRepository();
     $this->productService = new ProductService( $this->currentLang);
-   
   }
   
 // createNewUser

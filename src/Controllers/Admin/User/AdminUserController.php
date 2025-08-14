@@ -5,16 +5,19 @@ namespace Vvintage\Controllers\Admin\User;
 
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
+use Vvintage\Services\Admin\User\AdminUserService;
 use Vvintage\Repositories\User\UserRepository;
 
 final class AdminUserController extends BaseAdminController 
 {
-  private UserRepository $userRepository;
+  // private UserRepository $userRepository;
+  private AdminUserService $adminUserService;
 
   public function __construct()
   {
     parent::__construct();
-    $this->userRepository = new UserRepository();
+    $this->adminUserService = new AdminUserService();
+    // $this->userRepository = new UserRepository();
   }
 
   public function all(RouteData $routeData)
@@ -55,8 +58,10 @@ final class AdminUserController extends BaseAdminController
     // Устанавливаем пагинацию
     $pagination = pagination($usersPerPage, 'users');
 
-    $users = $this->userRepository->getAllUsers($pagination);
-    $total = $this->userRepository->getAllUsersCount();
+    $users = $this->adminUserService->getAllUsers($pagination);
+    // $users = $this->userRepository->getAllUsers($pagination);
+    $total = $this->adminUserService->getAllUsersCount();
+    // $total = $this->userRepository->getAllUsersCount();
         
     $this->renderLayout('users/all',  [
       'pageTitle' => $pageTitle,
