@@ -9,13 +9,12 @@ use Vvintage\Models\Product\Product;
 use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Services\Product\ProductImageService;
-// use Vvintage\Database\Database;
+use Vvintage\Services\Base\BaseService;
 
 require_once ROOT . "./libs/functions.php";
 
-class ProductService
+class ProductService extends BaseService
 {
-    private string $currentLang;
     protected ProductRepository $repository;
     private CategoryRepository $categoryRepository;
     private ProductImageService $productImageService;
@@ -28,7 +27,7 @@ class ProductService
 
     public function __construct($currentLang)
     {
-        $this->currentLang = $currentLang;
+        parent::__construct();
         $this->repository = new ProductRepository($this->currentLang);
         $this->categoryRepository = new CategoryRepository($this->currentLang);
         $this->productImageService = new ProductImageService();

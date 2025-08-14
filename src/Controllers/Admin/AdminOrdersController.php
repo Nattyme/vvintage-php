@@ -14,7 +14,7 @@ use Vvintage\Repositories\Order\OrderRepository;
 /** Сервис */
 use Vvintage\Services\Admin\AdminOrderService;
 use Vvintage\Services\Messages\FlashMessage;
-
+use Vvintage\Services\Base\BaseService;
 /** Сервисы */
 // use Vvintage\Services\Admin\AdminStatsService;
 

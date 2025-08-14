@@ -49,7 +49,6 @@ final class AdminOrderService extends OrderService
 
   public function getAllOrders($pagination): array
   {
-
     return $this->orderRepository->getAllOrders($pagination);
   }
 

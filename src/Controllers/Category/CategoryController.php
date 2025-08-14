@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers;
 
-use Vvintage\Contracts\Category\CategoryRepositoryInterfave;
-use Vvintage\Repositories\Category\CategoryRepository;
+// use Vvintage\Contracts\Category\CategoryRepositoryInterfave;
+// use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Models\Category\Category;
-use Vvintage\DTO\Category\CategoryDTO;
+// use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\Services\Category\CategoryService;
 
 final class CategoryController
 {
     public function __construct()
     {
-        $this->categoryRepository = $categoryRepository;
+        $this->categoryService = new CategoryService();
     }
 
     /**
@@ -23,7 +24,8 @@ final class CategoryController
      */
     public function index(string $locale = 'ru'): array
     {
-        $rawCategories = $this->categoryRepository->getAllCategories(); // массив из БД
+        $rawCategories = $this->categoryService->getAllCategories(); // массив из БД
+        // $rawCategories = $this->categoryRepository->getAllCategories(); // массив из БД
 
         $categories = [];
 

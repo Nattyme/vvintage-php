@@ -11,17 +11,17 @@ use Vvintage\Repositories\Product\ProductRepository;
 // use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Base\BaseService;
 
 /** DTO */
 use Vvintage\DTO\Order\OrderDTO;
 
 
 // extends AbstractUserItemsListService
-class OrderService 
+class OrderService extends BaseService
 {
     protected OrderRepository $orderRepository;
     private ProductRepository $productRepository;
-    private FlashMessage $note;
 
     
     private array $status = [
@@ -36,11 +36,11 @@ class OrderService
       'canceled' => 'Отменён'
     ];
 
-    public function __construct(FlashMessage $note)
+    public function __construct()
     {
+      parent::__construct();
       $this->orderRepository = new OrderRepository();
       $this->productRepository = new ProductRepository();;
-      $this->note=$note;
     }
 
     public function getOrderTotalPrice($products, $cartModel)

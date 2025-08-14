@@ -7,19 +7,17 @@ namespace Vvintage\Services\Category;
 /** Модель */
 use Vvintage\Models\Category\Category;
 use Vvintage\Repositories\Category\CategoryRepository;
+use Vvintage\Services\Base\BaseService;
 
 require_once ROOT . "./libs/functions.php";
 
-final class CategoryService
+final class CategoryService extends BaseService
 {
-    private array $languages;
-    private string $currentLang;
     private CategoryRepository $repository;
 
     public function __construct($languages, $currentLang)
     {
-        $this->languages = $languages;
-        $this->currentLang = $currentLang;
+        parent::__construct();
         $this->repository = new CategoryRepository($this->currentLang);
     }
 
@@ -48,5 +46,10 @@ final class CategoryService
     // public function countSubCats(): int
     // {
     // }
+
+    public function getAllCategories(): array
+    {
+       $this->repository->getAllCategories(); 
+    }
 
 }
