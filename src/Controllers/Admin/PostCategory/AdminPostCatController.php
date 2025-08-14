@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin;
+namespace Vvintage\Controllers\Admin\PostCategory;
 
 use Vvintage\Routing\RouteData;
 
@@ -9,19 +9,26 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 
 /** Репозитории */
-use Vvintage\Repositories\Brand\BrandRepository;
+use Vvintage\Repositories\PostCategory\PostCategoryRepository;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Config\LanguageConfig;
 
 /** Сервисы */
 // use Vvintage\Services\Admin\AdminStatsService;
 
-class AdminBrandController extends BaseAdminController 
+class AdminPostCatController extends BaseAdminController 
 {
-  private BrandRepository $brandRepository;
+  private const TABLE = 'post_categories';
+  private PostCategoryRepository $categoryRepository;
+  private FlashMessage $notes;
+  
 
-  public function __construct()
+  public function __construct(PostCategoryRepository $categoryRepository, FlashMessage $notes)
   {
     parent::__construct();
-    $this->brandRepository = new BrandRepository();
+    $this->categoryRepository = $categoryRepository;
+    $this->notes = $notes;
+
   }
 
   public function all(RouteData $routeData)
@@ -51,19 +58,27 @@ class AdminBrandController extends BaseAdminController
   private function renderAll(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Категории блога';
 
-    $brandsPerPage = 9;
+    // Получаем данные из GET-запроса
+    $searchQuery = $_GET['query'] ?? '';
+    $filterSection = $_GET['action'] ?? ''; // имя селекта - action
+
+    $categoryPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+    $pagination = pagination($categoryPerPage, self::TABLE);
+    $cats = $this->categoryRepository->getAllCategories($pagination);
+    $mainCats = $this->categoryRepository->getMainCats();
+    $total = $this->categoryRepository->getAllCategoriesCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout('post-categories/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brands' => $brands,
+      'cats' => $cats,
+      'mainCats' => $mainCats,
+      'searchQuery' => $searchQuery,
+      'filterSection' => $filterSection,
       'pagination' => $pagination
     ]);
 
@@ -72,18 +87,13 @@ class AdminBrandController extends BaseAdminController
   private function renderNew(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды - новая запись';
+    $pageTitle = 'Категории блога - новая';
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout('post-categories/new',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
+      'currentLang' => $this->currentLang,
     ]);
 
   }
@@ -91,7 +101,7 @@ class AdminBrandController extends BaseAdminController
   private function renderEdit(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Редактирование категории';
 
     $pageClass = 'admin-page';
 
@@ -109,7 +119,7 @@ class AdminBrandController extends BaseAdminController
 
       // Если нет ошибок
       if ( empty($_SESSION['errors'])) {
-        $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
+        $categories = $this->categoryRepository->getBrandById((int) $routeData->uriGetParam);
         // $brand->title = $_POST['title'];
 
         // R::store($brand);
@@ -118,17 +128,16 @@ class AdminBrandController extends BaseAdminController
       }
     }
 
-    $currentLang = LanguageConfig::getCurrentLocale();
 
     // Запрос постов в БД с сортировкой id по убыванию
-    $brand = $this->brandRepository->getBrandById( (int) $routeData->uriGetParam);
+    $categories = $this->categoryRepository->getPostCatById( (int) $routeData->uriGetParam);
 
 
         
-    $this->renderLayout('brands/edit',  [
+    $this->renderLayout('post-categories/edit',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brand' => $brand,
+      'categories' => $categories,
       'languages' => $this->languages,
       'currentLang' => $currentLang
     ]);
@@ -138,19 +147,19 @@ class AdminBrandController extends BaseAdminController
   private function renderDelete(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Удалить категорию';
 
-    $brandsPerPage = 9;
+    $categoriesPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+    $pagination = pagination($categoriesPerPage, self::TABLE);
+    $categories = $this->categoryRepository->getAllCategories($pagination);
+    $total = $this->categoryRepository->getAllBrandsCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout('post-categories/delete',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brands' => $brands,
+      'categories' => $categories,
       'pagination' => $pagination
     ]);
 

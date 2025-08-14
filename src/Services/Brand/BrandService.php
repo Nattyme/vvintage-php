@@ -6,27 +6,35 @@ namespace Vvintage\Services\Brand;
 
 /** Модель */
 use Vvintage\Models\Brand\Brand;
+use Vvintage\Services\Base\BaseService;
 use Vvintage\Repositories\Brand\BrandRepository;
 
 require_once ROOT . "./libs/functions.php";
 
-final class BrandService
+class BrandService extends BaseService
 {
-    private array $languages;
-    private string $currentLang;
-    private BrandRepository $repository;
+    protected BrandRepository $repository;
 
-    public function __construct($languages, $currentLang)
+    public function __construct()
     {
-        $this->languages = $languages;
-        $this->currentLang = $currentLang;
-        $this->repository = new BrandRepository($this->currentLang);
+       parent::__construct();
+       $this->repository = new BrandRepository($this->currentLang);
+      // $this->repository = new BrandRepository($this->currentLang);
     }
 
 
-    public function getBrandsArray(): array
+    // public function getBrandsArray(): array
+    // {
+    //   return $this->repository->getBrandsArray();
+    // }
+
+    public function getAllBrands($pagination): array
     {
-      return $this->repository->getBrandsArray();
+      return  $this->repository->getAllBrands($pagination);
     }
 
+    public function getAllBrandsCount(): int
+    {
+      return $this->repository->getAllBrandsCount();
+    }
 }

@@ -1,21 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin;
+namespace Vvintage\Controllers\Admin\User;
 
 use Vvintage\Routing\RouteData;
-
-/** Контроллеры */
 use Vvintage\Controllers\Admin\BaseAdminController;
-
-/** Репозитории */
 use Vvintage\Repositories\User\UserRepository;
 
-
-/** Сервисы */
-// use Vvintage\Services\Admin\AdminStatsService;
-
-class AdminUsersController extends BaseAdminController 
+final class AdminUserController extends BaseAdminController 
 {
   private UserRepository $userRepository;
 

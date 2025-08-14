@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin;
+namespace Vvintage\Services\Admin\Order;
+
 use Vvintage\Services\Messages\FlashMessage;
 
 /** Репозитории */

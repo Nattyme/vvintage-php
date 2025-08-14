@@ -66,14 +66,14 @@
 
   /** Админ контроллеры */
   use Vvintage\Controllers\Admin\HomeAdminController;
-  use Vvintage\Controllers\Admin\AdminProductController;
-  use Vvintage\Controllers\Admin\AdminBrandController;
-  use Vvintage\Controllers\Admin\AdminCategoryController;
-  use Vvintage\Controllers\Admin\AdminUsersController;
-  use Vvintage\Controllers\Admin\AdminOrdersController;
-  use Vvintage\Controllers\Admin\AdminPostController;
-  use Vvintage\Controllers\Admin\AdminMessageController;
-  use Vvintage\Controllers\Admin\AdminPostCatController;
+  use Vvintage\Controllers\Admin\Product\AdminProductController;
+  use Vvintage\Controllers\Admin\Brand\AdminBrandController;
+  use Vvintage\Controllers\Admin\Category\AdminCategoryController;
+  use Vvintage\Controllers\Admin\User\AdminUserController;
+  use Vvintage\Controllers\Admin\Order\AdminOrderController;
+  use Vvintage\Controllers\Admin\Post\AdminPostController;
+  use Vvintage\Controllers\Admin\Message\AdminMessageController;
+  use Vvintage\Controllers\Admin\PostCategory\AdminPostCatController;
 
   // API
   use Vvintage\Controllers\Api\Category\CategoryApiController;
@@ -493,8 +493,8 @@
       $adminProductController = new AdminProductController();
       $adminBrandController = new AdminBrandController();
       $adminCategoryController = new AdminCategoryController();
-      $adminUsersController = new AdminUsersController();
-      $adminOrdersController = new AdminOrdersController($notes);
+      $adminUserController = new AdminUserController();
+      $adminOrderController = new AdminOrderController($notes);
       $adminPostController = new AdminPostController($notes, $breadcrumbs);
       $adminMessageController = new AdminMessageController($notes);
       $adminPostCatController = new AdminPostCatController($postCategoryRepository, $notes);
@@ -520,15 +520,15 @@
  
         // ::::::::::::: ORDERS :::::::::::::::::::
         case 'orders':
-          $adminOrdersController->all($routeData);
+          $adminOrderController->all($routeData);
           break;
       
         case 'order':
-          $adminOrdersController->single($routeData);
+          $adminOrderController->single($routeData);
           break;
       
         case 'order-delete':
-          $adminOrdersController->delete($routeData);
+          $adminOrderController->delete($routeData);
           break;
 
         
@@ -577,16 +577,16 @@
 
       // ::::::::::::: USERS :::::::::::::::::::
       case 'users':
-        $adminUsersController->all($routeData);
+        $adminUserController->all($routeData);
         break; 
 
       case 'user-edit':
-        $adminUsersController->edit($routeData);
+        $adminUserController->edit($routeData);
         require ROOT . "admin/modules/users/edit.php";
         break; 
 
       case 'user-block':
-        $adminUsersController->block($routeData);
+        $adminUserController->block($routeData);
         require ROOT . "admin/modules/users/block.php";
         break;
 

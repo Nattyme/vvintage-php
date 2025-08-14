@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin;
+namespace Vvintage\Controllers\Admin\Post;
 
 use Vvintage\Routing\RouteData;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Admin\AdminPostService;
+use Vvintage\Services\Admin\Post\AdminPostService;
 
 /** Контракты */
 use Vvintage\Contracts\Post\PostRepositoryInterface;

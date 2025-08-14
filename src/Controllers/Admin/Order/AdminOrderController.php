@@ -1,24 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin;
+namespace Vvintage\Controllers\Admin\Order;
 
 use Vvintage\Routing\RouteData;
-
-/** Контроллеры */
 use Vvintage\Controllers\Admin\BaseAdminController;
-
-/** Репозитории */
 use Vvintage\Repositories\Order\OrderRepository;
 
 /** Сервис */
-use Vvintage\Services\Admin\AdminOrderService;
+use Vvintage\Services\Admin\Order\AdminOrderService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Base\BaseService;
-/** Сервисы */
-// use Vvintage\Services\Admin\AdminStatsService;
 
-class AdminOrdersController extends BaseAdminController 
+
+class AdminOrderController extends BaseAdminController 
 {   
   private const TABLE_ORDERS = 'orders';
   private const PAGE_ORDERS_ALL = 'Все заказы';
@@ -27,7 +22,6 @@ class AdminOrdersController extends BaseAdminController
 
   // private OrderRepository $orderRepository;
   private AdminOrderService $adminOrderService;
-
 
 
   public function __construct(FlashMessage $notes)

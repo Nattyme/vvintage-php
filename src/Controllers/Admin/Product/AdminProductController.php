@@ -1,19 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin;
+namespace Vvintage\Controllers\Admin\Product;
 
 use Vvintage\Routing\RouteData;
-
-/** Контракты */
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
-
-/** Контроллеры */
 use Vvintage\Controllers\Admin\BaseAdminController;
-
-/** Сервисы */
-use Vvintage\Services\Admin\AdminProductService;
-
+use Vvintage\Services\Admin\Product\AdminProductService;
 
 
 class AdminProductController extends BaseAdminController

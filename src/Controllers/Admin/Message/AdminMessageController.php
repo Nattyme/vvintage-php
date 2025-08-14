@@ -1,19 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin;
+namespace Vvintage\Controllers\Admin\Message;
 
 use Vvintage\Routing\RouteData;
-
-/** Контроллеры */
 use Vvintage\Controllers\Admin\BaseAdminController;
-
-/** Репозитории */
 use Vvintage\Repositories\Message\MessageRepository;
 
 /** Сервисы */
 use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Admin\AdminMessageService;
+use Vvintage\Services\Admin\Messages\AdminMessageService;
 
 
 

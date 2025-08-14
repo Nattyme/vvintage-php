@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin;
+namespace Vvintage\Controllers\Admin\Brand;
 
 use Vvintage\Routing\RouteData;
 
-/** Контроллеры */
 use Vvintage\Controllers\Admin\BaseAdminController;
+use Vvintage\Services\Admin\Brand\AdminBrandService;
+// use Vvintage\Repositories\Brand\BrandRepository;
 
-/** Сервисы */
-use Vvintage\Services\Admin\AdminCategoryService;
 
 
-final class AdminCategoryController extends BaseAdminController 
+class AdminBrandController extends BaseAdminController 
 {
-  private AdminCategoryService $adminCategoryService;
+  private AdminBrandService $adminBrandService;
 
   public function __construct()
   {
     parent::__construct();
-    $this->adminCategoryService = new AdminCategoryService();
+    $this->adminBrandService = new AdminBrandService();
+    // $this->brandRepository = new BrandRepository();
   }
 
   public function all(RouteData $routeData)
@@ -49,27 +49,21 @@ final class AdminCategoryController extends BaseAdminController
   private function renderAll(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Категории';
+    $pageTitle = 'Бренды';
 
-    // Получаем данные из GET-запроса
-    $searchQuery = $_GET['query'] ?? '';
-    $filterSection = $_GET['action'] ?? ''; // имя селекта - action
-
-    $categoryPerPage = 9;
+    $brandsPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($categoryPerPage, 'categories');
-    $cats = $this->adminCategoryService->getAllCategories($pagination);
-    $mainCats = $this->adminCategoryService->getMainCats();
-    $total = $this->adminCategoryService->getAllCategoriesCount();
+    $pagination = pagination($brandsPerPage, 'brands');
+    $brands = $this->adminBrandService->getAllBrands($pagination);
+    // $brands = $this->brandRepository->getAllBrands($pagination);
+    $total = $this->adminBrandService->getAllBrandsCount();
+    // $total = $this->brandRepository->getAllBrandsCount();
         
-    $this->renderLayout('categories/all',  [
+    $this->renderLayout('brands/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'cats' => $cats,
-      'mainCats' => $mainCats,
-      'searchQuery' => $searchQuery,
-      'filterSection' => $filterSection,
+      'brands' => $brands,
       'pagination' => $pagination
     ]);
 
@@ -124,6 +118,8 @@ final class AdminCategoryController extends BaseAdminController
       }
     }
 
+    $currentLang = LanguageConfig::getCurrentLocale();
+
     // Запрос постов в БД с сортировкой id по убыванию
     $brand = $this->brandRepository->getBrandById( (int) $routeData->uriGetParam);
 
@@ -134,7 +130,7 @@ final class AdminCategoryController extends BaseAdminController
       'routeData' => $routeData,
       'brand' => $brand,
       'languages' => $this->languages,
-      'currentLang' => $this->currentLang
+      'currentLang' => $currentLang
     ]);
 
   }
