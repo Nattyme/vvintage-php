@@ -20,9 +20,9 @@ final class AdminOrderService extends OrderService
       'confirmed'   => 'Подтвердить',
       'pending'     => 'Ожидать оплату',
       'paid'        => 'Оплатить',
-      'in_progress' => 'Начать работу',
+      'in_progress' => 'Начать обработку',
       'shipped'     => 'Отправить',
-      'delivered'   => 'Доставить в пункт выдачи',
+      'delivered'   => 'Отметить доставленным в пункт выдачи',
       'completed'   => 'Завершить',
       'canceled'    => 'Отменить'
   ];
@@ -32,11 +32,57 @@ final class AdminOrderService extends OrderService
   {
     parent::__construct($note);
   }
+  
 
   public function getActions()
   {
     return $this->actions;
   }
+
+  public function handleStatusAction(array $data): void 
+  {
+      if ( 
+        isset($data['action-submit']) && 
+        (isset($data['action']) && !empty($data['action'])) &&
+        (isset($data['orders']) && !empty($data['orders'])) ) {
+        $action = $data['action'];
+
+        foreach ($data['orders'] as $key=> $orderId) {
+          $this->applyAction((int) $orderId, $action);
+        }
+
+      }
+
+  }
+
+  private function applyAction(int $orderId, string $action): bool
+  {
+      switch ($action) {
+          case 'new':
+              return $this->hideProduct($orderId);
+          case 'confirmed':
+              return $this->publishProduct($orderId);
+          case 'pending':
+              return $this->publishProduct($orderId);
+          case 'paid':
+              return $this->publishProduct($orderId);
+          case 'in_progress':
+              return $this->publishProduct($orderId);
+          case 'shipped':
+              return $this->publishProduct($orderId);
+          case 'delivered':
+              return $this->publishProduct($orderId);
+          case 'completed':
+              return $this->publishProduct($orderId);
+          case 'canceled':
+              return $this->publishProduct($orderId);
+          default:
+              return false;
+
+      }
+  }
+
+
 
   public function getAllOrdersActions($pagination)
   {

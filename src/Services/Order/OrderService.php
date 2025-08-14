@@ -43,6 +43,11 @@ class OrderService extends BaseService
       $this->productRepository = new ProductRepository();;
     }
 
+    public function getStatusData(): array 
+    {
+      return $this->status;
+    }
+
     public function getOrderTotalPrice($products, $cartModel)
     {
         return !empty($products) ? $cartModel->getTotalPrice($products) : 0;

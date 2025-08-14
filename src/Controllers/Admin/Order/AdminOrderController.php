@@ -33,6 +33,7 @@ class AdminOrderController extends BaseAdminController
   public function all(RouteData $routeData)
   {
     $this->isAdmin();
+    $this->adminOrderService->handleStatusAction($_POST);
     $this->renderAll($routeData);
   }
 
@@ -68,15 +69,21 @@ class AdminOrderController extends BaseAdminController
     $total = $this->adminOrderService->getAllOrdersCount();
     // $total = $this->orderRepository->getAllOrdersCount();
     $actions = $this->adminOrderService->getActions();
+    $statusData = $this->adminOrderService->getStatusData();
+
+    $orderViewModel = [
+      'total' => $total,
+      'orders' => $orders,
+      'searchQuery' => $searchQuery,
+      'actions'=> $actions,
+      'statusData' => $statusData
+    ];
         
     $this->renderLayout('orders/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'orders' => $orders,
-      'total' => $total,
-      'searchQuery' => $searchQuery,
       'pagination' => $pagination,
-      'actions' => $actions
+      'orderViewModel' => $orderViewModel
     ]);
 
   }

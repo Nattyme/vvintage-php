@@ -14,7 +14,7 @@
       <?php echo h($order->getEmail()); ?>
   </td>
   <td>
-      <?php echo h($order->getStatus()); ?>
+      <?php echo h($orderViewModel['statusData'][$order->getStatus()]); ?>
   </td>
   <td>
     <?php 
@@ -30,7 +30,19 @@
   </td>
   <td>
   </td>
-  <td>
+  <td class="link-above-others">
+    <label>
+      <input 
+        class="table__checkbox-hidden real-checkbox" 
+        type="checkbox" 
+        name="orders[]" 
+        data-check="<?php echo h($order->getId());?>"
+        value="<?php echo h($order->getId());?>"
+      >
+      <span class="table__checkbox-fake custom-checkbox"></span>
+    </label>
+  </td>
+  <!-- <td>
     <a 
       class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
       href="<?php echo HOST . "admin/";?>order-delete/<?php echo u($order->getId());?>"
@@ -39,5 +51,5 @@
 
         <span class="leftright"></span><span class="rightleft"> </span>
     </a>
-  </td>
+  </td> -->
 </tr>

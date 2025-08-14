@@ -8,11 +8,11 @@
       <form method="GET" action="" class="form-products-table__actions">
           <select class="select" name="action">
             <option value="">— Выберите действие —</option>
-            <?php foreach ($productViewModel['actions'] as $key => $value) : ?>
+            <?php foreach ($orderViewModel['actions'] as $key => $value) : ?>
               <option value="<?php echo $key;?>"><?php echo $value;?></option>
             <?php endforeach;?>
           </select>
-        <button type="submit" class="button button--s button--primary">Применить</button>
+        <button name="action-submit" type="submit" class="button button--s button--primary">Применить</button>
       </form>
       <!-- // SELECT -->
 
@@ -22,7 +22,7 @@
           type="text" 
           name="query" 
           placeholder="Найти" 
-          value="<?php echo h($searchQuery);?>"
+          value="<?php echo h($orderViewModel['searchQuery']);?>"
         >
 
         <button type="search-submit">
@@ -45,11 +45,17 @@
           <th>Оплата</th>
           <th>Стоимость</th>
           <th></th>
-          <th></th>
+          <th class="product-table__item product-table__item--checkbox">
+            <label>
+              <input class="table__checkbox-hidden real-checkbox" type="checkbox" name="orders[]" data-check="all">
+              <span class="table__checkbox-fake custom-checkbox"></span>
+            </label>
+          </th>
+        
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($orders as $order) : ?>
+        <?php foreach ($orderViewModel['orders'] as $order) : ?>
           <?php include ROOT . 'views/admin/orders/parts/_order-in-list.tpl'; ?>
         <?php endforeach; ?> 
       </tbody>
