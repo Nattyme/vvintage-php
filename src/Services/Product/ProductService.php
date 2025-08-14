@@ -7,8 +7,9 @@ namespace Vvintage\Services\Product;
 /** Модель */
 use Vvintage\Models\Product\Product;
 use Vvintage\Repositories\Product\ProductRepository;
-use Vvintage\Repositories\Category\CategoryRepository;
+
 use Vvintage\Services\Product\ProductImageService;
+use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Base\BaseService;
 
 require_once ROOT . "./libs/functions.php";
@@ -16,7 +17,7 @@ require_once ROOT . "./libs/functions.php";
 class ProductService extends BaseService
 {
     protected ProductRepository $repository;
-    private CategoryRepository $categoryRepository;
+    private CategoryService $categoryService;
     private ProductImageService $productImageService;
 
     private array $status = [
@@ -29,7 +30,7 @@ class ProductService extends BaseService
     {
         parent::__construct();
         $this->repository = new ProductRepository($this->currentLang);
-        $this->categoryRepository = new CategoryRepository($this->currentLang);
+        $this->categoryService = new CategoryService();
         $this->productImageService = new ProductImageService();
     }
 

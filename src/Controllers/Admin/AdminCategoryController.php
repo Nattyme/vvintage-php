@@ -8,25 +8,18 @@ use Vvintage\Routing\RouteData;
 /** Контроллеры */
 use Vvintage\Controllers\Admin\BaseAdminController;
 
-/** Репозитории */
-use Vvintage\Repositories\Category\CategoryRepository;
-
-use Vvintage\Config\LanguageConfig;
-
 /** Сервисы */
-// use Vvintage\Services\Admin\AdminStatsService;
+use Vvintage\Services\Admin\AdminCategoryService;
 
-class AdminCategoryController extends BaseAdminController 
+
+final class AdminCategoryController extends BaseAdminController 
 {
-  private CategoryRepository $categoryRepository;
-  protected array $languages;
+  private AdminCategoryService $adminCategoryService;
 
   public function __construct()
   {
     parent::__construct();
-    $this->languages = LanguageConfig::getAvailableLanguages();
-    $this->categoryRepository = new CategoryRepository('ru');
-    $this->categoryRepository = new CategoryRepository('ru');
+    $this->adminCategoryService = new AdminCategoryService();
   }
 
   public function all(RouteData $routeData)
@@ -66,9 +59,9 @@ class AdminCategoryController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($categoryPerPage, 'categories');
-    $cats = $this->categoryRepository->getAllCategories($pagination);
-    $mainCats = $this->categoryRepository->getMainCats();
-    $total = $this->categoryRepository->getAllCategoriesCount();
+    $cats = $this->adminCategoryService->getAllCategories($pagination);
+    $mainCats = $this->adminCategoryService->getMainCats();
+    $total = $this->adminCategoryService->getAllCategoriesCount();
         
     $this->renderLayout('categories/all',  [
       'pageTitle' => $pageTitle,

@@ -11,11 +11,11 @@ use Vvintage\Services\Base\BaseService;
 
 require_once ROOT . "./libs/functions.php";
 
-final class CategoryService extends BaseService
+class CategoryService extends BaseService
 {
-    private CategoryRepository $repository;
+    protected CategoryRepository $repository;
 
-    public function __construct($languages, $currentLang)
+    public function __construct()
     {
         parent::__construct();
         $this->repository = new CategoryRepository($this->currentLang);
@@ -47,9 +47,15 @@ final class CategoryService extends BaseService
     // {
     // }
 
-    public function getAllCategories(): array
+    public function getAllCategories($pagination = null): array
     {
-       $this->repository->getAllCategories(); 
+      return $this->repository->getAllCategories($pagination);
     }
+
+    public function getMainCats(): array
+    {
+      return $this->repository->getMainCats();
+    }
+
 
 }

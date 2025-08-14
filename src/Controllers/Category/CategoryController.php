@@ -25,7 +25,6 @@ final class CategoryController
     public function index(string $locale = 'ru'): array
     {
         $rawCategories = $this->categoryService->getAllCategories(); // массив из БД
-        // $rawCategories = $this->categoryRepository->getAllCategories(); // массив из БД
 
         $categories = [];
 
