@@ -73,21 +73,14 @@ final class AdminCategoryController extends BaseAdminController
 
   private function renderNew(RouteData $routeData): void
   {
-    // Название страницы
-    $pageTitle = 'Бренды - новая запись';
+    $viewPath = 'categories/new';
+    $pageTitle = 'Категория - создание';
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
+      'routeData' => $routeData
     ]);
-
   }
 
   private function renderEdit(RouteData $routeData): void

@@ -5,6 +5,7 @@ namespace Vvintage\Services\SEO;
 
 use Vvintage\DTO\Common\SeoDTO;
 use Vvintage\Services\SEO\ProductSeoStrategy;
+use Vvintage\Services\SEO\PostSeoStrategy;
 // use Vvintage\Services\SEO\ProductSeoStrategy;
 
 
@@ -25,6 +26,9 @@ class SeoService
                 break;
             case 'product':
                 $strategy = new ProductSeoStrategy($model);
+                break;
+            case 'post':
+                $strategy = new PostSeoStrategy($model);
                 break;
             default:
                 throw new \Exception('Unknown SEO page type');

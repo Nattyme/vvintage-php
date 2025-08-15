@@ -22,7 +22,7 @@ final class Post
     private \Datetime  $edit_time;
 
     private ?array $translations = null;
-    private string $currentLang = 'ru';
+    private string $currentLocale = 'ru';
 
     private function __construct() {}
 
@@ -42,7 +42,7 @@ final class Post
         $post->cover_small = $data['cover_small'] ?? null;
         $post->edit_time = $data['edit_time'] ?? null;
         $post->translations = $data['translations'] ?? [];
-        $post->currentLang = (string) ($data['locale'] ?? 'ru');
+        $post->currentLocale = (string) ($data['locale'] ?? 'ru');
 
         return $post;
     }
@@ -65,6 +65,7 @@ final class Post
         $post->cover = $dto->cover;
         $post->cover_small = $dto->cover_small;
         $post->edit_time = new \Datetime ();
+        $post->currentLocale = $dto->locale ?? 'ru';
         $post->translations = $dto->translations;
 
         return $post;
@@ -132,7 +133,12 @@ final class Post
 
     public function getTranslations(): ?array
     {
-      return $this->translations[$this->currentLang];
+      return $this->translations[$this->currentLocale];
+    }
+
+    public function getCurrentLocale(): string 
+    {
+      return $this->currentLocale;
     }
 
     /** SEO */

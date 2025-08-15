@@ -21,17 +21,15 @@ class ProductSeoStrategy implements SeoStrategyInterface
       $locale = $this->product->getCurrentLocale();
       $translations = $this->product->getTranslations();
 
-        // Используем данные из продукта
-        $meta = $translations[$locale] ?? $translations['ru'] ?? [];
-
-        return new SeoDTO(
-            $meta['title'] ?? $meta['title'] ?? '',
-            $meta['meta_description'] ?? $meta['title'] ?? '',
-            $meta['meta_title'] ?? $meta['title'] ?? '',
-            $meta['meta_description'] ?? $meta['description'] ?? ''
-        );
+        
+      return new SeoDTO(
+        $translations['title'] ?? $translations['title'] ?? '',
+        $translations['meta_description'] ?? $translations['title'] ?? '',
+        $translations['meta_title'] ?? $translations['title'] ?? '',
+        $translations['meta_description'] ?? $translations['description'] ?? ''
+      );
     }
-
+  
     public function getStructuredData(): string
     {
         $locale = $this->product->getCurrentLocale();

@@ -170,10 +170,10 @@ class Product
     {
       return $this->currentLocale;
     }
-
-    public function getTranslations(): array 
+      
+    public function getTranslations(): ?array
     {
-      return $this->translations;
+      return $this->translations[$this->currentLocale];
     }
 
     public function getImages(): array

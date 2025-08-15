@@ -56,9 +56,7 @@ class AdminBrandController extends BaseAdminController
     // Устанавливаем пагинацию
     $pagination = pagination($brandsPerPage, 'brands');
     $brands = $this->adminBrandService->getAllBrands($pagination);
-    // $brands = $this->brandRepository->getAllBrands($pagination);
     $total = $this->adminBrandService->getAllBrandsCount();
-    // $total = $this->brandRepository->getAllBrandsCount();
         
     $this->renderLayout('brands/all',  [
       'pageTitle' => $pageTitle,
@@ -72,18 +70,12 @@ class AdminBrandController extends BaseAdminController
   private function renderNew(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды - новая запись';
+    $pageTitle = 'Бренды - создание';
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
-        
-    $this->renderLayout('brands/all',  [
+   
+    $this->renderLayout('brands/new',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination
+      'routeData' => $routeData
     ]);
 
   }

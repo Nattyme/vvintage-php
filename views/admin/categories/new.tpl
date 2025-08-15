@@ -1,7 +1,7 @@
 <div class="admin-page__content-form">
   
-  <?php include ROOT . "admin/templates/components/errors.tpl"; ?>
-  <?php include ROOT . "admin/templates/components/success.tpl"; ?>
+  <?php include ROOT . "views/components/errors.tpl"; ?>
+  <?php include ROOT . "views/components/success.tpl"; ?>
 
   <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/category-new">
     <div class="admin-form__field">
@@ -12,6 +12,7 @@
         class="admin-form__input admin-form__input--width-label" 
         type="text" 
         placeholder="Заголовок категории"
+        value="<?php echo isset($_POST['title']) ? h($_POST['title']) : '';?>"
         required
       />
     </div>
@@ -20,10 +21,10 @@
     <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
     <div class="admin-form__buttons buttons">
-      <button name="submit" value="submit" class="button button-solid button-solid--admin" type="submit">
+      <button name="submit" value="submit" class="button button--m button--primary" type="submit">
         Создать
       </button>
-      <a class="button button-outline button-outline--admin" href="<?php echo HOST . 'admin/category';?>">Отмена</a>
+      <a class="button button--m button--outline" href="<?php echo HOST . 'admin/category';?>">Отмена</a>
     </div>
   </form>
 </div>

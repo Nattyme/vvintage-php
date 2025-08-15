@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Vvintage\Controllers\Blog;
@@ -10,14 +9,18 @@ use Vvintage\Controllers\Base\BaseController;
 // use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Models\Post\Post;
 use Vvintage\Routing\RouteData;
+
+/** Сервисы */
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Post\PostService;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Seo\SeoService;
 
 
 final class PostController extends BaseController
 {
     private FlashMessage $notes;
+    private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
     private PostService $postService;
 
@@ -25,6 +28,7 @@ final class PostController extends BaseController
     {
         parent::__construct(); // Важно!
         $this->notes = $notes;
+        $this->seoService = new SeoService();
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService( $this->languages, $this->currentLang);
     }
@@ -54,11 +58,11 @@ final class PostController extends BaseController
         // $relatedPosts = $post;
         // $relatedPosts = $post->getRelated();
 
-        // Название страницы
-        $pageTitle = $post->getTitle();
+        // Получаем seo страницы
+        $seo = $this->seoService->getSeoForPage('post', $post);
 
         // Хлебные крошки
-        $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+        $breadcrumbs = $this->breadcrumbsService->generate($routeData, $post->getTitle());
 
         // Формируем единую модель для передачи в шаблон
         $viewModel = [
@@ -70,7 +74,7 @@ final class PostController extends BaseController
         // Подключение шаблонов страницы
         $this->renderLayout('blog/post', [
               'post' => $post,
-              'pageTitle' => $pageTitle,
+              'seo' => $seo,
               'routeData' => $routeData,
               'viewModel' => $viewModel,
         ]);
