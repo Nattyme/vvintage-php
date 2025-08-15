@@ -8,7 +8,7 @@
           </div>
             <ul class="topics-list">
 
-              <?php foreach( $postViewModel['subCategories'] as $category) : ?>
+              <?php foreach( $viewModel['subCategories'] as $category) : ?>
                 <li class="topics-list__item">
                   <a class="topics-list__link" href="">
                     <?php echo h($category->getTitle()); ?>

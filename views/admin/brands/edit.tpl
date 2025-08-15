@@ -46,8 +46,8 @@
     <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
     <div class="admin-form__buttons buttons">
-      <button name="submit" value="submit" class="button-solid button-solid--admin" type="submit">Создать</button>
-      <a class="button-outline button-outline--admin" href="<?php echo HOST . 'admin/brand';?>">Отмена</a>
+      <button name="submit" value="submit" class="button button--m button--primary" type="submit">Создать</button>
+      <a class="button button--m button--outline" href="<?php echo HOST . 'admin/brand';?>">Отмена</a>
     </div>
   </form>
 </div>

@@ -21,6 +21,11 @@ class CategoryService extends BaseService
         $this->repository = new CategoryRepository($this->currentLang);
     }
 
+    public function getCategoryById(int $id): ?Category
+    {
+      return $this->repository->getCategoryById($id);
+    }
+
     public function getMainCategoriesArray(): array
     {
       return $this->repository->getMainCategoriesArray();

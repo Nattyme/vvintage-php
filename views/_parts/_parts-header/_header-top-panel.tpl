@@ -4,11 +4,13 @@
 
       <?php include ROOT . 'views/_parts/_parts-header/_select-lang.tpl';?>
 
-      <div class="header__logo">
-        <a href="<?php echo HOST . 'main'; ?>" class="logo">
-          <?php echo h($settings['site_title']); ?>
-        </a>
-      </div>
+      <?php if (!$isBlogPage) : ?>
+        <div class="header__logo">
+          <a href="<?php echo HOST . 'main'; ?>" class="logo">
+            <?php echo h($settings['site_title']); ?>
+          </a>
+        </div>
+      <?php endif;?>
 
 
       <!-- Вход/Выход -->

@@ -10,12 +10,12 @@ use Vvintage\Services\Admin\Category\AdminCategoryService;
 
 final class AdminCategoryController extends BaseAdminController 
 {
-  private AdminCategoryService $adminCategoryService;
+  private AdminCategoryService $service;
 
   public function __construct()
   {
     parent::__construct();
-    $this->adminCategoryService = new AdminCategoryService();
+    $this->service = new AdminCategoryService();
   }
 
   public function all(RouteData $routeData)
@@ -55,9 +55,9 @@ final class AdminCategoryController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($categoryPerPage, 'categories');
-    $cats = $this->adminCategoryService->getAllCategories($pagination);
-    $mainCats = $this->adminCategoryService->getMainCategories();
-    $total = $this->adminCategoryService->getAllCategoriesCount();
+    $cats = $this->service->getAllCategories($pagination);
+    $mainCats = $this->service->getMainCategories();
+    $total = $this->service->getAllCategoriesCount();
         
     $this->renderLayout('categories/all',  [
       'pageTitle' => $pageTitle,
@@ -85,9 +85,11 @@ final class AdminCategoryController extends BaseAdminController
 
   private function renderEdit(RouteData $routeData): void
   {
-    // Название страницы
-    $pageTitle = 'Бренды';
+    $viewPath = 'categories/edit';
 
+    // Название страницы
+    $pageTitle = 'Категория - редактирование';
+    $id = (int) $routeData->uriGetParam;
     $pageClass = 'admin-page';
 
     // Задаем название страницы и класс
@@ -114,14 +116,13 @@ final class AdminCategoryController extends BaseAdminController
     }
 
     // Запрос постов в БД с сортировкой id по убыванию
-    $brand = $this->brandRepository->getBrandById( (int) $routeData->uriGetParam);
-
+    $category = $this->service->getCategoryById( $id );
 
         
-    $this->renderLayout('brands/edit',  [
+    $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brand' => $brand,
+      'category' => $category,
       'languages' => $this->languages,
       'currentLang' => $this->currentLang
     ]);

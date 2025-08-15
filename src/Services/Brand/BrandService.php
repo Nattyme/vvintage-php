@@ -37,4 +37,11 @@ class BrandService extends BaseService
     {
       return $this->repository->getAllBrandsCount();
     }
+
+    
+    public function getBrandById( int $id): ?Brand 
+    {
+      return $this->repository->getBrandById( $id);
+    }
+
 }

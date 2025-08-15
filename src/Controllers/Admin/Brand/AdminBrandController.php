@@ -83,7 +83,7 @@ class AdminBrandController extends BaseAdminController
   private function renderEdit(RouteData $routeData): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Бренды - редактирование';
 
     $pageClass = 'admin-page';
 
@@ -110,19 +110,15 @@ class AdminBrandController extends BaseAdminController
       }
     }
 
-    $currentLang = LanguageConfig::getCurrentLocale();
-
-    // Запрос постов в БД с сортировкой id по убыванию
-    $brand = $this->brandRepository->getBrandById( (int) $routeData->uriGetParam);
-
-
+    // Запрос бренда
+    $brand = $this->adminBrandService->getBrandById( (int) $routeData->uriGetParam);
         
     $this->renderLayout('brands/edit',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'brand' => $brand,
       'languages' => $this->languages,
-      'currentLang' => $currentLang
+      'currentLang' => $this->currentLang
     ]);
 
   }
