@@ -491,7 +491,7 @@
 
       $homeAdminController = new HomeAdminController();
       $adminProductController = new AdminProductController();
-      $adminBrandController = new AdminBrandController();
+      $adminBrandController = new AdminBrandController($notes);
       $adminCategoryController = new AdminCategoryController();
       $adminUserController = new AdminUserController();
       $adminOrderController = new AdminOrderController($notes);

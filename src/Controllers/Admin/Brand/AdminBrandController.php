@@ -7,19 +7,24 @@ use Vvintage\Routing\RouteData;
 
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Brand\AdminBrandService;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Admin\Validation\AdminBrandValidator;
 // use Vvintage\Repositories\Brand\BrandRepository;
 
 
 
 class AdminBrandController extends BaseAdminController 
 {
-  private AdminBrandService $adminBrandService;
+  private AdminBrandService $service;
+  private AdminBrandValidator $validator;
+  private FlashMessage $notes;
 
-  public function __construct()
+  public function __construct(FlashMessage $notes)
   {
     parent::__construct();
-    $this->adminBrandService = new AdminBrandService();
-    // $this->brandRepository = new BrandRepository();
+    $this->service = new AdminBrandService();
+    $this->validator = new AdminBrandValidator();
+    $this->notes = $notes;
   }
 
   public function all(RouteData $routeData)
@@ -55,8 +60,8 @@ class AdminBrandController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->adminBrandService->getAllBrands($pagination);
-    $total = $this->adminBrandService->getAllBrandsCount();
+    $brands = $this->service->getAllBrands($pagination);
+    $total = $this->service->getAllBrandsCount();
         
     $this->renderLayout('brands/all',  [
       'pageTitle' => $pageTitle,
@@ -71,9 +76,21 @@ class AdminBrandController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = 'Бренды - создание';
+    $viewPath = 'brands/single';
 
    
-    $this->renderLayout('brands/new',  [
+    if( isset($_POST['submit']) ) {
+      $validate = $this->validator->new($_POST);
+
+      if(!$validate) {
+        $this->notes->pushError('Не удалось сохранить новый бренд. Попробуйте ещё раз');
+      }
+    }
+
+   
+
+   
+    $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData
     ]);
@@ -85,6 +102,8 @@ class AdminBrandController extends BaseAdminController
     // Название страницы
     $pageTitle = 'Бренды - редактирование';
 
+    $viewPath = 'brands/single';
+
     $pageClass = 'admin-page';
 
     // Задаем название страницы и класс
@@ -95,25 +114,28 @@ class AdminBrandController extends BaseAdminController
       }
 
       // Проверка на заполненность названия
-      if( trim($_POST['title']) == '' ) {
-        $_SESSION['errors'][] = ['title' => 'Введите название бренда'];
-      } 
+      foreach ($_POST['title'] as $key=>$value) {
+        if( trim($value) == '' ) {
+          $_SESSION['errors'][] = ['title' => 'Введите название бренда'];
+        } 
+      }
+      
 
       // Если нет ошибок
-      if ( empty($_SESSION['errors'])) {
-        $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
+      // if ( empty($_SESSION['errors'])) {
+        // $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
         // $brand->title = $_POST['title'];
 
         // R::store($brand);
 
-        $_SESSION['success'][] = ['title' => 'Бренд успешно обновлен.'];
-      }
+      //   $_SESSION['success'][] = ['title' => 'Бренд успешно обновлен.'];
+      // }
     }
 
     // Запрос бренда
-    $brand = $this->adminBrandService->getBrandById( (int) $routeData->uriGetParam);
+    $brand = $this->service->getBrandById( (int) $routeData->uriGetParam);
         
-    $this->renderLayout('brands/edit',  [
+    $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'brand' => $brand,
