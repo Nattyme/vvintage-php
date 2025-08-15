@@ -30,11 +30,18 @@ use Vvintage\Repositories\Product\ProductRepository;
 /** Роутинг */
 use Vvintage\Routing\RouteData;
 
+// Пеервод на другие языки
+use Vvintage\Config\LanguageConfig;
+use Vvintage\Services\Translator\Translator;
+
 final class LoginController extends BaseController
 {
   private UserRepository $userRepository;
   private ProductRepository $productRepository;
   private FlashMessage $notes;
+  protected array $languages;
+  protected string $currentLang;
+  protected Translator $translator;
 
   public function __construct(UserRepository $userRepository, ProductRepository $productRepository, FlashMessage $notes) 
   {
@@ -42,6 +49,9 @@ final class LoginController extends BaseController
     $this->userRepository = $userRepository;
     $this->productRepository = $productRepository;
     $this->notes = $notes;
+    $this->translator = setTranslator(); // берём уже установленный переводчик
+    $this->languages = LanguageConfig::getAvailableLanguages();
+    $this->currentLang = LanguageConfig::getCurrentLocale();
   }
 
   public function index(RouteData $routeData): void
