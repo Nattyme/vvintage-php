@@ -19,4 +19,5 @@ final class CategoryDTO
         $this->image = (string) ($data['image'] ?? '');
         $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
     }
+
 }

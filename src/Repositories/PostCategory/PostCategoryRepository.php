@@ -18,10 +18,14 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     private string $currentLang;
     private const DEFAULT_LANG = 'ru';
 
+
+
     public function __construct(string $currentLang = self::DEFAULT_LANG)
     {
         $this->currentLang = $currentLang;
     }
+
+
 
     public function getPostCatById(int $id): ?PostCategory
     {
@@ -34,6 +38,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return $this->mapBeanToPostCategory($bean);
     }
 
+    
     public function getAllCategories(): array
     {
         $beans = $this->findAll(self::TABLE);

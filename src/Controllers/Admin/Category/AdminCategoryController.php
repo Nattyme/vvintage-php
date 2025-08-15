@@ -56,7 +56,7 @@ final class AdminCategoryController extends BaseAdminController
     // Устанавливаем пагинацию
     $pagination = pagination($categoryPerPage, 'categories');
     $cats = $this->adminCategoryService->getAllCategories($pagination);
-    $mainCats = $this->adminCategoryService->getMainCats();
+    $mainCats = $this->adminCategoryService->getMainCategories();
     $total = $this->adminCategoryService->getAllCategoriesCount();
         
     $this->renderLayout('categories/all',  [

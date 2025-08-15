@@ -3,8 +3,8 @@
     <p>
       <?php 
         echo h(__('shop.shown.items', [
-          '%count%' => $productViewModel['shown'],
-          '%total%' => $productViewModel['total']
+          '%count%' => $viewModel['shown'],
+          '%total%' => $viewModel['total']
         ], 'shop'));
       ;?>
     </p>

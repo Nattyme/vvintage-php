@@ -12,7 +12,7 @@
 
   $views = $post->getViews() ?  h($post->getViews()) : '0';
 
-  $date = $post->getTime() ? h($post->getTime()) : time();
+  $date = $post->getDateTime() ? h($post->getDateTime()->getTimestamp()) : time();
   $rusDate = rus_date($rusDateFormat, $date);
   $dateTime = date('Y-m-d', $date);   // Получим нужную дату в зав-ти от параметра
 ;?>

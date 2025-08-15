@@ -77,9 +77,9 @@ final class CatalogController extends BaseController
       /** Категории */
       $mainCategoryAll = $this->categoryService->getMainCategories();
       $subCategoryAll = $this->categoryService->getSubCategories();
-dd( $mainCategoryAll);
+
       // Формируем единую модель для передачи в шаблон
-      $productViewModel = [
+      $viewModel = [
           'products' => $products,
           'imagesByProductId' => $imagesByProductId,
           'total' => $total,
@@ -93,7 +93,7 @@ dd( $mainCategoryAll);
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'productViewModel' => $productViewModel
+            'viewModel' => $viewModel
       ]);
     }
 }

@@ -47,7 +47,7 @@ final class BlogController extends BaseController
 
 
       // Формируем единую модель для передачи в шаблон
-      $postViewModel = [
+      $viewModel = [
           'posts' =>  $blogData['posts'],
           'mainCategories' => $blogData['mainCategories'],
           'subCategories' => $blogData['subCategories'],
@@ -62,7 +62,7 @@ final class BlogController extends BaseController
           'pageTitle' => $pageTitle,
           'routeData' => $routeData,
           'breadcrumbs' => $breadcrumbs,
-          'postViewModel' => $postViewModel
+          'viewModel' => $viewModel
         
       ]);
     }

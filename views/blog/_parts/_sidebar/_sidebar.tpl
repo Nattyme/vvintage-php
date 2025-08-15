@@ -31,7 +31,7 @@
         </div>
 
         <ul class="widget__list widget__list--blog widget__list--categories" aria-labelledby="rubrics-title">
-          <?php foreach( $postViewModel['subCategories'] as $category) : ?>
+          <?php foreach( $viewModel['subCategories'] as $category) : ?>
             <li class="widget__item">
               <a href="#!" class="widget__link widget__link--categories">
                 <?php echo h($category->getTitle()) ;?>

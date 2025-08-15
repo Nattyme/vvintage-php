@@ -14,10 +14,10 @@
   </div>
 
   <div class="cart__body">
-    <?php foreach ($productViewModel['products'] as $product) :
+    <?php foreach ($viewModel['products'] as $product) :
 
         // Получаем главное изображения 
-        $images = $productViewModel['imagesByProductId'][$product->getId()] ?? null;
+        $images = $viewModel['imagesByProductId'][$product->getId()] ?? null;
         $mainImage = $images['main'] ?? null;
 
         include ROOT . 'views/favorites/_parts/_product.tpl';
@@ -31,7 +31,7 @@
         <div class="cart__grid">
           <p class="cart__total-amount">
              <?php echo h(__('product-list.table.ttl', [], 'product-list'));?>: 
-             <span class="text-bold"><?php echo count($productViewModel['products']);?></span>
+             <span class="text-bold"><?php echo count($viewModel['products']);?></span>
           </p>
   
         </div>

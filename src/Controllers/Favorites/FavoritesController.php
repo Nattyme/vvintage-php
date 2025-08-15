@@ -101,7 +101,7 @@ final class FavoritesController extends BaseController
       }
 
       // Формируем единую модель для передачи в шаблон
-      $productViewModel = [
+      $viewModel = [
           'products' => $products,
           'imagesByProductId' => $imagesByProductId
       ];
@@ -112,7 +112,7 @@ final class FavoritesController extends BaseController
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'productViewModel' => $productViewModel
+            'viewModel' => $viewModel
       ]);
      
     }

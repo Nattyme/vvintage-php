@@ -71,6 +71,7 @@ class Product
       $product->datetime = new \Datetime ();
       $product->edit_time = $dto->edit_time;
       $product->translations = $dto->translations;
+      $product->currentLocale = $dto->locale ?? 'ru';
       $product->images = $dto->images;
       
 

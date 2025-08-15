@@ -6,9 +6,9 @@
         </div>
         
         <div class="cards-row">
-          <?php foreach($productViewModel['related'] as $product) : ?>
+          <?php foreach($viewModel['related'] as $product) : ?>
             <?php 
-                $images = $productViewModel['imagesByProductId'][$product->getId()] ?? null;
+                $images = $viewModel['imagesByProductId'][$product->getId()] ?? null;
                 $mainImage = $images['main'] ?? null;
             ?>
             <?php include ROOT . 'views/shop/_parts/_card.tpl';?>

@@ -89,9 +89,9 @@
 
             <!-- Карточки товаров -->
             <div class="products__cards">
-                <?php foreach ($productViewModel['products'] as $product) : ?>
+                <?php foreach ($viewModel['products'] as $product) : ?>
                   <?php 
-                      $images = $productViewModel['imagesByProductId'][$product->getId()] ?? null;
+                      $images = $viewModel['imagesByProductId'][$product->getId()] ?? null;
                       $mainImage = $images['main'] ?? null;
                   ?>
         

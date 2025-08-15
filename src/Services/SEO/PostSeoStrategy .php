@@ -7,19 +7,19 @@ use Vvintage\Contracts\SeoStrategyInterface;
 use Vvintage\DTO\Common\SeoDTO;
 
 
-class ProductSeoStrategy implements SeoStrategyInterface
+class PostSeoStrategy implements SeoStrategyInterface
 {
-    private $product;
+    private $post;
 
-    public function __construct($product)
+    public function __construct($post)
     {
-        $this->product = $product;
+        $this->post = $post;
     }
 
     public function getSeo(): SeoDTO
     {
-      $locale = $this->product->getCurrentLocale();
-      $translations = $this->product->getTranslations();
+      $locale = $this->post->getCurrentLocale();
+      $translations = $this->post->getTranslations();
 
         // Используем данные из продукта
         $meta = $translations[$locale] ?? $translations['ru'] ?? [];
@@ -34,8 +34,8 @@ class ProductSeoStrategy implements SeoStrategyInterface
 
     public function getStructuredData(): string
     {
-        $locale = $this->product->getCurrentLocale();
-        $translations = $this->product->getTranslations();
+        $locale = $this->post->getCurrentLocale();
+        $translations = $this->post->getTranslations();
         $meta = $translations[$locale] ?? [];
 
         $data = [
@@ -45,9 +45,9 @@ class ProductSeoStrategy implements SeoStrategyInterface
             "description" => $meta['description'] ?? '',
             "brand" => [
                 "@type" => "Brand",
-                "name" => $this->product->getBrandTitle()
+                "name" => $this->post->getBrandTitle()
             ]
-            // "image" => $this->product->getImageUrl(),
+            // "image" => $this->post->getImageUrl(),
         ];
 
         return '<script type="application/ld+json">' . json_encode($data, JSON_UNESCAPED_UNICODE) . '</script>';

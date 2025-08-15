@@ -61,7 +61,7 @@ final class PostController extends BaseController
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
         // Формируем единую модель для передачи в шаблон
-        $postViewModel = [
+        $viewModel = [
             'mainCategories' => $mainCategories,
             'subCategories' => $subCategories,
             'breadcrumbs' => $breadcrumbs
@@ -72,7 +72,7 @@ final class PostController extends BaseController
               'post' => $post,
               'pageTitle' => $pageTitle,
               'routeData' => $routeData,
-              'postViewModel' => $postViewModel,
+              'viewModel' => $viewModel,
         ]);
     }
 }

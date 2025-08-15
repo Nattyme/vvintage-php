@@ -16,15 +16,15 @@
           <header class="product-card__header">
      
             <div class="product-card__row">
-              <h1 class="h1 product-card__title"><?php echo h($productViewModel['product']->getTitle());?></h1>
+              <h1 class="h1 product-card__title"><?php echo h($viewModel['product']->getTitle());?></h1>
             </div>
             <div class="product-card__row">
               <p>New without tegs</p>
-              <a href="#" class="product-card__brand"><?php echo h($productViewModel['product']->getBrandTitle());?></a>
+              <a href="#" class="product-card__brand"><?php echo h($viewModel['product']->getBrandTitle());?></a>
             </div>
             <div class="product-card__row">
               <div class="product-card__price">
-                <span class="price"><?php echo h($productViewModel['product']->getPrice());?>&nbsp;&euro;
+                <span class="price"><?php echo h($viewModel['product']->getPrice());?>&nbsp;&euro;
                 </span>
               </div>
             </div>
@@ -33,7 +33,7 @@
           <dl class="product-card__list">
             <div class="product-card__item  product-card__item--title">
               <dt><?php echo h(__('product.brand.title', [], 'product'));?></dt>
-              <dd><a href=""><?php echo h($productViewModel['product']->getBrandTitle());?></a></dd>
+              <dd><a href=""><?php echo h($viewModel['product']->getBrandTitle());?></a></dd>
             </div>
             <div class="product-card__item">
               <dt><?php echo h(__('product.item.condition', [], 'product'));?></dt>
@@ -50,17 +50,17 @@
           </dl>
 
           <div class="product__description">
-            <?php echo $productViewModel['product']->getContent();?>
+            <?php echo $viewModel['product']->getContent();?>
           </div>
 
           <div class="product-card__button">
-            <?php if (isProductInCart($productViewModel['product']->getId())) : ?>
+            <?php if (isProductInCart($viewModel['product']->getId())) : ?>
             
               <button type="button" class="button button--primary button--l" disabled>
                 <?php echo h(__('button.item.incart', [], 'buttons',));?>
               </button>
             <?php  else : ?>
-              <a href="<?php echo HOST . 'addtocart?id=' . u($productViewModel['product']->getId());?>" class="button button--primary button--xl">
+              <a href="<?php echo HOST . 'addtocart?id=' . u($viewModel['product']->getId());?>" class="button button--primary button--xl">
                 <?php echo h(__('button.cart.add', [], 'buttons'));?>: 
               </a>
             <?php endif;?>

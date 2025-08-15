@@ -90,7 +90,7 @@ final class CartController extends BaseController
       }
 
       // Формируем единую модель для передачи в шаблон
-      $productViewModel = [
+      $viewModel = [
           'products' => $products,
           'imagesByProductId' => $imagesByProductId,
           'totalPrice' => $totalPrice
@@ -102,7 +102,7 @@ final class CartController extends BaseController
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'productViewModel' => $productViewModel,
+            'viewModel' => $viewModel,
       ]);
     }
 

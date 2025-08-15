@@ -11,7 +11,7 @@
       <div class="page-cart__cart-wrapper">
         <?php include ROOT . 'views/components/success.tpl'; ?>
 
-        <?php if (!empty($productViewModel['products'])) : ?>
+        <?php if (!empty($viewModel['products'])) : ?>
           <!-- cart table-->
           <?php include 'views/favorites/_parts/_table.tpl';?>
           <!--// cart table-->

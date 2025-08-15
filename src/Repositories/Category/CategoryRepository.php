@@ -23,11 +23,60 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     private const TABLE_CATEGORIES = 'categories';
     private const TABLE_CATEGORIES_TRANSLATION = 'categories_translation';
     private string $currentLang;
+    private const DEFAULT_LANG = 'ru';
 
     public function __construct(string $currentLang)
     {
        $this->currentLang = $currentLang;
     }
+
+    /**
+     * Загружает переводы из categories_translation
+     */
+    private function loadTranslations(int $categoryId): array
+    {
+        $rows = R::getAll(
+            'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?',
+            [$categoryId]
+        );
+
+        $translations = [];
+        foreach ($rows as $row) {
+            $translations[$row['locale']] = [
+                'title' => $row['title'],
+                'description' => $row['description'],
+                'meta_title' => $row['meta_title'],
+                'meta_description' => $row['meta_description'],
+            ];
+        }
+
+        return $translations;
+    }
+
+    private function mapBeanToCategory(OODBBean $bean): Category
+    {
+ 
+        $translations = $this->loadTranslations((int) $bean->id);
+
+        $translatedData = $translations[$this->currentLang] ?? $translations[self::DEFAULT_LANG] ?? [
+            'title' => '',
+            'description' => '',
+            'meta_title' => '',
+            'meta_description' => ''
+        ];
+
+
+        $dto = new CategoryDTO([
+            'id' => (int) $bean->id,
+            'title' => (string) $bean->title,
+            'parent_id' => (int) $bean->parent_id,
+            'image' => (string) $bean->image,
+            'translations' => $translations
+        ]);
+
+        return Category::fromDTO($dto);
+    }
+
 
     public function getCategoryById(int $id): ?Category
     {
@@ -40,10 +89,31 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return $this->mapBeanToCategory($bean);
     }
 
+    // public function getAllCategories(): array
+    // {
+    //     $beans = $this->findAll(self::TABLE_CATEGORIES);
+
+    //     return array_map([$this, 'mapBeanToCategory'], $beans);
+    // }
+
+    // private function getAllCategoriesTranslated(array $params): array 
+    // {
+    //   $sql = '
+    //       SELECT c.id, c.parent_id, c.image,
+    //         ct.title, ct.description, ct.meta_title, ct.meta_description
+    //       FROM categories c
+    //       LEFT JOIN categories_translation ct
+    //         ON c.id = ct.category_id AND ct.locale = ?
+    //   ';
+
+    //   $beans = $this->findAll(self::TABLE_CATEGORIES, $sql, $params);
+
+    //    return array_map([$this, 'mapBeanToCategory'], $beans);
+    // }
+
     public function getAllCategories(): array
     {
         $beans = $this->findAll(self::TABLE_CATEGORIES);
-
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
@@ -104,44 +174,9 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return $id;
     }
 
-    /**
-     * Загружает переводы из categories_translation
-     */
-    private function loadTranslations(int $categoryId): array
-    {
-        $rows = R::getAll(
-            'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?',
-            [$categoryId]
-        );
+    
 
-        $translations = [];
-        foreach ($rows as $row) {
-            $translations[$row['locale']] = [
-                'title' => $row['title'],
-                'description' => $row['description'],
-                'meta_title' => $row['meta_title'],
-                'meta_description' => $row['meta_description'],
-            ];
-        }
-
-        return $translations;
-    }
-
-    private function mapBeanToCategory(OODBBean $bean): Category
-    {
-        $translations = $this->loadTranslations((int) $bean->id);
-
-        $dto = new CategoryDTO([
-            'id' => (int) $bean->id,
-            'title' => (string) $bean->title,
-            'parent_id' => (int) $bean->parent_id,
-            'image' => (string) $bean->image,
-            'translations' => $translations
-        ]);
-
-        return Category::fromDTO($dto);
-    }
-
+   
     private function mapBeanToArray(OODBBean $bean): array
     {
       $translations = $this->loadTranslations((int) $bean->id);

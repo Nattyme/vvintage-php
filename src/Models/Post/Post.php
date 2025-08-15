@@ -108,10 +108,6 @@ final class Post
     }
 
     
-    public function getTime(): ?float
-    {
-      return $this->timestamp;
-    }
     public function getViews(): ?int
     {
       return $this->views;
