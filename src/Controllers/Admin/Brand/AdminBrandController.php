@@ -72,78 +72,71 @@ class AdminBrandController extends BaseAdminController
 
   }
 
+  private function handleBrandForm(RouteData $routeData, ?int $brandId = null): void
+  {
+      $brand = $brandId ? $this->service->getBrandById($brandId) : null;
+
+      if ($brandId && !$brand) {
+          $this->notes->pushError('Бренд не найден.');
+          // header('Location: /admin/brands');
+          // exit;
+      }
+
+      if (isset($_POST['submit'])) {
+          // Проверка CSRF
+          if (!check_csrf($_POST['csrf'] ?? '')) {
+              $this->notes->pushError('Неверный токен безопасности.');
+              // header('Location: ' . $_SERVER['REQUEST_URI']);
+              // exit;
+          }
+
+          // Валидация
+          $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
+
+          if (!$validate) {
+              $this->notes->pushError($brandId ? 'Не удалось обновить бренд. Проверьте данные.' : 'Не удалось сохранить новый бренд. Проверьте данные.');
+              header('Location: ' . $_SERVER['REQUEST_URI']);
+              exit;
+          }
+
+          // Сохранение
+          $saved = $brandId
+              ? $this->service->updateBrand($brandId, $_POST)
+              : $this->service->createBrand($_POST);
+
+          if ($saved) {
+              $this->notes->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
+              header('Location: /admin/brands');
+              exit;
+          } else {
+              $this->notes->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
+              header('Location: ' . $_SERVER['REQUEST_URI']);
+              exit;
+          }
+      }
+
+      // Передаем бренд в шаблон (может быть null для нового)
+      $this->renderLayout('brands/single', [
+          'pageTitle' => $brandId ? 'Бренды - редактирование' : 'Бренды - создание',
+          'routeData' => $routeData,
+          'brand' => $brand,
+          'languages' => $this->languages,
+          'currentLang' => $this->currentLang
+      ]);
+  }
+
   private function renderNew(RouteData $routeData): void
   {
-    // Название страницы
-    $pageTitle = 'Бренды - создание';
-    $viewPath = 'brands/single';
-
-   
-    if( isset($_POST['submit']) ) {
-      $validate = $this->validator->new($_POST);
-
-      if(!$validate) {
-        $this->notes->pushError('Не удалось сохранить новый бренд. Попробуйте ещё раз');
-      }
-    }
-
-   
-
-   
-    $this->renderLayout($viewPath,  [
-      'pageTitle' => $pageTitle,
-      'routeData' => $routeData
-    ]);
-
+      $this->handleBrandForm($routeData);
   }
 
   private function renderEdit(RouteData $routeData): void
   {
-    // Название страницы
-    $pageTitle = 'Бренды - редактирование';
-
-    $viewPath = 'brands/single';
-
-    $pageClass = 'admin-page';
-
-    // Задаем название страницы и класс
-    if( isset($_POST['submit'])) {
-      // Проверка токена
-      if (!check_csrf($_POST['csrf'] ?? '')) {
-        $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
-      }
-
-      // Проверка на заполненность названия
-      foreach ($_POST['title'] as $key=>$value) {
-        if( trim($value) == '' ) {
-          $_SESSION['errors'][] = ['title' => 'Введите название бренда'];
-        } 
-      }
-      
-
-      // Если нет ошибок
-      // if ( empty($_SESSION['errors'])) {
-        // $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
-        // $brand->title = $_POST['title'];
-
-        // R::store($brand);
-
-      //   $_SESSION['success'][] = ['title' => 'Бренд успешно обновлен.'];
-      // }
-    }
-
-    // Запрос бренда
-    $brand = $this->service->getBrandById( (int) $routeData->uriGetParam);
-        
-    $this->renderLayout($viewPath,  [
-      'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brand' => $brand,
-      'languages' => $this->languages,
-      'currentLang' => $this->currentLang
-    ]);
-
+      $this->handleBrandForm($routeData, (int)$routeData->uriGetParam);
   }
+
+
+
 
   private function renderDelete(RouteData $routeData): void
   {
