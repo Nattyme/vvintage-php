@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header__row">
 
-      <?php include ROOT . 'views/_parts/_parts-header/_select-lang.tpl';?>
+      <?php include ROOT . 'views/components/select/_select-lang.tpl';?>
 
       <?php if (!$isBlogPage) : ?>
         <div class="header__logo">

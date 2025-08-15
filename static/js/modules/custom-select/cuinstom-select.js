@@ -3,7 +3,7 @@ const addCustomSelect = () => {
   if (!select) return;
 
   const trigger = select.querySelector('[custom-select-trigger]');
-  const form = select.querySelector('[custom-select-form]');
+  const form = select.querySelector('[custom-select-form]');  
   const input = form.querySelector('[custom-select-input]');
 
   if (!form) return;

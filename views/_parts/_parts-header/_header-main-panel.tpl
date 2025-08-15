@@ -42,7 +42,7 @@
         </div>
       
       <?php else : ?>
-        <?php include ROOT . 'templates/_parts/nav/nav.tpl'; ?>
+        <?php include ROOT . 'views/_parts/nav/nav.tpl'; ?>
 
         <!-- Иконки: избранное + корзина -->
         <div class="header__icons">

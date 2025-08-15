@@ -1,62 +1,67 @@
 <div class="admin-page__content-form">
-  
+
   <?php include ROOT . "views/components/errors.tpl"; ?>
   <?php include ROOT . "views/components/success.tpl"; ?>
 
-  <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/brand-new">
-    <!-- Языковой селект -->
-    <div class="admin-form__field admin-form__language-select">
-      <label class="admin-form__label" for="language-select">Выберите язык</label>
-      <select id="language-select" class="admin-form__input">
-        <?php foreach ($languages as $code => $label): ?>
-          <option value="<?php echo h($code) ?>" <?php echo ($code === $currentLang) ? 'selected' : '';?>>
-            <?php echo h($label);?>
-          </option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-
-    <?php foreach ($languages as $code => $label): ?>
-      <div class="lang-group" data-lang="<?= h($code) ?>" style="<?= $code === 'ru' ? '' : 'display: none;' ?>">
-        <?php include 'views/admin/brands/translations/translation_fields.tpl'; ?>
-      </div>
-    <?php endforeach; ?>
-
-
-    <!-- Контейнер для языковых полей -->
-    <div class="admin-form__fields-langs">
-      <!-- Русский -->
-      <?php include 'views/admin/brands/translations/ru_fields.tpl'; ?>
-      <!-- Немецкий -->
-      <?php include 'views/admin/brands/translations/de_fields.tpl'; ?>
-      <!-- Английский -->
-      <?php include 'views/admin/brands/translations/en_fields.tpl'; ?>
-      <!-- Испанский -->
-      <?php include 'views/admin/brands/translations/es_fields.tpl'; ?>
-      <!-- Французский -->
-      <?php include 'views/admin/brands/translations/fr_fields.tpl'; ?>
-      <!-- Японский -->
-      <?php include 'views/admin/brands/translations/ja_fields.tpl'; ?>
-      <!-- Китайский -->
-      <?php include 'views/admin/brands/translations/zh_fields.tpl'; ?>
-      
-    </div>
+  <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/brand-edit/<?php echo u($brand->getId()); ?>">
 
     <!-- CSRF-токен -->
-    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()); ?>">
+
+    <div class="admin-form__field">
+      <div class="admin-form__item" data-control="tab">
+        <!-- Навигация -->
+        <div class="tab__nav" data-control="tab-nav">
+          
+          <?php foreach ($languages as $code => $value ) : ?>
+            <button type="button" class="tab__nav-button tab__nav-button--flags" data-control="tab-button" 
+                    title="Перейти в редактирование текст на кнопке статуса">
+              <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . $code;?>">
+            </button>
+          <?php endforeach;?>
+        </div>
+        <!-- Навигация -->
+
+        <!-- Блоки с контентом -->
+        <div class="admin-form__item">
+          <div class="tab__content" data-control="tab-content">
+            <?php foreach ($languages as $code => $value ) : ?>
+              <div class="tab__block" data-control="tab-block">
+               <?php include ROOT . "views/admin/brands/translations/{$code}_fields.tpl";?>
+              </div>
+            <?php endforeach;?>
+          </div>
+        </div>
+        <!--// Блоки с контентом -->
+      </div>
+
+    </div>
+
+
+
+    
+    <!-- Логотип бренда -->
+    <div class="admin-form__field">
+      <label class="admin-form__label" for="image">Логотип бренда</label>
+      <?php if ($brand->getImage()): ?>
+        <div class="admin-form__image-preview">
+          <img src="<?php echo HOST . 'uploads/brands/' . h($brand->getImage()); ?>" alt="Логотип <?php echo h($brand->getTitle()); ?>" width="100">
+        </div>
+      <?php endif; ?>
+      <input 
+        id="image" 
+        name="image" 
+        class="admin-form__input" 
+        type="file" 
+        accept="image/*"
+      />
+      <small>Оставьте пустым, если не хотите менять текущий логотип</small>
+    </div>
+
 
     <div class="admin-form__buttons buttons">
-      <button name="submit" value="submit" class="button button--m button--primary" type="submit">Создать</button>
-      <a class="button button--m button--outline" href="<?php echo HOST . 'admin/brand';?>">Отмена</a>
+      <button name="submit" value="submit" class="button button--m button--primary" type="submit">Сохранить</button>
+      <a class="button button--m button--outline" href="<?php echo HOST . 'admin/brand'; ?>">Отмена</a>
     </div>
   </form>
 </div>
-<script>
-document.getElementById('language-select').addEventListener('change', function() {
-  const selectedLang = this.value;
-  document.querySelectorAll('.lang-group').forEach(group => {
-    group.style.display = group.dataset.lang === selectedLang ? 'block' : 'none';
-  });
-});
-
-</script>
