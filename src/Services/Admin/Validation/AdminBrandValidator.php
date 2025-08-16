@@ -7,38 +7,39 @@ use Vvintage\Services\Messages\FlashMessage;
 
 final class AdminBrandValidator
 {
-    private FlashMessage $notes;
+    private FlashMessage $flash;
 
     public function __construct()
     {
-        $this->notes = new FlashMessage();
+        $this->flash = new FlashMessage();
     }
 
-    public function new(array &$data): bool // & — чтобы можно было изменять данные
+    public function new(array &$data): bool
     {
         $valid = true;
 
         // Обязательные поля
-        $valid && $this->validateRequired($data, 'title', 'Заполните название бренда');
-        $valid && $this->validateRequired($data, 'description', 'Заполните описание бренда');
-        $valid && $this->validateRequired($data, 'meta_title', 'Заполните SEO заголовок страницы бренда');
-        $valid && $this->validateRequired($data, 'meta_description', 'Заполните SEO описание страницы бренда');
+        $valid = $this->validateRequired($data, 'title', 'Заполните название бренда') && $valid;
+        $valid = $this->validateRequired($data, 'description', 'Заполните описание бренда') && $valid;
+        $valid = $this->validateRequired($data, 'meta_title', 'Заполните SEO заголовок страницы бренда') && $valid;
+        $valid = $this->validateRequired($data, 'meta_description', 'Заполните SEO описание страницы бренда') && $valid;
 
         // Длина
-        $valid && $this->validateLength($data['title'] ?? [], 2, 255, 'Название бренда');
-        $valid && $this->validateLength($data['meta_title'] ?? [], 5, 70, 'SEO заголовок');
-        $valid && $this->validateLength($data['meta_description'] ?? [], 10, 160, 'SEO описание');
+        $valid = $this->validateLength($data['title'] ?? [], 2, 255, 'Название бренда') && $valid;
+        $valid = $this->validateLength($data['meta_title'] ?? [], 5, 70, 'SEO заголовок') && $valid;
+        $valid = $this->validateLength($data['meta_description'] ?? [], 10, 160, 'SEO описание') && $valid;
 
         // Проверка допустимых символов + автоочистка
-        $valid && $this->validateAllowedChars($data, 'title', 'Название бренда');
+        $valid = $this->validateAllowedChars($data, 'title', 'Название бренда') && $valid;
 
         // Логотип
         if (!empty($_FILES['image']['name'])) {
-            $valid && $this->validateImage($_FILES['image']);
+            $valid = $this->validateImage($_FILES['image']) && $valid;
         }
 
-        return (bool)$valid;
+        return $valid;
     }
+
 
     /**
      * Проверка обязательных полей
@@ -49,7 +50,7 @@ final class AdminBrandValidator
         foreach ($data[$fieldName] ?? [] as $lang => $value) {
             if (trim((string)$value) === '') {
                 $flagPath = HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$lang";
-                $this->notes->pushError('Пустое поле', $message, $flagPath);
+                $this->flash->pushError('Пустое поле', $message, $flagPath);
                 $valid = false;
             }
         }
@@ -66,7 +67,7 @@ final class AdminBrandValidator
             $len = mb_strlen(trim((string)$value));
             if ($len < $min || $len > $max) {
                 $flagPath = HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$lang";
-                $this->notes->pushError(
+                $this->flash->pushError(
                     'Некорректная длина',
                     "$fieldLabel должно быть от $min до $max символов",
                     $flagPath
@@ -94,7 +95,7 @@ final class AdminBrandValidator
                 $data[$fieldName][$lang] = $cleaned;
 
                 $flagPath = HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$lang";
-                $this->notes->pushError(
+                $this->flash->pushError(
                     'Недопустимые символы',
                     "$fieldLabel был автоматически очищен от лишних символов",
                     $flagPath
@@ -113,13 +114,13 @@ final class AdminBrandValidator
         $valid = true;
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            $this->notes->pushError('Ошибка загрузки', 'Не удалось загрузить логотип');
+            $this->flash->pushError('Ошибка загрузки', 'Не удалось загрузить логотип');
             return false;
         }
 
         $maxSize = 2 * 1024 * 1024; // 2MB
         if ($file['size'] > $maxSize) {
-            $this->notes->pushError('Слишком большой файл', 'Максимальный размер логотипа — 2 МБ');
+            $this->flash->pushError('Слишком большой файл', 'Максимальный размер логотипа — 2 МБ');
             $valid = false;
         }
 
@@ -129,7 +130,7 @@ final class AdminBrandValidator
 
         $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
         if (!in_array($mime, $allowed, true)) {
-            $this->notes->pushError('Неверный формат', 'Допустимые форматы: JPG, PNG, WEBP, SVG');
+            $this->flash->pushError('Неверный формат', 'Допустимые форматы: JPG, PNG, WEBP, SVG');
             $valid = false;
         }
 

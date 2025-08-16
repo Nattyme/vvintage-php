@@ -100,7 +100,7 @@ class AdminBrandController extends BaseAdminController
 
           if (!$validate) {
               $this->flash->pushError($brandId ? 'Не удалось обновить бренд. Проверьте данные.' : 'Не удалось сохранить новый бренд. Проверьте данные.');
-              header('Location: ' . HOST . 'admin/brands');
+              header('Location: ' . HOST . 'admin/brand-new');
               exit;
           }
 
@@ -128,7 +128,7 @@ class AdminBrandController extends BaseAdminController
 
           $brand = Brand::fromDTO($brandDTO); // создаём объект Brand
 
-
+dd($brandDTO);
           // Сохранение
           $saved = $brandId
               ? $this->service->updateBrand($brandId, $_POST)
