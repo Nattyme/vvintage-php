@@ -22,10 +22,10 @@ use Vvintage\DTO\Post\PostDTO;
 final class PostRepository extends AbstractRepository implements PostRepositoryInterface
 {  
     private const TABLE = 'posts';
-    private const TABLE_TRANSLATION = 'posts_translation';
+    private const TABLE_TRANSLATION = 'poststranslation';
 
-    private const TABLE_CATEGORIES = 'posts_categories';
-    private const TABLE_CATEGORIES_TRANSLATION = 'posts_categories_translation';
+    private const TABLE_CATEGORIES = 'postscategories';
+    private const TABLE_CATEGORIES_TRANSLATION = 'postscategoriestranslation';
 
     private string $currentLang;
     private const DEFAULT_LANG = 'ru';

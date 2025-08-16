@@ -25,14 +25,14 @@ use Vvintage\DTO\Brand\BrandDTO;
 final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
     private const TABLE_PRODUCTS = 'products';
-    private const TABLE_PRODUCTS_TRANSLATION = 'products_translation';
+    private const TABLE_PRODUCTS_TRANSLATION = 'productstranslation';
     private const TABLE_PRODUCT_IMAGES = 'productimages';
 
     private const TABLE_BRANDS = 'brands';
-    private const TABLE_BRANDS_TRANSLATION = 'brands_translation';
+    private const TABLE_BRANDS_TRANSLATION = 'brandstranslation';
 
     private const TABLE_CATEGORIES = 'categories';
-    private const TABLE_CATEGORIES_TRANSLATION = 'categories_translation';
+    private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
 
     private const DEFAULT_LOCALE = 'ru';
     private string $currentLocale;

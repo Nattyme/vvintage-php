@@ -63,7 +63,8 @@ class AdminMessageController extends BaseAdminController
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'messages' => $messages,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'flash' => $this->flash
     ]);
 
   }

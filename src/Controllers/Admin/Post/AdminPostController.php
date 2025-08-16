@@ -257,7 +257,8 @@ class AdminPostController extends BaseAdminController
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'postViewModel' => $postViewModel,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'flash' => $this->flash
     ]);
   }
 
@@ -284,7 +285,7 @@ class AdminPostController extends BaseAdminController
     $postId = $routeData->getUriGetParam();
     // $post = $this->adminPostService->getPost((int) $postId);
     $postViewData =  $this->adminPostService->getPostViewData((int) $postId);
-dd($postViewData);
+
     $this->renderLayout('blog/edit',  [
       'postViewData' => $postViewData,
       'pageTitle' => $pageTitle,

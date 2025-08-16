@@ -12,8 +12,8 @@ use Vvintage\DTO\PostCategory\PostCategoryDTO;
 
 final class PostCategoryRepository extends AbstractRepository implements PostCategoryRepositoryInterface
 {
-    private const TABLE = 'posts_categories';
-    private const TABLE_TRANSLATION = 'posts_categories_translation';
+    private const TABLE = 'postscategories';
+    private const TABLE_TRANSLATION = 'postscategoriestranslation';
 
     private string $currentLang;
     private const DEFAULT_LANG = 'ru';
