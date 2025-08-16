@@ -23,12 +23,7 @@
             </div>
 
             <div class="products__sort">
-              <label for="sort">Сортировать:</label>
-              <select name="sort" id="sort" onchange="this.form.submit()">
-                <option value="">По умолчанию</option>
-                <option value="price_asc">Цена ↑</option>
-                <option value="price_desc">Цена ↓</option>
-              </select>
+              <?php include ROOT . 'views/shop/_sort/_by-price.tpl'; ?>
             </div>
           </div>
 
@@ -37,53 +32,7 @@
             
             <!-- Фильтры -->
             <aside class="products__filters">
-
-              <!-- Категории -->
-              <div class="filter-group">
-                <h3 class="filter-title">Категории</h3>
-                <label class="filter-checkbox">
-                  <input type="checkbox" name="category[]" value="phones">
-                  <span>Телефоны</span>
-                </label>
-                <label class="filter-checkbox">
-                  <input type="checkbox" name="category[]" value="laptops">
-                  <span>Ноутбуки</span>
-                </label>
-                <label class="filter-checkbox hidden">
-                  <input type="checkbox" name="category[]" value="accessories">
-                  <span>Аксессуары</span>
-                </label>
-                <button type="button" class="filter-show-more" data-target="category">Показать ещё</button>
-              </div>
-
-              <!-- Бренды -->
-              <div class="filter-group">
-                <h3 class="filter-title">Бренды</h3>
-                <label class="filter-checkbox">
-                  <input type="checkbox" name="brand[]" value="apple">
-                  <span>Apple</span>
-                </label>
-                <label class="filter-checkbox">
-                  <input type="checkbox" name="brand[]" value="samsung">
-                  <span>Samsung</span>
-                </label>
-                <label class="filter-checkbox hidden">
-                  <input type="checkbox" name="brand[]" value="xiaomi">
-                  <span>Xiaomi</span>
-                </label>
-                <button type="button" class="filter-show-more" data-target="brand">Показать ещё</button>
-              </div>
-
-              <!-- Цена -->
-              <div class="filter-group">
-                <h3 class="filter-title">Цена</h3>
-                <div class="filter-price">
-                  <input type="number" name="price_min" placeholder="от">
-                  <span class="dash">—</span>
-                  <input type="number" name="price_max" placeholder="до">
-                </div>
-              </div>
-
+              <?php include ROOT . 'views/shop/_filter/_index.tpl';?>
             </aside>
 
 

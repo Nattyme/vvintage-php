@@ -93,8 +93,7 @@ final class CatalogController extends BaseController
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'viewModel' => $viewModel,
-            'flash' => $this->flash
+            'viewModel' => $viewModel
       ]);
     }
 }
