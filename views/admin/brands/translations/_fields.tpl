@@ -7,10 +7,14 @@
       class="admin-form__input" 
       type="text" 
       placeholder="Введите название бренда" 
-      value="<?php echo isset($_POST['title'][$code]) ? h($_POST['title'][$code] ) : '';?>"
+      value="<?php 
+          echo isset($_POST['title'][$code]) 
+          ? h($_POST['title'][$code] ) 
+          : ($brand->getTitle() ? h($brand->getTitle()) : '');
+      ?>"
     />
-
   </div>
+
   <div class="admin-form__field">
     <label class="admin-form__label" for="description-<?php echo $code;?>">Описание бренда</label>
     <textarea 
@@ -18,8 +22,14 @@
       name="description[<?php echo $code;?>]" 
       class="admin-form__textarea" 
       placeholder="Введите описание бренда"
-    ><?php echo isset($_POST['description'][$code]) ? h($_POST['description'][$code] ) : '';?></textarea>
+    ><?php 
+      echo isset($_POST['description'][$code]) 
+      ? h($_POST['title'][$description] ) 
+      : ($brand->getTranslatedDescription($code) 
+      ? h($brand->getTranslatedDescription($code)) : '');
+    ?></textarea>
   </div>
+
 
   <div class="admin-form__field">
     <label class="admin-form__label" for="meta_title-<?php echo $code;?>">SEO заголовок страницы</label>
@@ -29,7 +39,11 @@
       class="admin-form__input" 
       type="text" 
       placeholder="Введите SEO заголовок страницы" 
-      value="<?php echo isset($_POST['meta_title'][$code]) ? h($_POST['meta_title'][$code] ) : '';?>"
+      value="<?php 
+        echo isset($_POST['meta_title'][$code]) 
+        ? h($_POST['meta_title'][$code] ) 
+        : ($brand->getSeoTitle() ? h($brand->getSeoTitle()) : '');
+      ?>"
     />
   </div>
 
@@ -40,6 +54,11 @@
       name="meta_description[<?php echo $code;?>]" 
       class="admin-form__textarea" 
       placeholder="Введите SEO описание страницы"
-    ><?php echo isset($_POST['meta_description'][$code]) ? h($_POST['meta_description'][$code] ) : '';?></textarea>
+    ><?php 
+      echo isset($_POST['meta_description'][$code]) 
+      ? h($_POST['meta_description'][$meta_description] ) 
+      : ($brand->getSeoDescription($code) 
+      ? h($brand->getSeoDescription($code)) : '');
+    ?></textarea>
   </div>
 </div>

@@ -6,7 +6,7 @@
   <form 
     class="admin-form" 
     method="POST" 
-    <?php if (isset($brand) && $brand->getId()) : ?>
+    <?php if ($brand && $brand->getId()) : ?>
       action="<?php echo HOST;?>admin/brand-edit/<?php echo u($brand->getId()); ?>"
     <?php endif;?>
   >

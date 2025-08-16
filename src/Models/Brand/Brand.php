@@ -61,10 +61,38 @@ final class Brand
       return $this->image;
     }
 
-    public function getTranslations(): array
+    public function getTranslations(?string $locale = null): array
     {
-      return $this->translations;
+        if ($locale) {
+            return $this->translations[$locale] ?? [];
+        }
+        return $this->translations;
     }
+
+
+    public function getTranslatedTitle(?string $locale = null): string 
+    {
+        $locale = $locale ?? $this->currentLocale;
+
+        return $this->translations[$locale]['title'] ?? $this->title;
+    }
+
+    public function getTranslatedDescription(?string $locale = null): string 
+    {
+        $locale = $locale ?? $this->currentLocale;
+
+        return $this->translations[$locale]['description'] ?? '';
+    }
+
+
+    public function getSeoTitle(?string $locale = null): string {
+        return $this->getTranslations($locale)['meta_title'] ?? $this->title;
+    }
+
+    public function getSeoDescription(?string $locale = null): string {
+        return $this->getTranslations($locale)['meta_description'] ?? '';
+    }
+
 
 
 }
