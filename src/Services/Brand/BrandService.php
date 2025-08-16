@@ -28,9 +28,9 @@ class BrandService extends BaseService
     //   return $this->repository->getBrandsArray();
     // }
 
-    public function getAllBrands($pagination): array
+    public function getAllBrands(): array
     {
-      return  $this->repository->getAllBrands($pagination);
+      return  $this->repository->getAllBrands();
     }
 
     public function getAllBrandsCount(): int

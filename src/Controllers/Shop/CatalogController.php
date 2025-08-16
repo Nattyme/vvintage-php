@@ -17,6 +17,7 @@ use Vvintage\Repositories\Product\ProductRepository;
 /** Сервисы */
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Category\CategoryService;
+use Vvintage\Services\Brand\BrandService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Seo\SeoService;
 use Vvintage\Services\Page\Breadcrumbs;
@@ -29,6 +30,7 @@ final class CatalogController extends BaseController
 {
     private ProductService $productService;
     private CategoryService $categoryService;
+    private BrandService $brandService;
     private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
 
@@ -37,6 +39,7 @@ final class CatalogController extends BaseController
       parent::__construct(); // Важно!
       $this->productService = new ProductService();
       $this->categoryService = new CategoryService();
+      $this->brandService = new BrandService();
       $this->seoService = $seoService;
       $this->breadcrumbsService = $breadcrumbs;
     }
@@ -52,6 +55,10 @@ final class CatalogController extends BaseController
 
       // Получаем продукты с учётом пагинации
       $products =  $this->productService->getActiveProducts($pagination);
+
+      // Получаем бренды
+      $brands = $this->brandService->getAllBrands();
+      $mainCategories = $this->categoryService->getMainCategories();
 
       $seo = [];
       // получаем SEO DTO
@@ -81,9 +88,12 @@ final class CatalogController extends BaseController
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'products' => $products,
+          'brands' => $brands,
+          'mainCategories' => $mainCategories,
           'imagesByProductId' => $imagesByProductId,
           'total' => $total,
-          'shown' => $shown
+          'shown' => $shown,
+          'locale' => $this->currentLang
       ];
 
 
