@@ -24,10 +24,10 @@ class AdminOrderController extends BaseAdminController
   private AdminOrderService $adminOrderService;
 
 
-  public function __construct(FlashMessage $notes)
+  public function __construct(FlashMessage $flash)
   {
     parent::__construct();
-    $this->adminOrderService = new AdminOrderService($notes);
+    $this->adminOrderService = new AdminOrderService($flash);
   }
 
   public function all(RouteData $routeData)
@@ -107,7 +107,7 @@ class AdminOrderController extends BaseAdminController
     $this->renderLayout('orders/single',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-        'order' => $order,
+      'order' => $order,
       'actions'=> $actions,
       'statusData' => $statusData
     ]);
@@ -156,7 +156,8 @@ class AdminOrderController extends BaseAdminController
       'routeData' => $routeData,
       'brand' => $brand,
       'languages' => $this->languages,
-      'currentLang' => $currentLang
+      'currentLang' => $currentLang,
+      'flash' => $this->flash
     ]);
 
   }

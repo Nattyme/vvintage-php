@@ -17,14 +17,14 @@ class AdminBrandController extends BaseAdminController
 {
   private AdminBrandService $service;
   private AdminBrandValidator $validator;
-  private FlashMessage $notes;
+  private FlashMessage $flash;
 
-  public function __construct(FlashMessage $notes)
+  public function __construct(FlashMessage $flash)
   {
     parent::__construct();
     $this->service = new AdminBrandService();
     $this->validator = new AdminBrandValidator();
-    $this->notes = $notes;
+    $this->flash = $flash;
   }
 
   public function all(RouteData $routeData)
@@ -67,7 +67,10 @@ class AdminBrandController extends BaseAdminController
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'brands' => $brands,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'flash' => $this->flash
+
+
     ]);
 
   }
@@ -77,7 +80,7 @@ class AdminBrandController extends BaseAdminController
       $brand = $brandId ? $this->service->getBrandById($brandId) : null;
 
       if ($brandId && !$brand) {
-          $this->notes->pushError('Бренд не найден.');
+          $this->flash->pushError('Бренд не найден.');
           // header('Location: /admin/brands');
           // exit;
       }
@@ -85,7 +88,7 @@ class AdminBrandController extends BaseAdminController
       if (isset($_POST['submit'])) {
           // Проверка CSRF
           if (!check_csrf($_POST['csrf'] ?? '')) {
-              $this->notes->pushError('Неверный токен безопасности.');
+              $this->flash->pushError('Неверный токен безопасности.');
               // header('Location: ' . $_SERVER['REQUEST_URI']);
               // exit;
           }
@@ -94,7 +97,7 @@ class AdminBrandController extends BaseAdminController
           $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
 
           if (!$validate) {
-              $this->notes->pushError($brandId ? 'Не удалось обновить бренд. Проверьте данные.' : 'Не удалось сохранить новый бренд. Проверьте данные.');
+              $this->flash->pushError($brandId ? 'Не удалось обновить бренд. Проверьте данные.' : 'Не удалось сохранить новый бренд. Проверьте данные.');
               header('Location: ' . $_SERVER['REQUEST_URI']);
               exit;
           }
@@ -105,11 +108,11 @@ class AdminBrandController extends BaseAdminController
               : $this->service->createBrand($_POST);
 
           if ($saved) {
-              $this->notes->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
-              header('Location: /admin/brands');
+              $this->flash->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
+              header('Location: ' . $_SERVER['REQUEST_URI']);
               exit;
           } else {
-              $this->notes->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
+              $this->flash->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
               header('Location: ' . $_SERVER['REQUEST_URI']);
               exit;
           }
@@ -121,7 +124,8 @@ class AdminBrandController extends BaseAdminController
           'routeData' => $routeData,
           'brand' => $brand,
           'languages' => $this->languages,
-          'currentLang' => $this->currentLang
+          'currentLang' => $this->currentLang,
+          'flash' => $this->flash
       ]);
   }
 
@@ -154,7 +158,8 @@ class AdminBrandController extends BaseAdminController
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'brands' => $brands,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'flash' => $this->flash
     ]);
 
   }

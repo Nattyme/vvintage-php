@@ -74,7 +74,8 @@ final class ProductController extends BaseController
               'seo' => $seo,
               'routeData' => $routeData,
               'breadcrumbs' => $breadcrumbs,
-              'viewModel' => $viewModel
+              'viewModel' => $viewModel,
+              'flash' => $this->flash
         ]);
     }
 }

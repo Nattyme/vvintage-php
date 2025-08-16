@@ -18,29 +18,23 @@ final class AdminBrandValidator
     {
         $valid = true;
 
-        // CSRF-проверка
-        if (!check_csrf($data['csrf'] ?? '')) {
-            $this->notes->pushError('Неверный токен безопасности');
-            $valid = false;
-        }
-
         // Обязательные поля
-        $valid &= $this->validateRequired($data, 'title', 'Заполните название бренда');
-        $valid &= $this->validateRequired($data, 'description', 'Заполните описание бренда');
-        $valid &= $this->validateRequired($data, 'meta_title', 'Заполните SEO заголовок страницы бренда');
-        $valid &= $this->validateRequired($data, 'meta_description', 'Заполните SEO описание страницы бренда');
+        $valid && $this->validateRequired($data, 'title', 'Заполните название бренда');
+        $valid && $this->validateRequired($data, 'description', 'Заполните описание бренда');
+        $valid && $this->validateRequired($data, 'meta_title', 'Заполните SEO заголовок страницы бренда');
+        $valid && $this->validateRequired($data, 'meta_description', 'Заполните SEO описание страницы бренда');
 
         // Длина
-        $valid &= $this->validateLength($data['title'] ?? [], 2, 255, 'Название бренда');
-        $valid &= $this->validateLength($data['meta_title'] ?? [], 5, 70, 'SEO заголовок');
-        $valid &= $this->validateLength($data['meta_description'] ?? [], 10, 160, 'SEO описание');
+        $valid && $this->validateLength($data['title'] ?? [], 2, 255, 'Название бренда');
+        $valid && $this->validateLength($data['meta_title'] ?? [], 5, 70, 'SEO заголовок');
+        $valid && $this->validateLength($data['meta_description'] ?? [], 10, 160, 'SEO описание');
 
         // Проверка допустимых символов + автоочистка
-        $valid &= $this->validateAllowedChars($data, 'title', 'Название бренда');
+        $valid && $this->validateAllowedChars($data, 'title', 'Название бренда');
 
         // Логотип
         if (!empty($_FILES['image']['name'])) {
-            $valid &= $this->validateImage($_FILES['image']);
+            $valid && $this->validateImage($_FILES['image']);
         }
 
         return (bool)$valid;

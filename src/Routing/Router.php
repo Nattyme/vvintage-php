@@ -209,14 +209,14 @@
       // $cartModel = new Cart();
       // $favModel = new Favorites();
 
-      $notes = new FlashMessage();
-      $validator = new LoginValidator($userRepository, $notes);
+      $flash = new FlashMessage();
+      $validator = new LoginValidator($userRepository, $flash);
       $productRepository = new ProductRepository();
 
-      $loginController = new LoginController($userRepository, $productRepository, $notes);
-      $regController = new RegistrationController($notes);
-      $resetController = new PasswordResetController($notes);
-      $setNewPassController = new PasswordSetNewController( $setNewPassService, $notes );
+      $loginController = new LoginController($userRepository, $productRepository, $flash);
+      $regController = new RegistrationController($flash);
+      $resetController = new PasswordResetController($flash);
+      $setNewPassController = new PasswordSetNewController( $setNewPassService, $flash );
 
    
       switch ($routeData->uriModule) {
@@ -245,9 +245,9 @@
     private static function routeProfile(RouteData $routeData) {
       $sessionManager = new SessionManager();
       $breadcrumbs = new Breadcrumbs();
-      $notes = new FlashMessage();
+      $flash = new FlashMessage();
 
-      $profileController = new ProfileController($sessionManager, $breadcrumbs, $notes);
+      $profileController = new ProfileController($sessionManager, $breadcrumbs, $flash);
 
       switch ($routeData->uriModule) {
         case 'profile':
@@ -295,10 +295,10 @@
       
     private static function routeBlog(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
-      $notes = new FlashMessage();
+      $flash = new FlashMessage();
   
-      $blogController = new BlogController($notes, $breadcrumbs);
-      $postController = new PostController($notes, $breadcrumbs);
+      $blogController = new BlogController($flash, $breadcrumbs);
+      $postController = new PostController($flash, $breadcrumbs);
     
 
         if ($routeData->uriModule === 'add-comment') {
@@ -318,7 +318,7 @@
        * @var UserInreface $userModel
       */
       $userModel = SessionManager::getLoggedInUser();
-      $notes = new FlashMessage();
+      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
 
       // Получаем корзину и ее модель
@@ -334,9 +334,9 @@
       $cartStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
-      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $flash);
 
-      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $notes, $breadcrumbs );
+      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $flash, $breadcrumbs );
 
       switch ($routeData->uriModule) {
         case 'cart':
@@ -357,7 +357,7 @@
        * @var UserInreface $userModel
       */
       $userModel = SessionManager::getLoggedInUser();
-      $notes = new FlashMessage();
+      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
 
       // Получаем избранное и ее модель
@@ -374,8 +374,8 @@
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
                     
-      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productRepository, $notes);
-      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $notes, $breadcrumbs );
+      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productRepository, $flash);
+      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $flash, $breadcrumbs );
 
       switch ($routeData->uriModule) {
         case 'favorites':
@@ -405,8 +405,8 @@
 
       $userRepository = $userModel->getRepository();
       $productRepository = new ProductRepository();
-      $notes = new FlashMessage();
-      $validator = new NewOrderValidator($userRepository, $notes);
+      $flash = new FlashMessage();
+      $validator = new NewOrderValidator($userRepository, $flash);
       $breadcrumbs = new Breadcrumbs();
 
 
@@ -419,9 +419,9 @@
                     ? new UserItemsListStore( $userRepository ) 
                     : new GuestItemsListStore();
 
-      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $notes);
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $flash);
 
-      $orderService = new OrderService($notes);
+      $orderService = new OrderService($flash);
       $controller = new OrderController(
         $orderService, 
         $cartService, 
@@ -430,7 +430,7 @@
         $cart, 
         $cartStore, 
         $validator, 
-        $notes,
+        $flash,
         $breadcrumbs);
 
       switch ($routeData->uriModule) {
@@ -449,11 +449,11 @@
     private static function routePages(RouteData $routeData)
     {
       $pageService = new PageService();
-      $notes = new FlashMessage();
+      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
       $pageModel = $pageService->getPageBySlug($routeData->uriModule);
 
-      $controller = new PageController($pageModel, $pageService, $notes, $breadcrumbs);
+      $controller = new PageController($pageModel, $pageService, $flash, $breadcrumbs);
 
       switch ($routeData->uriModule) {
         case 'contacts':
@@ -482,7 +482,7 @@
     /**********************/
     private static function routeAdminPages(RouteData $routeData)
     {
-      $notes = new FlashMessage();
+      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
 
       $postRepository = new  PostRepository();
@@ -491,13 +491,13 @@
 
       $homeAdminController = new HomeAdminController();
       $adminProductController = new AdminProductController();
-      $adminBrandController = new AdminBrandController($notes);
+      $adminBrandController = new AdminBrandController($flash);
       $adminCategoryController = new AdminCategoryController();
       $adminUserController = new AdminUserController();
-      $adminOrderController = new AdminOrderController($notes);
-      $adminPostController = new AdminPostController($notes, $breadcrumbs);
-      $adminMessageController = new AdminMessageController($notes);
-      $adminPostCatController = new AdminPostCatController($postCategoryRepository, $notes);
+      $adminOrderController = new AdminOrderController($flash);
+      $adminPostController = new AdminPostController($flash, $breadcrumbs);
+      $adminMessageController = new AdminMessageController($flash);
+      $adminPostCatController = new AdminPostCatController($postCategoryRepository, $flash);
 
       switch ($routeData->uriGet) {
          // ::::::::::::: SHOP :::::::::::::::::::

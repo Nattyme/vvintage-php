@@ -14,18 +14,18 @@ use Vvintage\Routing\RouteData;
 
 final class PasswordResetController extends BaseController
 {
-  private FlashMessage $notes;
+  private FlashMessage $flash;
 
-  public function __construct(FlashMessage $notes)
+  public function __construct(FlashMessage $flash)
   {
-      $this->notes = $notes;
+      $this->flash = $flash;
   }
 
   public function index ($routeData) 
   {
     if (isset($_POST['lost-password'])) {
-      $resetPassService = new PasswordResetService( new UserRepository(), $this->notes);
-      $validator = new PasswordResetValidator($resetPassService, $this->notes);
+      $resetPassService = new PasswordResetService( new UserRepository(), $this->flash);
+      $validator = new PasswordResetValidator($resetPassService, $this->flash);
       $resultEmail = false;
 
       if ($validator->validate($_POST)) {
@@ -33,11 +33,11 @@ final class PasswordResetController extends BaseController
 
         if ($result['success']) {
           $resultEmail = true;
-          $this->notes->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
+          $this->flash->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
    
         } else {
           foreach ($result['errors'] as $error) {
-            $this->notes->pushError($error['title']);
+            $this->flash->pushError($error['title']);
           }
         }
 

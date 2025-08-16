@@ -32,9 +32,9 @@ final class ProfileController extends BaseController
   private UserService $userService;
   private SessionManager $sessionManager;
   private Breadcrumbs $breadcrumbsService;
-  private FlashMessage $notes;
+  private FlashMessage $flash;
 
-  public function __construct(SessionManager $sessionManager, Breadcrumbs $breadcrumbs, FlashMessage $notes)
+  public function __construct(SessionManager $sessionManager, Breadcrumbs $breadcrumbs, FlashMessage $flash)
   {
     parent::__construct(); // Важно!
     // $this->orderRepository = new OrderRepository();
@@ -42,7 +42,7 @@ final class ProfileController extends BaseController
     $this->userService = new UserService($this->languages, $this->currentLang);
     $this->sessionManager = $sessionManager;
     $this->breadcrumbsService = $breadcrumbs;
-    $this->notes = $notes;
+    $this->flash = $flash;
   }
 
   private function renderProfile (RouteData $routeData, ?User $userModel, ?array $orders): void 
@@ -61,7 +61,8 @@ final class ProfileController extends BaseController
             'breadcrumbs' => $breadcrumbs,
             'pageClass' => $pageClass,
             'userModel' => $userModel,
-            'orders' => $orders
+            'orders' => $orders,
+            'flash' => $flash
       ]);
   }
 
@@ -80,7 +81,8 @@ final class ProfileController extends BaseController
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'pageClass' => $pageClass,
-            'userModel' => $userModel
+            'userModel' => $userModel,
+            'flash' => $flash
       ]);
   }
 

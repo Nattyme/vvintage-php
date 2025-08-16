@@ -38,17 +38,17 @@ final class LoginController extends BaseController
 {
   private UserRepository $userRepository;
   private ProductRepository $productRepository;
-  private FlashMessage $notes;
+  private FlashMessage $flash;
   protected array $languages;
   protected string $currentLang;
   protected Translator $translator;
 
-  public function __construct(UserRepository $userRepository, ProductRepository $productRepository, FlashMessage $notes) 
+  public function __construct(UserRepository $userRepository, ProductRepository $productRepository, FlashMessage $flash) 
   {
     parent::__construct(); // Важно!
     $this->userRepository = $userRepository;
     $this->productRepository = $productRepository;
-    $this->notes = $notes;
+    $this->flash = $flash;
     $this->translator = setTranslator(); // берём уже установленный переводчик
     $this->languages = LanguageConfig::getAvailableLanguages();
     $this->currentLang = LanguageConfig::getCurrentLocale();
@@ -61,7 +61,7 @@ final class LoginController extends BaseController
       return;
     }
 
-    $loginService = new LoginService($this->userRepository, $this->notes);
+    $loginService = new LoginService($this->userRepository, $this->flash);
     $userModel = $loginService->login($_POST);
 
 
@@ -77,9 +77,9 @@ final class LoginController extends BaseController
     $userName = $_SESSION['logged_user']['name'] ?? '';
     
     if (trim($userName) !== '') {
-      $this->notes->pushSuccess(h(__('login.success.username', ['%name%' => $userName], 'messages')));
+      $this->flash->pushSuccess(h(__('login.success.username', ['%name%' => $userName], 'messages')));
     } else {
-      $this->notes->pushSuccess(h(__('login.success', [], 'messages')));
+      $this->flash->pushSuccess(h(__('login.success', [], 'messages')));
     }
 
     // Редирект
@@ -98,11 +98,11 @@ final class LoginController extends BaseController
     $user = $this->createUserModels();
     // Здесь возвращается guest Store
     $cartService = new CartService(
-      $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productRepository, $this->notes
+      $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productRepository, $this->flash
     );
 
     $favService = new FavoritesService(
-      $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productRepository, $this->notes
+      $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productRepository, $this->flash
     );
     $userItemsMergeService = new UserItemsMergeService($favService, $cartService);
 

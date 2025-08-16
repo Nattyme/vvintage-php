@@ -1,7 +1,9 @@
 <?php
-// Проверка, что массив $errors не пустой
-if (!empty($_SESSION['errors'])) :
-    foreach ($_SESSION['errors'] as $error) :
+// $notes должен быть передан в layout, например из контроллера
+$errors = $flash->get('errors');
+
+if (!empty($errors)) :
+    foreach ($errors as $error) :
         ?>
         <div class="notifications<?php echo !empty($error['desc']) ? ' notifications__title--with-message' : ''; ?>">
             
@@ -23,6 +25,5 @@ if (!empty($_SESSION['errors'])) :
         </div>
         <?php
     endforeach;
-    $_SESSION['errors'] = [];
 endif;
 ?>

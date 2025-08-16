@@ -45,7 +45,7 @@ final class OrderController extends BaseController
     private array $cart;
     private UserItemsListStoreInterface $cartStore;
     private NewOrderValidator $validator;
-    private FlashMessage $notes;
+    private FlashMessage $flash;
     private Breadcrumbs $breadcrumbsService;
   
 
@@ -57,7 +57,7 @@ final class OrderController extends BaseController
       array $cart,
       UserItemsListStoreInterface $cartStore,
       NewOrderValidator $validator,
-      FlashMessage $notes,
+      FlashMessage $flash,
       Breadcrumbs $breadcrumbs
     )
     {
@@ -69,7 +69,7 @@ final class OrderController extends BaseController
       $this->cart = $cart;
       $this->cartStore = $cartStore;
       $this->validator = $validator;
-      $this->notes = $notes;
+      $this->flash = $flash;
       $this->breadcrumbsService = $breadcrumbs;
     }
 
@@ -118,7 +118,7 @@ final class OrderController extends BaseController
       } 
 
       // сообщение об ошибке
-      $this->notes->pushError("Произошла ошибка при создании заказа.");
+      $this->flash->pushError("Произошла ошибка при создании заказа.");
       $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
     }
 
@@ -141,7 +141,7 @@ final class OrderController extends BaseController
 
       // Если заказ не создан
       if (!$new_order_id || $new_order_id <= 0) {
-        $this->notes->pushError('ID заказа не найден');
+        $this->flash->pushError('ID заказа не найден');
         header('Location: ' . HOST);
         exit();
       }
@@ -150,7 +150,8 @@ final class OrderController extends BaseController
       $this->renderLayout('orders/created', [
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
-            'breadcrumbs' => $breadcrumbs
+            'breadcrumbs' => $breadcrumbs,
+            'flash' => $this->flash
       ]);
     }
 
@@ -169,7 +170,8 @@ final class OrderController extends BaseController
             'routeData' => $routeData,
             'products' => $products,
             'totalPrice' => $totalPrice,
-            'breadcrumbs' => $breadcrumbs
+            'breadcrumbs' => $breadcrumbs,
+            'flash' => $this->flash
       ]);
     }
 }

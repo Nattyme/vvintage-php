@@ -66,7 +66,8 @@ final class AdminCategoryController extends BaseAdminController
       'mainCats' => $mainCats,
       'searchQuery' => $searchQuery,
       'filterSection' => $filterSection,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'flash' => $this->flash
     ]);
 
   }
@@ -79,7 +80,8 @@ final class AdminCategoryController extends BaseAdminController
         
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData
+      'routeData' => $routeData,
+      'flash' => $this->flash
     ]);
   }
 
@@ -124,7 +126,8 @@ final class AdminCategoryController extends BaseAdminController
       'routeData' => $routeData,
       'category' => $category,
       'languages' => $this->languages,
-      'currentLang' => $this->currentLang
+      'currentLang' => $this->currentLang,
+      'flash' => $this->flash
     ]);
 
   }
@@ -145,7 +148,8 @@ final class AdminCategoryController extends BaseAdminController
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'brands' => $brands,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'flash' => $this->flash
     ]);
 
   }

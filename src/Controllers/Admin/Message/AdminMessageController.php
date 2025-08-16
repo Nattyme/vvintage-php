@@ -17,13 +17,13 @@ class AdminMessageController extends BaseAdminController
 {
   private AdminMessageService $adminMessageService;
   // private MessageRepository $messageRepository;
-  private FlashMessage $notes;
+  private FlashMessage $flash;
 
-  public function __construct(FlashMessage $notes)
+  public function __construct(FlashMessage $flash)
   {
     parent::__construct();
     $this->adminMessageService = new AdminMessageService();
-    $this->notes = $notes;
+    $this->flash = $flash;
   }
 
   public function all(RouteData $routeData)
@@ -121,7 +121,8 @@ class AdminMessageController extends BaseAdminController
     $this->renderLayout('messages/delete',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'message' => $message
+      'message' => $message,
+      'flash' => $this->flash
     ]);
 
   }

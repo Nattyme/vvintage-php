@@ -49,7 +49,7 @@ final class CartController extends BaseController
     private Cart $cartModel;
     private array $cart;
     private UserItemsListStoreInterface $cartStore;
-    private FlashMessage $notes;
+    private FlashMessage $flash;
     private Breadcrumbs $breadcrumbsService;
 
     public function __construct(
@@ -58,7 +58,7 @@ final class CartController extends BaseController
       Cart $cartModel, 
       array $cart, 
       UserItemsListStoreInterface $cartStore, 
-      FlashMessage $notes,
+      FlashMessage $flash,
       Breadcrumbs $breadcrumbs
     )
     {
@@ -69,7 +69,7 @@ final class CartController extends BaseController
       $this->cart = $cart;
       $this->cartStore = $cartStore;
       $this->breadcrumbsService = $breadcrumbs;
-      $this->notes = $notes;
+      $this->flash = $flash;
     }
 
     private function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
@@ -103,6 +103,7 @@ final class CartController extends BaseController
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'viewModel' => $viewModel,
+            'flash' => $this->flash
       ]);
     }
 

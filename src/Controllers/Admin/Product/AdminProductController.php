@@ -88,7 +88,8 @@ class AdminProductController extends BaseAdminController
     $this->renderLayout('shop/new',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'statusList' => $statusList
+      'statusList' => $statusList,
+      'flash' => $this->flash
     ]);
   }
 
@@ -199,7 +200,8 @@ class AdminProductController extends BaseAdminController
       'product' => $product,
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'statusList' => $statusList
+      'statusList' => $statusList,
+      'flash' => $this->flash
     ]);
   }
 }

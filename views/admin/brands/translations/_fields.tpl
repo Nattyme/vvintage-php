@@ -16,10 +16,9 @@
     <textarea 
       id="description-<?php echo $code;?>" 
       name="description[<?php echo $code;?>]" 
-      class="admin-form__textarea" placeholder="Введите описание бренда"
-    >
-        <?php echo isset($_POST['description'][$code]) ? h($_POST['description'][$code] ) : '';?>
-    </textarea>
+      class="admin-form__textarea" 
+      placeholder="Введите описание бренда"
+    ><?php echo isset($_POST['description'][$code]) ? h($_POST['description'][$code] ) : '';?></textarea>
   </div>
 
   <div class="admin-form__field">
@@ -41,8 +40,6 @@
       name="meta_description[<?php echo $code;?>]" 
       class="admin-form__textarea" 
       placeholder="Введите SEO описание страницы"
-    >
-    <?php echo isset($_POST['meta_description'][$code]) ? h($_POST['meta_description'][$code] ) : '';?>
-    </textarea>
+    ><?php echo isset($_POST['meta_description'][$code]) ? h($_POST['meta_description'][$code] ) : '';?></textarea>
   </div>
 </div>

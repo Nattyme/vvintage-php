@@ -15,16 +15,16 @@ require_once ROOT . './libs/functions.php';
 
 final class BlogController extends BaseController
 {
-  private FlashMessage $notes;
+  private FlashMessage $flash;
   private Breadcrumbs $breadcrumbsService;
   private PostService $postService;
 
     public function __construct(
-        FlashMessage $notes,
+        FlashMessage $flash,
         Breadcrumbs $breadcrumbs
     ) {
         parent::__construct(); // Важно!
-        $this->notes = $notes;
+        $this->flash = $flash;
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService( $this->languages, $this->currentLang );
     }
@@ -62,8 +62,8 @@ final class BlogController extends BaseController
           'pageTitle' => $pageTitle,
           'routeData' => $routeData,
           'breadcrumbs' => $breadcrumbs,
-          'viewModel' => $viewModel
-        
+          'viewModel' => $viewModel,
+          'flash' => $this->flash
       ]);
     }
 }

@@ -1,7 +1,5 @@
 <div class="admin-page__content-form">
   <div class="admin-form">
-    <?php include ROOT . "views/components/errors.tpl"; ?>
-    <?php include ROOT . "views/components/success.tpl"; ?>
 
     <header class="admin-form__header admin-form__row">
       <!-- SELECT -->

@@ -12,13 +12,13 @@ use Vvintage\Services\Messages\FlashMessage;
 
 final class PasswordSetNewController extends BaseController 
 {
-  private FlashMessage $notes;
+  private FlashMessage $flash;
   private PasswordSetNewService $setNewPassService;
 
-  public function __construct(PasswordSetNewService $setNewPassService, FlashMessage $notes)
+  public function __construct(PasswordSetNewService $setNewPassService, FlashMessage $flash)
   {
     $this->setNewPassService = $setNewPassService;
-    $this->notes = $notes;
+    $this->flash = $flash;
   }
 
   
@@ -42,13 +42,13 @@ final class PasswordSetNewController extends BaseController
             if ($isValidCode) {
               $this->setNewPassService->updateUserPassword($password, $email);
 
-              $this->notes->pushSuccess('Пароль был успешно изменён');
+              $this->flash->pushSuccess('Пароль был успешно изменён');
               $newPasswordReady = true;
             } else {
-              $this->notes->pushError('Неверный код восстановления');
+              $this->flash->pushError('Неверный код восстановления');
             }
           } else {
-              $this->notes->pushError('Пользователь не найден');
+              $this->flash->pushError('Пользователь не найден');
           }
       }
 
@@ -60,13 +60,13 @@ final class PasswordSetNewController extends BaseController
           $userModel = $this->setNewPassService->findUserByEmail($email);
 
           if (!$userModel) {
-              $this->notes->pushError('Пользователь не найден');
+              $this->flash->pushError('Пользователь не найден');
               header("Location: " . HOST . "lost-password");
               exit;
           }
 
           if (!$this->setNewPassService->isValidRecoveryCode($email, $resetCode)) {
-              $this->notes->pushError('Неверный или просроченный код восстановления');
+              $this->flash->pushError('Неверный или просроченный код восстановления');
               header("Location: " . HOST . "lost-password");
               exit;
           }

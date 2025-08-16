@@ -17,15 +17,15 @@ class PageController extends BaseController
   private Page $pageModel;
   private PageService $pageService;
   private Breadcrumbs $breadcrumbsService;
-  private FlashMessage $notes;
+  private FlashMessage $flash;
 
-  public function __construct (Page $pageModel, PageService $pageService, FlashMessage $notes, Breadcrumbs $breadcrumbs)
+  public function __construct (Page $pageModel, PageService $pageService, FlashMessage $flash, Breadcrumbs $breadcrumbs)
   {
     parent::__construct(); // Важно!
     $this->pageModel = $pageModel;
     $this->pageService = $pageService;
     $this->breadcrumbsService = $breadcrumbs;
-    $this->notes = $notes;
+    $this->flash = $flash;
   }
 
   public function index($routeData)

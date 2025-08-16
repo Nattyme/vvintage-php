@@ -48,7 +48,7 @@ final class FavoritesController extends BaseController
     private Favorites $favModel;
     private array $fav_list;
     private UserItemsListStoreInterface $favStore;
-    private FlashMessage $notes;
+    private FlashMessage $flash;
     private Breadcrumbs $breadcrumbsService;
 
     public function __construct(
@@ -57,7 +57,7 @@ final class FavoritesController extends BaseController
       Favorites $favModel, 
       array $fav_list, 
       UserItemsListStoreInterface $favStore, 
-      FlashMessage $notes,
+      FlashMessage $flash,
       Breadcrumbs $breadcrumbs
       )
     {
@@ -67,7 +67,7 @@ final class FavoritesController extends BaseController
       $this->favModel = $favModel;
       $this->fav_list = $fav_list;
       $this->favStore = $favStore;
-      $this->notes = $notes;
+      $this->flash = $flash;
       $this->breadcrumbsService = $breadcrumbs;
     }
 
@@ -112,7 +112,8 @@ final class FavoritesController extends BaseController
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'viewModel' => $viewModel
+            'viewModel' => $viewModel,
+            'flash' => $this->flash
       ]);
      
     }

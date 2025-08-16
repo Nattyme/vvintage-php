@@ -20,14 +20,14 @@ class AdminPostCatController extends BaseAdminController
 {
   private const TABLE = 'post_categories';
   private PostCategoryRepository $categoryRepository;
-  private FlashMessage $notes;
+  private FlashMessage $flash;
   
 
-  public function __construct(PostCategoryRepository $categoryRepository, FlashMessage $notes)
+  public function __construct(PostCategoryRepository $categoryRepository, FlashMessage $flash)
   {
     parent::__construct();
     $this->categoryRepository = $categoryRepository;
-    $this->notes = $notes;
+    $this->flash = $flash;
 
   }
 
@@ -94,6 +94,7 @@ class AdminPostCatController extends BaseAdminController
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'currentLang' => $this->currentLang,
+      'flash' => $this->flash
     ]);
 
   }
@@ -139,7 +140,8 @@ class AdminPostCatController extends BaseAdminController
       'routeData' => $routeData,
       'categories' => $categories,
       'languages' => $this->languages,
-      'currentLang' => $currentLang
+      'currentLang' => $currentLang,
+      'flash' => $this->flash
     ]);
 
   }
@@ -160,7 +162,8 @@ class AdminPostCatController extends BaseAdminController
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'categories' => $categories,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'flash' => $this->flash
     ]);
 
   }

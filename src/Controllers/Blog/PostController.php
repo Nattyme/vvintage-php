@@ -19,15 +19,15 @@ use Vvintage\Services\Seo\SeoService;
 
 final class PostController extends BaseController
 {
-    private FlashMessage $notes;
+    private FlashMessage $flash;
     private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
     private PostService $postService;
 
-    public function __construct(FlashMessage $notes, Breadcrumbs $breadcrumbs)
+    public function __construct(FlashMessage $flash, Breadcrumbs $breadcrumbs)
     {
         parent::__construct(); // Важно!
-        $this->notes = $notes;
+        $this->flash = $flash;
         $this->seoService = new SeoService();
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService( $this->languages, $this->currentLang);
@@ -77,6 +77,7 @@ final class PostController extends BaseController
               'seo' => $seo,
               'routeData' => $routeData,
               'viewModel' => $viewModel,
+              'flash' => $this->flash
         ]);
     }
 }

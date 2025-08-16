@@ -19,14 +19,14 @@ class AdminPostController extends BaseAdminController
 {
   private AdminPostService $adminPostService;
   private Breadcrumbs $breadcrumbs;
-  private FlashMessage $notes;
+  private FlashMessage $flash;
 
-  public function __construct(FlashMessage $notes, Breadcrumbs $breadcrumbs)
+  public function __construct(FlashMessage $flash, Breadcrumbs $breadcrumbs)
   {
     parent::__construct();
     $this->adminPostService = new AdminPostService($this->languages, $this->currentLang);
     $this->breadcrumbs = $breadcrumbs;
-    $this->notes = $notes;
+    $this->flash = $flash;
   }
 
   public function all (RouteData $routeData)
@@ -270,6 +270,7 @@ class AdminPostController extends BaseAdminController
     $this->renderLayout('blog/new',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
+      'flash' => $this->flash
     ]);
   }
 
@@ -288,6 +289,7 @@ dd($postViewData);
       'postViewData' => $postViewData,
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
+      'flash' => $this->flash
     ]);
   }
 

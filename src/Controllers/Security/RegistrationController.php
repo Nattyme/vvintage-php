@@ -13,24 +13,24 @@ use Vvintage\Services\Messages\FlashMessage;
 
 final class RegistrationController extends BaseController
 {
-  private FlashMessage $notes;
+  private FlashMessage $flash;
 
-  public function __construct(FlashMessage $notes)
+  public function __construct(FlashMessage $flash)
   {
-      $this->notes = $notes;
+      $this->flash = $flash;
   }
 
   public function index ($routeData) {
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
       $regService = new RegistrationService();
-      $validator = new RegistrationValidator($regService, $this->notes);
+      $validator = new RegistrationValidator($regService, $this->flash);
 
       if ( $validator->validate( $_POST )) {
         $newUser = $regService->registrateUser( $_POST );
 
         if (!$newUser) {
-          $this->notes->pushError('Что-то пошло не так. Попробуйте ещё раз.');
+          $this->flash->pushError('Что-то пошло не так. Попробуйте ещё раз.');
         }
       }
     }
