@@ -230,6 +230,12 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         return $this->saveBrand($dto);
     }
 
+
+    public function existsByTitle(string $cleaned): ?int
+    {
+      return $this->countAll(self::TABLE_BRANDS, 'LOWER(title) = ?', [mb_strtolower($cleaned)]);
+    }
+
     /** Получает бренд по id */
     // public function getBrandById(int $id): ?Brand
     // {

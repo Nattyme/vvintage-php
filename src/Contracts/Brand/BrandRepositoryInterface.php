@@ -15,4 +15,5 @@ interface BrandRepositoryInterface
     public function saveBrand(BrandDTO $brand): ?int;
     public function getAllBrandsCount(?string $sql = null, array $params = []): int;
     public function getBrandsArray(): array;
+    public function existsByTitle(string $cleaned): ?int;
 }

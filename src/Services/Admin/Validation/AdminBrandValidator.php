@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Admin\Validation;
 
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Repositories\Brand\BrandRepository;
 
 final class AdminBrandValidator
 {
@@ -31,6 +32,7 @@ final class AdminBrandValidator
 
         // Проверка допустимых символов + автоочистка
         $valid = $this->validateAllowedChars($data, 'title', 'Название бренда') && $valid;
+        $valid = $this->validateUniqueBrand($data, 'title') && $valid;
 
         // Логотип
         if (!empty($_FILES['image']['name'])) {
@@ -147,4 +149,40 @@ final class AdminBrandValidator
 
         return $valid;
     }
+
+    private function validateUniqueBrand(array &$data, string $fieldName): bool
+    {
+        $brandRepo = new BrandRepository();
+
+
+        $valid = true;
+
+        foreach ($data[$fieldName] ?? [] as $lang => $value) {
+            // Приведение к стандартному виду: первая буква заглавная, остальные строчные
+            $cleaned = mb_strtolower(trim((string)$value), 'UTF-8');
+            if ($cleaned !== '') {
+                $cleaned = mb_strtoupper(mb_substr($cleaned, 0, 1, 'UTF-8')) 
+                        . mb_substr($cleaned, 1, null, 'UTF-8');
+            }
+
+            // Сохраняем нормализованное значение обратно в массив данных
+            $data[$fieldName][$lang] = $cleaned;
+
+            // Проверка уникальности без учёта регистра
+            $exists = $brandRepo->existsByTitle($cleaned);
+            
+            if ($exists > 0) {
+                $flagPath = HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$lang";
+                $this->flash->pushError(
+                    'Такой бренд уже существует',
+                    "Бренд уже добавлен",
+                    $flagPath
+                );
+                $valid = false;
+            }
+        }
+
+        return $valid;
+    }
+
 }
