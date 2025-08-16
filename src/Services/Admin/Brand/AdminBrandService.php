@@ -13,14 +13,13 @@ final class AdminBrandService extends BrandService
       parent::__construct();
     }
 
-    public function updateBrand (int $id, array $data): int
-    {
+    public function updateBrand (int $id, array $data) 
+    { 
+      return $this->repository->updateBrand($id, $data); 
+    } 
     
+    public function createBrand (array $data) 
+    { 
+      return $this->repository->createBrand($data); 
     }
-
-    public function createBrand (array $data): int
-    {
-      return $this->repository->createBrand($data);
-    }
-
 }
