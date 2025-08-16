@@ -146,6 +146,23 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         return array_map([$this, 'mapBeanToBrand'], $beans);
     }
 
+    private function createBrandBean(): OODBBean 
+    {
+      return $this->createBean(self::TABLE_BRANDS);
+    }
+
+    private function createBrandTranslationsBean(): OODBBean 
+    {
+      return $this->createBean(self::TABLE_BRANDS_TRANSLATION);
+    }
+
+    public function createBrand(array $data): ?Brand 
+    {
+      $bean = $this->createBrandBean();
+      $beanTranslations = $this->createBrandTranslationsBean();
+      dd($bean);
+    }
+
 
     public function saveBrand(Brand $brand): ?int
     {

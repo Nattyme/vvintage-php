@@ -7,14 +7,34 @@ final class BrandDTO
 {
     public int $id;
     public string $title;
+    public string $description;
     public string $image;
-    public array $translations; // ['ru' => [...], 'en' => [...]]
+    public array $translations; // ['ru' => ['title'=>..., 'description'=>...], 'en' => [...]];
 
     public function __construct(array $data)
     {
-        $this->id = (int) ($data['id'] ?? 0);
-        $this->title = (string) ($data['title'] ?? '');
-        $this->image = (string) ($data['image'] ?? '');
-        $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
+        $this->id = (int)($data['id'] ?? 0);
+        $this->title = (string)($data['title'] ?? '');
+        $this->description = (string)($data['description'] ?? '');
+        $this->image = (string)($data['image'] ?? '');
+
+        $this->translations = [];
+        if (isset($data['translations']) && is_array($data['translations'])) {
+            foreach ($data['translations'] as $locale => $fields) {
+                $this->translations[$locale] = [];
+                if (isset($fields['title'])) {
+                    $this->translations[$locale]['title'] = (string)$fields['title'];
+                }
+                if (isset($fields['description'])) {
+                    $this->translations[$locale]['description'] = (string)$fields['description'];
+                }
+                if (isset($fields['meta_title'])) {
+                    $this->translations[$locale]['meta_title'] = (string)$fields['meta_title'];
+                }
+                if (isset($fields['meta_description'])) {
+                    $this->translations[$locale]['meta_description'] = (string)$fields['meta_description'];
+                }
+            }
+        }
     }
 }

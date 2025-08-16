@@ -6,6 +6,8 @@ namespace Vvintage\Controllers\Admin\Brand;
 use Vvintage\Routing\RouteData;
 
 use Vvintage\Controllers\Admin\BaseAdminController;
+use Vvintage\Models\Brand\Brand;
+use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\Services\Admin\Brand\AdminBrandService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Admin\Validation\AdminBrandValidator;
@@ -81,16 +83,16 @@ class AdminBrandController extends BaseAdminController
 
       if ($brandId && !$brand) {
           $this->flash->pushError('Бренд не найден.');
-          // header('Location: /admin/brands');
-          // exit;
+          header('Location: ' . HOST . 'admin/brands');
+          exit;
       }
 
       if (isset($_POST['submit'])) {
           // Проверка CSRF
           if (!check_csrf($_POST['csrf'] ?? '')) {
               $this->flash->pushError('Неверный токен безопасности.');
-              // header('Location: ' . $_SERVER['REQUEST_URI']);
-              // exit;
+              header('Location: ' . HOST . 'admin/brands');
+              exit;
           }
 
           // Валидация
@@ -98,9 +100,14 @@ class AdminBrandController extends BaseAdminController
 
           if (!$validate) {
               $this->flash->pushError($brandId ? 'Не удалось обновить бренд. Проверьте данные.' : 'Не удалось сохранить новый бренд. Проверьте данные.');
-              header('Location: ' . $_SERVER['REQUEST_URI']);
+              header('Location: ' . HOST . 'admin/brands');
               exit;
           }
+
+          dd( $_POST);
+          $brandDTO = new BrandDTO($_POST); // image может быть null
+          $brand = Brand::fromDTO($brandDTO); // создаём объект Brand
+
 
           // Сохранение
           $saved = $brandId
@@ -109,7 +116,7 @@ class AdminBrandController extends BaseAdminController
 
           if ($saved) {
               $this->flash->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
-              header('Location: ' . $_SERVER['REQUEST_URI']);
+              header('Location: ' . HOST . 'admin/brands');
               exit;
           } else {
               $this->flash->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
@@ -140,8 +147,6 @@ class AdminBrandController extends BaseAdminController
   }
 
 
-
-
   private function renderDelete(RouteData $routeData): void
   {
     // Название страницы
@@ -151,8 +156,8 @@ class AdminBrandController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+    $brands = $this->service->getAllBrands($pagination);
+    $total = $this->service->getAllBrandsCount();
         
     $this->renderLayout('brands/all',  [
       'pageTitle' => $pageTitle,
