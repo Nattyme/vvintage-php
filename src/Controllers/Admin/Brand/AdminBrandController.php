@@ -83,69 +83,68 @@ class AdminBrandController extends BaseAdminController
 
       if ($brandId && !$brand) {
           $this->flash->pushError('Бренд не найден.');
-          header('Location: ' . HOST . 'admin/brands');
-          exit;
+          // форма не существует — можно сделать редирект или показать пустую страницу
+          $this->renderLayout('brands/single', [
+              'pageTitle' => 'Бренды - редактирование',
+              'routeData' => $routeData,
+              'brand' => null,
+              'languages' => $this->languages,
+              'currentLang' => $this->currentLang,
+              'flash' => $this->flash
+          ]);
+          return;
       }
 
       if (isset($_POST['submit'])) {
           // Проверка CSRF
           if (!check_csrf($_POST['csrf'] ?? '')) {
               $this->flash->pushError('Неверный токен безопасности.');
-              header('Location: ' . HOST . 'admin/brands');
-              exit;
-          }
-
-          // Валидация
-          $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
-
-          if (!$validate) {
-              $this->flash->pushError($brandId ? 'Не удалось обновить бренд. Проверьте данные.' : 'Не удалось сохранить новый бренд. Проверьте данные.');
-              header('Location: ' . HOST . 'admin/brand-new');
-              exit;
-          }
-
-      
-          $translations = [];
-
-          foreach ($_POST['title'] as $lang => $title) {
-              $translations[$lang] = [
-                  'title' => $_POST['title'][$lang] ?? '',
-                  'description' => $_POST['description'][$lang] ?? '',
-                  'meta_title' => $_POST['meta_title'][$lang] ?? '',
-                  'meta_description' => $_POST['meta_description'][$lang] ?? '',
-              ];
-          }
-
-          // Берём основной язык для "основных" полей (например, 'ru')
-          $mainLang = 'ru';
-
-          $brandDTO = new BrandDTO([
-              'title' => $_POST['title'][$mainLang] ?? '',
-              'description' => $_POST['description'][$mainLang] ?? '',
-              'image' => $_POST['image'] ?? '',
-              'translations' => $translations,
-          ]);
-
-          $brand = Brand::fromDTO($brandDTO); // создаём объект Brand
-
-dd($brandDTO);
-          // Сохранение
-          $saved = $brandId
-              ? $this->service->updateBrand($brandId, $_POST)
-              : $this->service->createBrand($_POST);
-
-          if ($saved) {
-              $this->flash->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
-              header('Location: ' . HOST . 'admin/brands');
-              exit;
           } else {
-              $this->flash->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
-              header('Location: ' . $_SERVER['REQUEST_URI']);
-              exit;
+              // Валидация
+              $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
+
+              if (!$validate) {
+                  $this->flash->pushError($brandId 
+                      ? 'Не удалось обновить бренд. Проверьте данные.' 
+                      : 'Не удалось сохранить новый бренд. Проверьте данные.');
+              } else {
+                  $translations = [];
+                  foreach ($_POST['title'] as $lang => $title) {
+                      $translations[$lang] = [
+                          'title' => $_POST['title'][$lang] ?? '',
+                          'description' => $_POST['description'][$lang] ?? '',
+                          'meta_title' => $_POST['meta_title'][$lang] ?? '',
+                          'meta_description' => $_POST['meta_description'][$lang] ?? '',
+                      ];
+                  }
+
+                  $mainLang = 'ru';
+
+                  $brandDTO = new BrandDTO([
+                      'title' => $_POST['title'][$mainLang] ?? '',
+                      'description' => $_POST['description'][$mainLang] ?? '',
+                      'image' => $_POST['image'] ?? '',
+                      'translations' => $translations,
+                  ]);
+
+                  $brand = Brand::fromDTO($brandDTO);
+
+                  $saved = $brandId
+                      ? $this->service->updateBrand($brandId, $_POST)
+                      : $this->service->createBrand($brandDTO);
+
+                  if ($saved) {
+                      $this->flash->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
+                      header('Location: ' . HOST . 'admin/brand');
+                      exit; // здесь return нужен, чтобы не рендерить форму
+                  } else {
+                      $this->flash->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
+                  }
+              }
           }
       }
 
-      // Передаем бренд в шаблон (может быть null для нового)
+      // Всегда рендерим форму (новая или с ошибками)
       $this->renderLayout('brands/single', [
           'pageTitle' => $brandId ? 'Бренды - редактирование' : 'Бренды - создание',
           'routeData' => $routeData,
@@ -155,6 +154,7 @@ dd($brandDTO);
           'flash' => $this->flash
       ]);
   }
+
 
   private function renderNew(RouteData $routeData): void
   {
