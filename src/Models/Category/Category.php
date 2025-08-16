@@ -125,6 +125,8 @@ final class Category
     public function getTranslatedTitle(?string $locale = null): string 
     {
         $locale = $locale ?? $this->currentLocale;
+   
+      // dd($this->translations[$locale]['title']);
 
         return $this->translations[$locale]['title'] ?? $this->title;
     }

@@ -9,3 +9,4 @@
   <?php endforeach;?>
   <button type="button" class="filter-show-more" data-target="category">Показать ещё</button>
 </div>
+

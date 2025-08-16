@@ -21,7 +21,7 @@ use Vvintage\DTO\Category\CategoryDTO;
 final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
 {
     private const TABLE_CATEGORIES = 'categories';
-    private const TABLE_CATEGORIES_TRANSLATION = 'categories_translation';
+    private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
     private string $currentLang;
     private const DEFAULT_LANG = 'ru';
 
