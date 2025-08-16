@@ -104,8 +104,28 @@ class AdminBrandController extends BaseAdminController
               exit;
           }
 
-          dd( $_POST);
-          $brandDTO = new BrandDTO($_POST); // image может быть null
+      
+          $translations = [];
+
+          foreach ($_POST['title'] as $lang => $title) {
+              $translations[$lang] = [
+                  'title' => $_POST['title'][$lang] ?? '',
+                  'description' => $_POST['description'][$lang] ?? '',
+                  'meta_title' => $_POST['meta_title'][$lang] ?? '',
+                  'meta_description' => $_POST['meta_description'][$lang] ?? '',
+              ];
+          }
+
+          // Берём основной язык для "основных" полей (например, 'ru')
+          $mainLang = 'ru';
+
+          $brandDTO = new BrandDTO([
+              'title' => $_POST['title'][$mainLang] ?? '',
+              'description' => $_POST['description'][$mainLang] ?? '',
+              'image' => $_POST['image'] ?? '',
+              'translations' => $translations,
+          ]);
+
           $brand = Brand::fromDTO($brandDTO); // создаём объект Brand
 
 
