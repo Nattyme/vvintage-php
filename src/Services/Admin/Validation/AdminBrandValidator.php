@@ -89,11 +89,12 @@ final class AdminBrandValidator
 
         foreach ($data[$fieldName] ?? [] as $lang => $value) {
             $trimmed = trim((string)$value);
-            if ($trimmed !== '' && !preg_match($pattern, $trimmed)) {
-                // Автоочистка
-                $cleaned = preg_replace($cleanupPattern, '', $trimmed);
-                $data[$fieldName][$lang] = $cleaned;
 
+            // Автоочистка недопустимых символов
+            $cleaned = preg_replace($cleanupPattern, '', $trimmed);
+
+            // Если были недопустимые символы, пушим сообщение об ошибке
+            if ($trimmed !== '' && $trimmed !== $cleaned) {
                 $flagPath = HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$lang";
                 $this->flash->pushError(
                     'Недопустимые символы',
@@ -102,7 +103,17 @@ final class AdminBrandValidator
                 );
                 $valid = false;
             }
+
+            // Приведение к нормальному формату: первая буква заглавная
+            $cleaned = mb_strtolower($cleaned, 'UTF-8'); 
+            if ($cleaned !== '') {
+                $cleaned = mb_strtoupper(mb_substr($cleaned, 0, 1, 'UTF-8')) 
+                        . mb_substr($cleaned, 1, null, 'UTF-8');
+            }
+
+            $data[$fieldName][$lang] = $cleaned;
         }
+
         return $valid;
     }
 
