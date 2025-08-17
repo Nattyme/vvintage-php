@@ -1,5 +1,6 @@
-<div class="products__pages-shown">
-  <div class="pages-shown">
+
+<div class="products__toolbar">
+  <div class="products__results-info">
     <p>
       <?php 
         echo h(__('shop.shown.items', [
@@ -8,5 +9,9 @@
         ], 'shop'));
       ;?>
     </p>
+  </div>
+
+  <div class="products__sort">
+    <?php include ROOT . 'views/shop/_sort/_by-price.tpl'; ?>
   </div>
 </div>

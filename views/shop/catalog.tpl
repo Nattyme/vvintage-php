@@ -17,15 +17,7 @@
         <form class="products__form" method="GET">
 
           <!-- Панель управления сверху -->
-          <div class="products__toolbar">
-            <div class="products__results-info">
-              <p>Показано: <span>9</span> из <span>12</span> товаров</p>
-            </div>
-
-            <div class="products__sort">
-              <?php include ROOT . 'views/shop/_sort/_by-price.tpl'; ?>
-            </div>
-          </div>
+           <?php include ROOT . 'views/shop/_parts/_top-toolbar.tpl';?>
 
           <!-- Сетка с фильтрами и карточками -->
           <div class="products__layout">
@@ -51,10 +43,7 @@
 
           <!-- Панель внизу -->
           <div class="products__footer">
-            <div class="products__results-info">
-              <p>Показано: <span>9</span> из <span>12</span> товаров</p>
-            </div>
-           
+            <?php include ROOT . 'views/shop/_parts/_products-bottom.tpl';?>
           </div>
 
         </form>
