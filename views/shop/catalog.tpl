@@ -14,7 +14,7 @@
 
         
         <!-- Форма фильтров и сортировки -->
-        <form class="products__form" method="GET">
+        <form class="products__form" method="GET" action="<?php HOST . 'shop';?>">
 
           <!-- Панель управления сверху -->
            <?php include ROOT . 'views/shop/_parts/_top-toolbar.tpl';?>

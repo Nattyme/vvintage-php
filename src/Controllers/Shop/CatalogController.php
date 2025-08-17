@@ -12,8 +12,6 @@ use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
 use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Repositories\Product\ProductRepository;
 
-
-
 /** Сервисы */
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Category\CategoryService;
@@ -21,6 +19,8 @@ use Vvintage\Services\Brand\BrandService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Seo\SeoService;
 use Vvintage\Services\Page\Breadcrumbs;
+
+use Vvintage\DTO\Product\ProductFilterDTO;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -44,9 +44,18 @@ final class CatalogController extends BaseController
       $this->breadcrumbsService = $breadcrumbs;
     }
 
+
     public function index(RouteData $routeData): void
     {
       $this->setRouteData($routeData); // <-- передаём routeData
+
+      $filterDto = new ProductFilterDTO($_GET);
+dd( $filterDto);
+      // $products = $this->productService->getFilteredProducts($filterDto);
+      // $categories = $this->categoryRepo->getCategoryTree(); // дерево
+      $categories = $this->categoryService->getCategoryTree();
+      $brands = $this->brandService->getAllBrands();
+      // $brands = $this->brandRepo->getAll();
 
       // Название страницы
       $pageTitle = 'Каталог товаров';
@@ -57,7 +66,7 @@ final class CatalogController extends BaseController
       $products =  $this->productService->getActiveProducts($pagination);
 
       // Получаем бренды
-      $brands = $this->brandService->getAllBrands();
+      // $brands = $this->brandService->getAllBrands();
       $mainCategories = $this->categoryService->getMainCategories();
 
       $seo = [];
@@ -84,7 +93,7 @@ final class CatalogController extends BaseController
       /** Категории */
       // $mainCategoryAll = $this->categoryService->getMainCategories();
       // $subCategoryAll = $this->c->getSubCategories();
-      $categories = $this->categoryService->getCategoryTree();
+      // $categories = $this->categoryService->getCategoryTree();
 
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
@@ -108,3 +117,5 @@ final class CatalogController extends BaseController
       ]);
     }
 }
+
+

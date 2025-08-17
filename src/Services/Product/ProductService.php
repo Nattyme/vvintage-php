@@ -96,4 +96,9 @@ class ProductService extends BaseService
         return $this->productImageService->countAll($images);
     }
 
+    public function getFilteredProducts(ProductFilterDTO $filter): array 
+    {
+        return $this->repository->filter($filter);
+    }
+
 }

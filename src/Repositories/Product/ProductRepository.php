@@ -316,4 +316,52 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             $this->updatePartial((int)$id, $data);
         }
     }
+
+    public function filter(ProductFilterDTO $filter): array
+    {
+        $conditions = [];
+        $params = [];
+
+        // фильтр по брендам
+        if (!empty($filter->brands)) {
+            $in = R::genSlots($filter->brands); // "?,?,?"
+            $conditions[] = " brand_id IN ($in) ";
+            $params = array_merge($params, $filter->brands);
+        }
+
+        // фильтр по категориям
+        if (!empty($filter->categories)) {
+            $in = R::genSlots($filter->categories);
+            $conditions[] = " category_id IN ($in) ";
+            $params = array_merge($params, $filter->categories);
+        }
+
+        // диапазон цены
+        if ($filter->priceMin !== null) {
+            $conditions[] = " price >= ? ";
+            $params[] = $filter->priceMin;
+        }
+        if ($filter->priceMax !== null) {
+            $conditions[] = " price <= ? ";
+            $params[] = $filter->priceMax;
+        }
+
+        // базовое условие
+        $sql = count($conditions) ? implode(" AND ", $conditions) : " 1 ";
+
+        // сортировка
+        $order = "";
+        if ($filter->sort === 'price_asc') {
+            $order = " ORDER BY price ASC";
+        } elseif ($filter->sort === 'price_desc') {
+            $order = " ORDER BY price DESC";
+        }
+
+        // выполняем через RedBean
+        $products = $this->findAll(self::TABLE_PRODUCTS, $sql . $order, $params);
+
+        // return $products; // это массив beans
+        return array_map([$this, 'fetchProductWithJoins'], $products);
+
+    }
 }
