@@ -11,7 +11,7 @@
         <ul class="filter-group__sub-list accordion__content">
         <?php if(!empty($category['children'])) : ?>
           <?php foreach($category['children'] as $child) : ?>
-            <li>
+            <li class="filter-group__sub-item">
               <label class="filter-checkbox">
                 <input class="real-checkbox" type="checkbox" name="category[]" value="<?php echo $child['id'];?>">
                 <span class="custom-checkbox"></span>

@@ -19,9 +19,6 @@
              
             }
           ?>
-          <svg class="icon icon--arrow-down">
-
-          </svg>
     </div>
         
     <ul class="select-options" role="listbox" tabindex="-1" custom-select-options>
