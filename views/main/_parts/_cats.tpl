@@ -12,4 +12,7 @@
       </div>
     </div>
   </div>
+   <div class="background animation-bg">
+    <?php include ROOT. 'views/components/animations/_background-lines.tpl';?>
+  </div>  
 </section>

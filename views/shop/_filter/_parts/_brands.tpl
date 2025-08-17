@@ -8,7 +8,9 @@
     </label>
   <?php endforeach;?>
 
-  <button type="button" class="filter-show-more" data-target="brand">Показать ещё</button>
+  <div class="filter-group__button" id="filter-brand-btn">
+    <button type="button" class="filter-show-more" data-target="brand">Показать ещё</button>
+  </div>
 </div>
 
  

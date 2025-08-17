@@ -10,6 +10,5 @@
   <?php if (!$isBlogPage) : ?>
     <?php include ROOT . 'views/_parts/_parts-header/_header-nav.tpl';?>
   <?php endif; ?>
-
 </header>
 

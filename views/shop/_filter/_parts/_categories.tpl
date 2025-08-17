@@ -8,8 +8,8 @@
           <?php echo $category['title'];?>
         </button>
 
-        <ul class="filter-group__sub-list accordion__content">
         <?php if(!empty($category['children'])) : ?>
+        <ul class="filter-group__sub-list accordion__content">
           <?php foreach($category['children'] as $child) : ?>
             <li class="filter-group__sub-item">
               <label class="filter-checkbox">
@@ -19,8 +19,8 @@
               </label>
             </li>
           <?php endforeach; ?>
-        <?php endif; ?>
         </ul>
+        <?php endif; ?>
       </li>
     <?php endforeach;?>
   </ul>
