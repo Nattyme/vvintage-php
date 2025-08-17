@@ -46,13 +46,15 @@ final class RegistrationController extends BaseController
     }
 
     // Показываем форму
-    self::renderForm($routeData);
+    $this->renderForm($routeData);
   }
 
-  private static function renderForm ($routeData) {
+  private function renderForm ($routeData) {
     $pageTitle = "Регистрация";
     $pageClass = "authorization-page";
+    $flash = $this->flash;
 
+    
     //Сохраняем код ниже в буфер
     ob_start();
     include ROOT . 'views/login/form-registration.tpl';

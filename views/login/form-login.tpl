@@ -60,7 +60,7 @@
       </div>
     </button>
     <!-- CSRF-токен -->
-      <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
     <!-- // CSRF-токен -->
   <?php endif; ?>
 </form>
@@ -77,6 +77,8 @@
       Восстановить
     </a>
   </div>
+
+  
 </div>
 <!-- // links -->
   
