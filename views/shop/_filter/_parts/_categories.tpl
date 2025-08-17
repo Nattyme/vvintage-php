@@ -1,23 +1,30 @@
-<div class="filter-group" data-control="tab">
+<div class="filter-group">
   <h3 class="filter-title">Категории</h3>
   
-  <!-- Навигация -->
-  <div class="filter-group__tab-nav" data-control="tab-nav">
-      <?php foreach($viewModel['mainCategories'] as $category) : ?>
-        <button type="button" class="filter-group__tab-btn" data-control="tab-button">
-          <?php echo $category->getTranslatedTitle($viewModel['locale']);?>
+  <ul class="filter-group__list" data-control="tab" id="filter-category">
+    <?php foreach($viewModel['categories'] as $category) : ?>
+      <li class="filter-group__item accordion__item" data-section="<?php $category['id'];?>">
+        <button type="button" class="filter-group__btn accordion__btn">
+          <?php echo $category['title'];?>
         </button>
-      <?php endforeach;?>
-    </div>
-    <!--// Навигация -->
 
-   <div class="filter-group__tab-content" data-control="tab-content">
-      <?php foreach ($viewModel['mainCategories'] as $category ) : ?>
-        <div class="filter-group__tab-block" data-control="tab-block">
-          подкатегория
-        </div>
-      <?php endforeach;?>
-    </div>
+        <ul class="filter-group__sub-list accordion__content">
+        <?php if(!empty($category['children'])) : ?>
+          <?php foreach($category['children'] as $child) : ?>
+            <li>
+              <label class="filter-checkbox">
+                <input class="real-checkbox" type="checkbox" name="category[]" value="<?php echo $child['id'];?>">
+                <span class="custom-checkbox"></span>
+                <div><?php echo $child['title'];?></div>
+              </label>
+            </li>
+          <?php endforeach; ?>
+        <?php endif; ?>
+        </ul>
+      </li>
+    <?php endforeach;?>
+  </ul>
+
 </div>
 
   

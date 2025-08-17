@@ -82,14 +82,15 @@ final class CatalogController extends BaseController
         
 
       /** Категории */
-      $mainCategoryAll = $this->categoryService->getMainCategories();
-      $subCategoryAll = $this->categoryService->getSubCategories();
+      // $mainCategoryAll = $this->categoryService->getMainCategories();
+      // $subCategoryAll = $this->c->getSubCategories();
+      $categories = $this->categoryService->getCategoryTree();
 
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'products' => $products,
           'brands' => $brands,
-          'mainCategories' => $mainCategories,
+          'categories' => $categories,
           'imagesByProductId' => $imagesByProductId,
           'total' => $total,
           'shown' => $shown,

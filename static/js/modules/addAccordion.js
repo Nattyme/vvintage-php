@@ -3,10 +3,12 @@ const addAccordion = (type, selector) => {
   // e.preventDefault();
   const accordionWrapper = document.querySelector(selector);
   if(!accordionWrapper) return;
+ 
   const accordionBtns = accordionWrapper.querySelectorAll('.accordion__btn');
   const accordionItems = document.querySelectorAll('.accordion__item');
   const accordionContents = document.querySelectorAll('.accordion__content');
   if(!accordionBtns || !accordionItems || !accordionContents) return;
+
 
   const findContentAndItem = (btn) => {
     const currentItem = btn.closest('.accordion__item');
@@ -58,6 +60,8 @@ const addAccordion = (type, selector) => {
   };
 
   const startAccordionByType = (e, btn) => {
+  // console.log(btn);
+  
     switch (type) {
       case 'only' :
         showOnlyContent(e, btn);

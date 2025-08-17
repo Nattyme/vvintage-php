@@ -7,7 +7,7 @@
   </a>
   
   <div class="authorization-page__lang">
-    <?php include ROOT . 'views/_parts/_parts-header/_select-lang.tpl';?>
+    <?php include ROOT . 'views/components/select/_select-lang.tpl';?>
   </div>
 
 </header>
@@ -22,4 +22,7 @@
       </div>
     </div>
   </section>
+  <div class="background animation-bg">
+    <?php include ROOT. 'views/components/animations/_background-lines.tpl';?>
+  </div>  
 </main>

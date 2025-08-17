@@ -59,6 +59,34 @@ class CategoryService extends BaseService
       return $this->repository->getAllCategories($pagination);
     }
 
+     public function getCategoryTree() {
+        // Получим все категории
+        $allCategories = $this->repository->getAllCategories(); 
+        $tree = [];
+
+        // сначала создаём индекс категорий по id
+        $categoriesById = [];
+        foreach ($allCategories as $category) {
+            $categoriesById[$category->getId()] = [
+                'id' => $category->getId(),
+                'title' => $category->getTranslatedTitle($this->currentLang),
+                'parentId' => $category->getParentId(),
+                'children' => []
+            ];
+        }
+
+        // связываем детей с родителями
+        foreach ($categoriesById as $id => &$cat) {
+            if ($cat['parentId']) {
+                $categoriesById[$cat['parentId']]['children'][] = &$cat;
+            } else {
+                $tree[] = &$cat; // главная категория
+            }
+        }
+
+        return $tree;
+    }
+
     // public function getMainCats(): array
     // {
     //   return $this->repository->getMainCats();
