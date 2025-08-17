@@ -62,7 +62,7 @@ final class ProfileController extends BaseController
             'pageClass' => $pageClass,
             'userModel' => $userModel,
             'orders' => $orders,
-            'flash' => $flash
+            'flash' => $this->flash
       ]);
   }
 

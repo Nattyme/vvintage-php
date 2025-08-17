@@ -6,16 +6,19 @@ namespace Vvintage\Controllers\Admin\Product;
 use Vvintage\Routing\RouteData;
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 use Vvintage\Controllers\Admin\BaseAdminController;
+use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Admin\Product\AdminProductService;
 
 
 class AdminProductController extends BaseAdminController
 {
   private AdminProductService $adminProductService;
+  private FlashMessage $flash;
 
   public function __construct()
   {
     parent::__construct();
+    $this->flash = new FlashMessage();
     $this->adminProductService = new AdminProductService($this->currentLang);
   }
 
@@ -74,7 +77,8 @@ class AdminProductController extends BaseAdminController
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'productViewModel' => $productViewModel,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'flash' => $this->flash
     ]);
   }
 
