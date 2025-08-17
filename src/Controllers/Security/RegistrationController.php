@@ -10,13 +10,23 @@ use Vvintage\Services\Security\RegistrationService;
 use Vvintage\Services\Validation\RegistrationValidator;
 use Vvintage\Services\Messages\FlashMessage;
 
+// Пеервод на другие языки
+use Vvintage\Config\LanguageConfig;
+use Vvintage\Services\Translator\Translator;
+
 
 final class RegistrationController extends BaseController
 {
+  protected array $languages;
+  protected string $currentLang;
+  protected Translator $translator;
   private FlashMessage $flash;
 
   public function __construct(FlashMessage $flash)
   {
+      $this->translator = setTranslator(); // берём уже установленный переводчик
+      $this->languages = LanguageConfig::getAvailableLanguages();
+      $this->currentLang = LanguageConfig::getCurrentLocale();
       $this->flash = $flash;
   }
 
@@ -42,7 +52,7 @@ final class RegistrationController extends BaseController
   private static function renderForm ($routeData) {
     $pageTitle = "Регистрация";
     $pageClass = "authorization-page";
- 
+
     //Сохраняем код ниже в буфер
     ob_start();
     include ROOT . 'views/login/form-registration.tpl';

@@ -43,12 +43,12 @@ final class LoginController extends BaseController
   protected string $currentLang;
   protected Translator $translator;
 
-  public function __construct(UserRepository $userRepository, ProductRepository $productRepository, FlashMessage $flash) 
+  public function __construct(UserRepository $userRepository, ProductRepository $productRepository) 
   {
     parent::__construct(); // Важно!
     $this->userRepository = $userRepository;
     $this->productRepository = $productRepository;
-    $this->flash = $flash;
+    $this->flash = new FlashMessage();
     $this->translator = setTranslator(); // берём уже установленный переводчик
     $this->languages = LanguageConfig::getAvailableLanguages();
     $this->currentLang = LanguageConfig::getCurrentLocale();
@@ -150,7 +150,8 @@ final class LoginController extends BaseController
   {
     $pageTitle = "Вход на сайт";
     $pageClass = "authorization-page";
-
+    $flash = $this->flash;
+    
     ob_start();
     include ROOT . 'views/login/form-login.tpl';
     $content = ob_get_clean();
