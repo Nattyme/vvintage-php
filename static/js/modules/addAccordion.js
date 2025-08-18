@@ -32,7 +32,7 @@ const addAccordion = (type, selector) => {
       currentItem.querySelector('.expand-icon')?.classList.remove('expand-icon--active');
     } else {
       currentItem.classList.add('active');
-      currentContent.style.maxHeight = currentContent.scrollHeight + 'px';
+      currentContent.style.maxHeight = currentContent.scrollHeight + 20 + 'px';
       currentItem.querySelector('.expand-icon')?.classList.add('expand-icon--active');
     }
    
