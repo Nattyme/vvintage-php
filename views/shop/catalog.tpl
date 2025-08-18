@@ -23,8 +23,8 @@
           <div class="products__layout">
             
             <!-- Фильтры -->
-            <aside class="products__filters">
-              <?php include ROOT . 'views/shop/_filter/_index.tpl';?>
+            <aside class="products__sidebar">
+              <?php include ROOT . 'views/shop/_sidebar/_sidebar.tpl';?>
             </aside>
 
 
@@ -45,7 +45,7 @@
           <div class="products__footer">
             <?php include ROOT . 'views/shop/_parts/_products-bottom.tpl';?>
           </div>
-<button type="submit"> ПРИМЕНИТЬ</button>
+
         </form>
 
 
