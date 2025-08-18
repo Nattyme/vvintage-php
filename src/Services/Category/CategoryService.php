@@ -41,9 +41,6 @@ class CategoryService extends BaseService
       return $this->repository->getAllCategoriesArray();
     }
 
-    // public function countSubCats(): int
-    // {
-    // }
 
     
     public function getMainCategories(): array
@@ -59,7 +56,7 @@ class CategoryService extends BaseService
       return $this->repository->getAllCategories($pagination);
     }
 
-     public function getCategoryTree() {
+    public function getCategoryTree() {
         // Получим все категории
         $allCategories = $this->repository->getAllCategories(); 
         $tree = [];
@@ -87,10 +84,5 @@ class CategoryService extends BaseService
         return $tree;
     }
 
-    // public function getMainCats(): array
-    // {
-    //   return $this->repository->getMainCats();
-    // }
-
-
+  
 }

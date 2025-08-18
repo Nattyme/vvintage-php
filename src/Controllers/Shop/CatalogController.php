@@ -59,10 +59,8 @@ final class CatalogController extends BaseController
       ]);
 
       $products = $this->productService->getFilteredProducts($filterDto);
-      // $categories = $this->categoryRepo->getCategoryTree(); // дерево
       $categories = $this->categoryService->getCategoryTree();
       $brands = $this->brandService->getAllBrands();
-      // $brands = $this->brandRepo->getAll();
 
       // Название страницы
       $pageTitle = 'Каталог товаров';
@@ -70,11 +68,7 @@ final class CatalogController extends BaseController
       $pagination = pagination($productsPerPage, 'products');
 
       // Получаем продукты с учётом пагинации
-      // $products =  $this->productService->getActiveProducts($pagination);
       $products = $this->productService->getFilteredProducts($filterDto);
-// dd(  $products);
-      // Получаем бренды
-      // $brands = $this->brandService->getAllBrands();
       $mainCategories = $this->categoryService->getMainCategories();
 
       $seo = [];
@@ -97,11 +91,6 @@ final class CatalogController extends BaseController
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
         
-
-      /** Категории */
-      // $mainCategoryAll = $this->categoryService->getMainCategories();
-      // $subCategoryAll = $this->c->getSubCategories();
-      // $categories = $this->categoryService->getCategoryTree();
 
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
