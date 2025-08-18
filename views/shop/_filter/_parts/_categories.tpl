@@ -13,7 +13,12 @@
           <?php foreach($category['children'] as $child) : ?>
             <li class="filter-group__sub-item">
               <label class="filter-checkbox">
-                <input class="real-checkbox" type="checkbox" name="category[]" value="<?php echo $child['id'];?>">
+                <input 
+                  class="real-checkbox" 
+                  type="checkbox" 
+                  name="category[]" 
+                  value="<?php echo $child['id'];?>"
+                   <?php echo in_array($child['id'], $viewModel['filterDto']->categories) ? 'checked' : ''; ?>>
                 <span class="custom-checkbox"></span>
                 <div><?php echo $child['title'];?></div>
               </label>

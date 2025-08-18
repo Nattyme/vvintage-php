@@ -106,6 +106,7 @@ final class CatalogController extends BaseController
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'products' => $products,
+          'filterDto' => $filterDto,
           'brands' => $brands,
           'categories' => $categories,
           'imagesByProductId' => $imagesByProductId,
