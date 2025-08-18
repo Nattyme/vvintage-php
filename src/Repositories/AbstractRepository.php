@@ -49,15 +49,34 @@ abstract class AbstractRepository
      * @param array $params Параметры для SQL-запроса
      * @return OODBBean[]
      */
+    // protected function findAll(string $table, ?string $sql = null, array $params = []): array
+    // {  
+    //     if ($sql === null) {
+    //         $sql = 'ORDER BY id ASC';
+    //     } elseif (!preg_match('/^\s*(WHERE|ORDER BY)/i', $sql)) {
+    //         $sql = 'WHERE ' . $sql;
+    //     }
+     
+    //     return R::findAll($table, $sql, $params);
+    // }
     protected function findAll(string $table, ?string $sql = null, array $params = []): array
     {
-        if ($sql === null) {
-            $sql = 'ORDER BY id ASC';
-        } elseif (!preg_match('/^\s*(WHERE|ORDER BY)/i', $sql)) {
+        // Если $sql пустой, просто выбираем все записи
+        if (empty($sql)) {
+            $sql = '';
+        }
+// dd($params);
+        // Если есть условия и они не начинаются с WHERE, добавляем WHERE
+        if ($sql && !preg_match('/^\s*WHERE/i', $sql)) {
             $sql = 'WHERE ' . $sql;
         }
+
+
+
+        // Здесь просто вызываем RedBeanPHP
         return R::findAll($table, $sql, $params);
     }
+
 
 
     protected function findByIds(string $table, array $ids): array

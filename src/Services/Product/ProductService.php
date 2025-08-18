@@ -11,6 +11,7 @@ use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Base\BaseService;
+use Vvintage\DTO\Product\ProductFilterDTO;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -98,7 +99,7 @@ class ProductService extends BaseService
 
     public function getFilteredProducts(ProductFilterDTO $filter): array 
     {
-        return $this->repository->filter($filter);
+        return $this->repository->getFilteredProducts($filter);
     }
 
 }

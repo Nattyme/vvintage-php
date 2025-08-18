@@ -49,9 +49,16 @@ final class CatalogController extends BaseController
     {
       $this->setRouteData($routeData); // <-- передаём routeData
 
-      $filterDto = new ProductFilterDTO($_GET);
-dd( $filterDto);
-      // $products = $this->productService->getFilteredProducts($filterDto);
+
+      $filterDto = new ProductFilterDTO([
+          'brands'    => $_GET['brand'] ?? [],
+          'categories'=> $_GET['category'] ?? [],
+          'priceMin'  => $_GET['priceMin'] ?? null,
+          'priceMax'  => $_GET['priceMax'] ?? null,
+          'sort'      => $_GET['sort'] ?? null,
+      ]);
+
+      $products = $this->productService->getFilteredProducts($filterDto);
       // $categories = $this->categoryRepo->getCategoryTree(); // дерево
       $categories = $this->categoryService->getCategoryTree();
       $brands = $this->brandService->getAllBrands();
@@ -63,8 +70,9 @@ dd( $filterDto);
       $pagination = pagination($productsPerPage, 'products');
 
       // Получаем продукты с учётом пагинации
-      $products =  $this->productService->getActiveProducts($pagination);
-
+      // $products =  $this->productService->getActiveProducts($pagination);
+      $products = $this->productService->getFilteredProducts($filterDto);
+// dd(  $products);
       // Получаем бренды
       // $brands = $this->brandService->getAllBrands();
       $mainCategories = $this->categoryService->getMainCategories();

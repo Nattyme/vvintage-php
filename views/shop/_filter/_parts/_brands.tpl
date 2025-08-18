@@ -2,7 +2,13 @@
   <h3 class="filter-title">Бренды</h3>
   <?php foreach($viewModel['brands'] as $brand) : ?>
     <label class="filter-checkbox">
-      <input class="real-checkbox" type="checkbox" name="brand[]" value="<?php echo $brand->getId();?>">
+      <input 
+        class="real-checkbox" 
+        type="checkbox" 
+        name="brand[]" 
+        value="<?php echo $brand->getId();?>"
+        <?php echo in_array( $brand->getId(), $_GET['brand'] ?? []) ? 'checked' : '';?>
+      >
       <span class="custom-checkbox"></span>
       <div><?php echo $brand->getTranslatedTitle($viewModel['locale']);?></div>
     </label>

@@ -45,7 +45,7 @@
           <div class="products__footer">
             <?php include ROOT . 'views/shop/_parts/_products-bottom.tpl';?>
           </div>
-
+<button type="submit"> ПРИМЕНИТЬ</button>
         </form>
 
 

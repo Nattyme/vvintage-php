@@ -15,8 +15,8 @@ class ProductFilterDTO {
     public function __construct(array $query) {
         $this->categories = $query['categories'] ?? [];
         $this->brands = $query['brands'] ?? [];
-        $this->priceMin = $query['price_min'] ?? null;
-        $this->priceMax = $query['price_max'] ?? null;
+        $this->priceMin = isset($query['priceMin']) ? (int) $query['priceMin'] : null;
+        $this->priceMax = isset($query['priceMax']) ? (int) $query['priceMax'] : null;
         $this->sort = $query['sort'] ?? null;
         $this->page = $query['page'] ?? 1;
     }
