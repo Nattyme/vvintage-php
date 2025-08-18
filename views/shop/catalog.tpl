@@ -29,16 +29,26 @@
 
 
             <!-- Карточки товаров -->
-            <div class="products__cards">
-                <?php foreach ($viewModel['products'] as $product) : ?>
-                  <?php 
-                      $images = $viewModel['imagesByProductId'][$product->getId()] ?? null;
-                      $mainImage = $images['main'] ?? null;
-                  ?>
-        
-                  <?php include ROOT . 'views/shop/_parts/_card.tpl';?>
-                <?php endforeach; ?>  
-            </div>
+            <?php if (isset($viewModel['products']) && !empty($viewModel['products']) ): ?>
+                <div class="products__cards">
+                    <?php foreach ($viewModel['products'] as $product) : ?>
+                      <?php 
+                          $images = $viewModel['imagesByProductId'][$product->getId()] ?? null;
+                          $mainImage = $images['main'] ?? null;
+                      ?>
+            
+                      <?php include ROOT . 'views/shop/_parts/_card.tpl';?>
+                    <?php endforeach; ?>  
+                </div>
+            <?php elseif(isset($_GET) && !empty($_GET)) : ?>
+              <div class="products__empty products__empty--filtered">
+                <h3>К сожалению, по вашему запросу ничего не найдено. Попробуйте изменить параметры фильтра.</h3>
+              </div>
+            <?php else : ?>
+              <div class="products__empty products__empty--initial">
+                <h3>В этой категории пока нет товаров. Мы работаем над пополнением!</h3>
+              </div>
+            <?php endif;?>
           </div>
 
           <!-- Панель внизу -->
@@ -48,12 +58,13 @@
 
         </form>
 
-
-        <div class="products__pagination">
-          <div class="section-pagination">
-            <?php include ROOT . 'views/_parts/pagination/_pagination.tpl';?>
+        <?php if (isset($viewModel['products']) && !empty($viewModel['products']) ): ?>
+          <div class="products__pagination">
+            <div class="section-pagination">
+              <?php include ROOT . 'views/_parts/pagination/_pagination.tpl';?>
+            </div>
           </div>
-        </div>
+        <?php endif; ?>
       </div>
           
     </div>
