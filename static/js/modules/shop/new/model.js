@@ -37,6 +37,8 @@ const initModel = () => {
       body: formData
     });
 
+    const text = await res.text(); // получаем "как есть"
+    console.log('Ответ сервера:', text);
     if (!res.ok) throw new Error(`Ошибка сети ${res.status}`);
     const result = await res.json();
     console.log(result);

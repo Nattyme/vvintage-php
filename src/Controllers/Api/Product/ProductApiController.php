@@ -44,33 +44,30 @@ class ProductApiController
       header('Content-Type: application/json');
         $response = [];
 
-      // Проверка на заполненность названия
-      // if ( isset($_POST['title']) && trim($_POST['title']) == '' ) {
-      //   $response['errors'][] = 'название товара';
-      // } 
+        // Проверка текстовых полей
+        $requiredFields = ['title' => 'название товара', 
+                          'price' => 'стоимость товара', 
+                          'url' => 'ссылка на vinted.fr', 
+                          'content' => 'описание товара'];
 
-      // if( isset($_POST['title']) && trim($_POST['price']) == '' ) {
-      //   $response['errors'][] = 'стоимость товара';
-      // } 
+        foreach ($requiredFields as $field => $message) {
+            if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
+                $response['errors'][] = $message;
+            }
+        }
 
-      // // Проверка на заполненность ссылки
-      // if( isset($_POST['title']) && trim($_POST['url']) == '' ) {
-      //   $response['errors'][] = 'ссылка на vinted.fr';
-      // } 
+        if (!empty($response['errors'])) {
+            echo json_encode($response);
+            exit();
+        }
 
-      // // Проверка на заполненность содержимого
-      // if( isset($_POST['title']) && trim($_POST['content']) == '' ) {
-      //   $response['errors'][] = 'описание товара';
-      // } 
+        // Проверка файлов
+        if (!isset($_FILES['cover']) || empty($_FILES['cover']['name'])) {
+            $response['errors'][] = 'Добавьте изображения товара';
+            echo json_encode($response);
+            exit();
+        }
 
-      // // Если есть ошибки - сразу возвращаем 
-      // if (!empty($response['errors'])) {
-      //   echo json_encode($response);
-
-      //   // Очищаем ошибки, чтобы не дублировать
-      //   unset($_SESSION['errors']);
-      //   exit();
-      // }
       
       // Если передано изображение - уменьшаем, сохраняем, записываем в БД
       if ( isset($_FILES['cover']['name']) && $_FILES['cover']['tmp_name'] !== '') {
@@ -125,7 +122,10 @@ class ProductApiController
           
         //   R::store( $productImages);
         // }
-        
+      
+// Посмотреть все POST данные
+// 
+
       
         $response['success'][] = 'Товар успешно добавлен';
         unset($_SESSION['success']);

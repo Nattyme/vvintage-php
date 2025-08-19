@@ -32,7 +32,7 @@ const initNewProductFormEvents = () => {
 
     // Устанавливаем новый массив файлов в form data
     formModel.setSortedFiles(orderedFiles);
-   console.log(formData);
+
     // Отправляем значения формы
     try {
       const res = await formModel.sendFormDataFetch();
