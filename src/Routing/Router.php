@@ -168,6 +168,7 @@
     {
         $categoryApiController = new CategoryApiController();
         $brandApiController = new BrandApiController();
+        $productApiController = new ProductApiController();
 
         switch ($routeData->uriGet) {
             case 'category-main':
@@ -194,12 +195,31 @@
                 $brandApiController->getAllBrands();
                 break;
 
+            case 'product-edit' :
+              if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
+                $productApiController->edit($routeData);
+              }
+            case 'product-new' :
+              // Если параметра нет - значит создаем
+              $productApiController->new();
+              break;
+            case 'product' :
+              if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
+                $productApiController->getProduct($routeData);
+              }
+              break;
+
+            case 'products' :
+              $productApiController->getAll($routeData);
+              break;
+
             default:
                 http_response_code(404);
                 echo json_encode(['error' => 'API endpoint not found']);
                 break;
         }
     }
+
 
 
     private static function routeAuth(RouteData $routeData) {
