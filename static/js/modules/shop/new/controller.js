@@ -10,13 +10,13 @@ const initNewProductFormEvents = () => {
   if (!formView || !formModel) return;
 
   const formElement = formView.getFormElement();
-  console.log(formElement);
+
   
   if (!formElement) return;
 
   formElement.addEventListener('submit', async (event) => {
     event.preventDefault();
-
+  console.log('form clicked');
     // Собираем значения формы и записываем в переменную модели
     formModel.setFormData(formElement);
 
@@ -32,7 +32,7 @@ const initNewProductFormEvents = () => {
 
     // Устанавливаем новый массив файлов в form data
     formModel.setSortedFiles(orderedFiles);
-  
+   console.log(formData);
     // Отправляем значения формы
     try {
       const res = await formModel.sendFormDataFetch();

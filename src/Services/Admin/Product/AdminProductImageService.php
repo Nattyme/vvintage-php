@@ -8,10 +8,6 @@ use Vvintage\Services\Product\ProductImageService;
 
 final class AdminProductImageService extends ProductImageService
 {
-  public function __construct()
-  {
-    parent::__construct();
-  }
 
   public function addImages(int $productId, array $files): array
   {

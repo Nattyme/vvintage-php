@@ -32,12 +32,13 @@ const initModel = () => {
 
  
   const sendFormDataFetch = async () => {
-    const res = await fetch('/admin/api/shop/new.php', {
+    const res = await fetch('/api/product-create', {
       method: 'POST',
       body: formData
     });
+
     if (!res.ok) throw new Error(`Ошибка сети ${res.status}`);
-    const result = res.json();
+    const result = await res.json();
     console.log(result);
     
     return result;

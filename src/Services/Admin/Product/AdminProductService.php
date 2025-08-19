@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace Vvintage\Services\Admin\Product;
 
 use Vvintage\Services\Product\ProductService;
-use Vvintage\Services\Product\AdminProductImageService;
+use Vvintage\Services\Admin\Product\AdminProductImageService;
 
 
 final class AdminProductService extends ProductService
 {
+
+  private AdminProductImageService $imageService;
 
     private array $actions = [
       'hide'     => 'Скрыть',

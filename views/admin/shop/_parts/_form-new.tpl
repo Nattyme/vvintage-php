@@ -9,7 +9,7 @@
           name="title" 
           class="admin-form__input input" 
           type="text"
-          value="<?php echo isset($_POST['title']) ? h($_POST['title']) : '';?>"
+          value="<?php echo isset($_POST['title']) ? h($_POST['title']) : '123456';?>"
           placeholder="Введите название" 
           required
         />
@@ -18,7 +18,7 @@
         <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название для страницы товара (латиницей: chasy-chanel)</label>
         <input id="slug" name="slug" class="admin-form__input input" type="text"
-                value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : ''; ?>"
+                value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : '123456'; ?>"
                 placeholder="Введите название старницы" required/>
       </div>
 
@@ -29,7 +29,7 @@
           name="price" 
           class="admin-form__input input" 
           type="text"
-          value="<?php echo isset($_POST['price']) ? h($_POST['price']) : '';?>"
+          value="<?php echo isset($_POST['price']) ? h($_POST['price']) : '123456';?>"
           placeholder="Введите цену в &euro;" 
           required
         />
@@ -42,7 +42,7 @@
           name="article" 
           class="admin-form__input input" 
           type="text"
-          value="<?php echo isset($_POST['article']) ? h($_POST['article']) : '';?>"
+          value="<?php echo isset($_POST['article']) ? h($_POST['article']) : '123456';?>"
           placeholder="Введите артикул" 
         />
       </div>
@@ -54,7 +54,7 @@
           name="url" 
           class="admin-form__input input" 
           type="text"
-          value="<?php echo isset($_POST['url']) ? u($_POST['url']) : '';?>"
+          value="<?php echo isset($_POST['url']) ? u($_POST['url']) : '123456';?>"
           placeholder="Введите ссылку на vinted.fr" 
         />
       </div>
@@ -122,7 +122,7 @@
             
               <select class="select" name="status" id="status">
               <?php foreach ($statusList as $key => $value) : ?>
-                <option <?php echo isset($_POST['status']) &&  $_POST['status'] === $key ? 'selected' : '';?> value="<?php echo h($key);?>">
+                <option <?php echo isset($_POST['status']) &&  $_POST['status'] === $key ? 'selected' : '123456';?> value="<?php echo h($key);?>">
                   <?php echo h($value);?>
                 </option>
               <?php endforeach; ?>
