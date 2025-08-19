@@ -98,6 +98,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     public function getAllProducts(array $data = []): array
     {
+     
         $rows = $this->uniteProductRawData($data);
         return array_map([$this, 'fetchProductWithJoins'], $rows);
     }

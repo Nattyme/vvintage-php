@@ -64,10 +64,9 @@ class ProductService extends BaseService
     //    $result['number_of_pages'] = $number_of_pages;
     // $result['page_number'] = $page_number;
     // $result['sql_page_limit'] =  $sql_page_limit;
-    public function getAll($pagination): array
+    public function getAll($pagination = []): array
     {
-
-        return $this->repository->getAllProducts(['limit' => $pagination['sql_page_limit']]);
+        return $this->repository->getAllProducts(['limit' => $pagination['sql_page_limit'] ?? '']);
     }
 
     public function getLastProducts(int $count): array
@@ -100,6 +99,11 @@ class ProductService extends BaseService
     public function getFilteredProducts(ProductFilterDTO $filter): array 
     {
         return $this->repository->getFilteredProducts($filter);
+    }
+
+    public function toApiArray(array $data): array
+    {
+      return $this->repository->getProductsArray($id);
     }
 
 }

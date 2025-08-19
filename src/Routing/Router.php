@@ -78,6 +78,7 @@
   // API
   use Vvintage\Controllers\Api\Category\CategoryApiController;
   use Vvintage\Controllers\Api\Brand\BrandApiController;
+  use Vvintage\Controllers\Api\Product\ProductApiController;
 
 
 
@@ -203,7 +204,7 @@
               // Если параметра нет - значит создаем
               $productApiController->create();
               break;
-              
+
             case 'product' :
               if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
                 $productApiController->load($routeData);
@@ -211,7 +212,7 @@
               break;
 
             case 'products' :
-              $productApiController->loadAll($routeData);
+              $productApiController->getAll();
               break;
 
             default:
