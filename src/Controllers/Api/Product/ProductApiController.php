@@ -17,13 +17,23 @@ class ProductApiController
         header('Content-Type: application/json; charset=utf-8');
     }
 
-    public function show(RouteData $rd): void
+    public function load(RouteData $rd): void
     {
         $id = (int)$rd->getUriGetParam();
         $product = $this->svc->getProductById($id);
         if (!$product) { http_response_code(404); echo json_encode(['error'=>'Not found']); return; }
 
         echo json_encode($this->svc->toApiArray($product), JSON_UNESCAPED_UNICODE);
+    }
+
+    public function loadAll(): array
+    {
+
+    }
+
+    public function create()
+    {
+
     }
 
     public function store(): void

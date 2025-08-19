@@ -195,22 +195,23 @@
                 $brandApiController->getAllBrands();
                 break;
 
-            case 'product-edit' :
+            case 'product-update' :
               if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
-                $productApiController->edit($routeData);
+                $productApiController->update($routeData);
               }
-            case 'product-new' :
+            case 'product-create' :
               // Если параметра нет - значит создаем
-              $productApiController->new();
+              $productApiController->create();
               break;
+              
             case 'product' :
               if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
-                $productApiController->getProduct($routeData);
+                $productApiController->load($routeData);
               }
               break;
 
             case 'products' :
-              $productApiController->getAll($routeData);
+              $productApiController->loadAll($routeData);
               break;
 
             default:
