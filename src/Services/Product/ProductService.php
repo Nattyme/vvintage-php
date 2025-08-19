@@ -101,9 +101,4 @@ class ProductService extends BaseService
         return $this->repository->getFilteredProducts($filter);
     }
 
-    public function toApiArray(array $data): array
-    {
-      return $this->repository->getProductsArray($id);
-    }
-
 }

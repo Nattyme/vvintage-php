@@ -6,6 +6,8 @@ namespace Vvintage\Controllers\Api\Product;
 use Vvintage\Routing\RouteData;
 use Vvintage\Services\Admin\Product\AdminProductService;
 use Vvintage\DTO\Product\ProductDTO;
+use Vvintage\Serializers\ProductApiSerializer;
+
 
 class ProductApiController
 {
@@ -17,22 +19,22 @@ class ProductApiController
         header('Content-Type: application/json; charset=utf-8');
     }
 
-    public function load(RouteData $rd): void
-    {
-        $id = (int)$rd->getUriGetParam();
-        $product = $this->service->getProductById($id);
-        if (!$product) { http_response_code(404); echo json_encode(['error'=>'Not found']); return; }
+    // public function load(RouteData $rd): void
+    // {
+    //     $id = (int)$rd->getUriGetParam();
+    //     $product = $this->service->getProductById($id);
+    //     if (!$product) { http_response_code(404); echo json_encode(['error'=>'Not found']); return; }
 
-        echo json_encode($this->service->toApiArray($product), JSON_UNESCAPED_UNICODE);
-    }
+    //     echo json_encode($this->service->toApiArray($product), JSON_UNESCAPED_UNICODE);
+    // }
 
-    public function getAll(): void
-    {
-      $products = $this->service->getAll();
-      if (!$products) { http_response_code(404); echo json_encode(['error'=>'Not found']); return; }
+    // public function getAll(): void
+    // {
+    //   $products = $this->service->getAll();
+    //   if (!$products) { http_response_code(404); echo json_encode(['error'=>'Not found']); return; }
 
-      echo json_encode($this->service->toApiArray($products), JSON_UNESCAPED_UNICODE);
-    }
+    //   echo json_encode($this->service->toApiArray($products), JSON_UNESCAPED_UNICODE);
+    // }
 
     public function create()
     {
@@ -85,4 +87,33 @@ class ProductApiController
         $ok = $this->service->reorderImages($id, $data['order'] ?? []);
         echo json_encode(['success'=>$ok]);
     }
+
+
+    public function load(RouteData $rd): void
+    {
+        $id = (int)$rd->getUriGetParam();
+        $product = $this->service->getProductById($id);
+
+        if (!$product) {
+            http_response_code(404);
+            echo json_encode(['error'=>'Not found']);
+            return;
+        }
+
+        echo json_encode(ProductApiSerializer::toArray($product), JSON_UNESCAPED_UNICODE);
+    }
+
+    public function getAll(): void
+    {
+        $products = $this->service->getAll();
+
+        if (!$products) {
+            http_response_code(404);
+            echo json_encode(['error'=>'Not found']);
+            return;
+        }
+
+        echo json_encode(ProductApiSerializer::toList($products), JSON_UNESCAPED_UNICODE);
+    }
+
 }

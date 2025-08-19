@@ -9,25 +9,25 @@
   $response = [];
 
   // Проверка на заполненность названия
-  if ( trim($_POST['title']) == '' ) {
+  if ( isset($_POST['title']) && trim($_POST['title']) == '' ) {
     $response['errors'][] = 'название товара';
   } 
 
-  if( trim($_POST['price']) == '' ) {
+  if( isset($_POST['title']) && trim($_POST['price']) == '' ) {
     $response['errors'][] = 'стоимость товара';
   } 
 
-  // // Проверка на заполненность ссылки
-  if( trim($_POST['url']) == '' ) {
+  // Проверка на заполненность ссылки
+  if( isset($_POST['title']) && trim($_POST['url']) == '' ) {
     $response['errors'][] = 'ссылка на vinted.fr';
   } 
 
   // Проверка на заполненность содержимого
-  if( trim($_POST['content']) == '' ) {
+  if( isset($_POST['title']) && trim($_POST['content']) == '' ) {
     $response['errors'][] = 'описание товара';
   } 
 
-  // // Если есть ошибки - сразу возвращаем 
+  // Если есть ошибки - сразу возвращаем 
   if (!empty($response['errors'])) {
     echo json_encode($response);
 
@@ -63,7 +63,7 @@
       exit();
     }
 
-     
+    
     // Если новое изображение успешно загружено 
     $product = R::dispense('products');
     $product->title = $_POST['title'];
@@ -90,7 +90,7 @@
       R::store( $productImages);
     }
     
-   
+  
     $response['success'][] = 'Товар успешно добавлен';
     unset($_SESSION['success']);
     $_SESSION['success'][] = ['title' => 'Товар успешно добавлен'];
@@ -102,7 +102,5 @@
     exit();
   }
 
- 
-    
-    
+  
     

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Admin\Product;
 
 use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Product\AdminProductImageService;
 
 
 final class AdminProductService extends ProductService
@@ -18,6 +19,7 @@ final class AdminProductService extends ProductService
     public function __construct()
     {
       parent::__construct();
+      $this->imageService = new AdminProductImageService();
     }
 
     
@@ -105,5 +107,10 @@ final class AdminProductService extends ProductService
 
         }
 
+    }
+
+    public function addImages(int $productId, array $files): array
+    {
+      return $this->imageService->addImages($productId, $files);
     }
 }

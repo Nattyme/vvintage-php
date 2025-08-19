@@ -92,6 +92,7 @@ class AdminProductController extends BaseAdminController
     $statusList = $this->adminProductService->getStatusList();
     // $pageClass = "admin-page";
 
+
     $this->renderLayout('shop/new',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,

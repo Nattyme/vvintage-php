@@ -191,6 +191,11 @@ class Product
       return $this->slug;
     }
 
+    public function getStock(): int
+    {
+      return $this->stock;
+    }
+
     public function getStatus(): string
     {
       return $this->status;
