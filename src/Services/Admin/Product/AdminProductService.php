@@ -15,9 +15,9 @@ final class AdminProductService extends ProductService
       'archived' => 'В архив'
     ];
 
-    public function __construct(string $currentLang)
+    public function __construct()
     {
-      parent::__construct($currentLang);
+      parent::__construct();
     }
 
     

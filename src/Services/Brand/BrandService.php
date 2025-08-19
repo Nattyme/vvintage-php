@@ -44,4 +44,9 @@ class BrandService extends BaseService
       return $this->repository->getBrandById( $id);
     }
 
+    public function getBrandsArray(): array
+    {
+      return $this->repository->getBrandsArray();
+    }
+
 }

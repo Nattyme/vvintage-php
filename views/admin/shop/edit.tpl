@@ -6,7 +6,7 @@
     <div class="notifications__title"></div>
   </div>
 
-  <?php ROOT . 'views/shop/_parts/_form-edit.tpl';?>
+  <?php include ROOT . 'views/admin/shop/_parts/_form-edit.tpl';?>
 </div>
 
 <script>

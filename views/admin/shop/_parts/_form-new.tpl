@@ -1,3 +1,4 @@
+<?php echo 'hey';?>
 <form id="form-add-product" method="POST" class="admin-form" enctype="multipart/form-data">
   <div class="admin-form__row">
     <div class="admin-form__column">

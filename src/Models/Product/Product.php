@@ -122,7 +122,7 @@ class Product
         return $this->title;
     }
 
-    public function getBrandId(): string
+    public function getBrandId(): int
     {
         return $this->brand->getId();
     }

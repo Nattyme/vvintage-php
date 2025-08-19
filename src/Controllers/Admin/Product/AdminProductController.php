@@ -8,18 +8,21 @@ use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Admin\Product\AdminProductService;
+use Vvintage\Services\Admin\Brand\AdminBrandService;
 
 
 class AdminProductController extends BaseAdminController
 {
   private AdminProductService $adminProductService;
+  private AdminBrandService $brandService;
   private FlashMessage $flash;
 
   public function __construct()
   {
     parent::__construct();
     $this->flash = new FlashMessage();
-    $this->adminProductService = new AdminProductService($this->currentLang);
+    $this->adminProductService = new AdminProductService();
+    $this->brandService = new AdminBrandService();
   }
 
   public function all (RouteData $routeData)
@@ -107,16 +110,7 @@ class AdminProductController extends BaseAdminController
     $productId = $routeData->getUriGetParam();
     $product = $this->adminProductService->getProductById((int) $productId);
     $statusList = $this->adminProductService->getStatusList();
-    // Получаем главные категориии, подкатегории и бренды
-    // $mainCats = $this->categoryRepository->getMainCats();
-    // $subCats = $this->/categoryRepository->getSubCats();
-    // $brands = $this->brandRepository->getAllBrands();
 
-    // Загружаем объект категории
-    // $selectedSubCat = $product->getCategory();
-
-    // Главный раздел
-    // $selectedMaiCat = $this->categoryRepository->getParentCategory($selectedSubCat);
 
     // if( isset($_POST['submit'])) {
     //   // Проверка токена

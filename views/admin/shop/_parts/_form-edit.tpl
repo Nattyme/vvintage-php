@@ -83,13 +83,7 @@
       <div class="admin-form__field">
         <label class="admin-form__label" for="brands">Выберите бренд</label>
         <div class="admin-form__row">
-          <select class="select" name="brand" id="brands">
-            <?php foreach ($brands as $brand) : ?>
-              <option <?php echo $product['brand'] === $brand['id']  ? 'selected' : '';?> value="<?php echo h($brand['id']);?>">
-                <?php echo h($brand['title']);?>
-              </option>
-            <?php endforeach; ?>
-          </select>
+          <select class="select" name="brand" id="brands"></select>
   
           <a 
             class="button button--s button--primary" 

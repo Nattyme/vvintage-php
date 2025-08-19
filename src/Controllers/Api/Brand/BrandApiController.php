@@ -20,9 +20,9 @@ class BrandApiController extends BaseController
     public function getAllBrands(): void
     {
         try {
-            // Вызов метода сервиса, который возвращает массив главных категорий.
+            // Вызов метода сервиса, который возвращает массив брендов.
             $brands = $this->brandService->getBrandsArray();
-
+            
             // Отправляем заголовок HTTP, говорящий браузеру (или клиенту API), что ответ — это JSON в кодировке UTF-8.
             header('Content-Type: application/json; charset=utf-8');
 
