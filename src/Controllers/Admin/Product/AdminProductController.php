@@ -198,12 +198,12 @@ class AdminProductController extends BaseAdminController
     // }
 
 
-    // $this->renderLayout('shop/edit',  [
-    //   'product' => $product,
-    //   'pageTitle' => $pageTitle,
-    //   'routeData' => $routeData,
-    //   'statusList' => $statusList,
-    //   'flash' => $this->flash
-    // ]);
+    $this->renderLayout('shop/edit',  [
+      'product' => $product,
+      'pageTitle' => $pageTitle,
+      'routeData' => $routeData,
+      'statusList' => $statusList,
+      'flash' => $this->flash
+    ]);
   }
 }

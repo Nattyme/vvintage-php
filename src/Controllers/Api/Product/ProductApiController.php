@@ -98,12 +98,14 @@ class ProductApiController
 
 
         // Сначала проверяем текстовые поля
-        $textValidation = AdminProductValidator::validate($_POST);
-        if (!empty($textValidation['errors'])) {
-          $response['errors'] = $textValidation['errors'];
-          $response['data'] = $textValidation['data'] ?? [];
-        }
-        error_log(print_r( $response, true));
+        $validator = new AdminProductValidator();
+        $errors = $validator->validate($_POST);
+        // if (!empty($textValidation['errors'])) {
+        //   $response['errors'] = $textValidation['errors'];
+        //   $response['data'] = $textValidation['data'] ?? [];
+        // }
+        error_log(print_r(  $errors, true));
+        exit();
 
         if(!isset($_FILES['cover']) || empty($_FILES['cover'])) {
           $response['errors']['cover'][] =  'Добавьте изображения товара'; 
