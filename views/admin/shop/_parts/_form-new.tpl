@@ -112,9 +112,9 @@
       </div>
 
       <div class="admin-form__field">
-        <label class="admin-form__text" for="editor">Описание товара</label>
-        <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="description" rows="5" cols="1" id="editor">
-          <?php echo isset($_POST['content']) ? h($_POST['content']) : 'Введите описание товара'; ?>
+        <label class="admin-form__text" for="description">Описание товара</label>
+        <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="description" rows="5" cols="1" id="description">
+          <?php echo isset($_POST['description']) ? h($_POST['description']) : 'Введите описание товара'; ?>
         </textarea>
       </div>
 

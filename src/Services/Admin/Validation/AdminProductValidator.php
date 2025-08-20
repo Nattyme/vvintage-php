@@ -81,6 +81,7 @@ final class AdminProductValidator
             unset($errors['title']);
         }
 
+        // slug
         $slug = trim($data['slug'] ?? '');
         $errors['slug'] = [];
         if ($slug === '') {
@@ -153,6 +154,29 @@ final class AdminProductValidator
         if (empty($errors['url'])) {
             unset($errors['url']);
         }
+
+        // title
+        $description = trim($data['description'] ?? '');
+        $errors['description'] = [];
+        if ($description === '') {
+            $errors['description'][] = 'Поле описания не может быть пустым';
+        } elseif (!is_string($description)) {
+            $errors['description'][] = 'Поле описания должно быть строкой';
+        } elseif (preg_match('/^[\s.,!?()-]+$/u', $description)) {
+            $errors['description'][] = 'Описание должно содержать буквы или цифры';
+        } elseif (ctype_digit($description)) {
+            $errors['description'][] = 'Описание не может состоять только из цифр';
+        } elseif (mb_strlen($description) < 20) {
+            $errors['description'][] = 'Описание должно быть не менее 20 символов';
+        } elseif (mb_strlen($description) > 1000) {
+            $errors['description'][] = 'Описание слишком длинное (максимум 1000 символов)';
+        } elseif (!preg_match('/^[\p{L}\d\s.,!?()-]+$/u', $description)) {
+            $errors['description'][] = 'Описание содержит недопустимые символы';
+        }
+        if (empty($errors['description'])) {
+            unset($errors['description']);
+        }
+
 
         // status
         $errors['status'] = [];
