@@ -10,7 +10,7 @@ const initCategoriesEvents = async () => {
   if (!mainCatsBlock || !subCatsBlock) return;
 
   // Читаем значения, которые PHP вставил в HTML
-  const currentParentId = mainCatsBlock.dataset.currentParent || '';
+  const currentParentId = mainCatsBlock.dataset.currentParent || 1;
   const currentCatId = subCatsBlock.dataset.currentCat || '';
 
   // Загружаем главные категории

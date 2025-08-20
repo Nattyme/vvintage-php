@@ -73,29 +73,21 @@
       <div class="admin-form__field">
           <label class="admin-form__label" for="mainCat">Главный раздел</label>
           <div class="admin-form__row">
-            <select class="select" name="mainCat" id="mainCat">
-              <?php if (isset($_POST['mainCat']) ) : ?>
-                <option value="<?php echo h($_POST['mainCat']);?>"><?php echo h($_POST['mainCat']);?></option>
-              <?php else : ?>
-                <option value="">Выберите категорию</option>
-              <?php endif;?>
-            </select>
+            <select class="select" name="mainCat" id="category"></select>
       
             <a 
               class="button button--s button--primary" 
               href="<?php echo HOST . 'category-new';?>">
-                Новая категория
+                Новый раздел
             </a>
           </div>
       </div>
 
+   
       <div class="admin-form__field">
           <label class="admin-form__label" for="subCat">Категория</label>
           <div class="admin-form__row">
-              <select class="select" name="category_id" id="subCat">
-                <option value="">Выберите подкатегорию</option>
-              </select>
-  
+              <select class="select" name="category_id" id="subCategory"></select>
 
               <a 
                 class="button button--s button--primary" 
@@ -105,12 +97,11 @@
           </div>
       </div>
 
+
       <div class="admin-form__field">
           <label class="admin-form__label" for="brands">Выберите бренд</label>
           <div class="admin-form__row">
-            <select class="select" name="brand_id" id="brands">
-              <option value="">Выберите бренд</option>
-            </select>
+            <select class="select" name="brand_id" id="brands"></select>
   
             <a 
               class="button button--s button--primary" 

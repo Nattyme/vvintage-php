@@ -1,6 +1,6 @@
 const initView = () => {
-  const mainCatBlock = document.querySelector('#mainCat');
-  const subCatBlock = document.querySelector('#subCat');
+  const mainCatBlock = document.querySelector('#category');
+  const subCatBlock = document.querySelector('#subCategory');
 
   if (!mainCatBlock || !subCatBlock) return;
 
@@ -11,7 +11,8 @@ const initView = () => {
 
   // Заполняет опции селекта данными категорий 
   const setCategoriesOptions = (categories, selectElement) => {
-      let optionsList = '';
+      let optionsList = '';     
+      
       let selectedId = selectElement.dataset.selected ? selectElement.dataset.selected : '';
 
       if (categories.length === 0) {
