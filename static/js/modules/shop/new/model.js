@@ -25,15 +25,20 @@ const initModel = () => {
 
   // Ф-ция добавляет упорядоченные файлы в форму
   const setSortedFiles = (files) => {
+
+    files.forEach(item => {
+      formData.append('cover[]', item.file); // item.file должен быть File
+      formData.append('order[]', item.order);
+    });
     // files.forEach((item, index) => {
     //   formData.append('cover[]', item.file);
     //   formData.append('order[]', item.order);
     // });
 
-    files.forEach((item, index) => {
-      formData.append(`cover[${index}]`, item.file); // Файл
-      formData.append(`order[${index}]`, item.order); // Порядковый номер
-    });
+    // files.forEach((item, index) => {
+    //   formData.append(`cover[${index}]`, item.file); // Файл
+    //   formData.append(`order[${index}]`, item.order); // Порядковый номер
+    // });
    
   }
 

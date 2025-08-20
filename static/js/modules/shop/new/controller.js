@@ -30,13 +30,14 @@ const initNewProductFormEvents = () => {
     
     const orderedFiles = previewModel.getCurrentFiles(); // отсортированный массив
     if (!orderedFiles) return;
+console.log(orderedFiles);
 
     // Устанавливаем новый массив файлов в form data
     formModel.setSortedFiles(orderedFiles);
 
-for (var pair of formModel.getFormData().entries()) {
-    console.log(pair[0]+ ', ' + pair[1]);
-}
+    for (var pair of formModel.getFormData().entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+    }
     // Отправляем значения формы
     try {
       const res = await formModel.sendFormDataFetch();

@@ -90,25 +90,47 @@ class ProductApiController
      public function create()
     {
         $response = ['errors' => [], 'success' => []];
-error_log(print_r($_POST, true)); // пишет в системный лог
+
         // Сначала проверяем текстовые поля
         $textValidation = AdminProductValidator::validate($_POST);
         if (!empty($textValidation['errors'])) {
             $response['errors'] = $textValidation['errors'];
         }
-error_log(print_r( $textValidation, true)); // пишет в системный лог
-        // Проверка файлов, если они есть
-        $fileValidation = AdminProductImageValidator::validate($_FILES['cover'] ?? []);
-        if (!empty($fileValidation['errors'])) {
-            $response['errors']['cover'] = $fileValidation['errors'];
+
+        $files = $_FILES['cover'];
+        $order = $_POST['order']; // [1,2,3]
+
+        $images = [];
+   
+        for ($i = 0; $i < count($files['name']); $i++) {
+            $images[] = [
+                'file_name' => $files['name'][$i],
+                'tmp_name' => $files['tmp_name'][$i],
+                'type'     => $files['type'][$i],
+                'size'     => $files['size'][$i],
+                'error'    => $files['error'][$i],
+                'order'    => $order[$i] ?? null, // на случай если меньше элементов
+            ];
         }
-error_log(print_r( $response, true)); // пишет в системный лог
+   
+        // Проверка файлов, если они есть
+        foreach($images as $image) {
+           $fileValidation = AdminProductImageValidator::validate($image ?? []);
+            if (!empty($fileValidation['errors'])) {
+                $response['errors']['cover'] = $fileValidation['errors'];
+            }
+
+        }
+ 
+    
+
         // Если есть ошибки, сразу возвращаем JSON
         if (!empty($response['errors'])) {
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
             exit();
         }
-
+ error_log(print_r($response, true));
+    exit();
         // Сохраняем изображения
         // $coverImages = [];
         // if (isset($_FILES['cover']['name']) && !empty($_FILES['cover']['tmp_name'][0])) {
@@ -127,11 +149,9 @@ error_log(print_r( $response, true)); // пишет в системный лог
 
         // Создаем DTO и сохраняем товар
         $productDTO = new ProductDTO($_POST);
-error_log(print_r(  $productDTO , true)); // пишет в системный лог
-        // $id = $this->service->createProductDraft($productDTO);
+        $id = $this->service->createProductDraft($productDTO);
         $response['success'][] = 'Товар успешно добавлен';
-        // $response['id'] = $id;
-error_log(print_r( $response, true)); // пишет в системный лог
+        $response['id'] = $id;
         echo json_encode($response, JSON_UNESCAPED_UNICODE);
         exit();
     }
