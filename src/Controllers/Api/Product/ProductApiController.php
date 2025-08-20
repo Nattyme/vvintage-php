@@ -100,9 +100,10 @@ class ProductApiController
         // Сначала проверяем текстовые поля
         $textValidation = AdminProductValidator::validate($_POST);
         if (!empty($textValidation['errors'])) {
-          $response['errors']['general'] = $textValidation['errors'];
+          $response['errors'] = $textValidation['errors'];
+          $response['data'] = $textValidation['data'] ?? [];
         }
-
+error_log(print_r( $response, true));
 
         if(!isset($_FILES['cover']) || empty($_FILES['cover'])) {
           $response['errors']['cover'][] =  'Добавьте изображения товара'; 
@@ -139,8 +140,7 @@ class ProductApiController
         );
             }
         }
- 
-          
+ error_log(print_r( $response, true));
         // Если есть ошибки, сразу возвращаем JSON
         if (!empty($response['errors'])) {
             echo json_encode($response, JSON_UNESCAPED_UNICODE);

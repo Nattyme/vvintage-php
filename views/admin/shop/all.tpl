@@ -3,7 +3,7 @@
   <?php include ROOT . "views/components/success.tpl"; ?>
 
   <header class="admin-form__header admin-form__row">
-    <a href="<?php HOST . 'shop-new';?>" class="button button--m button--primary" data-btn="add">
+    <a href="<?php echo HOST . 'admin/shop-new';?>" class="button button--m button--primary" data-btn="add">
       <span>Добавить товар</span>
     </a>
     <form method="GET" action="" class="shop__search search" role="search">

@@ -8,7 +8,7 @@ final class AdminProductImageValidator
     public static function validate(array $data): array
     {
         $errors = [];
-  
+  error_log(print_r( $data, true));
         if (!isset($data['file_name']) || !is_string($data['file_name']) || empty($data['file_name'])) {
             $errors['file_name'] = 'Имя файла обязательно';
         }

@@ -17,7 +17,7 @@
         <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название для страницы товара (латиницей: chasy-chanel)</label>
         <input id="slug" name="slug" class="admin-form__input input" type="text"
-                value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : '123456'; ?>"
+                value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : 'chain-women'; ?>"
                 placeholder="Введите название старницы" required/>
       </div>
 
