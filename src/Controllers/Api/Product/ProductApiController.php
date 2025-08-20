@@ -93,16 +93,28 @@ class ProductApiController
 
         // Сначала проверяем текстовые поля
         $textValidation = AdminProductValidator::validate($_POST);
+
         if (!empty($textValidation['errors'])) {
-            $response['errors'] = $textValidation['errors'];
+          $response['errors'] = $textValidation['errors'];
         }
+
+        $response['errors'][]= !isset($_FILES['cover']) || (isset($_FILES['cover']) && empty($_FILES['cover'])) ? 'Добавьте изображения товара' : []; 
+        $response['errors'][] = !isset($_POST['order']) || (isset($_POST['order']) && empty($_POST['order'])) ? 'Не задан порядок для изображений товара' : []; 
+       
+       
+        if (!empty($response['errors'])) {
+           error_log(print_r($response, true));
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
 
         $files = $_FILES['cover'];
         $order = $_POST['order']; // [1,2,3]
 
         $images = [];
    
-        for ($i = 0; $i < count($files['name']); $i++) {
+        for ($i = 0; $i < count($files['name'] ?? []); $i++) {
             $images[] = [
                 'file_name' => $files['name'][$i],
                 'tmp_name' => $files['tmp_name'][$i],
@@ -129,6 +141,7 @@ class ProductApiController
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
             exit();
         }
+          $response['success'][] = 'Товар успешно добавлен';
  error_log(print_r($response, true));
     exit();
         // Сохраняем изображения

@@ -43,6 +43,10 @@ final class AdminProductValidator
             $errors['url'] = 'Поле URL невалидно';
         }
 
+        if (empty($data['url'])) {
+            $errors['url'] = 'Поле URL пустое';
+        }
+
         // status
         if (!isset($data['status']) || !in_array($data['status'], ['active','inactive'], true)) {
             $errors['status'] = 'Поле статус должно быть активным ил не активным';

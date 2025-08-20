@@ -25,12 +25,15 @@ const initNewProductFormEvents = () => {
     const formData = formModel.getFormData();
     if (!formData) return;
 
-    // Очищаем данные файлов
-    formModel.clearFilesData(formData);
     
     const orderedFiles = previewModel.getCurrentFiles(); // отсортированный массив
     if (!orderedFiles) return;
 console.log(orderedFiles);
+
+    // Перед каждой отправкой очищаем только старые файлы внутри formData,
+    // а превью пусть живет до успешной отправки
+    formModel.clearFilesData(); // <-- оставляем только здесь, но перед append
+    formModel.setSortedFiles(orderedFiles);
 
     // Устанавливаем новый массив файлов в form data
     formModel.setSortedFiles(orderedFiles);
@@ -43,9 +46,11 @@ console.log(orderedFiles);
       const res = await formModel.sendFormDataFetch();
      
       if (res.success) {
-        // Очистим форму
+        // Очистим форму и превью только если всё прошло успешно
         formView.resetForm();
-        previewModel.reset(); // Очистка файлов (если есть такой метод)
+        previewModel.reset(); 
+        // formView.resetForm();
+        // previewModel.reset(); // Очистка файлов (если есть такой метод)
         // window.location.href = '/admin/shop'; // Переход
         // return;
       }
@@ -72,15 +77,18 @@ console.log(orderedFiles);
           Object.entries(res.errors).forEach(([field, messages]) => {
             if (Array.isArray(messages)) {
               messages.forEach(message => {
-                formView.addNotificationText(`${field}: ${message}`);
+                // formView.addNotificationText(`${field}: ${message}`);
+                formView.displayNotification({field : field,
+                                              title: message})
+                formView.scrollToElement();
               });
             } else {
               formView.addNotificationText(`${field}: ${messages}`);
             }
           });
 
-        formView.displayNotification('error');
-        formView.scrollToElement();
+        // formView.displayNotification('error');
+        // formView.scrollToElement();
       }
        
       
