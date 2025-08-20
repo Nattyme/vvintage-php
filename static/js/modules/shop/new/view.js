@@ -29,23 +29,51 @@ const initView = () => {
   }
 
   // Ф-ция показывает уведомления
-  const displayNotification = (type) => {
+  // const displayNotification = (type) => {
+  //   if (type === 'error') {
+  //     notification.removeAttribute('hidden');
+  //     notificationTitle.classList.add('notifications__title--error');
+  //   }
+
+  // }
+  // Ф-ция показывает уведомления
+  const displayNotification = ({ type = 'info', title = '' } = {}) => {
+    if (!title) return; // ничего не показываем, если нет текста
+
+    notification.removeAttribute('hidden');
+
+    // Сбрасываем все классы
+    notificationTitle.classList.remove('notifications__title--error');
+
     if (type === 'error') {
-      notification.removeAttribute('hidden');
       notificationTitle.classList.add('notifications__title--error');
     }
 
+    notificationTitle.textContent = title;
   }
 
+
   // ф-ция добавляет текст уведомления
+  // const addNotificationText = (errors) => {
+  //   clearNotification();
+  //   errors.forEach((error, index) => {
+  //     noteText += error.title + (index === errors.length - 1 ? '.' : ', ');
+  //   });
+  //   notificationTitle.textContent = noteText;
+  // }
   const addNotificationText = (errors) => {
-    console.log(errors);
     clearNotification();
-    errors.forEach((error, index) => {
-      noteText += error.title + (index === errors.length - 1 ? '.' : ', ');
-    });
+    noteText = ''; // обнуляем
+
+    // Собираем все сообщения в один массив
+    const messages = Object.values(errors).flat(); // flatten массив массивов в один
+
+    // Формируем текст: все сообщения через запятую, точка в конце
+    noteText = messages.join(', ') + (messages.length ? '.' : '');
+
     notificationTitle.textContent = noteText;
   }
+
 
   // Ф-ция прокрутки к элементу
   const scrollToElement = (element) => {

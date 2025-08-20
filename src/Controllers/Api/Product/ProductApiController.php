@@ -89,29 +89,33 @@ class ProductApiController
 
      public function create()
     {
-        $response = ['errors' => [], 'success' => []];
+        // $response = ['errors' => [], 'success' => []];
+        $response = [
+            'success' => false,
+            'errors' => [],
+            'data' => []
+        ];
+
 
         // Сначала проверяем текстовые поля
         $textValidation = AdminProductValidator::validate($_POST);
-
         if (!empty($textValidation['errors'])) {
-          $response['errors'] = $textValidation['errors'];
-        }
-
-        $response['errors'][]= !isset($_FILES['cover']) || (isset($_FILES['cover']) && empty($_FILES['cover'])) ? 'Добавьте изображения товара' : []; 
-        $response['errors'][] = !isset($_POST['order']) || (isset($_POST['order']) && empty($_POST['order'])) ? 'Не задан порядок для изображений товара' : []; 
-       
-       
-        if (!empty($response['errors'])) {
-           error_log(print_r($response, true));
-            echo json_encode($response, JSON_UNESCAPED_UNICODE);
-            exit();
+          $response['errors']['general'] = $textValidation['errors'];
         }
 
 
-        $files = $_FILES['cover'];
-        $order = $_POST['order']; // [1,2,3]
+        if(!isset($_FILES['cover']) || empty($_FILES['cover'])) {
+          $response['errors']['cover'][] =  'Добавьте изображения товара'; 
+        }
 
+        // Проверка порядка
+        if( !isset($_POST['order']) || empty($_POST['order']) ) {
+          $response['errors']['cover'][] = 'Не задан порядок для изображений товара'; 
+        }
+   
+
+        $files = $_FILES['cover'] ?? [];
+        $order = $_POST['order'] ?? []; // [1,2,3]
         $images = [];
    
         for ($i = 0; $i < count($files['name'] ?? []); $i++) {
@@ -124,26 +128,32 @@ class ProductApiController
                 'order'    => $order[$i] ?? null, // на случай если меньше элементов
             ];
         }
-   
+
         // Проверка файлов, если они есть
         foreach($images as $image) {
            $fileValidation = AdminProductImageValidator::validate($image ?? []);
             if (!empty($fileValidation['errors'])) {
-                $response['errors']['cover'] = $fileValidation['errors'];
+                $response['errors']['cover'] = array_merge(
+                $response['errors']['cover'] ?? [],
+                $fileValidation['errors']
+        );
             }
-
         }
  
-    
-
+          
         // Если есть ошибки, сразу возвращаем JSON
         if (!empty($response['errors'])) {
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
             exit();
         }
-          $response['success'][] = 'Товар успешно добавлен';
- error_log(print_r($response, true));
-    exit();
+
+       // Если ошибок нет — создаём товар
+        // $productId = AdminProduct::create($_POST, $images); // твой метод создания
+        $response['success'] = true;
+        // $response['data'] = ['id' => $productId];
+
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        exit();
         // Сохраняем изображения
         // $coverImages = [];
         // if (isset($_FILES['cover']['name']) && !empty($_FILES['cover']['tmp_name'][0])) {
