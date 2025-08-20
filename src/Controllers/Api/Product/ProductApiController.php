@@ -7,6 +7,8 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Services\Admin\Product\AdminProductService;
 use Vvintage\DTO\Product\ProductDTO;
 use Vvintage\Serializers\ProductApiSerializer;
+use Vvintage\Services\Admin\Validation\AdminProductValidator;
+use Vvintage\Services\Admin\Validation\AdminProductImageValidator;
 
 require_once ROOT . "libs/resize-and-crop.php";
 require_once ROOT . "libs/functions.php";
@@ -22,122 +24,120 @@ class ProductApiController
         header('Content-Type: application/json; charset=utf-8');
     }
 
-    // public function load(RouteData $rd): void
-    // {
-    //     $id = (int)$rd->getUriGetParam();
-    //     $product = $this->service->getProductById($id);
-    //     if (!$product) { http_response_code(404); echo json_encode(['error'=>'Not found']); return; }
 
-    //     echo json_encode($this->service->toApiArray($product), JSON_UNESCAPED_UNICODE);
+
+    // public function create()
+    // {
+    //     header('Content-Type: application/json; charset=utf-8');
+
+    //     // Проверка текстовых полей через валидатор
+    //     $response = AdminProductValidator::validate($_POST);
+
+    //     if (!empty($response['errors'])) {
+    //         echo json_encode($response, JSON_UNESCAPED_UNICODE);
+    //         exit();
+    //     }
+
+    //     $files = $_FILES['cover'] ?? [];
+    //     $orders = $_POST['order'] ?? [];
+
+
+    //     // Проверка файлов
+    //     $fileResponse = AdminProductImageValidator::validate($files ?? []);
+
+    //     if (!empty($fileResponse['errors'])) {
+    //         echo json_encode($fileResponse, JSON_UNESCAPED_UNICODE);
+    //         exit();
+    //     }
+
+    //     // Если передано изображение, сохраняем его
+    //     if (isset($_FILES['cover']['name']) && $_FILES['cover']['tmp_name'] !== '') {
+    //         $coverImages = saveSliderImg('cover', [350, 478], 12, 'products', [536, 566], [350, 478]);
+
+    //         if (empty($coverImages)) {
+    //             echo json_encode(['errors' => ['Добавьте изображения товара']], JSON_UNESCAPED_UNICODE);
+    //             exit();
+    //         }
+
+    //         // Если были ошибки при сохранении изображения в сессию
+    //         if (!empty($_SESSION['errors'])) {
+    //             $imgErrors = [];
+    //             foreach ($_SESSION['errors'] as $error) {
+    //                 $imgErrors[] = [
+    //                     'title' => $error['title'],
+    //                     'url' => $error['fileName']
+    //                 ];
+    //             }
+    //             unset($_SESSION['errors']);
+    //             echo json_encode(['errorsImg' => $imgErrors], JSON_UNESCAPED_UNICODE);
+    //             exit();
+    //         }
+
+    //         // Создаем DTO и сохраняем через сервис
+    //         $productDTO = new ProductDTO($_POST);
+    //         $id = $this->service->createProduct($productDTO);
+
+    //         echo json_encode(['success' => ['Товар успешно добавлен'], 'id' => $id], JSON_UNESCAPED_UNICODE);
+    //         exit();
+    //     }
+
+    //     // Если изображение не передано
+    //     echo json_encode(['success' => ['все ок']], JSON_UNESCAPED_UNICODE);
+    //     echo json_encode(['errors' => ['Добавьте изображения товара']], JSON_UNESCAPED_UNICODE);
+    //     exit();
     // }
 
-    // public function getAll(): void
-    // {
-    //   $products = $this->service->getAll();
-    //   if (!$products) { http_response_code(404); echo json_encode(['error'=>'Not found']); return; }
-
-    //   echo json_encode($this->service->toApiArray($products), JSON_UNESCAPED_UNICODE);
-    // }
-
-    public function create()
+     public function create()
     {
-      header('Content-Type: application/json');
-        $response = [];
-
-        // Проверка текстовых полей
-        $requiredFields = ['title' => 'название товара', 
-                          'price' => 'стоимость товара', 
-                          'url' => 'ссылка на vinted.fr', 
-                          'content' => 'описание товара'];
-
-        foreach ($requiredFields as $field => $message) {
-            if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
-                $response['errors'][] = $message;
-            }
+        $response = ['errors' => [], 'success' => []];
+error_log(print_r($_POST, true)); // пишет в системный лог
+        // Сначала проверяем текстовые поля
+        $textValidation = AdminProductValidator::validate($_POST);
+        if (!empty($textValidation['errors'])) {
+            $response['errors'] = $textValidation['errors'];
         }
-
+error_log(print_r( $textValidation, true)); // пишет в системный лог
+        // Проверка файлов, если они есть
+        $fileValidation = AdminProductImageValidator::validate($_FILES['cover'] ?? []);
+        if (!empty($fileValidation['errors'])) {
+            $response['errors']['cover'] = $fileValidation['errors'];
+        }
+error_log(print_r( $response, true)); // пишет в системный лог
+        // Если есть ошибки, сразу возвращаем JSON
         if (!empty($response['errors'])) {
-            echo json_encode($response);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
             exit();
         }
 
-        // Проверка файлов
-        if (!isset($_FILES['cover']) || empty($_FILES['cover']['name'])) {
-            $response['errors'][] = 'Добавьте изображения товара';
-            echo json_encode($response);
-            exit();
-        }
+        // Сохраняем изображения
+        // $coverImages = [];
+        // if (isset($_FILES['cover']['name']) && !empty($_FILES['cover']['tmp_name'][0])) {
+        //     $coverImages = saveSliderImg('cover', [350, 478], 12, 'products', [536, 566], [350, 478]);
 
-      
-      // Если передано изображение - уменьшаем, сохраняем, записываем в БД
-      if ( isset($_FILES['cover']['name']) && $_FILES['cover']['tmp_name'] !== '') {
-        //Если передано изображение - уменьшаем, сохраняем файлы в папку
-        $coverImages = saveSliderImg('cover', [350, 478], 12, 'products', [536, 566], [350, 478]);
-
-        // Если в сесси появились ошибки - добавляем их в ответ
-        if (!empty($_SESSION['errors'])) {
-          foreach($_SESSION['errors'] as $error) {
-            $response['errorsImg'][] = [
-              'title' => $error['title'],
-              'url' => $error['fileName']
-            ];
-          }
-
-          echo json_encode($response);
-          // Очищаем ошибки, чтобы не дублировать
-          unset($_SESSION['errors']);
-          exit();
-        }
-
-        // Если массив изображений пуст - выводим ошибку
-        if (empty($coverImages)) {
-          $response['errors'][] = 'Добавьте изображения товара';
-          echo json_encode($response);
-          exit();
-        }
-
-        
-        // Если новое изображение успешно загружено 
-        // $product = R::dispense('products');
-        // $product->title = $_POST['title'];
-        // $product->content = $_POST['content'];
-        // $product->price = $_POST['price'];
-        // $product->article = $_POST['article'];
-        // $product->category = $_POST['subCat'];
-        // $product->brand = $_POST['brand'];
-        // $product->stock = 1;
-        // $product->url = $_POST['url'];
-        // $product->timestamp = time();
-        // $product_id = R::store($product);
-      
-        // Записываем имя файлов в БД
-        // foreach ( $coverImages as $value) {
-        //   $productImages = R::dispense('productimages');
-        //   $productImages->product_id = $product_id;
-      
-        //   $productImages->filename_full = $value['cover_full'];
-        //   $productImages->filename = $value['cover'];
-        //   $productImages->filename_small = $value['cover_small'];
-        //   $productImages->image_order = $value['order'];
-          
-        //   R::store( $productImages);
+        //     if (empty($coverImages)) {
+        //         $response['errors']['cover'][] = 'Не удалось сохранить изображения';
+        //         echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        //         exit();
+        //     }
+        // } else {
+        //     $response['errors']['cover'][] = 'Добавьте изображения товара';
+        //     echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        //     exit();
         // }
-      
-// Посмотреть все POST данные
-// 
 
-      
+        // Создаем DTO и сохраняем товар
+        $productDTO = new ProductDTO($_POST);
+error_log(print_r(  $productDTO , true)); // пишет в системный лог
+        // $id = $this->service->createProductDraft($productDTO);
         $response['success'][] = 'Товар успешно добавлен';
-        unset($_SESSION['success']);
-        $_SESSION['success'][] = ['title' => 'Товар успешно добавлен'];
-        echo json_encode($response);
+        // $response['id'] = $id;
+error_log(print_r( $response, true)); // пишет в системный лог
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
         exit();
-      } else {
-        $response['errors'][] = 'Добавьте изображения товара';
-        echo json_encode($response);
-        exit();
-      }
     }
+   
+
+
 
     public function store(): void
     {
@@ -150,9 +150,9 @@ class ProductApiController
         echo json_encode(['success'=>true, 'id'=>$id]);
     }
 
-    public function update(RouteData $rd): void
+    public function update(RouteData $routeData): void
     {
-        $id = (int)$rd->getUriGetParam();
+        $id = (int)$routeData->getUriGetParam();
         $data = json_decode(file_get_contents('php://input'), true) ?? [];
         $errors = $this->service->validateApi($data, $id);
         if ($errors) { http_response_code(422); echo json_encode(['errors'=>$errors]); return; }
@@ -162,25 +162,25 @@ class ProductApiController
         echo json_encode(['success'=>$ok]);
     }
 
-    public function delete(RouteData $rd): void
+    public function delete(RouteData $routeData): void
     {
-        $id = (int)$rd->getUriGetParam();
+        $id = (int)$routeData->getUriGetParam();
         $ok = $this->service->deleteProduct($id);
         echo json_encode(['success'=>$ok]);
     }
 
-    public function uploadImages(RouteData $rd): void
+    public function uploadImages(RouteData $routeData): void
     {
-        $id = (int)$rd->getUriGetParam();
+        $id = (int)$routeData->getUriGetParam();
         // ВАЖНО: сюда прилетит POST multipart/form-data → доступны $_FILES
         $result = $this->service->addImages($id, $_FILES['images'] ?? null);
         if (!$result['success']) { http_response_code(422); }
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 
-    public function reorderImages(RouteData $rd): void
+    public function reorderImages(RouteData $routeData): void
     {
-        $id = (int)$rd->getUriGetParam();
+        $id = (int)$routeData->getUriGetParam();
         $data = json_decode(file_get_contents('php://input'), true) ?? [];
         $ok = $this->service->reorderImages($id, $data['order'] ?? []);
         echo json_encode(['success'=>$ok]);

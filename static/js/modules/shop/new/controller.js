@@ -16,9 +16,10 @@ const initNewProductFormEvents = () => {
 
   formElement.addEventListener('submit', async (event) => {
     event.preventDefault();
-  console.log('form clicked');
+
     // Собираем значения формы и записываем в переменную модели
     formModel.setFormData(formElement);
+
 
     // Получаем значение формы из модели
     const formData = formModel.getFormData();
@@ -33,42 +34,69 @@ const initNewProductFormEvents = () => {
     // Устанавливаем новый массив файлов в form data
     formModel.setSortedFiles(orderedFiles);
 
+for (var pair of formModel.getFormData().entries()) {
+    console.log(pair[0]+ ', ' + pair[1]);
+}
     // Отправляем значения формы
     try {
       const res = await formModel.sendFormDataFetch();
-      console.log(res);
-      console.log(res.errors);
+     
       if (res.success) {
         // Очистим форму
         formView.resetForm();
         previewModel.reset(); // Очистка файлов (если есть такой метод)
-        window.location.href = '/admin/shop'; // Переход
+        // window.location.href = '/admin/shop'; // Переход
+        // return;
       }
 
-      if (res.errorsImg && res.errorsImg.length > 0) {
-          console.log(res);
-          console.log('scroll in img');
-        formView.displayNotification('error');
-        formView.addNotificationText(res.errors);
-        formView.scrollToElement();
-      }
-      if (res.errors && res.errors.length > 0) {
-        console.log(res.errors);
-        console.log('scroll in rerrors');
+      // если есть ошибки
+      // if (res.errorsImg && res.errorsImg.length > 0) {
+      //     console.log(res);
+      //     console.log('scroll in img');
+      //   formView.displayNotification('error');
+      //   formView.addNotificationText(res.errors);
+      //   formView.scrollToElement();
+      // }
+      // if (res.errors && res.errors.length > 0) {
+      //   console.log(res.errors);
+      //   console.log('scroll in rerrors');
         
+      //   formView.displayNotification('error');
+      //   formView.addNotificationText(res.errors);
+      //   formView.scrollToElement();
+      // }
+
+      if (res.errors) {
+          // Ошибки приходят в объекте: {title: [...], images: [...], ...}
+          Object.entries(res.errors).forEach(([field, messages]) => {
+            if (Array.isArray(messages)) {
+              messages.forEach(message => {
+                formView.addNotificationText(`${field}: ${message}`);
+              });
+            } else {
+              formView.addNotificationText(`${field}: ${messages}`);
+            }
+          });
+
         formView.displayNotification('error');
-        formView.addNotificationText(res.errors);
         formView.scrollToElement();
       }
+       
+      
     } 
     catch (err) {
       console.log(err);
-        console.log('scroll in rerrors');
-      // view.displayNotification('error');
-      // view.addNotificationText(errors);
-      // view.scrollToElement();
-    }
-  });
-};
+      
+      console.error("Ошибка сети или сервера:", err);
+      console.error("Ошибка сети или сервера:", err);
+      formView.displayNotification('error');
+      // formView.addNotificationText("Не удалось отправить форму. Попробуйте позже.");
+      // formView.addNotificationText("Не удалось отправить форму. Попробуйте позже.");
+      //     view.displayNotification('error');
+      //     view.addNotificationText(err);
+      //     view.scrollToElement();
+      }
+});
+}
 
 export default initNewProductFormEvents;

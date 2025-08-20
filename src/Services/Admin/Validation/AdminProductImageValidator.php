@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Validator\Product;
+namespace Vvintage\Services\Admin\Validation;
 
 final class AdminProductImageValidator
 {
@@ -21,6 +21,6 @@ final class AdminProductImageValidator
             $errors['image_order'] = 'Порядок изображений должен быть числовым';
         }
 
-        return $errors;
+          return ['errors' => $errors];
     }
 }
