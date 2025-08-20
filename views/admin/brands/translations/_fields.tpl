@@ -10,7 +10,7 @@
       value="<?php 
           echo isset($_POST['title'][$code]) 
           ? h($_POST['title'][$code] ) 
-          : ($brand->getTitle() ? h($brand->getTitle()) : '');
+          : (isset($brand) && $brand->getTitle() ? h($brand->getTitle()) : '');
       ?>"
     />
   </div>
@@ -25,7 +25,7 @@
     ><?php 
       echo isset($_POST['description'][$code]) 
       ? h($_POST['title'][$description] ) 
-      : ($brand->getTranslatedDescription($code) 
+      : (isset($brand) && $brand->getTranslatedDescription($code) 
       ? h($brand->getTranslatedDescription($code)) : '');
     ?></textarea>
   </div>
@@ -42,7 +42,7 @@
       value="<?php 
         echo isset($_POST['meta_title'][$code]) 
         ? h($_POST['meta_title'][$code] ) 
-        : ($brand->getSeoTitle() ? h($brand->getSeoTitle()) : '');
+        : (isset($brand) && $brand->getSeoTitle() ? h($brand->getSeoTitle()) : '');
       ?>"
     />
   </div>
@@ -57,7 +57,7 @@
     ><?php 
       echo isset($_POST['meta_description'][$code]) 
       ? h($_POST['meta_description'][$meta_description] ) 
-      : ($brand->getSeoDescription($code) 
+      : (isset($brand) && $brand->getSeoDescription($code) 
       ? h($brand->getSeoDescription($code)) : '');
     ?></textarea>
   </div>

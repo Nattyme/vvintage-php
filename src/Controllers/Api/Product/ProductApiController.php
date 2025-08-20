@@ -87,7 +87,7 @@ class ProductApiController
     //     exit();
     // }
 
-     public function create()
+    public function create()
     {
         // $response = ['errors' => [], 'success' => []];
         $response = [
@@ -103,7 +103,7 @@ class ProductApiController
           $response['errors'] = $textValidation['errors'];
           $response['data'] = $textValidation['data'] ?? [];
         }
-error_log(print_r( $response, true));
+        error_log(print_r( $response, true));
 
         if(!isset($_FILES['cover']) || empty($_FILES['cover'])) {
           $response['errors']['cover'][] =  'Добавьте изображения товара'; 
@@ -140,7 +140,7 @@ error_log(print_r( $response, true));
         );
             }
         }
- error_log(print_r( $response, true));
+       error_log(print_r( $response, true));
         // Если есть ошибки, сразу возвращаем JSON
         if (!empty($response['errors'])) {
             echo json_encode($response, JSON_UNESCAPED_UNICODE);

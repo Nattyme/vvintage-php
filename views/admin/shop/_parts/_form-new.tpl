@@ -2,6 +2,34 @@
   <div class="admin-form__row">
     <div class="admin-form__column">
       <div class="admin-form__field">
+        <div class="admin-form__item" data-control="tab">
+          <!-- Навигация -->
+          <div class="tab__nav" data-control="tab-nav">
+            
+            <?php foreach ($languages as $code => $value ) : ?>
+              <button type="button" class="tab__nav-button tab__nav-button--flags" data-control="tab-button" 
+                      title="Перейти в редактирование текст на кнопке статуса">
+                <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . $code;?>">
+              </button>
+            <?php endforeach;?>
+          </div>
+          <!-- Навигация -->
+
+          <!-- Блоки с контентом -->
+          <div class="admin-form__item">
+            <div class="tab__content" data-control="tab-content">
+              <?php foreach ($languages as $code => $value ) : ?>
+                <div class="tab__block" data-control="tab-block">
+                <?php include ROOT . "views/admin/shop/translations/_fields.tpl";?>
+                </div>
+              <?php endforeach;?>
+            </div>
+          </div>
+          <!--// Блоки с контентом -->
+        </div>
+      </div>
+
+      <div class="admin-form__field none">
         <label class="admin-form__label" for="title">Название товара</label>
         <input 
           id="title"
@@ -14,7 +42,7 @@
         />
       </div>
 
-        <div class="admin-form__field">
+      <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название для страницы товара (латиницей: chasy-chanel)</label>
         <input id="slug" name="slug" class="admin-form__input input" type="text"
                 value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : 'chain-women'; ?>"
@@ -113,9 +141,7 @@
 
       <div class="admin-form__field">
         <label class="admin-form__text" for="description">Описание товара</label>
-        <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="description" rows="5" cols="1" id="description">
-          <?php echo isset($_POST['description']) ? h($_POST['description']) : 'Введите описание товара'; ?>
-        </textarea>
+        <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="description" rows="5" cols="1" id="description"><?php echo isset($_POST['description']) ? h($_POST['description']) : 'Введите описание товара'; ?></textarea>
       </div>
 
       <div class="admin-form__field">

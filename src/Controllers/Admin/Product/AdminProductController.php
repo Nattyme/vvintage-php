@@ -97,7 +97,10 @@ class AdminProductController extends BaseAdminController
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'statusList' => $statusList,
-      'flash' => $this->flash
+      'flash' => $this->flash,
+      'product' => null,
+      'languages' => $this->languages,
+      'currentLang' => $this->currentLang,
     ]);
   }
 
@@ -195,12 +198,12 @@ class AdminProductController extends BaseAdminController
     // }
 
 
-    $this->renderLayout('shop/edit',  [
-      'product' => $product,
-      'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'statusList' => $statusList,
-      'flash' => $this->flash
-    ]);
+    // $this->renderLayout('shop/edit',  [
+    //   'product' => $product,
+    //   'pageTitle' => $pageTitle,
+    //   'routeData' => $routeData,
+    //   'statusList' => $statusList,
+    //   'flash' => $this->flash
+    // ]);
   }
 }
