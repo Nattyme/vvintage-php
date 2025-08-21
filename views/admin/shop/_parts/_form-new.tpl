@@ -171,17 +171,19 @@
             </p>
           </div>
 
-          <div class="block-upload__button">
-            <!-- Кастомная кнопка -->
-            <button type="button" class="btn-add-photo" id="btn-add-photo">
-              <svg class="icon icon--add_photo">
-                <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#add_photo';?>"></use>
-              </svg>
-            </button>
-            <input id="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input" hidden>
+          <div class="block-upload__preview" data-preview="container" data-dragg-and-drop>
+            <p>Перетащите файлы сюда</p>
+            или нажмите на кнопку 
+              <div class="block-upload__button admin-form__block-upload__button">
+                <!-- Кастомная кнопка -->
+                <button type="button" class="btn-add-photo" id="btn-add-photo">
+                  <svg class="icon icon--add_photo">
+                    <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#add_photo';?>"></use>
+                  </svg>
+                </button>
+                <input id="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input" hidden>
+              </div>
           </div>
-
-          <div class="block-upload__preview" data-preview="container" data-dragg-and-drop></div>
         </div>
         
       </div>
