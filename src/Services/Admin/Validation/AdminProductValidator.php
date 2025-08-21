@@ -14,14 +14,14 @@ final class AdminProductValidator
    */
     public function validate(array $data): array
     {
-      $this->textValidation($data);
+      $dataAdded = $this->textValidation($data);
 
   
       return [
-        'errors' => $this->errors
+        'errors' => $this->errors,
+        'data' => $dataAdded
       ];
-        // $response['data'] = $textValidation['data'] ?? [];
-     
+    
     }
 
     private function textValidation (array $data): array
@@ -71,11 +71,7 @@ final class AdminProductValidator
         // }
 
         // Синхронизация с основными полями (русский)
-        $data[] = $this->synchronize($data['translations']);
-        // if (!empty($data['translations']['ru'])) {
-        //     $data['title'] = $data['translations']['ru']['title'] ?? '';
-        //     $data['description'] = $data['translations']['ru']['description'] ?? '';
-        // }
+        $dataAdded = $this->synchronize($data['translations'], $data);
 
         // slug
         $this->validateSlug($data['slug']);
@@ -100,15 +96,11 @@ final class AdminProductValidator
 
         // status
         $this->validateStatus($data['status']);
-       dd($this->errors);
-             error_log(print_r($this->errors, true));
-
-             
-
-        return ['errors' => $this->errors];
+            
+        return $dataAdded;
     }
 
-    private function validateTranslation($translation)
+    private function validateTranslation(?array $translation)
     {
       foreach ($translation as $lang => $trans) {
           $this->validateTitle($trans['title'], $lang);
@@ -116,44 +108,44 @@ final class AdminProductValidator
       }
     }
 
-    private function validateTitle(?string $titleData, string $lang): void
+    private function validateTitle(?string $titleData, ?string $lang): void
     {
         $title = trim($titleData ?? '');
         $this->errors['title'][$lang] = [];
 
         if ($title === '') {
-            // $errors['title'][$lang] = 'Поле названия не может быть пустым';
+            // $this->errors['title'][$lang][] = 'Поле названия не может быть пустым';
         } elseif (!is_string($title)) {
-            $this->errors['title'][$lang]  = 'Поле названия должно быть строкой';
+            $this->errors['title'][$lang][]  = 'Поле названия должно быть строкой';
         } elseif (ctype_digit($title)) {
-            $this->errors['title'][$lang]  = 'Название не может состоять только из цифр';
+            $this->errors['title'][$lang][]  = 'Название не может состоять только из цифр';
         } elseif (!preg_match('/^[\p{L}\d\s]+$/u', $title)) {
-            $this->errors['title'][$lang]  = 'Название может содержать только буквы, цифры и пробелы';
+            $this->errors['title'][$lang][]  = 'Название может содержать только буквы, цифры и пробелы';
         }
         if (empty($this->errors['title'][$lang])) {
             unset($this->errors['title'][$lang] );
         }
     }
 
-    private function validateDescription(?string $descData, string $lang): void 
+    private function validateDescription(?string $descData, ?string $lang): void 
     {
         $description = trim($descData ?? '');
         $this->errors['description'][$lang] = [];
 
         if ($description === '') {
-          // $errors['description'][$lang] = 'Поле описания не может быть пустым';
+          // $this->errors['description'][$lang][] = 'Поле описания не может быть пустым';
         } elseif (!is_string($description)) {
-            $this->errors['description'][$lang] = 'Поле описания должно быть строкой';
+            $this->errors['description'][$lang][] = 'Поле описания должно быть строкой';
         } elseif (preg_match('/^[\s.,!?()-]+$/u', $description)) {
-            $this->errors['description'][$lang] = 'Описание должно содержать буквы или цифры';
+            $this->errors['description'][$lang][] = 'Описание должно содержать буквы или цифры';
         } elseif (ctype_digit($description)) {
-            $this->errors['description'][$lang] = 'Описание не может состоять только из цифр';
+            $this->errors['description'][$lang][] = 'Описание не может состоять только из цифр';
         } elseif (mb_strlen($description) < 20) {
-            $this->errors['description'][$lang] = 'Описание должно быть не менее 20 символов';
+            $this->errors['description'][$lang][] = 'Описание должно быть не менее 20 символов';
         } elseif (mb_strlen($description) > 1000) {
-            $this->errors['description'][$lang] = 'Описание слишком длинное (максимум 1000 символов)';
+            $this->errors['description'][$lang][] = 'Описание слишком длинное (максимум 1000 символов)';
         } elseif (!preg_match('/^[\p{L}\d\s.,!?()-]+$/u', $description)) {
-            $this->errors['description'][$lang] = 'Описание содержит недопустимые символы';
+            $this->errors['description'][$lang][] = 'Описание содержит недопустимые символы';
         }
         if (empty( $this->errors['description'][$lang])) {
             unset( $this->errors['description'][$lang]);
@@ -161,15 +153,17 @@ final class AdminProductValidator
     }
 
     // Синхронизация с основными полями (русский)
-    private function synchronize(array $translations):void
+    private function synchronize(?array $translations, ?array $data): array
     {
-        if (!empty($translations['translations']['ru'])) {
+        if (!empty($translations['ru'])) {
           $data['title'] =  $translations['ru']['title'] ?? '';
           $data['description'] = $translations['ru']['description'] ?? '';
         }
+
+        return $data;
     }
 
-    private function validateSlug(string $slugData):void
+    private function validateSlug(?string $slugData):void
     {
         $slug = trim($slugData ?? '');
         $this->errors['slug'] = [];
@@ -186,7 +180,7 @@ final class AdminProductValidator
         }
     }
 
-    private function validatePrice(string $priceData): void
+    private function validatePrice(?string $priceData): void
     {
         $this->errors['price'] = [];
         if (!isset($priceData) || !is_numeric($priceData)) {
@@ -197,7 +191,7 @@ final class AdminProductValidator
         }
     }
 
-    private function validateSku(string $skuData): void
+    private function validateSku(?string $skuData): void
     {
        $sku = trim($skuData ?? '');
 
@@ -213,7 +207,7 @@ final class AdminProductValidator
 
     }
 
-    private function validateStock(string $stockData): void 
+    private function validateStock(?string $stockData): void 
     {
       $this->errors['stock'] = [];
       if (!isset($stockData) || !is_numeric($stockData)) {
@@ -224,7 +218,7 @@ final class AdminProductValidator
       }
     }
 
-    private function validateCategory(int $categoryData): void 
+    private function validateCategory(?string $categoryData): void 
     {
       $this->errors['category_id'] = [];
       if (!isset($categoryData) || !is_numeric($categoryData)) {
@@ -237,7 +231,7 @@ final class AdminProductValidator
     }
 
 
-    private function validateBrand(int $brandData): void 
+    private function validateBrand(?string $brandData): void 
     {
         $this->errors['brand_id'] = [];
         if (!isset($brandData) || !is_numeric($brandData)) {
@@ -248,7 +242,7 @@ final class AdminProductValidator
         }
     }
 
-    private function validateUrl(string $urlData): void 
+    private function validateUrl(?string $urlData): void 
     {
         $url = trim($urlData ?? '');
         $this->errors['url'] = [];
@@ -261,7 +255,7 @@ final class AdminProductValidator
 
     }
 
-    private function validateStatus (string $statusData): void 
+    private function validateStatus (?string $statusData): void 
     {
         $this->errors['status'] = [];
         if (!isset($statusData) || !in_array($statusData, ['active','inactive'], true)) {

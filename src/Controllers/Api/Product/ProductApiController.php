@@ -99,12 +99,11 @@ class ProductApiController
 
         // Сначала проверяем текстовые поля
         $validator = new AdminProductValidator();
-        $errors = $validator->validate($_POST);
-        // if (!empty($textValidation['errors'])) {
-        //   $response['errors'] = $textValidation['errors'];
-        //   $response['data'] = $textValidation['data'] ?? [];
-        // }
-        error_log(print_r(  $errors, true));
+        $validatorResult = $validator->validate($_POST);
+        $errors =  $validatorResult['errors'];
+        $_POST = array_merge( $_POST,  $validatorResult['data']);
+        
+        error_log(print_r( $validatorResult, true));
         exit();
 
         if(!isset($_FILES['cover']) || empty($_FILES['cover'])) {
