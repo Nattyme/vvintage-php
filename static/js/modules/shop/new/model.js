@@ -25,10 +25,11 @@ const initModel = () => {
 
   // Ф-ция добавляет упорядоченные файлы в форму
   const setSortedFiles = (files) => {
+    // очищаем поле для файлов
+    formData.delete('cover[]');
 
     files.forEach(item => {
       formData.append('cover[]', item.file); // item.file должен быть File
-      formData.append('order[]', item.order);
     });
   }
 

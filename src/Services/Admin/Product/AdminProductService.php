@@ -120,7 +120,7 @@ final class AdminProductService extends ProductService
         // foreach($productTranslationsDto as $dto) {
         //   $this->saveTranslation($dto);
         // }
- error_log(print_r(   $data, true));
+  error_log(print_r($images, true));
      exit();
         $imagesDto = [];
         foreach($images as $image) {
@@ -132,8 +132,7 @@ final class AdminProductService extends ProductService
               'alt' => $image['alt'] ?? null
           ]);
         }
- error_log(print_r(   $imagesDto, true));
-     exit();
+
         foreach($imagesDto as $dto) {
           $this->imageService->saveImage($dto);
         }

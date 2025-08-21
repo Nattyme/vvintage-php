@@ -17,8 +17,6 @@ const initModel = () => {
       file: file
     });
 
-    currentFiles.forEach((file, index) => file.order = index + 1);
-
     return imageURL;
   }
 
@@ -41,8 +39,6 @@ const initModel = () => {
 
     // Обновим данные основного массива
     currentFiles.splice(0, currentFiles.length, ...newOrder);
-    console.log(currentFiles);
-    
   }
 
   // Ф-ция удаления файла
@@ -54,7 +50,6 @@ const initModel = () => {
       URL.revokeObjectURL(currentFiles[index].url);
       currentFiles.splice(index, 1);
     };
-
   }
 
   // Ф-ция получения текущего массива файлов

@@ -110,14 +110,13 @@ class ProductApiController
         $response['errors']  =  array_merge($validatorTextResult['errors'],  $validatorImgResult['errors']);
         
 
-      error_log(print_r( $response['errors'], true));
+  
         // Если есть ошибки, сразу возвращаем JSON
         if (!empty($response['errors'])) {
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
             exit();
         }
 
-        error_log(print_r(   $response['errors'], true));
 
        // Если ошибок нет — создаём товар
         $productId = $this->service->createProductDraft($_POST,  $validatorImgResult['data']); 

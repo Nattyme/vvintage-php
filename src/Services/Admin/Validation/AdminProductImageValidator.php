@@ -72,6 +72,7 @@ final class AdminProductImageValidator
               'type'     => $files['type'][$i],
               'size'     => $files['size'][$i],
               'error'    => $files['error'][$i],
+              'image_order' => $i 
           ];
       }
 

@@ -7,7 +7,6 @@ let previewInputListening = false;
 const initPreviewContainerEvents = () => {
   const view = initView();
   if (!view) return;
-  // const model = initModel();
   if (previewContainerListening) return;
 
   const previewBlock = view.getPreviewBlock();
@@ -16,10 +15,10 @@ const initPreviewContainerEvents = () => {
   const previewInput = view.getPreviewInput();
   const previewContainer = view.getPreviewContainer();
   if (!previewInput || !previewContainer) return;
-
   if (previewInputListening === true) return;
 
-  // Слушаем клик по контейнеру с изображениями
+
+  /** Удаление файла */
   previewContainer.addEventListener("click", (e) => {
     const btnClose = view.getButtonClose(
       e.target,
@@ -37,11 +36,8 @@ const initPreviewContainerEvents = () => {
     e.stopPropagation();
     e.preventDefault();
 
-    // Удаляем изображение со страницы
-    view.removeImage(wrapper);
-
-    // Удаляем файл из массива и освобождаем память
-    model.removeFile(imageURL);
+    view.removeImage(wrapper); // Удаляем изображение со страницы
+    model.removeFile(imageURL);  // Удаляем файл из массива и освобождаем память
 
     // Если фотографий нет - удалим активный стиль у контейнера изображений
     if (!model.getCurrentFiles().length) view.deactivateContainer();
@@ -49,29 +45,40 @@ const initPreviewContainerEvents = () => {
 
   previewContainerListening = true;
 
+  // ===============================
+  // ОБРАБОТКА input[type=file]
+  // ===============================
   // Слушаем момент загрузки файла
   previewInput.addEventListener("change", () => {
+    const newFiles = Array.from(previewInput.files); // временная переменная
+    if (!newFiles.length) return;
     // Получае загруженные файлы и формируем массив
-    model.setUploadedFiles(previewInput.files);
+    // model.setUploadedFiles(previewInput.files);
+    // if (!files || !files.length) return;
+
+    newFiles.forEach((file) => {
+      const imageURL = model.addFile(file); // проверка на дубликаты
+      if(!imageURL) return; // файл уже есть, пропускаем
+
+      let imageTmpl = view.getImgTmpl(imageURL);   // Добавляем файл в массив
+      view.insertTemplate(previewContainer, imageTmpl);    // Вставляем изображения в контейнер
+    
+      // const imageURL = model.addFile(file);
+
+ 
+    });
 
     // Записываем массив в переменную
-    let files = model.getUploadedFiles();
-    if (!files || !files.length) return;
+    // let files = model.getUploadedFiles();
+    
 
     // Очистим контейнер превью
-    view.cleanContainer();
+    // view.cleanContainer();
 
     // Добавим активный класс контейнеру, если его нет
     view.toggleActiveClass(previewContainer);
 
-    files.forEach((file) => {
-      // Добавляем файл в массив
-      const imageURL = model.addFile(file);
-      let imageTmpl = view.getImgTmpl(imageURL);
-
-      // Вставляем изображения в контейнер
-      view.insertTemplate(previewContainer, imageTmpl);
-    });
+  
   });
 
   previewInputListening = true;

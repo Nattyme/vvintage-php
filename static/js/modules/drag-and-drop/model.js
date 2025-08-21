@@ -62,6 +62,7 @@ const initModel = () => {
   }
 
   const onFilesUploaded = (addedNodes) => {
+  
     addedNodes.forEach(node => {
       if (node.nodeType === 1) {
         if(!node.hasAttribute('draggable') || node.getAttribute('draggable') !== true) {
