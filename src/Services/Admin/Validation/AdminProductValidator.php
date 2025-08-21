@@ -111,7 +111,7 @@ final class AdminProductValidator
     private function validateTitle(?string $titleData, ?string $lang): void
     {
         $title = trim($titleData ?? '');
-        $this->errors['title'][$lang] = [];
+        // $this->errors['title'][$lang] = [];
 
         if ($title === '') {
             // $this->errors['title'][$lang][] = 'Поле названия не может быть пустым';
@@ -130,7 +130,7 @@ final class AdminProductValidator
     private function validateDescription(?string $descData, ?string $lang): void 
     {
         $description = trim($descData ?? '');
-        $this->errors['description'][$lang] = [];
+        // $this->errors['description'][$lang] = [];
 
         if ($description === '') {
           // $this->errors['description'][$lang][] = 'Поле описания не может быть пустым';

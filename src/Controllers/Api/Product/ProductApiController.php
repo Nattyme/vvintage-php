@@ -98,55 +98,59 @@ class ProductApiController
 
 
         // Сначала проверяем текстовые поля
-        $validator = new AdminProductValidator();
-        $validatorResult = $validator->validate($_POST);
-        $errors =  $validatorResult['errors'];
-        $_POST = array_merge( $_POST,  $validatorResult['data']);
+        $validatorText = new AdminProductValidator();
+        $validatorImg = new AdminProductImageValidator();
+
+        $validatorTextResult = $validatorText->validate($_POST);
+        $_POST = array_merge( $_POST,  $validatorTextResult['data']);
+        $validatorImgResult = $validatorImg->validate($_FILES);
+   
+        $errors =  array_merge($validatorTextResult['errors'],  $validatorImgResult['errors']);
         
-        error_log(print_r( $validatorResult, true));
+        error_log(print_r( $errors, true));
         exit();
 
-        if(!isset($_FILES['cover']) || empty($_FILES['cover'])) {
-          $response['errors']['cover'][] =  'Добавьте изображения товара'; 
-        }
+      //   if(!isset($_FILES['cover']) || empty($_FILES['cover'])) {
+      //     $response['errors']['cover'][] =  'Добавьте изображения товара'; 
+      //   }
 
-        // Проверка порядка
-        if( !isset($_POST['order']) || empty($_POST['order']) ) {
-          $response['errors']['cover'][] = 'Не задан порядок для изображений товара'; 
-        }
+      //   // Проверка порядка
+      //   if( !isset($_POST['order']) || empty($_POST['order']) ) {
+      //     $response['errors']['cover'][] = 'Не задан порядок для изображений товара'; 
+      //   }
    
 
-        $files = $_FILES['cover'] ?? [];
-        $order = $_POST['order'] ?? []; // [1,2,3]
-        $images = [];
+      //   $files = $_FILES['cover'] ?? [];
+      //   $order = $_POST['order'] ?? []; // [1,2,3]
+      //   $images = [];
    
-        for ($i = 0; $i < count($files['name'] ?? []); $i++) {
-            $images[] = [
-                'file_name' => $files['name'][$i],
-                'tmp_name' => $files['tmp_name'][$i],
-                'type'     => $files['type'][$i],
-                'size'     => $files['size'][$i],
-                'error'    => $files['error'][$i],
-                'order'    => $order[$i] ?? null, // на случай если меньше элементов
-            ];
-        }
+      //   for ($i = 0; $i < count($files['name'] ?? []); $i++) {
+      //       $images[] = [
+      //           'file_name' => $files['name'][$i],
+      //           'tmp_name' => $files['tmp_name'][$i],
+      //           'type'     => $files['type'][$i],
+      //           'size'     => $files['size'][$i],
+      //           'error'    => $files['error'][$i],
+      //           'order'    => $order[$i] ?? null, // на случай если меньше элементов
+      //       ];
+      //   }
 
-        // Проверка файлов, если они есть
-        foreach($images as $image) {
-           $fileValidation = AdminProductImageValidator::validate($image ?? []);
-            if (!empty($fileValidation['errors'])) {
-                $response['errors']['cover'] = array_merge(
-                $response['errors']['cover'] ?? [],
-                $fileValidation['errors']
-        );
-            }
-        }
-       error_log(print_r( $response, true));
-        // Если есть ошибки, сразу возвращаем JSON
-        if (!empty($response['errors'])) {
-            echo json_encode($response, JSON_UNESCAPED_UNICODE);
-            exit();
-        }
+      //   // Проверка файлов, если они есть
+      //   foreach($images as $image) {
+      //      $fileValidation = AdminProductImageValidator::validate($image ?? []);
+      //       if (!empty($fileValidation['errors'])) {
+      //           $response['errors']['cover'] = array_merge(
+      //           $response['errors']['cover'] ?? [],
+      //           $fileValidation['errors']
+      //   );
+      //       }
+      //   }
+      //  error_log(print_r( $response, true));
+      //   // Если есть ошибки, сразу возвращаем JSON
+      //   if (!empty($response['errors'])) {
+      //       echo json_encode($response, JSON_UNESCAPED_UNICODE);
+      //       exit();
+      //   }
 
        // Если ошибок нет — создаём товар
         // $productId = AdminProduct::create($_POST, $images); // твой метод создания
