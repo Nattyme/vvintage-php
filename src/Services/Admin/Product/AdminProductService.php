@@ -6,6 +6,10 @@ namespace Vvintage\Services\Admin\Product;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Admin\Product\AdminProductImageService;
 
+/** DTO */
+use Vvintage\DTO\Product\ProductDTO;
+use Vvintage\DTO\Product\ProductImageDTO;
+
 
 final class AdminProductService extends ProductService
 {
@@ -70,10 +74,33 @@ final class AdminProductService extends ProductService
         return $result;
     }
 
-    public function createProductDraft(array $data): int
+    public function createProductDraft(array $data, array $images): int
     {
         $data['status'] = 'hidden'; // или draft
-        return $this->repository->create($data);
+        $imagesDTO =  array_map(fn($image) => new ProductImageDTO($image), $images);
+     error_log(print_r(   $data, true));
+     exit();
+        $productDto = new ProductDTO([
+            'id' => $data['id'] ?? 0,
+            'categoryDTO' => $categoryDTO,
+            'brandDTO' => $brandDTO,
+            'slug' => (string) $data['slug'],
+            'title' => (string) $data['title'],
+            'description' => (string) $data['description'],
+            'price' => (string) $data['price'],
+            'url' => (string) $data['url'],
+            'status' => (string) $data['status'],
+            'sku' => (string) $data['sku'],
+            'stock' => (int) $data['stock'],
+            'datetime' => (string) $data['datetime'],
+            'edit_time' => (string) $data['edit_time'],
+            'images_total' => count($imagesDTO),
+            'translations' => $data['translations'],
+            'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,
+            'images' => $imagesDTO,
+        ]);
+        
+        // return $this->repository->create($productDto, $productImgDto);
     }
 
     public function applyAction(int $productId, string $action): bool

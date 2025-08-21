@@ -29,7 +29,8 @@ final class AdminProductImageValidator
 
     
         return [
-          'errors' => $this->errors
+          'errors' => $this->errors,
+          'data' => $images
         ];
     }
 
@@ -80,9 +81,9 @@ final class AdminProductImageValidator
 
     private function validateImage(array $image): void
     {
-        $this->isFileName($data);
-        $this->isFileSize($data);
-        $this->isFileType($data);
+        $this->isFileName($image);
+        $this->isFileSize($image);
+        $this->isFileType($image);
     }
 
 

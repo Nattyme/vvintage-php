@@ -43,6 +43,89 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         $this->currentLocale = $currentLocale;
     }
 
+    /** Создаёт новый OODBBean для продукта */
+    private function createProductBean(): OODBBean 
+    {
+        return $this->createBean(self::TABLE_PRODUCTS);
+    }
+
+    /** Создаёт новый OODBBean для изображения продукта */
+    private function createProductImageBean(): OODBBean 
+    {
+        return $this->createBean(self::TABLE_PRODUCT_IMAGES);
+    }
+
+     /** Создаёт новый продукт через DTO */
+    public function createProduct(ProductDTO $dto): ?int
+    {
+        return $this->saveProduct($dto);
+    }
+
+    /** Обновляет существующий продукт через DTO */
+    public function updateProduct(ProductDTO $dto): ?int
+    {
+        if (!$dto->id) {
+            return null; // нельзя обновить без ID
+        }
+
+        return $this->saveProduct($dto);
+    }
+
+     /** Сохраняет бренд с DTO */
+    public function saveProduct(ProductDTO $dto): ?int
+    {
+        if (!$dto) {
+            return null;
+        }
+
+        // Создаем или загружаем продукт
+        $productBean = $dto->id 
+            ? $this->findById(self::TABLE_PRODUCTS, $dto->id)
+            : $this->createProductBean();
+
+        $brandBean->title = $dto->title;
+        $brandBean->image = $dto->image;
+
+        R::store($brandBean);
+
+        $brandId = (int)$brandBean->id;
+        if (!$brandId) {
+            return null;
+        }
+
+        // Сохраняем переводы
+        foreach ($dto->translations as $locale => $fields) {
+            $translationBean = R::findOne(self::TABLE_BRANDS_TRANSLATION, 'brand_id = ? AND locale = ?', [$brandId, $locale])
+                ?? $this->createBrandTranslationsBean();
+
+            $translationBean->brand_id = $brandId;
+            $translationBean->locale = $locale;
+            $translationBean->title = $fields['title'] ?? '';
+            $translationBean->description = $fields['description'] ?? '';
+            $translationBean->meta_title = $fields['meta_title'] ?? '';
+            $translationBean->meta_description = $fields['meta_description'] ?? '';
+
+            R::store($translationBean);
+        }
+    // $product = R::dispense('products');
+    // $product->title = $_POST['title'];
+    // $product->content = $_POST['content'];
+    // $product->price = $_POST['price'];
+    // $product->article = $_POST['article'];
+    // $product->category = $_POST['subCat'];
+    // $product->brand = $_POST['brand'];
+    // $product->stock = 1;
+    // $product->url = $_POST['url'];
+    // $product->timestamp = time();
+    // $product_id = R::store($product);
+        return $brandId;
+    }
+
+
+
+
+
+    /***** GET ****/
     public function getProductById(int $id): ?Product
     {
         $rows = $this->uniteProductRawData(['productId' => $id]);
@@ -111,75 +194,6 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         $rows = $this->uniteProductRawData(['productIds' => $ids]);
         return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
-
-    // private function uniteProductRawData(array $data): array
-    // {
-    //     $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-
-    //     $sql = '
-    //         SELECT 
-    //             p.*,
-    //             pt.locale,
-    //             COALESCE(pt.title, p.title) AS title,
-    //             COALESCE(pt.description, p.description) AS description,
-    //             pt.meta_title,
-    //             pt.meta_description,
-    //             c.id AS category_id,
-    //             c.title AS category_title,
-    //             c.parent_id AS category_parent_id,
-    //             c.image AS category_image,
-    //             ct.title AS category_title_translation,
-    //             ct.description AS category_description,
-    //             ct.meta_title AS category_meta_title,
-    //             ct.meta_description AS category_meta_description,
-    //             b.id AS brand_id,
-    //             b.title AS brand_title,
-    //             b.image AS brand_image,
-    //             bt.title AS brand_title_translation,
-    //             bt.description AS brand_description,
-    //             bt.meta_title AS brand_meta_title,
-    //             bt.meta_description AS brand_meta_description,
-    //             GROUP_CONCAT(DISTINCT pi.filename ORDER BY pi.image_order) AS images
-    //         FROM ' . self::TABLE_PRODUCTS .' p
-    //         LEFT JOIN ' . self::TABLE_PRODUCTS_TRANSLATION .' pt 
-    //             ON pt.product_id = p.id AND pt.locale = ?
-    //         LEFT JOIN ' . self::TABLE_PRODUCT_IMAGES .' pi 
-    //             ON pi.product_id = p.id
-    //         LEFT JOIN ' . self::TABLE_CATEGORIES .' c 
-    //             ON p.category_id = c.id
-    //         LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct 
-    //             ON ct.category_id = c.id AND ct.locale = ?
-    //         LEFT JOIN ' . self::TABLE_BRANDS . ' b 
-    //             ON p.brand_id = b.id
-    //         LEFT JOIN ' . self::TABLE_BRANDS_TRANSLATION . ' bt 
-    //             ON bt.brand_id = b.id AND bt.locale = ?
-    //     ';
-
-    //     $bindings = [$locale, $locale, $locale];
-
-    //     // фильтры
-    //     if (!empty($data['productId'])) {
-    //         $sql .= ' WHERE p.id = ?';
-    //         $bindings[] = $data['productId'];
-    //     } elseif (!empty($data['productIds']) && is_array($data['productIds'])) {
-    //         $placeholders = implode(',', array_fill(0, count($data['productIds']), '?'));
-    //         $sql .= " WHERE p.id IN ($placeholders)";
-    //         $bindings = array_merge($bindings, $data['productIds']);
-    //     }
-
-    //     $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
-
-
-    //     if (isset($data['limit'])) {
-    //         if (is_numeric($data['limit']) && (int)$data['limit'] > 0) {
-    //             $sql .= ' LIMIT ' . (int)$data['limit'];
-    //         } elseif (is_string($data['limit'])) {
-    //             $sql .= ' ' . $data['limit'];
-    //         }
-    //     }
-
-    //     return R::getAll($sql, $bindings);
-    // }
 
     private function uniteProductRawData(array $data): array
     {
@@ -402,54 +416,6 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         }
     }
 
-    // public function filter(ProductFilterDTO $filter): array
-    // {
-    //     $conditions = [];
-    //     $params = [];
-
-    //     // фильтр по брендам
-    //     if (!empty($filter->brands)) {
-    //         $in = R::genSlots($filter->brands); // "?,?,?"
-    //         $conditions[] = " brand_id IN ($in) ";
-    //         $params = array_merge($params, $filter->brands);
-    //     }
-
-    //     // фильтр по категориям
-    //     if (!empty($filter->categories)) {
-    //         $in = R::genSlots($filter->categories);
-    //         $conditions[] = " category_id IN ($in) ";
-    //         $params = array_merge($params, $filter->categories);
-    //     }
-
-    //     // диапазон цены
-    //     if ($filter->priceMin !== null) {
-    //         $conditions[] = " price >= ? ";
-    //         $params[] = $filter->priceMin;
-    //     }
-    //     if ($filter->priceMax !== null) {
-    //         $conditions[] = " price <= ? ";
-    //         $params[] = $filter->priceMax;
-    //     }
-
-    //     // базовое условие
-    //     $sql = count($conditions) ? implode(" AND ", $conditions) : " 1 ";
-
-    //     // сортировка
-    //     $order = "";
-    //     if ($filter->sort === 'price_asc') {
-    //         $order = " ORDER BY price ASC";
-    //     } elseif ($filter->sort === 'price_desc') {
-    //         $order = " ORDER BY price DESC";
-    //     }
-
-    //     // выполняем через RedBean
-    //     $products = $this->findAll(self::TABLE_PRODUCTS, $sql . $order, $params);
-    //   dd($products);
-    //     // return $products; // это массив beans
-    //     return array_map([$this, 'fetchProductWithJoins'], $products);
-
-    // }
-
     public function getFilteredProducts(ProductFilterDTO $filterDto): array
     {
         $conditions = [];
@@ -498,7 +464,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         // // базовый запрос
         // $sql = "status = ?";
         // $params[] = 'active';
-// объединяем условия
+        // объединяем условия
 
         if ($conditions) {
             $sql = implode(" AND ", $conditions);
