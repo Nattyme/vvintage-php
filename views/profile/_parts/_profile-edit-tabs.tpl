@@ -57,32 +57,35 @@
       </div>
 
       <div class="profile-form__row">
-        <div class="profile-form__img profile-form__column">
-          <div class="avatar-big">
-            <?php if ( !empty($userModel->getAvatar())) : ?>
-              <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="Аватарка" />
-            <?php else : ?>
-              <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="Аватарка" />
-            <?php endif; ?>
-          </div>
-        </div>
-        <div class="profile-form__upload profile-form__column">
+            <div class="profile__user-avatar">
+              <div class="avatar-big">
+                <?php if ( !empty($userModel->getAvatar())) : ?>
+                  <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="Аватарка" />
+                <?php else : ?>
+                  <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="Аватарка" />
+                <?php endif; ?>
+              </div>
+              <!-- Кастомная кнопка -->
+              <button type="button" class="btn-add-photo" id="btn-add-photo">
+                <svg class="icon icon--add_photo">
+                  <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#add_photo';?>"></use>
+                </svg>
+              </button>
+              <input id="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input" hidden>
+            </div>
+        
           <div class="block-upload">
             <div class="block-upload__description">
               <div class="block-upload__title">Фотография</div>
               <p>Изображение jpg или png, рекомендуемая ширина 160px и больше, высота от 160px и более. Вес до 4Мб.</p>
-              <div class="block-upload__file-wrapper">
-                <input name="avatar" class="file-button" type="file">
-              </div>
             </div>
-          </div>
-          <?php /* if ( !empty($user->avatar)) : */ ?>
+            <?php if ( !empty($user->avatar)) :  ?>
             <label class="checkbox__item mt-15">
               <input class="checkbox__btn" type="checkbox" name="delete-avatar">
               <span class="checkbox__label">Удалить фотографию</span>
             </label>
-          <?php /* endif; */ ?>
-        </div>
+          <?php endif;  ?>
+          </div>
       </div>
 
       <div class="profile-form__row">

@@ -172,8 +172,13 @@
           </div>
 
           <div class="block-upload__button">
-            <label class="block-upload__input-fake" for="file">Выбрать изображения</label>
-            <input id="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input">
+            <!-- Кастомная кнопка -->
+            <button type="button" class="btn-add-photo" id="btn-add-photo">
+              <svg class="icon icon--add_photo">
+                <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#add_photo';?>"></use>
+              </svg>
+            </button>
+            <input id="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input" hidden>
           </div>
 
           <div class="block-upload__preview" data-preview="container" data-dragg-and-drop></div>

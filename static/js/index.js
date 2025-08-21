@@ -3,6 +3,7 @@
 // import router from './modules/admin/router.js';
 // import addSidebarControlPanel from "./modules/admin/model/sidebar/addSidebar.js";
 import addBackTopBtn from "./modules/utils/backtop.js";
+import addPhotoBtn from "./modules/utils/add-photo.js";
 import initShowMore from "./modules/utils/show-more.js";
 import getCookiesFormData from "./modules/cookies/index.js.js";
 import addAccordion from "./modules/addAccordion.js";
@@ -36,6 +37,7 @@ const initEverything = async () => {
   // Слушаем клик по селекту перевода 
   // handleLangForm();
   addBackTopBtn();
+  addPhotoBtn();
   initShowMore();
   addCustomSelect();
   addTab();
