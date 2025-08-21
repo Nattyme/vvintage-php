@@ -11,10 +11,14 @@ final class ProductInputDTO
     public string $slug;
     public string $title;
     public string $description;
-    public string $price;
+    public int $price;
     public string $sku;
+    public string $url;
     public int $stock;
+    public string $status;
     public string $locale;
+    public string $datetime;
+    public string $edit_time;
 
     public function __construct(array $data)
     {
@@ -24,7 +28,7 @@ final class ProductInputDTO
         $this->slug = (string) ($data['slug'] ?? '');
         $this->title = (string) ($data['title'] ?? '');
         $this->description = (string) ($data['description'] ?? '');
-        $this->price = (string) ($data['price'] ?? '');
+        $this->price = (int) ($data['price'] ?? '');
         $this->sku = (string) ($data['sku'] ?? '');
         $this->stock = (int) ($data['stock'] ?? 0);
         $this->url = (string) ($data['url'] ?? '');
