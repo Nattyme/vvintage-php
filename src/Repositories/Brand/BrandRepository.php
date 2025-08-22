@@ -189,7 +189,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         $brandBean->title = $dto->title;
         $brandBean->image = $dto->image;
 
-        R::store($brandBean);
+        $this->saveBean($brandBean);
 
         $brandId = (int)$brandBean->id;
         if (!$brandId) {
@@ -208,7 +208,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
             $translationBean->meta_title = $fields['meta_title'] ?? '';
             $translationBean->meta_description = $fields['meta_description'] ?? '';
 
-            R::store($translationBean);
+            $this->saveBean($translationBean);
         }
 
         return $brandId;

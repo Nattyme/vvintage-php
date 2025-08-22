@@ -49,6 +49,12 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return $this->createBean(self::TABLE_PRODUCTS);
     }
 
+     /** Создаёт новый OODBBean для перевода продукта */
+    private function createProductTranslateBean(): OODBBean 
+    {
+        return $this->createBean(self::TABLE_PRODUCTS_TRANSLATION);
+    }
+
     /** Создаёт новый OODBBean для изображения продукта */
     private function createProductImageBean(): OODBBean 
     {
@@ -56,9 +62,68 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     }
 
      /** Создаёт новый продукт через DTO */
-    public function createProduct(ProductDTO $dto): ?int
+    public function saveProduct(ProductDTO $dto, array $translations, array $images): ?int
     {
-        return $this->saveProduct($dto);
+        if (!$dto) {
+            return null;
+        }
+
+        // Создаем или загружаем продукт
+        $bean = $dto->id 
+            ? $this->findById(self::TABLE_PRODUCTS, $dto->id)
+            : $this->createProductBean();
+
+        $bean->category_id = $dto->category_id;
+        $bean->brand_id = $dto->brand_id;
+        $bean->slug = $dto->slug;
+        $bean->title = $dto->title;
+        $bean->description = $dto->description;
+        $bean->price = $dto->price;
+        $bean->url = $dto->url;
+        $bean->sku = $dto->sku;
+        $bean->stock = $dto->stock;
+        $bean->datetime = $dto->datetime;
+        $bean->status = $dto->status;
+        $bean->edit_time = $dto->edit_time;
+
+        $this->store($bean);
+
+        $productId = (int)$bean->id;
+
+        if (!$productId) {
+            return null;
+        }
+
+              // Сохраняем переводы
+              // foreach ($dto->translations as $locale => $fields) {
+              //     $translationBean = R::findOne(self::TABLE_BRANDS_TRANSLATION, 'brand_id = ? AND locale = ?', [$brandId, $locale])
+              //         ?? $this->createBrandTranslationsBean();
+
+              //     $translationBean->brand_id = $brandId;
+              //     $translationBean->locale = $locale;
+              //     $translationBean->title = $fields['title'] ?? '';
+              //     $translationBean->description = $fields['description'] ?? '';
+              //     $translationBean->meta_title = $fields['meta_title'] ?? '';
+              //     $translationBean->meta_description = $fields['meta_description'] ?? '';
+
+              //     R::store($translationBean);
+              // }
+          // $product = R::dispense('products');
+          // $product->title = $_POST['title'];
+          // $product->content = $_POST['content'];
+          // $product->price = $_POST['price'];
+          // $product->article = $_POST['article'];
+          // $product->category = $_POST['subCat'];
+          // $product->brand = $_POST['brand'];
+          // $product->stock = 1;
+          // $product->url = $_POST['url'];
+          // $product->timestamp = time();
+          // $product_id = R::store($product);
+              return $brandId;
+          }
+
+
+      
     }
 
     /** Обновляет существующий продукт через DTO */
@@ -70,58 +135,6 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
         return $this->saveProduct($dto);
     }
-
-     /** Сохраняет бренд с DTO */
-    public function saveProduct(ProductDTO $dto): ?int
-    {
-        if (!$dto) {
-            return null;
-        }
-
-        // Создаем или загружаем продукт
-        $productBean = $dto->id 
-            ? $this->findById(self::TABLE_PRODUCTS, $dto->id)
-            : $this->createProductBean();
-
-        $brandBean->title = $dto->title;
-        $brandBean->image = $dto->image;
-
-        R::store($brandBean);
-
-        $brandId = (int)$brandBean->id;
-        if (!$brandId) {
-            return null;
-        }
-
-        // Сохраняем переводы
-        foreach ($dto->translations as $locale => $fields) {
-            $translationBean = R::findOne(self::TABLE_BRANDS_TRANSLATION, 'brand_id = ? AND locale = ?', [$brandId, $locale])
-                ?? $this->createBrandTranslationsBean();
-
-            $translationBean->brand_id = $brandId;
-            $translationBean->locale = $locale;
-            $translationBean->title = $fields['title'] ?? '';
-            $translationBean->description = $fields['description'] ?? '';
-            $translationBean->meta_title = $fields['meta_title'] ?? '';
-            $translationBean->meta_description = $fields['meta_description'] ?? '';
-
-            R::store($translationBean);
-        }
-    // $product = R::dispense('products');
-    // $product->title = $_POST['title'];
-    // $product->content = $_POST['content'];
-    // $product->price = $_POST['price'];
-    // $product->article = $_POST['article'];
-    // $product->category = $_POST['subCat'];
-    // $product->brand = $_POST['brand'];
-    // $product->stock = 1;
-    // $product->url = $_POST['url'];
-    // $product->timestamp = time();
-    // $product_id = R::store($product);
-        return $brandId;
-    }
-
-
 
 
 
@@ -484,4 +497,34 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
 
 
+    public function saveProductTranslation(array $productsDto)
+    {
+      foreach( $productsDto as $dto) {
+        if (!$dto) {
+            return null;
+        }
+
+        // Создаем или загружаем основной перевод
+        $bean = $dto->id 
+        ? $this->findById(self::TABLE_PRODUCTS_TRANSLATION, $dto->id)
+        : $this->createProductTranslateBean();
+
+        $bean->product_id = $dto->product_id;
+        $bean->slug = $dto->slug;
+        $bean->locale = $dto->locale;
+        $bean->title = $dto->title;
+        $bean->description = $dto->description;
+        $bean->meta_title = $dto->meta_title;
+        $bean->meta_description = $dto->meta_description;
+
+        $this->saveBean($bean);
+        
+        $translateId = (int) $bean->id;
+
+        if (!$translateId) {
+          return null;
+        }
+
+      }
+    }
 }

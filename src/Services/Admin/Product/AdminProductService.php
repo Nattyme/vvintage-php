@@ -8,7 +8,7 @@ use Vvintage\Services\Admin\Product\AdminProductImageService;
 
 /** DTO */
 use Vvintage\DTO\Product\ProductInputDTO;
-use Vvintage\DTO\Product\ProductImageInputDTO;
+// use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\DTO\Product\ProductTranslationInputDTO;
 
 
@@ -78,65 +78,57 @@ final class AdminProductService extends ProductService
     public function createProductDraft(array $data, array $images)
     {
         $data['status'] = 'hidden'; // или draft
-    //     $imagesDTO =  array_map(fn($image) => new ProductImageDTO($image), $images);
-    //  error_log(print_r(   $data, true));
-    //  exit();
-        $productDto = new ProductInputDTO([
-          'category_id' => (int) ($data['category_id'] ?? 1),
-          'brand_id' => (int) ($data['brand_id'] ?? 1),
-          'slug' => (string) ($data['slug'] ?? ''),
-          'title' => (string) ($data['title'] ?? ''),
-          'description' => (string) ($data['description'] ?? ''),
-          'price' => (int) ((int) $data['price'] ?? 0),
-          'sku' => (string) ($data['sku'] ?? ''),
-          'stock' => (int) ( (int) $data['stock'] ?? 0),
-          'url' => (string) ($data['url'] ?? ''),
-          'status' => (string) ($data['status'] ?? ''),
-          'datetime' => (new \DateTime())->format('Y-m-d H:i:s'),
-          'edit_time' => time()
-        ]);
 
-        // $productId = $this->repository->create($productDto);
-        $productTranslationsDto = [];
-    
-        foreach($data['translations'] as $locale => $translate) {
-            $productTranslationsDto[] = new ProductTranslationInputDTO([
-                'product_id' => (int) 1,
-                // 'product_id' => (int) $productId,
-                'slug' => (string) ($data['slug'] ?? ''),
-                'locale' => (string) $locale, 
-                'title' => (string) ($translate['title'] ?? ''),
-                'description' => (string) ($translate['description'] ?? ''),
-                'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
-                'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
-            ]);
-        }
+        $productDto = $this->createProductInputDto($data);
+        $tTranslations =$data['translations'] ?? [];
+        $productImages = $images ?? [];
 
-
-  // error_log(print_r( $images, true));
-  // error_log(print_r( $productTranslationsDto, true));
-    
-
-        // foreach($productTranslationsDto as $dto) {
-        //   $this->saveTranslation($dto);
-        // }
-  error_log(print_r($images, true));
-     exit();
-        $imagesDto = [];
-        foreach($images as $image) {
-          $imagesDto[] = new ProductImageInputDTO([
-              'product_id' => (int) 1,
-              // 'product_id' => (int) $productId,
-              'filename' => (string) ($image['file_name'] ?? ''),
-              'image_order' => (int) ($image['image_order'] ?? 1),
-              'alt' => $image['alt'] ?? null
-          ]);
-        }
-
-        foreach($imagesDto as $dto) {
-          $this->imageService->saveImage($dto);
-        }
+        $this->repository->saveProduct();
     }
+
+    private function createProductTranslateInputDto(array $data, int $productId): array
+    {
+      $productTranslationsDto = [];
+    
+      foreach($data['translations'] as $locale => $translate) {
+          $productTranslationsDto[] = new ProductTranslationInputDTO([
+              'product_id' => (int) $productId,
+              'slug' => (string) ($data['slug'] ?? ''),
+              'locale' => (string) $locale, 
+              'title' => (string) ($translate['title'] ?? ''),
+              'description' => (string) ($translate['description'] ?? ''),
+              'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
+              'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
+          ]);
+      }
+      
+      return  $productTranslationsDto;
+
+    }
+
+    private function createProductInputDto(array $data): ProductInputDTO
+    {
+        return new ProductInputDTO([
+                'category_id' => (int) ($data['category_id'] ?? 1),
+                'brand_id' => (int) ($data['brand_id'] ?? 1),
+                'slug' => (string) ($data['slug'] ?? ''),
+                'title' => (string) ($data['title'] ?? ''),
+                'description' => (string) ($data['description'] ?? ''),
+                'price' => (int) ((int) $data['price'] ?? 0),
+                'sku' => (string) ($data['sku'] ?? ''),
+                'stock' => (int) ( (int) $data['stock'] ?? 0),
+                'url' => (string) ($data['url'] ?? ''),
+                'status' => (string) ($data['status'] ?? ''),
+                'datetime' => (new \DateTime())->format('Y-m-d H:i:s'),
+                'edit_time' => time()
+              ]);
+    }
+
+    public function createProductImagesInputDto(array $images, int $productId)
+    {
+       $this->imageService->createProductImagesInputDto($images);
+    }
+
 
     public function applyAction(int $productId, string $action): bool
     {
