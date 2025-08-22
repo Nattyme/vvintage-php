@@ -65,7 +65,7 @@ abstract class AbstractRepository
         if (empty($sql)) {
             $sql = '';
         }
-// dd($params);
+
         // Если есть условия и они не начинаются с WHERE, добавляем WHERE
         if ($sql && !preg_match('/^\s*WHERE/i', $sql)) {
             $sql = 'WHERE ' . $sql;
@@ -98,6 +98,24 @@ abstract class AbstractRepository
         $sql = $sql ?? '';
 
         return (int) R::count($table, $sql, $params);
+    }
+
+    // Открывает транзакцию 
+    protected function begin(): void
+    {
+      R::begin();
+    }
+
+    // Пожтверждает транзакцию
+    protected function commit(): void
+    {
+      R::commit();
+    }
+
+    // отменяет транзакцию
+    protected function rollback(): void
+    {
+      R::rollback();
     }
 
 

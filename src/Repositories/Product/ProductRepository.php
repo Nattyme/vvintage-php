@@ -18,10 +18,13 @@ use Vvintage\Models\Brand\Brand;
 
 /** DTO */
 use Vvintage\DTO\Product\ProductDTO;
+use Vvintage\DTO\Product\ProductInputDTO;
 use Vvintage\DTO\Product\ProductImageDTO;
+use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\DTO\Category\CategoryDTO;
 use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
+use Vvintage\DTO\Product\ProductTranslationInputDTO;
 
 final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
@@ -61,81 +64,81 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return $this->createBean(self::TABLE_PRODUCT_IMAGES);
     }
 
-     /** Создаёт новый продукт через DTO */
-    public function saveProduct(ProductDTO $dto, array $translations, array $images): ?int
+    /** create DTO */
+    private function createTranslateInputDto(array $data, int $productId): array
     {
-        if (!$dto) {
-            return null;
-        }
-
-        // Создаем или загружаем продукт
-        $bean = $dto->id 
-            ? $this->findById(self::TABLE_PRODUCTS, $dto->id)
-            : $this->createProductBean();
-
-        $bean->category_id = $dto->category_id;
-        $bean->brand_id = $dto->brand_id;
-        $bean->slug = $dto->slug;
-        $bean->title = $dto->title;
-        $bean->description = $dto->description;
-        $bean->price = $dto->price;
-        $bean->url = $dto->url;
-        $bean->sku = $dto->sku;
-        $bean->stock = $dto->stock;
-        $bean->datetime = $dto->datetime;
-        $bean->status = $dto->status;
-        $bean->edit_time = $dto->edit_time;
-
-        $this->store($bean);
-
-        $productId = (int)$bean->id;
-
-        if (!$productId) {
-            return null;
-        }
-
-              // Сохраняем переводы
-              // foreach ($dto->translations as $locale => $fields) {
-              //     $translationBean = R::findOne(self::TABLE_BRANDS_TRANSLATION, 'brand_id = ? AND locale = ?', [$brandId, $locale])
-              //         ?? $this->createBrandTranslationsBean();
-
-              //     $translationBean->brand_id = $brandId;
-              //     $translationBean->locale = $locale;
-              //     $translationBean->title = $fields['title'] ?? '';
-              //     $translationBean->description = $fields['description'] ?? '';
-              //     $translationBean->meta_title = $fields['meta_title'] ?? '';
-              //     $translationBean->meta_description = $fields['meta_description'] ?? '';
-
-              //     R::store($translationBean);
-              // }
-          // $product = R::dispense('products');
-          // $product->title = $_POST['title'];
-          // $product->content = $_POST['content'];
-          // $product->price = $_POST['price'];
-          // $product->article = $_POST['article'];
-          // $product->category = $_POST['subCat'];
-          // $product->brand = $_POST['brand'];
-          // $product->stock = 1;
-          // $product->url = $_POST['url'];
-          // $product->timestamp = time();
-          // $product_id = R::store($product);
-              return $brandId;
-          }
-
-
+      $productTranslationsDto = [];
+    
+      foreach($data['translations'] as $locale => $translate) {
+          $productTranslationsDto[] = new ProductTranslationInputDTO([
+              'product_id' => (int) $productId,
+              'slug' => (string) ($data['slug'] ?? ''),
+              'locale' => (string) $locale, 
+              'title' => (string) ($translate['title'] ?? ''),
+              'description' => (string) ($translate['description'] ?? ''),
+              'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
+              'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
+          ]);
+      }
       
+      return  $productTranslationsDto;
+
     }
 
-    /** Обновляет существующий продукт через DTO */
-    public function updateProduct(ProductDTO $dto): ?int
+    private function createImagesInputDto (array $images, int $productId): array
     {
-        if (!$dto->id) {
-            return null; // нельзя обновить без ID
-        }
+      $imagesDto = [];
 
-        return $this->saveProduct($dto);
+      foreach($images as $image) {
+        $imagesDto[] = new ProductImageInputDTO([
+            'product_id' => (int) $productId,
+            'filename' => (string) ($image['file_name'] ?? ''),
+            'image_order' => (int) ($image['image_order'] ?? 1),
+            'alt' => $image['alt'] ?? ''
+        ]);
+      }
+
+      return $imagesDto;
     }
 
+    private function createCategoryDTOFromArray(array $row): CategoryDTO
+    {
+        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
+        return new CategoryDTO([
+            'id' => (int) $row['category_id'],
+            'title' => (string) ($row['category_title_translation'] ?: $row['category_title']),
+            'parent_id' => (int) ($row['category_parent_id'] ?? 0),
+            'image' => (string) ($row['category_image'] ?? ''),
+            'translations' => [
+                $locale => [
+                    'title' => $row['category_title_translation'] ?? '',
+                    'description' => $row['category_description'] ?? '',
+                    'seo_title' => $row['category_meta_title'] ?? '',
+                    'seo_description' => $row['category_meta_description'] ?? '',
+                ]
+            ],
+            'locale' => $locale,
+        ]);
+    }
+
+    private function createBrandDTOFromArray(array $row): BrandDTO
+    {
+        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
+        return new BrandDTO([
+            'id' => (int) $row['brand_id'],
+            'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
+            'image' => (string) ($row['brand_image'] ?? ''),
+            'translations' => [
+                $locale => [
+                    'title' => $row['brand_title_translation'] ?? '',
+                    'description' => $row['brand_description'] ?? '',
+                    'seo_title' => $row['brand_meta_title'] ?? '',
+                    'seo_description' => $row['brand_meta_description'] ?? '',
+                ]
+            ],
+            'locale' => $locale,
+        ]);
+    }
 
 
     /***** GET ****/
@@ -156,6 +159,100 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         $products = array_map([$this, 'fetchProductWithJoins'], $fetchedProducts);
 
         return $products;
+    }
+
+    
+    public function getAllProducts(array $data = []): array
+    {
+     
+        $rows = $this->uniteProductRawData($data);
+        return array_map([$this, 'fetchProductWithJoins'], $rows);
+    }
+
+    public function getProductsByIds(array $ids): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+        $rows = $this->uniteProductRawData(['productIds' => $ids]);
+        return array_map([$this, 'fetchProductWithJoins'], $rows);
+    }
+
+    public function getAllProductsCount(?string $sql = null, array $params = []): int
+    {
+        return $this->countAll(self::TABLE_PRODUCTS, $sql, $params);
+    }
+
+    public function getLastProducts(int $count): array
+    {
+        $rows = $this->uniteProductRawData(['limit' => $count]);
+        return array_map([$this, 'fetchProductWithJoins'], $rows);
+    }
+
+    public function getFilteredProducts(ProductFilterDTO $filterDto): array
+    {
+        $conditions = [];
+        $params = [];
+
+        // статус первым
+        $conditions[] = "status = ?";
+        $params[] = 'active';
+
+        // фильтрация по брендам
+        if (!empty($filterDto->brands)) {
+            $placeholders = implode(',', array_fill(0, count($filterDto->brands), '?'));
+            $conditions[] = "brand_id IN ($placeholders)";
+            $params = array_merge($params, $filterDto->brands);
+        }
+
+        // фильтрация по категориям
+        if (!empty($filterDto->categories)) {
+            $placeholders = implode(',', array_fill(0, count($filterDto->categories), '?'));
+            $conditions[] = "category_id IN ($placeholders)";
+            $params = array_merge($params, $filterDto->categories);
+        }
+
+        // фильтрация по цене
+        if ($filterDto->priceMin !== null) {
+            $conditions[] = "price >= ?";
+            $params[] = $filterDto->priceMin;
+        }
+        if ($filterDto->priceMax !== null) {
+            $conditions[] = "price <= ?";
+            $params[] = $filterDto->priceMax;
+        }
+
+
+        // сортировка
+        $orderBy = "id DESC"; // дефолт
+        switch ($filterDto->sort) {
+            case 'price_asc':
+                $orderBy = "price ASC";
+                break;
+            case 'price_desc':
+                $orderBy = "price DESC";
+                break;
+        }
+
+        // // базовый запрос
+        // $sql = "status = ?";
+        // $params[] = 'active';
+        // объединяем условия
+
+        if ($conditions) {
+            $sql = implode(" AND ", $conditions);
+        }
+
+        // финальный запрос
+        $beans = $this->findAll('products', $sql . " ORDER BY " . $orderBy, $params);
+
+        if(!$beans) {
+          return [];
+        }
+
+        $rows = $this->uniteProductRawData(['limit' => $beans]);
+
+        return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
 
 
@@ -190,23 +287,19 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return Product::fromDTO($dto);
     }
 
-
-
-    public function getAllProducts(array $data = []): array
+    private function fetchImageDTOs(array $row): array
     {
-     
-        $rows = $this->uniteProductRawData($data);
-        return array_map([$this, 'fetchProductWithJoins'], $rows);
+        $imagesRows = R::getAll(
+            'SELECT id, product_id, filename, image_order 
+             FROM ' . self::TABLE_PRODUCT_IMAGES . '
+             WHERE product_id = ? 
+             ORDER BY image_order',
+            [$row['id']]
+        );
+        return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
     }
 
-    public function getProductsByIds(array $ids): array
-    {
-        if (empty($ids)) {
-            return [];
-        }
-        $rows = $this->uniteProductRawData(['productIds' => $ids]);
-        return array_map([$this, 'fetchProductWithJoins'], $rows);
-    }
+
 
     private function uniteProductRawData(array $data): array
     {
@@ -289,6 +382,67 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return R::getAll($sql, $bindings);
     }
 
+    public function updateStatus(int $productId, string $status): bool
+    {
+        return $this->updatePartial($productId, ['status' => $status], ['id' => $productId]);
+    }
+
+    private function updatePartial(int $id, array $data): bool
+    {     
+      
+        $productBean = $this->loadBean(self::TABLE_PRODUCTS, $id);
+     
+        if (!$productBean->id) {
+            throw new RuntimeException("Product with ID {$id} not found");
+        }
+        foreach ($data as $field => $value) {
+            $productBean->{$field} = $value;
+        }
+  
+
+        return !!$this->saveBean($productBean);
+      
+        // return $productBean->export();
+    }
+
+    // public function updateFull(ProductDTO $dto): ?array
+    // {
+    //     return $this->updatePartial($dto->getId(), $dto->toArray());
+    // }
+
+    /** Обновляет существующий продукт через DTO */
+    public function updateProduct(ProductDTO $dto): ?int
+    {
+        if (!$dto->id) {
+            return null; // нельзя обновить без ID
+        }
+
+        return $this->saveProduct($dto);
+    }
+
+
+
+
+
+    public function deleteExtraImagesExceptMain(int $productId): void
+    {
+        $mainExists = R::getCell(
+            'SELECT COUNT(*) FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+             WHERE product_id = ? AND is_main = 1',
+            [$productId]
+        );
+        if ($mainExists) {
+            R::exec(
+                'DELETE FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+                 WHERE product_id = ? 
+                   AND id NOT IN (
+                       SELECT id FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+                       WHERE product_id = ? AND is_main = 1
+                   )',
+                [$productId, $productId]
+            );
+        }
+    }
 
     private function loadTranslations(int $productId): array
     {
@@ -311,116 +465,6 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return $translations;
     }
 
-    private function createCategoryDTOFromArray(array $row): CategoryDTO
-    {
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-        return new CategoryDTO([
-            'id' => (int) $row['category_id'],
-            'title' => (string) ($row['category_title_translation'] ?: $row['category_title']),
-            'parent_id' => (int) ($row['category_parent_id'] ?? 0),
-            'image' => (string) ($row['category_image'] ?? ''),
-            'translations' => [
-                $locale => [
-                    'title' => $row['category_title_translation'] ?? '',
-                    'description' => $row['category_description'] ?? '',
-                    'seo_title' => $row['category_meta_title'] ?? '',
-                    'seo_description' => $row['category_meta_description'] ?? '',
-                ]
-            ],
-            'locale' => $locale,
-        ]);
-    }
-
-    private function createBrandDTOFromArray(array $row): BrandDTO
-    {
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-        return new BrandDTO([
-            'id' => (int) $row['brand_id'],
-            'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
-            'image' => (string) ($row['brand_image'] ?? ''),
-            'translations' => [
-                $locale => [
-                    'title' => $row['brand_title_translation'] ?? '',
-                    'description' => $row['brand_description'] ?? '',
-                    'seo_title' => $row['brand_meta_title'] ?? '',
-                    'seo_description' => $row['brand_meta_description'] ?? '',
-                ]
-            ],
-            'locale' => $locale,
-        ]);
-    }
-
-    private function fetchImageDTOs(array $row): array
-    {
-        $imagesRows = R::getAll(
-            'SELECT id, product_id, filename, image_order 
-             FROM ' . self::TABLE_PRODUCT_IMAGES . '
-             WHERE product_id = ? 
-             ORDER BY image_order',
-            [$row['id']]
-        );
-        return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
-    }
-
-
-    public function getAllProductsCount(?string $sql = null, array $params = []): int
-    {
-        return $this->countAll(self::TABLE_PRODUCTS, $sql, $params);
-    }
-
-    public function getLastProducts(int $count): array
-    {
-        $rows = $this->uniteProductRawData(['limit' => $count]);
-        return array_map([$this, 'fetchProductWithJoins'], $rows);
-    }
-
-    public function updateStatus(int $productId, string $status): bool
-    {
-        return $this->updatePartial($productId, ['status' => $status], ['id' => $productId]);
-    }
-
-    public function deleteExtraImagesExceptMain(int $productId): void
-    {
-        $mainExists = R::getCell(
-            'SELECT COUNT(*) FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
-             WHERE product_id = ? AND is_main = 1',
-            [$productId]
-        );
-        if ($mainExists) {
-            R::exec(
-                'DELETE FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
-                 WHERE product_id = ? 
-                   AND id NOT IN (
-                       SELECT id FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
-                       WHERE product_id = ? AND is_main = 1
-                   )',
-                [$productId, $productId]
-            );
-        }
-    }
-
-    private function updatePartial(int $id, array $data): bool
-    {     
-      
-        $productBean = $this->loadBean(self::TABLE_PRODUCTS, $id);
-     
-        if (!$productBean->id) {
-            throw new RuntimeException("Product with ID {$id} not found");
-        }
-        foreach ($data as $field => $value) {
-            $productBean->{$field} = $value;
-        }
-  
-
-        return !!$this->saveBean($productBean);
-      
-        // return $productBean->export();
-    }
-
-    public function updateFull(ProductDTO $dto): ?array
-    {
-        return $this->updatePartial($dto->getId(), $dto->toArray());
-    }
 
     public function bulkUpdate(array $ids, array $data): void
     {
@@ -429,102 +473,147 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         }
     }
 
-    public function getFilteredProducts(ProductFilterDTO $filterDto): array
+    
+
+    /** SAVE */
+    /** Создаёт новый продукт через DTO */
+    public function saveProduct(ProductInputDTO $dto, array $translations, array $images): ?int
     {
-        $conditions = [];
-        $params = [];
-
-        // статус первым
-        $conditions[] = "status = ?";
-        $params[] = 'active';
-
-        // фильтрация по брендам
-        if (!empty($filterDto->brands)) {
-            $placeholders = implode(',', array_fill(0, count($filterDto->brands), '?'));
-            $conditions[] = "brand_id IN ($placeholders)";
-            $params = array_merge($params, $filterDto->brands);
-        }
-
-        // фильтрация по категориям
-        if (!empty($filterDto->categories)) {
-            $placeholders = implode(',', array_fill(0, count($filterDto->categories), '?'));
-            $conditions[] = "category_id IN ($placeholders)";
-            $params = array_merge($params, $filterDto->categories);
-        }
-
-        // фильтрация по цене
-        if ($filterDto->priceMin !== null) {
-            $conditions[] = "price >= ?";
-            $params[] = $filterDto->priceMin;
-        }
-        if ($filterDto->priceMax !== null) {
-            $conditions[] = "price <= ?";
-            $params[] = $filterDto->priceMax;
-        }
-
-
-        // сортировка
-        $orderBy = "id DESC"; // дефолт
-        switch ($filterDto->sort) {
-            case 'price_asc':
-                $orderBy = "price ASC";
-                break;
-            case 'price_desc':
-                $orderBy = "price DESC";
-                break;
-        }
-
-        // // базовый запрос
-        // $sql = "status = ?";
-        // $params[] = 'active';
-        // объединяем условия
-
-        if ($conditions) {
-            $sql = implode(" AND ", $conditions);
-        }
-
-        // финальный запрос
-        $beans = $this->findAll('products', $sql . " ORDER BY " . $orderBy, $params);
-
-        if(!$beans) {
-          return [];
-        }
-
-        $rows = $this->uniteProductRawData(['limit' => $beans]);
-
-        return array_map([$this, 'fetchProductWithJoins'], $rows);
-    }
-
-
-
-    public function saveProductTranslation(array $productsDto)
-    {
-      foreach( $productsDto as $dto) {
         if (!$dto) {
             return null;
         }
 
-        // Создаем или загружаем основной перевод
-        $bean = $dto->id 
-        ? $this->findById(self::TABLE_PRODUCTS_TRANSLATION, $dto->id)
-        : $this->createProductTranslateBean();
 
-        $bean->product_id = $dto->product_id;
-        $bean->slug = $dto->slug;
-        $bean->locale = $dto->locale;
-        $bean->title = $dto->title;
-        $bean->description = $dto->description;
-        $bean->meta_title = $dto->meta_title;
-        $bean->meta_description = $dto->meta_description;
+        // Транзакция сохранения продукта
+        try {
+          
+          // Открывает транзакцию 
+          $this->begin();
 
-        $this->saveBean($bean);
-        
-        $translateId = (int) $bean->id;
+          // 1. сохраняем продукт
+          // 2. сохраняем переводы
+          // 3. сохраняем изображения
 
-        if (!$translateId) {
-          return null;
-        }
+          // Создаем или загружаем продукт
+          $bean = $dto->id 
+              ? $this->findById(self::TABLE_PRODUCTS, $dto->id)
+              : $this->createProductBean();
 
+          $bean->category_id = $dto->category_id;
+          $bean->brand_id = $dto->brand_id;
+          $bean->slug = $dto->slug;
+          $bean->title = $dto->title;
+          $bean->description = $dto->description;
+          $bean->price = $dto->price;
+          $bean->url = $dto->url;
+          $bean->sku = $dto->sku;
+          $bean->stock = $dto->stock;
+          $bean->datetime = $dto->datetime;
+          $bean->status = $dto->status;
+          $bean->edit_time = $dto->edit_time;
+
+          $this->store($bean);
+
+          // ID продукта
+          $productId = (int)$bean->id;
+
+          if (!$productId) {
+            throw new RuntimeException("Не удалось сохранить продукт");
+          }
+
+          // Создаем DTO для переводов и сохраняем в БД
+          $translateDto = $this->createTranslateInputDto($translations, $productId);
+          $translateIds = $this->saveProductTranslation($translateDto);
+
+          // Создаем DTO для изображений 
+          $imagesDto = $this->createImagesInputDto($images, $productId);
+          $imagesIds = $this->saveProductImages($imagesDto);
+
+          if (!$productId || !$translateIds || !$imagesIds) {
+            return null;
+          }
+          return $productId; 
+
+          $this->commit();
       }
+      catch (\Throwable $e) {
+        $this->rollback(); // откатываем изменения
+        throw $e;      // пробрасываем ошибку выше
+      }
+  
+    }
+
+    public function saveProductTranslation(array $translateDto): ?array
+    {
+      foreach( $translateDto as $dto) {
+        if (!$dto) {
+            return null;
+        }
+      }
+
+      $ids = [];
+
+      foreach($translateDto as $dto) {
+          // Создаем или загружаем основной перевод
+          $bean = $dto->id 
+          ? $this->findById(self::TABLE_PRODUCTS_TRANSLATION, $dto->id)
+          : $this->createProductTranslateBean();
+
+          $bean->product_id = $dto->product_id;
+          $bean->slug = $dto->slug;
+          $bean->locale = $dto->locale;
+          $bean->title = $dto->title;
+          $bean->description = $dto->description;
+          $bean->meta_title = $dto->meta_title;
+          $bean->meta_description = $dto->meta_description;
+
+          $this->saveBean($bean);
+          
+          $id = (int) $bean->id;
+
+          if (!$id) {
+            return null;
+          }
+
+          $ids[] = $id;
+      }
+
+      return $ids;
+    }
+
+    public function saveProductImages(array $imagesDto): ?array
+    {
+      foreach( $imagesDto as $dto) {
+        if (!$dto) {
+            return null;
+        }
+      }
+
+      $ids = [];
+
+      foreach($imagesDto as $dto) {
+          // Создаем или загружаем изображения 
+          $bean = $dto->id 
+          ? $this->findById(self::TABLE_PRODUCT_IMAGES, $dto->id)
+          : $this->createProductImageBean();
+
+          $bean->product_id = $dto->product_id;
+          $bean->filename = $dto->filename;
+          $bean->image_order = $dto->image_order;
+          $bean->alt = $dto->alt;
+          
+
+          $this->saveBean($bean);
+          
+          $id = (int) $bean->id;
+
+          if (!$id) {
+            return null;
+          }
+
+          $ids[] = $id;
+      }
+
+      return $ids;
     }
 }

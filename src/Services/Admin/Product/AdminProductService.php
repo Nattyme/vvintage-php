@@ -8,8 +8,7 @@ use Vvintage\Services\Admin\Product\AdminProductImageService;
 
 /** DTO */
 use Vvintage\DTO\Product\ProductInputDTO;
-// use Vvintage\DTO\Product\ProductImageInputDTO;
-use Vvintage\DTO\Product\ProductTranslationInputDTO;
+
 
 
 final class AdminProductService extends ProductService
@@ -86,25 +85,6 @@ final class AdminProductService extends ProductService
         $this->repository->saveProduct();
     }
 
-    private function createProductTranslateInputDto(array $data, int $productId): array
-    {
-      $productTranslationsDto = [];
-    
-      foreach($data['translations'] as $locale => $translate) {
-          $productTranslationsDto[] = new ProductTranslationInputDTO([
-              'product_id' => (int) $productId,
-              'slug' => (string) ($data['slug'] ?? ''),
-              'locale' => (string) $locale, 
-              'title' => (string) ($translate['title'] ?? ''),
-              'description' => (string) ($translate['description'] ?? ''),
-              'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
-              'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
-          ]);
-      }
-      
-      return  $productTranslationsDto;
-
-    }
 
     private function createProductInputDto(array $data): ProductInputDTO
     {
@@ -122,11 +102,6 @@ final class AdminProductService extends ProductService
                 'datetime' => (new \DateTime())->format('Y-m-d H:i:s'),
                 'edit_time' => time()
               ]);
-    }
-
-    public function createProductImagesInputDto(array $images, int $productId)
-    {
-       $this->imageService->createProductImagesInputDto($images);
     }
 
 
