@@ -19,15 +19,7 @@ final class AdminProductImageValidator
             $this->validateImage($image);
         }
 
-        // if (!isset($data['product_id']) || !is_int($data['product_id'])) {
-        //     $errors['product_id'] = 'Номер продукта обязателен и должен быть числом.';
-        // }
-
-        // if (!isset($data['order']) || !is_int( (int) $data['order'])) {
-        //      $this->errors['order'] = 'Порядок изображений должен быть числовым';
-        // }
-
-    
+  
         return [
           'errors' => $this->errors,
           'data' => $images

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Contracts\Product;
 
+use Vvintage\Models\Product\Product;
 use Vvintage\DTO\Product\ProductDTO;
 use Vvintage\DTO\Product\ProductInputDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
@@ -11,7 +12,7 @@ use Vvintage\DTO\Product\ProductFilterDTO;
 interface ProductRepositoryInterface
  {
     /** GET */
-    public function getProductById(int $id): ?ProductDTO;
+    public function getProductById(int $id): ?Product;
 
     public function getProductsByParam(string $sql = '', array $params = []): array;
 
@@ -33,7 +34,7 @@ interface ProductRepositoryInterface
     public function bulkUpdate(array $ids, array $data): void;
 
     /** SAVE */
-    public function saveProduct(ProductInputDTO $dto, array $translations, array $images): ?int;
+    public function saveProduct(ProductInputDTO $dto, array $translations, array $images, array  $processedImages): ?int;
 
     public function saveProductTranslation(array $translateDto): ?array;
 

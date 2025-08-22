@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vvintage\Repositories\Product;
 
 use RedBeanPHP\R;
+use RedBeanPHP\OODBBean;
 use RuntimeException;
 
 /** Контракты */
@@ -25,6 +26,7 @@ use Vvintage\DTO\Category\CategoryDTO;
 use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
 use Vvintage\DTO\Product\ProductTranslationInputDTO;
+use Vvintage\Services\Admin\Product\AdminProductImageService;
 
 final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
@@ -68,8 +70,8 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private function createTranslateInputDto(array $data, int $productId): array
     {
       $productTranslationsDto = [];
-    
-      foreach($data['translations'] as $locale => $translate) {
+  
+      foreach($data as $locale => $translate) {
           $productTranslationsDto[] = new ProductTranslationInputDTO([
               'product_id' => (int) $productId,
               'slug' => (string) ($data['slug'] ?? ''),
@@ -80,23 +82,28 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
               'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
           ]);
       }
-      
+         
       return  $productTranslationsDto;
 
     }
 
-    private function createImagesInputDto (array $images, int $productId): array
+    private function createImagesInputDto (array $images, array $finalImages, int $productId): array
     {
       $imagesDto = [];
 
-      foreach($images as $image) {
-        $imagesDto[] = new ProductImageInputDTO([
-            'product_id' => (int) $productId,
-            'filename' => (string) ($image['file_name'] ?? ''),
-            'image_order' => (int) ($image['image_order'] ?? 1),
-            'alt' => $image['alt'] ?? ''
-        ]);
-      }
+      $count = min(count($images), count($finalImages)); // чтобы не выйти за пределы массивов
+
+        for ($i = 0; $i < $count; $i++) {
+            $image = $images[$i];
+            $finalImage = $finalImages[$i];
+
+            $imagesDto[] = new ProductImageInputDTO([
+                'product_id' => (int) $productId,
+                'cover' => (string) ($finalImage['cover'] ?? ''),
+                'image_order' => (int) ($image['image_order'] ?? 1),
+                'alt' => $image['alt'] ?? ''
+            ]);
+        }
 
       return $imagesDto;
     }
@@ -477,13 +484,12 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     /** SAVE */
     /** Создаёт новый продукт через DTO */
-    public function saveProduct(ProductInputDTO $dto, array $translations, array $images): ?int
+    public function saveProduct(ProductInputDTO $dto, array $translations, array $images, array  $processedImages): ?int
     {
         if (!$dto) {
             return null;
         }
-
-
+     
         // Транзакция сохранения продукта
         try {
           
@@ -512,7 +518,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
           $bean->status = $dto->status;
           $bean->edit_time = $dto->edit_time;
 
-          $this->store($bean);
+          $this->saveBean($bean);
 
           // ID продукта
           $productId = (int)$bean->id;
@@ -520,24 +526,48 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
           if (!$productId) {
             throw new RuntimeException("Не удалось сохранить продукт");
           }
-
+   
           // Создаем DTO для переводов и сохраняем в БД
           $translateDto = $this->createTranslateInputDto($translations, $productId);
           $translateIds = $this->saveProductTranslation($translateDto);
 
-          // Создаем DTO для изображений 
-          $imagesDto = $this->createImagesInputDto($images, $productId);
+          $imageService = new AdminProductImageService();
+          // 3. Финализируем файлы после проверки
+          $finalImages = $imageService->finalizeImages($processedImages);
+          // Создаём DTO для изображений 
+          $imagesDto = $this->createImagesInputDto($images, $finalImages, $productId);
+          
+
+          // 2. Проверяем что все filename есть
+          foreach ($imagesDto as $dto) {
+              if (!$dto->filename) {
+                  throw new RuntimeException("Пустое имя файла для изображения");
+              }
+          }
+
+         
           $imagesIds = $this->saveProductImages($imagesDto);
 
+ 
           if (!$productId || !$translateIds || !$imagesIds) {
-            return null;
+              throw new RuntimeException("Не удалось сохранить продукт");
           }
-          return $productId; 
 
           $this->commit();
+          return $productId;
+
+        
       }
       catch (\Throwable $e) {
         $this->rollback(); // откатываем изменения
+
+         // удаляем все возможные файлы
+        $imageService->cleanup($processedImages);
+        if (!empty($finalImages)) {
+            $imageService->cleanupFinal($finalImages);
+        }
+
+        // $imageService->cleanup($processedImages);
         throw $e;      // пробрасываем ошибку выше
       }
   
@@ -554,10 +584,8 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
       $ids = [];
 
       foreach($translateDto as $dto) {
-          // Создаем или загружаем основной перевод
-          $bean = $dto->id 
-          ? $this->findById(self::TABLE_PRODUCTS_TRANSLATION, $dto->id)
-          : $this->createProductTranslateBean();
+          // Создаем или загружаем перевод
+          $bean = $this->createProductTranslateBean();
 
           $bean->product_id = $dto->product_id;
           $bean->slug = $dto->slug;
@@ -593,9 +621,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
       foreach($imagesDto as $dto) {
           // Создаем или загружаем изображения 
-          $bean = $dto->id 
-          ? $this->findById(self::TABLE_PRODUCT_IMAGES, $dto->id)
-          : $this->createProductImageBean();
+          $bean = $this->createProductImageBean();
 
           $bean->product_id = $dto->product_id;
           $bean->filename = $dto->filename;

@@ -29,14 +29,14 @@
         </div>
       </div>
 
-      <div class="admin-form__field">
+      <div class="admin-form__field none">
         <label class="admin-form__label" for="title">Название товара</label>
         <input 
           id="title"
           name="title" 
           class="admin-form__input input" 
           type="text"
-          value="<?php echo isset($_POST['title']) ? h($_POST['title']) : '';?>"
+          value="<?php echo isset($_POST['title']) ? h($_POST['title']) : 'ппрпрпр';?>"
           placeholder="Введите название" 
           required
         />
@@ -45,7 +45,7 @@
       <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название для страницы товара (латиницей: chasy-chanel)</label>
         <input id="slug" name="slug" class="admin-form__input input" type="text"
-                value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : ''; ?>"
+                value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : 'chain-women'; ?>"
                 placeholder="Введите название старницы" required/>
       </div>
 
@@ -56,7 +56,7 @@
           name="price" 
           class="admin-form__input input" 
           type="text"
-          value="<?php echo isset($_POST['price']) ? h($_POST['price']) : 0;?>"
+          value="<?php echo isset($_POST['price']) ? h($_POST['price']) : 12345;?>"
           placeholder="Введите цену в &euro;" 
           required
         />
@@ -69,7 +69,7 @@
           name="sku" 
           class="admin-form__input input" 
           type="text"
-          value="<?php echo isset($_POST['sku']) ? h($_POST['sku']) : '';?>"
+          value="<?php echo isset($_POST['sku']) ? h($_POST['sku']) : '123456';?>"
           placeholder="Введите артикул" 
         />
       </div>
@@ -93,7 +93,7 @@
           name="url" 
           class="admin-form__input input" 
           type="text"
-          value="<?php echo isset($_POST['url']) ? u($_POST['url']) : '';?>"
+          value="<?php echo isset($_POST['url']) ? u($_POST['url']) : 'https://nattyme.github.io/amid/';?>"
           placeholder="Введите ссылку на vinted.fr" 
         />
       </div>
@@ -141,7 +141,7 @@
 
       <div class="admin-form__field">
         <label class="admin-form__text" for="description">Описание товара</label>
-        <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="description" rows="5" cols="1" id="description"><?php echo isset($_POST['description']) ? h($_POST['description']) : ''; ?></textarea>
+        <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="description" rows="5" cols="1" id="description"><?php echo isset($_POST['description']) ? h($_POST['description']) : 'Введите описание товара'; ?></textarea>
       </div>
 
       <div class="admin-form__field">
@@ -150,7 +150,7 @@
             
               <select class="select" name="status" id="status">
               <?php foreach ($statusList as $key => $value) : ?>
-                <option <?php echo isset($_POST['status']) &&  $_POST['status'] === $key ? 'selected' : '';?> value="<?php echo h($key);?>">
+                <option <?php echo isset($_POST['status']) &&  $_POST['status'] === $key ? 'selected' : '123456';?> value="<?php echo h($key);?>">
                   <?php echo h($value);?>
                 </option>
               <?php endforeach; ?>

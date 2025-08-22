@@ -120,7 +120,7 @@ final class AdminProductValidator
         } elseif (ctype_digit($title)) {
             $this->errors['title'][$lang][]  = 'Название не может состоять только из цифр';
         } elseif (!preg_match('/^[\p{L}\d\s]+$/u', $title)) {
-            $this->errors['title'][$lang][]  = 'Название может содержать только буквы, цифры и пробелы';
+            // $this->errors['title'][$lang][]  = 'Название может содержать только буквы, цифры и пробелы';
         }
         if (empty($this->errors['title'][$lang])) {
             unset($this->errors['title'][$lang] );
@@ -133,7 +133,7 @@ final class AdminProductValidator
         // $this->errors['description'][$lang] = [];
 
         if ($description === '') {
-          // $this->errors['description'][$lang][] = 'Поле описания не может быть пустым';
+          $this->errors['description'][$lang][] = 'Поле описания не может быть пустым';
         } elseif (!is_string($description)) {
             $this->errors['description'][$lang][] = 'Поле описания должно быть строкой';
         } elseif (preg_match('/^[\s.,!?()-]+$/u', $description)) {
@@ -145,7 +145,7 @@ final class AdminProductValidator
         } elseif (mb_strlen($description) > 1000) {
             $this->errors['description'][$lang][] = 'Описание слишком длинное (максимум 1000 символов)';
         } elseif (!preg_match('/^[\p{L}\d\s.,!?()-]+$/u', $description)) {
-            $this->errors['description'][$lang][] = 'Описание содержит недопустимые символы';
+            // $this->errors['description'][$lang][] = 'Описание содержит недопустимые символы';
         }
         if (empty( $this->errors['description'][$lang])) {
             unset( $this->errors['description'][$lang]);
@@ -258,8 +258,8 @@ final class AdminProductValidator
     private function validateStatus (?string $statusData): void 
     {
         $this->errors['status'] = [];
-        if (!isset($statusData) || !in_array($statusData, ['active','inactive'], true)) {
-            $this->errors['status'][] = 'Поле статус должно быть active или inactive';
+        if (!isset($statusData) || !in_array($statusData, ['active','hidden'], true)) {
+            $this->errors['status'][] = 'Поле статус должно быть "Активный" или "Невидимый"';
         }
         if (empty($this->errors['status'])) {
             unset($this->errors['status']);

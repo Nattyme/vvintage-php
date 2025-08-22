@@ -37,12 +37,10 @@ const initModel = () => {
   const sendFormDataFetch = async () => {
     const res = await fetch('/api/product-create', {
       method: 'POST',
+      credentials: 'include', // сессия
       body: formData
     });
-// временно без throw
-const result = await res.json();
-console.log('Ответ сервера:', result);
-return result;
+
     if (!res.ok) throw new Error(`Ошибка сети ${res.status}`);
 
     // const result = await res.json(); // сразу парсим JSON

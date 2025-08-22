@@ -15,6 +15,7 @@ export async function getProduct(id) {
 export async function createProduct(data) {
   const res = await fetch(`${API_BASE}/product-new`, {
     method: 'POST',
+    credentials: 'include', // сессия
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
@@ -25,6 +26,7 @@ export async function createProduct(data) {
 export async function updateProduct(id, data) {
   const res = await fetch(`${API_BASE}/product-edit/${id}`, {
     method: 'PUT',
+    credentials: 'include', // сессия
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });

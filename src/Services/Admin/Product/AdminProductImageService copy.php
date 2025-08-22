@@ -26,29 +26,26 @@ final class AdminProductImageService extends ProductImageService
         }
     }
 
-
-        /**
+    /**
      * Подготавливает изображения: грузит в tmp + делает ресайзы
      */
     public function prepareImages(array $files, array $sizes): array
     {
         $processed = [];
-        //  $coverImages = saveSliderImg('cover', [350, 478], 12, 'products', [536, 566], [350, 478]);
-        foreach ($files as $file) {
-            $tmpName = $file['tmp_name'];
-            $kaboom = explode(".", $file['file_name']);
-            $fileExt = end($kaboom);
+  //  $coverImages = saveSliderImg('cover', [350, 478], 12, 'products', [536, 566], [350, 478]);
+        foreach ($files['name'] as $key => $name) {
+            $tmpName = $files['tmp_name'][$key];
 
             // Генерация уникального имени (без дублей)
-            $baseName = rand(100000000000,999999999999) . "." . $fileExt;
+            $baseName = uniqid('img_', true) . '.' . pathinfo($name, PATHINFO_EXTENSION);
             $tmpFile  = $this->tmpFolder . $baseName;
 
             if (!move_uploaded_file($tmpName, $tmpFile)) {
-                throw new \RuntimeException("Не удалось загрузить файл {$tmpName} во временную папку");
+                throw new \RuntimeException("Не удалось загрузить файл {$name} во временную папку");
             }
 
             // Генерация разных размеров
-            $fullTmp  = $this->tmpFolder . 'full_' . $baseName;;
+            $fullTmp  = $this->tmpFolder . 'full_'  . $baseName;
             $smallTmp = $this->tmpFolder . 'small_' . $baseName;
 
             resize_and_crop($tmpFile, $fullTmp,  $sizes['full'][0],  $sizes['full'][1]);
@@ -60,17 +57,14 @@ final class AdminProductImageService extends ProductImageService
             $processed[] = [
                 'tmp_full'       => $fullTmp,
                 'tmp_small'      => $smallTmp,
-                'original_name'  => $tmpName,
-                'final_full'     => $baseName,
-                'final_small'    => $sizes['small'][0] . '-' . $baseName,
+                'original_name'  => $name,
+                'final_full'     => 'full_'  . $baseName,
+                'final_small'    => 'small_' . $baseName,
             ];
         }
 
         return $processed;
     }
-
-
-  
 
     /**
      * Финализируем: переносим tmp → products
@@ -91,7 +85,7 @@ final class AdminProductImageService extends ProductImageService
             }
 
             $finalPaths[] = [
-                'cover'  => basename($finalFull),
+                'cover_full'  => basename($finalFull),
                 'cover_small' => basename($finalSmall),
             ];
         }
@@ -116,9 +110,8 @@ final class AdminProductImageService extends ProductImageService
     public function cleanupFinal(array $images): void
     {
         foreach ($images as $img) {
-            @unlink($this->finalFolder . $img['cover']);
+            @unlink($this->finalFolder . $img['cover_full']);
             @unlink($this->finalFolder . $img['cover_small']);
         }
     }
-
 }

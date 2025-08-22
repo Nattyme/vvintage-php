@@ -6,6 +6,7 @@ namespace Vvintage\Controllers\Api\Product;
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Product\AdminProductService;
+use Vvintage\Services\Admin\Product\AdminProductImageService;
 use Vvintage\DTO\Product\ProductDTO;
 use Vvintage\Serializers\ProductApiSerializer;
 use Vvintage\Services\Admin\Validation\AdminProductValidator;
@@ -23,14 +24,14 @@ class ProductApiController extends BaseAdminController
     {
       parent::__construct();
       $this->service = new AdminProductService();
+
     }
 
     public function create()
     {
-        $this->isAdmin();
-
         header('Content-Type: application/json; charset=utf-8');
-
+    
+        // $this->isAdmin();
         $response = [
             'success' => false,
             'errors' => [],
@@ -54,7 +55,7 @@ class ProductApiController extends BaseAdminController
 
         // Объединяем ошибки
         $response['errors']  =  array_merge($validatorTextResult['errors'],  $validatorImgResult['errors']);
-        
+      
 
         // Если есть ошибки, сразу возвращаем JSON
         if (!empty($response['errors'])) {
@@ -62,12 +63,20 @@ class ProductApiController extends BaseAdminController
             exit();
         }
 
+        $imageService = new AdminProductImageService();
+
+        // 1. Подготовка изображений (во временной папке)
+        $processedImages = $imageService->prepareImages($validatorImgResult['data'], [
+            'full' => [536, 566],
+            'small' => [350, 478]
+        ]);
+
+  // error_log(print_r(  $processedImages, true));
+  //       exit();
 
        // Если ошибок нет — создаём dto товара и сохраняем через сервис
-        $productId = $this->service->createProductDraft($data,  $validatorImgResult['data']); 
+        $productId = $this->service->createProductDraft($data, $validatorImgResult['data'],  $processedImages); 
         $response['success'] = true;
-
-        echo json_encode($response, JSON_UNESCAPED_UNICODE);
 
             
         if ($productId) {
@@ -76,9 +85,9 @@ class ProductApiController extends BaseAdminController
         } else {
             $response['errors'][] = 'Не удалось создать продукт';
         }
-
-        echo json_encode($response, JSON_UNESCAPED_UNICODE);
-        exit();
+ 
+        // echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        // exit();
     }
    
 

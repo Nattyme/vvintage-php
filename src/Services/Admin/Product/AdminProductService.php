@@ -74,15 +74,21 @@ final class AdminProductService extends ProductService
         return $result;
     }
 
-    public function createProductDraft(array $data, array $images)
+    public function createProductDraft(array $data, array $images,  array $processedImages): int
     {
         $data['status'] = 'hidden'; // или draft
-
+ 
         $productDto = $this->createProductInputDto($data);
-        $tTranslations =$data['translations'] ?? [];
+        $translations = $data['translations'] ?? [];
         $productImages = $images ?? [];
 
-        $this->repository->saveProduct();
+        $productId = $this->repository->saveProduct($productDto, $translations,  $productImages, $processedImages);
+
+        if( ! $productId) {
+          return null;
+        }
+
+        return $productId;
     }
 
 

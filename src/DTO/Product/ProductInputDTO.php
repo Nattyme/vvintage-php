@@ -5,6 +5,7 @@ namespace Vvintage\DTO\Product;
 
 final class ProductInputDTO
 {
+    public ?int $id = null;
     public int $category_id;
     public int $brand_id;
 
@@ -22,6 +23,7 @@ final class ProductInputDTO
 
     public function __construct(array $data)
     {
+        $this->id = isset($data['id']) ? (int) $data['id'] : null; 
         $this->category_id = (int) ($data['category_id'] ?? 0);
         $this->brand_id = (int) ($data['brand_id'] ?? 0);
 
