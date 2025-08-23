@@ -19,7 +19,6 @@
               <h1 class="h1 product-card__title"><?php echo h($viewModel['product']->getTitle());?></h1>
             </div>
             <div class="product-card__row">
-              <p>New without tegs</p>
               <a href="#" class="product-card__brand"><?php echo h($viewModel['product']->getBrandTitle());?></a>
             </div>
             <div class="product-card__row">
@@ -35,15 +34,15 @@
               <dt><?php echo h(__('product.brand.title', [], 'product'));?></dt>
               <dd><a href=""><?php echo h($viewModel['product']->getBrandTitle());?></a></dd>
             </div>
-            <div class="product-card__item">
-              <dt><?php echo h(__('product.item.condition', [], 'product'));?></dt>
-              <dd>New without tags</dd>
-            </div>
+            <!-- <div class="product-card__item"> -->
+              <!-- <dt><?php echo h(__('product.item.condition', [], 'product'));?></dt> -->
+              <!-- <dd>New without tags</dd> -->
+            <!-- </div> -->
             <div class="product-card__item">
                <dt><?php echo h(__('product.item.update', [], 'product'));?></dt>
               <dd>
-                <time datetime="<?php /** echo h($product->getTimestamp()); */?>">
-                <!-- <?php /** echo rus_date("j. m. Y", h($product->getTimestamp()) ); */ ?> -->
+                <time datetime="<?php echo rus_date("j. m. Y", h($viewModel['product']->getEditTime())); ?>">
+                <?php echo rus_date("j. m. Y", h($viewModel['product']->getEditTime()) );  ?>
               </dd>
             </div>
           

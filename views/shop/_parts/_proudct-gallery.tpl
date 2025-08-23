@@ -40,8 +40,16 @@
 
   <div class="fav-button-wrapper">
     <a 
-      href="<?php echo HOST . 'addtofav?id=' . u($viewModel['product']->getId());?>" 
       class="fav-button <?php echo isProductInFav($viewModel['product']->getId()) ? 'fav-button--active' : '';?>"
+      href="
+        <?php 
+            if (isProductInFav($viewModel['product']->getId())) {
+              echo HOST . 'removefromfav?id=' . u($viewModel['product']->getId());
+            } else {
+               echo HOST . 'addtofav?id=' . u($viewModel['product']->getId());
+            }
+        ?>
+      " 
     >
         <svg class="icon icon--favorite">
           <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>"></use>

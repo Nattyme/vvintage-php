@@ -11,7 +11,7 @@ const initController = async () => {
   const catsData = await model.setCatsData();   // Получаем данные по категориям с сервера и задаем cats в модели
   const mainCats = model.getMainCats();  // Найдем основные категории
   if (!catsData || !nav ||  !mainCats) return;
- console.log(catsData);
+
  
   view.addAdminActiveClass(); // Если нужно - задаем активный класс админ панели
   view.findAndRemoveAllSubNavs();  // Находим и удаляем все подменю
@@ -32,13 +32,19 @@ const initController = async () => {
      
     if (!catId) return;
     const currentCatData = model.getCatsByParent(catId); // получаем данные объекта по категории
-    if(!currentCatData.length) return;
+    if(!currentCatData.length) {
+      view.removeOverlay();
+      view.findAndRemoveAllSubNavs(nav);
+      return;
+    };
 
     view.findAndRemoveAllSubNavs(); // Находим все саб меню и удаляем их
     view.insertTemplate(catBlock, view.getSubNavContainerTemplate()); // Добавляем новое подменю на страницу
   
     const subNavList = view.getSubNavList(catBlock);
+
     if (!subNavList) return;
+
     const subNavMarkup = view.renderMenuTree(currentCatData, 2);
     subNavList.innerHTML = subNavMarkup;
     // view.fillNav(subNavList, currentCatData); // Заполняем меню подкаетагорий данными
