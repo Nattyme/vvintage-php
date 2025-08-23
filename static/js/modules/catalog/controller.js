@@ -8,11 +8,10 @@ const initController = async () => {
   if ( !view || !model) return;
 
   const nav = view.getNav();
-  // const navList = view.getNavList();
   const catsData = await model.setCatsData();   // Получаем данные по категориям с сервера и задаем cats в модели
   const mainCats = model.getMainCats();  // Найдем основные категории
   if (!catsData || !nav ||  !mainCats) return;
-  // if (!catsData || !nav || !navList || !mainCats) return;
+ console.log(catsData);
  
   view.addAdminActiveClass(); // Если нужно - задаем активный класс админ панели
   view.findAndRemoveAllSubNavs();  // Находим и удаляем все подменю
@@ -27,7 +26,6 @@ const initController = async () => {
   // const catBlocksAll = navList.querySelectorAll('.nav__block');
   if (!catBlocksAll) return;
 
-
    // Ф-ция добавляет 2-й уровень меню
   const addSubNav = (catBlock) => {
     const catId = catBlock.id; // id категории
@@ -35,7 +33,6 @@ const initController = async () => {
     if (!catId) return;
     const currentCatData = model.getCatsByParent(catId); // получаем данные объекта по категории
     if(!currentCatData.length) return;
-console.log(currentCatData);
 
     view.findAndRemoveAllSubNavs(); // Находим все саб меню и удаляем их
     view.insertTemplate(catBlock, view.getSubNavContainerTemplate()); // Добавляем новое подменю на страницу
@@ -48,15 +45,17 @@ console.log(currentCatData);
     const subSubNav = view.getSubSubNav(catBlock);
     if(!subSubNav) return;
    
-    view.setNavOverlay(); // Добалем оверлей
+    view.setNavOverlay(); // Добавлем оверлей
+    
+
     
     // Слушаем, когда курсор покинет навигацию
-    nav.addEventListener('mouseleave', () => {
-      // Находим все subNav в навигации и удаляем их. Убираем оверлей
-      view.findAndRemoveAllSubNavs(nav);
-      // view.findAndRemoveAllSubNavs(navList);
-      view.removeOverlay();
-    });
+    // nav.addEventListener('mouseleave', () => {
+    //   // Находим все subNav в навигации и удаляем их. Убираем оверлей
+    //   view.findAndRemoveAllSubNavs(nav);
+    //   // view.findAndRemoveAllSubNavs(navList);
+    //   view.removeOverlay();
+    // });
   
 
     // Находим все subNavs и добавляем SubSubNavs
@@ -92,6 +91,12 @@ console.log(currentCatData);
 
   // На каждый блок главной навигации вешаем прослушку событий hover
   catBlocksAll.forEach(catBlock => catBlock.addEventListener('mouseenter', () => addSubNav(catBlock)));
+    
+  nav.addEventListener('mouseleave', () => {
+    view.findAndRemoveAllSubNavs(nav);
+    view.removeOverlay();
+  });
+
 }
 
 export default initController;
