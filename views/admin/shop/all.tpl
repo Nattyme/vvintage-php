@@ -95,7 +95,7 @@
               <?php echo h($product->getPrice() ?? ''); ?>  &euro;
             </td>
             <td>
-              <a class="link link-above-others" href="<?php echo !empty($product->getUrl()) ? u($product->getUrl()) : '';?>">vinted.fr</a>
+              <a class="link link-above-others" href="<?php echo !empty($product->getUrl()) ? $product->getUrl() : '';?>">vinted.fr</a>
             </td>
             <td>
               <?php echo h(rus_date('j. m. Y. H:i', $product->getDateTime()->getTimestamp()));?>
