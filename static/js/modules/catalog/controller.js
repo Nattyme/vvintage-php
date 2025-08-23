@@ -54,16 +54,6 @@ const initController = async () => {
     view.setNavOverlay(); // Добавлем оверлей
     
 
-    
-    // Слушаем, когда курсор покинет навигацию
-    // nav.addEventListener('mouseleave', () => {
-    //   // Находим все subNav в навигации и удаляем их. Убираем оверлей
-    //   view.findAndRemoveAllSubNavs(nav);
-    //   // view.findAndRemoveAllSubNavs(navList);
-    //   view.removeOverlay();
-    // });
-  
-
     // Находим все subNavs и добавляем SubSubNavs
     const subNavBlocksAll = view.getSubNavBlocksAll(subNavList);
     if (!subNavBlocksAll) return;

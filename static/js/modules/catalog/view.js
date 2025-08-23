@@ -27,12 +27,14 @@ const initView = () => {
 
   const getCatBlocksAll = () => nav.querySelectorAll('.nav__block');
 
-  const getSubNavContainerTemplate = () => {
+
+
+ const getSubNavContainerTemplate = () => {
   return `
     <div class="sub-nav">
-      <div class="sub-nav__container container">
-      <ul class="sub-nav__list"></ul>
-      <div class="sub-nav__line-separator"></div>
+        <div class="sub-nav__container container">
+        <ul class="sub-nav__list"></ul>   <!-- контейнер для списка -->
+        <div class="sub-nav__line-separator"></div>
         <ul class="sub-sub-nav__list"></ul>
       </div>
     </div>
@@ -242,6 +244,58 @@ const initView = () => {
 //     </li>
 //   `).join('');
 // };
+
+// const renderMenuTree = (cats, level = 1, baseUrl = 'https://vvintage') => {
+//   if (!Array.isArray(cats)) return '';
+
+//   const levelClassMap = {
+//     1: 'nav__block',
+//     2: 'sub-nav__item',
+//     3: 'sub-sub-nav__item'
+//   };
+
+//   const linkClassMap = {
+//     1: 'nav__link',
+//     2: 'sub-nav__link',
+//     3: 'sub-sub-nav__link'
+//   };
+
+//   const ulClassMap = {
+//     1: 'nav__list'
+//   };
+
+//   const liClass = levelClassMap[level] || '';
+//   const linkClass = linkClassMap[level] || '';
+
+//   if (level === 1) {
+//     return `
+//       <ul class="${ulClassMap[1]}">
+//         ${cats.map(cat => `
+//           <li class="${liClass}" id="${cat.id}">
+//             <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}" data-cat="${cat.id}">
+//               ${cat.title}
+//             </a>
+//           </li>
+//         `).join('')}
+//       </ul>
+//     `;
+//   }
+
+//     // 2-й и 3-й уровень: только li
+//   return cats.map(cat => `
+//     <li class="${liClass}" id="${cat.id}" data-cat="${cat.id}">
+//       <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}" data-cat="${cat.id}">
+//         ${level === 2 && cat.image ? `
+//           <svg class="icon icon--${cat.image}">
+//             <use href="${baseUrl}/static/img/svgsprite/sprite.symbol.svg#${cat.image}"></use>
+//           </svg>
+//         ` : ''}
+      
+//           <div>${cat.title}</div>
+//       </a>
+//     </li>
+//   `).join('');
+// };
 const renderMenuTree = (cats, level = 1, baseUrl = 'https://vvintage') => {
   if (!Array.isArray(cats)) return '';
 
@@ -259,11 +313,13 @@ const renderMenuTree = (cats, level = 1, baseUrl = 'https://vvintage') => {
 
   const ulClassMap = {
     1: 'nav__list'
+    // Для 2 и 3 уровня ul уже есть в контейнере
   };
 
   const liClass = levelClassMap[level] || '';
   const linkClass = linkClassMap[level] || '';
 
+  // 1-й уровень: возвращаем UL
   if (level === 1) {
     return `
       <ul class="${ulClassMap[1]}">
@@ -278,7 +334,7 @@ const renderMenuTree = (cats, level = 1, baseUrl = 'https://vvintage') => {
     `;
   }
 
-  // 2-й и 3-й уровень: только li
+  // 2-й и 3-й уровень: только LI
   return cats.map(cat => `
     <li class="${liClass}" id="${cat.id}" data-cat="${cat.id}">
       <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}" data-cat="${cat.id}">
@@ -293,6 +349,7 @@ const renderMenuTree = (cats, level = 1, baseUrl = 'https://vvintage') => {
     </li>
   `).join('');
 };
+
 
 
   // Ф-ция вставляет в навигацию шаблон с данными категорий
