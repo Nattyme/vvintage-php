@@ -21,6 +21,7 @@
 
       <div class="profile__body profile__form-wrapper">
         <?php if (isset($uriGet)) : ?>
+     
           <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile-edit/<?php echo $uriGet; ?>" method="POST">
         <?php else : ?>
           <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile-edit" method="POST">

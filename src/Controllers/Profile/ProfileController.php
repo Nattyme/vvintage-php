@@ -16,6 +16,7 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\User\UserService;
+use Vvintage\Services\Validation\ProfileValidator;
 
 // use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\Product\ProductRepository;
@@ -38,7 +39,7 @@ final class ProfileController extends BaseController
     $this->userService = new UserService($this->languages, $this->currentLang);
     $this->sessionManager = $sessionManager;
     $this->breadcrumbsService = $breadcrumbs;
-
+    $this->validator = new ProfileValidator();
   }
 
   private function renderProfile (RouteData $routeData, ?User $userModel, ?array $orders): void 
@@ -137,21 +138,25 @@ final class ProfileController extends BaseController
 
     $this->setRouteData($routeData); // <-- передаём routeData
 
-    if($isLoggedUser) {
-      $userModel = $this->sessionManager->getLoggedInUser();
-      $id = $userModel->getId();
-      $address = $userModel->getAddress();
-
-      if(!$address) {
-        $this->userRepository->ensureUserHasAddress($userModel);
-      }
-
-      $orders = $this->userService->getOrdersByUserId($id);
-    } else {
+    //Если пользователь залогинен
+    if(!$isLoggedUser) {
       header('Location: ' . HOST . 'login');
+      exit();
     }
+      // $userModel = $this->sessionManager->getLoggedInUser();
+      // $id = $userModel->getId();
+      // $address = $userModel->getAddress();
 
-    $this->renderProfileEdit($routeData, $userModel,  $address);
+      // if(!$address) {
+      //   $this->userRepository->ensureUserHasAddress($userModel);
+      // }
+
+      // $orders = $this->userService->getOrdersByUserId($id);
+      $this->renderProfileEdit($routeData, $userModel,  $address);
+
+    // if(isset($_POST['updateProfile'])) {
+
+    // }
 
   }
 

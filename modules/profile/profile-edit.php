@@ -184,7 +184,7 @@
     
         //Загружаем адрес доставки
         $userDelivery = R::findOne('address', ' user_id = ? ', [$_SESSION['logged_user']['id']]);
-print_r( $userDelivery);
+
         updateUserAndGoToProfile($user);  //Обновляем данные пользователя
         updateUserDeliveryAndGoToProfile($userDelivery); //Обновляем данные доставки  пользователя
       }
