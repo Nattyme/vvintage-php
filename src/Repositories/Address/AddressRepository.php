@@ -15,11 +15,35 @@ use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\Address\Address;
 use Vvintage\DTO\Address\AddressDTO;
+use Vvintage\DTO\Address\AddressOutputDTO;
 
 
 final class AddressRepository extends AbstractRepository implements AddressRepositoryInterface
 {   
     private const TABLE_ADDRESSES = 'address';
+
+    private function mapBeanToAddress(OODBBean $bean): Address
+    {
+        $dto = new AddressOutputDTO([
+            'id' => (int) $bean->id ?? 0,
+            'name' => (string) $bean->name ?? '',
+            'surname' => (string) $bean->surname ?? '',
+            'fathername' => (string) $bean->fathername ?? '',
+            'phone' => (string) $bean->phone ?? '',
+
+            'country' => (string) $bean->country ?? '',
+            'city' => (string) $bean->v ?? '',
+            'area' => (string) $bean->area ?? '',
+
+            'street' => (string) $bean->street ?? '',
+            'building' => (string) $bean->building ?? '',
+            'flat' => (string) $bean->flat ?? '',
+            'post_index' => (string) $bean->post_index ?? '',
+
+        ]);
+
+        return Address::fromDTO($dto);
+    }
 
     /**
      * Метод ищет адрес по id
@@ -34,7 +58,7 @@ final class AddressRepository extends AbstractRepository implements AddressRepos
             return null;
         }
 
-        return new Address($bean);
+        return $this->getAddressDTOById($bean);
     }
 
     /**
@@ -120,7 +144,7 @@ final class AddressRepository extends AbstractRepository implements AddressRepos
 
     }
 
-    public function getAddressDTOById(int $addressId): ?AddressDTO
+    public function getAddressDTOById(int $addressId): ?AddressOutputDTO
     {
         $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
 
@@ -128,7 +152,7 @@ final class AddressRepository extends AbstractRepository implements AddressRepos
             return null;
         }
 
-        return new AddressDTO([
+        return new AddressOutputDTO([
             'id' => $addressBean->id,
             'name' => $addressBean->name,
             'surname' => $addressBean->surname,

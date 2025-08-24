@@ -141,7 +141,7 @@
                 type="text" 
                 placeholder="Имя получателя"
                 name="delivery_name"
-                value="<?php echo isset($_POST['delivery_name']) ? $_POST['delivery_name'] : $userDelivery->name; ?>"
+                value="<?php echo isset($_POST['delivery_name']) ? $_POST['delivery_name'] : $address->getName(); ?>"
               />
             </label>
           </div>
@@ -153,7 +153,7 @@
                 type="text" 
                 placeholder="Фамилия получателя"
                 name="delivery_surname"
-                value="<?php echo isset($_POST['delivery_surname']) ? $_POST['delivery_surname'] : $userDelivery->surname; ?>"
+                value="<?php echo isset($_POST['delivery_surname']) ? $_POST['delivery_surname'] : $address->getSurname(); ?>"
               />
             </label>
           </div>
@@ -165,7 +165,7 @@
                 type="text" 
                 placeholder="Отчество получателя"
                 name="delivery_fathername"
-                value="<?php echo isset($_POST['delivery_fathername']) ? $_POST['delivery_fathername'] : $userDelivery->fathername; ?>"
+                value="<?php echo isset($_POST['delivery_fathername']) ? $_POST['delivery_fathername'] : $address->getFathername(); ?>"
               />
             </label>
           </div>
@@ -178,7 +178,7 @@
                 type="text" 
                 placeholder="Страна получателя"
                 name="delivery_country"
-                value="<?php echo isset($_POST['delivery_country']) ? $_POST['delivery_country'] : $userDelivery->country; ?>"
+                value="<?php echo isset($_POST['delivery_country']) ? $_POST['delivery_country'] : $address->getCountry(); ?>"
               />
             </label>
           </div>
@@ -190,7 +190,7 @@
                 type="text" 
                 placeholder="Город получателя"
                 name="delivery_city"
-                value="<?php echo isset($_POST['delivery_city']) ? $_POST['delivery_city'] : $userDelivery->city; ?>"
+                value="<?php echo isset($_POST['delivery_city']) ? $_POST['delivery_city'] : $address->getCity(); ?>"
               />
             </label>
           </div>
@@ -202,7 +202,7 @@
                 type="text" 
                 placeholder="Область, район получателя"
                 name="delivery_area"
-                value="<?php echo isset($_POST['delivery_area']) ? $_POST['delivery_area'] : $userDelivery->area; ?>"
+                value="<?php echo isset($_POST['delivery_area']) ? $_POST['delivery_area'] : $address->getArea(); ?>"
               />
             </label>
           </div>
@@ -215,7 +215,7 @@
                 type="text" 
                 placeholder="Улица получателя"
                 name="delivery_street"
-                value="<?php echo isset($_POST['delivery_street']) ? $_POST['delivery_street'] : $userDelivery->street; ?>"
+                value="<?php echo isset($_POST['delivery_street']) ? $_POST['delivery_street'] : $address->getStreet(); ?>"
               />
             </label>
           </div>
@@ -229,7 +229,7 @@
                   type="text" 
                   placeholder="Номер дома"
                   name="delivery_building"
-                  value="<?php echo isset($_POST['delivery_building']) ? $_POST['delivery_building'] : $userDelivery->building; ?>"
+                  value="<?php echo isset($_POST['delivery_building']) ? $_POST['delivery_building'] : $address->getBuilding(); ?>"
                 />
               </label>
             </div>
@@ -242,7 +242,7 @@
                   type="text" 
                   placeholder="Номер квартиры"
                   name="delivery_flat"
-                  value="<?php echo isset($_POST['delivery_flat']) ? $_POST['delivery_flat'] : $userDelivery->flat; ?>"
+                  value="<?php echo isset($_POST['delivery_flat']) ? $_POST['delivery_flat'] : $address->getFlat(); ?>"
                 />
               </label>
             </div>
@@ -254,7 +254,7 @@
                 class="profile-input" 
                 type="text" placeholder="Почтовый индекс получателя"
                 name="delivery_index"
-                value="<?php echo isset($_POST['delivery_index']) ? $_POST['delivery_index'] : $userDelivery->post_index; ?>"
+                value="<?php echo isset($_POST['delivery_index']) ? $_POST['delivery_index'] : $address->getPostIndex(); ?>"
               />
             </label>
           </div>
@@ -265,7 +265,7 @@
                 class="profile-input" 
                 type="text" placeholder="Телефон получателя"
                 name="delivery_phone"
-                value="<?php echo isset($_POST['delivery_phone']) ? $_POST['delivery_phone'] : $userDelivery->phone; ?>"
+                value="<?php echo isset($_POST['delivery_phone']) ? $_POST['delivery_phone'] : $address->getPhone(); ?>"
               />
             </label>
           </div>

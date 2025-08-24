@@ -14,7 +14,6 @@ use Vvintage\Models\Address\Address;
 
 /** Сервисы */
 use Vvintage\Services\Auth\SessionManager;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\User\UserService;
 
@@ -32,17 +31,14 @@ final class ProfileController extends BaseController
   private UserService $userService;
   private SessionManager $sessionManager;
   private Breadcrumbs $breadcrumbsService;
-  private FlashMessage $flash;
 
-  public function __construct(SessionManager $sessionManager, Breadcrumbs $breadcrumbs, FlashMessage $flash)
+  public function __construct(SessionManager $sessionManager, Breadcrumbs $breadcrumbs)
   {
     parent::__construct(); // Важно!
-    // $this->orderRepository = new OrderRepository();
-    // $this->userRepository = new UserRepository();
     $this->userService = new UserService($this->languages, $this->currentLang);
     $this->sessionManager = $sessionManager;
     $this->breadcrumbsService = $breadcrumbs;
-    $this->flash = $flash;
+
   }
 
   private function renderProfile (RouteData $routeData, ?User $userModel, ?array $orders): void 
@@ -66,11 +62,12 @@ final class ProfileController extends BaseController
       ]);
   }
 
-  private function renderProfileEdit (RouteData $routeData, ?User $userModel): void 
+  private function renderProfileEdit (RouteData $routeData, ?User $userModel,  ?Address $address): void 
   {  
       // Название страницы
       $pageTitle = 'Редактирование профиля пользователя';
       $pageClass = "profile-page";
+  
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -82,7 +79,7 @@ final class ProfileController extends BaseController
             'breadcrumbs' => $breadcrumbs,
             'pageClass' => $pageClass,
             'userModel' => $userModel,
-            'flash' => $flash
+            'address' => $address,
       ]);
   }
 
@@ -154,9 +151,7 @@ final class ProfileController extends BaseController
       header('Location: ' . HOST . 'login');
     }
 
-    $addressModel = $userModel->getAddress();
-
-    $this->renderProfileEdit($routeData, $userModel);
+    $this->renderProfileEdit($routeData, $userModel,  $address);
 
   }
 

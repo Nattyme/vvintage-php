@@ -9,6 +9,7 @@ use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Models\User\User;
 use Vvintage\Controllers\AdminPanel\AdminPanelController;
+use Vvintage\Services\Messages\FlashMessage;
 
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
@@ -22,6 +23,7 @@ abstract class BaseController
   protected string $currentLang;
   protected RouteData $routeData; 
   protected Translator $translator;
+  protected FlashMessage $flash;
 
   public function __construct()
   {
@@ -29,6 +31,7 @@ abstract class BaseController
       $this->translator = setTranslator(); // берём уже установленный переводчик
       $this->languages = LanguageConfig::getAvailableLanguages();
       $this->currentLang = LanguageConfig::getCurrentLocale();
+      $this->flash = new FlashMessage();
   }
 
 
@@ -62,6 +65,7 @@ abstract class BaseController
       'adminData' => $adminData,
       'languages' => $this->languages,
       'currentLang' => $this->currentLang,
+      'flash' => $this->flash,
       'isBlogPage' => $isBlogPage
     ]) );
 

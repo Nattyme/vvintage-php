@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace Vvintage\Models\Address;
-use Vvintage\DTO\Address\AddressDTO;
+use Vvintage\DTO\Address\AddressOutputDTO;
 
 use RedBeanPHP\OODBBean;
 
@@ -46,7 +46,7 @@ final class Address
         return $address;
     }
 
-    public static function fromDTO(AddressDTO $dto): self
+    public static function fromDTO(AddressOutputDTO $dto): self
     {
         $address = new self();
         $address->id = $dto->id;

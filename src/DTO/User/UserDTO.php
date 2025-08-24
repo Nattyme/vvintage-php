@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\DTO\User;
 
 use Vvintage\DTO\Address\AddressDTO;
+use Vvintage\DTO\Address\AddressOutputDTO;
 
 
 final class UserDTO
@@ -24,7 +25,7 @@ final class UserDTO
     public string $avatar;
     public string $avatar_small;
     // private int $addressId;
-    public ?AddressDTO $address = null;
+    public ?AddressOutputDTO $address = null;
 
     public function __construct(array $data)
     {

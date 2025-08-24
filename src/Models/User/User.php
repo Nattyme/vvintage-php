@@ -251,10 +251,8 @@ final class User implements UserInterface
       if (!$this->address) {
         return null; // или пустой объект / исключение
       }
-      
 
-      $addressRepository = new AddressRepository();
-      return $addressRepository->getAddressById($this->addressId);
+      return $this->address;
     }
 
 

@@ -5,6 +5,7 @@ namespace Vvintage\Contracts\Address;
 
 use Vvintage\Models\Address\Address;
 use Vvintage\DTO\Address\AddressDTO;
+use Vvintage\DTO\Address\AddressOutputDTO;
 
 
 interface AddressRepositoryInterface
@@ -37,5 +38,5 @@ interface AddressRepositoryInterface
      * @param Address $addressModel
     */
     public function removeAddress(Address $addressModel): void;
-    public function getAddressDTOById(int $addressId): ?AddressDTO;
+    // public function getAddressDTOById(int $addressId): ?AddressOutputDTO;
   }
