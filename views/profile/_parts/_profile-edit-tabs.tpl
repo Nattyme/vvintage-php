@@ -21,11 +21,11 @@
           <?php include ROOT . "templates/components/success.tpl"; ?>
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите имя 
+              Имя
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Имя"
+                placeholder="Введите имя "
                 name="name"
                 value="<?php echo isset($_POST['name']) ? $_POST['name'] : $userModel->getName(); ?>" 
               />
@@ -33,11 +33,11 @@
           </div>
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите фамилию 
+              Фамилия
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Фамилия"
+                placeholder="Введите фамилию "
                 name="surname"
                 value="<?php echo isset($_POST['surname']) ? $_POST['surname'] : $userModel->getSurname(); ?>"
               />
@@ -92,11 +92,11 @@
         <div class="profile-form__container">
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите страну 
+              Страна 
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Страна"
+                placeholder="Введите страну "
                 name="country"
                 value="<?php echo isset($_POST['country']) ? $_POST['country'] : $userModel->getCountry(); ?>"
               />
@@ -104,11 +104,11 @@
           </div>
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите город 
+              Город
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Город"
+                placeholder="Введите город "
                 name="city"
                 value="<?php echo isset($_POST['city']) ? $_POST['city'] : $userModel->getCity(); ?>"
               />
@@ -135,11 +135,11 @@
         <div class="profile-form__container">
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите имя получателя
+              Имя получателя
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Имя получателя"
+                placeholder="Введите имя получателя"
                 name="delivery_name"
                 value="<?php echo isset($_POST['delivery_name']) ? $_POST['delivery_name'] : $address->getName(); ?>"
               />
@@ -147,11 +147,11 @@
           </div>
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите фамилию получателя
+              Фамилия получателя
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Фамилия получателя"
+                placeholder="Введите фамилию получателя"
                 name="delivery_surname"
                 value="<?php echo isset($_POST['delivery_surname']) ? $_POST['delivery_surname'] : $address->getSurname(); ?>"
               />
@@ -159,11 +159,11 @@
           </div>
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите отчество получателя
+              Отчество получателя
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Отчество получателя"
+                placeholder="Введите отчество получателя"
                 name="delivery_fathername"
                 value="<?php echo isset($_POST['delivery_fathername']) ? $_POST['delivery_fathername'] : $address->getFathername(); ?>"
               />
@@ -172,11 +172,11 @@
 
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите страну получателя
+              Страна получателя
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Страна получателя"
+                placeholder="Введите страну получателя"
                 name="delivery_country"
                 value="<?php echo isset($_POST['delivery_country']) ? $_POST['delivery_country'] : $address->getCountry(); ?>"
               />
@@ -184,11 +184,11 @@
           </div>
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите город получателя
+              Город получателя
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Город получателя"
+                placeholder="Введите город получателя"
                 name="delivery_city"
                 value="<?php echo isset($_POST['delivery_city']) ? $_POST['delivery_city'] : $address->getCity(); ?>"
               />
@@ -196,11 +196,11 @@
           </div>
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите область/район получателя
+              Область, район получателя
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Область, район получателя"
+                placeholder="Введите область/район получателя"
                 name="delivery_area"
                 value="<?php echo isset($_POST['delivery_area']) ? $_POST['delivery_area'] : $address->getArea(); ?>"
               />
@@ -209,11 +209,11 @@
 
           <div class="profile-form__group">
             <label class="profile-input__label">
-              Введите улицу получателя
+              Улица получателя 
               <input 
                 class="profile-input" 
                 type="text" 
-                placeholder="Улица получателя"
+                placeholder="Введите улицу получателя"
                 name="delivery_street"
                 value="<?php echo isset($_POST['delivery_street']) ? $_POST['delivery_street'] : $address->getStreet(); ?>"
               />
@@ -223,11 +223,11 @@
           <div class="profile-form__group-wrapper">
             <div class="profile-form__group">
               <label class="profile-input__label">
-                Введите номер дома
+                Номер дома 
                 <input 
                   class="profile-input" 
                   type="text" 
-                  placeholder="Номер дома"
+                  placeholder="Введите номер дома"
                   name="delivery_building"
                   value="<?php echo isset($_POST['delivery_building']) ? $_POST['delivery_building'] : $address->getBuilding(); ?>"
                 />
@@ -236,11 +236,11 @@
 
             <div class="profile-form__group">
               <label class="profile-input__label">
-                Введите номер квартиры
+                Номер квартиры
                 <input 
                   class="profile-input" 
                   type="text" 
-                  placeholder="Номер квартиры"
+                  placeholder="Введите номер квартиры"
                   name="delivery_flat"
                   value="<?php echo isset($_POST['delivery_flat']) ? $_POST['delivery_flat'] : $address->getFlat(); ?>"
                 />
@@ -249,10 +249,10 @@
           </div>
          
           <div class="profile-form__group">
-            <label class="profile-input__label">Введите почтовый индекс получателя
+            <label class="profile-input__label">Почтовый индекс получателя
               <input 
                 class="profile-input" 
-                type="text" placeholder="Почтовый индекс получателя"
+                type="text" placeholder="Введите почтовый индекс получателя"
                 name="delivery_index"
                 value="<?php echo isset($_POST['delivery_index']) ? $_POST['delivery_index'] : $address->getPostIndex(); ?>"
               />
@@ -260,10 +260,10 @@
           </div>
           
           <div class="profile-form__group">
-            <label class="profile-input__label">Введите номер телефона получателя
+            <label class="profile-input__label">Телефон получателя 
               <input 
                 class="profile-input" 
-                type="text" placeholder="Телефон получателя"
+                type="text" placeholder="Введите номер телефона получателя"
                 name="delivery_phone"
                 value="<?php echo isset($_POST['delivery_phone']) ? $_POST['delivery_phone'] : $address->getPhone(); ?>"
               />
