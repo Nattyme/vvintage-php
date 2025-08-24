@@ -25,10 +25,10 @@ final class PageService
     }
 
     // Получаем поля страницы и задаем модели
-    $pageFieldRepo = new PageFieldRepository( $pageModel->getId() );
+    $pageFieldRepo = new PageFieldRepository( (int) $pageModel->getId() );
 
     $pageFields = $pageFieldRepo->getFieldsByPageId();
-  
+
     $pageModel->setFields($pageFields);
 
     return $pageModel;

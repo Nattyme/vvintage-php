@@ -10,7 +10,7 @@
 
       <div class="contacts__map-wrapper">
         <div class="contacts__map" id="map" style="width: 100%; height: 476px">
-         
+   
           <?php if (!empty($fields['map'])): ?>
             <iframe 
               src="<?php echo $fields['map'];?>" 

@@ -29,9 +29,9 @@ final class PageFieldRepository extends AbstractRepository implements PageFieldR
   {
     // Найдём страницу
     $bean = $this->loadBean('pages', $this->pageId);
-  
+
     // Получить список всех связанных полей страницы
-    $fields = $bean->ownPageFieldsList;
+    $fields = $bean->ownPagefieldsList;
 
     // Преобразуем каждый bean из pagefield в объект модели PageField
     return array_map(fn($bean) => new PageField($bean), $fields);
@@ -42,15 +42,15 @@ final class PageFieldRepository extends AbstractRepository implements PageFieldR
   {
     // Найдем страницу
     $bean = $this->loadBean('pages', $id);
-    $bean->ownPageFieldsList = [];
+    $bean->ownPagefieldsList = [];
 
     foreach ($pageFields as $name => $value) {
-      $field = R::dispense('page_fields');
+      $field = R::dispense('pagefields');
       $field->name = $name;
       $field->value = $value;
 
       // Добавляем новое поле к странице.
-      $bean->ownPageFieldsList[] = $field;
+      $bean->ownPagefieldsList[] = $field;
     }
 
     $this->saveBean($bean);

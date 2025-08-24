@@ -36,10 +36,11 @@ class PageController extends BaseController
       return;
     }
 
+    // получаем общие данные старницы 
     $this->setRouteData($routeData); // <-- передаём routeData
-
-    // Передаем данные  шаблон
     $page = $this->pageModel->export();
+
+    // Получаем данные полей страницы
     $fields = [];
 
     foreach($this->pageModel->getFields() as $field) {
@@ -53,7 +54,7 @@ class PageController extends BaseController
 
     // Хлебные крошки
     $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
-
+  
     // Общий рендер
     $this->renderLayout("pages/{$slug}/index", [
         'page' => $page,
