@@ -10,22 +10,19 @@ use Vvintage\Models\Page\Page;
 // use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Messages\FlashMessage;
 
 class PageController extends BaseController
 {
   private Page $pageModel;
   private PageService $pageService;
   private Breadcrumbs $breadcrumbsService;
-  private FlashMessage $flash;
 
-  public function __construct (Page $pageModel, PageService $pageService, FlashMessage $flash, Breadcrumbs $breadcrumbs)
+  public function __construct (Page $pageModel, PageService $pageService, Breadcrumbs $breadcrumbs)
   {
     parent::__construct(); // Важно!
     $this->pageModel = $pageModel;
     $this->pageService = $pageService;
     $this->breadcrumbsService = $breadcrumbs;
-    $this->flash = $flash;
   }
 
   public function index($routeData)

@@ -17,9 +17,9 @@
         <article class="article">
           <div class="article__img">
             <picture>
-              <source srcset="<?php echo HOST . 'static/img/about-page/01.webp 1x,' . 'static/img/about-page/01@2x.webp 2x';?>" type="image/webp" />
-              <source srcset="<?php echo HOST . 'static/img/about-page/01.jpg 1x,' . 'static/img/about-page/01@2x.jpg 2x';?>" type="image/jpeg" />
-              <img src="<?php echo HOST . 'static/img/about-page/01.jpg';?>" srcset="<?php echo HOST . 'static/img/about-page/01@2x.jpg'?>" alt="" />
+              <!-- <source srcset="<?php echo HOST . 'static/img/about-page/is-perfuming-front-window.jpg 1x,' . 'static/img/about-page/is-perfuming-front-window.jpg 1x';?>" type="image/webp" /> -->
+              <!-- <source srcset="<?php echo HOST . 'static/img/about-page/is-perfuming-front-window.jpg 1x,' . 'static/img/about-page/is-perfuming-front-window.jpg 1x';?>" type="image/jpeg" /> -->
+              <img src="<?php echo HOST . 'static/img/about-page/is-perfuming-front-window.jpg';?>" srcset="<?php echo HOST . 'static/img/about-page/is-perfuming-front-window.jpg'?>" alt="" />
             </picture>
           </div>
           <div class="article__content">
@@ -46,138 +46,5 @@
       </div>
     </div>
   </section>
-  <section class="delivery">
-    <div class="container">
-      <div class="delivery__header">
-        <div class="section-title">
-          <h1 class="h1">Доставка</h1>
-        </div>
-      </div>
-
-      <div class="delivery__content">
-        <ul class="delivery__text">
-          <li>
-            <svg class="icon icon--payment">
-              <use href="./img/svgsprite/sprite.symbol.svg#payment"></use>
-            </svg>
-            <div>Оплачивается из&#160;расчета 15 евро за&#160;1 кг.</div>
-          </li>
-          <li>
-            <svg class="icon icon--note">
-              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#note';?>"></use>
-            </svg>
-            <div>Итоговая стоимость рассчитывается оператором при выставлении счета.</div>
-          </li>
-          <li>
-            <svg class="icon icon--plane">
-              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#plane';?>"></use>
-            </svg>
-            <div>Доставка по&#160;всему миру.</div>
-          </li>
-          <li>
-            <svg class="icon icon--check">
-              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#check';?>"></use>
-            </svg>
-            <div>Стоимость отправляемого товара может быть задекларирована в&#160;соответствии с&#160;пожеланиями покупателя.</div>
-          </li>
-        </ul>
-
-        <div class="delivery__img">
-          <picture>
-            <source srcset="<?php echo HOST . 'static/img/about-page/happy-postman_wide.webp 1x,' . 'static/img/about-page/happy-postman_wide@2x.webp 2x';?>" type="image/webp" />
-            <source srcset="<?php echo HOST . 'static/img/about-page/happy-postman_wide.jpg 1x,' . 'static/img/about-page/happy-postman_wide@2x.jpg 2x';?>" type="image/jpeg" />
-            <img src="<?php echo HOST . 'static/img/about-page/happy-postman_wide.jpg';?>" srcset="<?php echo HOST . 'static/img/about-page/happy-postman_wide@2x';?>" alt="happy-postman" />
-          </picture>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="prices">
-    <div class="container">
-      <div class="prices__header">
-        <div class="section-title">
-          <h1 class="h1">Тарифы</h1>
-        </div>
-      </div>
-
-      <div class="prices__cards">
-        <div class="cards-row">
-          <div class="price-card">
-            <div class="price-card__body">
-              <div class="price-card__header">
-                <h2 class="price-card__title">Россия</h2>
-                <p>ОТ&#160;<span class="text-bold text-accent">35 &#8364;</span></p>
-              </div>
-              <div class="price-card__text">
-                <p>Подробнее о&#160;тарифах</p>
-              </div>
-      
-              <div class="price-card__table">
-                <div class="price-card__plans-row">
-                  <div class="price-card__plan price-card__plan--1">
-                    <div>1 кг</div>
-                    <div>35&#8364;</div>
-                  </div>
-                  <div class="price-card__plan price-card__plan--2">
-                    <div>2 кг</div>
-                    <div>37&#8364;</div>
-                  </div>
-                  <div class="price-card__plan price-card__plan--3">
-                    <div>3 кг</div>
-                    <div>44&#8364;</div>
-                  </div>
-                  <div class="price-card__plan price-card__plan--4">
-                    <div>4 кг</div>
-                    <div>48&#8364;</div>
-                  </div>
-                  <div class="price-card__plan price-card__plan--5">
-                    <div>5 кг</div>
-                    <div>50&#8364;</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="price-card">
-            <div class="price-card__body">
-              <div class="price-card__header">
-                <h2 class="price-card__title">Другие страны</h2>
-
-                <p>ОТ&#160;<span class="text-bold text-accent">37 &#8364;</span></p>
-              </div>
-              <div class="price-card__text">
-                <p>Подробнее о&#160;тарифах</p>
-              </div>
-              
-              <div class="price-card__table">
-                <div class="price-card__plans-row">
-                  <div class="price-card__plan price-card__plan--1">
-                    <div>1 кг</div>
-                    <div>37&#8364;</div>
-                  </div>
-                  <div class="price-card__plan price-card__plan--2">
-                    <div>2 кг</div>
-                    <div>44&#8364;</div>
-                  </div>
-                  <div class="price-card__plan price-card__plan--3">
-                    <div>3 кг</div>
-                    <div>48&#8364;</div>
-                  </div>
-                  <div class="price-card__plan price-card__plan--4">
-                    <div>4 кг</div>
-                    <div>50&#8364;</div>
-                  </div>
-                  <div class="price-card__plan price-card__plan--5">
-                    <div>5 кг</div>
-                    <div>54&#8364;</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
+ 
 </main>

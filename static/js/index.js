@@ -44,6 +44,7 @@ const initEverything = async () => {
   getCookiesFormData();
   addAccordion("many", "#sidebar");
   addAccordion("many", "#filter-category");
+  addAccordion("many", "#prices");
   
   fancyBox();
   const pathHolder = document.querySelector("[data-config]");

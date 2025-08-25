@@ -10,6 +10,7 @@ const addAccordion = (type, selector) => {
   if(!accordionBtns || !accordionItems || !accordionContents) return;
 
 
+
   const findContentAndItem = (btn) => {
     const currentItem = btn.closest('.accordion__item');
     const currentContent = currentItem.querySelector('.accordion__content');

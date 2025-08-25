@@ -1,0 +1,349 @@
+<main class="inner-page delivery">
+  <div class="container">
+
+      <div class="delivery__header">
+        <div class="section-title">
+          <h1 class="h1">Доставка и оплата</h1>
+        </div>
+      
+        <div class="breadcrumbs">
+          <a href="#!" class="breadcrumb ">Главная</a> 
+          <span>&mdash;</span> 
+          <a href="#!" class="breadcrumb breadcrumb--active">Доставка и оплата</a>
+        </div>
+      </div>
+
+
+
+    <section class="delivery__schema">
+      <div class="section-title">
+        <h3 class="h3">Оформление заказа</h3>
+      </div>
+      <ul class="schema">
+        <li class="schema__item">
+          <div class="schema__icon">
+            <svg class="icon icon--shopping_bag_speed">
+              <use href="./img/svgsprite/sprite.symbol.svg#shopping_bag_speed"></use>
+            </svg>
+          </div>
+          <p>Оформите заказ на сайте. Доступно после <a class="link">регистрации</a></p>
+        </li>
+        <li class="schema__item">
+          <div class="schema__icon">
+            <svg class="icon icon--order_approve">
+              <use href="./img/svgsprite/sprite.symbol.svg#order_approve"></use>
+            </svg>
+          </div>
+          <p>Администратор проверит наличие товара и рассчитает итоговую стоимость. 
+            Данные по оплате будут направлены на email</p>
+        </li>
+        <li class="schema__item">
+          <div class="schema__icon">
+            <svg class="icon icon--credit_card_clock">
+              <use href="./img/svgsprite/sprite.symbol.svg#credit_card_clock"></use>
+            </svg>
+          </div>
+          <p>Оплатить заказ нужно в течении 15 мин с момента подтверждения. После получения оплаты выкупаем товар у поставщика.</p>
+      
+          <a class="schema__link link" href="#!">Все способы оплаты</a>
+
+        
+        </li>
+        <li class="schema__item">
+          <div class="schema__icon">
+
+            <svg class="icon icon--delivery_speed">
+              <use href="./img/svgsprite/sprite.symbol.svg#delivery_speed"></use>
+            </svg>
+          </div>
+          <p>Товар поступает на склад в течение 1-ой недели. После проверки он отправляется покупателю государственной почтой вашей страны. В графе заказа в профиле появится трек-номер</p>
+      
+          <a class="schema__link link" href="#!">Перейти к тарифам</a>
+      
+        </li>
+      </ul>
+    </section>
+    
+    <!-- <div class="delivery__content">
+    
+        <ul class="delivery__text">
+          <li>
+            <svg class="icon icon--payment">
+              <use href="./img/svgsprite/sprite.symbol.svg#payment"></use>
+            </svg>
+            <div> Оплачивается из расчета 15 евро за 1 кг.</div>
+          </li>
+          <li>
+            <svg class="icon icon--note">
+              <use href="./img/svgsprite/sprite.symbol.svg#note"></use>
+            </svg>
+            <div>Итоговая стоимость рассчитывается оператором при выставлении счета.</div>
+          </li>
+          <li>
+            <svg class="icon icon--plane">
+              <use href="./img/svgsprite/sprite.symbol.svg#plane"></use>
+            </svg>
+            <div>Доставка по всему миру.</div>
+          
+          </li>
+          <li>
+            <svg class="icon icon--check">
+              <use href="./img/svgsprite/sprite.symbol.svg#check"></use>
+            </svg>
+            <div>Стоимость отправляемого товара может быть задекларирована в соответствии с пожеланиями покупателя.</div>
+          
+          </li>
+        </ul>
+
+        <div class="delivery__img">
+          <img src="./../../img//about-page/happy-postman_wide.jpg" srcset="happy-postman_wide@2x" alt="happy-postman">
+        </div>
+        
+    </div> -->
+
+
+    <section class="delivery__tip">
+      <div class="tip-list">
+        <div class="tip-item">
+            <p>Посмотреть трек номер и статус отправки можно в вашем <a href="#!" class="link">профиле.</a></p>
+        </div>
+        <div class="sub-nav__line-separator"></div>
+        <div class="tip-item">
+            <p>Есть вопросы? Ищите конкретный товар?</p>
+            <a class="button button--s button--outline">Напишите нам</a>
+        </div>
+      </div>
+    
+    </section>
+
+    
+  <!-- <div class="delivery__shipment">
+    
+      <ul class="delivery__text">
+        <li>
+          <svg class="icon icon--payment">
+            <use href="./img/svgsprite/sprite.symbol.svg#payment"></use>
+          </svg>
+          <div> Оплачивается из расчета 15 евро за 1 кг.</div>
+        </li>
+        <li>
+          <svg class="icon icon--note">
+            <use href="./img/svgsprite/sprite.symbol.svg#note"></use>
+          </svg>
+          <div>Итоговая стоимость рассчитывается оператором при выставлении счета.</div>
+        </li>
+        <li>
+          <svg class="icon icon--plane">
+            <use href="./img/svgsprite/sprite.symbol.svg#plane"></use>
+          </svg>
+          <div>Доставка по всему миру.</div>
+        
+        </li>
+        <li>
+          <svg class="icon icon--check">
+            <use href="./img/svgsprite/sprite.symbol.svg#check"></use>
+          </svg>
+          <div>Стоимость отправляемого товара может быть задекларирована в соответствии с пожеланиями покупателя.</div>
+        
+        </li>
+      </ul>
+
+      <div class="delivery__img">
+        <img src="./../../img//about-page/happy-postman_wide.jpg" srcset="happy-postman_wide@2x" alt="happy-postman">
+      </div>
+      
+  </div> -->
+
+
+  <section class="prices">
+    <div class="section-title">
+      <h3 class="h3">Тарифы</h3>
+    </div>
+
+    <div class="prices__cards" id="prices">
+      <div class="cards-row " >
+        <div class="price-card accordion__item">
+          <div class="price-card__body">
+            <div class="price-card__header">
+              <div class="price-card__title price-card__title--with-line">
+                <h2 class="price-card__title">Россия</h2>
+              </div>
+              <p>ОТ <span class="text-bold text-accent">35 €</span></p>
+            </div>
+          
+            <button class="button button--primary button--s accordion__btn">Подробнее</button>
+        
+            <div class="price-card__table accordion__content">
+              <div class="price-card__plans-row">
+                <div class="price-card__plan price-card__plan--1">
+                  <div>1 кг</div>
+                  <div>35€</div>
+                </div>
+                <div class="price-card__plan price-card__plan--2">
+                  <div>2 кг</div>
+                  <div>37€</div>
+                </div>
+                <div class="price-card__plan price-card__plan--3">
+                  <div>3 кг</div>
+                  <div>44€</div>
+                </div>
+                <div class="price-card__plan price-card__plan--4">
+                  <div>4 кг</div>
+                  <div>48€</div>
+                </div>
+                <div class="price-card__plan price-card__plan--5">
+                  <div>5 кг</div>
+                  <div>50€</div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+      
+    
+        </div>
+        <div class="price-card accordion__item">
+          <div class="price-card__body">
+            <div class="price-card__header">
+              <div class="price-card__title price-card__title--with-line accordion__btn">
+                <h2 class="price-card__title">МИР</h2>
+              </div>
+          
+              <p>ОТ <span class="text-bold text-accent">37 €</span></p>
+            </div>
+            <button class="button button--primary button--s accordion__btn">Подробнее</button>
+        
+            <div class="price-card__table accordion__content">
+              <div class="price-card__plans-row">
+                <div class="price-card__plan price-card__plan--1">
+                  <div>1 кг</div>
+                  <div>37€</div>
+                </div>
+                <div class="price-card__plan price-card__plan--2">
+                  <div>2 кг</div>
+                  <div>44€</div>
+                </div>
+                <div class="price-card__plan price-card__plan--3">
+                  <div>3 кг</div>
+                  <div>48€</div>
+                </div>
+                <div class="price-card__plan price-card__plan--4">
+                  <div>4 кг</div>
+                  <div>50€</div>
+                </div>
+                <div class="price-card__plan price-card__plan--5">
+                  <div>5 кг</div>
+                  <div>54€</div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+    
+  <section class="post-logos">
+      <p class="post-text">Доставка заказов государственными почтовыми службами:</p>
+      <ul class="logos">
+        <li class="logos__item">
+          <a href="https://www.laposte.fr/" class="logos__link">
+            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-la-poste-post" alt="logo-la-poste-post">
+          </a>
+        </li>
+        <li class="logos__item">
+          <a href="https://www.japanpost.jp/" class="logos__link">
+            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-japan-post" alt="logo-japan-post">
+          </a>
+        </li>
+        <li class="logos__item">
+          <a href="http://www.chinapost.com.cn/" class="logos__link">
+            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-china-post" alt="logo-china-post">
+          </a>
+        </li>
+        <li class="logos__item">
+          <a href="#" class="logos__link">
+            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-russian-post" alt="logo-russian-post">
+          </a>
+        </li>
+        <li class="logos__item">
+          <a href="#" class="logos__link">
+              <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-correos-post" alt="logo-correos-post">
+          </a>
+        </li>
+        <li class="logos__item">
+          <a href="#" class="logos__link">
+            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-deutsche-post" alt="logo-deutsche-post">
+          </a>
+        </li>
+        <li class="logos__item">
+          <a href="#" class="logos__link">
+              <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-royal-post" alt="logo-royal-post">
+          </a>
+        </li>
+
+
+      </ul>
+  </section>
+
+
+
+  <section class="terms">
+    <div class="container">
+          <div class="section-title">
+            <h3 class="h3">Гарантии и условия поставки </h3>
+          </div>
+          <ul>
+            <li>Оператор выкупает товар сразу же после поступления оплаты.</li>
+            <li>Если к моменту перевода средств товар уже продан -  возвращаем оплату. Удержается только комиссия по переводу через системы.</li>
+            <li>Все претензии должны направляться в письменной форме.</li>
+            <li>В связи со сложной международной ситуацией и сложной работой почты, мы не принимаем возвраты товара.</li>
+            <li>Мы стараемся выложить как можно больше фотографий, чтобы покупатель имел четкое представление о том, что он приобретает.</li>
+            <li>Мы не несем ответственности за работу почты России.</li>
+            <li>По желанию отправка может быть застрахована</li>
+          </ul>
+
+    </div>
+  </section>
+
+  <section class="payment">
+    <div class="container">
+      <div class="section-title">
+        <h3 class="h3">Способы оплаты</h3>
+      </div>
+
+      <ul>
+        <li>Оплата принимается разными способами. Через международные средства оплаты, такие как : Paypal, дебетовые  карты, денежные переводы, а также через отправку электронных платежей таких как системы переводов и криптовалюта. </li>
+        <li>Все цены указаны в евро. Курс евро зависит от выбранного способа оплаты.</li>
+        <li>Расчет производится в рублях, евро и долларах по реальному курсу на день выставления счета</li>
+      </ul>
+
+      <ul class="payment-logos">
+        <li class="payment-logos__item">
+          <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-paypal" alt="paypal-logo">
+        </li>
+        <li class="payment-logos__item">
+            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-mastercard" alt="mastercard-logo">
+        </li>
+        <li class="payment-logos__item">
+          <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-bitcoin" alt="bitcoin-logo">
+        </li>
+        <li class="payment-logos__item">
+          <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-visa" alt="visa-logo">
+        </li>
+        <li class="payment-logos__item">
+            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-mir" alt="mir-logo">
+        </li>
+    
+      </ul>
+    </div>
+  </section>
+
+
+  </div>
+</main>

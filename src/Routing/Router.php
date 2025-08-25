@@ -137,6 +137,10 @@
           self::routeOrders($routeData);
           break;
 
+        case 'delivery':
+          self::routePages($routeData);
+          break;
+
         case 'contacts':
           self::routePages($routeData);
           break;
@@ -475,9 +479,13 @@
       $breadcrumbs = new Breadcrumbs();
       $pageModel = $pageService->getPageBySlug($routeData->uriModule);
 
-      $controller = new PageController($pageModel, $pageService, $flash, $breadcrumbs);
+      $controller = new PageController($pageModel, $pageService, $breadcrumbs);
 
       switch ($routeData->uriModule) {
+        case 'delivery':
+          $controller->index($routeData);
+          break;
+
         case 'contacts':
           $controller->index($routeData);
           break;
