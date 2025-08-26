@@ -38,9 +38,6 @@ final class User implements UserInterface
     private string $avatar;
     private string $avatar_small;
     
-    private int $addressId;
-    private Address $address;
-
     private function __construct() {}
 
     
@@ -62,16 +59,6 @@ final class User implements UserInterface
         $user->phone = (string) $dto->phone;
         $user->avatar = (string) $dto->avatar;
         $user->avatar_small = (string) $dto->avatar_small;
-
-        if ($dto->address) {
-            $user->addressId = $dto->address->id;
-            $user->address = Address::fromDTO($dto->address);
-        }
-
-     
-        // $user->addressId = (string) $dto->addressId;
-
-        // $brand->translations = $dto->translations;
       
         return $user;
     }
@@ -94,11 +81,7 @@ final class User implements UserInterface
          
         $user->avatar = (string) ($data['avatar'] ?? '');
         $user->avatar_small = (string) $dto->avatar_small;
-   
-        // $user->addressId = (int) ($data['address_id'] ?? 0);
-        $user->addressRepository = $data['address'];
-
-        
+           
         return $user;
     }
 

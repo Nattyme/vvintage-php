@@ -4,16 +4,18 @@ declare(strict_types=1);
 namespace Vvintage\Services\Validation;
 
 use Vvintage\Services\Security\RegistrationService;
+use Vvintage\Repositories\User\UserRepository;
+
 use Vvintage\Services\Base\BaseService;
 
 final class RegistrationValidator extends BaseService
 {
   private UserRepository $userRepository;
 
-  public function __construct(UserRepository $userRepository)
+  public function __construct()
   {
       parent::__construct(); // Важно!
-      $this->userRepository = $userRepository;
+      $this->userRepository = new UserRepository();
   }
 
   public function validate(array $data): bool
@@ -34,7 +36,8 @@ final class RegistrationValidator extends BaseService
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $this->flash->pushError('Введите корректный Email');
       $valid = false;
-    } elseif ($this->userRepository->findByEmail($email)) {
+    } elseif ($this->userRepository->findBlockedUserByEmail($email)) {
+
       $this->flash->pushError('Ошибка регистрации.');
       $valid = false;
     }
@@ -49,7 +52,7 @@ final class RegistrationValidator extends BaseService
       $valid = false;
     }
 
-    if ($this->regService->isEmailFree($email)) {
+    if ($this->userRepository->getUserByEmail($email)) {
       $this->flash->pushError(
         'Пользователь с таким email уже существует',
         'Используйте другой email адрес или воспользуйтесь <a href="' . HOST . 'lost-password">восстановлением пароля.</a>'

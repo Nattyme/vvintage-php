@@ -81,7 +81,7 @@ abstract class BaseController
 
   protected function isAdmin(): bool
   {
-    $userModel = $this->sessionManager->getLoggedInUser();
+    $userModel = $this->sessionService->getLoggedInUser();
     
     if( $userModel instanceof User) {
       return $userModel && $userModel->getRole() === 'admin';

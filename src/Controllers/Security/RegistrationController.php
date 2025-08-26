@@ -32,7 +32,7 @@ final class RegistrationController extends BaseController
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
       $regService = new RegistrationService();
-      $validator = new RegistrationValidator($regService, $this->flash);
+      $validator = new RegistrationValidator();
 
       if ( $validator->validate( $_POST )) {
         $newUser = $regService->registrateUser( $_POST );

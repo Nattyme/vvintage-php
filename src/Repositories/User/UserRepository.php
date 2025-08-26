@@ -17,6 +17,7 @@ use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Repositories\Address\AddressRepository;
 use Vvintage\DTO\User\UserDTO;
+use Vvintage\DTO\User\UserInputDTO;
 use Vvintage\DTO\Address\AddressDTO;
 
 final class UserRepository extends AbstractRepository implements UserRepositoryInterface
@@ -71,18 +72,49 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
       return $this->mapBeanToUser($bean);;
     }
 
+     /** create DTO */
+    private function createUserInputDto(array $data, int $userId): array
+    {
+      $userInputDto = [];
+
+      $dto = new UserInputDTO([
+                  'id' => (int) $bean->id,
+                  'password' => (string) $bean->password,
+                  'email' => (string) $bean->email,
+                  'name' => (string) $bean->name,
+                  'role' => (string) $bean->role,
+
+                  'fav_list' => (string) $bean->fav_list,
+                  'cart' => (string) $bean->cart,
+
+                  'country' => (string) $bean->country,
+                  'city' => (string) $bean->city,
+                  'phone' => (string) $bean->phone,
+
+                  'avatar' => (string) $bean->avatar,
+                  'avatar_small' => (string) $bean->avatar_small
+              ]);
+      foreach($data as $locale => $translate) {
+          $productTranslationsDto[] = new ProductTranslationInputDTO([
+              'product_id' => (int) $productId,
+              'slug' => (string) ($data['slug'] ?? ''),
+              'locale' => (string) $locale, 
+              'title' => (string) ($translate['title'] ?? ''),
+              'description' => (string) ($translate['description'] ?? ''),
+              'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
+              'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
+          ]);
+      }
+         
+      return  $productTranslationsDto;
+
+    }
+
+
 
 
     private function mapBeanToUser(OODBBean $bean): User
     {
-        // $translations = $this->loadTranslations((int) $bean->id);
-
-        // Получаем AddressDTO
-        $addressDTO = null;
-        if (!empty($bean->address_id)) {
-            $addressDTO = $this->addressRepository->getAddressDTOById((int)$bean->address_id);
-        }
-
         $dto = new UserDTO([
             'id' => (int) $bean->id,
             'password' => (string) $bean->password,
@@ -99,7 +131,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
             'avatar' => (string) $bean->avatar,
             'avatar_small' => (string) $bean->avatar_small,
-            'address' => $addressDTO, // передаём объект AddressDTO
         ]);
 
         return User::fromDTO($dto);
@@ -147,16 +178,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
       foreach($fields as $field) {
         $bean->$field = null;
       }
-      
-      $addressModel = $this->addressRepository->createAddress(); // создаем новый адрес
-      $addressId = $addressModel->getId();
-
-      if (!is_int($addressId) || $addressId === 0) {
-        return null;
-      }
-
-      $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
-      $bean->address = $addressBean;
+    
 
       $userId = $this->saveBean($bean);
 
@@ -230,36 +252,36 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     /**
      * Метод сохраняет id адреса в поле теблицы User
     */
-    public function updateUserAddressId(int $userId, int $addressId): void {
-      $userBean = $this->loadBean(self::TABLE_USERS, $userId);
-      $addressBean = $this->loadBean(self::TABLE_ADDRESSES,  $addressId);
+    // public function updateUserAddressId(int $userId, int $addressId): void {
+    //   $userBean = $this->loadBean(self::TABLE_USERS, $userId);
+    //   $addressBean = $this->loadBean(self::TABLE_ADDRESSES,  $addressId);
 
-      if ($userBean->id !== 0) {
-        $userBean->address = $addressBean;
-        $this->saveBean($userBean);
-      }
-    }
+    //   if ($userBean->id !== 0) {
+    //     $userBean->address = $addressBean;
+    //     $this->saveBean($userBean);
+    //   }
+    // }
 
-    public function ensureUserHasAddress(User $userModel): ?int
-    {
-      $bean = $this->loadBean(self::TABLE_USERS, $userModel->getId());
+    // public function ensureUserHasAddress(User $userModel): ?int
+    // {
+    //   $bean = $this->loadBean(self::TABLE_USERS, $userModel->getId());
 
-      if ($bean->address_id !== null) {
-        return null;
-      }
+    //   if ($bean->address_id !== null) {
+    //     return null;
+    //   }
 
-      $addressModel = $this->addressRepository->createAddress(); // создаем новый адрес
-      $addressId = $addressModel->getId();
+    //   $addressModel = $this->addressRepository->createAddress(); // создаем новый адрес
+    //   $addressId = $addressModel->getId();
 
-      if (!is_int($addressId) || $addressId === 0) {
-        return null;
-      }
+    //   if (!is_int($addressId) || $addressId === 0) {
+    //     return null;
+    //   }
 
-      $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
-      $bean->address = $addressBean;
+    //   $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
+    //   $bean->address = $addressBean;
 
-      return $this->saveBean($bean);
-    }
+    //   return $this->saveBean($bean);
+    // }
 
 
   

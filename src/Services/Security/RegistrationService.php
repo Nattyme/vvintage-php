@@ -16,7 +16,7 @@ final class RegistrationService extends BaseService
   private UserService $userService;
   private SessionService $sessionService;
 
-  public function __constuct(UserService $userService, SessionServuce $sessionService)
+  public function __construct()
   {
     parent::__construct(); // Важно!
     $this->userService = new UserService();
@@ -25,6 +25,7 @@ final class RegistrationService extends BaseService
  
   public function registrateUser (array $postData):void 
   {
+    
     // Создаем нового пользователя
     $newUser = $this->userService->createUser( $postData );
 

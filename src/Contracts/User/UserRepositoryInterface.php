@@ -20,8 +20,8 @@ interface UserRepositoryInterface
 
     public function setRecoveryCode (User $userModel, string $recoveryCode): void;
     public function updateUserPassword (User $userModel, string $password): void;
-    public function updateUserAddressId(int $userId, int $addressId): void;
-    public function ensureUserHasAddress(User $userModel): ?int;
+    // public function updateUserAddressId(int $userId, int $addressId): void;
+    // public function ensureUserHasAddress(User $userModel): ?int;
     public function getItemsList(int $userId, string $itemsKey): array;   
 
     public function getAllUsersCount(?string $sql = null, array $params = []): int;
