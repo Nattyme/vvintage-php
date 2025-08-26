@@ -13,7 +13,6 @@ use Vvintage\Models\User\User;
 use Vvintage\Models\Address\Address;
 
 /** Сервисы */
-use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\User\UserService;
 use Vvintage\Services\Validation\ProfileValidator;
@@ -27,22 +26,136 @@ require_once ROOT . './libs/functions.php';
 
 final class ProfileController extends BaseController
 { 
-  // private OrderRepository $orderRepository;
-  // private UserRepository $userRepository;
   private UserService $userService;
-  private SessionManager $sessionManager;
   private Breadcrumbs $breadcrumbsService;
+  private ProfileValidator $validator;
 
-  public function __construct(SessionManager $sessionManager, Breadcrumbs $breadcrumbs)
+  public function __construct(Breadcrumbs $breadcrumbs)
   {
     parent::__construct(); // Важно!
     $this->userService = new UserService($this->languages, $this->currentLang);
-    $this->sessionManager = $sessionManager;
     $this->breadcrumbsService = $breadcrumbs;
     $this->validator = new ProfileValidator();
   }
 
-  private function renderProfile (RouteData $routeData, ?User $userModel, ?array $orders): void 
+
+  public function index(RouteData $routeData)
+  {
+    $orders = null;
+    $userModel = null;
+    $this->setRouteData($routeData);
+
+    $userModel = $this->getLoggedInUser();
+    if(!$userModel) {
+      header("Location: " . HOST . 'login');
+      exit;
+    };
+
+    if( empty($this->routeData->uriGetParam) ) {
+      
+      $id = $userModel->getId() ?? null;
+
+      if (!$id) {
+        header("Location: " . HOST . 'login');
+        exit;
+      }
+
+      $orders = $this->userService->getOrdersByUserId($id);
+      $this->renderProfileFull($this->routeData, $userModel, $orders);
+    } else {
+      $id = (int) $this->routeData->uriGetParam;
+
+      if(!is_numeric($id)) {
+        header("Location: " . HOST . 'login');
+        exit;
+      }
+
+      if ($this->isProfileOwner($id) || isAdmin()) {
+        $userModel = $this->userService->getUserByID($id);
+        $order = $orders = $this->userService->getOrdersByUserId($id);
+
+        $this->renderProfileFull($this->routeData, $userModel, $orders);
+      } 
+
+      $this->renderProfile($this->routeData, $userModel);
+    }
+     
+  }
+
+  public function edit(RouteData $routeData)
+  {    
+    $orders = null;
+    $userModel = null;
+
+    $this->setRouteData($routeData);
+  
+    $userModel = $this->getLoggedInUser();
+    if(!$userModel) header("Location: " . HOST . 'login');
+
+    $id = $userModel->getId();
+    
+    if ($this->isProfileOwner($id) || $this->isAdmin()) {
+      $orders = $this->userService->getOrdersByUserId($id);
+      $address = $userModel->getAddress();
+
+      $this->renderProfileEdit($routeData, $userModel, $orders, $address);
+    } 
+
+    header('Location: ' . HOST . 'profile');
+    exit();
+  }
+
+  public function order(RouteData $routeData)
+  {
+       $this->setRouteData($routeData);
+       
+      // Если ID нет - выходим
+      if ( !isset($_GET['id']) || empty($_GET['id'])) {
+        header('Location: ' . HOST . 'profile');
+        exit();
+      }
+
+      $userModel = null;
+      $isLoggedUser = $this->isLoggedIn();
+
+      if(!$isLoggedUser) {
+        header('Location: ' . HOST . 'login');
+      }
+
+      $userModel = $this->getLoggedInUser();
+      $userId = $userModel->getId();
+
+      // Если есть ID  - получаем данные заказа, проверя, что это заказ вошедшего в свой профиль пользователя
+      $orders = $this->userService->getOrderById((int)$routeData->uriGetParam);
+      // Проверка, что заказ принадлежит текущему пользователю
+      if ( $order->getUserId() !== $userId) {
+        header('Location: ' . HOST . 'profile');
+        exit();
+      }
+
+      // Получаем массив товаров из JSON формата
+      $products = $order->getCart();
+      
+      // Обходим массив с товарами и создаем ассоциативный массив с id => 1
+      $ids = array_fill_keys(array_column($products, 'id'), 1);
+
+      // Пересобирем в новый массив $productsData с ключами - Id товара
+      $productsData = $this->userService->getProductsByIds($ids);
+
+      // Создаём ассоциативный массив из cart: [id => amount]
+      $amountMap = array_column($products, 'amount', 'id');
+
+      foreach ($productsData as &$product) {
+          $productId = $product['id'];
+          $product['amount'] = $amountMap[$productId] ?? 0;
+      }
+      unset($product);
+
+      $this->renderOrder($routeData, $order, $productsData);
+  }
+
+
+  private function renderProfile (RouteData $routeData, ?User $userModel): void 
   {  
       // Название страницы
       $pageTitle = 'Профиль пользователя';
@@ -63,7 +176,28 @@ final class ProfileController extends BaseController
       ]);
   }
 
-  private function renderProfileEdit (RouteData $routeData, ?User $userModel,  ?Address $address): void 
+  private function renderProfileFull(RouteData $routeData, ?User $userModel, ?array $orders): void
+  {
+      // Название страницы
+      $pageTitle = 'Профиль пользователя';
+      $pageClass = "profile-page";
+
+      // Хлебные крошки
+      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+
+          // Подключение шаблонов страницы
+      $this->renderLayout('profile/profile-full', [
+            'pageTitle' => $pageTitle,
+            'routeData' => $routeData,
+            'breadcrumbs' => $breadcrumbs,
+            'pageClass' => $pageClass,
+            'userModel' => $userModel,
+            'orders' => $orders,
+            'flash' => $this->flash
+      ]);
+  }
+
+  private function renderProfileEdit (RouteData $routeData, ?User $userModel,  array $address): void 
   {  
       // Название страницы
       $pageTitle = 'Редактирование профиля пользователя';
@@ -103,110 +237,5 @@ final class ProfileController extends BaseController
             'products' => $products
       ]);
 
-  }
-
-
-  public function index(RouteData $routeData)
-  {
-    $orders = null;
-    $userModel = null;
-    $isLoggedUser = $this->sessionManager->isLoggedIn();
-    $this->setRouteData($routeData); // <-- передаём routeData
-
-    if($isLoggedUser) {
-      $userModel = $this->sessionManager->getLoggedInUser();
-      if(!$userModel) 
-      {
-        header("Location: " . HOST . 'login');
-      };
-      $id = $userModel->getId();
-
-      $orders = $this->userService->getOrdersByUserId($id);
-
-    } else {
-      header('Location: ' . HOST . 'login');
-    }
-    
-    $this->renderProfile($routeData, $userModel, $orders);
-  }
-
-  public function edit(RouteData $routeData)
-  {    
-    $orders = null;
-    $userModel = null;
-    $isLoggedUser = $this->sessionManager->isLoggedIn();
-
-    $this->setRouteData($routeData); // <-- передаём routeData
-
-    //Если пользователь залогинен
-    if(!$isLoggedUser) {
-      header('Location: ' . HOST . 'login');
-      exit();
-    }
-      // $userModel = $this->sessionManager->getLoggedInUser();
-      // $id = $userModel->getId();
-      // $address = $userModel->getAddress();
-
-      // if(!$address) {
-      //   $this->userRepository->ensureUserHasAddress($userModel);
-      // }
-
-      // $orders = $this->userService->getOrdersByUserId($id);
-      $this->renderProfileEdit($routeData, $userModel,  $address);
-
-    // if(isset($_POST['updateProfile'])) {
-
-    // }
-
-  }
-
-  public function order(RouteData $routeData)
-  {
-      // Если ID нет - выходим
-      if ( !isset($_GET['id']) || empty($_GET['id'])) {
-        header('Location: ' . HOST . 'profile');
-        exit();
-      }
-
-      $userModel = null;
-      $isLoggedUser = $this->sessionManager->isLoggedIn();
-
-      if(!$isLoggedUser) {
-        header('Location: ' . HOST . 'login');
-      }
-
-      $userModel = $this->sessionManager->getLoggedInUser();
-      $userId = $userModel->getId();
-
-      // Если есть ID  - получаем данные заказа, проверя, что это заказ вошедшего в свой профиль пользователя
-      $orders = $this->userService->getOrderById((int)$routeData->uriGetParam);
-      // Проверка, что заказ принадлежит текущему пользователю
-      if ( $order->getUserId() !== $userId) {
-        header('Location: ' . HOST . 'profile');
-        exit();
-      }
-
-      // Получаем массив товаров из JSON формата
-      $products = $order->getCart();
-      
-      // Обходим массив с товарами и создаем ассоциативный массив с id => 1
-      $ids = array_fill_keys(array_column($products, 'id'), 1);
-
-      // Запрос продуктов и соответствующих им изображений
-      // $productRepository = new ProductRepository();
-      // Пересобирем в новый массив $productsData с ключами - Id товара
-      $productsData = $this->userService->getProductsByIds($ids);
-      // $productsData = $productRepository->getProductsByIds($ids);
-
-      // Создаём ассоциативный массив из cart: [id => amount]
-      $amountMap = array_column($products, 'amount', 'id');
-
-      foreach ($productsData as &$product) {
-          $productId = $product['id'];
-          $product['amount'] = $amountMap[$productId] ?? 0;
-      }
-      unset($product);
-
-      $this->renderOrder($routeData, $order, $productsData);
   }
 }

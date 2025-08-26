@@ -18,4 +18,9 @@ final class AddressService
   {
     return $this->addressRepository->createAddress($user_id, $postData);
   }
+
+  public function getAddressById(int $id): ?Address
+  {
+    return $this->addressRepository->getAddressById($id);
+  }
 }

@@ -5,17 +5,16 @@ namespace Vvintage\Services\Validation;
 
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Base\BaseService;
 
-final class LoginValidator
+final class LoginValidator extends BaseService
 {
   private UserRepository $userData;
-  private FlashMessage $notes;
 
-  public function __construct(UserRepository $userData, FlashMessage $notes)
+  public function __construct(UserRepository $userData)
   {
+    parent::__construct(); // Важно!
     $this->userData = $userData;
-    $this->notes = $notes;
   }
 
   public function validate(array $data): bool

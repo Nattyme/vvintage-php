@@ -4,17 +4,16 @@ declare(strict_types=1);
 namespace Vvintage\Services\Validation;
 
 use Vvintage\Services\Security\PasswordResetService;
-use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Base\BaseService;
 
-final class PasswordResetValidator
+final class PasswordResetValidator extends BaseService
 {
   private PasswordResetService $resetPassService;
-  private FlashMessage $notes;
 
-  public function __construct(PasswordResetService $resetPassService, FlashMessage $notes)
+  public function __construct(PasswordResetService $resetPassService)
   {
+    parent::__construct(); // Важно!
     $this->resetPassService = $resetPassService;
-    $this->notes = $notes;
   }
 
   public function validate(array $data): bool
@@ -23,16 +22,16 @@ final class PasswordResetValidator
 
     $csrfToken = $data['csrf'] ?? '';
     if (!check_csrf($csrfToken)) {
-      $this->notes->pushError('Неверный токен безопасности');
+      $this->flash->pushError('Неверный токен безопасности');
       $valid = false;
     } 
 
     $email = trim($data['email'] ?? '');
     if ($email === '') {
-      $this->notes->pushError('Введите email');
+      $this->flash->pushError('Введите email');
       $valid = false;
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->notes->pushError('Некорректный формат email');
+      $this->flash->pushError('Некорректный формат email');
       $valid = false;
     }
 

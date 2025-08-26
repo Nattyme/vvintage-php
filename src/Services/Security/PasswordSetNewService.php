@@ -4,14 +4,16 @@ declare(strict_types=1);
 namespace Vvintage\Services\Security;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\User\UserRepository;
+use Vvintage\Services\Base\BaseService;
 
 use RedBeanPHP\R;
 
-final class PasswordSetNewService 
+final class PasswordSetNewService extends BaseService
 {
   private UserRepository $userRepository;
 
   public function __construct (UserRepository $userRepository) {
+    parent::__construct(); // Важно!
     $this->userRepository = $userRepository;
   }
 

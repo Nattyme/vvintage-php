@@ -13,6 +13,7 @@ final class UserDTO
     public string $password;
     public string $email;
     public string $name;
+    public string $surname;
     public string $role;
 
     public array $fav_list;
@@ -34,6 +35,7 @@ final class UserDTO
         $this->password = (string) ($data['password'] ?? '');
         $this->email = (string) ($data['email'] ?? '');
         $this->name = (string) ($data['name'] ?? '');
+        $this->surname = (string) ($data['surname'] ?? '');
         $this->role = (string) ($data['role'] ?? '');
 
         $this->fav_list = is_array($data['fav_list'] ?? null) ? $data['fav_list'] : json_decode($data['fav_list'] ?? '[]', true);

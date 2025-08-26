@@ -6,16 +6,15 @@ use Vvintage\Repositories\User\UserRepository;
 
 use RedBeanPHP\R;
 use Vvintage\Config\Config;
-use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Base\BaseService;
 
-final class PasswordResetService 
+final class PasswordResetService extends BaseService
 {
   private UserRepository $userRepository;
-  private FlashMessage $notes;
 
-  public function __construct (UserRepository $userRepository, FlashMessage $notes) {
+  public function __construct (UserRepository $userRepository) {
+    parent::__construct(); // Важно!
     $this->userRepository = $userRepository;
-    $this->notes = $notes;
   }
 
   // Генерируем случайную строку заданной длины 

@@ -24,6 +24,7 @@ abstract class BaseController
   protected RouteData $routeData; 
   protected Translator $translator;
   protected FlashMessage $flash;
+  protected SessionManager $sessionManager;
 
   public function __construct()
   {
@@ -32,6 +33,7 @@ abstract class BaseController
       $this->languages = LanguageConfig::getAvailableLanguages();
       $this->currentLang = LanguageConfig::getCurrentLocale();
       $this->flash = new FlashMessage();
+      $this->sessionManager = new SessionManager();
   }
 
 
@@ -79,8 +81,7 @@ abstract class BaseController
 
   protected function isAdmin(): bool
   {
-    $sessionManager = new SessionManager();
-    $userModel = $sessionManager->getLoggedInUser();
+    $userModel = $this->sessionManager->getLoggedInUser();
     
     if( $userModel instanceof User) {
       return $userModel && $userModel->getRole() === 'admin';
@@ -89,11 +90,26 @@ abstract class BaseController
     return false;
   }
 
+   protected function isLoggedIn(): bool
+   {
+      return $this->sessionManager->isLoggedIn();
+   }
+
+   protected function getLoggedInUser(): ?User
+   {
+    return $this->sessionManager->getLoggedInUser();
+   }
+
   protected function isBlogPage(RouteData $routePath): bool 
   {
       if (!$routePath) return false;
 
       return $this->routeData->getUriModule() === 'blog';
+  }
+
+  protected function isProfileOwner(int $profileId): bool 
+  {
+    return  $this->sessionManager->isProfileOwner($profileId);
   }
 
   

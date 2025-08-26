@@ -27,6 +27,7 @@ class PageController extends BaseController
 
   public function index($routeData)
   {
+   
     if(!$this->pageModel) {
       http_response_code(404);
       echo "404 — Страница не найдена";

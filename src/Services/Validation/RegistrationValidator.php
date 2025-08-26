@@ -4,17 +4,16 @@ declare(strict_types=1);
 namespace Vvintage\Services\Validation;
 
 use Vvintage\Services\Security\RegistrationService;
-use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Base\BaseService;
 
-final class RegistrationValidator
+final class RegistrationValidator extends BaseService
 {
   private RegistrationService $regService;
-  private FlashMessage $notes;
 
-  public function __construct(RegistrationService $regService, FlashMessage $notes)
+  public function __construct(RegistrationService $regService)
   {
+      parent::__construct(); // Важно!
     $this->regService = $regService;
-    $this->notes = $notes;
   }
 
   public function validate(array $data): bool
@@ -23,7 +22,7 @@ final class RegistrationValidator
 
     $csrfToken = $data['csrf'] ?? '';
     if (!check_csrf($csrfToken)) {
-      $this->notes->pushError('Неверный токен безопасности');
+      $this->flash->pushError('Неверный токен безопасности');
       $valid = false;
     }
 
@@ -31,26 +30,26 @@ final class RegistrationValidator
     $password = trim($data['password'] ?? '');
 
     if ($email === '') {
-      $this->notes->pushError('Введите email', 'Email обязателен для регистрации на сайте');
+      $this->flash->pushError('Введите email', 'Email обязателен для регистрации на сайте');
       $valid = false;
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->notes->pushError('Введите корректный Email');
+      $this->flash->pushError('Введите корректный Email');
       $valid = false;
     } elseif ($this->regService->isEmailBlocked($email)) {
-      $this->notes->pushError('Ошибка регистрации.');
+      $this->flash->pushError('Ошибка регистрации.');
       $valid = false;
     }
 
     if ($password === '') {
-      $this->notes->pushError('Введите пароль', 'Пароль обязателен для регистрации на сайте');
+      $this->flash->pushError('Введите пароль', 'Пароль обязателен для регистрации на сайте');
       $valid = false;
     } elseif (strlen($password) < 5) {
-      $this->notes->pushError('Неверный формат пароля', 'Пароль должен быть больше четырёх символов');
+      $this->flash->pushError('Неверный формат пароля', 'Пароль должен быть больше четырёх символов');
       $valid = false;
     }
 
     if ($this->regService->isEmailFree($email)) {
-      $this->notes->pushError(
+      $this->flash->pushError(
         'Пользователь с таким email уже существует',
         'Используйте другой email адрес или воспользуйтесь <a href="' . HOST . 'lost-password">восстановлением пароля.</a>'
       );

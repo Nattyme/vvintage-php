@@ -13,21 +13,18 @@ use Vvintage\Routing\RouteData;
 /** Сервисы */
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Post\PostService;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Seo\SeoService;
 
 
 final class PostController extends BaseController
 {
-    private FlashMessage $flash;
     private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
     private PostService $postService;
 
-    public function __construct(FlashMessage $flash, Breadcrumbs $breadcrumbs)
+    public function __construct(Breadcrumbs $breadcrumbs)
     {
         parent::__construct(); // Важно!
-        $this->flash = $flash;
         $this->seoService = new SeoService();
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService( $this->languages, $this->currentLang);

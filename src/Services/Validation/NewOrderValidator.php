@@ -5,17 +5,16 @@ namespace Vvintage\Services\Validation;
 
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Base\BaseService;
 
-final class NewOrderValidator
+final class NewOrderValidator extends BaseService
 {
   private UserRepository $userData;
-  private FlashMessage $notes;
 
-  public function __construct(UserRepository $userData, FlashMessage $notes)
+  public function __construct(UserRepository $userData)
   {
+    parent::__construct(); // Важно!
     $this->userData = $userData;
-    $this->notes = $notes;
   }
 
   public function validate(array $data): bool
@@ -24,32 +23,32 @@ final class NewOrderValidator
 
     $csrfToken = $data['csrf'] ?? '';
     if (!check_csrf($csrfToken)) {
-      $this->notes->renderError('Неверный токен безопасности');
+      $this->flash->renderError('Неверный токен безопасности');
       $valid = false;
     } 
 
     $email = isset($data['email']) ? trim(strtolower($data['email'])) : '';
 
     if ($email === '') {
-      $this->notes->pushError('Введите email');
+      $this->flash->pushError('Введите email');
       $valid = false;
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->notes->pushError('Некорректный формат email');
+      $this->flash->pushError('Некорректный формат email');
       $valid = false;
     } elseif ($email) {
       $isUserInBlock = $this->userData->findBlockedUserByEmail($email);
 
       if ($isUserInBlock) {
-        $this->notes->pushError('Ошибка, невозможно оформить заказ для этого email.');
+        $this->flash->pushError('Ошибка, невозможно оформить заказ для этого email.');
         $valid = false;
       }
 
     } elseif ( empty(trim($data['name'])) ) {
-      $this->notes->pushError('Поле "Имя" пустое. Заполните данные для отправки.');
+      $this->flash->pushError('Поле "Имя" пустое. Заполните данные для отправки.');
     } elseif ( empty(trim($data['phone'])) ) {
-        $this->notes->pushError('Поле "Телефон" пустое. Заполните данные для отправки.');
+        $this->flash->pushError('Поле "Телефон" пустое. Заполните данные для отправки.');
     }  else if ( empty(trim($data['address'])) ) {
-        $this->notes->pushError('Поле "Адрес" пустое. Заполните данные для отправки.');
+        $this->flash->pushError('Поле "Адрес" пустое. Заполните данные для отправки.');
     } 
 
     return $valid;

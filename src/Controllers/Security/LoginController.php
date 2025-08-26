@@ -16,7 +16,6 @@ use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\Security\LoginService;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\User\UserItemsMergeService;
 
 /** Хранилища */
@@ -38,7 +37,6 @@ final class LoginController extends BaseController
 {
   private UserRepository $userRepository;
   private ProductRepository $productRepository;
-  private FlashMessage $flash;
   protected array $languages;
   protected string $currentLang;
   protected Translator $translator;
@@ -48,7 +46,6 @@ final class LoginController extends BaseController
     parent::__construct(); // Важно!
     $this->userRepository = $userRepository;
     $this->productRepository = $productRepository;
-    $this->flash = new FlashMessage();
     $this->translator = setTranslator(); // берём уже установленный переводчик
     $this->languages = LanguageConfig::getAvailableLanguages();
     $this->currentLang = LanguageConfig::getCurrentLocale();

@@ -6,18 +6,17 @@ namespace Vvintage\Services\Security;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Validation\LoginValidator;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Base\BaseService;
 
-final class LoginService
+final class LoginService extends BaseService 
 {
   private UserRepository $userRepository;
-  private FlashMessage $notes;
 
-  public function __construct(UserRepository $userRepository, FlashMessage $notes)
+  public function __construct(UserRepository $userRepository)
   {
+    parent::__construct(); // Важно!
     $this->userRepository = $userRepository;
-    $this->notes = $notes;
   }
 
   public function login(array $data): ?User

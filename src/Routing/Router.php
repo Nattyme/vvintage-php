@@ -232,17 +232,13 @@
       $userRepository = new UserRepository();
       $setNewPassService = new PasswordSetNewService($userRepository);
 
-      // $cartModel = new Cart();
-      // $favModel = new Favorites();
-
-      $flash = new FlashMessage();
-      $validator = new LoginValidator($userRepository, $flash);
+      $validator = new LoginValidator($userRepository);
       $productRepository = new ProductRepository();
 
-      $loginController = new LoginController($userRepository, $productRepository, $flash);
-      $regController = new RegistrationController($flash);
-      $resetController = new PasswordResetController($flash);
-      $setNewPassController = new PasswordSetNewController( $setNewPassService, $flash );
+      $loginController = new LoginController($userRepository, $productRepository);
+      $regController = new RegistrationController();
+      $resetController = new PasswordResetController();
+      $setNewPassController = new PasswordSetNewController( $setNewPassService);
 
    
       switch ($routeData->uriModule) {
@@ -269,11 +265,8 @@
     }
 
     private static function routeProfile(RouteData $routeData) {
-      $sessionManager = new SessionManager();
       $breadcrumbs = new Breadcrumbs();
-      $flash = new FlashMessage();
-
-      $profileController = new ProfileController($sessionManager, $breadcrumbs, $flash);
+      $profileController = new ProfileController($breadcrumbs);
 
       switch ($routeData->uriModule) {
         case 'profile':
@@ -321,10 +314,9 @@
       
     private static function routeBlog(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
-      $flash = new FlashMessage();
   
-      $blogController = new BlogController($flash, $breadcrumbs);
-      $postController = new PostController($flash, $breadcrumbs);
+      $blogController = new BlogController($breadcrumbs);
+      $postController = new PostController($breadcrumbs);
     
 
         if ($routeData->uriModule === 'add-comment') {

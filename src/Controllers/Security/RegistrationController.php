@@ -8,7 +8,6 @@ use Vvintage\Controllers\Base\BaseController;
 
 use Vvintage\Services\Security\RegistrationService;
 use Vvintage\Services\Validation\RegistrationValidator;
-use Vvintage\Services\Messages\FlashMessage;
 
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
@@ -20,14 +19,13 @@ final class RegistrationController extends BaseController
   protected array $languages;
   protected string $currentLang;
   protected Translator $translator;
-  private FlashMessage $flash;
 
-  public function __construct(FlashMessage $flash)
+  public function __construct()
   {
+      parent::__construct(); // Важно!
       $this->translator = setTranslator(); // берём уже установленный переводчик
       $this->languages = LanguageConfig::getAvailableLanguages();
       $this->currentLang = LanguageConfig::getCurrentLocale();
-      $this->flash = $flash;
   }
 
   public function index ($routeData) {

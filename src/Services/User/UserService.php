@@ -70,9 +70,4 @@ class UserService extends BaseService
     return $this->productRepository->getProductsByIds($ids);
   }
 
-  public function getUserAddress(): array 
-  {
-    // $id =  $this->userRepository->
-    // return $this->getAddressById();
-  }
 }

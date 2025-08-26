@@ -9,7 +9,6 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Security\PasswordResetService;
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Validation\PasswordResetValidator;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Routing\RouteData;
 
 // Пеервод на другие языки
@@ -21,14 +20,13 @@ final class PasswordResetController extends BaseController
   protected array $languages;
   protected string $currentLang;
   protected Translator $translator;
-  private FlashMessage $flash;
 
-  public function __construct(FlashMessage $flash)
+  public function __construct()
   {
+      parent::__construct(); // Важно!
       $this->translator = setTranslator(); // берём уже установленный переводчик
       $this->languages = LanguageConfig::getAvailableLanguages();
       $this->currentLang = LanguageConfig::getCurrentLocale();
-      $this->flash = $flash;
   }
 
   public function index ($routeData) 

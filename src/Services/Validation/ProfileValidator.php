@@ -5,10 +5,14 @@ namespace Vvintage\Services\Validation;
 
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Base\BaseService;
 
-final class ProfileValidator 
+final class ProfileValidator extends BaseService
 {
+  public function __constuct()
+  {
+    parent::__construct(); // Важно!
+  }
   public function validateLogin()
   {
      // Проверка на то, что юзер залогинен
@@ -25,8 +29,7 @@ final class ProfileValidator
         updateUserAndGoToProfile($user);  //Обновляем данные пользователя
         updateUserDeliveryAndGoToProfile($userDelivery); //Обновляем данные доставки  пользователя
       } else if ( $_SESSION['logged_user']['role'] === 'admin') {
-    
-        // print_r($_SESSION);
+  
         // Это администратор сайта. Делаем проверку на доп парам - ID пользователя для редактирования
         if ( isset($uriGet) && $uriGet !== $_SESSION['logged_user']['id']) {
           //Редакт. чужого профиля. 

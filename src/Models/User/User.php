@@ -26,6 +26,7 @@ final class User implements UserInterface
     private string $password;
     private string $email;
     private string $name;
+    private string $surname;
     private string $role;
 
     private array $fav_list;
@@ -50,6 +51,7 @@ final class User implements UserInterface
         $user->password = (string) $dto->password;
         $user->email = (string) $dto->email;
         $user->name = (string) $dto->name;
+        $user->surname = (string) $dto->surname;
         $user->role = (string) $dto->role;
       
         $user->fav_list = $dto->fav_list;
@@ -81,6 +83,7 @@ final class User implements UserInterface
         $user->password = (string) ($data['password'] ?? '');
         $user->email = (string) ($data['email'] ?? '');
         $user->name = $data['name'] ?? '';
+        $user->surname = $data['surname'] ?? '';
         $user->role = (string) ($data['role'] ?? 'Пользователь');
         $user->fav_list = (string) ($data['fav_list'] ?? []);
         $user->cart = (string) ($data['cart'] ?? []);
@@ -131,6 +134,7 @@ final class User implements UserInterface
         return [
           'id' => $this->id,
           'name' => $this->name,
+          'surname' => $this->surname,
           'email' => $this->email,
           'role' => $this->role,
           'password' => $this->password,
@@ -175,7 +179,7 @@ final class User implements UserInterface
 
     public function getSurname(): string
     {
-      return $this->name;
+      return $this->surname;
     }
 
     public function getCountry(): string

@@ -8,17 +8,15 @@ use Vvintage\Controllers\Base\BaseController;
 
 use Vvintage\Services\Security\PasswordSetNewService;
 use Vvintage\Services\Validation\PasswordSetNewValidator;
-use Vvintage\Services\Messages\FlashMessage;
 
 final class PasswordSetNewController extends BaseController 
 {
-  private FlashMessage $flash;
   private PasswordSetNewService $setNewPassService;
 
-  public function __construct(PasswordSetNewService $setNewPassService, FlashMessage $flash)
+  public function __construct(PasswordSetNewService $setNewPassService)
   {
+    parent::__construct(); // Важно!
     $this->setNewPassService = $setNewPassService;
-    $this->flash = $flash;
   }
 
   

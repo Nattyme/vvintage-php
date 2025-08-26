@@ -6,25 +6,22 @@ namespace Vvintage\Controllers\Blog;
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Post\PostService;
 use Vvintage\DTO\Post\PostDTO;
+
 
 
 require_once ROOT . './libs/functions.php';
 
 final class BlogController extends BaseController
 {
-  private FlashMessage $flash;
   private Breadcrumbs $breadcrumbsService;
   private PostService $postService;
 
     public function __construct(
-        FlashMessage $flash,
         Breadcrumbs $breadcrumbs
     ) {
         parent::__construct(); // Важно!
-        $this->flash = $flash;
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService( $this->languages, $this->currentLang );
     }

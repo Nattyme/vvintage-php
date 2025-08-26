@@ -8,11 +8,17 @@ use Vvintage\Services\User\UserService;
 use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Address\AddressService;
 use Vvintage\Repositories\AddressRepository;
+use Vvintage\Services\Base\BaseService;
 
 use RedBeanPHP\R;
 
-final class RegistrationService
+final class RegistrationService extends BaseService
 {
+
+  public function __constuct()
+  {
+    parent::__construct(); // Важно!
+  }
  
   public function registrateUser (array $postData):void 
   {

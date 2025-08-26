@@ -74,4 +74,19 @@ class SessionManager
         return $userRepository->getUserById((int) $_SESSION['user_id']);
     }
 
+    public function isProfileOwner(int $profileId): bool 
+    {
+        if (!$this->isLoggedIn()) {
+            return false;
+        }
+
+        $user = $this->getLoggedInUser();
+        if (!$user) {
+            return false;
+        }
+
+        return $user->getId() === $profileId;
+    }
+
+
 }
