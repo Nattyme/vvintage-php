@@ -8,12 +8,12 @@ use Vvintage\Services\Base\BaseService;
 
 final class RegistrationValidator extends BaseService
 {
-  private RegistrationService $regService;
+  private UserRepository $userRepository;
 
-  public function __construct(RegistrationService $regService)
+  public function __construct(UserRepository $userRepository)
   {
       parent::__construct(); // Важно!
-    $this->regService = $regService;
+      $this->userRepository = $userRepository;
   }
 
   public function validate(array $data): bool
@@ -27,7 +27,6 @@ final class RegistrationValidator extends BaseService
     }
 
     $email = trim($data['email'] ?? '');
-    $password = trim($data['password'] ?? '');
 
     if ($email === '') {
       $this->flash->pushError('Введите email', 'Email обязателен для регистрации на сайте');
@@ -35,10 +34,12 @@ final class RegistrationValidator extends BaseService
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $this->flash->pushError('Введите корректный Email');
       $valid = false;
-    } elseif ($this->regService->isEmailBlocked($email)) {
+    } elseif ($this->userRepository->findByEmail($email)) {
       $this->flash->pushError('Ошибка регистрации.');
       $valid = false;
     }
+
+    $password = trim($data['password'] ?? '');
 
     if ($password === '') {
       $this->flash->pushError('Введите пароль', 'Пароль обязателен для регистрации на сайте');
