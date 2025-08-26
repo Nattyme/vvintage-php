@@ -16,7 +16,6 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Favorites\Favorites;
-use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
 // use Vvintage\Store\Favorites\GuestFavoritesStore;

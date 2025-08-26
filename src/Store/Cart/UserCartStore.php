@@ -6,7 +6,7 @@ namespace Vvintage\Store\Cart;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Cart\Cart;
-use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Session\SessionService;
 
 class UserCartStore implements CartStoreInterface
 {
@@ -25,6 +25,7 @@ class UserCartStore implements CartStoreInterface
 
   public function save (Cart $cartModel, ?UserInterface $userModel = null): void 
   {
+    $sessionService = new SessionService();
     $cart = $cartModel->getItems();
 
     // Записываем в БД
@@ -34,7 +35,7 @@ class UserCartStore implements CartStoreInterface
     $userModel->setCart( $cartModel->getItems() );
 
     //  Обновляем данные пользователя в сессии
-    SessionManager::setUserSession($userModel);  // обновляем logged_user
+     $sessionService->setUserSession($userModel);  // обновляем logged_user
 }
 
 } 

@@ -5,7 +5,7 @@ namespace Vvintage\Services\Security;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Services\User\UserService;
-use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Base\BaseService;
 
 use RedBeanPHP\R;
@@ -14,13 +14,13 @@ final class RegistrationService extends BaseService
 {
 
   private UserService $userService;
-  private SessionManager $sessionManager;
+  private SessionService $sessionService;
 
-  public function __constuct(UserService $userService, SessionManager $sessionManager)
+  public function __constuct(UserService $userService, SessionServuce $sessionService)
   {
     parent::__construct(); // Важно!
     $this->userService = new UserService();
-    $this->sessionManager = new SessionManager();
+    $this->sessionService = new SessionService();
   }
  
   public function registrateUser (array $postData):void 
@@ -48,7 +48,7 @@ final class RegistrationService extends BaseService
 
   private function autoLoginNewUser (User $user): void
   {
-    $this->sessionManager->setUserSession($user);
+    $this->sessionService->setUserSession($user);
 
     // Сообщение об успехе
     $_SESSION['success'][] = [

@@ -6,7 +6,7 @@ namespace Vvintage\Services\Security;
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Validation\LoginValidator;
-use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Base\BaseService;
 
 final class LoginService extends BaseService 
@@ -21,6 +21,7 @@ final class LoginService extends BaseService
 
   public function login(array $data): ?User
   {
+    $sessionService = new SessionService();
     $validator = new LoginValidator($this->userRepository, $this->notes);
 
     if (!$validator->validate($data)) {
@@ -34,7 +35,7 @@ final class LoginService extends BaseService
       return null;
     }
 
-    SessionManager::setUserSession($user);
+    $sessionService->setUserSession($user);
     return $user;
   }
 }

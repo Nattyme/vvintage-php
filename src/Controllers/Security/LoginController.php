@@ -10,7 +10,6 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
-use Vvintage\Services\Auth\SessionManager;
 
 /** Сервисы */
 use Vvintage\Services\Cart\CartService;

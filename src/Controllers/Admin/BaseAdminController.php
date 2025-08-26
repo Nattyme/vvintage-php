@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Admin;
 
 use Vvintage\Models\Settings\Settings;
-use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Models\User\User;
 
 // Пеервод на другие языки
@@ -26,8 +26,8 @@ abstract class BaseAdminController
 
   protected function isAdmin(): bool
   {
-    $sessionManager = new SessionManager();
-    $userModel = $sessionManager->getLoggedInUser();
+    $sessionService = new SessionService();
+    $userModel = $sessionService->getLoggedInUser();
 
     if (!($userModel instanceof User) || $userModel->getRole() !== 'admin') {
       header("Location: " . HOST . 'login');

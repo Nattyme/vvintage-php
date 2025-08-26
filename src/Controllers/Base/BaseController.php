@@ -6,7 +6,7 @@ namespace Vvintage\Controllers\Base;
 // use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 use Vvintage\Models\Settings\Settings;
-use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Models\User\User;
 use Vvintage\Controllers\AdminPanel\AdminPanelController;
 use Vvintage\Services\Messages\FlashMessage;
@@ -24,7 +24,7 @@ abstract class BaseController
   protected RouteData $routeData; 
   protected Translator $translator;
   protected FlashMessage $flash;
-  protected SessionManager $sessionManager;
+  protected SessionService $sessionService;
 
   public function __construct()
   {
@@ -33,7 +33,7 @@ abstract class BaseController
       $this->languages = LanguageConfig::getAvailableLanguages();
       $this->currentLang = LanguageConfig::getCurrentLocale();
       $this->flash = new FlashMessage();
-      $this->sessionManager = new SessionManager();
+      $this->sessionService = new SessionService();
   }
 
 

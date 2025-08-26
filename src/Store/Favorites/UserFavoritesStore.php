@@ -6,7 +6,7 @@ namespace Vvintage\Store\Favorites;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Favorites\Favorites;
-use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Session\SessionService;
 
 class UserFavoritesStore implements FavoritesStoreInterface
 {
@@ -25,7 +25,7 @@ class UserFavoritesStore implements FavoritesStoreInterface
 
   public function save (Favorites $favModel, ?UserInterface $userModel = null): void 
   {
-dd('сораняем');
+    $sessionService = new SessionService();
     $fav = $favModel->getItems();
 
     // Записываем в БД
@@ -35,7 +35,7 @@ dd('сораняем');
     $userModel->setFav( $favModel->getItems() );
 
     //  Обновляем данные пользователя в сессии
-    SessionManager::setUserSession($userModel);  // обновляем logged_user
+    $sessionService->setUserSession($userModel);  // обновляем logged_user
 }
 
 } 

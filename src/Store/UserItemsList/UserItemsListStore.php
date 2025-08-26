@@ -15,7 +15,7 @@ use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Models\Cart\Cart;
 
 /** Сервисы */
-use Vvintage\Services\Auth\SessionManager;
+use Vvintage\Services\Session\SessionService;
 
 class UserItemsListStore implements UserItemsListStoreInterface
 {
@@ -35,6 +35,7 @@ class UserItemsListStore implements UserItemsListStoreInterface
 
   public function save ($itemKey, $itemModel, ?UserInterface $userModel = null): void 
   {
+    $sessionService = new SessionService();
     $items = $itemModel->getItems();
 
     // Записываем в БД
@@ -44,7 +45,7 @@ class UserItemsListStore implements UserItemsListStoreInterface
     $userModel->set( $itemKey, $itemModel->getItems() );
 
     //  Обновляем данные пользователя в сессии
-    SessionManager::setUserSession($userModel);  // обновляем logged_user
+    $sessionService->setUserSession($userModel);  // обновляем logged_user
   }
 
 } 

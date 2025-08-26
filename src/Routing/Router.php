@@ -34,7 +34,7 @@
   use Vvintage\Services\Favorites\FavoritesService;
   use Vvintage\Services\Order\OrderService;
   use Vvintage\Services\Blog\BlogService;
-  use Vvintage\Services\Auth\SessionManager;
+  use Vvintage\Services\Session\SessionService;
   use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Validation\LoginValidator;
   use Vvintage\Services\Validation\NewOrderValidator;
@@ -239,6 +239,7 @@
       $regController = new RegistrationController();
       $resetController = new PasswordResetController();
       $setNewPassController = new PasswordSetNewController( $setNewPassService);
+      $sessionService = new SessionService();
 
    
       switch ($routeData->uriModule) {
@@ -259,7 +260,7 @@
           break;
         
         case 'logout':
-          SessionManager::logout();
+          $sessionService->logout();
           break;
       }
     }
@@ -331,11 +332,12 @@
     }
 
     private static function routeCart(RouteData $routeData) {
+      $sessionService = new SessionService();
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
       */
-      $userModel = SessionManager::getLoggedInUser();
+      $userModel = $sessionService->getLoggedInUser();
       $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
 
@@ -370,11 +372,12 @@
     }
 
     private static function routeFav(RouteData $routeData) {
+      $sessionService = new SessionService();
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
       */
-      $userModel = SessionManager::getLoggedInUser();
+      $userModel = $sessionService->getLoggedInUser();
       $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
 
@@ -409,11 +412,12 @@
     }
 
     private static function routeOrders(RouteData $routeData) {
+      $sessionService = new SessionService();
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
       */
-      $userModel = SessionManager::getLoggedInUser();
+      $userModel = $sessionService->getLoggedInUser();
 
       // Если гость - перенаправляем на страницу входа
       if($userModel instanceof GuestUser) {

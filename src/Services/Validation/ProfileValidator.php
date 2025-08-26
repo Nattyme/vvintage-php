@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Validation;
 
-use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Base\BaseService;
 

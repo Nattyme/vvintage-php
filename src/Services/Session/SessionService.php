@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Auth;
+namespace Vvintage\Services\Session;
 
 use RedBeanPHP\R; // Подключаем readbean
 
@@ -20,9 +20,9 @@ use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Store\Cart\GuestCartStore;
 use Vvintage\Store\Favorites\GuestFavoritesStore;
 
-class SessionManager
+class SessionService
 {
-    public static function setUserSession(User $user): bool
+    public function setUserSession(User $user): bool
     {
         // Автологин пользователя после регистрации
         $_SESSION['logged_user'] = $user->export($user);
@@ -40,7 +40,7 @@ class SessionManager
         return false;
     }
 
-    public static function isLoggedIn(): bool
+    public function isLoggedIn(): bool
     {
         $result = false;
 
@@ -50,7 +50,7 @@ class SessionManager
         return $result;
     }
 
-    public static function logout(): void
+    public function logout(): void
     {
       if (empty($_SESSION['errors'])) {
         session_destroy();
@@ -60,7 +60,7 @@ class SessionManager
     }
 
 
-    public static function getLoggedInUser(): ?UserInterface
+    public function getLoggedInUser(): ?UserInterface
     {
         // Если не пользователь - возвращаем экземпляр гостя с корзиной из куки
         if (!isset($_SESSION['user_id'])) {

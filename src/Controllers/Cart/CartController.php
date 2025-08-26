@@ -29,7 +29,6 @@ use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
 
 /** Сервисы */
-use Vvintage\Services\Auth\SessionManager;
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
