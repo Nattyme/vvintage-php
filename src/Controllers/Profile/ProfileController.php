@@ -119,7 +119,7 @@ final class ProfileController extends BaseController
       // Проверяем права: владелец профиля или админ
       if ($this->isProfileOwner($id) || $this->isAdmin()) {
           $orders = $this->userService->getOrdersByUserId($id);
-          $address = null; // здесь можно добавить $userModel->getAddress(), если нужно
+          $address = null; // здесь можно добавить $userModel->getAddress()
 
           $this->renderProfileEdit($routeData, $userModel, $address);
       } else {
