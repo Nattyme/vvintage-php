@@ -91,28 +91,45 @@ final class ProfileController extends BaseController
   }
 
   public function edit(RouteData $routeData)
-  {    
-    $orders = null;
-    $userModel = null;
+  {
+      $this->setRouteData($routeData);
 
-    $this->setRouteData($routeData);
-  
-    $userModel = $this->getLoggedInUser();
-    if(!$userModel) header("Location: " . HOST . 'login');
+      $loggedUser = $this->getLoggedInUser();
+      if (!$loggedUser) {
+          header("Location: " . HOST . 'login');
+          exit;
+      }
 
-    $id = $userModel->getId();
-    
-    if ($this->isProfileOwner($id) || $this->isAdmin()) {
-      $orders = $this->userService->getOrdersByUserId($id);
-      // $address = $userModel->getAddress();
-      $address = null;
+      // Определяем ID пользователя, которого хотим редактировать
+      $id = $loggedUser->getId(); // по умолчанию редактируем себя
+      if ($this->isAdmin() && !empty($this->routeData->uriGet)) {
+          $idFromUri = (int)$this->routeData->uriGet;
+          if (is_numeric($idFromUri) && $idFromUri > 0) {
+              $id = $idFromUri;
+          }
+      }
 
-      $this->renderProfileEdit($routeData, $userModel, $orders, $address);
-    } 
+      // Получаем пользователя по ID
+      $userModel = $this->userService->getUserByID($id);
+      if (!$userModel) {
+          header("Location: " . HOST . 'profile');
+          exit;
+      }
 
-    header('Location: ' . HOST . 'profile');
-    exit();
+      // Проверяем права: владелец профиля или админ
+      if ($this->isProfileOwner($id) || $this->isAdmin()) {
+          $orders = $this->userService->getOrdersByUserId($id);
+          $address = null; // здесь можно добавить $userModel->getAddress(), если нужно
+
+          $this->renderProfileEdit($routeData, $userModel, $address);
+      } else {
+          // Нет прав — редирект на свой профиль
+          header('Location: ' . HOST . 'profile');
+          exit();
+      }
   }
+
+
 
   public function order(RouteData $routeData)
   {
@@ -206,7 +223,7 @@ final class ProfileController extends BaseController
       ]);
   }
 
-  private function renderProfileEdit (RouteData $routeData, ?User $userModel,  array $address): void 
+  private function renderProfileEdit (RouteData $routeData, ?User $userModel,  $address): void 
   {  
       // Название страницы
       $pageTitle = 'Редактирование профиля пользователя';
