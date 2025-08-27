@@ -15,8 +15,7 @@ use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
-use Vvintage\Repositories\Address\AddressRepository;
-use Vvintage\DTO\User\UserDTO;
+use Vvintage\DTO\User\UserOutputDTO;
 use Vvintage\DTO\User\UserCreateDTO;
 use Vvintage\DTO\User\UserUpdateDTO;
 use Vvintage\DTO\Address\AddressDTO;
@@ -24,21 +23,8 @@ use Vvintage\DTO\Address\AddressDTO;
 final class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
     private const TABLE_USERS = 'users';
-    private const TABLE_ADDRESSES = 'address';
     private const TABLE_BLOCKED_USERS = 'blockedusers';
 
-    private AddressRepository $addressRepository;
-
-    public function __construct()
-    {
-      $this->addressRepository = new AddressRepository();
-    }
-
-
-    private function hashPassword(string $password): string
-    {
-      return password_hash($password, PASSWORD_DEFAULT);
-    }
 
     /**
      * Метод ищет пользователя по id
@@ -123,7 +109,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
     private function mapBeanToUser(OODBBean $bean): User
     {
-        $dto = new UserDTO([
+        $dto = new UserOutputDTO([
             'id' => (int) $bean->id,
             'password' => (string) $bean->password,
             'email' => (string) $bean->email,
@@ -192,7 +178,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
   public function saveNewUser(UserCreateDTO $dto): ?User
   {
-      $bean = $this->createUserBean();
+      $bean = $this->createBean(self::TABLE_USERS);
       $bean->password = $this->hashPassword($dto->password);
       $bean->email = strtolower($dto->email);
       $bean->name = $dto->name ?? '';
@@ -295,6 +281,13 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
       }
     }
 
+    
+    private function hashPassword(string $password): string
+    {
+      return password_hash($password, PASSWORD_DEFAULT);
+    }
+
+
     /**
      * Метод сохраняет id адреса в поле теблицы User
     */
@@ -329,11 +322,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     //   return $this->saveBean($bean);
     // }
 
-
-    private function createUserBean(): OODBBean
-    {
-      return $this->createBean(self::TABLE_USERS);
-    }
 
     /**
      * Метод обновляет корзину

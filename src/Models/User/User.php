@@ -17,7 +17,7 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
 
-use Vvintage\DTO\User\UserDTO;
+use Vvintage\DTO\User\UserOutputDTO;
 // use Vvintage\DTO\Address\AddressDTO;
 
 final class User implements UserInterface
@@ -41,7 +41,7 @@ final class User implements UserInterface
     private function __construct() {}
 
     
-    public static function fromDTO(UserDTO $dto): self
+    public static function fromDTO(UserOutputDTO $dto): self
     {
         $user = new self();
         $user->id = (int) $dto->id;
@@ -120,13 +120,13 @@ final class User implements UserInterface
           'surname' => $this->surname,
           'email' => $this->email,
           'role' => $this->role,
-          'password' => $this->password,
+          // 'password' => $this->password,
           'cart' => $this->cart,
           'fav' => $this->fav_list,
           'country' => $this->country,
           'city' => $this->city,
           'phone' => $this->phone,
-          'address' => $this->getAddress(),
+          // 'address' => $this->getAddress(),
           'avatar' => $this->avatar,
           'avatar_small' => $this->avatar_small
         ];
@@ -233,14 +233,14 @@ final class User implements UserInterface
       return new Favorites ($this->fav_list);
     }
 
-    public function getAddress(): ?Address
-    {
-      if (!$this->address) {
-        return null; // или пустой объект / исключение
-      }
+    // public function getAddress(): ?Address
+    // {
+    //   if (!$this->address) {
+    //     return null; // или пустой объект / исключение
+    //   }
 
-      return $this->address;
-    }
+    //   return $this->address;
+    // }
 
 
 }

@@ -3,7 +3,7 @@
   <section class="profile">
     <div class="container">
       <div class="profile__title">
-        <h2 class="h2 mb-25">Профиль пользователя</h2>
+        <h2 class="h2">Профиль пользователя</h2>
         <p>Чтобы посмотреть свой профиль
           <a href="<?php echo HOST; ?>login">войдите</a>
           либо
@@ -27,65 +27,92 @@
           <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile-edit" method="POST">
         <?php endif; ?>
 
-
-
-
-
               <section class="profile-card">
-                <div class="profile-card__header">
-                  <div class="profile-card__avatar">
-                    <?php if (!empty($userModel->getAvatar())) : ?>
-                      <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="Аватарка">
+                  <div class="profile-form__row">
+                <div class="col-md-8">
+                  <?php include ROOT . "templates/components/errors.tpl"; ?>
+                  <?php include ROOT . "templates/components/success.tpl"; ?>
+                  <div class="form-group">
+                    <label class="input__label">
+                      Введите имя 
+                      <input 
+                        class="input input--width-label" 
+                        type="text" 
+                        placeholder="Имя"
+                        name="name"
+                        value="<?php echo isset($_POST['name']) ? $_POST['name'] : $user->name; ?>" 
+                      />
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="input__label">
+                      Введите фамилию 
+                      <input 
+                        class="input input--width-label" 
+                        type="text" 
+                        placeholder="Фамилия"
+                        name="surname"
+                        value="<?php echo isset($_POST['surname']) ? $_POST['surname'] : $user->surname; ?>"
+                      />
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="input__label">Введите email 
+                      <input 
+                        class="input input--width-label" 
+                        type="text" placeholder="Email"
+                        name="email"
+                        value="<?php echo isset($_POST['email']) ? $_POST['email'] : $user->email; ?>"
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="profile-form__row">
+                <div class="profile-form__img profile-form__column">
+                  <div class="avatar-big">
+                    <?php if ( !empty($user->avatar)) : ?>
+                      <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $user->avatar; ?>" alt="Аватарка" />
                     <?php else : ?>
-                      <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="Аватарка">
+                      <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="Аватарка" />
                     <?php endif; ?>
                   </div>
-                  <div class="profile-card__user">
-                    <div class="profile-card__name">
-                      <?php echo $userModel->getName(); ?> <?php echo $userModel->getSurname(); ?>
+                </div>
+                <div class="profile-form__upload profile-form__column">
+                  <div class="block-upload">
+                    <div class="block-upload__description">
+                      <div class="block-upload__title">Фотография</div>
+                      <p>Изображение jpg или png, рекомендуемая ширина 160px и больше, высота от 160px и более. Вес до 4Мб.</p>
+                      <div class="block-upload__file-wrapper">
+                        <input name="avatar" class="file-button" type="file">
+                      </div>
                     </div>
-                    <div class="profile-card__role">Роль: <?php echo h( $userModel->getRole());?></div>
                   </div>
-
-                <?php
-                  if ($this->isAdmin()) {
-                    echo "<a class=\"button button--s button--primary\" href=\"" . HOST . "profile-edit/". $userModel->getId() ."\">Редактировать</a>";
-                  }
-                  else  {
-                      echo "<a class=\"button button--s button--primary\" href=\"" . HOST . "profile-edit\">Редактировать</a>";
-                  }
-                ?>
-
+                  <?php /* if ( !empty($user->avatar)) : */ ?>
+                    <label class="checkbox__item mt-15">
+                      <input class="checkbox__btn" type="checkbox" name="delete-avatar">
+                      <span class="checkbox__label">Удалить фотографию</span>
+                    </label>
+                  <?php /* endif; */ ?>
                 </div>
+              </div>
 
-                <div class="profile-card__body">
-                  <dl class="profile-card__list">
-                    <div class="profile-card__row">
-                      <dt>Электронная почта</dt>
-                      <dd><?php echo h($userModel->getEmail()); ?></dd>
-                    </div>
-                    <div class="profile-card__row">
-                      <dt>Телефон</dt>
-                      <dd><?php echo h($userModel->getPhone()); ?></dd>
-                    </div>
-                    <div class="profile-card__row">
-                      <dt>Страна</dt>
-                      <dd><?php echo $userModel->getCountry(); ?></dd>
-                    </div>
-                    <div class="profile-card__row">
-                      <dt>Город</dt>
-                      <dd><?php echo $userModel->getCity(); ?></dd>
-                    </div>
-                  </dl>
-                </div>
+              
+
+              <div class="form-group form-group--buttons-left">
+                <button name="updateProfile" class="button-solid" type="submit">Сохранить</button>
+                <a class="button-outline" href="<?php echo HOST; ?>profile">Отмена</a>
+              </div>
+              
               </section>
 
               <!-- // Выводим заказы пользователя (если есть) -->
+            <?php if ( isset($orders) and !empty($orders)) : ?>
               <section class="profile-orders">
-                <?php if ( $orders) : ?>
-                    <?php include (ROOT . 'views/profile/_parts/user-orders.tpl'); ?>
-                <?php endif;?>
+                <?php include (ROOT . 'views/profile/_parts/user-orders.tpl'); ?>
               </section>
+            <?php endif;?>
           
          
           </form>

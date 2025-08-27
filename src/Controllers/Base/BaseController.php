@@ -92,12 +92,12 @@ abstract class BaseController
 
    protected function isLoggedIn(): bool
    {
-      return $this->sessionManager->isLoggedIn();
+      return $this->sessionService->isLoggedIn();
    }
 
    protected function getLoggedInUser(): ?User
    {
-    return $this->sessionManager->getLoggedInUser();
+    return $this->sessionService->getLoggedInUser();
    }
 
   protected function isBlogPage(RouteData $routePath): bool 
@@ -109,7 +109,7 @@ abstract class BaseController
 
   protected function isProfileOwner(int $profileId): bool 
   {
-    return  $this->sessionManager->isProfileOwner($profileId);
+    return  $this->sessionService->isProfileOwner($profileId);
   }
 
   

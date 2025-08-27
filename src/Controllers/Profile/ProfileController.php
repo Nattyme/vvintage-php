@@ -46,15 +46,16 @@ final class ProfileController extends BaseController
     $this->setRouteData($routeData);
 
     $userModel = $this->getLoggedInUser();
+    
     if(!$userModel) {
       header("Location: " . HOST . 'login');
       exit;
     };
 
-    if( empty($this->routeData->uriGetParam) ) {
-      
+    if( empty($this->routeData->uriGet) ) {
+   
       $id = $userModel->getId() ?? null;
-
+  
       if (!$id) {
         header("Location: " . HOST . 'login');
         exit;
@@ -63,21 +64,28 @@ final class ProfileController extends BaseController
       $orders = $this->userService->getOrdersByUserId($id);
       $this->renderProfileFull($this->routeData, $userModel, $orders);
     } else {
-      $id = (int) $this->routeData->uriGetParam;
+        $id = (int) $this->routeData->uriGet ?? null;
+        
+        if(!is_numeric($this->routeData->uriGet) || !$id) {
+          header("Location: " . HOST . 'profile');
+          exit;
+        }
 
-      if(!is_numeric($id)) {
-        header("Location: " . HOST . 'login');
-        exit;
-      }
+        if ($this->isProfileOwner($id) || $this->isAdmin()) {
+          $userModel = $this->userService->getUserByID($id);
 
-      if ($this->isProfileOwner($id) || isAdmin()) {
-        $userModel = $this->userService->getUserByID($id);
-        $order = $orders = $this->userService->getOrdersByUserId($id);
+          if(!$userModel) {
+            header("Location: " . HOST . 'profile');
+            exit;
+          }
+          
+          $order = $orders = $this->userService->getOrdersByUserId($id);
 
-        $this->renderProfileFull($this->routeData, $userModel, $orders);
-      } 
+          $this->renderProfileFull($this->routeData, $userModel, $orders);
+        } else {
+          $this->renderProfile($this->routeData, $userModel);
+        }
 
-      $this->renderProfile($this->routeData, $userModel);
     }
      
   }
@@ -96,7 +104,8 @@ final class ProfileController extends BaseController
     
     if ($this->isProfileOwner($id) || $this->isAdmin()) {
       $orders = $this->userService->getOrdersByUserId($id);
-      $address = $userModel->getAddress();
+      // $address = $userModel->getAddress();
+      $address = null;
 
       $this->renderProfileEdit($routeData, $userModel, $orders, $address);
     } 
