@@ -50,6 +50,7 @@ final class Address
     {
         $address = new self();
         $address->id = $dto->id;
+        $address->user_id = $dto->user_id;
         $address->name = $dto->name;
         $address->surname = $dto->surname;
         $address->fathername = $dto->fathername;

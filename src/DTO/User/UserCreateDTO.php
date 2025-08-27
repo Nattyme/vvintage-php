@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\User;
 
-final class UserInputDTO
+final class UserCreateDTO
 {
     public string $password;
     public string $email;
@@ -27,7 +27,7 @@ final class UserInputDTO
         $this->email = (string) ($data['email'] ?? '');
         $this->name = (string) ($data['name'] ?? '');
         $this->surname = (string) ($data['surname'] ?? '');
-        $this->role = 'user';
+        $this->role = 'customer';
 
         $this->fav_list = is_array($data['fav_list'] ?? null) ? $data['fav_list'] : json_decode($data['fav_list'] ?? '[]', true);
         $this->cart = is_array($data['cart'] ?? null) ? $data['cart'] : json_decode($data['cart'] ?? '[]', true);

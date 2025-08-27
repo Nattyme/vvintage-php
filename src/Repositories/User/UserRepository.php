@@ -17,7 +17,8 @@ use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Repositories\Address\AddressRepository;
 use Vvintage\DTO\User\UserDTO;
-use Vvintage\DTO\User\UserInputDTO;
+use Vvintage\DTO\User\UserCreateDTO;
+use Vvintage\DTO\User\UserUpdateDTO;
 use Vvintage\DTO\Address\AddressDTO;
 
 final class UserRepository extends AbstractRepository implements UserRepositoryInterface
@@ -73,44 +74,51 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     }
 
      /** create DTO */
-    private function createUserInputDto(array $data, int $userId): array
+    private function getUserCreateDto(array $data): UserCreateDTO
     {
-      $userInputDto = [];
+  
+      $dto = new UserCreateDTO([
+                  'password' => (string) $data['password'],
+                  'email' => strtolower((string) $data['email']),
+                  'name' => null,
+                  'role' => (string) 'customer',
 
-      $dto = new UserInputDTO([
-                  'id' => (int) $bean->id,
-                  'password' => (string) $bean->password,
-                  'email' => (string) $bean->email,
-                  'name' => (string) $bean->name,
-                  'role' => (string) $bean->role,
+                  'fav_list' => json_encode($dto->fav_list ?? []),
+                  'cart' => json_encode($dto->cart ?? []),
 
-                  'fav_list' => (string) $bean->fav_list,
-                  'cart' => (string) $bean->cart,
+                  'country' => (string) '',
+                  'city' => (string) '',
+                  'phone' => (string) '',
 
-                  'country' => (string) $bean->country,
-                  'city' => (string) $bean->city,
-                  'phone' => (string) $bean->phone,
-
-                  'avatar' => (string) $bean->avatar,
-                  'avatar_small' => (string) $bean->avatar_small
+                  'avatar' => (string) '',
+                  'avatar_small' => (string) ''
               ]);
-      foreach($data as $locale => $translate) {
-          $productTranslationsDto[] = new ProductTranslationInputDTO([
-              'product_id' => (int) $productId,
-              'slug' => (string) ($data['slug'] ?? ''),
-              'locale' => (string) $locale, 
-              'title' => (string) ($translate['title'] ?? ''),
-              'description' => (string) ($translate['description'] ?? ''),
-              'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
-              'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
-          ]);
-      }
+  
          
-      return  $productTranslationsDto;
+      return  $dto;
 
     }
 
+    private function getUserUpdateDto($data): UserUpdateDTO 
+    {
+      $dto = new UserUpdateDTO([
+                  'name' => (string) $data->name,
 
+                  'fav_list' => json_encode($dto->fav_list ?? json_decode($bean->fav_list, true)),
+                  'cart' => json_encode($dto->cart ?? json_decode($bean->cart, true)),
+
+                  'country' => (string) $data->country,
+                  'city' => (string) $data->city,
+                  'phone' => (string) $data->phone,
+
+                  'avatar' => (string) $data->avatar,
+                  'avatar_small' => (string) $data->avatar_small
+              ]);
+  
+         
+      return  $dto;
+
+    }
 
 
     private function mapBeanToUser(OODBBean $bean): User
@@ -166,53 +174,91 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     */
     public function createUser(array $postData): ?User
     {
-      $bean = $this->createBean(self::TABLE_USERS);
-
-      $bean->role = 'user';
-      $bean->email = strtolower($postData['email']);;
-
-      // Сохраняем пароль в зашифрованном виде функцией password_hash
-      $bean->password = $this->hashPassword($postData['password']);
-
-      $fields = ['name', 'surname', 'country', 'city', 'phone', 'avatar', 'avatar_small', 'cart', 'fav_list', 'recovery_code'];
-      foreach($fields as $field) {
-        $bean->$field = null;
-      }
-    
-
-      $userId = $this->saveBean($bean);
-
-      return new User ($bean);
+      $dto = $this->getUserCreateDto($postData);
+      return $this->saveNewUser($dto);
     }
-
 
     /**
      * Метод редактирует пользователя 
      * @param User $userModel, array $newUserData
      * @return User|null
-     */
-    public function editUser(User $userModel, array $postData): ?User
+    */
+    public function editUser(array $postData, int $id): ?User
     {
-      $id = $userModel->getId();
-      $bean = $this->loadBean(self::TABLE_USERS, $id);
-
-      if ($bean->id !== 0) {
-        // Заполнить пар-ры
-        $bean->name =  $postData['name'] ?? '';
-        $bean->surname = $postData['surname'] ?? '';
-        $bean->country = $postData['country'] ?? '';
-        $bean->city = $postData['city'] ?? '';
-        $bean->phone = $postData['phone'] ?? '';
-        $bean->avatar = $postData['avatar'] ?? '';
-        $bean->avatar_small = $postData['avatar_small'] ?? '';
-
-        $userId = $this->saveBean($bean);
-  
-        return new User ($bean);
-      }
-
-      return null;
+      $dto = $this->getUserUpdateDto($postData);
+      return $this->updateUser($dto, $userId);
     }
+
+
+  public function saveNewUser(UserCreateDTO $dto): ?User
+  {
+      $bean = $this->createUserBean();
+      $bean->password = $this->hashPassword($dto->password);
+      $bean->email = strtolower($dto->email);
+      $bean->name = $dto->name ?? '';
+      $bean->role = $dto->role && trim($dto->role) !== '' ? $dto->role : 'customer';
+
+      // JSON поля
+      $bean->fav_list = json_encode($dto->fav_list ?? []);
+      $bean->cart = json_encode($dto->cart ?? []);
+      $bean->country = $dto->country ?? '';
+      $bean->city = $dto->city ?? '';
+      $bean->phone = $dto->phone ?? '';
+      $bean->avatar = $dto->avatar ?? '';
+      $bean->avatar_small = $dto->avatar_small ?? '';
+
+      $this->saveBean($bean);
+
+      return $this->mapBeanToUser($bean);
+  }
+
+  public function updateUser(UserUpdateDTO $dto, int $id): ?User
+  {
+      $bean = $this->loadBean(self::TABLE_USERS, $id);
+      if (!$bean || $bean->id === 0) return null;
+
+      $bean->name = $dto->name ?? $bean->name;
+      $bean->fav_list = json_encode($dto->fav_list ?? json_decode($bean->fav_list, true));
+      $bean->cart = json_encode($dto->cart ?? json_decode($bean->cart, true));
+      $bean->country = $dto->country ?? $bean->country;
+      $bean->city = $dto->city ?? $bean->city;
+      $bean->phone = $dto->phone ?? $bean->phone;
+      $bean->avatar = $dto->avatar ?? $bean->avatar;
+      $bean->avatar_small = $dto->avatar_small ?? $bean->avatar_small;
+
+      $this->saveBean($bean);
+
+      return $this->mapBeanToUser($bean);
+  }
+
+  
+    /**
+     * Метод редактирует пользователя 
+     * @param User $userModel, array $newUserData
+     * @return User|null
+     */
+    // public function editUser(User $userModel, array $postData): ?User
+    // {
+    //   $id = $userModel->getId();
+    //   $bean = $this->loadBean(self::TABLE_USERS, $id);
+
+    //   if ($bean->id !== 0) {
+    //     // Заполнить пар-ры
+    //     $bean->name =  $postData['name'] ?? '';
+    //     $bean->surname = $postData['surname'] ?? '';
+    //     $bean->country = $postData['country'] ?? '';
+    //     $bean->city = $postData['city'] ?? '';
+    //     $bean->phone = $postData['phone'] ?? '';
+    //     $bean->avatar = $postData['avatar'] ?? '';
+    //     $bean->avatar_small = $postData['avatar_small'] ?? '';
+
+    //     $userId = $this->saveBean($bean);
+  
+    //     return new User ($bean);
+    //   }
+
+    //   return null;
+    // }
 
     public function setRecoveryCode (User $userModel, string $recoveryCode): void
     {
@@ -284,7 +330,11 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     // }
 
 
-  
+    private function createUserBean(): OODBBean
+    {
+      return $this->createBean(self::TABLE_USERS);
+    }
+
     /**
      * Метод обновляет корзину
      * @return void

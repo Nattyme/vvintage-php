@@ -3,13 +3,10 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\User;
 
-final class UserInputDTO
+final class UserUpdateDTO
 {
-    public string $password;
-    public string $email;
     public string $name;
     public string $surname;
-    public string $role;
 
     public array $fav_list;
     public array $cart;
@@ -23,11 +20,8 @@ final class UserInputDTO
 
     public function __construct(array $data)
     {
-        $this->password = (string) ($data['password'] ?? '');
-        $this->email = (string) ($data['email'] ?? '');
         $this->name = (string) ($data['name'] ?? '');
         $this->surname = (string) ($data['surname'] ?? '');
-        $this->role = 'user';
 
         $this->fav_list = is_array($data['fav_list'] ?? null) ? $data['fav_list'] : json_decode($data['fav_list'] ?? '[]', true);
         $this->cart = is_array($data['cart'] ?? null) ? $data['cart'] : json_decode($data['cart'] ?? '[]', true);

@@ -22,7 +22,7 @@ final class LoginService extends BaseService
   public function login(array $data): ?User
   {
     $sessionService = new SessionService();
-    $validator = new LoginValidator($this->userRepository, $this->notes);
+    $validator = new LoginValidator($this->userRepository, $this->flash);
 
     if (!$validator->validate($data)) {
       return null;
@@ -31,7 +31,7 @@ final class LoginService extends BaseService
     $user = $this->userRepository->getUserByEmail($data['email']);
 
     if (!$user || !password_verify($data['password'], $user->getPassword())) {
-      $this->notes->pushError('Неверный email или пароль');
+      $this->flash->pushError('Неверный email или пароль');
       return null;
     }
 

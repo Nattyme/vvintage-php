@@ -10,12 +10,12 @@ use Vvintage\Config\LanguageConfig;
 abstract class BaseService
 {    
   protected string $currentLang;
-  protected FlashMessage $note;
+  protected FlashMessage $flash;
 
   public function __construct()
   {
     $this->currentLang = LanguageConfig::getCurrentLocale();
-    $this->note= new FlashMessage ();
+    $this->flash = new FlashMessage ();
   }
 
 }

@@ -14,7 +14,7 @@ interface UserRepositoryInterface
 
     public function findBlockedUserByEmail (string $email): bool;
     public function createUser(array $postData): ?User;
-    public function editUser(User $userModel, array $postData): ?User;
+    public function editUser(array $postData, int $userId): ?User;
     public function saveUserItemsList(string $itemKey, User $userModel, array $items): void;
     public function removeUser(User $userModel): void;
 

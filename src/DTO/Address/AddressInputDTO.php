@@ -6,6 +6,7 @@ namespace Vvintage\DTO\Address;
 final class AddressDTO
 {
     public int $id;
+    public int $user_id;
 
     public string $name;
     public string $surname;
