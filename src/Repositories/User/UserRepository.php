@@ -87,18 +87,19 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
     private function getUserUpdateDto($data): UserUpdateDTO 
     {
+      
       $dto = new UserUpdateDTO([
-                  'name' => (string) $data->name,
+                  'name' => (string) $data['name'],
 
-                  'fav_list' => json_encode($dto->fav_list ?? json_decode($bean->fav_list, true)),
-                  'cart' => json_encode($dto->cart ?? json_decode($bean->cart, true)),
+                  'fav_list' => json_encode($dto->fav_list ?? []),
+                  'cart' => json_encode($dto->cart ?? []),
 
-                  'country' => (string) $data->country,
-                  'city' => (string) $data->city,
-                  'phone' => (string) $data->phone,
+                  'country' => (string) $data['country'],
+                  'city' => (string) $data['city'],
+                  'phone' => (string) $data['phone'],
 
-                  'avatar' => (string) $data->avatar,
-                  'avatar_small' => (string) $data->avatar_small
+                  'avatar' => (string) $data['avatar'],
+                  'avatar_small' => (string) $data['avatar_small']
               ]);
   
          
@@ -172,7 +173,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     public function editUser(array $postData, int $id): ?User
     {
       $dto = $this->getUserUpdateDto($postData);
-      return $this->updateUser($dto, $userId);
+      return $this->updateUser($dto, $id);
     }
 
 

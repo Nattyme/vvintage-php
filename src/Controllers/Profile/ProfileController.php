@@ -267,46 +267,50 @@ final class ProfileController extends BaseController
       // Принимаем данные
       $data = $_POST;
       $files = $_FILES['avatar'] ?? [];
-
-      $valid = $this->validator->validateEdit($data);
-      $validAvatar = $this->validator->validateEditAvatar($files);
-
+    
       // Если ошибок нет - сохраняем
       if ( isset($files['name']) && $files['tmp_name'] !== '') {
-        dd($this->validator->validateEditAvatar($files));
-        $this->userService->handleAvatar($userModel, $files);
+        $validAvatar = $this->validator->validateEditAvatar($files);
+
+        if(!$validAvatar) return;
+      
+        $avatars = $this->userService->handleAvatar($userModel, $files);
+       
       }
+
+      $valid = $this->validator->validateEdit($data);
 
       if(!$valid) return;
 
-      $this->userService->handleFormData($userModel, $data, $files);
-     
+      $data = array_merge($data, $avatars);
+  
+      $updatedData = $this->userService->handleFormData($userModel, $data);
 
       // Удаление аватарки
-      if ( isset($_POST['delete-avatar']) && $_POST['delete-avatar'] == 'on') {
-        $avatarFolderLocation = ROOT . 'usercontent/avatars/';
+      // if ( isset($_POST['delete-avatar']) && $_POST['delete-avatar'] == 'on') {
+      //   $avatarFolderLocation = ROOT . 'usercontent/avatars/';
         
-        // Если есть старое изображение - удаляем 
-        if (file_exists($avatarFolderLocation . $user->avatar) && !empty($user->avatar)) {
-          unlink($avatarFolderLocation . $user->avatar);
-        }
+      //   // Если есть старое изображение - удаляем 
+      //   if (file_exists($avatarFolderLocation . $user->avatar) && !empty($user->avatar)) {
+      //     unlink($avatarFolderLocation . $user->avatar);
+      //   }
 
-        if (file_exists($avatarFolderLocation . $user->avatarSmall) && !empty($user->avatarSmall)) {
-          unlink($avatarFolderLocation . $user->avatarSmall);
-        }
+      //   if (file_exists($avatarFolderLocation . $user->avatarSmall) && !empty($user->avatarSmall)) {
+      //     unlink($avatarFolderLocation . $user->avatarSmall);
+      //   }
 
-        // Удалить записи файла в БД
-        $user->avatar = '';
-        $user->avatarSmall = '';
-      }
+      //   // Удалить записи файла в БД
+      //   $user->avatar = '';
+      //   $user->avatarSmall = '';
+      // }
     
-      R::store($user);
+      // R::store($user);
 
-      if ($user->id ===  $_SESSION['logged_user']['id']) {
-        $_SESSION['logged_user'] = $user;
-      }
+      // if ($user->id ===  $_SESSION['logged_user']['id']) {
+      //   $_SESSION['logged_user'] = $user;
+      // }
       
-      $this->redirect('profile', $user->id);
+      $this->redirect('profile', (string) $userModel->getId());
     
     }
   }

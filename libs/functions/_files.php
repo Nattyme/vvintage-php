@@ -1,4 +1,6 @@
 <?php
+  require_once ROOT . 'libs/functions/_resize-and-crop.php';
+
   /* **Работа с файлами. Сохранение изображения** */
   // saveUploaddedImg("cover", [600, 300], 12, 'blog', [1110, 460], [290, 230]) 
   function saveUploadedImg($inputFileName, $minSize, $maxFileSizeMb, $folderName, $fullSize, $smallSize) {

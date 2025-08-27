@@ -27,6 +27,18 @@ class UserService extends BaseService
   protected OrderRepository $orderRepository;
   protected ProductService $productService;
 
+  private const FOLDER_NAME = 'avatars';
+  // private const FILE_NAME = 'avatar';
+  private const AVATAR_FULL_SIZE = [160, 160];
+  private const AVATAR_SMALL_SIZE = [48, 48];
+  private const EXTENSIONS = [
+                                  IMAGETYPE_GIF  => 'gif',
+                                  IMAGETYPE_JPEG => 'jpg',
+                                  IMAGETYPE_PNG  => 'png',
+                                  IMAGETYPE_BMP  => 'bmp',
+                                  IMAGETYPE_WEBP => 'webp',
+                              ];
+
   public function __construct () {
     parent::__construct();
     $this->userRepository = new UserRepository ();
@@ -82,45 +94,59 @@ class UserService extends BaseService
     return  $this->userRepository->findBlockedUserByEmail($email);
   }
 
-  public function handleFormData(User $userModel, array $data, array $files) 
+  public function handleFormData(User $userModel, array $data) 
   {
-    //  $dto = $this->userRepository->getUserUpdateDto();
-
-
-
-    //  $user->name = htmlentities(trim($_POST['name']));
-    // $user->surname = htmlentities(trim($_POST['surname']));
-    // $user->email = htmlentities(trim($_POST['email']));
-    // $user->country = htmlentities(trim($_POST['country']));
-    // $user->city = htmlentities(trim($_POST['city']));
-          // Если передано изображение - уменьшаем, сохраняем, записываем в БД
-
-
-
- 
+     return $this->userRepository->editUser($data, $userModel->getId());
   }
 
   public function handleAvatar(User $userModel, array $files): array
   {
-      //Если передано изображение - уменьшаем, сохраняем файлы в папку, получаем название файлов изображений
-      $avatarFileName = saveUploadedImg('avatar', [160, 160], 12, 'avatars', [160, 160], [48, 48]);
+      $fileTmpLoc = $files['tmp_name'] ?? null;
+      $info = getimagesize($fileTmpLoc); // Получаем информацию о файле
+
+      $mime = $info['mime'] ?? '';
+      $type = $info[2] ?? null; // GD тип
+
+      $fileExt = $extensions[$type] ?? 'jpg'; // по умолчанию jpg
+
+      // Прописываем путь для хранения изображения
+      $imgFolderLocation = ROOT . 'usercontent/' . self::FOLDER_NAME . '/';
+      $db_file_name = rand(100000000000, 999999999999) . "." . $fileExt;
+
+
+      $filePathFullSize =  self::FOLDER_NAME  . $db_file_name;
+      $filePathSmallSize =  self::FOLDER_NAME  . self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name;
+
+      // Обработать фотографию
+      // 1. Обрезать до мах размера
+      $resultFullSize = resize_and_crop($fileTmpLoc, $filePathFullSize, self::AVATAR_FULL_SIZE[0], self::AVATAR_FULL_SIZE[1]);
+      // 2. Обрезать до мин размера
+      $resultSmallSize = resize_and_crop($fileTmpLoc, $filePathSmallSize, self::AVATAR_SMALL_SIZE[0], self::AVATAR_SMALL_SIZE[1]);
+
+      if ($resultFullSize != true || $resultSmallSize != true) {
+        $this->flash->pushError('Ошибка сохранения файла');
+        return false;
+      }
+
+      return ['avatar' => $db_file_name, 'avatar_small' => self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name,];
+      // $avatarFileName = saveUploadedImg('avatar', [160, 160], 12, 'avatars', [160, 160], [48, 48]);
         
       // Если новое изображение успешно загружено - удаляем старое
-      if ($avatarFileName) {
-        $avatarFolderLocation = ROOT . 'usercontent/avatars/';
-        // Если есть старое изображение - удаляем 
-        if (file_exists($avatarFolderLocation . $user->avatar) && !empty($user->avatar)) {
-          unlink($avatarFolderLocation . $user->avatar);
-        }
+      // if ($avatarFileName) {
+      //   $avatarFolderLocation = ROOT . 'usercontent/avatars/';
+      //   // Если есть старое изображение - удаляем 
+      //   if (file_exists($avatarFolderLocation . $user->avatar) && !empty($user->avatar)) {
+      //     unlink($avatarFolderLocation . $user->avatar);
+      //   }
 
-        if (file_exists($avatarFolderLocation . $user->avatarSmall) && !empty($user->avatarSmall)) {
-          unlink($avatarFolderLocation . $user->avatarSmall);
-        }
+      //   if (file_exists($avatarFolderLocation . $user->avatarSmall) && !empty($user->avatarSmall)) {
+      //     unlink($avatarFolderLocation . $user->avatarSmall);
+      //   }
 
-        // Записываем имя файлов в БД
-        $user->avatar = $avatarFileName[0];
-        $user->avatarSmall = $avatarFileName[1];
-      }
+      //   // Записываем имя файлов в БД
+      //   $user->avatar = $avatarFileName[0];
+      //   $user->avatarSmall = $avatarFileName[1];
+      // }
   }
 
 }
