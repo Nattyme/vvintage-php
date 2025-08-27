@@ -1,6 +1,9 @@
 <main class="page-profile">
   <section class="profile-card">
     <div class="container">
+    
+        <?php include ROOT . "views/components/errors.tpl"; ?>
+      <?php include ROOT . "views/components/success.tpl"; ?>
         <div class="profile-card__header">
             <div class="profile-card__avatar">
               <?php if (!empty($userModel->getAvatar())) : ?>

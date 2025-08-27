@@ -19,18 +19,21 @@
         <h2 class="h2">Редактировать профиль </h2>
       </div>
 
-      <?php include ROOT . "templates/components/errors.tpl"; ?>
-      <?php include ROOT . "templates/components/success.tpl"; ?>
 
       <div class="profile__body profile__form-wrapper">
+        
+
         <?php if (isset($uriGet)) : ?>
      
           <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile-edit/<?php echo $uriGet; ?>" method="POST">
+            
         <?php else : ?>
           <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile-edit" method="POST">
         <?php endif; ?>
 
             <div class="profile-card">
+                <?php include ROOT . "views/components/errors.tpl"; ?>
+                <?php include ROOT . "views/components/success.tpl"; ?>
                 <div class="profile-card__content">
               
                     <div class="profile-column profile-column--img">
@@ -48,7 +51,7 @@
                                       <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#add_photo';?>"></use>
                                     </svg>
                                 </button>
-                                <input id="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input" hidden>
+                                <input id="file" name="avatar" class="block-upload__input-real" type="file" data-preview="input" hidden>
                             </div>
     
                           </div>
@@ -64,11 +67,11 @@
                     <div class="profile-column">
                           <div class="form-group">
                             <label class="input__label">
-                              Введите имя 
+                              Имя 
                               <input 
                                 class="input input--width-label" 
                                 type="text" 
-                                placeholder="Имя"
+                                placeholder="Введите имя "
                                 name="name"
                                 value="<?php echo isset($_POST['name']) ? $_POST['name'] : h($userModel->getName()); ?>" 
                               />
@@ -87,10 +90,10 @@
                             </label>
                           </div>
                           <div class="form-group">
-                            <label class="input__label">Введите email 
+                            <label class="input__label">Email 
                               <input 
                                 class="input input--width-label" 
-                                type="text" placeholder="Email"
+                                type="text" placeholder="Введите email"
                                 name="email"
                                 value="<?php echo isset($_POST['email']) ? $_POST['email'] : h($userModel->getEmail()); ?>"
                               />
@@ -98,11 +101,41 @@
                           </div>
 
                     </div>
+
+                    <!-- CSRF-токен -->
+                    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+                    <!-- // CSRF-токен -->
                   
                   
                 </div>
-          
 
+                <div class="form-group">
+                  <label class="input__label">Телефон
+                    <input 
+                      class="input input--width-label" 
+                      type="text" placeholder="Введите телефон"
+                      name="phone"
+                      value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : h($userModel->getPhone()); ?>"
+                    />
+                  </label>
+                  <label class="input__label">Страна
+                    <input 
+                      class="input input--width-label" 
+                      type="text" placeholder="Введите страну"
+                      name="country"
+                      value="<?php echo isset($_POST['country']) ? $_POST['country'] : h($userModel->getCountry()); ?>"
+                    />
+                  </label>
+                  <label class="input__label">Город
+                    <input 
+                      class="input input--width-label" 
+                      type="text" placeholder="Введите ваш город"
+                      name="city"
+                      value="<?php echo isset($_POST['city']) ? $_POST['city'] : h($userModel->getCity()); ?>"
+                    />
+                  </label>
+                </div>
+          
                 <div class="profile-form__row">
                   <button name="updateProfile" class="button button--primary button--s" type="submit">Сохранить</button>
                   <a class="button button--outline button--s" href="<?php echo HOST; ?>profile">Отмена</a>

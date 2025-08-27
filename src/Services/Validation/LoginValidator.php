@@ -19,25 +19,25 @@ final class LoginValidator extends BaseService
   public function validate(array $data): bool
   {
     $valid = true;
-
     $csrfToken = $data['csrf'] ?? '';
+    
     if (!check_csrf($csrfToken)) {
-      $this->notes->renderError('Неверный токен безопасности');
+      $this->flash->pushError('Неверный токен безопасности');
       $valid = false;
     } 
 
     $email = trim( strtolower($data['email']) ?? '');
     if ($email === '') {
-      $this->notes->renderError('Введите email');
+      $this->flash->pushError('Введите email');
       $valid = false;
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->notes->renderError('Некорректный формат email');
+      $this->flash->pushError('Некорректный формат email');
       $valid = false;
     } elseif ($email) {
       $isUserInBlock = $this->userData->findBlockedUserByEmail($email);
 
       if ($isUserInBlock) {
-        $this->notes->renderError('Ошибка, невозможно зайти в профиль.');
+        $this->flash->pushError('Ошибка, невозможно зайти в профиль.');
         $valid = false;
       }
 
@@ -45,7 +45,7 @@ final class LoginValidator extends BaseService
 
     $password = trim($data['password'] ?? '');
     if ($password === '') {
-      $this->notes->renderError('Введите пароль');
+      $this->flash->pushError('Введите пароль');
       $valid = false;
     }
 

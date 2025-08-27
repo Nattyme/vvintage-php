@@ -18,6 +18,8 @@ use Vvintage\Repositories\AddressRepository;
 use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\User\UserRepository;
 
+require_once ROOT . './libs/functions.php';
+
 class UserService extends BaseService
 {
   protected UserRepository $userRepository;
@@ -78,6 +80,47 @@ class UserService extends BaseService
   public function findBlockedUserByEmail(string $email) 
   {
     return  $this->userRepository->findBlockedUserByEmail($email);
+  }
+
+  public function handleFormData(User $userModel, array $data, array $files) 
+  {
+    //  $dto = $this->userRepository->getUserUpdateDto();
+
+
+
+    //  $user->name = htmlentities(trim($_POST['name']));
+    // $user->surname = htmlentities(trim($_POST['surname']));
+    // $user->email = htmlentities(trim($_POST['email']));
+    // $user->country = htmlentities(trim($_POST['country']));
+    // $user->city = htmlentities(trim($_POST['city']));
+          // Если передано изображение - уменьшаем, сохраняем, записываем в БД
+
+
+
+ 
+  }
+
+  public function handleAvatar(User $userModel, array $files): array
+  {
+      //Если передано изображение - уменьшаем, сохраняем файлы в папку, получаем название файлов изображений
+      $avatarFileName = saveUploadedImg('avatar', [160, 160], 12, 'avatars', [160, 160], [48, 48]);
+        
+      // Если новое изображение успешно загружено - удаляем старое
+      if ($avatarFileName) {
+        $avatarFolderLocation = ROOT . 'usercontent/avatars/';
+        // Если есть старое изображение - удаляем 
+        if (file_exists($avatarFolderLocation . $user->avatar) && !empty($user->avatar)) {
+          unlink($avatarFolderLocation . $user->avatar);
+        }
+
+        if (file_exists($avatarFolderLocation . $user->avatarSmall) && !empty($user->avatarSmall)) {
+          unlink($avatarFolderLocation . $user->avatarSmall);
+        }
+
+        // Записываем имя файлов в БД
+        $user->avatar = $avatarFileName[0];
+        $user->avatarSmall = $avatarFileName[1];
+      }
   }
 
 }
