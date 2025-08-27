@@ -48,8 +48,7 @@ final class ProfileController extends BaseController
     $userModel = $this->getLoggedInUser();
     
     if(!$userModel) {
-      header("Location: " . HOST . 'login');
-      exit;
+      $this->redirect('login');
     };
 
     if( empty($this->routeData->uriGet) ) {
@@ -57,8 +56,7 @@ final class ProfileController extends BaseController
       $id = $userModel->getId() ?? null;
   
       if (!$id) {
-        header("Location: " . HOST . 'login');
-        exit;
+        $this->redirect('login');
       }
 
       $orders = $this->userService->getOrdersByUserId($id);
@@ -67,16 +65,14 @@ final class ProfileController extends BaseController
         $id = (int) $this->routeData->uriGet ?? null;
         
         if(!is_numeric($this->routeData->uriGet) || !$id) {
-          header("Location: " . HOST . 'profile');
-          exit;
+          $this->redirect('profile');
         }
 
         if ($this->isProfileOwner($id) || $this->isAdmin()) {
           $userModel = $this->userService->getUserByID($id);
 
           if(!$userModel) {
-            header("Location: " . HOST . 'profile');
-            exit;
+            $this->redirect('profile');
           }
           
           $order = $orders = $this->userService->getOrdersByUserId($id);
@@ -96,8 +92,7 @@ final class ProfileController extends BaseController
 
       $loggedUser = $this->getLoggedInUser();
       if (!$loggedUser) {
-          header("Location: " . HOST . 'login');
-          exit;
+          $this->redirect('login');
       }
 
       // Определяем ID пользователя, которого хотим редактировать
@@ -112,8 +107,7 @@ final class ProfileController extends BaseController
       // Получаем пользователя по ID
       $userModel = $this->userService->getUserByID($id);
       if (!$userModel) {
-          header("Location: " . HOST . 'profile');
-          exit;
+        $this->redirect('profile');
       }
 
       // Проверяем права: владелец профиля или админ
@@ -124,8 +118,7 @@ final class ProfileController extends BaseController
           $this->renderProfileEdit($routeData, $userModel, $address);
       } else {
           // Нет прав — редирект на свой профиль
-          header('Location: ' . HOST . 'profile');
-          exit();
+          $this->redirect('profile');
       }
   }
 
@@ -137,15 +130,14 @@ final class ProfileController extends BaseController
        
       // Если ID нет - выходим
       if ( !isset($_GET['id']) || empty($_GET['id'])) {
-        header('Location: ' . HOST . 'profile');
-        exit();
+        $this->redirect('profile');
       }
 
       $userModel = null;
       $isLoggedUser = $this->isLoggedIn();
 
       if(!$isLoggedUser) {
-        header('Location: ' . HOST . 'login');
+        $this->redirect('login');
       }
 
       $userModel = $this->getLoggedInUser();
@@ -155,8 +147,7 @@ final class ProfileController extends BaseController
       $orders = $this->userService->getOrderById((int)$routeData->uriGetParam);
       // Проверка, что заказ принадлежит текущему пользователю
       if ( $order->getUserId() !== $userId) {
-        header('Location: ' . HOST . 'profile');
-        exit();
+        $this->redirect('profile');
       }
 
       // Получаем массив товаров из JSON формата
@@ -211,6 +202,8 @@ final class ProfileController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
+      $this->updateUserAndGoToProfile($userModel);
+
           // Подключение шаблонов страницы
       $this->renderLayout('profile/profile-full', [
             'pageTitle' => $pageTitle,
@@ -228,7 +221,12 @@ final class ProfileController extends BaseController
       // Название страницы
       $pageTitle = 'Редактирование профиля пользователя';
       $pageClass = "profile-page";
+
+
   
+      if(isset($_POST['updateProfile'])) {
+        dd($_FILES);
+      }
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -263,5 +261,87 @@ final class ProfileController extends BaseController
             'products' => $products
       ]);
 
+  }
+
+
+  private  function updateUserAndGoToProfile (User $userModel) {
+    if ( isset($_POST['updateProfile'])) {
+      // Проверить поля на заполненность
+      if ( trim($_POST['name']) === '') {
+        $_SESSION['errors'][] = ['title' => 'Поле "имя пользователя" не должно быть пустым.'];
+      }
+      if ( trim($_POST['surname']) === '') {
+        $_SESSION['errors'][] = ['title' => 'Поле "фамилия пользователя" не должно быть пустым.'];
+      }
+      if ( trim($_POST['email']) === '') {
+        $_SESSION['errors'][] = ['title' => 'Поле "email пользоватлея" не должно быть пустым.'];
+      }
+
+      // Если ошибок нет - обновить данные в БД
+      if ( empty($_SESSION['errors']) ) {
+        $user->name = htmlentities(trim($_POST['name']));
+        $user->surname = htmlentities(trim($_POST['surname']));
+        $user->email = htmlentities(trim($_POST['email']));
+        $user->country = htmlentities(trim($_POST['country']));
+        $user->city = htmlentities(trim($_POST['city']));
+
+        // Если передано изображение - уменьшаем, сохраняем, записываем в БД
+        if( isset($_FILES['avatar']['name']) && $_FILES['avatar']['tmp_name'] !== '') {
+          //Если передано изображение - уменьшаем, сохраняем файлы в папку, получаем название файлов изображений
+          $avatarFileName = saveUploadedImg('avatar', [160, 160], 12, 'avatars', [160, 160], [48, 48]);
+          
+          // Если новое изображение успешно загружено - удаляем старое
+          if ($avatarFileName) {
+            $avatarFolderLocation = ROOT . 'usercontent/avatars/';
+            // Если есть старое изображение - удаляем 
+            if (file_exists($avatarFolderLocation . $user->avatar) && !empty($user->avatar)) {
+              unlink($avatarFolderLocation . $user->avatar);
+            }
+
+            if (file_exists($avatarFolderLocation . $user->avatarSmall) && !empty($user->avatarSmall)) {
+              unlink($avatarFolderLocation . $user->avatarSmall);
+            }
+
+            // Записываем имя файлов в БД
+            $user->avatar = $avatarFileName[0];
+            $user->avatarSmall = $avatarFileName[1];
+          }
+        }
+
+        // Удаление аватарки
+        if ( isset($_POST['delete-avatar']) && $_POST['delete-avatar'] == 'on') {
+          $avatarFolderLocation = ROOT . 'usercontent/avatars/';
+          
+          // Если есть старое изображение - удаляем 
+          if (file_exists($avatarFolderLocation . $user->avatar) && !empty($user->avatar)) {
+            unlink($avatarFolderLocation . $user->avatar);
+          }
+
+          if (file_exists($avatarFolderLocation . $user->avatarSmall) && !empty($user->avatarSmall)) {
+            unlink($avatarFolderLocation . $user->avatarSmall);
+          }
+
+          // Удалить записи файла в БД
+          $user->avatar = '';
+          $user->avatarSmall = '';
+        }
+      
+        R::store($user);
+
+        if ($user->id ===  $_SESSION['logged_user']['id']) {
+          $_SESSION['logged_user'] = $user;
+        }
+        
+        $this->redirect('profile', $user->id);
+      }
+    }
+  }
+
+  private function redirect(string $pageName, string $param = ''): void 
+  {
+    $path = $param !== '' ? $pageName . '/' . $param : $pageName;
+    
+    header("Location: " . HOST . $path);
+    exit;
   }
 }
