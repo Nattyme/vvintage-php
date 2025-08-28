@@ -169,10 +169,13 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
   public function updateUser(UserUpdateDTO $dto, int $id): ?User
   {
+
+  
       $bean = $this->loadBean(self::TABLE_USERS, $id);
       if (!$bean || $bean->id === 0) return null;
 
       $bean->name = $dto->name ?? $bean->name;
+      $bean->surname = $dto->surname ?? $bean->surname;
       $bean->fav_list = json_encode($dto->fav_list ?? json_decode($bean->fav_list, true));
       $bean->cart = json_encode($dto->cart ?? json_decode($bean->cart, true));
       $bean->country = $dto->country ?? $bean->country;
@@ -181,8 +184,8 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
       // Аватар обновляем только если пришёл новый
       if (!empty($dto->avatar)) {
-          $user->avatar = $dto->avatar;
-          $user->avatarSmall = $dto->avatarSmall;
+          $bean->avatar = $dto->avatar;
+          $bean->avatarSmall = $dto->avatar_small;
       }
 
       // $bean->avatar = $dto->avatar ?? $bean->avatar;

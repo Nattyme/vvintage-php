@@ -29,7 +29,6 @@ class UserService extends BaseService
   protected ProductService $productService;
 
   private const FOLDER_NAME = 'avatars';
-  // private const FILE_NAME = 'avatar';
   private const AVATAR_FULL_SIZE = [160, 160];
   private const AVATAR_SMALL_SIZE = [48, 48];
   private const EXTENSIONS = [
@@ -112,11 +111,13 @@ class UserService extends BaseService
 
       // Прописываем путь для хранения изображения
       $imgFolderLocation = ROOT . 'usercontent/' . self::FOLDER_NAME . '/';
+
       $db_file_name = rand(100000000000, 999999999999) . "." . $fileExt;
 
 
-      $filePathFullSize =  self::FOLDER_NAME  . $db_file_name;
-      $filePathSmallSize =  self::FOLDER_NAME  . self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name;
+      $filePathFullSize = $imgFolderLocation . $db_file_name;
+      $filePathSmallSize = $imgFolderLocation . self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name;
+
 
       // Обработать фотографию
       // 1. Обрезать до мах размера
@@ -154,6 +155,7 @@ class UserService extends BaseService
   {
       $dto = new UserUpdateDTO([
                 'name' => (string) $data['name'],
+                'surname' => (string) $data['surname'],
 
                 'fav_list' => json_encode($dto->fav_list ?? []),
                 'cart' => json_encode($dto->cart ?? []),
