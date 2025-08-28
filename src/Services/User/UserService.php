@@ -17,6 +17,7 @@ use Vvintage\Repositories\AddressRepository;
 /** Репозитории */
 use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\User\UserRepository;
+use Vvintage\DTO\User\UserUpdateDTO;
 
 require_once ROOT . './libs/functions.php';
 
@@ -149,4 +150,26 @@ class UserService extends BaseService
       // }
   }
 
+  public function getUserUpdateDto(array $data): UserUpdateDTO 
+  {
+      $dto = new UserUpdateDTO([
+                'name' => (string) $data['name'],
+
+                'fav_list' => json_encode($dto->fav_list ?? []),
+                'cart' => json_encode($dto->cart ?? []),
+
+                'country' => (string) $data['country'],
+                'city' => (string) $data['city'],
+                'phone' => (string) $data['phone'],
+
+                'avatar' => isset($data['avatar']) ? (string)$data['avatar'] : null,
+                'avatar_small' => isset($data['avatar_small']) ? (string)$data['avatar_small'] : null,
+            ]);
+    return $dto;
+  }
+
+  public function updateUser (UserUpdateDTO $dto, int $id) 
+  {
+    return $this->userRepository->updateUser($dto, $id);
+  }
 }

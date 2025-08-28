@@ -14,7 +14,7 @@ interface UserRepositoryInterface
 
     public function findBlockedUserByEmail (string $email): bool;
     public function createUser(array $postData): ?User;
-    public function editUser(array $postData, int $userId): ?User;
+    // public function editUser(array $postData, int $userId): ?User;
     public function saveUserItemsList(string $itemKey, User $userModel, array $items): void;
     public function removeUser(User $userModel): void;
 
@@ -23,6 +23,5 @@ interface UserRepositoryInterface
     // public function updateUserAddressId(int $userId, int $addressId): void;
     // public function ensureUserHasAddress(User $userModel): ?int;
     public function getItemsList(int $userId, string $itemsKey): array;   
-
     public function getAllUsersCount(?string $sql = null, array $params = []): int;
   }

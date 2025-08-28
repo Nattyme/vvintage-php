@@ -24,7 +24,7 @@
                 echo "<a class=\"button button--s button--primary\" href=\"" . HOST . "profile-edit/". $userModel->getId() ."\">Редактировать</a>";
               }
               else  {
-                  echo "<a class=\"button button--s button--primary\" href=\"" . HOST . "profile-edit\">Редактировать</a>";
+                echo "<a class=\"button button--s button--primary\" href=\"" . HOST . "profile-edit\">Редактировать</a>";
               }
             ?>
 

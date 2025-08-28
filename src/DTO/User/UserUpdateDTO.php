@@ -15,8 +15,8 @@ final class UserUpdateDTO
     public string $city;
     public string $phone;
 
-    public string $avatar;
-    public string $avatar_small;
+    public ?string $avatar;
+    public ?string $avatar_small;
 
     public function __construct(array $data)
     {
@@ -30,8 +30,8 @@ final class UserUpdateDTO
         $this->country = (string) ($data['country'] ?? '');
         $this->city = (string) ($data['city'] ?? '');
         $this->phone = (string) ($data['phone'] ?? '');
-        $this->avatar = (string) ($data['avatar'] ?? '');
-        $this->avatar_small = (string) ($data['avatar_small'] ?? '');
+        $this->avatar = (string) $data['avatar'] ?? null;
+        $this->avatar_small = (string) $data['avatar_small'] ?? null;
 
     }
 }

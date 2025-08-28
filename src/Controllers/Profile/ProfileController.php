@@ -93,39 +93,55 @@ final class ProfileController extends BaseController
   public function edit(RouteData $routeData)
   {
       $this->setRouteData($routeData);
-      $uriGet = $this->routeData->uriGet ?? null;
-      $userModel = $this->getLoggedInUser();
 
+      $userModel = null;
+
+      if ( $this->isAdmin() ) {
+        $uriGet = $this->routeData->uriGet ?? null;
+ 
+        // проверка на доп параметр 
+        if (!empty( $uriGet ) ) {
+           
+          $idFromUri = (int) $uriGet;
+           
+          if (is_numeric($idFromUri) && $idFromUri > 0) {
+            
+              $userModel = $this->userService->getUserByID($idFromUri);
+          }
+        } else {
+          $userModel = $this->getLoggedInUser();
+        }
+      }
+
+      if (!$userModel) {
+        $userModel = $this->getLoggedInUser();
+      }
+
+    
       // если гость — редиректим
       if ($userModel instanceof GuestUser || !$userModel) {
           $this->redirect('login');
       }
 
-      // Определяем ID пользователя, которого хотим редактировать
-      $id = $userModel->getId(); // по умолчанию редактируем себя
-      if ($this->isAdmin() && !empty( $uriGet )) {
-          $idFromUri = (int) $uriGet;
-          if (is_numeric($idFromUri) && $idFromUri > 0) {
-              $id = $idFromUri;
-          }
-      }
-
-      // Получаем пользователя по ID
-      $userModel = $this->userService->getUserByID($id);
-      if (!$userModel) {
-        $this->redirect('profile');
-      }
+      
 
       // Проверяем права: владелец профиля или админ
-      if ($this->isProfileOwner($id) || $this->isAdmin()) {
-          $orders = $this->userService->getOrdersByUserId($id);
-          $address = null; // здесь можно добавить $userModel->getAddress()
-
-          $this->renderProfileEdit($routeData, $userModel, $address);
-      } else {
-          // Нет прав — редирект на свой профиль
-          $this->redirect('profile');
+      if (!($this->isProfileOwner($userModel->getId()) || $this->isAdmin())) {
+           $this->redirect('profile');
       }
+
+      $orders = $this->userService->getOrdersByUserId($userModel->getId());
+      $address = null; // здесь можно добавить $userModel->getAddress()
+
+
+      if (isset($_POST['updateProfile'])) {
+        
+        $this->updateUserAndGoToProfile($userModel);
+      }
+
+
+      $this->renderProfileEdit($routeData, $userModel, $uriGet, $address);
+
   }
 
 
@@ -146,7 +162,7 @@ final class ProfileController extends BaseController
       $userId = $userModel->getId();
 
       // Если есть ID  - получаем данные заказа, проверя, что это заказ вошедшего в свой профиль пользователя
-      $orders = $this->userService->getOrderById((int)$routeData->uriGetParam);
+      $orders = $this->userService->getOrderById((int) $routeData->uriGetParam);
       // Проверка, что заказ принадлежит текущему пользователю
       if ( $order->getUserId() !== $userId) {
         $this->redirect('profile');
@@ -215,7 +231,7 @@ final class ProfileController extends BaseController
       ]);
   }
 
-  private function renderProfileEdit (RouteData $routeData, ?User $userModel,  $address): void 
+  private function renderProfileEdit (RouteData $routeData, ?User $userModel, $uriGet, $address): void 
   {  
       // Название страницы
       $pageTitle = 'Редактирование профиля пользователя';
@@ -224,11 +240,13 @@ final class ProfileController extends BaseController
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+ 
 
+      // dd($userModel);
+      // if (isset($_POST['updateProfile'])) {
 
-      if (isset($_POST['updateProfile'])) {
-        $this->updateUserAndGoToProfile($userModel);
-      }
+      //   $this->updateUserAndGoToProfile($userModel);
+      // }
 
       // Подключение шаблонов страницы
       $this->renderLayout('profile/profile-edit', [
@@ -237,6 +255,7 @@ final class ProfileController extends BaseController
             'breadcrumbs' => $breadcrumbs,
             'pageClass' => $pageClass,
             'userModel' => $userModel,
+            'uriGet' => $uriGet,
             'address' => $address,
       ]);
   }
@@ -264,30 +283,34 @@ final class ProfileController extends BaseController
 
 
   private  function updateUserAndGoToProfile (User $userModel) {
+    // dd($userModel);
     if ( isset($_POST['updateProfile'])) {
       // Принимаем данные
       $data = $_POST;
-      $files = $_FILES['avatar'] ?? [];
-    
-      // Если ошибок нет - сохраняем
-      if ( isset($files['name']) && $files['tmp_name'] !== '') {
-        $validAvatar = $this->validator->validateEditAvatar($files);
 
+      $files = $_FILES['avatar'] ?? [];
+      // Если ошибок нет - сохраняем
+      if ( !empty($files['name']) && $files['tmp_name'] !== '') {
+        $validAvatar = $this->validator->validateEditAvatar($files);
         if(!$validAvatar) return;
-      
         $avatars = $this->userService->handleAvatar($userModel, $files);
-       
+        $data = array_merge($data, $avatars);
       }
 
       $valid = $this->validator->validateEdit($data);
 
       if(!$valid) return;
+      $dto = $this->userService->getUserUpdateDto($data);
+      
+      $this->userService->updateUser($dto, $userModel->getId());
 
-      If(!empty($avatars)) {
-        $data = array_merge($data, $avatars);
-      }
-  
-      $updatedData = $this->userService->handleFormData($userModel, $data);
+      $this->redirect('profile', (string)$userModel->getId());
+     
+      
+
+    
+
+      // $updatedData = $this->userService->handleFormData($userModel, $data);
 
       // Удаление аватарки
       // if ( isset($_POST['delete-avatar']) && $_POST['delete-avatar'] == 'on') {
@@ -313,7 +336,7 @@ final class ProfileController extends BaseController
       //   $_SESSION['logged_user'] = $user;
       // }
       
-      $this->redirect('profile', (string) $userModel->getId());
+      // $this->redirect('profile', (string) $userModel->getId());
     
     }
   }

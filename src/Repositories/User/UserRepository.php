@@ -85,29 +85,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
     }
 
-    private function getUserUpdateDto($data): UserUpdateDTO 
-    {
-      
-      $dto = new UserUpdateDTO([
-                  'name' => (string) $data['name'],
-
-                  'fav_list' => json_encode($dto->fav_list ?? []),
-                  'cart' => json_encode($dto->cart ?? []),
-
-                  'country' => (string) $data['country'],
-                  'city' => (string) $data['city'],
-                  'phone' => (string) $data['phone'],
-
-                  'avatar' => (string) $data['avatar'],
-                  'avatar_small' => (string) $data['avatar_small']
-              ]);
-  
-         
-      return  $dto;
-
-    }
-
-
     private function mapBeanToUser(OODBBean $bean): User
     {
         $dto = new UserOutputDTO([
@@ -115,6 +92,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
             'password' => (string) $bean->password,
             'email' => (string) $bean->email,
             'name' => (string) $bean->name,
+            'surname' => (string) $bean->surname,
             'role' => (string) $bean->role,
 
             'fav_list' => (string) $bean->fav_list,
@@ -165,17 +143,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
       return $this->saveNewUser($dto);
     }
 
-    /**
-     * Метод редактирует пользователя 
-     * @param User $userModel, array $newUserData
-     * @return User|null
-    */
-    public function editUser(array $postData, int $id): ?User
-    {
-      $dto = $this->getUserUpdateDto($postData);
-      return $this->updateUser($dto, $id);
-    }
-
+  
 
   public function saveNewUser(UserCreateDTO $dto): ?User
   {
@@ -210,8 +178,15 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
       $bean->country = $dto->country ?? $bean->country;
       $bean->city = $dto->city ?? $bean->city;
       $bean->phone = $dto->phone ?? $bean->phone;
-      $bean->avatar = $dto->avatar ?? $bean->avatar;
-      $bean->avatar_small = $dto->avatar_small ?? $bean->avatar_small;
+
+      // Аватар обновляем только если пришёл новый
+      if (!empty($dto->avatar)) {
+          $user->avatar = $dto->avatar;
+          $user->avatarSmall = $dto->avatarSmall;
+      }
+
+      // $bean->avatar = $dto->avatar ?? $bean->avatar;
+      // $bean->avatar_small = $dto->avatar_small ?? $bean->avatar_small;
 
       $this->saveBean($bean);
 
