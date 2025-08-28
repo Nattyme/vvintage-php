@@ -44,6 +44,7 @@ final class ProfileController extends BaseController
   {
     $orders = null;
     $this->setRouteData($routeData);
+    $uriGet = $this->routeData->uriGet ?? null;
 
     $userModel = $this->getLoggedInUser();
 
@@ -52,45 +53,47 @@ final class ProfileController extends BaseController
         $this->redirect('login');
     }
 
-    if( empty($this->routeData->uriGet) ) {
-   
-      $id = $userModel->getId() ?? null;
-  
-      if (!$id) {
-        $this->redirect('login');
+
+    if( $uriGet ) {
+      $id = (int) $uriGet ?? null;
+      
+      if(!is_numeric($uriGet) || !$id) {
+        $this->redirect('profile');
       }
 
-      $orders = $this->userService->getOrdersByUserId($id);
-      $this->renderProfileFull($this->routeData, $userModel, $orders);
-    } else {
-        $id = (int) $this->routeData->uriGet ?? null;
-        
-        if(!is_numeric($this->routeData->uriGet) || !$id) {
+      if ($this->isProfileOwner($id) || $this->isAdmin()) {
+        $userModel = $this->userService->getUserByID($id);
+
+        if(!$userModel) {
           $this->redirect('profile');
         }
+        
+        $order = $orders = $this->userService->getOrdersByUserId($id);
 
-        if ($this->isProfileOwner($id) || $this->isAdmin()) {
-          $userModel = $this->userService->getUserByID($id);
+        $this->renderProfileFull($this->routeData, $userModel, $orders);
+      } else {
+        $this->redirect('profile');
+      }
 
-          if(!$userModel) {
-            $this->redirect('profile');
-          }
-          
-          $order = $orders = $this->userService->getOrdersByUserId($id);
-
-          $this->renderProfileFull($this->routeData, $userModel, $orders);
-        } else {
-          $this->renderProfile($this->routeData, $userModel);
+    } else {
+        $id = $userModel->getId() ?? null;
+  
+        if (!$id) {
+          $this->redirect('login');
         }
 
+        $orders = $this->userService->getOrdersByUserId($id);
+        $this->renderProfileFull($this->routeData, $userModel, $orders);
     }
+
+
      
   }
 
   public function edit(RouteData $routeData)
   {
       $this->setRouteData($routeData);
-
+      $uriGet = $this->routeData->uriGet ?? null;
       $userModel = $this->getLoggedInUser();
 
       // если гость — редиректим
@@ -100,8 +103,8 @@ final class ProfileController extends BaseController
 
       // Определяем ID пользователя, которого хотим редактировать
       $id = $userModel->getId(); // по умолчанию редактируем себя
-      if ($this->isAdmin() && !empty($this->routeData->uriGet)) {
-          $idFromUri = (int)$this->routeData->uriGet;
+      if ($this->isAdmin() && !empty( $uriGet )) {
+          $idFromUri = (int) $uriGet;
           if (is_numeric($idFromUri) && $idFromUri > 0) {
               $id = $idFromUri;
           }
@@ -171,25 +174,25 @@ final class ProfileController extends BaseController
   }
 
 
-  private function renderProfile (RouteData $routeData, ?User $userModel): void 
-  {  
-      // Название страницы
-      $pageTitle = 'Профиль пользователя';
-      $pageClass = "profile-page";
+  // private function renderProfile (RouteData $routeData, ?User $userModel): void 
+  // {  
+  //     // Название страницы
+  //     $pageTitle = 'Профиль пользователя';
+  //     $pageClass = "profile-page";
 
-      // Хлебные крошки
-      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+  //     // Хлебные крошки
+  //     $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-      // Подключение шаблонов страницы
-      $this->renderLayout('profile/profile', [
-            'pageTitle' => $pageTitle,
-            'routeData' => $routeData,
-            'breadcrumbs' => $breadcrumbs,
-            'pageClass' => $pageClass,
-            'userModel' => $userModel,
-            'flash' => $this->flash
-      ]);
-  }
+  //     // Подключение шаблонов страницы
+  //     $this->renderLayout('profile/profile', [
+  //           'pageTitle' => $pageTitle,
+  //           'routeData' => $routeData,
+  //           'breadcrumbs' => $breadcrumbs,
+  //           'pageClass' => $pageClass,
+  //           'userModel' => $userModel,
+  //           'flash' => $this->flash
+  //     ]);
+  // }
 
   private function renderProfileFull(RouteData $routeData, ?User $userModel, ?array $orders): void
   {
