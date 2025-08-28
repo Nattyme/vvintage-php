@@ -10,6 +10,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Base\BaseController;
 
 use Vvintage\Models\User\User;
+use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\Address\Address;
 
 /** Сервисы */
@@ -42,14 +43,14 @@ final class ProfileController extends BaseController
   public function index(RouteData $routeData)
   {
     $orders = null;
-    $userModel = null;
     $this->setRouteData($routeData);
 
     $userModel = $this->getLoggedInUser();
-    
-    if(!$userModel) {
-      $this->redirect('login');
-    };
+
+    // если гость — редиректим
+    if ($userModel instanceof GuestUser || !$userModel) {
+        $this->redirect('login');
+    }
 
     if( empty($this->routeData->uriGet) ) {
    
@@ -90,13 +91,15 @@ final class ProfileController extends BaseController
   {
       $this->setRouteData($routeData);
 
-      $loggedUser = $this->getLoggedInUser();
-      if (!$loggedUser) {
+      $userModel = $this->getLoggedInUser();
+
+      // если гость — редиректим
+      if ($userModel instanceof GuestUser || !$userModel) {
           $this->redirect('login');
       }
 
       // Определяем ID пользователя, которого хотим редактировать
-      $id = $loggedUser->getId(); // по умолчанию редактируем себя
+      $id = $userModel->getId(); // по умолчанию редактируем себя
       if ($this->isAdmin() && !empty($this->routeData->uriGet)) {
           $idFromUri = (int)$this->routeData->uriGet;
           if (is_numeric($idFromUri) && $idFromUri > 0) {
@@ -126,18 +129,14 @@ final class ProfileController extends BaseController
 
   public function order(RouteData $routeData)
   {
-       $this->setRouteData($routeData);
+      $this->setRouteData($routeData);
        
       // Если ID нет - выходим
-      if ( !isset($_GET['id']) || empty($_GET['id'])) {
-        $this->redirect('profile');
-      }
+      $userModel = $this->getLoggedInUser();
 
-      $userModel = null;
-      $isLoggedUser = $this->isLoggedIn();
-
-      if(!$isLoggedUser) {
-        $this->redirect('login');
+      // если гость — редиректим
+      if ($userModel instanceof GuestUser || !$userModel) {
+          $this->redirect('login');
       }
 
       $userModel = $this->getLoggedInUser();
@@ -188,7 +187,6 @@ final class ProfileController extends BaseController
             'breadcrumbs' => $breadcrumbs,
             'pageClass' => $pageClass,
             'userModel' => $userModel,
-            'orders' => $orders,
             'flash' => $this->flash
       ]);
   }
@@ -282,7 +280,9 @@ final class ProfileController extends BaseController
 
       if(!$valid) return;
 
-      $data = array_merge($data, $avatars);
+      If(!empty($avatars)) {
+        $data = array_merge($data, $avatars);
+      }
   
       $updatedData = $this->userService->handleFormData($userModel, $data);
 

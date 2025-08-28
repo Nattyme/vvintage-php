@@ -45,7 +45,6 @@ final class OrderController extends BaseController
     private array $cart;
     private UserItemsListStoreInterface $cartStore;
     private NewOrderValidator $validator;
-    private FlashMessage $flash;
     private Breadcrumbs $breadcrumbsService;
   
 
@@ -57,7 +56,6 @@ final class OrderController extends BaseController
       array $cart,
       UserItemsListStoreInterface $cartStore,
       NewOrderValidator $validator,
-      FlashMessage $flash,
       Breadcrumbs $breadcrumbs
     )
     {
@@ -69,12 +67,12 @@ final class OrderController extends BaseController
       $this->cart = $cart;
       $this->cartStore = $cartStore;
       $this->validator = $validator;
-      $this->flash = $flash;
       $this->breadcrumbsService = $breadcrumbs;
     }
 
     public function index(RouteData $routeData): void
     {
+      $this->setRouteData($routeData);
       
       if(empty($this->cart)) {
         header('Location: ' . HOST . 'cart');

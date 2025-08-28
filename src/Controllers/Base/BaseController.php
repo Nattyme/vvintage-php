@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Base;
 
 // use Vvintage\Routing\Router;
+/** Интерфейсы */
+use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Routing\RouteData;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Session\SessionService;
@@ -95,7 +97,7 @@ abstract class BaseController
       return $this->sessionService->isLoggedIn();
    }
 
-   protected function getLoggedInUser(): ?User
+   protected function getLoggedInUser(): ?UserInterface
    {
     return $this->sessionService->getLoggedInUser();
    }

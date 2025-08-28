@@ -356,7 +356,7 @@
                     : new GuestItemsListStore();
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $flash);
 
-      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $flash, $breadcrumbs );
+      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $breadcrumbs );
 
       switch ($routeData->uriModule) {
         case 'cart':
@@ -452,7 +452,6 @@
         $cart, 
         $cartStore, 
         $validator, 
-        $flash,
         $breadcrumbs);
 
       switch ($routeData->uriModule) {
