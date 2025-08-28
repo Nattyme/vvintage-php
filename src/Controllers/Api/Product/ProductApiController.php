@@ -12,9 +12,6 @@ use Vvintage\Serializers\ProductApiSerializer;
 use Vvintage\Services\Admin\Validation\AdminProductValidator;
 use Vvintage\Services\Admin\Validation\AdminProductImageValidator;
 
-require_once ROOT . "libs/resize-and-crop.php";
-require_once ROOT . "libs/functions.php";
-
 
 class ProductApiController extends BaseAdminController
 {

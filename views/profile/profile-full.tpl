@@ -1,10 +1,10 @@
 <main class="page-profile">
-  <section class="profile-card">
+  <div class="page-profile__content">
     <div class="container">
-    
+      <div class="profile-card">
         <?php include ROOT . "views/components/errors.tpl"; ?>
-      <?php include ROOT . "views/components/success.tpl"; ?>
-        <div class="profile-card__header">
+        <?php include ROOT . "views/components/success.tpl"; ?>
+        <section class="profile-card__header">
             <div class="profile-card__avatar">
               <?php if (!empty($userModel->getAvatar())) : ?>
                 <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="Аватарка">
@@ -28,9 +28,9 @@
               }
             ?>
 
-        </div>
+        </section>
 
-        <div class="profile-card__body">
+        <section class="profile-card__body">
           <dl class="profile-card__list">
             <div class="profile-card__row">
               <dt>Электронная почта</dt>
@@ -49,10 +49,11 @@
               <dd><?php echo $userModel->getCity(); ?></dd>
             </div>
           </dl>
-        </div>
+        </section>
+      </div>
     </div>
 
-  </section>
+  </div>
 
   <!-- // Выводим заказы пользователя (если есть) -->
   <section class="profile-orders">
