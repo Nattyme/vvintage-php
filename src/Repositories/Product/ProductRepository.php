@@ -23,6 +23,7 @@ use Vvintage\DTO\Product\ProductInputDTO;
 use Vvintage\DTO\Product\ProductImageDTO;
 use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Category\CategoryOutputDTO;
 use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
 use Vvintage\DTO\Product\ProductTranslationInputDTO;
@@ -108,10 +109,30 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
       return $imagesDto;
     }
 
-    private function createCategoryDTOFromArray(array $row): CategoryDTO
+    // private function createCategoryDTOFromArray(array $row): CategoryDTO
+    // {
+    //     $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
+    //     return new CategoryDTO([
+    //         'id' => (int) $row['category_id'],
+    //         'title' => (string) ($row['category_title_translation'] ?: $row['category_title']),
+    //         'parent_id' => (int) ($row['category_parent_id'] ?? 0),
+    //         'image' => (string) ($row['category_image'] ?? ''),
+    //         'translations' => [
+    //             $locale => [
+    //                 'title' => $row['category_title_translation'] ?? '',
+    //                 'description' => $row['category_description'] ?? '',
+    //                 'seo_title' => $row['category_meta_title'] ?? '',
+    //                 'seo_description' => $row['category_meta_description'] ?? '',
+    //             ]
+    //         ],
+    //         'locale' => $locale,
+    //     ]);
+    // }
+
+    private function createCategoryOutputDTO (array $row): CategoryOutputDTO
     {
         $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-        return new CategoryDTO([
+        return new CategoryOutputDTO([
             'id' => (int) $row['category_id'],
             'title' => (string) ($row['category_title_translation'] ?: $row['category_title']),
             'parent_id' => (int) ($row['category_parent_id'] ?? 0),
@@ -268,7 +289,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
         $productId = (int) $row['id'];
         $translations = $this->loadTranslations($productId);
-        $categoryDTO = $this->createCategoryDTOFromArray($row);
+        $categoryDTO = $this->createCategoryOutputDTO($row);
         $brandDTO = $this->createBrandDTOFromArray($row);
         $imagesDTO = $this->fetchImageDTOs($row);
 

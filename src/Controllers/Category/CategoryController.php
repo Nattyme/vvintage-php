@@ -7,7 +7,7 @@ use Vvintage\Controllers\BaseController;
 // use Vvintage\Contracts\Category\CategoryRepositoryInterfave;
 // use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Models\Category\Category;
-// use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Category\CategoryOutputDTO;
 use Vvintage\Services\Category\CategoryService;
 
 class CategoryController extends BaseController
@@ -31,8 +31,8 @@ class CategoryController extends BaseController
         $categories = [];
 
         foreach ($rawCategories as $rawCategory) {
-            $dto = new CategoryDTO($rawCategory);
-            $category = Category::fromDTO($dto);
+            $dto = new CategoryOutputDTO($rawCategory);
+            $category = Category::fromOutputDTO($dto);
             $category->setCurrentLocale($locale);
 
             $categories[] = [

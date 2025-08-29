@@ -7,7 +7,7 @@ namespace Vvintage\Models\Product;
 /** DTO */
 use Vvintage\DTO\Product\ProductDTO;
 use Vvintage\DTO\Product\ProductImageDTO;
-use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Category\CategoryOutputDTO;
 use Vvintage\DTO\Brand\BrandDTO;
 
 /** Модели */
@@ -57,7 +57,7 @@ class Product
 
       $product->id = $dto->id;
       
-      $product->category = Category::fromDTO($dto->categoryDTO);
+      $product->category = Category::fromOutputDTO($dto->categoryDTO);
       $product->brand = Brand::fromDTO($dto->brandDTO);
 
       $product->slug = $dto->slug;

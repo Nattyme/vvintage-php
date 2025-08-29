@@ -16,6 +16,7 @@ use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Category\CategoryOutputDTO;
 use Vvintage\DTO\Category\CategoryInputDTO;
 
 
@@ -172,7 +173,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
             $transBean->meta_description = $translation['meta_description'] ?? '';
             $this->saveBean($transBean);
         }
-dd($id);
+
         return $id;
     }
     // public function saveCategory(Category $cat): int

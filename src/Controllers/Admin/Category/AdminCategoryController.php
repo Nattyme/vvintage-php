@@ -36,6 +36,7 @@ final class AdminCategoryController extends BaseAdminController
   public function edit(RouteData $routeData)
   {
     $this->isAdmin();
+    $this->setRouteData($routeData);
     $this->renderEdit($routeData);
   }
 
@@ -138,10 +139,10 @@ final class AdminCategoryController extends BaseAdminController
 
               if ($saved) {
                   $this->flash->pushSuccess('Категория успешно создана.');
-                  header('Location: ' . HOST . 'admin/brand');
-                  exit; // здесь return нужен, чтобы не рендерить форму
+                  $this->redirect('category');
               } else {
                   $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
+                  $this->redirect('category');
               }
       }
       
@@ -157,15 +158,14 @@ final class AdminCategoryController extends BaseAdminController
     ]);
   }
 
-  private function renderEdit(RouteData $routeData): void
+  private function renderEdit(): void
   {
     $viewPath = 'categories/edit';
-
-    // Название страницы
     $pageTitle = 'Категория - редактирование';
-    $id = (int) $routeData->uriGet;
-    $pageClass = 'admin-page';
 
+    $id = (int) $this->routeData->uriGet ?? null;
+    $pageClass = 'admin-page';
+dd($id);
     // Задаем название страницы и класс
     if( isset($_POST['submit'])) {
       // Проверка токена
@@ -207,7 +207,7 @@ final class AdminCategoryController extends BaseAdminController
   private function renderDelete(): void
   {
     // Название страницы
-    $pageTitle = 'Категории';
+    $pageTitle = 'Удалить категорию';
 
     $brandsPerPage = 9;
 

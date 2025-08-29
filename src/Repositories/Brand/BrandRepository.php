@@ -213,6 +213,44 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
         return $brandId;
     }
+    // public function saveBrand(BrandDTO $dto): ?int
+    // {
+    //     if (!$dto) {
+    //         return null;
+    //     }
+
+    //     // Создаем или загружаем основной бренд
+    //     $brandBean = $dto->id 
+    //         ? $this->findById(self::TABLE_BRANDS, $dto->id)
+    //         : $this->createBrandBean();
+
+    //     $brandBean->title = $dto->title;
+    //     $brandBean->image = $dto->image;
+
+    //     $this->saveBean($brandBean);
+
+    //     $brandId = (int)$brandBean->id;
+    //     if (!$brandId) {
+    //         return null;
+    //     }
+
+    //     // Сохраняем переводы
+    //     foreach ($dto->translations as $locale => $fields) {
+    //         $translationBean = R::findOne(self::TABLE_BRANDS_TRANSLATION, 'brand_id = ? AND locale = ?', [$brandId, $locale])
+    //             ?? $this->createBrandTranslationsBean();
+
+    //         $translationBean->brand_id = $brandId;
+    //         $translationBean->locale = $locale;
+    //         $translationBean->title = $fields['title'] ?? '';
+    //         $translationBean->description = $fields['description'] ?? '';
+    //         $translationBean->meta_title = $fields['meta_title'] ?? '';
+    //         $translationBean->meta_description = $fields['meta_description'] ?? '';
+
+    //         $this->saveBean($translationBean);
+    //     }
+
+    //     return $brandId;
+    // }
 
     /** Создаёт новый бренд через DTO */
     public function createBrand(BrandDTO $dto): ?int

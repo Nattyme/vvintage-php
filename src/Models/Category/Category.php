@@ -5,6 +5,7 @@ namespace Vvintage\Models\Category;
 
 use Vvintage\DTO\Category\CategoryDTO;
 use Vvintage\DTO\Category\CategoryInputDTO;
+use Vvintage\DTO\Category\CategoryOutputDTO;
 
 
 final class Category
@@ -21,6 +22,20 @@ final class Category
     private function __construct() {}
 
     public static function fromDTO(CategoryInputDTO $dto): self
+    {
+        $category = new self();
+
+        $category->id = $dto->id;
+        $category->title = $dto->title;
+        $category->parent_id = $dto->parent_id;
+        $category->slug = $dto->slug;
+        $category->image = $dto->image;
+        $category->translations = $dto->translations;
+
+        return $category;
+    }
+
+    public static function fromOutputDTO(CategoryOutputDTO $dto): self
     {
         $category = new self();
 
@@ -135,8 +150,6 @@ final class Category
     public function getTranslatedTitle(?string $locale = null): string 
     {
         $locale = $locale ?? $this->currentLocale;
-   
-      // dd($this->translations[$locale]['title']);
 
         return $this->translations[$locale]['title'] ?? $this->title;
     }
