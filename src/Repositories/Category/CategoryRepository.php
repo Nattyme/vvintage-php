@@ -16,6 +16,7 @@ use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Category\CategoryInputDTO;
 
 
 final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
@@ -66,7 +67,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         ];
 
 
-        $dto = new CategoryDTO([
+        $dto = new CategoryInputDTO([
             'id' => (int) $bean->id,
             'title' => (string) $bean->title,
             'parent_id' => (int) $bean->parent_id,
@@ -152,6 +153,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
         $bean->title = $cat->getTitle(); // по умолчанию ru
         $bean->parent_id = $cat->getParentId();
+        $bean->slug = $cat->getSlug();
         $bean->image = $cat->getImage();
         $bean->seo_title = $cat->getSeoTitle();
         $bean->seo_description = $cat->getSeoDescription();
@@ -170,8 +172,40 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
             $transBean->meta_description = $translation['meta_description'] ?? '';
             $this->saveBean($transBean);
         }
-
+dd($id);
         return $id;
+    }
+    // public function saveCategory(Category $cat): int
+    // {
+    //     $bean = $cat->getId() ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId()) : $this->createBean(self::TABLE_CATEGORIES);
+
+    //     $bean->title = $cat->getTitle(); // по умолчанию ru
+    //     $bean->parent_id = $cat->getParentId();
+    //     $bean->image = $cat->getImage();
+    //     $bean->seo_title = $cat->getSeoTitle();
+    //     $bean->seo_description = $cat->getSeoDescription();
+
+    //     $id = (int) $this->saveBean($bean);
+
+    //     // Сохраняем переводы в отдельную таблицу
+    //     R::exec('DELETE FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?', [$id]);
+    //     foreach ($cat->getAllTranslations() as $locale => $translation) {
+    //         $transBean = $this->createBean(self::TABLE_CATEGORIES_TRANSLATION);
+    //         $transBean->category_id = $id;
+    //         $transBean->locale = $locale;
+    //         $transBean->title = $translation['title'] ?? '';
+    //         $transBean->description = $translation['description'] ?? '';
+    //         $transBean->meta_title = $translation['meta_title'] ?? '';
+    //         $transBean->meta_description = $translation['meta_description'] ?? '';
+    //         $this->saveBean($transBean);
+    //     }
+
+    //     return $id;
+    // }
+
+    public function createCategory(Category $cat) 
+    {
+      return $this->saveCategory($cat);
     }
 
     

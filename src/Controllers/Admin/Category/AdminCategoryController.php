@@ -7,9 +7,14 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Category\AdminCategoryService;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Admin\Validation\AdminCategoryValidator;
+use Vvintage\DTO\Category\CategoryInputDTO;
+use Vvintage\Models\Category\Category;
+
 
 final class AdminCategoryController extends BaseAdminController 
 {
+  private AdminCategoryValidator $validator;
   private AdminCategoryService $service;
   private FlashMessage $flash;
 
@@ -18,7 +23,7 @@ final class AdminCategoryController extends BaseAdminController
     parent::__construct();
     $this->service = new AdminCategoryService();
     $this->flash = new FlashMessage();
-    $this->validator = new AdminBrandValidator();
+    $this->validator = new AdminCategoryValidator();
   }
 
   public function all(RouteData $routeData)
@@ -89,7 +94,7 @@ final class AdminCategoryController extends BaseAdminController
     
     if( $parentId) {    
       $parentId = (int) $parentId;
-      $parentCategory = $this->service->getCategoryById($id);
+      $parentCategory = $this->service->getCategoryById($parentId);
     }
 
     
@@ -99,20 +104,13 @@ final class AdminCategoryController extends BaseAdminController
     }
 
     if(isset($_POST['submit'])) {
-      dd($_POST);
-      $validate = $this->validator->new($_POST);
-      // Проверка CSRF
-      if (!check_csrf($_POST['csrf'] ?? '')) {
-          $this->flash->pushError('Неверный токен безопасности.');
-      } else {
-          // Валидация
-          $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
+   
+      // $validate = $this->validator->new($_POST);
+      $validate = true;
 
-          if (!$validate) {
-              $this->flash->pushError($brandId 
-                  ? 'Не удалось обновить бренд. Проверьте данные.' 
-                  : 'Не удалось сохранить новый бренд. Проверьте данные.');
-          } else {
+      if (!$validate) {
+        $this->flash->pushError('Не удалось сохранить новую категорию. Проверьте данные.');
+      } else {
               $translations = [];
               foreach ($_POST['title'] as $lang => $title) {
                   $translations[$lang] = [
@@ -125,28 +123,28 @@ final class AdminCategoryController extends BaseAdminController
 
               $mainLang = 'ru';
 
-              $brandDTO = new BrandDTO([
+              $dto = new CategoryInputDTO([
+                  'parent_id' => $_POST['parent_id'] ?? 0,
+                  'slug' => $_POST['slug'] ?? '',
                   'title' => $_POST['title'][$mainLang] ?? '',
                   'description' => $_POST['description'][$mainLang] ?? '',
                   'image' => $_POST['image'] ?? '',
                   'translations' => $translations,
               ]);
 
-              $brand = Brand::fromDTO($brandDTO);
+              $category = Category::fromDTO($dto);
 
-              $saved = $brandId
-                  ? $this->service->updateBrand($brandId, $_POST)
-                  : $this->service->createBrand($brandDTO);
+              $saved = $this->service->createCategory( $category);
 
               if ($saved) {
-                  $this->flash->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
+                  $this->flash->pushSuccess('Категория успешно создана.');
                   header('Location: ' . HOST . 'admin/brand');
                   exit; // здесь return нужен, чтобы не рендерить форму
               } else {
-                  $this->flash->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
+                  $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
               }
-          }
       }
+      
     }
 
     $this->renderLayout($viewPath,  [
@@ -154,7 +152,7 @@ final class AdminCategoryController extends BaseAdminController
       'routeData' => $this->routeData,
       'flash' => $this->flash,
       'uriGet' => $uriGet,
-      'currentMainCategory' => $currentMainCategory
+      'parentCategory' => $parentCategory
       
     ]);
   }
@@ -182,7 +180,7 @@ final class AdminCategoryController extends BaseAdminController
 
       // Если нет ошибок
       if ( empty($_SESSION['errors'])) {
-        $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
+        $category = $this->service->getCategoryById((int) $routeData->uriGet);
         // $brand->title = $_POST['title'];
 
         // R::store($brand);
@@ -209,19 +207,19 @@ final class AdminCategoryController extends BaseAdminController
   private function renderDelete(): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Категории';
 
     $brandsPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->brandRepository->getAllBrands($pagination);
-    $total = $this->brandRepository->getAllBrandsCount();
+    $pagination = pagination($brandsPerPage, 'categories');
+    $category = $this->service->getAllCategories($pagination);
+    $category = $this->service->getAllCategoriesCount();
         
-    $this->renderLayout('brands/all',  [
+    $this->renderLayout('categories/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'brands' => $brands,
+      'categories' => $categories,
       'pagination' => $pagination,
       'flash' => $this->flash
     ]);

@@ -36,9 +36,9 @@
       placeholder="Введите описание категории"
     ><?php 
       echo isset($_POST['description'][$code]) 
-      ? h($_POST['title'][$description] ) 
-      : (isset($brand) && $brand->getTranslatedDescription($code) 
-      ? h($brand->getTranslatedDescription($code)) : '');
+      ? h($_POST['title'][$code] ) 
+      : (isset($category) && $category->getTranslatedDescription($code) 
+      ? h($category->getTranslatedDescription($code)) : '');
     ?></textarea>
   </div>
 
@@ -68,9 +68,9 @@
       placeholder="Введите SEO описание страницы"
     ><?php 
       echo isset($_POST['meta_description'][$code]) 
-      ? h($_POST['meta_description'][$meta_description] ) 
-      : (isset($brand) && $brand->getSeoDescription($code) 
-      ? h($brand->getSeoDescription($code)) : '');
+      ? h($_POST['meta_description'][$code] ) 
+      : (isset($category) && $category->getSeoDescription($code) 
+      ? h($category->getSeoDescription($code)) : '');
     ?></textarea>
   </div>
 </div>

@@ -4,12 +4,15 @@ declare(strict_types=1);
 namespace Vvintage\Models\Category;
 
 use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Category\CategoryInputDTO;
+
 
 final class Category
 {
     private int $id;
     private string $title;
     private int $parent_id;
+    private string $slug;
     private string $image;
 
     private array $translations = [];
@@ -17,13 +20,14 @@ final class Category
 
     private function __construct() {}
 
-    public static function fromDTO(CategoryDTO $dto): self
+    public static function fromDTO(CategoryInputDTO $dto): self
     {
         $category = new self();
 
         $category->id = $dto->id;
         $category->title = $dto->title;
         $category->parent_id = $dto->parent_id;
+        $category->slug = $dto->slug;
         $category->image = $dto->image;
         $category->translations = $dto->translations;
 
@@ -37,6 +41,7 @@ final class Category
         $category->id = (int) ($data['id'] ?? 0);
         $category->title = (string) ($data['title'] ?? '');
         $category->parent_id = (int) ($data['parent_id'] ?? 0);
+        $category->slug = (string) ($data['slug'] ?? '');
         $category->image = (string) ($data['image'] ?? '');
         $category->translations = $data['translations'] ?? [];
         $category->currentLocale = (string) ($data['locale'] ?? 'ru');
@@ -61,6 +66,11 @@ final class Category
         return $this->translations[$locale]['description']
             ?? $this->translations['ru']['description']
             ?? '';
+    }
+
+    public function getSlug(): string 
+    {
+      return $this->slug;
     }
 
     // public function getSeoTitle(?string $locale = null): string

@@ -84,5 +84,10 @@ class CategoryService extends BaseService
         return $tree;
     }
 
+    public function getAllCategoriesCount(): int
+    {
+       return $this->repository->getAllCategoriesCount();
+    }
+
   
 }

@@ -12,14 +12,14 @@
           <?php if ($uriGet) : ?> 
           <div class="admin-form__field">
             <label class="admin-form__label" for="title">
-              <?php echo 'Будет добавлено в раздел: ' . h($currentMainCategory->getTitle());?>
+              <?php echo 'Будет добавлено в раздел: ' . h($parentCategory->getTitle());?>
             </label>
             <input 
               id="parent" 
               name="parent_id" 
               class="admin-form__input admin-form__input--width-label" 
               type="text" 
-              value="<?php echo h($currentMainCategory->getId());?>"
+              value="<?php echo h($parentCategory->getId());?>"
               hidden
             />
             
@@ -27,26 +27,7 @@
           </div>
           <?php endif; ?> 
           
-          <!-- <div class="admin-form__field">
-            <label class="admin-form__label" for="title">
-              <?php if ($uriGet) : ?> 
-                Введите название категории
-              <?php else : ?>
-                Введите название раздела
-              <?php endif;?>
-            </label>
-            <input 
-              id="title" 
-              name="title" 
-              class="admin-form__input admin-form__input--width-label" 
-              type="text" 
-              placeholder="Заголовок категории"
-              value="<?php echo isset($_POST['title']) ? h($_POST['title']) : '';?>"
-              required
-            />
-            
-      
-          </div> -->
+    
 
           <div class="admin-form__field">
             <div class="admin-form__item" data-control="tab">
