@@ -150,6 +150,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     public function saveCategory(Category $cat): int
     {
+    
         $bean = $cat->getId() ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId()) : $this->createBean(self::TABLE_CATEGORIES);
 
         $bean->title = $cat->getTitle(); // по умолчанию ru
@@ -203,6 +204,15 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     //     return $id;
     // }
+
+    public function updateCategory(Category $cat) {
+
+      if (!$cat->getId()) {
+          return null; // нельзя обновить без ID
+      }
+
+      $this->saveCategory($cat);
+    }
 
     public function createCategory(Category $cat) 
     {

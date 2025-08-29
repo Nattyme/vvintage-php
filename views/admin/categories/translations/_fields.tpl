@@ -1,7 +1,7 @@
 <div class="lang-group lang-group--<?php echo $code;?>" data-lang="<?php echo $code;?>">
   <div class="admin-form__field">
     <label class="admin-form__label" for="title-<?php echo $code;?>">
-      <?php if ($uriGet) : ?> 
+      <?php if ($this->routeData->uriGet) : ?> 
           Название категории
         <?php else : ?>
           Название раздела
@@ -16,14 +16,14 @@
       value="<?php 
           echo isset($_POST['title'][$code]) 
           ? h($_POST['title'][$code] ) 
-          : (isset($brand) && $brand->getTitle() ? h($brand->getTitle()) : '');
+          : (isset($category) && $category->getTranslatedTitle() ? h($category->getTranslatedTitle()) : '');
       ?>"
     />
   </div>
 
   <div class="admin-form__field">
     <label class="admin-form__label" for="description-<?php echo $code;?>">
-       <?php if ($uriGet) : ?> 
+       <?php if ($this->routeData->uriGet) : ?> 
           Описание категории
         <?php else : ?>
           Описание раздела
@@ -54,7 +54,7 @@
       value="<?php 
         echo isset($_POST['meta_title'][$code]) 
         ? h($_POST['meta_title'][$code] ) 
-        : (isset($brand) && $brand->getSeoTitle() ? h($brand->getSeoTitle()) : '');
+        : (isset($category) && $category->getSeoTitle() ? h($category->getSeoTitle()) : '');
       ?>"
     />
   </div>

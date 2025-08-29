@@ -101,7 +101,7 @@ final class AdminCategoryController extends BaseAdminController
     
     if ($parentId && !$parentCategory) {
         $this->flash->pushError('Раздел для добавления категории не найден. Выберите другой');
-        $this->redirect('category');
+        $this->redirect('admin/category');
     }
 
     if(isset($_POST['submit'])) {
@@ -139,10 +139,10 @@ final class AdminCategoryController extends BaseAdminController
 
               if ($saved) {
                   $this->flash->pushSuccess('Категория успешно создана.');
-                  $this->redirect('category');
+                  $this->redirect('admin/category');
               } else {
                   $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
-                  $this->redirect('category');
+                  $this->redirect('admin/category');
               }
       }
       
@@ -165,41 +165,76 @@ final class AdminCategoryController extends BaseAdminController
 
     $id = (int) $this->routeData->uriGet ?? null;
     $pageClass = 'admin-page';
-dd($id);
-    // Задаем название страницы и класс
-    if( isset($_POST['submit'])) {
-      // Проверка токена
-      if (!check_csrf($_POST['csrf'] ?? '')) {
-        $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
-      }
 
-      // Проверка на заполненность названия
-      if( trim($_POST['title']) == '' ) {
-        $_SESSION['errors'][] = ['title' => 'Введите название бренда'];
-      } 
+    if (!$id) {
+      $this->flash->pushError('Не удалось получить категорию для редактирования. Проверьте данные.');
+      $this->redirect('admin/category');
+    } 
 
-      // Если нет ошибок
-      if ( empty($_SESSION['errors'])) {
-        $category = $this->service->getCategoryById((int) $routeData->uriGet);
-        // $brand->title = $_POST['title'];
+    $category = $this->service->getCategoryById($id);
 
-        // R::store($brand);
-
-        $_SESSION['success'][] = ['title' => 'Бренд успешно обновлен.'];
-      }
+    if( $category->getParentId()) {    
+      $parendId = $category->getParentId();
+      $parentCategory = $this->service->getCategoryById($parendId);
     }
 
-    // Запрос постов в БД с сортировкой id по убыванию
-    $category = $this->service->getCategoryById( $id );
+    // $validate = $this->validator->new($_POST);
+    if(isset($_POST['submit'])) {
+        $validate = true;
 
+      
+        if (!$validate) {
+          $this->flash->pushError('Не удалось получить категорию для редактирования. Проверьте данные.');
+          $this->redirect('admin/category');
+        } 
+
+        $translations = [];
+    
+        foreach ($_POST['title'] as $lang => $title) {
+            $translations[$lang] = [
+                'title' => $_POST['title'][$lang] ?? '',
+                'description' => $_POST['description'][$lang] ?? '',
+                'meta_title' => $_POST['meta_title'][$lang] ?? '',
+                'meta_description' => $_POST['meta_description'][$lang] ?? '',
+            ];
+        }
+
+        $mainLang = 'ru';
+
+        $dto = new CategoryInputDTO([
+            'id' => $id,
+            'parent_id' => $_POST['parent_id'] ?? 0,
+            'slug' => $_POST['slug'] ?? '',
+            'title' => $_POST['title'][$mainLang] ?? '',
+            'description' => $_POST['description'][$mainLang] ?? '',
+            'image' => $_POST['image'] ?? '',
+            'translations' => $translations,
+        ]);
+
+        $category = Category::fromDTO($dto);
+
+        $saved = $this->service->updateCategory( $category);
+
+        if ($saved) {
+            $this->flash->pushSuccess('Категория успешно создана.');
+            $this->redirect('admin/category');
+        } else {
+            $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
+            $this->redirect('admin/category');
+        }
         
+
+
+    }
+    
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'category' => $category,
       'languages' => $this->languages,
       'currentLang' => $this->currentLang,
-      'flash' => $this->flash
+      'flash' => $this->flash,
+      'parentCategory' => $parentCategory ?? null
     ]);
 
   }

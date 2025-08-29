@@ -7,7 +7,26 @@
       id="form-edit-category" 
       method="POST" 
       action="<?php echo HOST;?>admin/category-edit/<?php echo u($category->getId());?>"
-      class="admin-form">
+      class="admin-form"
+  >
+
+  <?php if ($parentCategory) : ?> 
+    <div class="admin-form__field">
+      <label class="admin-form__label" for="title">
+        <?php echo 'Обвновление в разделе: ' . h($parentCategory->getTitle());?>
+      </label>
+      <input 
+        id="parent" 
+        name="parent_id" 
+        class="admin-form__input admin-form__input--width-label" 
+        type="text" 
+        value="<?php echo h($parentCategory->getId());?>"
+        hidden
+      />
+      
+
+    </div>
+  <?php endif; ?> 
 
       <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название категории</label>
@@ -22,16 +41,40 @@
         />
       </div>
 
+      <div class="admin-form__field">
+        <div class="admin-form__item" data-control="tab">
+          <!-- Навигация -->
+          <div class="tab__nav" data-control="tab-nav">
+            
+            <?php foreach ($languages as $code => $value ) : ?>
+              <button type="button" class="tab__nav-button tab__nav-button--flags" data-control="tab-button" 
+                      title="Перейти в редактирование языка <?php echo $code; ?>">
+                <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . $code;?>">
+              </button>
+            <?php endforeach;?>
+          </div>
+          <!-- Навигация -->
+
+          <!-- Блоки с контентом -->
+          <div class="admin-form__item">
+            <div class="tab__content" data-control="tab-content">
+              <?php foreach ($languages as $code => $value ) : ?>
+                <div class="tab__block" data-control="tab-block">
+                <?php include (ROOT . "views/admin/categories/translations/_fields.tpl");?>
+                </div>
+              <?php endforeach;?>
+            </div>
+          </div>
+          <!--// Блоки с контентом -->
+        </div>
+
+      </div>
+
       <!-- CSRF-токен -->
       <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
       <div class="admin-form__buttons buttons">
-        <!-- <a class="button button-outline button-outline--admin" href="<?php echo HOST;?>shop">Отмена</a> -->
-        <?php if (isset($_POST['submit'])) : ?>
-          <a class="button button-solid" href="<?php echo HOST;?>admin/category" title="К списку категорий">К списку товаров</a>
-        <?php else : ?>
-          <a class="button button--m button--outline" href="<?php echo HOST;?>admin/category" title="Отмена">Отмена</a>
-        <?php endif; ?>
+        <a class="button button--m button--outline" href="<?php echo HOST;?>admin/category" title="Отмена">Отмена</a>
         <button class="button button--m button--primary" type="submit" name="submit" value="submit">Сохранить</button>
       </div>
   </form>

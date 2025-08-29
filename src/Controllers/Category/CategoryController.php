@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers;
 use Vvintage\Controllers\BaseController;
-
-// use Vvintage\Contracts\Category\CategoryRepositoryInterfave;
-// use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryOutputDTO;
 use Vvintage\Services\Category\CategoryService;

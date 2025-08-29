@@ -27,6 +27,11 @@ final class AdminCategoryService extends CategoryService
       return $this->repository->createCategory($cat); 
     }
 
+    public function updateCategory( Category $cat)
+    {
+      return $this->repository->updateCategory($cat); 
+    }
+
   
 
 }
