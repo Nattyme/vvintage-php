@@ -150,9 +150,9 @@
           // require ROOT . 'modules/about/index.php';
           break;
 
-        case 'admin':
-          self::routeAdminPages($routeData);
-          break;
+        // case 'admin':
+        //   self::routeAdminPages($routeData);
+        //   break;
 
         case 'api' : 
           self::routeApi($routeData);
@@ -505,8 +505,9 @@
     /*************************/
     /******** ADMIN  *********/
     /**********************/
-    private static function routeAdminPages(RouteData $routeData)
+    public static function routeAdminPages(RouteData $routeData)
     {
+ 
       $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
 
@@ -523,14 +524,15 @@
       $adminPostController = new AdminPostController($flash, $breadcrumbs);
       $adminMessageController = new AdminMessageController($flash);
       $adminPostCatController = new AdminPostCatController($postCategoryRepository, $flash);
-
-      switch ($routeData->uriGet) {
+  
+      switch ($routeData->uriModule) {
          // ::::::::::::: SHOP :::::::::::::::::::
         case '':
           $homeAdminController->index($routeData);
           break;
 
         case 'shop':
+           
           $adminProductController->all($routeData);
           break;
 

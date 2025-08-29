@@ -57,13 +57,21 @@ setTranslator($translator);           // сохраняем объект гло�
 Database::connect(); // Подключение БД:
 Settings::init(); // Загружаем и сохраняем настройки
 
+// Создаём объект RouteData через parseUri()
+$routeData = RouteData::parseUri();
+
+if ($routeData->isAdmin) {
+    Router::routeAdminPages($routeData);
+} else {
+    Router::route($routeData);
+}
 
 // Получаем части URI и создаем переменные (например: /shop/product/1)
-$uri = $_SERVER['REQUEST_URI'];
-$uriModule = getModuleName();    // первая часть пути — модуль
-$uriGet = getUriGet();           // вторая часть — подстраница/id
-$uriGetParam = getUriGetParam(); // третья часть — параметр get
+// $uri = $_SERVER['REQUEST_URI'];
+// $uriModule = getModuleName();    // первая часть пути — модуль
+// $uriGet = getUriGet();           // вторая часть — подстраница/id
+// $uriGetParam = getUriGetParam(); // третья часть — параметр get
 
 // Передаем данные маршрутизатору
-$routeData = new RouteData($uri, $uriModule, $uriGet, $uriGetParam);
-Router::route($routeData);
+// $routeData = new RouteData($uri, $uriModule, $uriGet, $uriGetParam);
+// Router::route($routeData);

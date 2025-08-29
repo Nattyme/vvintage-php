@@ -35,7 +35,9 @@ final class AdminCategoryController extends BaseAdminController
   public function new(RouteData $routeData)
   {
     $this->isAdmin();
-    $this->renderNew($routeData);
+
+    $uriGet = $this->routeData->uriGet ?? null;
+    $this->renderNew($routeData,  $uriGet);
   }
 
   public function delete (RouteData $routeData)
@@ -74,16 +76,26 @@ final class AdminCategoryController extends BaseAdminController
 
   }
 
-  private function renderNew(RouteData $routeData): void
+  private function renderNew(RouteData $routeData,  ?string $uriGet): void
   {
     $viewPath = 'categories/new';
     $pageTitle = 'Категория - создание';
 
-        
+    $mainCats = $this->service->getMainCategories();
+    dd( $routeData);
+    if($uriGet) {
+      
+      $id = (int) $uriGet;
+      $currentMainCategory = $this->service->getCategoryById($id);
+    }
+        dd( $currentMainCategory);
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
-      'flash' => $this->flash
+      'flash' => $this->flash,
+      'uriGet' => $uriGet,
+      'currentMainCategory' => $currentMainCategory
+      
     ]);
   }
 

@@ -4,26 +4,45 @@ namespace Vvintage\Routing;
 
 class RouteData
 {
-    public string $uri;
-    public string $uriModule;
-    public ?string $uriGet;
-    public ?string $uriGetParam;
+    // public string $uri;
+    // public string $uriModule;
+    // public ?string $uriGet;
+    // public ?string $uriGetParam;
+    // PHP 8+ с короткой записью конструктора объявление свойств в начале класса и $this->… = … в конструкторе больше не нужны.
+    public function __construct(
+      public string $uri, 
+      public bool $isAdmin, 
+      public ?string  $uriModule, 
+      public ?string $uriGet, 
+      public array $uriGetParams = []
+    )
+    {}
 
-    public function __construct(string $uri, string  $uriModule, ?string $uriGet = null, ?string $uriGetParam = null)
-    {
-        $this->uri = $uri;
-        $this->uriModule = $uriModule;
-        $this->uriGet = $uriGet;
-        $this->uriGetParam = $uriGetParam;
-    }
-
-    public function getUriModule(): string
+    public function getUriModule(): ?string
     {
       return $this->uriModule;
     }
 
-    public function getUriGetParam(): string
+    // public function getUriGetParam(): string
+    // {
+    //   return $this->uriGetParam;
+    // }
+
+    public static function parseUri(): self
     {
-      return $this->uriGetParam;
+      $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
+      $uri = trim($uri, '/');
+      $parts = explode('/', $uri);
+
+      $isAdmin = ($parts[0] === 'admin');
+      if ($isAdmin) array_shift($parts); // убираем admin
+
+      return new self(
+          uri : $uri,
+          isAdmin : $isAdmin,
+          uriModule : $parts[0] ?? null,
+          uriGet : $parts[1] ?? null,
+          uriGetParams : array_slice($parts, 2)
+      );
     }
 }

@@ -5,9 +5,9 @@
 
 
     <header class="admin-form__header admin-form__row">
-      <a href="<?php echo HOST . 'admin/category-new';?>" class="button button--m button--primary" data-btn="add">
-        Новая категория
-      </a>
+        <a href="<?php echo HOST . 'admin/category-new';?>" class="button button--m button--outline" data-btn="add">
+          Новый раздел
+        </a>
 
       <!-- SEARCH FORM-->
       <form method="GET" action="" class="search" role="search">
@@ -48,6 +48,7 @@
           <th>Категория</th>
           <th>Раздел</th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -66,6 +67,14 @@
 
             <td class="admin-form-table__unit">
               <?php echo $cat->getParentId() > 0 ? h($cat->getTitle()) : '';?>
+            </td>
+            <td>
+              <?php 
+                if ( $cat->getParentId() === 0 ) : ?>
+                      <a href="<?php echo HOST . 'admin/category-new/' . $cat->getId();?>" class="button button--s button--outline link-above-others" data-btn="add">
+                        Новая категория
+                      </a>
+                <?php endif; ?>
             </td>
             <td>
               <a 
