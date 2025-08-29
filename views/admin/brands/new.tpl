@@ -27,7 +27,7 @@
           <div class="tab__content" data-control="tab-content">
             <?php foreach ($languages as $code => $value ) : ?>
               <div class="tab__block" data-control="tab-block">
-               <?php include ROOT . "views/admin/brands/translations/{$code}_fields.tpl";?>
+               <?php include ROOT . "views/admin/brands/translations/_fields.tpl";?>
               </div>
             <?php endforeach;?>
           </div>

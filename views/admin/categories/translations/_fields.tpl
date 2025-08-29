@@ -1,12 +1,18 @@
 <div class="lang-group lang-group--<?php echo $code;?>" data-lang="<?php echo $code;?>">
   <div class="admin-form__field">
-    <label class="admin-form__label" for="title-<?php echo $code;?>">Название бренда</label>
+    <label class="admin-form__label" for="title-<?php echo $code;?>">
+      <?php if ($uriGet) : ?> 
+          Название категории
+        <?php else : ?>
+          Название раздела
+        <?php endif;?>
+    </label>
     <input 
       id="title-<?php echo $code;?>" 
       name="title[<?php echo $code;?>]" 
       class="admin-form__input" 
       type="text" 
-      placeholder="Введите название бренда" 
+      placeholder="Введите название категории" 
       value="<?php 
           echo isset($_POST['title'][$code]) 
           ? h($_POST['title'][$code] ) 
@@ -16,15 +22,21 @@
   </div>
 
   <div class="admin-form__field">
-    <label class="admin-form__label" for="description-<?php echo $code;?>">Описание бренда</label>
+    <label class="admin-form__label" for="description-<?php echo $code;?>">
+       <?php if ($uriGet) : ?> 
+          Описание категории
+        <?php else : ?>
+          Описание раздела
+        <?php endif;?>
+    </label>
     <textarea 
       id="description-<?php echo $code;?>" 
       name="description[<?php echo $code;?>]" 
       class="admin-form__textarea" 
-      placeholder="Введите описание бренда"
+      placeholder="Введите описание категории"
     ><?php 
       echo isset($_POST['description'][$code]) 
-      ? h($_POST['title'][$code] ) 
+      ? h($_POST['title'][$description] ) 
       : (isset($brand) && $brand->getTranslatedDescription($code) 
       ? h($brand->getTranslatedDescription($code)) : '');
     ?></textarea>
@@ -56,7 +68,7 @@
       placeholder="Введите SEO описание страницы"
     ><?php 
       echo isset($_POST['meta_description'][$code]) 
-      ? h($_POST['meta_description'][$code] ) 
+      ? h($_POST['meta_description'][$meta_description] ) 
       : (isset($brand) && $brand->getSeoDescription($code) 
       ? h($brand->getSeoDescription($code)) : '');
     ?></textarea>

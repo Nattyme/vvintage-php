@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Vvintage\Controllers;
+use Vvintage\Controllers\BaseController;
 
 // use Vvintage\Contracts\Category\CategoryRepositoryInterfave;
 // use Vvintage\Repositories\Category\CategoryRepository;
@@ -9,10 +10,11 @@ use Vvintage\Models\Category\Category;
 // use Vvintage\DTO\Category\CategoryDTO;
 use Vvintage\Services\Category\CategoryService;
 
-final class CategoryController
+class CategoryController extends BaseController
 {
     public function __construct()
     {
+        parent::__construct();
         $this->categoryService = new CategoryService();
     }
 

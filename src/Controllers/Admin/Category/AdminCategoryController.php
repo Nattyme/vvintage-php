@@ -18,12 +18,14 @@ final class AdminCategoryController extends BaseAdminController
     parent::__construct();
     $this->service = new AdminCategoryService();
     $this->flash = new FlashMessage();
+    $this->validator = new AdminBrandValidator();
   }
 
   public function all(RouteData $routeData)
   {
     $this->isAdmin();
-    $this->renderAll($routeData);
+    $this->setRouteData($routeData);
+    $this->renderAll();
   }
 
   public function edit(RouteData $routeData)
@@ -35,18 +37,18 @@ final class AdminCategoryController extends BaseAdminController
   public function new(RouteData $routeData)
   {
     $this->isAdmin();
-
-    $uriGet = $this->routeData->uriGet ?? null;
-    $this->renderNew($routeData,  $uriGet);
+    $this->setRouteData($routeData);
+    $this->renderNew();
   }
 
   public function delete (RouteData $routeData)
   {
     $this->isAdmin();
-    $this->renderDelete($routeData);
+    $this->setRouteData($routeData);
+    $this->renderDelete();
   }
 
-  private function renderAll(RouteData $routeData): void
+  private function renderAll(): void
   {
     // Название страницы
     $pageTitle = 'Категории';
@@ -65,7 +67,7 @@ final class AdminCategoryController extends BaseAdminController
         
     $this->renderLayout('categories/all',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'cats' => $cats,
       'mainCats' => $mainCats,
       'searchQuery' => $searchQuery,
@@ -76,22 +78,80 @@ final class AdminCategoryController extends BaseAdminController
 
   }
 
-  private function renderNew(RouteData $routeData,  ?string $uriGet): void
+  private function renderNew(): void
   {
     $viewPath = 'categories/new';
     $pageTitle = 'Категория - создание';
 
+    $uriGet = $this->routeData->uriGet ?? null;
+    $parentId = $this->routeData->uriGet ?? null;
     $mainCats = $this->service->getMainCategories();
-    dd( $routeData);
-    if($uriGet) {
-      
-      $id = (int) $uriGet;
-      $currentMainCategory = $this->service->getCategoryById($id);
+    
+    if( $parentId) {    
+      $parentId = (int) $parentId;
+      $parentCategory = $this->service->getCategoryById($id);
     }
-        dd( $currentMainCategory);
+
+    
+    if ($parentId && !$parentCategory) {
+        $this->flash->pushError('Раздел для добавления категории не найден. Выберите другой');
+        $this->redirect('category');
+    }
+
+    if(isset($_POST['submit'])) {
+      dd($_POST);
+      $validate = $this->validator->new($_POST);
+      // Проверка CSRF
+      if (!check_csrf($_POST['csrf'] ?? '')) {
+          $this->flash->pushError('Неверный токен безопасности.');
+      } else {
+          // Валидация
+          $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
+
+          if (!$validate) {
+              $this->flash->pushError($brandId 
+                  ? 'Не удалось обновить бренд. Проверьте данные.' 
+                  : 'Не удалось сохранить новый бренд. Проверьте данные.');
+          } else {
+              $translations = [];
+              foreach ($_POST['title'] as $lang => $title) {
+                  $translations[$lang] = [
+                      'title' => $_POST['title'][$lang] ?? '',
+                      'description' => $_POST['description'][$lang] ?? '',
+                      'meta_title' => $_POST['meta_title'][$lang] ?? '',
+                      'meta_description' => $_POST['meta_description'][$lang] ?? '',
+                  ];
+              }
+
+              $mainLang = 'ru';
+
+              $brandDTO = new BrandDTO([
+                  'title' => $_POST['title'][$mainLang] ?? '',
+                  'description' => $_POST['description'][$mainLang] ?? '',
+                  'image' => $_POST['image'] ?? '',
+                  'translations' => $translations,
+              ]);
+
+              $brand = Brand::fromDTO($brandDTO);
+
+              $saved = $brandId
+                  ? $this->service->updateBrand($brandId, $_POST)
+                  : $this->service->createBrand($brandDTO);
+
+              if ($saved) {
+                  $this->flash->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
+                  header('Location: ' . HOST . 'admin/brand');
+                  exit; // здесь return нужен, чтобы не рендерить форму
+              } else {
+                  $this->flash->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
+              }
+          }
+      }
+    }
+
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'flash' => $this->flash,
       'uriGet' => $uriGet,
       'currentMainCategory' => $currentMainCategory
@@ -105,7 +165,7 @@ final class AdminCategoryController extends BaseAdminController
 
     // Название страницы
     $pageTitle = 'Категория - редактирование';
-    $id = (int) $routeData->uriGetParam;
+    $id = (int) $routeData->uriGet;
     $pageClass = 'admin-page';
 
     // Задаем название страницы и класс
@@ -146,7 +206,7 @@ final class AdminCategoryController extends BaseAdminController
 
   }
 
-  private function renderDelete(RouteData $routeData): void
+  private function renderDelete(): void
   {
     // Название страницы
     $pageTitle = 'Бренды';

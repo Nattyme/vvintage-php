@@ -12,7 +12,7 @@
           <?php if ($uriGet) : ?> 
           <div class="admin-form__field">
             <label class="admin-form__label" for="title">
-              <?php echo h($currentMainCategory->getTitle());?>
+              <?php echo 'Будет добавлено в раздел: ' . h($currentMainCategory->getTitle());?>
             </label>
             <input 
               id="parent" 
@@ -27,7 +27,7 @@
           </div>
           <?php endif; ?> 
           
-          <div class="admin-form__field">
+          <!-- <div class="admin-form__field">
             <label class="admin-form__label" for="title">
               <?php if ($uriGet) : ?> 
                 Введите название категории
@@ -46,7 +46,37 @@
             />
             
       
+          </div> -->
+
+          <div class="admin-form__field">
+            <div class="admin-form__item" data-control="tab">
+              <!-- Навигация -->
+              <div class="tab__nav" data-control="tab-nav">
+                
+                <?php foreach ($languages as $code => $value ) : ?>
+                  <button type="button" class="tab__nav-button tab__nav-button--flags" data-control="tab-button" 
+                          title="Перейти в редактирование языка <?php echo $code; ?>">
+                    <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . $code;?>">
+                  </button>
+                <?php endforeach;?>
+              </div>
+              <!-- Навигация -->
+
+              <!-- Блоки с контентом -->
+              <div class="admin-form__item">
+                <div class="tab__content" data-control="tab-content">
+                  <?php foreach ($languages as $code => $value ) : ?>
+                    <div class="tab__block" data-control="tab-block">
+                    <?php include (ROOT . "views/admin/categories/translations/_fields.tpl");?>
+                    </div>
+                  <?php endforeach;?>
+                </div>
+              </div>
+              <!--// Блоки с контентом -->
+            </div>
+
           </div>
+
 
           <!-- CSRF-токен -->
           <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">

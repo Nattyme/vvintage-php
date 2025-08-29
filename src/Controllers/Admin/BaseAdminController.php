@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Admin;
 
+use Vvintage\Routing\RouteData;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Models\User\User;
@@ -13,6 +14,7 @@ use Vvintage\Config\LanguageConfig;
 
 abstract class BaseAdminController
 {
+  protected RouteData $routeData; 
   protected array $settings;
   protected array $languages;
   protected string $currentLang;
@@ -60,5 +62,19 @@ abstract class BaseAdminController
     include ROOT . 'views/admin/layout.php';
 
   }
+
+  protected function setRouteData(RouteData $routeData): void
+  {
+      $this->routeData = $routeData;
+  }
+
+  protected function redirect(string $pageName, string $param = ''): void 
+  {
+    $path = $param !== '' ? $pageName . '/' . $param : $pageName;
+
+    header("Location: " . HOST . $path);
+    exit;
+  }
+
 
 }
