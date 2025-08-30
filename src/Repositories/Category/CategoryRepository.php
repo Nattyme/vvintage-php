@@ -22,7 +22,7 @@ use Vvintage\DTO\Category\CategoryInputDTO;
 
 final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
 {
-    private const TABLE_CATEGORIES = 'categories';
+    private const TABLE = 'categories';
     private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
     private string $currentLang;
     private const DEFAULT_LANG = 'ru';
@@ -80,7 +80,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     public function getCategoryById(int $id): ?Category
     {
-        $bean = $this->findById(self::TABLE_CATEGORIES, $id);
+        $bean = $this->findById(self::TABLE, $id);
 
         if (!$bean || !$bean->id) {
             return null;
@@ -113,13 +113,13 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     public function getAllCategories(): array
     {
-        $beans = $this->findAll(self::TABLE_CATEGORIES);
+        $beans = $this->findAll(self::TABLE);
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
     public function getCategoriesByIds(array $ids): array
     {
-        $beans = $this->findByIds(self::TABLE_CATEGORIES, $ids);
+        $beans = $this->findByIds(self::TABLE, $ids);
 
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
@@ -131,16 +131,16 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     public function getSubCats(): array
     {
-        $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id IS NOT NULL');
+        $beans = $this->findAll(self::TABLE, 'parent_id IS NOT NULL');
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
     public function findCatsByParentId(?int $parentId = null): array
     {
         if ($parentId === null) {
-            $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id IS NULL');
+            $beans = $this->findAll(self::TABLE, 'parent_id IS NULL');
         } else {
-            $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id = ?', [$parentId]);
+            $beans = $this->findAll(self::TABLE, 'parent_id = ?', [$parentId]);
         }
 
         return array_map([$this, 'mapBeanToCategory'], $beans);
@@ -150,8 +150,8 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     {
         // сохраняем основную категорию
         $bean = $cat->getId()
-            ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId())
-            : $this->createBean(self::TABLE_CATEGORIES);
+            ? $this->loadBean(self::TABLE, $cat->getId())
+            : $this->createBean(self::TABLE);
 
         $bean->title = $cat->getTitle(); // по умолчанию ru
         $bean->parent_id = $cat->getParentId();
@@ -313,7 +313,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     public function getAllCategoriesArray(): array
     {
         // Достаём все категории без фильтра
-        $beans = $this->findAll(self::TABLE_CATEGORIES);
+        $beans = $this->findAll(self::TABLE);
 
         // Сбрасываем ключи и преобразуем в массивы
         return array_values(array_map([$this, 'mapBeanToArray'], $beans));
@@ -339,13 +339,13 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
             return [];
         }
 
-        $parentBean = R::findOne(self::TABLE_CATEGORIES, 'id = ?', [$id]);
+        $parentBean = R::findOne(self::TABLE, 'id = ?', [$id]);
 
         if (!$parentBean) {
             return [];
         }
 
-        $childrenBeans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id = ?', [$id]);
+        $childrenBeans = $this->findAll(self::TABLE, 'parent_id = ?', [$id]);
         // $childrenBeans = R::findAll('categories', 'parent_id = ?', [$id]);
 
         $result = [$this->mapBeanToCategory($parentBean)];
@@ -362,12 +362,19 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
             return false;
         }
 
-        return $this->countAll(self::TABLE_CATEGORIES, 'parent_id = ?', [$id]) > 0;
+        return $this->countAll(self::TABLE, 'parent_id = ?', [$id]) > 0;
     }
 
     public function getAllCategoriesCount(?string $sql = null, array $params = []): int
     {
-      return $this->countAll(self::TABLE_CATEGORIES, $sql, $params);
+      return $this->countAll(self::TABLE, $sql, $params);
     }
+
+    public function deleteCategory(int $id): void
+    {
+      $bean = $this->loadBean(self::TABLE, $id);
+      $this->deleteBean($bean);
+    }
+
 
 }

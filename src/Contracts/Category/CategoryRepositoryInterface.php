@@ -19,4 +19,5 @@ interface CategoryRepositoryInterface
     public function findCatsByParentId(?int $parentId = null): array;
     public function hasChildren(int $id): bool;
     public function getAllCategoriesCount(?string $sql = null, array $params = []): int;
+    public function deleteCategory(int $id): void;
 }

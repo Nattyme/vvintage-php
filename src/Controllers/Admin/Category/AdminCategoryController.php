@@ -238,24 +238,40 @@ final class AdminCategoryController extends BaseAdminController
 
   private function renderDelete(): void
   {
+    
     // Название страницы
     $pageTitle = 'Удалить категорию';
 
-    $brandsPerPage = 9;
+    $id = $this->routeData->uriGet ? (int) $this->routeData->uriGet : null;
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'categories');
-    $category = $this->service->getAllCategories($pagination);
-    $category = $this->service->getAllCategoriesCount();
-        
-    $this->renderLayout('categories/all',  [
+    if (!$id) $this->redirect('admin/category');
+
+    $category = $this->service->getCategoryById($id);
+
+
+    // Если нет ошибок
+    if (isset($_POST['submit'])) {
+      $csrfToken = $_POST['csrf'] ?? '';
+
+      if (!$csrfToken) {
+        $this->flash->pushSuccess('Неверный токен безопасности');
+        $this->redirect('admin/category');
+      }
+
+      $this->service->deleteCategory($id);
+
+      $this->flash->pushSuccess('Категория успешно удалена.');
+      $this->redirect('admin/category');
+    }
+
+    $this->renderLayout('categories/delete',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'categories' => $categories,
-      'pagination' => $pagination,
+      'routeData' => $this->routeData,
+      'category' => $category,
       'flash' => $this->flash
     ]);
 
   }
+
 
 }

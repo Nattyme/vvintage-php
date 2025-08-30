@@ -331,7 +331,4 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
       $this->deleteBean($bean);
     }
 
-
-
-    
 }

@@ -79,7 +79,7 @@
             <td>
               <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
-                href="<?php echo HOST . "admin/";?>admin/category-delete/<?php echo u($cat->getId());?>"
+                href="<?php echo HOST . 'admin/category-delete/' . u($cat->getId());?>"
                 aria-label="Удалить категорию <?php echo h($cat->getTitle());?>"
               >
 
