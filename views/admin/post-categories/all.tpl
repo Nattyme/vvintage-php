@@ -5,7 +5,7 @@
 
 
     <header class="admin-form__header admin-form__row">
-        <a href="<?php echo HOST . 'admin/category-new';?>" class="button button--m button--outline" data-btn="add">
+        <a href="<?php echo HOST . 'admin/category-blog-new';?>" class="button button--m button--outline" data-btn="add">
           Новый раздел
         </a>
 
@@ -60,7 +60,7 @@
             </td>
             
             <td class="admin-form-table__unit">
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit/<?php echo u($cat->getId());?>">
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-blog-edit/<?php echo u($cat->getId());?>">
                 <?php echo $cat->getParentId() === 0 ? h($cat->getTitle()) : '-';?>
               </a>
             </td>
@@ -79,7 +79,7 @@
             <td>
               <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
-                href="<?php echo HOST . "admin/";?>admin/category-delete/<?php echo u($cat->getId());?>"
+                href="<?php echo HOST . "admin/";?>admin/category-blog-delete/<?php echo u($cat->getId());?>"
                 aria-label="Удалить категорию <?php echo h($cat->getTitle());?>"
               >
 

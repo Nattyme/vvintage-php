@@ -59,7 +59,7 @@ final class AdminPostCategoryController extends BaseAdminController
   private function renderAll(): void
   {
     // Название страницы
-    $pageTitle = 'Категории юдлг';
+    $pageTitle = 'Категории блога';
 
     // Получаем данные из GET-запроса
     $searchQuery = $_GET['query'] ?? '';
@@ -173,11 +173,11 @@ final class AdminPostCategoryController extends BaseAdminController
       $this->redirect('admin/post-category');
     } 
 
-    $category = $this->service->getPostCategoryById($id);
+    $category = $this->service->getCategoryById($id);
 
-    if( $category->getPostParentId()) {    
+    if( $category->getParentId()) {    
       $parendId = $category->getParentId();
-      $parentCategory = $this->service->getPostCategoryById($parendId);
+      $parentCategory = $this->service->getCategoryById($parendId);
     }
 
     // $validate = $this->validator->new($_POST);

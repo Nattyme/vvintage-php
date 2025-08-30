@@ -82,20 +82,20 @@ final class PostCategory
             ?? '';
     }
 
-    public function getSeoTitle(?string $locale = null): string
-    {
-        $locale = $locale ?? $this->currentLocale;
+    // public function getSeoTitle(?string $locale = null): string
+    // {
+    //     $locale = $locale ?? $this->currentLocale;
 
-        return $this->translations[$locale]['seo_title'] ?? '';
-    }
+    //     return $this->translations[$locale]['seo_title'] ?? '';
+    // }
 
-    public function getSeoDescription(?string $locale = null): string
-    {
-        $locale = $locale ?? $this->currentLocale;
+    // public function getSeoDescription(?string $locale = null): string
+    // {
+    //     $locale = $locale ?? $this->currentLocale;
 
-        return $this->translations[$locale]['seo_description']
-            ?? '';
-    }
+    //     return $this->translations[$locale]['seo_description']
+    //         ?? '';
+    // }
 
     public function getId(): int
     {
@@ -126,5 +126,44 @@ final class PostCategory
     public function setCurrentLocale(string $locale): void
     {
         $this->currentLocale = $locale;
+    }
+
+
+
+    
+
+    
+    public function getTranslations(?string $locale = null): array
+    {
+        if ($locale) {
+            return $this->translations[$locale] ?? [];
+        }
+        return $this->translations;
+    }
+
+
+    public function getTranslatedTitle(?string $locale = null): string 
+    {
+        $locale = $locale ?? $this->currentLocale;
+
+        return $this->translations[$locale]['title'] ?? $this->title;
+    }
+
+    public function getTranslatedDescription(?string $locale = null): string 
+    {
+        $locale = $locale ?? $this->currentLocale;
+
+        return ($this->translations[$locale]['description'] ?? $this->getDescription()) ?? '';
+    }
+
+
+    public function getSeoTitle(?string $locale = null): string {
+        $locale = $locale ?? $this->currentLocale;
+        return $this->translations[$locale]['meta_title'] ?? $this->title;
+    }
+
+    public function getSeoDescription(?string $locale = null): string {
+        $locale = $locale ?? $this->currentLocale;
+        return $this->translations[$locale]['meta_description'] ?? $this->title;
     }
 }
