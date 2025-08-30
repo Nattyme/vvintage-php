@@ -45,14 +45,7 @@ class AdminProductController extends BaseAdminController
     $this->renderEditProduct();
   }
 
-  public function delete (RouteData $routeData)
-  {
-    $this->isAdmin();
-    $this->setRouteData($routeData);
-    $this->renderDelete();
-  }
-
-  
+ 
   private function renderAllProducts(): void
   {
     // Название страницы
@@ -124,89 +117,6 @@ class AdminProductController extends BaseAdminController
     $product = $this->adminProductService->getProductById($id);
     $statusList = $this->adminProductService->getStatusList();
 
-
-    // if( isset($_POST['submit'])) {
-    //   // Проверка токена
-    //   if (!check_csrf($_POST['csrf'] ?? '')) {
-    //     $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
-    //   }
-
-    //   // Проверка на заполненность названия
-    //   if( trim($_POST['title']) == '' ) {
-    //     $_SESSION['errors'][] = ['title' => 'Введите название товара'];
-    //   } 
-
-    //   // Проверка на заполненность содержимого
-    //   if( trim($_POST['price']) == '' ) {
-    //     $_SESSION['errors'][] = ['title' => 'Введите стоимость товара'];
-    //   } 
-
-    //   // Проверка на заполненность содержимого
-    //   if( trim($_POST['content']) == '' ) {
-    //     $_SESSION['errors'][] = ['title' => 'Введите описание товара'];
-    //   } 
-
-    //   // Если нет ошибок
-    //   if ( empty($_SESSION['errors'])) {
-    //     $product = R::load('products', $_GET['id']);
-    //     $product->title = $_POST['title'];
-    //     $product->cat = $_POST['subCat'];
-    //     $product->brand = $_POST['brand'];
-    //     $product->price = $_POST['price'];
-    //     $product->content = $_POST['content'];
-    //     $product->editTime = time();
-
-    //     // Если передано изображение - уменьшаем, сохраняем, записываем в БД
-    //     if( isset($_FILES['cover']['name']) && $_FILES['cover']['tmp_name'] !== '') {
-    //       //Если передано изображение - уменьшаем, сохраняем файлы в папку, получаем название файлов изображений
-    //       $coverFileName = saveUploadedImgNoCrop('cover', [600, 300], 12, 'products', [540, 380], [290, 230]);
-
-    //       // Если новое изображение успешно загружено 
-    //       if ($coverFileName) {
-    //         $coverFolderLocation = ROOT . 'usercontent/products/';
-    //         // Если есть старое изображение - удаляем 
-    //         if (file_exists($coverFolderLocation . $product->cover) && !empty($product->cover)) {
-    //           unlink($coverFolderLocation . $product->cover);
-    //         }
-
-    //         // Если есть старое маленькое изображение - удаляем 
-    //         if (file_exists($coverFolderLocation . $product->coverSmall) && !empty($product->coverSmall)) {
-    //           unlink($coverFolderLocation . $product->coverSmall);
-    //         }
-    //           // Записываем имя файлов в БД
-    //         $product->cover = $coverFileName[0];
-    //         $product->coverSmall = $coverFileName[1];
-    //       }
-    //     }
-
-    //     // Удаление обложки
-    //     if ( isset($_POST['delete-cover']) && $_POST['delete-cover'] == 'on') {
-    //       $coverFolderLocation = ROOT . 'usercontent/products/';
-
-    //       // Если есть старое изображение - удаляем 
-    //       if (file_exists($coverFolderLocation . $product->cover) && !empty($product->cover)) {
-    //         unlink($coverFolderLocation . $product->cover);
-    //       }
-
-    //       // Если есть старое маленькое изображение - удаляем 
-    //       if (file_exists($coverFolderLocation . $product->coverSmall) && !empty($product->coverSmall)) {
-    //         unlink($coverFolderLocation . $product->coverSmall);
-    //       }
-
-    //       // Удалить записи файла в БД
-    //       $product->cover = NULL;
-    //       $product->coverSmall = NULL;
-    //     }
-
-    //     R::store($product);
-
-    //     if ( empty($_SESSION['errors'])) {
-    //       $_SESSION['success'][] = ['title' => 'Товар успешно обновлен.'];
-    //     }
-    //   }
-    // }
-
-
     $this->renderLayout('shop/edit',  [
       'product' => $product,
       'pageTitle' => $pageTitle,
@@ -216,43 +126,5 @@ class AdminProductController extends BaseAdminController
     ]);
   }
 
-  private function renderDelete(): void
-  {
-    
-    // Название страницы
-    $pageTitle = 'Удалить категорию блога';
-
-    $id = $this->routeData->uriGet ? (int) $this->routeData->uriGet : null;
-
-    if (!$id) $this->redirect('admin/category-blog');
-
-    $category = $this->service->getCategoryById($id);
-
-
-    // Если нет ошибок
-    if (isset($_POST['submit'])) {
-      $csrfToken = $_POST['csrf'] ?? '';
-
-      if (!$csrfToken) {
-        $this->flash->pushSuccess('Неверный токен безопасности');
-        $this->redirect('admin/category-blog');
-      }
-
-      $this->service->deleteCategory($id);
-
-      $this->flash->pushSuccess('Категория успешно удалена.');
-      $this->redirect('admin/category-blog');
-    }
-
-
-        
-    $this->renderLayout('post-categories/delete',  [
-      'pageTitle' => $pageTitle,
-      'routeData' => $this->routeData,
-      'category' => $category,
-      'flash' => $this->flash
-    ]);
-
-  }
 
 }
