@@ -7,19 +7,16 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Product\AdminProductService;
-use Vvintage\Services\Admin\Brand\AdminBrandService;
 
 
 class AdminProductController extends BaseAdminController
 {
   private AdminProductService $adminProductService;
-  // private AdminBrandService $brandService;
 
   public function __construct()
   {
     parent::__construct();
     $this->adminProductService = new AdminProductService();
-    // $this->brandService = new AdminBrandService();
   }
 
   public function all (RouteData $routeData)
