@@ -158,17 +158,17 @@ final class Category
     {
         $locale = $locale ?? $this->currentLocale;
 
-        return $this->translations[$locale]['description'] ?? '';
+        return ($this->translations[$locale]['description'] ?? $this->getDescription()) ?? '';
     }
 
 
     public function getSeoTitle(?string $locale = null): string {
         $locale = $locale ?? $this->currentLocale;
-        return $this->getTranslations[$locale]['meta_title'] ?? $this->title;
+        return $this->translations[$locale]['meta_title'] ?? $this->title;
     }
 
     public function getSeoDescription(?string $locale = null): string {
         $locale = $locale ?? $this->currentLocale;
-        return $this->getTranslations[$locale]['meta_description'] ?? '';
+        return $this->translations[$locale]['meta_description'] ?? $this->title;
     }
 }

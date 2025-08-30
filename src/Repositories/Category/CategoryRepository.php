@@ -150,8 +150,10 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     public function saveCategory(Category $cat): int
     {
-    
-        $bean = $cat->getId() ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId()) : $this->createBean(self::TABLE_CATEGORIES);
+        // сохраняем основную категорию
+        $bean = $cat->getId()
+            ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId())
+            : $this->createBean(self::TABLE_CATEGORIES);
 
         $bean->title = $cat->getTitle(); // по умолчанию ru
         $bean->parent_id = $cat->getParentId();
@@ -162,21 +164,72 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
         $id = (int) $this->saveBean($bean);
 
-        // Сохраняем переводы в отдельную таблицу
-        R::exec('DELETE FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?', [$id]);
+        // ⚡️ Главное изменение — мы НЕ удаляем все переводы
         foreach ($cat->getAllTranslations() as $locale => $translation) {
-            $transBean = $this->createBean(self::TABLE_CATEGORIES_TRANSLATION);
-            $transBean->category_id = $id;
-            $transBean->locale = $locale;
-            $transBean->title = $translation['title'] ?? '';
-            $transBean->description = $translation['description'] ?? '';
-            $transBean->meta_title = $translation['meta_title'] ?? '';
-            $transBean->meta_description = $translation['meta_description'] ?? '';
+            // ищем перевод для этой локали
+            $transBean = $this->findOneBy(
+                self::TABLE_CATEGORIES_TRANSLATION,
+                'category_id = ? AND locale = ?',
+                [$id, $locale]
+            );
+
+            if (!$transBean) {
+                // если нет — создаём новый
+                $transBean = $this->createBean(self::TABLE_CATEGORIES_TRANSLATION);
+                $transBean->category_id = $id;
+                $transBean->locale = $locale;
+            }
+
+            // ⚡️ Обновляем только те поля, что реально пришли
+            if (array_key_exists('title', $translation)) {
+                $transBean->title = $translation['title'];
+            }
+            if (array_key_exists('description', $translation)) {
+                $transBean->description = $translation['description'];
+            }
+            if (array_key_exists('meta_title', $translation)) {
+                $transBean->meta_title = $translation['meta_title'];
+            }
+            if (array_key_exists('meta_description', $translation)) {
+                $transBean->meta_description = $translation['meta_description'];
+            }
+
             $this->saveBean($transBean);
         }
 
         return $id;
     }
+
+
+    // public function saveCategory(Category $cat): int
+    // {
+    
+    //     $bean = $cat->getId() ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId()) : $this->createBean(self::TABLE_CATEGORIES);
+
+    //     $bean->title = $cat->getTitle(); // по умолчанию ru
+    //     $bean->parent_id = $cat->getParentId();
+    //     $bean->slug = $cat->getSlug();
+    //     $bean->image = $cat->getImage();
+    //     $bean->seo_title = $cat->getSeoTitle();
+    //     $bean->seo_description = $cat->getSeoDescription();
+
+    //     $id = (int) $this->saveBean($bean);
+
+    //     // Сохраняем переводы в отдельную таблицу
+    //     R::exec('DELETE FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?', [$id]);
+    //     foreach ($cat->getAllTranslations() as $locale => $translation) {
+    //         $transBean = $this->createBean(self::TABLE_CATEGORIES_TRANSLATION);
+    //         $transBean->category_id = $id;
+    //         $transBean->locale = $locale;
+    //         $transBean->title = $translation['title'] ?? '';
+    //         $transBean->description = $translation['description'] ?? '';
+    //         $transBean->meta_title = $translation['meta_title'] ?? '';
+    //         $transBean->meta_description = $translation['meta_description'] ?? '';
+    //         $this->saveBean($transBean);
+    //     }
+
+    //     return $id;
+    // }
     // public function saveCategory(Category $cat): int
     // {
     //     $bean = $cat->getId() ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId()) : $this->createBean(self::TABLE_CATEGORIES);
@@ -211,7 +264,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
           return null; // нельзя обновить без ID
       }
 
-      $this->saveCategory($cat);
+      return $this->saveCategory($cat);
     }
 
     public function createCategory(Category $cat) 

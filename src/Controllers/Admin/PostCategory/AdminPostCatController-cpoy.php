@@ -18,7 +18,7 @@ use Vvintage\Config\LanguageConfig;
 
 class AdminPostCatController extends BaseAdminController 
 {
-  private const TABLE = 'post_categories';
+  private const TABLE = 'postcategories';
   private PostCategoryRepository $categoryRepository;
   private FlashMessage $flash;
   
@@ -79,7 +79,8 @@ class AdminPostCatController extends BaseAdminController
       'mainCats' => $mainCats,
       'searchQuery' => $searchQuery,
       'filterSection' => $filterSection,
-      'pagination' => $pagination
+      'pagination' => $pagination,
+      'flash' => $this->flash
     ]);
 
   }

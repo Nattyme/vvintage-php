@@ -2,77 +2,72 @@
   
   <?php include ROOT . "views/components/errors.tpl"; ?>
   <?php include ROOT . "views/components/success.tpl"; ?>
+ 
+    <?php if ($uriGet) : ?>
+        <form class="admin-form" action="<?php echo HOST;?>admin/category-new/<?php echo $uriGet; ?>" method="POST" >
+    <?php else : ?>
+        <form class="admin-form" action="<?php echo HOST;?>admin/category-new" method="POST">
+    <?php endif; ?>
 
-  <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/category-new">
-    <div class="admin-form__field">
-      <label class="admin-form__label" for="title">Введите название категории</label>
-      <input 
-        id="title" 
-        name="title" 
-        class="admin-form__input admin-form__input--width-label" 
-        type="text" 
-        placeholder="Заголовок категории"
-        required
-      />
-    </div>
-
-    <div class="header__lang custom-select" data-custom-select>
-
-        <input type="hidden" name="lang" id="selected-language" value="<?php echo h($currentLang ?? '') ?>" data-custom-select-input>
-        
-        <div class="custom-select__selected custom-select__item" tabindex="0" aria-haspopup="listbox" aria-expanded="false" data-custom-select-selected>
-              <?php 
-                // Показываем текущий выбранный язык
-                if (isset($currentLang) && isset($languages[$currentLang])) {
-                  $code = h($currentLang);
-                  $label = h($languages[$currentLang]);
-                  echo "<span class='custom-select__icon'><img src='" . HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$code' alt='$code'></span>";
-                  echo "<div class='custom-select__text'>$label</div>";
-                } else {
-                  echo "Выберите язык";
-                }
-              ?>
-              <svg class="icon icon--arrow-down">
-
-              </svg>
-        </div>
+          <?php if ($uriGet) : ?> 
+          <div class="admin-form__field">
+            <label class="admin-form__label" for="title">
+              <?php echo 'Будет добавлено в раздел: ' . h($parentCategory->getTitle());?>
+            </label>
+            <input 
+              id="parent" 
+              name="parent_id" 
+              class="admin-form__input admin-form__input--width-label" 
+              type="text" 
+              value="<?php echo h($parentCategory->getId());?>"
+              hidden
+            />
             
-        <ul class="custom-select__list" role="listbox" tabindex="-1">
-          <?php foreach ($languages as $code => $label) : 
-            $isActive = ($code === $currentLang) ? 'custom-select__item--active' : '';
-          ?>
+      
+          </div>
+          <?php endif; ?> 
+          
+    
 
-            <?php if (! $isActive ) : ?>
-              <li 
-                class="custom-select__item <?=$isActive;?>" 
-                role="option" 
-                aria-selected="<?= $code === $currentLang ? 'true' : 'false' ?>"
-                data-value="<?php echo h($code) ?>">
-                    <span class="custom-select__icon">
-                      <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . h($code); ?>" alt="<?php echo h($code) ?>">
-                    </span>
-                    <span class="custom-select__text">
-                      <?php echo h($label) ?>
-                    </span>
-              </li>
-            <?php endif;?>
-          <?php endforeach; ?>
-        </ul>
+          <div class="admin-form__field">
+            <div class="admin-form__item" data-control="tab">
+              <!-- Навигация -->
+              <div class="tab__nav" data-control="tab-nav">
+                
+                <?php foreach ($languages as $code => $value ) : ?>
+                  <button type="button" class="tab__nav-button tab__nav-button--flags" data-control="tab-button" 
+                          title="Перейти в редактирование языка <?php echo $code; ?>">
+                    <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . $code;?>">
+                  </button>
+                <?php endforeach;?>
+              </div>
+              <!-- Навигация -->
 
-    </div>
+              <!-- Блоки с контентом -->
+              <div class="admin-form__item">
+                <div class="tab__content" data-control="tab-content">
+                  <?php foreach ($languages as $code => $value ) : ?>
+                    <div class="tab__block" data-control="tab-block">
+                    <?php include (ROOT . "views/admin/categories/translations/_fields.tpl");?>
+                    </div>
+                  <?php endforeach;?>
+                </div>
+              </div>
+              <!--// Блоки с контентом -->
+            </div>
+
+          </div>
 
 
-    <!-- CSRF-токен -->
-    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+          <!-- CSRF-токен -->
+          <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
-    <div class="admin-form__buttons buttons">
-      <a class="button button--m button--outline" href="<?php echo HOST . 'admin/category';?>">
-        Отмена
-      </a>
-      <button name="submit" value="submit" class="button button--m button--primary" type="submit">
-        Создать
-      </button>
-    </div>
+          <div class="admin-form__buttons buttons">
+            <button name="submit" value="submit" class="button button--m button--primary" type="submit">
+              Создать
+            </button>
+            <a class="button button--m button--outline" href="<?php echo HOST . 'admin/category';?>">Отмена</a>
+          </div>
   </form>
 </div>
 

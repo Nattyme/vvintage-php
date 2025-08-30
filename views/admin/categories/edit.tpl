@@ -1,7 +1,7 @@
 <div class="admin-page__content-form">
   
-  <?php include ROOT . "views/components/errors.tpl"; ?>
-  <?php include ROOT . "views/components/success.tpl"; ?>
+  <?php include (ROOT . "views/components/errors.tpl"); ?>
+  <?php include (ROOT . "views/components/success.tpl"); ?>
 
   <form 
       id="form-edit-category" 

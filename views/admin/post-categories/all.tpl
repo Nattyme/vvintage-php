@@ -5,11 +5,9 @@
 
 
     <header class="admin-form__header admin-form__row">
-      <a 
-        href="<?php echo HOST . 'admin/category-blog-new';?>" 
-        class="button button--m button--primary" data-btn="add">
-        Новая категория
-      </a>
+        <a href="<?php echo HOST . 'admin/category-new';?>" class="button button--m button--outline" data-btn="add">
+          Новый раздел
+        </a>
 
       <!-- SEARCH FORM-->
       <form method="GET" action="" class="search" role="search">
@@ -48,7 +46,8 @@
         <tr class="">
           <th>ID</th>
           <th>Категория</th>
-          <th>Рубрики</th>
+          <th>Раздел</th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -61,7 +60,7 @@
             </td>
             
             <td class="admin-form-table__unit">
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-blog-edit/<?php echo u($cat->getId());?>">
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit/<?php echo u($cat->getId());?>">
                 <?php echo $cat->getParentId() === 0 ? h($cat->getTitle()) : '-';?>
               </a>
             </td>
@@ -70,16 +69,24 @@
               <?php echo $cat->getParentId() > 0 ? h($cat->getTitle()) : '';?>
             </td>
             <td>
+              <?php 
+                if ( $cat->getParentId() === 0 ) : ?>
+                      <a href="<?php echo HOST . 'admin/category-new/' . $cat->getId();?>" class="button button--s button--outline link-above-others" data-btn="add">
+                        Новая категория
+                      </a>
+                <?php endif; ?>
+            </td>
+            <td>
               <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
-                href="<?php echo HOST . "admin/";?>admin/post-category-delete/<?php echo u($cat->getId());?>"
+                href="<?php echo HOST . "admin/";?>admin/category-delete/<?php echo u($cat->getId());?>"
                 aria-label="Удалить категорию <?php echo h($cat->getTitle());?>"
               >
 
                   <span class="leftright"></span><span class="rightleft"> </span>
               </a>
             </td>
-
+          </tr>
           
         <?php endforeach; ?> 
       </tbody>

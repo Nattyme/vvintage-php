@@ -73,7 +73,7 @@
   use Vvintage\Controllers\Admin\Order\AdminOrderController;
   use Vvintage\Controllers\Admin\Post\AdminPostController;
   use Vvintage\Controllers\Admin\Message\AdminMessageController;
-  use Vvintage\Controllers\Admin\PostCategory\AdminPostCatController;
+  use Vvintage\Controllers\Admin\PostCategory\AdminPostCategoryController;
 
   // API
   use Vvintage\Controllers\Api\Category\CategoryApiController;
@@ -523,7 +523,7 @@
       $adminOrderController = new AdminOrderController($flash);
       $adminPostController = new AdminPostController($flash, $breadcrumbs);
       $adminMessageController = new AdminMessageController($flash);
-      $adminPostCatController = new AdminPostCatController($postCategoryRepository, $flash);
+      $adminPostCatController = new AdminPostCategoryController($postCategoryRepository, $flash);
   
       switch ($routeData->uriModule) {
          // ::::::::::::: SHOP :::::::::::::::::::

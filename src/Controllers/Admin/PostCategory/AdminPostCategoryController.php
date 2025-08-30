@@ -1,29 +1,31 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin\Category;
+namespace Vvintage\Controllers\Admin\PostCategory;
 
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
-use Vvintage\Services\Admin\Category\AdminCategoryService;
+use Vvintage\Services\Admin\PostCategory\AdminPostCategoryService;
 use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Admin\Validation\AdminCategoryValidator;
-use Vvintage\DTO\Category\CategoryInputDTO;
-use Vvintage\Models\Category\Category;
+use Vvintage\Services\Admin\Validation\AdminPostCategoryValidator;
+use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
+use Vvintage\Models\PostCategory\PostCategory;
 
 
-final class AdminCategoryController extends BaseAdminController 
+final class AdminPostCategoryController extends BaseAdminController 
 {
-  private AdminCategoryValidator $validator;
-  private AdminCategoryService $service;
+  private AdminPostCategoryValidator $validator;
+  private AdminPostCategoryService $service;
   private FlashMessage $flash;
+
+  private const TABLE = 'postcategories';
 
   public function __construct()
   {
     parent::__construct();
-    $this->service = new AdminCategoryService();
+    $this->service = new AdminPostCategoryService();
     $this->flash = new FlashMessage();
-    $this->validator = new AdminCategoryValidator();
+    $this->validator = new AdminPostCategoryValidator();
   }
 
   public function all(RouteData $routeData)
@@ -57,7 +59,7 @@ final class AdminCategoryController extends BaseAdminController
   private function renderAll(): void
   {
     // Название страницы
-    $pageTitle = 'Категории';
+    $pageTitle = 'Категории юдлг';
 
     // Получаем данные из GET-запроса
     $searchQuery = $_GET['query'] ?? '';
@@ -66,12 +68,12 @@ final class AdminCategoryController extends BaseAdminController
     $categoryPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($categoryPerPage, 'categories');
-    $cats = $this->service->getAllCategories($pagination);
-    $mainCats = $this->service->getMainCategories();
-    $total = $this->service->getAllCategoriesCount();
+    $pagination = pagination($categoryPerPage, self::TABLE);
+    $cats = $this->service->getAllPostCategories($pagination);
+    $mainCats = $this->service->getMainPostCategories();
+    $total = $this->service->getAllPostCategoriesCount();
         
-    $this->renderLayout('categories/all',  [
+    $this->renderLayout('post-categories/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,
       'cats' => $cats,
@@ -86,22 +88,22 @@ final class AdminCategoryController extends BaseAdminController
 
   private function renderNew(): void
   {
-    $viewPath = 'categories/new';
+    $viewPath = 'post-categories/new';
     $pageTitle = 'Категория - создание';
 
     $uriGet = $this->routeData->uriGet ?? null;
     $parentId = $this->routeData->uriGet ?? null;
-    $mainCats = $this->service->getMainCategories();
+    $mainCats = $this->service->getMainPostCategories();
     
     if( $parentId) {    
       $parentId = (int) $parentId;
-      $parentCategory = $this->service->getCategoryById($parentId);
+      $parentCategory = $this->service->getPostCategoryById($parentId);
     }
 
     
     if ($parentId && !$parentCategory) {
-        $this->flash->pushError('Раздел для добавления категории не найден. Выберите другой');
-        $this->redirect('admin/category');
+        $this->flash->pushError('Раздел для добавления категории блога не найден. Выберите другой');
+        $this->redirect('admin/post-category');
     }
 
     if(isset($_POST['submit'])) {
@@ -110,7 +112,7 @@ final class AdminCategoryController extends BaseAdminController
       $validate = true;
 
       if (!$validate) {
-        $this->flash->pushError('Не удалось сохранить новую категорию. Проверьте данные.');
+        $this->flash->pushError('Не удалось сохранить новую категорию блога. Проверьте данные.');
       } else {
               $translations = [];
               foreach ($_POST['title'] as $lang => $title) {
@@ -124,7 +126,7 @@ final class AdminCategoryController extends BaseAdminController
 
               $mainLang = 'ru';
 
-              $dto = new CategoryInputDTO([
+              $dto = new PostCategoryInputDTO([
                   'parent_id' => $_POST['parent_id'] ?? 0,
                   'slug' => $_POST['slug'] ?? '',
                   'title' => $_POST['title'][$mainLang] ?? '',
@@ -133,16 +135,16 @@ final class AdminCategoryController extends BaseAdminController
                   'translations' => $translations,
               ]);
 
-              $category = Category::fromDTO($dto);
+              $category = PostCategory::fromDTO($dto);
 
               $saved = $this->service->createCategory( $category);
 
               if ($saved) {
-                  $this->flash->pushSuccess('Категория успешно создана.');
+                  $this->flash->pushSuccess('Новая категория блога успешно создана.');
                   $this->redirect('admin/category');
               } else {
-                  $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
-                  $this->redirect('admin/category');
+                  $this->flash->pushError('Не удалось сохранить категорию блога. Попробуйте ещё раз.');
+                  $this->redirect('admin/post-category');
               }
       }
       
@@ -160,22 +162,22 @@ final class AdminCategoryController extends BaseAdminController
 
   private function renderEdit(): void
   {
-    $viewPath = 'categories/edit';
-    $pageTitle = 'Категория - редактирование';
+    $viewPath = 'post-categories/edit';
+    $pageTitle = 'Категория блога - редактирование';
 
     $id = (int) $this->routeData->uriGet ?? null;
     $pageClass = 'admin-page';
 
     if (!$id) {
       $this->flash->pushError('Не удалось получить категорию для редактирования. Проверьте данные.');
-      $this->redirect('admin/category');
+      $this->redirect('admin/post-category');
     } 
 
-    $category = $this->service->getCategoryById($id);
+    $category = $this->service->getPostCategoryById($id);
 
-    if( $category->getParentId()) {    
+    if( $category->getPostParentId()) {    
       $parendId = $category->getParentId();
-      $parentCategory = $this->service->getCategoryById($parendId);
+      $parentCategory = $this->service->getPostCategoryById($parendId);
     }
 
     // $validate = $this->validator->new($_POST);
@@ -185,7 +187,7 @@ final class AdminCategoryController extends BaseAdminController
       
         if (!$validate) {
           $this->flash->pushError('Не удалось получить категорию для редактирования. Проверьте данные.');
-          $this->redirect('admin/category');
+          $this->redirect('admin/post-category');
         } 
 
         $translations = [];
@@ -201,7 +203,7 @@ final class AdminCategoryController extends BaseAdminController
 
         $mainLang = 'ru';
 
-        $dto = new CategoryInputDTO([
+        $dto = new PostCategoryInputDTO([
             'id' => $id,
             'parent_id' => $_POST['parent_id'] ?? 0,
             'slug' => $_POST['slug'] ?? '',
@@ -211,16 +213,16 @@ final class AdminCategoryController extends BaseAdminController
             'translations' => $translations,
         ]);
 
-        $category = Category::fromDTO($dto);
+        $category = PostCategory::fromDTO($dto);
 
-        $saved = $this->service->updateCategory( $category);
+        $saved = $this->service->updatePostCategory( $category);
 
         if ($saved) {
-          $this->flash->pushSuccess('Категория успешно создана.');
-           $this->redirect('admin/category-edit', $this->routeData->uriGet);
+          $this->flash->pushSuccess('Категория блога успешно создана.');
+           $this->redirect('admin/post-category-edit', $this->routeData->uriGet);
         } else {
             $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
-            $this->redirect('admin/category');
+            $this->redirect('admin/post-category');
         }
         
 
@@ -242,16 +244,16 @@ final class AdminCategoryController extends BaseAdminController
   private function renderDelete(): void
   {
     // Название страницы
-    $pageTitle = 'Удалить категорию';
+    $pageTitle = 'Удалить категорию блога';
 
     $brandsPerPage = 9;
 
     // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'categories');
+    $pagination = pagination($brandsPerPage, 'post-categories');
     $category = $this->service->getAllCategories($pagination);
     $category = $this->service->getAllCategoriesCount();
         
-    $this->renderLayout('categories/all',  [
+    $this->renderLayout('post-categories/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'categories' => $categories,
