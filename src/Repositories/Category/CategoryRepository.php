@@ -37,10 +37,8 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
      */
     private function loadTranslations(int $categoryId): array
     {
-        $rows = R::getAll(
-            'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?',
-            [$categoryId]
-        );
+        $sql = 'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?';
+        $rows = $this->getAll($sql, [$categoryId]);
 
         $translations = [];
         foreach ($rows as $row) {

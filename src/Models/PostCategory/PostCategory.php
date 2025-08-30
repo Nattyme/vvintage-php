@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Vvintage\Models\PostCategory;
 
 use Vvintage\DTO\PostCategory\PostCategoryDTO;
+use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
+use Vvintage\DTO\PostCategory\PostCategoryOutputDTO;
 
 final class PostCategory
 {
@@ -18,7 +20,21 @@ final class PostCategory
 
     private function __construct() {}
 
-    public static function fromDTO(PostCategoryDTO $dto): self
+    public static function fromDTO(PostCategoryInputDTO $dto): self
+    {
+        $category = new self();
+
+        $category->id = $dto->id;
+        $category->title = $dto->title;
+        $category->parent_id = $dto->parent_id;
+        $category->slug = $dto->slug;
+        $category->image = $dto->image;
+        $category->translations = $dto->translations;
+
+        return $category;
+    }
+
+    public static function fromOutputDTO(PostCategoryOutputDTO $dto): self
     {
         $category = new self();
 

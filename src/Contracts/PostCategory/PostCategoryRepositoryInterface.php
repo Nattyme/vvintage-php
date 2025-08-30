@@ -7,10 +7,12 @@ use Vvintage\Models\PostCategory\PostCategory;
 
 interface PostCategoryRepositoryInterface
  {    
-    public function getPostCatById(int $id): ?PostCategory;
+    public function getCategoryById(int $id): ?PostCategory;
     public function getAllCategories(): array; 
-    public function getPostCatsByIds(array $ids): array;
+    public function getCategoriesByIds(array $ids): array;
     public function getMainCats(): array;
     public function getSubCats(): array;
     public function getPostCatsByParentId(?int $id = null): array;
+    public function getParentCategory(PostCategory $childCategrory): ?PostCategory;
+    public function savePostCat(PostCategory $cat): int;
   }

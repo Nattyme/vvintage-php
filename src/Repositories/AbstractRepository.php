@@ -73,7 +73,7 @@ abstract class AbstractRepository
 
 
 
-        // Здесь просто вызываем RedBeanPHP
+        // вызываем RedBeanPHP
         return R::findAll($table, $sql, $params);
     }
 
@@ -116,6 +116,11 @@ abstract class AbstractRepository
     protected function rollback(): void
     {
       R::rollback();
+    }
+
+    protected function getAll(string $sql, array $params): array
+    {
+      return R::getAll($sql, $params);
     }
 
 

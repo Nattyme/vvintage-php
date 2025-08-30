@@ -69,9 +69,9 @@ final class AdminPostCategoryController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($categoryPerPage, self::TABLE);
-    $cats = $this->service->getAllPostCategories($pagination);
-    $mainCats = $this->service->getMainPostCategories();
-    $total = $this->service->getAllPostCategoriesCount();
+    $cats = $this->service->getAllCategories($pagination);
+    $mainCats = $this->service->getMainCategories();
+    $total = $this->service->getAllCategoriesCount();
         
     $this->renderLayout('post-categories/all',  [
       'pageTitle' => $pageTitle,

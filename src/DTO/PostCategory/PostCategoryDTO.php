@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\PostCategory;
 
-final class PostCategoryDTO
+class PostCategoryDTO
 {
     public int $id;
     public int $parent_id;

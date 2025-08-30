@@ -73,19 +73,17 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             return $row ?[$row] : [];
         } else {
             $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
-            return R::getAll($sql, $bindings);
+            return $this->getAll($sql, $bindings);
         }
     }
 
 
     private function loadTranslations(int $postId): array
     {
-        $rows = R::getAll(
-            'SELECT locale, title, slug, description, content, meta_title, meta_description 
+        $sql =  'SELECT locale, title, slug, description, content, meta_title, meta_description 
              FROM ' . self::TABLE_TRANSLATION .' 
-             WHERE post_id = ?',
-            [$postId]
-        );
+             WHERE post_id = ?';
+        $rows = $this->getAll($sql, [$postId]);
 
         $translations = [];
         foreach ($rows as $row) {
@@ -223,9 +221,9 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     }
 
 
-    public function getAll(): array
-    {
-        $rows = $this->findAll(self::TABLE_CATEGORIES);
-        return array_map([ $this, 'createCategoryDTOFromArray'], $rows);
-    }
+    // public function getAllDTO(): array
+    // {
+    //     $rows = $this->findAll(self::TABLE_CATEGORIES);
+    //     return array_map([ $this, 'createCategoryDTOFromArray'], $rows);
+    // }
 }
