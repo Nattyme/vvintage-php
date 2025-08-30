@@ -94,20 +94,17 @@ final class AdminPostCategoryController extends BaseAdminController
     $uriGet = $this->routeData->uriGet ?? null;
     $parentId = $this->routeData->uriGet ?? null;
     $mainCats = $this->service->getMainCategories();
-    
-    if( $parentId) {    
-      $parentId = (int) $parentId;
-      $parentCategory = $this->service->getCategoryById($parentId);
-    }
 
-    
-    if ($parentId && !$parentCategory) {
+    $parentCategory = $parentId ? $this->service->getCategoryById( (int) $parentId) : 0;
+          
+    if ( $uriGet && !$parentId && !$parentCategory) {
+
         $this->flash->pushError('Раздел для добавления категории блога не найден. Выберите другой');
-        $this->redirect('admin/post-category');
+        $this->redirect('admin/category-blog');
     }
-
+ 
     if(isset($_POST['submit'])) {
-   
+ 
       // $validate = $this->validator->new($_POST);
       $validate = true;
 
@@ -127,7 +124,7 @@ final class AdminPostCategoryController extends BaseAdminController
               $mainLang = 'ru';
 
               $dto = new PostCategoryInputDTO([
-                  'parent_id' => $_POST['parent_id'] ?? 0,
+                  'parent_id' => $_POST['parent_id'] ?? null,
                   'slug' => $_POST['slug'] ?? '',
                   'title' => $_POST['title'][$mainLang] ?? '',
                   'description' => $_POST['description'][$mainLang] ?? '',
@@ -141,10 +138,10 @@ final class AdminPostCategoryController extends BaseAdminController
 
               if ($saved) {
                   $this->flash->pushSuccess('Новая категория блога успешно создана.');
-                  $this->redirect('admin/category');
+                  $this->redirect('admin/category-blog');
               } else {
                   $this->flash->pushError('Не удалось сохранить категорию блога. Попробуйте ещё раз.');
-                  $this->redirect('admin/post-category');
+                  $this->redirect('admin/category-blog');
               }
       }
       
@@ -170,7 +167,7 @@ final class AdminPostCategoryController extends BaseAdminController
 
     if (!$id) {
       $this->flash->pushError('Не удалось получить категорию для редактирования. Проверьте данные.');
-      $this->redirect('admin/post-category');
+      $this->redirect('admin/post-category-blog');
     } 
 
     $category = $this->service->getCategoryById($id);
@@ -187,7 +184,7 @@ final class AdminPostCategoryController extends BaseAdminController
       
         if (!$validate) {
           $this->flash->pushError('Не удалось получить категорию для редактирования. Проверьте данные.');
-          $this->redirect('admin/post-category');
+          $this->redirect('admin/post-category-blog');
         } 
 
         $translations = [];
@@ -205,7 +202,7 @@ final class AdminPostCategoryController extends BaseAdminController
 
         $dto = new PostCategoryInputDTO([
             'id' => $id,
-            'parent_id' => $_POST['parent_id'] ?? 0,
+            'parent_id' => $_POST['parent_id'] ?? null,
             'slug' => $_POST['slug'] ?? '',
             'title' => $_POST['title'][$mainLang] ?? '',
             'description' => $_POST['description'][$mainLang] ?? '',
@@ -219,10 +216,10 @@ final class AdminPostCategoryController extends BaseAdminController
 
         if ($saved) {
           $this->flash->pushSuccess('Категория блога успешно создана.');
-           $this->redirect('admin/post-category-edit', $this->routeData->uriGet);
+           $this->redirect('admin/post-category-blog-edit', $this->routeData->uriGet);
         } else {
             $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
-            $this->redirect('admin/post-category');
+            $this->redirect('admin/category-blog');
         }
         
 

@@ -6,7 +6,7 @@ namespace Vvintage\DTO\PostCategory;
 class PostCategoryDTO
 {
     public int $id;
-    public int $parent_id;
+    public ?int $parent_id;
     public string $title;
     public string $slug;
     public string $image;
@@ -15,7 +15,7 @@ class PostCategoryDTO
     public function __construct(array $data)
     {
         $this->id = (int) ($data['id'] ?? 0);
-        $this->parent_id = (int) ($data['parent_id'] ?? 0);
+        $this->parent_id = $data['parent_id'] ? (int) $data['parent_id'] :  null;
         $this->title = (string) ($data['title'] ?? '');
         $this->slug = (string) ($data['slug'] ?? '');
         $this->image = (string) ($data['image'] ?? '');

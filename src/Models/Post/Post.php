@@ -53,7 +53,7 @@ final class Post
         $post = new self();
 
         $post->id = $dto->id;
-        $post->category = PostCategory::fromDTO($dto->categoryDTO);
+        $post->category = PostCategory::fromOutputDTO($dto->categoryDTO);
 
         $post->title = $dto->title;
         $post->slug = $dto->slug;

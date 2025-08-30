@@ -16,6 +16,7 @@ use Vvintage\Repositories\AbstractRepository;
 /** Модели */
 use Vvintage\Models\Post\Post;
 use Vvintage\DTO\PostCategory\PostCategoryDTO;
+use Vvintage\DTO\PostCategory\PostCategoryOutputDTO;
 use Vvintage\DTO\Post\PostDTO;
 
 
@@ -100,11 +101,11 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
         return $translations;
     }
 
-    private function createCategoryDTOFromArray(array $row): PostCategoryDTO
+    private function createCategoryOutputDTO(array $row): PostCategoryOutputDTO
     {
         $locale = $this->currentLang ?? self::DEFAULT_LANG;;
 
-        return new PostCategoryDTO([
+        return new PostCategoryOutputDTO([
             'id' => (int) $row['category_id'],
             'title' => (string) ($row['category_title_translation'] ?? ''),
             'parent_id' => (int) ($row['category_parent_id'] ?? 0),
@@ -121,6 +122,27 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
             'locale' => $locale,
         ]);
     }
+    // private function createCategoryDTOFromArray(array $row): PostCategoryOutputDTO
+    // {
+    //     $locale = $this->currentLang ?? self::DEFAULT_LANG;;
+
+    //     return new PostCategoryDTO([
+    //         'id' => (int) $row['category_id'],
+    //         'title' => (string) ($row['category_title_translation'] ?? ''),
+    //         'parent_id' => (int) ($row['category_parent_id'] ?? 0),
+    //         'image' => (string) ($row['category_image'] ?? ''),
+    //         'translations' => [
+    //             $locale => [
+    //                 'slug' => $row['category_slug_translation'] ?? '',
+    //                 'title' => $row['category_title_translation'] ?? '',
+    //                 'description' => $row['category_description'] ?? '',
+    //                 'seo_title' => $row['category_meta_title'] ?? '',
+    //                 'seo_description' => $row['category_meta_description'] ?? '',
+    //             ]
+    //         ],
+    //         'locale' => $locale,
+    //     ]);
+    // }
 
 
     private function fetchPostWithJoins(array $row): Post
@@ -129,7 +151,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
 
         $translations = $this->loadTranslations($postId);
     
-        $categoryDTO = $this->createCategoryDTOFromArray($row);
+        $categoryDTO = $this->createCategoryOutputDTO($row);
 
         $dto = new PostDTO([
             'id' => (int) $row['id'],
@@ -217,7 +239,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     public function findBySlug(string $slug): PostCategoryDTO
     {
         $row = $this->findOneBy(self::TABLE_CATEGORIES, 'slug = ?', [$slug]);
-        return $this->createCategoryDTOFromArray($row);
+        return $this->createCategoryOutputDTO($row);
     }
 
 

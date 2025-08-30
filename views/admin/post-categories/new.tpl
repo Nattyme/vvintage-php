@@ -4,9 +4,9 @@
   <?php include ROOT . "views/components/success.tpl"; ?>
  
     <?php if ($uriGet) : ?>
-        <form class="admin-form" action="<?php echo HOST;?>admin/category-new/<?php echo $uriGet; ?>" method="POST" >
+        <form class="admin-form" action="<?php echo HOST;?>admin/category-blog-new/<?php echo $uriGet; ?>" method="POST" >
     <?php else : ?>
-        <form class="admin-form" action="<?php echo HOST;?>admin/category-new" method="POST">
+        <form class="admin-form" action="<?php echo HOST;?>admin/category-blog-new" method="POST">
     <?php endif; ?>
 
           <?php if ($uriGet) : ?> 

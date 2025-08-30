@@ -162,7 +162,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
         $id = (int) $this->saveBean($bean);
 
-        // ⚡️ Главное изменение — мы НЕ удаляем все переводы
+        // НЕ удаляем все переводы
         foreach ($cat->getAllTranslations() as $locale => $translation) {
             // ищем перевод для этой локали
             $transBean = $this->findOneBy(
@@ -178,7 +178,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
                 $transBean->locale = $locale;
             }
 
-            // ⚡️ Обновляем только те поля, что реально пришли
+            // Обновляем только те поля, что реально пришли
             if (array_key_exists('title', $translation)) {
                 $transBean->title = $translation['title'];
             }

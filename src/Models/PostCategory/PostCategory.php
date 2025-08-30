@@ -11,7 +11,7 @@ final class PostCategory
 {
     private int $id;
     private string $title;
-    private int $parent_id;
+    private ?int $parent_id;
     private string $slug;
     private string $image;
 
@@ -54,7 +54,7 @@ final class PostCategory
 
         $category->id = (int) ($data['id'] ?? 0);
         $category->title = (string) ($data['title'] ?? '');
-        $category->parent_id = (int) ($data['parent_id'] ?? 0);
+        $category->parent_id = $data['parent_id'] ?? null;
         $category->slug = (string) ($data['slug'] ?? '');
         $category->image = (string) ($data['image'] ?? '');
         $category->translations = $data['translations'] ?? [];
@@ -102,7 +102,7 @@ final class PostCategory
         return $this->id;
     }
 
-    public function getParentId(): int
+    public function getParentId(): ?int
     {
         return $this->parent_id;
     }
@@ -165,5 +165,10 @@ final class PostCategory
     public function getSeoDescription(?string $locale = null): string {
         $locale = $locale ?? $this->currentLocale;
         return $this->translations[$locale]['meta_description'] ?? $this->title;
+    }
+
+    public function getSlug(): string 
+    {
+      return $this->slug;
     }
 }

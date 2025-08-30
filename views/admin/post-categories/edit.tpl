@@ -6,7 +6,7 @@
   <form 
       id="form-edit-category" 
       method="POST" 
-      action="<?php echo HOST;?>admin/category-edit/<?php echo u($category->getId());?>"
+      action="<?php echo HOST;?>admin/category-blog-edit/<?php echo u($category->getId());?>"
       class="admin-form"
   >
 

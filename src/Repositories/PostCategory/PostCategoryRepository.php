@@ -100,7 +100,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return new PostCategoryOutputDTO([
             'id' => (int) $row['id'],
             'title' => (string) ($row['category_title_translation'] ?? ''),
-            'parent_id' => (int) ($row['parent_id'] ?? 0),
+            'parent_id' => $row['parent_id'] ?? null,
             'image' => (string) ($row['image'] ?? ''),
             'slug' => (string) ($row['slug'] ?? ''),
             'translations' => [
@@ -255,6 +255,66 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     {
       return $this->countAll(self::TABLE, $sql, $params);
     }
+
+    
+    public function createCategory(PostCategory $cat) 
+    {
+      return $this->saveCategory($cat);
+    }
+
+
+    public function saveCategory(PostCategory $cat): int
+    {
+        // сохраняем основную категорию
+        $bean = $cat->getId()
+            ? $this->loadBean(self::TABLE, $cat->getId())
+            : $this->createBean(self::TABLE);
+
+        $bean->title = $cat->getTitle(); // по умолчанию ru
+        $bean->parent_id = $cat->getParentId();
+        $bean->slug = $cat->getSlug();
+        $bean->image = $cat->getImage();
+        $bean->seo_title = $cat->getSeoTitle();
+        $bean->seo_description = $cat->getSeoDescription();
+
+        $id = (int) $this->saveBean($bean);
+
+        // НЕ удаляем все переводы
+        foreach ($cat->getAllTranslations() as $locale => $translation) {
+            // ищем перевод для этой локали
+            $transBean = $this->findOneBy(
+                self::TABLE_TRANSLATION,
+                'category_id = ? AND locale = ?',
+                [$id, $locale]
+            );
+
+            if (!$transBean) {
+                // если нет — создаём новый
+                $transBean = $this->createBean(self::TABLE_TRANSLATION);
+                $transBean->category_id = $id;
+                $transBean->locale = $locale;
+            }
+
+            // Обновляем только те поля, что реально пришли
+            if (array_key_exists('title', $translation)) {
+                $transBean->title = $translation['title'];
+            }
+            if (array_key_exists('description', $translation)) {
+                $transBean->description = $translation['description'];
+            }
+            if (array_key_exists('meta_title', $translation)) {
+                $transBean->meta_title = $translation['meta_title'];
+            }
+            if (array_key_exists('meta_description', $translation)) {
+                $transBean->meta_description = $translation['meta_description'];
+            }
+
+            $this->saveBean($transBean);
+        }
+
+        return $id;
+    }
+
 
     
 }
