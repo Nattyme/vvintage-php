@@ -93,11 +93,11 @@ final class AdminPostCategoryController extends BaseAdminController
 
     $uriGet = $this->routeData->uriGet ?? null;
     $parentId = $this->routeData->uriGet ?? null;
-    $mainCats = $this->service->getMainPostCategories();
+    $mainCats = $this->service->getMainCategories();
     
     if( $parentId) {    
       $parentId = (int) $parentId;
-      $parentCategory = $this->service->getPostCategoryById($parentId);
+      $parentCategory = $this->service->getCategoryById($parentId);
     }
 
     

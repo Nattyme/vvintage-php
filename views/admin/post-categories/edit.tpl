@@ -28,7 +28,7 @@
     </div>
   <?php endif; ?> 
 
-      <div class="admin-form__field">
+      <!-- <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название категории</label>
         <input 
           id="title"
@@ -39,7 +39,7 @@
           value="<?php echo h(trim($category->getTitle()));?>"
           required
         />
-      </div>
+      </div> -->
 
       <div class="admin-form__field">
         <div class="admin-form__item" data-control="tab">
@@ -74,7 +74,7 @@
       <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
       <div class="admin-form__buttons buttons">
-        <a class="button button--m button--outline" href="<?php echo HOST;?>admin/category" title="Отмена">Отмена</a>
+        <a class="button button--m button--outline" href="<?php echo HOST;?>admin/category-blog" title="Отмена">Отмена</a>
         <button class="button button--m button--primary" type="submit" name="submit" value="submit">Сохранить</button>
       </div>
   </form>

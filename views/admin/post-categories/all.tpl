@@ -71,7 +71,7 @@
             <td>
               <?php 
                 if ( $cat->getParentId() === 0 ) : ?>
-                      <a href="<?php echo HOST . 'admin/category-new/' . $cat->getId();?>" class="button button--s button--outline link-above-others" data-btn="add">
+                      <a href="<?php echo HOST . 'admin/category-blog-new/' . $cat->getId();?>" class="button button--s button--outline link-above-others" data-btn="add">
                         Новая категория
                       </a>
                 <?php endif; ?>

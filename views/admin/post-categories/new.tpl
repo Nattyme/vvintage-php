@@ -66,7 +66,7 @@
             <button name="submit" value="submit" class="button button--m button--primary" type="submit">
               Создать
             </button>
-            <a class="button button--m button--outline" href="<?php echo HOST . 'admin/category';?>">Отмена</a>
+            <a class="button button--m button--outline" href="<?php echo HOST . 'admin/category-blog';?>">Отмена</a>
           </div>
   </form>
 </div>
