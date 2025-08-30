@@ -13,18 +13,19 @@ use Vvintage\Services\Admin\Brand\AdminBrandService;
 class AdminProductController extends BaseAdminController
 {
   private AdminProductService $adminProductService;
-  private AdminBrandService $brandService;
+  // private AdminBrandService $brandService;
 
   public function __construct()
   {
     parent::__construct();
     $this->adminProductService = new AdminProductService();
-    $this->brandService = new AdminBrandService();
+    // $this->brandService = new AdminBrandService();
   }
 
   public function all (RouteData $routeData)
   {
     $this->isAdmin();
+    $this->setRouteData($routeData);
     $this->adminProductService->handleStatusAction($_POST);
     $this->renderAllProducts($routeData);
   }
@@ -32,18 +33,27 @@ class AdminProductController extends BaseAdminController
   public function new(RouteData $routeData)
   {
     $this->isAdmin();
+    $this->setRouteData($routeData);
     $this->renderAddProduct($routeData);
   }
 
   public function edit(RouteData $routeData)
   {
     $this->isAdmin();
+    $this->setRouteData($routeData);
     $this->adminProductService->handleStatusAction($_POST);
-    $this->renderEditProduct($routeData);
+    $this->renderEditProduct();
+  }
+
+  public function delete (RouteData $routeData)
+  {
+    $this->isAdmin();
+    $this->setRouteData($routeData);
+    $this->renderDelete();
   }
 
   
-  private function renderAllProducts(RouteData $routeData): void
+  private function renderAllProducts(): void
   {
     // Название страницы
     $pageTitle = 'Все товары';
@@ -59,7 +69,6 @@ class AdminProductController extends BaseAdminController
     $imagesByProductId = [];
 
     foreach ($products as $product) {
-        // $imagesMainAndOthers = $imageService->splitImages($product->getImages());
         $imagesMainAndOthers = $this->adminProductService->getProductImages($product);
         $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
     }
@@ -75,14 +84,14 @@ class AdminProductController extends BaseAdminController
 
     $this->renderLayout('shop/all',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'productViewModel' => $productViewModel,
       'pagination' => $pagination,
       'flash' => $this->flash
     ]);
   }
 
-  private function renderAddProduct(RouteData $routeData): void
+  private function renderAddProduct(): void
   {
     // Название страницы
     $pageTitle = "Добавить новый товар";
@@ -92,7 +101,7 @@ class AdminProductController extends BaseAdminController
 
     $this->renderLayout('shop/new',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'statusList' => $statusList,
       'flash' => $this->flash,
       'product' => null,
@@ -101,15 +110,18 @@ class AdminProductController extends BaseAdminController
     ]);
   }
 
-  private function renderEditProduct(RouteData $routeData): void
+  private function renderEditProduct(): void
   {
     // Название страницы
     $pageTitle = "Редактирование товара";
     // $pageClass = "admin-page";
 
     // Получаем продукт по Id 
-    $productId = $routeData->getUriGetParam();
-    $product = $this->adminProductService->getProductById((int) $productId);
+    $id = $this->routeData->uriGet ? (int) $this->routeData->uriGet : null;
+
+    if (!$id) $this->redirect('admin/shop');
+
+    $product = $this->adminProductService->getProductById($id);
     $statusList = $this->adminProductService->getStatusList();
 
 
@@ -198,9 +210,49 @@ class AdminProductController extends BaseAdminController
     $this->renderLayout('shop/edit',  [
       'product' => $product,
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'statusList' => $statusList,
       'flash' => $this->flash
     ]);
   }
+
+  private function renderDelete(): void
+  {
+    
+    // Название страницы
+    $pageTitle = 'Удалить категорию блога';
+
+    $id = $this->routeData->uriGet ? (int) $this->routeData->uriGet : null;
+
+    if (!$id) $this->redirect('admin/category-blog');
+
+    $category = $this->service->getCategoryById($id);
+
+
+    // Если нет ошибок
+    if (isset($_POST['submit'])) {
+      $csrfToken = $_POST['csrf'] ?? '';
+
+      if (!$csrfToken) {
+        $this->flash->pushSuccess('Неверный токен безопасности');
+        $this->redirect('admin/category-blog');
+      }
+
+      $this->service->deleteCategory($id);
+
+      $this->flash->pushSuccess('Категория успешно удалена.');
+      $this->redirect('admin/category-blog');
+    }
+
+
+        
+    $this->renderLayout('post-categories/delete',  [
+      'pageTitle' => $pageTitle,
+      'routeData' => $this->routeData,
+      'category' => $category,
+      'flash' => $this->flash
+    ]);
+
+  }
+
 }
