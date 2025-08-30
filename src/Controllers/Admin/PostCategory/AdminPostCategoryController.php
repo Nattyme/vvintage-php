@@ -163,6 +163,7 @@ final class AdminPostCategoryController extends BaseAdminController
     $pageTitle = 'Категория блога - редактирование';
 
     $id = (int) $this->routeData->uriGet ?? null;
+
     $pageClass = 'admin-page';
 
     if (!$id) {
@@ -171,7 +172,7 @@ final class AdminPostCategoryController extends BaseAdminController
     } 
 
     $category = $this->service->getCategoryById($id);
-
+  
     if( $category->getParentId()) {    
       $parendId = $category->getParentId();
       $parentCategory = $this->service->getCategoryById($parendId);
@@ -212,11 +213,11 @@ final class AdminPostCategoryController extends BaseAdminController
 
         $category = PostCategory::fromDTO($dto);
 
-        $saved = $this->service->updatePostCategory( $category);
+        $saved = $this->service->updateCategory( $category);
 
         if ($saved) {
           $this->flash->pushSuccess('Категория блога успешно создана.');
-           $this->redirect('admin/post-category-blog-edit', $this->routeData->uriGet);
+           $this->redirect('admin/category-blog-edit', $this->routeData->uriGet);
         } else {
             $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
             $this->redirect('admin/category-blog');

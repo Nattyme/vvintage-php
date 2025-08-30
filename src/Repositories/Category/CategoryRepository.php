@@ -256,7 +256,8 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     //     return $id;
     // }
 
-    public function updateCategory(Category $cat) {
+    public function updateCategory(Category $cat): int
+    {
 
       if (!$cat->getId()) {
           return null; // нельзя обновить без ID
@@ -265,7 +266,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
       return $this->saveCategory($cat);
     }
 
-    public function createCategory(Category $cat) 
+    public function createCategory(Category $cat): int 
     {
       return $this->saveCategory($cat);
     }

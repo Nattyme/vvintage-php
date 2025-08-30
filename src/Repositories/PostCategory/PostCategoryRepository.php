@@ -315,6 +315,17 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return $id;
     }
 
+    public function updateCategory(PostCategory $cat): int
+    {
+
+      if (!$cat->getId()) {
+          return null; // нельзя обновить без ID
+      }
+
+      return $this->saveCategory($cat);
+    }
+
+
 
     
 }
