@@ -7,6 +7,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Models\User\User;
+use Vvintage\Services\Messages\FlashMessage;
 
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
@@ -18,12 +19,14 @@ abstract class BaseAdminController
   protected array $settings;
   protected array $languages;
   protected string $currentLang;
+  protected FlashMessage $flash;
 
   public function __construct()
   {
       $this->settings = Settings::all(); // Получаем 1 раз массив всех настроек 
       $this->languages = LanguageConfig::getAvailableLanguages();
       $this->currentLang = LanguageConfig::getCurrentLocale();
+      $this->flash = new FlashMessage();
   }
 
   protected function isAdmin(): bool
@@ -50,6 +53,7 @@ abstract class BaseAdminController
 
     // Превращаем элементы массива в переменные
     extract( array_merge($vars, [
+      'flash' => $this->flash,
       'settings' => $this->settings,
       'languages' => $this->languages
     ]) );

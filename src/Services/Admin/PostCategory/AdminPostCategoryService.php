@@ -32,6 +32,11 @@ final class AdminPostCategoryService extends PostCategoryService
       return $this->repository->updateCategory($cat); 
     }
 
+    public function deleteCategory(int $id): void
+    {
+      $this->repository->deleteCategory($id);
+    }
+
   
 
 }

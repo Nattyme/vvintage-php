@@ -5,7 +5,6 @@ namespace Vvintage\Controllers\Admin\Post;
 
 use Vvintage\Routing\RouteData;
 use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Admin\Post\AdminPostService;
 
 /** Контракты */
@@ -19,14 +18,12 @@ class AdminPostController extends BaseAdminController
 {
   private AdminPostService $adminPostService;
   private Breadcrumbs $breadcrumbs;
-  private FlashMessage $flash;
 
-  public function __construct(FlashMessage $flash, Breadcrumbs $breadcrumbs)
+  public function __construct(Breadcrumbs $breadcrumbs)
   {
     parent::__construct();
     $this->adminPostService = new AdminPostService($this->languages, $this->currentLang);
     $this->breadcrumbs = $breadcrumbs;
-    $this->flash = $flash;
   }
 
   public function all (RouteData $routeData)

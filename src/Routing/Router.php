@@ -507,23 +507,20 @@
     /**********************/
     public static function routeAdminPages(RouteData $routeData)
     {
- 
-      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
-
       $postRepository = new  PostRepository();
       $postCategoryRepository = new PostCategoryRepository(); 
 
 
       $homeAdminController = new HomeAdminController();
       $adminProductController = new AdminProductController();
-      $adminBrandController = new AdminBrandController($flash);
+      $adminBrandController = new AdminBrandController();
       $adminCategoryController = new AdminCategoryController();
       $adminUserController = new AdminUserController();
-      $adminOrderController = new AdminOrderController($flash);
-      $adminPostController = new AdminPostController($flash, $breadcrumbs);
-      $adminMessageController = new AdminMessageController($flash);
-      $adminPostCatController = new AdminPostCategoryController($postCategoryRepository, $flash);
+      $adminOrderController = new AdminOrderController();
+      $adminPostController = new AdminPostController($breadcrumbs);
+      $adminMessageController = new AdminMessageController();
+      $adminPostCatController = new AdminPostCategoryController($postCategoryRepository);
   
       switch ($routeData->uriModule) {
          // ::::::::::::: SHOP :::::::::::::::::::

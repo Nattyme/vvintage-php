@@ -15,4 +15,6 @@ interface PostCategoryRepositoryInterface
     public function getPostCatsByParentId(?int $id = null): array;
     public function getParentCategory(PostCategory $childCategrory): ?PostCategory;
     public function savePostCat(PostCategory $cat): int;
+    public function updateCategory(PostCategory $cat): int;
+    public function deleteCategory(int $id): void;
   }

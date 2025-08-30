@@ -6,7 +6,6 @@ namespace Vvintage\Controllers\Admin\Category;
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Category\AdminCategoryService;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Admin\Validation\AdminCategoryValidator;
 use Vvintage\DTO\Category\CategoryInputDTO;
 use Vvintage\Models\Category\Category;
@@ -16,13 +15,11 @@ final class AdminCategoryController extends BaseAdminController
 {
   private AdminCategoryValidator $validator;
   private AdminCategoryService $service;
-  private FlashMessage $flash;
 
   public function __construct()
   {
     parent::__construct();
     $this->service = new AdminCategoryService();
-    $this->flash = new FlashMessage();
     $this->validator = new AdminCategoryValidator();
   }
 

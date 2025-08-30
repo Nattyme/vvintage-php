@@ -7,20 +7,15 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\User\AdminUserService;
 use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Messages\FlashMessage;
 
 final class AdminUserController extends BaseAdminController 
 {
-  // private UserRepository $userRepository;
   private AdminUserService $adminUserService;
-  private FlashMessage $flash;
 
   public function __construct()
   {
     parent::__construct();
     $this->adminUserService = new AdminUserService();
-    $this->flash = new FlashMessage();
-    // $this->userRepository = new UserRepository();
   }
 
   public function all(RouteData $routeData)

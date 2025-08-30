@@ -1,7 +1,7 @@
 <div class="admin-page__content-form">
   <div class="admin-form">
-    <?php include ROOT . "views/components/errors.tpl"; ?>
-    <?php include ROOT . "views/components/success.tpl"; ?>
+    <?php include (ROOT . "views/components/errors.tpl"); ?>
+    <?php include (ROOT . "views/components/success.tpl"); ?>
 
 
     <header class="admin-form__header admin-form__row">
@@ -79,7 +79,7 @@
             <td>
               <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
-                href="<?php echo HOST . "admin/";?>admin/category-blog-delete/<?php echo u($cat->getId());?>"
+                href="<?php echo HOST . 'admin/category-blog-delete/' . u($cat->getId());?>"
                 aria-label="Удалить категорию <?php echo h($cat->getTitle());?>"
               >
 

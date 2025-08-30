@@ -6,7 +6,6 @@ namespace Vvintage\Controllers\Admin\Product;
 use Vvintage\Routing\RouteData;
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 use Vvintage\Controllers\Admin\BaseAdminController;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Admin\Product\AdminProductService;
 use Vvintage\Services\Admin\Brand\AdminBrandService;
 
@@ -15,12 +14,10 @@ class AdminProductController extends BaseAdminController
 {
   private AdminProductService $adminProductService;
   private AdminBrandService $brandService;
-  private FlashMessage $flash;
 
   public function __construct()
   {
     parent::__construct();
-    $this->flash = new FlashMessage();
     $this->adminProductService = new AdminProductService();
     $this->brandService = new AdminBrandService();
   }

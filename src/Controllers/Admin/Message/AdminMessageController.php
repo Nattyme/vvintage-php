@@ -8,7 +8,6 @@ use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Repositories\Message\MessageRepository;
 
 /** Сервисы */
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Admin\Messages\AdminMessageService;
 
 
@@ -16,14 +15,12 @@ use Vvintage\Services\Admin\Messages\AdminMessageService;
 class AdminMessageController extends BaseAdminController 
 {
   private AdminMessageService $adminMessageService;
-  // private MessageRepository $messageRepository;
-  private FlashMessage $flash;
 
-  public function __construct(FlashMessage $flash)
+
+  public function __construct()
   {
     parent::__construct();
     $this->adminMessageService = new AdminMessageService();
-    $this->flash = $flash;
   }
 
   public function all(RouteData $routeData)

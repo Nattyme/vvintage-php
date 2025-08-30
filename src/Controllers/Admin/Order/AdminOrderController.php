@@ -22,13 +22,10 @@ class AdminOrderController extends BaseAdminController
 
   // private OrderRepository $orderRepository;
   private AdminOrderService $adminOrderService;
-  private FlashMessage $flash;
-
 
   public function __construct()
   {
     parent::__construct();
-    $this->flash = new FlashMessage();
     $this->adminOrderService = new AdminOrderService($this->flash);
 
   }

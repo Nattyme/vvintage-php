@@ -325,6 +325,12 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
       return $this->saveCategory($cat);
     }
 
+    public function deleteCategory(int $id): void
+    {
+      $bean = $this->loadBean(self::TABLE, $id);
+      $this->deleteBean($bean);
+    }
+
 
 
     

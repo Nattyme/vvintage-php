@@ -4,8 +4,16 @@ declare(strict_types=1);
 namespace Vvintage\Services\Messages;
 
 
+
 final class FlashMessage
 {
+  private array $messages = [];
+
+  public function __construct()
+  {
+      $this->messages['success'] = $_SESSION['success'] ?? [];
+      $this->messages['errors'] = $_SESSION['errors'] ?? [];
+  }
     public function pushError(string $title, ?string $desc = null, ?string $flag = null) {
         $this->addMessage('errors', $title, $desc, $flag);
     }
@@ -30,7 +38,7 @@ final class FlashMessage
 
     public function get(string $type): array {
       $messages = $_SESSION[$type] ?? [];
-      unset($_SESSION[$type]); // очищаем, чтобы показывались только один раз
+      // unset($_SESSION[$type]); // очищаем, чтобы показывались только один раз
       return $messages;
     }
 

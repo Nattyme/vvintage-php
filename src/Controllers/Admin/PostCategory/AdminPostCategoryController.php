@@ -6,7 +6,6 @@ namespace Vvintage\Controllers\Admin\PostCategory;
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\PostCategory\AdminPostCategoryService;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Admin\Validation\AdminPostCategoryValidator;
 use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
 use Vvintage\Models\PostCategory\PostCategory;
@@ -16,7 +15,6 @@ final class AdminPostCategoryController extends BaseAdminController
 {
   private AdminPostCategoryValidator $validator;
   private AdminPostCategoryService $service;
-  private FlashMessage $flash;
 
   private const TABLE = 'postcategories';
 
@@ -24,7 +22,6 @@ final class AdminPostCategoryController extends BaseAdminController
   {
     parent::__construct();
     $this->service = new AdminPostCategoryService();
-    $this->flash = new FlashMessage();
     $this->validator = new AdminPostCategoryValidator();
   }
 
@@ -168,7 +165,7 @@ final class AdminPostCategoryController extends BaseAdminController
 
     if (!$id) {
       $this->flash->pushError('Не удалось получить категорию для редактирования. Проверьте данные.');
-      $this->redirect('admin/post-category-blog');
+      $this->redirect('admin/category-blog');
     } 
 
     $category = $this->service->getCategoryById($id);
@@ -216,8 +213,8 @@ final class AdminPostCategoryController extends BaseAdminController
         $saved = $this->service->updateCategory( $category);
 
         if ($saved) {
-          $this->flash->pushSuccess('Категория блога успешно создана.');
-           $this->redirect('admin/category-blog-edit', $this->routeData->uriGet);
+          $this->flash->pushSuccess('Категория блога успешно обновлена.');
+          $this->redirect('admin/category-blog-edit', $this->routeData->uriGet);
         } else {
             $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
             $this->redirect('admin/category-blog');
@@ -241,21 +238,38 @@ final class AdminPostCategoryController extends BaseAdminController
 
   private function renderDelete(): void
   {
+    
     // Название страницы
     $pageTitle = 'Удалить категорию блога';
 
-    $brandsPerPage = 9;
+    $id = $this->routeData->uriGet ? (int) $this->routeData->uriGet : null;
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'post-categories');
-    $category = $this->service->getAllCategories($pagination);
-    $category = $this->service->getAllCategoriesCount();
+    if (!$id) $this->redirect('admin/category-blog');
+
+    $category = $this->service->getCategoryById($id);
+
+
+    // Если нет ошибок
+    if (isset($_POST['submit'])) {
+      $csrfToken = $_POST['csrf'] ?? '';
+
+      if (!$csrfToken) {
+        $this->flash->pushSuccess('Неверный токен безопасности');
+        $this->redirect('admin/category-blog');
+      }
+
+      $this->service->deleteCategory($id);
+
+      $this->flash->pushSuccess('Категория успешно удалена.');
+      $this->redirect('admin/category-blog');
+    }
+
+
         
-    $this->renderLayout('post-categories/all',  [
+    $this->renderLayout('post-categories/delete',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'categories' => $categories,
-      'pagination' => $pagination,
+      'routeData' => $this->routeData,
+      'category' => $category,
       'flash' => $this->flash
     ]);
 
