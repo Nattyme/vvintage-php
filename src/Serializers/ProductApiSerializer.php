@@ -80,4 +80,10 @@ final class ProductApiSerializer
 
         $this->success(ProductApiSerializer::toItem($product));
     }
+
+    // Для getOne/getBySlug
+    public static function toItem(Product $product): array
+    {
+        return ['product' => self::toArray($product)];
+    }
 }

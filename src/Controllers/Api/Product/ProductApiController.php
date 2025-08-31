@@ -16,13 +16,13 @@ use Vvintage\Services\Admin\Validation\AdminProductImageValidator;
 class ProductApiController extends BaseApiController
 {
     private AdminProductService $service;
-    private ProductApiSerializer $productApiSerializer;
+    private ProductApiSerializer $serializer;
 
     public function __construct()
     {
       parent::__construct();
       $this->service = new AdminProductService();
-      $this->productApiSerializer = new ProductApiSerializer();
+      $this->serializer = new ProductApiSerializer();
     }
 
     public function create(): void
@@ -76,7 +76,7 @@ class ProductApiController extends BaseApiController
 
       // Получаем продукты из сервиса
       $productsData = $this->service->getActiveProducts(); // <-- метод, который вернёт массив объектов/DTO
-      $products = $this->productApiSerializer->toList($productsData);
+      $products = $this->serializer->toList($productsData);
       // Если есть изображения, категории, можно их добавить через сервис/репозиторий
       // $categories = $this->service->getCategories(); // пример
 
@@ -91,13 +91,15 @@ class ProductApiController extends BaseApiController
     }
 
     // Получение одного продукта по ID
-    public function getOne(int $id): void
+    public function getOne(RouteData $routeData): void
     {
-        $product = $this->service->getProductById($id);
-        if (!$product) {
-            $this->error(['Продукт не найден'], 404);
-        }
-        $this->success(['product' => $this->serializer->toItem($product)]);
+      $id = (int) $routeData->uriGetParams[0];
+      $product = $this->service->getProductById($id);
+ 
+      if (!$product) {
+          $this->error(['Продукт не найден'], 404);
+      }
+      $this->success(['product' => $this->serializer->toItem($product)]);
     }
 
     // Получение продукта по slug

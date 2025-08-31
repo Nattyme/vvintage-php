@@ -209,10 +209,8 @@
               $productApiController->create();
               break;
 
-            case 'product' :
-               dd($routeData);
-              if (isset($routeData->uriGet) && is_numeric($routeData->uriGet)) {
-               
+            case 'product':
+              if (isset($routeData->uriGetParams) && is_numeric($routeData->uriGetParams[0])) {
                 $productApiController->getOne($routeData);
               }
               break;
