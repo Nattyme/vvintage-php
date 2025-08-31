@@ -48,7 +48,7 @@ final class ProductApiSerializer
     public static function toList(array $products): array
     {
         return array_map(
-            fn(Product $p) => self::toArray($p),
+            fn(Product $product) => self::toArray($product),
             $products
         );
     }

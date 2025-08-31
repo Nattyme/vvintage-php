@@ -5,10 +5,10 @@ namespace Vvintage\Controllers\Base;
 
 // use Vvintage\Routing\Router;
 /** Интерфейсы */
-use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Routing\RouteData;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Session\SessionService;
+use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
 use Vvintage\Controllers\AdminPanel\AdminPanelController;
 use Vvintage\Services\Messages\FlashMessage;

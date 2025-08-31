@@ -1,49 +1,29 @@
 const API_BASE = '/api'; // базовый путь к API
 
-export async function getAllProducts() {
+export async function getAllCategory() {
   const res = await fetch(`${API_BASE}/products`);
   if (!res.ok) throw new Error('Ошибка получения продуктов');
   return await res.json();
 }
 
-export async function getProduct(id) {
+export async function getCategory(id) {
   const res = await fetch(`${API_BASE}/product/${id}`);
   if (!res.ok) throw new Error('Ошибка получения продукта');
   return await res.json();
 }
 
-export async function createProduct(data, files = []) {
-  let body;
-  let headers = {};
-
-  if (data instanceof FormData) {
-    // если сразу FormData — просто используем её
-    body = data;
-  } else if (files.length > 0) {
-    body = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      body.append(key, value);
-    });
-    files.forEach(file => body.append('cover[]', file));
-  } else {
-    headers['Content-Type'] = 'application/json';
-    body = JSON.stringify(data);
-  }
-
+export async function createCategory(data) {
   const res = await fetch(`${API_BASE}/product-new`, {
     method: 'POST',
-    credentials: 'include',
-    headers,
-    body
+    credentials: 'include', // сессия
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
   });
-
   if (!res.ok) throw new Error('Ошибка создания продукта');
   return await res.json();
 }
 
-
-
-export async function updateProduct(id, data) {
+export async function updateCategory(id, data) {
   const res = await fetch(`${API_BASE}/product-edit/${id}`, {
     method: 'PUT',
     credentials: 'include', // сессия
@@ -54,7 +34,7 @@ export async function updateProduct(id, data) {
   return await res.json();
 }
 
-export async function deleteProduct(id) {
+export async function deleteCategory(id) {
   const res = await fetch(`${API_BASE}/product/${id}`, {
     method: 'DELETE',
   });

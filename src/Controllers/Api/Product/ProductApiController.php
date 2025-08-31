@@ -16,12 +16,13 @@ use Vvintage\Services\Admin\Validation\AdminProductImageValidator;
 class ProductApiController extends BaseApiController
 {
     private AdminProductService $service;
+    private ProductApiSerializer $productApiSerializer;
 
     public function __construct()
     {
       parent::__construct();
       $this->service = new AdminProductService();
-
+      $this->productApiSerializer = new ProductApiSerializer();
     }
 
     public function create(): void
@@ -66,6 +67,26 @@ class ProductApiController extends BaseApiController
         }
 
         $this->success(['id' => $productId], 201);
+    }
+
+    public function getAll(): array 
+    {
+      // $this->isAdmin(); // проверка прав
+
+      // Получаем продукты из сервиса
+      $productsData = $this->service->getActiveProducts(); // <-- метод, который вернёт массив объектов/DTO
+      $products = $this->productApiSerializer->toList($productsData);
+      // Если есть изображения, категории, можно их добавить через сервис/репозиторий
+      // $categories = $this->service->getCategories(); // пример
+
+      // Формируем структуру для фронта
+      $data = [
+          'products' => $products
+          // 'categories' => $categories,
+      ];
+
+      // Отправляем клиенту JSON
+      $this->success($data);
     }
    
 }

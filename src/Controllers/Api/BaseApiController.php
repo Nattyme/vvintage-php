@@ -4,11 +4,19 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Api;
 
 use Vvintage\Services\Session\SessionService;
-
+use Vvintage\Contracts\User\UserInterface;
+use Vvintage\Models\User\User;
 
 
 class BaseApiController 
 {
+
+    public function __construct() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
     // общий для всех API-контроллеров, ставит заголовки и код статуса.
     protected function jsonResponse(array $data, int $status = 200): void 
     {
@@ -21,8 +29,9 @@ class BaseApiController
     protected function isAdmin(): bool {
         $sessionService = new SessionService();
         $userModel = $sessionService->getLoggedInUser();
-
+    
         if (!($userModel instanceof User) || $userModel->getRole() !== 'admin') {
+     
             $this->jsonResponse(['error' => 'Недостаточно прав'], 403);
         }
 
