@@ -43,7 +43,7 @@ const initModel = () => {
 
     if (!res.ok) throw new Error(`Ошибка сети ${res.status}`);
 
-    // const result = await res.json(); // сразу парсим JSON
+    const result = await res.json(); // сразу парсим JSON
     console.log('Ответ сервера (JSON):', result);
 
     return result;

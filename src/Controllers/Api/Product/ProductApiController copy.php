@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Api\Product;
 
 use Vvintage\Routing\RouteData;
-use Vvintage\Controllers\Api\BaseApiController;
+use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Product\AdminProductService;
 use Vvintage\Services\Admin\Product\AdminProductImageService;
 use Vvintage\DTO\Product\ProductDTO;
@@ -13,7 +13,7 @@ use Vvintage\Services\Admin\Validation\AdminProductValidator;
 use Vvintage\Services\Admin\Validation\AdminProductImageValidator;
 
 
-class ProductApiController extends BaseApiController
+class ProductApiController extends BaseAdminController
 {
     private AdminProductService $service;
 
@@ -26,6 +26,8 @@ class ProductApiController extends BaseApiController
 
     public function create()
     {
+        header('Content-Type: application/json; charset=utf-8');
+    
         // $this->isAdmin();
         $response = [
             'success' => false,
