@@ -52,4 +52,32 @@ final class ProductApiSerializer
             $products
         );
     }
+
+        /**
+     * Получить один продукт по ID
+     */
+    public function getOne(int $id): void
+    {
+        $product = $this->service->getProductById($id);
+
+        if (!$product) {
+            $this->error(['Продукт не найден'], 404);
+        }
+
+        $this->success(ProductApiSerializer::toItem($product));
+    }
+
+    /**
+     * Получить один продукт по slug
+     */
+    public function getBySlug(string $slug): void
+    {
+        $product = $this->service->getProductBySlug($slug);
+
+        if (!$product) {
+            $this->error(['Продукт не найден'], 404);
+        }
+
+        $this->success(ProductApiSerializer::toItem($product));
+    }
 }

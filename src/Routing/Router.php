@@ -210,8 +210,10 @@
               break;
 
             case 'product' :
-              if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
-                $productApiController->load($routeData);
+               dd($routeData);
+              if (isset($routeData->uriGet) && is_numeric($routeData->uriGet)) {
+               
+                $productApiController->getOne($routeData);
               }
               break;
 

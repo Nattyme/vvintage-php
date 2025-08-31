@@ -69,6 +69,7 @@ class ProductApiController extends BaseApiController
         $this->success(['id' => $productId], 201);
     }
 
+    // Список всех активных продуктов
     public function getAll(): array 
     {
       // $this->isAdmin(); // проверка прав
@@ -88,5 +89,25 @@ class ProductApiController extends BaseApiController
       // Отправляем клиенту JSON
       $this->success($data);
     }
+
+    // Получение одного продукта по ID
+    public function getOne(int $id): void
+    {
+        $product = $this->service->getProductById($id);
+        if (!$product) {
+            $this->error(['Продукт не найден'], 404);
+        }
+        $this->success(['product' => $this->serializer->toItem($product)]);
+    }
+
+    // Получение продукта по slug
+    public function getBySlug(string $slug): void
+    {
+        $product = $this->service->getProductBySlug($slug);
+        if (!$product) {
+            $this->error(['Продукт не найден'], 404);
+        }
+        $this->success(['product' => $this->serializer->toItem($product)]);
+    }    
    
 }

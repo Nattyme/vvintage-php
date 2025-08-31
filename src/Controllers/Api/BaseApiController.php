@@ -32,7 +32,7 @@ class BaseApiController
     
         if (!($userModel instanceof User) || $userModel->getRole() !== 'admin') {
      
-            $this->jsonResponse(['error' => 'Недостаточно прав'], 403);
+            $this->jsonResponse(['error' => 'Недостаточно прав'], 401);
         }
 
         return true;
