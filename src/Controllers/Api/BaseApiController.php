@@ -6,15 +6,23 @@ namespace Vvintage\Controllers\Api;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
+// Пеервод на другие языки
+use Vvintage\Config\LanguageConfig;
 
 
 class BaseApiController 
 {
+    protected array $languages;
+    protected string $currentLang;
+
 
     public function __construct() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+      $this->languages = LanguageConfig::getAvailableLanguages();
+      $this->currentLang = LanguageConfig::getCurrentLocale();
+      
+      if (session_status() === PHP_SESSION_NONE) {
+          session_start();
+      }
     }
 
     // общий для всех API-контроллеров, ставит заголовки и код статуса.

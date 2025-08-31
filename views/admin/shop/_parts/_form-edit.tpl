@@ -57,7 +57,7 @@
       <div class="admin-form__field">
           <label class="admin-form__label" for="mainCat">Раздел</label>
           <div class="admin-form__row">
-            <select class="select" name="mainCat" id="mainCat" data-current-parent="<?php echo h($product->getCategory()->getParentId()) ?>"></select>
+            <select class="select" name="mainCat" id="category" data-current-parent="<?php echo h($product->getCategory()->getParentId()) ?>"></select>
       
             <a 
               class="button button--s button--primary" 
@@ -70,7 +70,7 @@
       <div class="admin-form__field">
           <label class="admin-form__label" for="subCat">Категория</label>
           <div class="admin-form__row">
-              <select class="select" name="subCat" id="subCat" data-current-cat="<?php echo h($product->getCategory()->getId()) ?>"></select>
+              <select class="select" name="subCat" id="subCategory" data-current-cat="<?php echo h($product->getCategory()->getId()) ?>"></select>
   
               <a 
                 class="button button--s button--primary" 

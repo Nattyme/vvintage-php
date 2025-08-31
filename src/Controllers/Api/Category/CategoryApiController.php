@@ -5,15 +5,17 @@ namespace Vvintage\Controllers\Api\Category;
 
 use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Category\CategoryService;
+use Vvintage\Controllers\Api\BaseApiController;
 
-class CategoryApiController extends BaseController
+
+class CategoryApiController extends BaseApiController
 {
-    private CategoryService $categoryService;
+    private CategoryService $service;
 
     public function __construct()
     {
       parent::__construct(); // Важно!
-      $this->categoryService = new CategoryService($this->languages, $this->currentLang); 
+      $this->service = new CategoryService($this->languages, $this->currentLang); 
     } 
 
     // public function getAll()
@@ -33,7 +35,7 @@ class CategoryApiController extends BaseController
     {
         try {
             // Вызов метода сервиса, который возвращает массив главных категорий.
-            $categories = $this->categoryService->getMainCategoriesArray();
+            $categories = $this->service->getMainCategoriesArray();
 
             // Отправляем заголовок HTTP, говорящий браузеру (или клиенту API), что ответ — это JSON в кодировке UTF-8.
             header('Content-Type: application/json; charset=utf-8');
@@ -64,7 +66,7 @@ class CategoryApiController extends BaseController
     {
         try {
             // Вызов метода сервиса, который возвращает массив главных категорий.
-            $categories = $this->categoryService->getSubCategoriesArray($parent_id);
+            $categories = $this->service->getSubCategoriesArray($parent_id);
 
             // Отправляем заголовок HTTP, говорящий браузеру (или клиенту API), что ответ — это JSON в кодировке UTF-8.
             header('Content-Type: application/json; charset=utf-8');
@@ -95,7 +97,7 @@ class CategoryApiController extends BaseController
     {
         try {
             // Вызов метода сервиса, который возвращает массив главных категорий.
-            $categories = $this->categoryService->getAllCategoriesArray();
+            $categories = $this->service->getAllCategoriesArray();
 
             // Отправляем заголовок HTTP, говорящий браузеру (или клиенту API), что ответ — это JSON в кодировке UTF-8.
             header('Content-Type: application/json; charset=utf-8');

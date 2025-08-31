@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace Controllers\Api\PostCategory;
 
 use Models\Post\PostCategory;
+use Vvintage\Controllers\Api\BaseApiController;
 
-class PostCategoriesApiController
+class PostCategoriesApiController extends BaseApiController
 {
     public function getAll()
     {

@@ -291,7 +291,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     public function getMainCategoriesArray(): array
     {
         // Достаём все категории, у которых parent_id = NULL
-        $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id IS NULL');
+        $beans = $this->findAll(self::TABLE, 'parent_id IS NULL');
 
         // Сбрасываем ключи и преобразуем в массивы
         return array_values(array_map([$this, 'mapBeanToArray'], $beans));
@@ -301,9 +301,9 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     {
 
         if ($parent_id !== null) {
-            $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id = ?', [$parent_id]);
+            $beans = $this->findAll(self::TABLE, 'parent_id = ?', [$parent_id]);
         } else {
-            $beans = $this->findAll(self::TABLE_CATEGORIES, 'parent_id IS NOT NULL');
+            $beans = $this->findAll(self::TABLE, 'parent_id IS NOT NULL');
         }
 
         return array_values(array_map([$this, 'mapBeanToArray'], $beans));

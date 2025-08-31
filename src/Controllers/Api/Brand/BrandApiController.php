@@ -5,15 +5,16 @@ namespace Vvintage\Controllers\Api\Brand;
 
 use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Brand\BrandService;
+use Vvintage\Controllers\Api\BaseApiController;
 
-class BrandApiController extends BaseController
+class BrandApiController extends BaseApiController
 {
-    private BrandService $brandService;
+    private BrandService $service;
 
     public function __construct()
     {
       parent::__construct(); // Важно!
-      $this->brandService = new BrandService($this->languages, $this->currentLang); 
+      $this->service = new BrandService($this->languages, $this->currentLang); 
     } 
 
     //  Метод сам выведет получит и выведет данные через echo и заголовки.
@@ -21,7 +22,7 @@ class BrandApiController extends BaseController
     {
         try {
             // Вызов метода сервиса, который возвращает массив брендов.
-            $brands = $this->brandService->getBrandsArray();
+            $brands = $this->service->getBrandsArray();
             
             // Отправляем заголовок HTTP, говорящий браузеру (или клиенту API), что ответ — это JSON в кодировке UTF-8.
             header('Content-Type: application/json; charset=utf-8');
