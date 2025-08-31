@@ -24,112 +24,48 @@ class ProductApiController extends BaseApiController
 
     }
 
-    public function create()
+    public function create(): void
     {
-        // $this->isAdmin();
-        $response = [
-            'success' => false,
-            'errors' => [],
-            'data' => []
-        ];
+        $this->isAdmin(); // проверка прав
 
-        // Принимаем данные
-        $data = $_POST;
-        $files = $_FILES ?? [];
+        $data = $this->getRequestData();
+        $files = $data['_files'] ?? [];
+        unset($data['_files']);
 
 
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($data);
-        $data = array_merge( $data,  $validatorTextResult['data']);
 
         // Валидация изображений
         $validatorImg = new AdminProductImageValidator();
         $validatorImgResult = $validatorImg->validate($files);
-  
 
         // Объединяем ошибки
-        $response['errors']  =  array_merge($validatorTextResult['errors'],  $validatorImgResult['errors']);
-      
-
-        // Если есть ошибки, сразу возвращаем JSON
-        if (!empty($response['errors'])) {
-            echo json_encode($response, JSON_UNESCAPED_UNICODE);
-            exit();
+        $errors = array_merge( $validatorTextResult['errors'],  $validatorImgResult['errors']);
+        if(!empty($errors)) {
+          $this->error($errors, 422);
         }
 
+        // Подготовка изображений
         $imageService = new AdminProductImageService();
+        $processedImages = $imageService->prepareImages(
+          $validatorImgResult['data'],
+          ['full' => [536, 566],'small' => [350, 478]]
+        );
 
-        // 1. Подготовка изображений (во временной папке)
-        $processedImages = $imageService->prepareImages($validatorImgResult['data'], [
-            'full' => [536, 566],
-            'small' => [350, 478]
-        ]);
+        // Создание продукта
+        $productId = $this->service->createProductDraft(
+          $validatorTextResult['data'], 
+          $validatorImgResult['data'],  
+          $processedImages
+        ); 
 
-  // error_log(print_r(  $processedImages, true));
-  //       exit();
-
-       // Если ошибок нет — создаём dto товара и сохраняем через сервис
-        $productId = $this->service->createProductDraft($data, $validatorImgResult['data'],  $processedImages); 
-        $response['success'] = true;
-
-            
-        if ($productId) {
-            $response['success'] = true;
-            $response['data'] = ['id' => $productId];
-        } else {
-            $response['errors'][] = 'Не удалось создать продукт';
+        if (!$productId) {
+          $this->error(['Не удалось создать продукт'], 500);
         }
- 
-        // echo json_encode($response, JSON_UNESCAPED_UNICODE);
-        // exit();
+
+        $this->success(['id' => $productId], 201);
     }
    
-
-
-    // public function uploadImages(RouteData $routeData): void
-    // {
-    //     $id = (int)$routeData->getUriGetParam();
-    //     // ВАЖНО: сюда прилетит POST multipart/form-data → доступны $_FILES
-    //     $result = $this->service->addImages($id, $_FILES['images'] ?? null);
-    //     if (!$result['success']) { http_response_code(422); }
-    //     echo json_encode($result, JSON_UNESCAPED_UNICODE);
-    // }
-
-    // public function reorderImages(RouteData $routeData): void
-    // {
-    //     $id = (int)$routeData->getUriGetParam();
-    //     $data = json_decode(file_get_contents('php://input'), true) ?? [];
-    //     $ok = $this->service->reorderImages($id, $data['order'] ?? []);
-    //     echo json_encode(['success'=>$ok]);
-    // }
-
-
-    // public function load(RouteData $rd): void
-    // {
-    //     $id = (int)$rd->getUriGetParam();
-    //     $product = $this->service->getProductById($id);
-
-    //     if (!$product) {
-    //         http_response_code(404);
-    //         echo json_encode(['error'=>'Not found']);
-    //         return;
-    //     }
-
-    //     echo json_encode(ProductApiSerializer::toArray($product), JSON_UNESCAPED_UNICODE);
-    // }
-
-    // public function getAll(): void
-    // {
-    //     $products = $this->service->getAll();
-
-    //     if (!$products) {
-    //         http_response_code(404);
-    //         echo json_encode(['error'=>'Not found']);
-    //         return;
-    //     }
-
-    //     echo json_encode(ProductApiSerializer::toList($products), JSON_UNESCAPED_UNICODE);
-    // }
-
 }

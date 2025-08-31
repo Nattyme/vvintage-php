@@ -7,7 +7,8 @@ use Vvintage\Services\Session\SessionService;
 
 
 
-class BaseApiController {
+class BaseApiController 
+{
     // общий для всех API-контроллеров, ставит заголовки и код статуса.
     protected function jsonResponse(array $data, int $status = 200): void 
     {
