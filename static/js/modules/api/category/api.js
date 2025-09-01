@@ -7,7 +7,7 @@ export async function getAllCategory() {
   return await res.json();
 }
 // Получить список подкатегорий
-export async function getCategory(id) {
+export async function getSubCategories(id) {
   const res = await fetch(`${API_BASE}/categories/${id}/subcategories`);
   if (!res.ok) throw new Error('Ошибка получения списка подкатегорий');
   return await res.json();

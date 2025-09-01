@@ -30,14 +30,12 @@ const iniModel = () => {
   // }
 
   const setMainCats = async () => {
-    mainCategories = await api.getAllCategory();
-    return mainCategories;
+    return await api.getAllCategory();
   }
 
 
   const setSubCats = async (parentId) => {
-    subCategories = await api.getCategory(parentId);
-    return subCategories;
+    return await api.getSubCategories(parentId);
   };
 
   return {
