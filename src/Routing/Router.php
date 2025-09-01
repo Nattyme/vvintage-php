@@ -190,7 +190,7 @@
                 $id = (int)$matches[1];
 
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                  $categoryApiController->getCategory($id);
+                  $categoryApiController->getOne($id);
                 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
                     // $categoryApiController->update($id);
                 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {

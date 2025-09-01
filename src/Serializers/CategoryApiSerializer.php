@@ -36,10 +36,10 @@ final class CategoryApiSerializer
     }
 
     /**
-     * Для getOne/getBySlug (если нужно обернуть в объект)
+     * Для getOne/getBySlug
      */
     public static function toItem(Category $category): array
     {
-        return ['category' => self::toArray($category)];
+        return self::toArray($category);
     }
 }
