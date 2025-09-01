@@ -24,6 +24,7 @@ const initCategoriesEvents = async () => {
     // Загружаем подкатегории
     const subCats = await model.setSubCats(currentParentId);
     view.setCategoriesOptions(subCats, subCatsBlock);
+console.log(subCats);
 
     // Если есть сохранённая категория — выбираем её
     if (currentCatId) {

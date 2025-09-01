@@ -185,8 +185,8 @@
                 }
                 break;
             case 'category-sub':
-                if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
-                    $categoryApiController->getSubCategories((int) $routeData->uriGetParam);
+                if (isset($routeData->uriGetParams) && is_numeric($routeData->uriGetParams[0])) {
+                    $categoryApiController->getSubCategories((int) $routeData->uriGetParams[0]);
                 } 
                 else {
                     // Если параметра нет, или он некорректен — возможно, вернуть все категории
@@ -211,7 +211,7 @@
 
             case 'product':
               if (isset($routeData->uriGetParams) && is_numeric($routeData->uriGetParams[0])) {
-                $productApiController->getOne($routeData);
+                $productApiController->getOne($routeData->uriGetParams[0]);
               }
               break;
 

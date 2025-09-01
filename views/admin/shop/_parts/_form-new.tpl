@@ -101,7 +101,11 @@
       <div class="admin-form__field">
           <label class="admin-form__label" for="mainCat">Главный раздел</label>
           <div class="admin-form__row">
-            <select class="select" name="mainCat" id="category"></select>
+            <select class="select" name="mainCat" id="category" currentParent="
+              <?php echo isset($_POST['mainCat']) ? u($_POST['mainCat']) : 1;?>
+            ">
+
+            </select>
       
             <a 
               class="button button--s button--primary" 

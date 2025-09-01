@@ -11,7 +11,8 @@
       
         <input  id="title" name="title" class="admin-form__input input" type="text"
                 value="<?php echo h(rus_date('j. m. Y. H:i', $product->getEditTime()));?>"
-                placeholder="Введите название" disabled/>
+                placeholder="Введите название" disabled
+        />
       </div>
       <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название товара</label>

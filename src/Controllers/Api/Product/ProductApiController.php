@@ -27,7 +27,7 @@ class ProductApiController extends BaseApiController
 
     public function create(): void
     {
-        $this->isAdmin(); // проверка прав
+        // $this->isAdmin(); // проверка прав
 
         $data = $this->getRequestData();
         $files = $data['_files'] ?? [];
@@ -91,9 +91,9 @@ class ProductApiController extends BaseApiController
     }
 
     // Получение одного продукта по ID
-    public function getOne(RouteData $routeData): void
+    public function getOne(int $id): void
     {
-      $id = (int) $routeData->uriGetParams[0];
+      // $this->isAdmin(); // проверка прав
       $product = $this->service->getProductById($id);
  
       if (!$product) {
@@ -105,6 +105,7 @@ class ProductApiController extends BaseApiController
     // Получение продукта по slug
     public function getBySlug(string $slug): void
     {
+         // $this->isAdmin(); // проверка прав
         $product = $this->service->getProductBySlug($slug);
         if (!$product) {
             $this->error(['Продукт не найден'], 404);
