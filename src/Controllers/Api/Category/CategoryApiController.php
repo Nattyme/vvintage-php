@@ -3,19 +3,21 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Api\Category;
 
-use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\Controllers\Api\BaseApiController;
+use Vvintage\Serializers\CategoryApiSerializer;
 
 
 class CategoryApiController extends BaseApiController
 {
     private CategoryService $service;
+    private CategoryApiSerializer $serializer;
 
     public function __construct()
     {
       parent::__construct(); // Важно!
       $this->service = new CategoryService($this->languages, $this->currentLang); 
+      $this->serializer = new CategoryApiSerializer();
     } 
 
 

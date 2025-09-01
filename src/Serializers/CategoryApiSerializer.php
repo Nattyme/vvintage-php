@@ -3,87 +3,43 @@ declare(strict_types=1);
 
 namespace Vvintage\Serializers;
 
-use Vvintage\Models\Product\Product;
+use Vvintage\Models\Category\Category;
 
-final class ProductApiSerializer
+final class CategoryApiSerializer
 {
     /**
-     * Один продукт → API массив
+     * Одну категорию → API массив
      */
-    public static function toArray(Product $product): array
+    public static function toArray(Category $category): array
     {
         return [
-            'id'          => $product->getId(),
-            'title'       => $product->getTitle(),
-            'description' => $product->getContent(),
-            'price'       => $product->getPrice(),
-            'url'         => $product->getUrl(),
-            'status'      => $product->getStatus(),
-            'sku'         => $product->getSku(),
-            'slug'        => $product->getSlug(),
-            'stock'       => $product->getStock(),
+            'id'          => $category->getId(),
+            'title'       => $category->getTitle(),
+            'parent_id'   => $category->getParentId(),
+            'slug'        => $category->getSlug(),
+            'image'       => $category->getImage(),
 
-            'category'    => [
-                'id'    => $product->getCategory()->getId(),
-                'title' => $product->getCategoryTitle(),
-            ],
-
-            'brand'       => [
-                'id'    => $product->getBrandId(),
-                'title' => $product->getBrandTitle(),
-            ],
-
-            'images'      => $product->getImages(),
-            'translations'=> $product->getTranslations(),
-            'locale'      => $product->getCurrentLocale(),
-
-            'datetime'    => $product->getDatetime()->format('Y-m-d H:i:s'),
-            'edit_time'   => $product->getEditTime(),
+            'translations'=> $category->getTranslations(),
+            'locale'      => $category->getCurrentLocale(),
         ];
     }
 
     /**
-     * Массив продуктов → массив API объектов
+     * Массив категорий → массив API объектов
      */
-    public static function toList(array $products): array
+    public static function toList(array $categories): array
     {
         return array_map(
-            fn(Product $product) => self::toArray($product),
-            $products
+            fn(Category $category) => self::toArray($category),
+            $categories
         );
     }
 
-        /**
-     * Получить один продукт по ID
-     */
-    public function getOne(int $id): void
-    {
-        $product = $this->service->getProductById($id);
-
-        if (!$product) {
-            $this->error(['Продукт не найден'], 404);
-        }
-
-        $this->success(ProductApiSerializer::toItem($product));
-    }
-
     /**
-     * Получить один продукт по slug
+     * Для getOne/getBySlug (если нужно обернуть в объект)
      */
-    public function getBySlug(string $slug): void
+    public static function toItem(Category $category): array
     {
-        $product = $this->service->getProductBySlug($slug);
-
-        if (!$product) {
-            $this->error(['Продукт не найден'], 404);
-        }
-
-        $this->success(ProductApiSerializer::toItem($product));
-    }
-
-    // Для getOne/getBySlug
-    public static function toItem(Product $product): array
-    {
-        return ['product' => self::toArray($product)];
+        return ['category' => self::toArray($category)];
     }
 }
