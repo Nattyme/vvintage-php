@@ -175,55 +175,75 @@
         $brandApiController = new BrandApiController();
         $productApiController = new ProductApiController();
 
-        switch ($routeData->uriGet) {
-            case 'category-main':
-                if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
-                    $categoryApiController->getMainCategories((int) $routeData->uriGetParam);
-                } else {
-                    // Если параметра нет, или он некорректен — возможно, вернуть все категории
-                    $categoryApiController->getMainCategories();
+        $uri = preg_replace('#^api/#', '', $routeData->uri);
+        switch (true) {
+           
+            // --- Categories ---
+            // 1. /categories/{id}/subcategories
+            case preg_match('#^categories/(\d+)/subcategories$#', $uri, $matches):
+                $parentId = (int)$matches[1];
+                $categoryApiController->getSubCategories($parentId);
+                break;
+
+            // 2. /categories/{id}
+            case preg_match('#^categories/(\d+)$#',  $uri, $matches):
+                $id = (int)$matches[1];
+
+                if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                  $categoryApiController->getCategory($id);
+                } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+                    // $categoryApiController->update($id);
+                } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+                  // $categoryApiController->delete($id);
                 }
                 break;
-            case 'category-sub':
-                if (isset($routeData->uriGetParams) && is_numeric($routeData->uriGetParams[0])) {
-                    $categoryApiController->getSubCategories((int) $routeData->uriGetParams[0]);
-                } 
-                else {
-                    // Если параметра нет, или он некорректен — возможно, вернуть все категории
-                    $categoryApiController->getSubCategories();
-                }
+
+            case $routeData->uriGet === 'categories' && $_SERVER['REQUEST_METHOD'] === 'POST':
+                // $categoryApiController->create();
                 break;
-            case 'categories':
-               $categoryApiController->getAllCategories();
-               break;
-            case 'brands' :
+
+            // 3. /categories
+            case preg_match('#^categories$#',  $uri):
+                $categoryApiController->getMainCategories();
+                break;
+
+            // --- Brands ---
+            case $routeData->uriGet === 'brands':  
                 $brandApiController->getAllBrands();
                 break;
 
-            case 'product-update' :
-              if (isset($routeData->uriGetParam) && is_numeric($routeData->uriGetParam)) {
-                $productApiController->update($routeData);
-              }
-            case 'product-create' :
-              // Если параметра нет - значит создаем
-              $productApiController->create();
-              break;
+            case preg_match('#^brands/(\d+)$#',  $uri, $matches):  
+                $id = (int)$matches[1];
+                $brandApiController->getBrand($id);
+                break;
 
-            case 'product':
-              if (isset($routeData->uriGetParams) && is_numeric($routeData->uriGetParams[0])) {
-                $productApiController->getOne($routeData->uriGetParams[0]);
-              }
-              break;
+            // --- Products ---
+            case $routeData->uriGet === 'products':  
+                $productApiController->getAll();
+                break;
+         
+            case preg_match('#^products/(\d+)$#',  $uri, $matches): 
+                $id = (int)$matches[1];
+                if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                    $productApiController->getOne($id);
+                } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+                    $productApiController->update($id);
+                } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+                    $productApiController->delete($id);
+                }
+                break;
 
-            case 'products' :
-              $productApiController->getAll();
-              break;
+            case $routeData->uriGet === 'products' && $_SERVER['REQUEST_METHOD'] === 'POST':
+                $productApiController->create();
+                break;
 
+            // --- Default ---
             default:
                 http_response_code(404);
                 echo json_encode(['error' => 'API endpoint not found']);
                 break;
         }
+
     }
 
 

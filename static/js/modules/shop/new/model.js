@@ -1,3 +1,5 @@
+import * as api from './../../api/product/api.js';
+
 const initModel = () => {
   let formData = null;
 

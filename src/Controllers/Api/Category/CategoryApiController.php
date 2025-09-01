@@ -18,17 +18,6 @@ class CategoryApiController extends BaseApiController
       $this->service = new CategoryService($this->languages, $this->currentLang); 
     } 
 
-    // public function getAll()
-    // {
-    //     header('Content-Type: application/json; charset=utf-8');
-    //     echo json_encode(PostCategory::getAll(), JSON_UNESCAPED_UNICODE);
-    // }
-
-    // public function getByMainId($mainId)
-    // {
-    //     header('Content-Type: application/json; charset=utf-8');
-    //     echo json_encode(PostCategory::getByMainId($mainId), JSON_UNESCAPED_UNICODE);
-    // }
 
     //  Метод сам выведет получит и выведет данные через echo и заголовки.
     public function getMainCategories(): void
@@ -122,5 +111,18 @@ class CategoryApiController extends BaseApiController
                 'message' => $e->getMessage()
             ], JSON_UNESCAPED_UNICODE);
         }
+    }
+
+    public function getOne(int $id): void
+    {
+      $category = $this->service->getCategoryById($id);
+
+
+      if (!$category) {
+        $this->error(['Категория не найдена'], 404);
+      }
+
+      $this->success(['category' => $this->serializer->toItem($category)]);
+  
     }
 }

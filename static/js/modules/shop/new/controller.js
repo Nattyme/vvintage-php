@@ -28,7 +28,7 @@ const initNewProductFormEvents = () => {
     }
 
     try {
-      const res = await formModel.sendProduct(); // ✅ вместо sendFormDataFetch
+      const res = await formModel.sendProduct(); // вместо sendFormDataFetch
 
       console.log('Ответ сервера:', res);
 
