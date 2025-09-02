@@ -168,17 +168,17 @@
       <div class="admin-form__field">
   
         <label class="admin-form__label">Фотографии товара</label>
-        <div class="block-upload" data-preview="block">
+        <div class="block-upload" data-preview="block" data-dragg-and-drop>
           <div class="block-upload__description">
             <p class="block-upload__title">
               Изображение jpg или png, рекомендуемая ширина 945px и больше, высота от 400px и более. Вес до 2Мб.
             </p>
           </div>
 
-          <div class="block-upload__preview" data-preview="container" data-dragg-and-drop>
+          <div class="block-upload__preview" data-preview="container" data-dragg-preview>
       
           </div>
-          <div class="block-upload__dropzone" data-dropzone>
+          <div class="block-upload__dropzone" data-dragg-dropzone>
               <p>Перетащите файлы сюда</p>
               или нажмите на кнопку 
               <div class="block-upload__button admin-form__block-upload__button">

@@ -129,7 +129,7 @@
             </div>
 
             <!-- PREVIEW IMG -->
-            <div class="block-upload__preview active" data-preview="container" data-dragg-preview>
+            <div class="block-upload__preview" data-preview="container" data-dragg-preview>
               <?php foreach ($product->getImages() as $image) : ?>
                 <div class="block-upload__img-wrapper" data-preview="image-wrapper" draggable="true" data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>"        >
                   <img 
