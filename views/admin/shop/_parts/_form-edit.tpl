@@ -121,7 +121,7 @@
       <div class="admin-form__field">
       
           <label class="admin-form__label" for="file">Фотографии товара</label>
-          <div class="block-upload" data-preview="block">
+          <div class="block-upload" data-preview="block" data-dragg-and-drop>
             <div class="block-upload__description">
               <p class="block-upload__title">
                 Изображение jpg или png, рекомендуемая ширина 945px и больше, высота от 400px и более. Вес до 2Мб.
@@ -129,7 +129,7 @@
             </div>
 
             <!-- PREVIEW IMG -->
-            <div class="block-upload__preview active" data-preview="container" data-dragg-and-drop>
+            <div class="block-upload__preview active" data-preview="container" data-dragg-preview>
               <?php foreach ($product->getImages() as $image) : ?>
                 <div class="block-upload__img-wrapper" data-preview="image-wrapper" draggable="true" data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>"        >
                   <img 
@@ -144,7 +144,7 @@
                 </div>
               <?php endforeach;?>
             </div>
-            <div class="block-upload__dropzone" data-dropzone>
+            <div class="block-upload__dropzone" data-dragg-dropzone>
               <p>Перетащите файлы сюда</p>
               или нажмите на кнопку 
               <div class="block-upload__button admin-form__block-upload__button">
