@@ -138,6 +138,7 @@
               <?php foreach ($product->getImages() as $image) : ?>
                 <div class="admin-form__img-wrapper" data-preview="image-wrapper" draggable="true">
                   <img 
+                    id = "<?php echo $image->getId();?>"
                     src="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>" 
                     draggable="true" 
                     loading="lazy"

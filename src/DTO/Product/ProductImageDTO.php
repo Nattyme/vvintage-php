@@ -20,9 +20,14 @@ final class ProductImageDTO
         $this->image_order = (int) ($data['image_order'] ?? 0);
     }
 
-    public function getFilename()
+    public function getFilename(): string
     {
       return $this->filename;
+    }
+
+    public function getId(): int
+    {
+      return $this->id;
     }
 
 

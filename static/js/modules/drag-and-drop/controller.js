@@ -10,6 +10,9 @@ const initDragDropEvents = () => {
 
   //Следим за изменением контейнера изображений
   model.createObserver(container, model.onFilesUploaded);
+
+  // Если в контейнере уже есть картинки (PHP вывел), "инициализируем" их
+  model.onFilesUploaded(container.querySelectorAll('[data-preview="image-wrapper"'));
 }
 
 export default initDragDropEvents;
