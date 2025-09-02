@@ -3,13 +3,15 @@ const initView = () => {
   if (!previewBlock) return;
   const previewInput = previewBlock.querySelector('[data-preview="input"]');
   const previewContainer = previewBlock.querySelector('[data-preview="container"]');
+  const currentImages =  previewContainer.querySelectorAll('[data-preview="image-wrapper"]');
 
   if (!previewInput || !previewContainer) return;
-
+  // Общий блок с инпутом и блоком изображений
   const getPreviewBlock = () => {
     if (previewBlock) return previewBlock;
     return;
-  }; // Общий блок с инпутом и блоком изображений
+  }; 
+ 
   const getPreviewInput = () => previewInput;
   const getPreviewContainer = () => previewContainer;
 
@@ -22,6 +24,11 @@ const initView = () => {
   const getImageWrapper = (target, selector) => {
     return target.closest(selector);
   }
+
+  const getCurrentImages = () => {
+    if(!currentImages) return;
+    return Array.from(currentImages).map(wrapper => wrapper.dataset.url);
+  };
 
   // Удаляем изображения со страницы
   const removeImage = (wrapper) => {
@@ -64,6 +71,7 @@ const initView = () => {
   return {
     getButtonClose,
     getImageWrapper,
+    getCurrentImages,
     removeImage,
     deactivateContainer,
     cleanContainer,

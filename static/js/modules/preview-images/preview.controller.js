@@ -9,31 +9,31 @@ const initPreviewContainerEvents = () => {
   if (!view) return;
   if (previewContainerListening) return;
 
+  // Находим блок изображений (внутри контейнер с превью и кнопка загрузки файлов)
   const previewBlock = view.getPreviewBlock();
   if (!previewBlock) return;
 
   const previewInput = view.getPreviewInput();
+  // контейнер, где отображаются превью
   const previewContainer = view.getPreviewContainer();
   if (!previewInput || !previewContainer) return;
   if (previewInputListening === true) return;
 
+  // Берём все уже существующие првеью из php
+  const urls = view.getCurrentImages();
+  urls.forEach(url => model.addExistingFile(url)); // синхронизируем c моделью
+
 
   /** Удаление файла */
   previewContainer.addEventListener("click", (e) => {
-    const btnClose = view.getButtonClose(
-      e.target,
-      '[data-preview="btn-close"]'
-    );
+    const btnClose = view.getButtonClose(e.target, '[data-preview="btn-close"]');
     if (!btnClose) return;
 
-    const wrapper = view.getImageWrapper(
-      btnClose,
-      '[data-preview="image-wrapper"]'
-    );
+    const wrapper = view.getImageWrapper(btnClose, '[data-preview="image-wrapper"]');
     const imageURL = wrapper?.dataset.url;
     if (!imageURL) return;
 
-    e.stopPropagation();
+    // e.stopPropagation();
     e.preventDefault();
 
     view.removeImage(wrapper); // Удаляем изображение со страницы
@@ -82,6 +82,7 @@ const initPreviewContainerEvents = () => {
   });
 
   previewInputListening = true;
+
 };
 
 export default initPreviewContainerEvents;

@@ -71,8 +71,18 @@ const initModel = () => {
     return uploadedFiles;
   }
 
+  const addExistingFile = (url, name = null) => {
+    currentFiles.push({
+      name: name || `existing_${Date.now()}`, // если имя не передали
+      url: url,                               // сразу используем готовый URL
+      file: null                              // это не File, а уже сохранённое изображение
+    });
+  };
+
+
   return {
     addFile,
+    addExistingFile,
     updateOrder,
     removeFile,
     getCurrentFiles,
