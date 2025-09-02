@@ -128,27 +128,34 @@
               </p>
             </div>
 
-            <div class="block-upload__button ">
-                <span class="block-upload__input-fake">Выбрать изображения</span>
-                <input id="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input">
-            </div>
-
             <!-- PREVIEW IMG -->
             <div class="block-upload__preview active" data-preview="container" data-dragg-and-drop>
               <?php foreach ($product->getImages() as $image) : ?>
-                <div class="admin-form__img-wrapper" data-preview="image-wrapper" draggable="true">
+                <div class="block-upload__img-wrapper" data-preview="image-wrapper" draggable="true" data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>"        >
                   <img 
                     id = "<?php echo $image->getId();?>"
                     src="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>" 
-                    draggable="true" 
                     loading="lazy"
-                    data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>"                  
+                           
                   >
                   <button type="button" class="button button-close button-close--with-bg cross-wrapper" data-preview="btn-close">
                       <span class="leftright"></span><span class="rightleft"> </span>
                   </button>
                 </div>
               <?php endforeach;?>
+            </div>
+            <div class="block-upload__dropzone" data-dropzone>
+              <p>Перетащите файлы сюда</p>
+              или нажмите на кнопку 
+              <div class="block-upload__button admin-form__block-upload__button">
+                <!-- Кастомная кнопка -->
+                <button type="button" class="btn-add-photo" id="btn-add-photo">
+                  <svg class="icon icon--add_photo">
+                    <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#add_photo';?>"></use>
+                  </svg>
+                </button>
+                <input id="file" name="cover[]" class="block-upload__input-real" type="file" multiple data-preview="input" hidden>
+              </div>
             </div>
             <!-- // PREVIEW IMG -->
           </div>

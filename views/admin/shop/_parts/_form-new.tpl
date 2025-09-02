@@ -176,8 +176,11 @@
           </div>
 
           <div class="block-upload__preview" data-preview="container" data-dragg-and-drop>
-            <p>Перетащите файлы сюда</p>
-            или нажмите на кнопку 
+      
+          </div>
+          <div class="block-upload__dropzone" data-dropzone>
+              <p>Перетащите файлы сюда</p>
+              или нажмите на кнопку 
               <div class="block-upload__button admin-form__block-upload__button">
                 <!-- Кастомная кнопка -->
                 <button type="button" class="btn-add-photo" id="btn-add-photo">

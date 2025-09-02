@@ -3,7 +3,6 @@ const initView = () => {
   if (!previewBlock) return;
   const previewInput = previewBlock.querySelector('[data-preview="input"]');
   const previewContainer = previewBlock.querySelector('[data-preview="container"]');
-  const currentImages =  previewContainer.querySelectorAll('[data-preview="image-wrapper"]');
 
   if (!previewInput || !previewContainer) return;
   // Общий блок с инпутом и блоком изображений
@@ -26,7 +25,7 @@ const initView = () => {
   }
 
   const getCurrentImages = () => {
-    if(!currentImages) return;
+    const currentImages =  previewContainer.querySelectorAll('[data-preview="image-wrapper"]');
     return Array.from(currentImages).map(wrapper => wrapper.dataset.url);
   };
 
@@ -58,8 +57,8 @@ const initView = () => {
   // Ф-ция возвращает разметку для изображения
   const getImgTmpl = (url) => {
     return  `
-              <div class="admin-form__img-wrapper" data-preview="image-wrapper" data-url="${url}">
-                <img src="${url}" draggable="true" loading="lazy">
+              <div class="block-upload__img-wrapper" data-preview="image-wrapper" data-url="${url}" draggable="true" >
+                <img src="${url}" loading="lazy">
                 <button type="button" class="button button--close button--close-with-bg cross-wrapper" data-preview="btn-close">
                     <span class="leftright"></span><span class="rightleft"> </span>
                 </button>
