@@ -1,20 +1,26 @@
 import initView from './view.js';
 import initModel from "./model.js";
+import initPreviewView from './../preview-images/preview.view.js';
+import previewM from './../preview-images/preview.model.js';
 
 const initDragDropEvents = () => {
   const view = initView();
   const model = initModel();
+  const previewV = initPreviewView(); // объект с методами
+  // const previewM = initPreviewModel(); // объект с методами
   // Если нет контейнера dragg-and-drop - дальше код не выполнять
-  const containerPreview = view.getContainerPreview();
-  if(!containerPreview) return;
+  const previewContainer = view.getContainerPreview();
+  if(!previewContainer) return;
   const dropzone = view.getContainerDropzone();
+
 
   // --- I. Контроль изобрадений в preview ---
   //Следим за изменением контейнера изображений
-  model.createObserver(containerPreview, model.onFilesUploaded);
+  model.createObserver(previewContainer, model.onFilesUploaded);
 
   // Если в контейнере уже есть картинки (PHP вывел), "инициализируем" их
-  model.onFilesUploaded(containerPreview.querySelectorAll('[data-preview="image-wrapper"'));
+  // model.onFilesUploaded(containerPreview.querySelectorAll('[data-preview="image-wrapper"'));
+  model.onFilesUploaded(previewV.getCurrentImagesDom());
 
 
   // --- II. Контроль изобрадений в drop zone ---
@@ -36,14 +42,16 @@ dropzone.addEventListener('drop', e => {
   if (!files.length) return;
 
   files.forEach(file => {
-    const imageURL = model.addFile(file);
+    const imageURL = previewM.addFile(file);
     if (!imageURL) return;
 
-    const imageTmpl = view.getImgTmpl(imageURL);
-    view.insertTemplate(previewContainer, imageTmpl);
+    const imageTmpl = previewV.getImgTmpl(imageURL);
+    console.log(imageTmpl);
+    
+    previewV.insertTemplate(previewContainer, imageTmpl);
   });
 
-  view.toggleActiveClass(previewContainer);
+  previewV.toggleActiveClass(previewContainer);
 });
 
   

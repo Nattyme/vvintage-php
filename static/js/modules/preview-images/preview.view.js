@@ -24,10 +24,16 @@ const initView = () => {
     return target.closest(selector);
   }
 
+  const getCurrentImagesDom = () => {
+    return previewContainer.querySelectorAll('[data-preview="image-wrapper"]');
+  };
+
   const getCurrentImages = () => {
-    const currentImages =  previewContainer.querySelectorAll('[data-preview="image-wrapper"]');
+    const currentImages = getCurrentImagesDom();
     return Array.from(currentImages).map(wrapper => wrapper.dataset.url);
   };
+
+ 
 
   // Удаляем изображения со страницы
   const removeImage = (wrapper) => {
@@ -70,6 +76,7 @@ const initView = () => {
   return {
     getButtonClose,
     getImageWrapper,
+    getCurrentImagesDom,
     getCurrentImages,
     removeImage,
     deactivateContainer,
