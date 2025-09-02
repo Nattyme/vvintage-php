@@ -30,7 +30,7 @@ export async function createProduct(data, files = []) {
     body = JSON.stringify(data);
   }
 
-  const res = await fetch(`${API_BASE}/product-new`, {
+  const res = await fetch(`${API_BASE}/products`, {
     method: 'POST',
     credentials: 'include',
     headers,
@@ -44,7 +44,23 @@ export async function createProduct(data, files = []) {
 
 
 export async function updateProduct(id, data) {
-  const res = await fetch(`${API_BASE}/product-edit/${id}`, {
+  let body;
+  let headers = {};
+
+  if (data instanceof FormData) {
+    // если сразу FormData — просто используем её
+    body = data;
+  } else if (files.length > 0) {
+    body = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      body.append(key, value);
+    });
+    files.forEach(file => body.append('cover[]', file));
+  } else {
+    headers['Content-Type'] = 'application/json';
+    body = JSON.stringify(data);
+  }
+  const res = await fetch(`${API_BASE}/products/${id}`, {
     method: 'PUT',
     credentials: 'include', // сессия
     headers: { 'Content-Type': 'application/json' },
@@ -55,7 +71,7 @@ export async function updateProduct(id, data) {
 }
 
 export async function deleteProduct(id) {
-  const res = await fetch(`${API_BASE}/product/${id}`, {
+  const res = await fetch(`${API_BASE}/products/${id}`, {
     method: 'DELETE',
   });
   if (!res.ok) throw new Error('Ошибка удаления продукта');

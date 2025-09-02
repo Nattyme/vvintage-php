@@ -1,5 +1,5 @@
 const initView = () => {
-  const form = document.querySelector('#form-add-product');
+  const form = document.querySelector('#form-new, #form-edit');
   
   if (!form) return;
 

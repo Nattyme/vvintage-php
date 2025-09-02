@@ -1,4 +1,4 @@
-<form id="form-add-product" method="POST" class="admin-form" enctype="multipart/form-data">
+<form id="form-new" method="POST" class="admin-form" enctype="multipart/form-data">
   <div class="admin-form__row">
     <div class="admin-form__column">
       <div class="admin-form__field">

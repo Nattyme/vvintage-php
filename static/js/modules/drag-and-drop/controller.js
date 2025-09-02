@@ -9,7 +9,7 @@ const initDragDropEvents = () => {
   const previewV = initPreviewView(); // объект с методами
   // const previewM = initPreviewModel(); // объект с методами
   // Если нет контейнера dragg-and-drop - дальше код не выполнять
-  const previewContainer = view.getContainerPreview();
+  const previewContainer = view?.getContainerPreview();
   if(!previewContainer) return;
   const dropzone = view.getContainerDropzone();
 

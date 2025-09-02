@@ -26,11 +26,18 @@ const initModel = () => {
     return await api.createProduct(formData); // передаём FormData
   };
 
+  const updateProduct = async (id) => {
+    console.log(formData);
+    
+    return await api.updateProduct(id, formData); // передаём FormData
+  }
+
   return {
     setFormData,
     getFormData,
     clearFilesData,
     setSortedFiles,
+    updateProduct,
     sendProduct
   }
 }

@@ -1,8 +1,10 @@
 <form 
-  id="form-edit-product" 
+  id="form-edit" 
   method="POST" 
   class="admin-form" 
-  enctype="multipart/form-data">
+  enctype="multipart/form-data"
+  data-product="<?php echo h($product->getId());?>"
+>
 
   <div class="admin-form__row">
     <div class="admin-form__column">
