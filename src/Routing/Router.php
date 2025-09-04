@@ -218,15 +218,13 @@
                 break;
 
             // --- Products ---
-            case $routeData->uriGet === 'products':  
-                $productApiController->getAll();
-                break;
-         
+
             case preg_match('#^products/(\d+)$#',  $uri, $matches): 
                 $id = (int)$matches[1];
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $productApiController->getOne($id);
                 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+                  dd('put');
                     $productApiController->update($id);
                 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
                     $productApiController->delete($id);
@@ -236,6 +234,9 @@
             case $routeData->uriGet === 'products' && $_SERVER['REQUEST_METHOD'] === 'POST':
                 $productApiController->create();
                 break;
+            case $routeData->uriGet === 'products':  
+              $productApiController->getAll();
+              break;
 
             // --- Default ---
             default:

@@ -60,10 +60,14 @@ export async function updateProduct(id, data) {
     headers['Content-Type'] = 'application/json';
     body = JSON.stringify(data);
   }
+  console.log("Отправляем данные:", data);
+for (let pair of data.entries()) {
+  console.log(pair[0], pair[1]);
+}
+
   const res = await fetch(`${API_BASE}/products/${id}`, {
     method: 'PUT',
     credentials: 'include', // сессия
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Ошибка обновления продукта');

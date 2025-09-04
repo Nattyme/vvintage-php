@@ -112,5 +112,54 @@ class ProductApiController extends BaseApiController
         }
         $this->success(['product' => $this->serializer->toItem($product)]);
     }    
+
+    public function update(int $id): void 
+    {
+        // $this->isAdmin(); // проверка прав
+echo 'php api';
+        $data = $this->getRequestData();
+        $files = $data['_files'] ?? [];
+        unset($data['_files']);
+
+        // существующие изображения (например, массив id или путей)
+        $existingImages = $data['existing_images'] ?? [];
+        unset($data['existing_images']);
+
+        // Валидация текста
+        $validatorText = new AdminProductValidator();
+        $validatorTextResult = $validatorText->validate($data);
+
+        // Валидация новых изображений (только то, что реально загружено через dropzone)
+        $validatorImg = new AdminProductImageValidator();
+        $validatorImgResult = $validatorImg->validate($files);
+
+        // Объединяем ошибки
+        $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
+        if (!empty($errors)) {
+            $this->error($errors, 422);
+        }
+
+        // Подготовка новых изображений (только для новых файлов)
+        $imageService = new AdminProductImageService();
+        $processedNewImages = $imageService->prepareImages(
+            $validatorImgResult['data'],
+            ['full' => [536, 566], 'small' => [350, 478]]
+        );
+
+        // Обновляем продукт (старые изображения остаются как есть)
+        $success = $this->service->updateProduct(
+            $id,
+            $validatorTextResult['data'],   // текстовые данные
+            $existingImages,                // какие картинки оставить
+            $processedNewImages             // новые картинки
+        );
+
+        if (!$success) {
+            $this->error(['Не удалось обновить продукт'], 500);
+        }
+
+        $this->success(['id' => $id], 200);
+    }
+
    
 }
