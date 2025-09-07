@@ -23,7 +23,7 @@
         <li class="schema__item">
           <div class="schema__icon">
             <svg class="icon icon--shopping_bag_speed">
-              <use href="./img/svgsprite/sprite.symbol.svg#shopping_bag_speed"></use>
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#shopping_bag_speed';?>"></use>
             </svg>
           </div>
           <p>Оформите заказ на сайте. Доступно после <a class="link">регистрации</a></p>
@@ -31,7 +31,7 @@
         <li class="schema__item">
           <div class="schema__icon">
             <svg class="icon icon--order_approve">
-              <use href="./img/svgsprite/sprite.symbol.svg#order_approve"></use>
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#order_approve';?>"></use>
             </svg>
           </div>
           <p>Администратор проверит наличие товара и рассчитает итоговую стоимость. 
@@ -40,7 +40,7 @@
         <li class="schema__item">
           <div class="schema__icon">
             <svg class="icon icon--credit_card_clock">
-              <use href="./img/svgsprite/sprite.symbol.svg#credit_card_clock"></use>
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#credit_card_clock';?>"></use>
             </svg>
           </div>
           <p>Оплатить заказ нужно в течении 15 мин с момента подтверждения. После получения оплаты выкупаем товар у поставщика.</p>
@@ -53,7 +53,7 @@
           <div class="schema__icon">
 
             <svg class="icon icon--delivery_speed">
-              <use href="./img/svgsprite/sprite.symbol.svg#delivery_speed"></use>
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#delivery_speed';?>"></use>
             </svg>
           </div>
           <p>Товар поступает на склад в течение 1-ой недели. После проверки он отправляется покупателю государственной почтой вашей страны. В графе заказа в профиле появится трек-номер</p>
@@ -253,37 +253,37 @@
       <ul class="logos">
         <li class="logos__item">
           <a href="https://www.laposte.fr/" class="logos__link">
-            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-la-poste-post" alt="logo-la-poste-post">
+            <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-la-poste-post';?>" alt="logo-la-poste-post">
           </a>
         </li>
         <li class="logos__item">
           <a href="https://www.japanpost.jp/" class="logos__link">
-            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-japan-post" alt="logo-japan-post">
+            <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-japan-post';?>" alt="logo-japan-post">
           </a>
         </li>
         <li class="logos__item">
           <a href="http://www.chinapost.com.cn/" class="logos__link">
-            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-china-post" alt="logo-china-post">
+            <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-china-post';?>" alt="logo-china-post">
           </a>
         </li>
         <li class="logos__item">
           <a href="#" class="logos__link">
-            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-russian-post" alt="logo-russian-post">
+            <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-russian-post';?>" alt="logo-russian-post">
           </a>
         </li>
         <li class="logos__item">
           <a href="#" class="logos__link">
-              <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-correos-post" alt="logo-correos-post">
+              <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-correos-post';?>" alt="logo-correos-post">
           </a>
         </li>
         <li class="logos__item">
           <a href="#" class="logos__link">
-            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-deutsche-post" alt="logo-deutsche-post">
+            <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-deutsche-post'?>" alt="logo-deutsche-post">
           </a>
         </li>
         <li class="logos__item">
           <a href="#" class="logos__link">
-              <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-royal-post" alt="logo-royal-post">
+              <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-royal-post';?>" alt="logo-royal-post">
           </a>
         </li>
 
@@ -325,19 +325,19 @@
 
       <ul class="payment-logos">
         <li class="payment-logos__item">
-          <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-paypal" alt="paypal-logo">
+          <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-paypal';?>" alt="paypal-logo">
         </li>
         <li class="payment-logos__item">
-            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-mastercard" alt="mastercard-logo">
+            <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-mastercard';?>" alt="mastercard-logo">
         </li>
         <li class="payment-logos__item">
-          <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-bitcoin" alt="bitcoin-logo">
+          <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-bitcoin';?>" alt="bitcoin-logo">
         </li>
         <li class="payment-logos__item">
-          <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-visa" alt="visa-logo">
+          <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-visa';?>" alt="visa-logo">
         </li>
         <li class="payment-logos__item">
-            <img src="./img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-mir" alt="mir-logo">
+            <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#logo-pay-mir';?>" alt="mir-logo">
         </li>
     
       </ul>
