@@ -174,32 +174,36 @@
             </div>
           
             <button class="button button--primary button--s accordion__btn">Подробнее</button>
+
+            <div class="price-card__img">
+                <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#kremlin';?>" alt="logo-japan-post">
+            </div>
         
             <div class="price-card__table accordion__content">
-              <div class="price-card__plans-row">
-                <div class="price-card__plan price-card__plan--1">
-                  <div>1 кг</div>
-                  <div>35€</div>
-                </div>
-                <div class="price-card__plan price-card__plan--2">
-                  <div>2 кг</div>
-                  <div>37€</div>
-                </div>
-                <div class="price-card__plan price-card__plan--3">
-                  <div>3 кг</div>
-                  <div>44€</div>
-                </div>
-                <div class="price-card__plan price-card__plan--4">
-                  <div>4 кг</div>
-                  <div>48€</div>
-                </div>
-                <div class="price-card__plan price-card__plan--5">
-                  <div>5 кг</div>
-                  <div>50€</div>
-                </div>
-              </div>
-
-
+            
+                <table class="price-card__table">
+                  <tr>
+                    <td>1 кг</td>
+                    <td>35 €</td>
+                  </tr>
+                  <tr>
+                    <td>2 кг</td>
+                    <td>37 €</td>
+                  </tr>
+                  <tr>
+                    <td>3 кг</td>
+                    <td>44 €</td>
+                  </tr>
+                  <tr>
+                    <td>4 кг</td>
+                    <td>48 €</td>
+                  </tr>
+                  <tr>
+                    <td>5 кг</td>
+                    <td>50 €</td>
+                  </tr>
+                </table>
+  
             </div>
           </div>
       
@@ -215,30 +219,35 @@
               <p>ОТ <span class="text-bold text-accent">37 €</span></p>
             </div>
             <button class="button button--primary button--s accordion__btn">Подробнее</button>
+
+            <div class="price-card__img">
+              <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#global';?>" alt="logo-japan-post">
+            </div>
         
             <div class="price-card__table accordion__content">
-              <div class="price-card__plans-row">
-                <div class="price-card__plan price-card__plan--1">
-                  <div>1 кг</div>
-                  <div>37€</div>
-                </div>
-                <div class="price-card__plan price-card__plan--2">
-                  <div>2 кг</div>
-                  <div>44€</div>
-                </div>
-                <div class="price-card__plan price-card__plan--3">
-                  <div>3 кг</div>
-                  <div>48€</div>
-                </div>
-                <div class="price-card__plan price-card__plan--4">
-                  <div>4 кг</div>
-                  <div>50€</div>
-                </div>
-                <div class="price-card__plan price-card__plan--5">
-                  <div>5 кг</div>
-                  <div>54€</div>
-                </div>
-              </div>
+                  <table class="price-card__table">
+                  <tr>
+                    <td>1 кг</td>
+                    <td>37 €</td>
+                  </tr>
+                  <tr>
+                    <td>2 кг</td>
+                    <td>44 €</td>
+                  </tr>
+                  <tr>
+                    <td>3 кг</td>
+                    <td>4 8€</td>
+                  </tr>
+                  <tr>
+                    <td>4 кг</td>
+                    <td>50 €</td>
+                  </tr>
+                  <tr>
+                    <td>5 кг</td>
+                    <td>5 4€</td>
+                  </tr>
+                </table>
+           
 
 
             </div>
@@ -248,6 +257,8 @@
     </div>
 
   </section>
+
+  
 
     
   <section class="post-logos">
