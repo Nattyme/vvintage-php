@@ -26,8 +26,11 @@
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#shopping_bag_speed';?>"></use>
             </svg>
           </div>
-          <p>Оформите заказ на сайте. Доступно после <a class="link">регистрации</a></p>
-           <p>Администратор проверит наличие товара и рассчитает итоговую стоимость. </p>
+          <div class="schema__desc">
+
+            <p>Оформите заказ на сайте. Доступно после <a class="link">регистрации</a></p>
+             <p>Администратор проверит наличие товара и рассчитает итоговую стоимость. </p>
+          </div>
         </li>
         <li class="schema__item">
           <div class="schema__icon">
@@ -35,8 +38,11 @@
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#order_approve';?>"></use>
             </svg>
           </div>
-          <p>Данные по оплате будут направлены на email</p>
+          <div class="schema__desc">
+
+            <p>Данные по оплате будут направлены на email</p>
             <p>Оплатить заказ нужно в течении 15 мин с момента подтверждения.</p>
+          </div>
         </li>
         <li class="schema__item">
           <div class="schema__icon">
@@ -44,10 +50,13 @@
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#credit_card_clock';?>"></use>
             </svg>
           </div>
-          <p>После получения оплаты выкупаем товар у поставщика.</p>
-          <p>Товар поступает на склад в течение недели. </p>
+          <div class="schema__desc">
+
+            <p>После получения оплаты выкупаем товар у поставщика.</p>
+            <p>Товар поступает на склад в течение недели. </p>
+          </div>
       
-          <a class="schema__link link" href="#!">Перейти к способам оплаты</a>
+          <a class="schema__link link" href="#!">способы оплаты</a>
 
         
         </li>
@@ -58,9 +67,12 @@
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#delivery_speed';?>"></use>
             </svg>
           </div>
-          <p>После проверки он отправляется покупателю государственной почтой вашей страны. В графе заказа в профиле появится трек-номер</p>
+          <div class="schema__desc">
+
+            <p>После проверки он отправляется покупателю государственной почтой вашей страны. В графе заказа в профиле появится трек-номер</p>
+          </div>
       
-          <a class="schema__link link" href="#!">Перейти к тарифам</a>
+          <a class="schema__link link" href="#!">тарифы</a>
       
         </li>
       </ul>
@@ -173,34 +185,34 @@
               </div>
               <p>ОТ <span class="text-bold text-accent">35 €</span></p>
             </div>
-          
-            <button class="button button--primary button--s accordion__btn">Подробнее</button>
 
             <div class="price-card__img">
                 <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#kremlin';?>" alt="logo-japan-post">
             </div>
+
+             <button class="button button--primary button--s accordion__btn">Подробнее</button>
         
             <div class="price-card__table accordion__content">
             
                 <table class="price-card__table">
-                  <tr>
-                    <td>1 кг</td>
+                  <tr class="text-bold">
+                    <td>до 1 кг</td>
                     <td>35 €</td>
                   </tr>
                   <tr>
-                    <td>2 кг</td>
+                    <td>1 кг</td>
                     <td>37 €</td>
                   </tr>
                   <tr>
-                    <td>3 кг</td>
+                    <td>2 кг</td>
                     <td>44 €</td>
                   </tr>
                   <tr>
-                    <td>4 кг</td>
+                    <td>3 кг</td>
                     <td>48 €</td>
                   </tr>
-                  <tr>
-                    <td>5 кг</td>
+                  <tr class="text-bold">
+                    <td>от 4 до 5 кг</td>
                     <td>50 €</td>
                   </tr>
                 </table>
@@ -219,33 +231,35 @@
           
               <p>ОТ <span class="text-bold text-accent">37 €</span></p>
             </div>
-            <button class="button button--primary button--s accordion__btn">Подробнее</button>
+       
 
             <div class="price-card__img">
               <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#global';?>" alt="logo-japan-post">
             </div>
+
+            <button class="button button--primary button--s accordion__btn">Подробнее</button>
         
             <div class="price-card__table accordion__content">
                   <table class="price-card__table">
-                  <tr>
-                    <td>1 кг</td>
+                  <tr class="text-bold">
+                    <td>до 1 кг</td>
                     <td>37 €</td>
                   </tr>
                   <tr>
-                    <td>2 кг</td>
+                    <td>1 кг</td>
                     <td>44 €</td>
                   </tr>
                   <tr>
-                    <td>3 кг</td>
-                    <td>4 8€</td>
+                    <td>2 кг</td>
+                    <td>48 €</td>
                   </tr>
                   <tr>
-                    <td>4 кг</td>
+                    <td>3 кг</td>
                     <td>50 €</td>
                   </tr>
-                  <tr>
-                    <td>5 кг</td>
-                    <td>5 4€</td>
+                  <tr class="text-bold">
+                    <td>от 4 до 5 кг</td>
+                    <td>54 €</td>
                   </tr>
                 </table>
            
