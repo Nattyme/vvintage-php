@@ -1,6 +1,12 @@
 const API_BASE = '/api'; // базовый путь к API
 
 // Получение всех категорий
+export async function getAll() {
+  const res = await fetch(`${API_BASE}/categories-data`);
+  if (!res.ok) throw new Error('Ошибка получения всех категорий');
+  return await res.json();
+}
+// Получение главных категорий
 export async function getAllCategory() {
   const res = await fetch(`${API_BASE}/categories`);
   if (!res.ok) throw new Error('Ошибка получения списка категорий');

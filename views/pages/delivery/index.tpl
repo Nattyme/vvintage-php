@@ -107,7 +107,8 @@
     <section class="delivery__tip">
       <div class="tip-list">
         <div class="tip-item">
-            <p>Посмотреть трек номер и статус отправки можно в вашем <a href="#!" class="link">профиле.</a></p>
+          <p>Расчет производится в рублях, евро и долларах по реальному курсу на день выставления счета</p>
+          <p>Посмотреть трек номер и статус отправки можно в вашем <a href="#!" class="link">профиле.</a></p>
         </div>
         <div class="sub-nav__line-separator"></div>
         <div class="tip-item">

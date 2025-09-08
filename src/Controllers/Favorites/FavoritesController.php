@@ -18,9 +18,7 @@ use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
-// use Vvintage\Store\Favorites\GuestFavoritesStore;
-// use Vvintage\Store\Favorites\UserFavoritesStore;
-// use Vvintage\Store\Favorites\FavoritesStoreInterface;
+
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
@@ -47,7 +45,6 @@ final class FavoritesController extends BaseController
     private Favorites $favModel;
     private array $fav_list;
     private UserItemsListStoreInterface $favStore;
-    private FlashMessage $flash;
     private Breadcrumbs $breadcrumbsService;
 
     public function __construct(
@@ -56,7 +53,6 @@ final class FavoritesController extends BaseController
       Favorites $favModel, 
       array $fav_list, 
       UserItemsListStoreInterface $favStore, 
-      FlashMessage $flash,
       Breadcrumbs $breadcrumbs
       )
     {
@@ -65,8 +61,6 @@ final class FavoritesController extends BaseController
       $this->userModel = $userModel;
       $this->favModel = $favModel;
       $this->fav_list = $fav_list;
-      $this->favStore = $favStore;
-      $this->flash = $flash;
       $this->breadcrumbsService = $breadcrumbs;
     }
 

@@ -207,6 +207,10 @@
                 $categoryApiController->getMainCategories();
                 break;
 
+            case preg_match('#^categories-data$#',  $uri):
+                $categoryApiController->getAllCategories();
+                break;
+
             // --- Brands ---
             case $routeData->uriGet === 'brands':  
                 $brandApiController->getAllBrands();
@@ -417,7 +421,7 @@
                     : new GuestItemsListStore();
                     
       $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productRepository, $flash);
-      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $flash, $breadcrumbs );
+      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs );
 
       switch ($routeData->uriModule) {
         case 'favorites':

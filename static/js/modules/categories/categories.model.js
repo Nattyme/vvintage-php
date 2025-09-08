@@ -1,8 +1,8 @@
 import * as api from './../api/category/api.js';
 
 const iniModel = () => {
-  let mainCategories = [];
-  let subCategories = [];
+  // let mainCategories = [];
+  // let subCategories = [];
 
 
   // const loadMainCats = async () => {
