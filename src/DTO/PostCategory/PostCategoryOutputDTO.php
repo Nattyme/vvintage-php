@@ -5,9 +5,12 @@ namespace Vvintage\DTO\PostCategory;
 
 final class PostCategoryOutputDTO extends PostCategoryDTO
 {
-    public function __construct(array $data)
-    {
-        parent::__construct($data);
-    }
+   public ?string $id;
+
+  public function __construct(array $data)
+  {
+      parent::__construct($data);
+      $this->id = (string) ($data['id'] ?? null);
+  }
 
 }

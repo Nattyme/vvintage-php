@@ -1,12 +1,16 @@
-<ul class="nav-list nav-list--blog nav-list--header">
-   <?php foreach ($viewModel['mainCategories'] as $category) : ?>
-    <li class="nav-list__item nav-list__item--header">
-      <a 
-        class="nav-list__link nav-list__link--header" 
-        href="<?php echo HOST . "blog/{}"?>"
-      >
+<nav class="blog-nav">
+
+  <ul class="blog-nav__list">
+     <?php foreach ($viewModel['mainCategories'] as $category) : ?>
+      <li class="blog-nav__item">
+        <a 
+          class="blog-nav__link" 
+          href="<?php echo HOST . "blog/"?>"
+        >
         <?php echo  h($category->getTitle()) ;?>
-      </a>
-    </li>
-  <?php endforeach; ?>
-</ul>
+        </a>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+  
+</nav>

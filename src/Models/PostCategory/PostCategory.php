@@ -38,7 +38,7 @@ final class PostCategory
     {
         $category = new self();
 
-        $category->id = $dto->id;
+        $category->id = (int) $dto->id;
         $category->title = $dto->title;
         $category->parent_id = $dto->parent_id;
         $category->slug = $dto->slug;
