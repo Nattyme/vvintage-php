@@ -1,4 +1,4 @@
-<div class="product-sidebar">
+<aside class="product-sidebar">
   <div class="filter">
       <?php
         include ROOT . 'views/shop/_sidebar/_filter/_price.tpl';
@@ -11,4 +11,4 @@
         <a href="<?php echo HOST . 'shop'; ?>" class="button button--outline button--s">Сбросить фильтры</a>
       </div>
   </div>
-</div>
+</aside>

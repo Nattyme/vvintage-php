@@ -23,9 +23,8 @@
           <div class="products__layout">
             
             <!-- Фильтры -->
-            <aside class="products__sidebar">
-              <?php include ROOT . 'views/shop/_sidebar/_sidebar.tpl';?>
-            </aside>
+            <?php include ROOT . 'views/shop/_sidebar/_sidebar.tpl';?>
+         
 
 
             <!-- Карточки товаров -->
