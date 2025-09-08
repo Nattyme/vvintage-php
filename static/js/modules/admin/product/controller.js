@@ -28,7 +28,7 @@ const initNewProductFormEvents = () => {
     }
 
     try {
-      const res = await formModel.sendProduct(); // ✅ вместо sendFormDataFetch
+      const res = await formModel.sendProduct(); //  вместо sendFormDataFetch
 
       console.log('Ответ сервера:', res);
 
@@ -57,10 +57,10 @@ const initNewProductFormEvents = () => {
       }
 
     } catch (err) {
-      console.error("Ошибка сети или сервера:", err);
+      console.log("Ошибка сети или сервера:", err);
 
-      formView.displayNotification({ type: 'error', title: 'Не удалось отправить форму' });
-      formView.addNotificationText(["Попробуйте позже."]);
+      formView.addNotificationText({ type: 'error', title: 'Не удалось отправить форму' });
+      // formView.addNotificationText(["Попробуйте позже."]);
       formView.scrollToElement('note');
     }
   });

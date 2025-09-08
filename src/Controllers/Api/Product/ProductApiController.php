@@ -32,7 +32,7 @@ class ProductApiController extends BaseApiController
         $data = $this->getRequestData();
         $files = $data['_files'] ?? [];
         unset($data['_files']);
-
+dd($data);
 
         // Валидация текста
         $validatorText = new AdminProductValidator();

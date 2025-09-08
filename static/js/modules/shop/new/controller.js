@@ -72,7 +72,7 @@ const initNewProductFormEvents = () => {
       console.error("Ошибка сети или сервера:", err);
 
       formView.displayNotification({ type: 'error', title: 'Не удалось отправить форму' });
-      formView.addNotificationText(["Попробуйте позже."]);
+      formView.addNotificationText(["Попробуйте yt позже."]);
       formView.scrollToElement('note');
     }
   });

@@ -1,4 +1,4 @@
-import * as api from './../api/product/api.js';
+import * as api from './../../api/product/api.js';
 
 
 const initModel = () => {
