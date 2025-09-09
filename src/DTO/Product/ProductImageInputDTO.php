@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Product;
 
-use Vvintage\DTO\Produc\ProductImageDTO;
+use Vvintage\DTO\Product\ProductImageDTO;
 
-final class ProductImageInputDTO extends ProductImageDTOt
+final class ProductImageInputDTO extends ProductImageDTO
 {
     public int $product_id;
     public string $filename;

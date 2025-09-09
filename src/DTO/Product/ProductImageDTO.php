@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Product;
 
-final class ProductImageDTO
+class ProductImageDTO
 {
     public int $id;
     public int $product_id;

@@ -14,6 +14,30 @@ const initNewProductFormEvents = () => {
   
   if (!formElement) return;
 
+  function flattenErrors(errors) {
+    const messages = [];
+
+    Object.entries(errors).forEach(([field, value]) => {
+      if (Array.isArray(value)) {
+        // просто массив строк
+        value.forEach(msg => messages.push(`${field}: ${msg}`));
+      } else if (typeof value === 'object' && value !== null) {
+        // вложенный объект (например, {ru: ['...'], en: ['...']})
+        Object.entries(value).forEach(([locale, localeMsgs]) => {
+          if (Array.isArray(localeMsgs)) {
+            localeMsgs.forEach(msg => messages.push(`${field} (${locale}): ${msg}`));
+          }
+        });
+      } else {
+        // одиночная строка
+        messages.push(`${field}: ${value}`);
+      }
+    });
+
+    return messages;
+  }
+
+
   formElement.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -59,9 +83,24 @@ const initNewProductFormEvents = () => {
     } catch (err) {
       console.log("Ошибка сети или сервера:", err);
 
-      formView.addNotificationText({ type: 'error', title: 'Не удалось отправить форму' });
+      // formView.addNotificationText({ type: 'error', title: 'Не удалось отправить форму' });
       // formView.addNotificationText(["Попробуйте позже."]);
+      // formView.scrollToElement('note');
+
+     
+    if (err.errors) {
+      const errorMessages = flattenErrors(err.errors);
+
+      formView.displayNotification({
+        type: 'error',
+        title: 'Ошибка при отправке формы'
+      });
+      formView.addNotificationText(errorMessages);
       formView.scrollToElement('note');
+    } else {
+      formView.displayNotification({ type: 'error', title: 'Не удалось отправить форму' });
+      formView.scrollToElement('note');
+    }
     }
   });
 

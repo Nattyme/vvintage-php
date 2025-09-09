@@ -6,7 +6,7 @@ namespace Vvintage\DTO\Product;
 final class ProductImageInputDTO
 {
     public int $product_id;
-    public string $covaer_small;
+    public string $cover_small;
     public string $cover_full;
     public string $filename;
     public int $image_order;

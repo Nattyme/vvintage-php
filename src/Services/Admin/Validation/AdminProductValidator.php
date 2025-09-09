@@ -55,9 +55,10 @@ final class AdminProductValidator
             $this->errors['title'][$lang][] = 'Поле названия должно быть строкой';
         } elseif (ctype_digit($title)) {
             $this->errors['title'][$lang][] = 'Название не может состоять только из цифр';
-        } elseif (!preg_match('/^[\p{L}\d\s]+$/u', $title)) {
-            $this->errors['title'][$lang][] = 'Название может содержать только буквы, цифры и пробелы';
-        }
+        } 
+        // elseif (!preg_match('/^[\p{L}\d\s]+$/u', $title)) {
+        //     $this->errors['title'][$lang][] = 'Название может содержать только буквы, цифры и пробелы';
+        // }
 
         if (empty($this->errors['title'][$lang])) {
             unset($this->errors['title'][$lang]);
@@ -72,13 +73,17 @@ final class AdminProductValidator
             $this->errors['description'][$lang][] = 'Поле описания не может быть пустым';
         } elseif (!is_string($description)) {
             $this->errors['description'][$lang][] = 'Поле описания должно быть строкой';
-        } elseif (preg_match('/^[\s.,!?()-]+$/u', $description)) {
-            $this->errors['description'][$lang][] = 'Описание должно содержать буквы или цифры';
-        } elseif (ctype_digit($description)) {
+        } 
+        // elseif (preg_match('/^[\s.,!?()-]+$/u', $description)) {
+        //     $this->errors['description'][$lang][] = 'Описание должно содержать буквы или цифры';
+        // } 
+        elseif (ctype_digit($description)) {
             $this->errors['description'][$lang][] = 'Описание не может состоять только из цифр';
-        } elseif (mb_strlen($description) < 20) {
-            $this->errors['description'][$lang][] = 'Описание должно быть не менее 20 символов';
-        } elseif (mb_strlen($description) > 1000) {
+        } 
+        // elseif (mb_strlen($description) < 20) {
+        //     $this->errors['description'][$lang][] = 'Описание должно быть не менее 20 символов';
+        // } 
+        elseif (mb_strlen($description) > 1000) {
             $this->errors['description'][$lang][] = 'Описание слишком длинное (максимум 1000 символов)';
         }
 

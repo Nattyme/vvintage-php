@@ -37,8 +37,24 @@ export async function createProduct(data, files = []) {
     body
   });
 
-  if (!res.ok) throw new Error('Ошибка создания продукта');
-  return await res.json();
+   let responseData;
+    try {
+      responseData = await res.json(); // читаем тело даже при ошибке
+    } catch (e) {
+      throw new Error('Сервер вернул некорректный ответ');
+    }
+
+    if (!res.ok) {
+      // бросаем сам JSON с ошибками, чтобы поймать его в catch
+      throw responseData;
+    }
+
+    return responseData;
+
+
+
+  // if (!res.ok) throw new Error('Ошибка создания продукта');
+  // return await res.json();
 }
 
 

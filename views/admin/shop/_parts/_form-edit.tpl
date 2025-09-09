@@ -140,9 +140,12 @@
                     loading="lazy"
                            
                   >
-                  <button type="button" class="button button-close button-close--with-bg cross-wrapper" data-preview="btn-close">
+
+      
+                  <button type="button" class="button button--close button--close-with-bg cross-wrapper" data-preview="btn-close">
                       <span class="leftright"></span><span class="rightleft"> </span>
                   </button>
+               
                 </div>
               <?php endforeach;?>
             </div>

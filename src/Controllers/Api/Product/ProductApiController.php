@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Api\Product;
 
+
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Api\BaseApiController;
 use Vvintage\Services\Admin\Product\AdminProductService;
@@ -32,16 +33,17 @@ class ProductApiController extends BaseApiController
         $data = $this->getRequestData();
         $files = $data['_files'] ?? [];
         unset($data['_files']);
-dd($data);
 
+error_log("API create() data: " . print_r($data, true));
+error_log("API create() files: " . print_r($files, true));
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($data);
-
+error_log("ValidatorText result: " . print_r($validatorTextResult, true));
         // Валидация изображений
         $validatorImg = new AdminProductImageValidator();
         $validatorImgResult = $validatorImg->validate($files);
-
+error_log("ValidatorImg result: " . print_r($validatorImgResult, true));
         // Объединяем ошибки
         $errors = array_merge( $validatorTextResult['errors'],  $validatorImgResult['errors']);
         if(!empty($errors)) {
@@ -116,7 +118,7 @@ dd($data);
     public function update(int $id): void 
     {
         // $this->isAdmin(); // проверка прав
-echo 'php api';
+
         $data = $this->getRequestData();
         $files = $data['_files'] ?? [];
         unset($data['_files']);

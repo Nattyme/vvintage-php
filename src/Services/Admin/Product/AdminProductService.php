@@ -76,7 +76,7 @@ final class AdminProductService extends ProductService
 
     public function createProductDraft(array $data, array $images,  array $processedImages): int
     {
-      dd($_POST, $_FILES);
+     
         $data['status'] = 'hidden'; // или draft
  
         $productDto = $this->createProductInputDto($data);
