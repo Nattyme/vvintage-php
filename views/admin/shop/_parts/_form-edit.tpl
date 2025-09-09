@@ -17,6 +17,33 @@
         />
       </div>
       <div class="admin-form__field">
+        <div class="admin-form__item" data-control="tab">
+          <!-- Навигация -->
+          <div class="tab__nav" data-control="tab-nav">
+            
+            <?php foreach ($languages as $code => $value ) : ?>
+              <button type="button" class="tab__nav-button tab__nav-button--flags" data-control="tab-button" 
+                      title="Перейти в редактирование текст на кнопке статуса">
+                <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . $code;?>">
+              </button>
+            <?php endforeach;?>
+          </div>
+          <!-- Навигация -->
+
+          <!-- Блоки с контентом -->
+          <div class="admin-form__item">
+            <div class="tab__content" data-control="tab-content">
+              <?php foreach ($languages as $code => $value ) : ?>
+                <div class="tab__block" data-control="tab-block">
+                <?php include ROOT . "views/admin/shop/translations/_fields.tpl";?>
+                </div>
+              <?php endforeach;?>
+            </div>
+          </div>
+          <!--// Блоки с контентом -->
+        </div>
+      </div>
+      <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название товара</label>
         <input id="title" name="title" class="admin-form__input input" type="text"
                 value="<?php echo isset($_POST['title']) ? h($_POST['title']) : h($product->getTitle()); ?>"

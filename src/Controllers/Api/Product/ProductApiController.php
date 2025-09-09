@@ -34,16 +34,15 @@ class ProductApiController extends BaseApiController
         $files = $data['_files'] ?? [];
         unset($data['_files']);
 
-error_log("API create() data: " . print_r($data, true));
-error_log("API create() files: " . print_r($files, true));
+
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($data);
-error_log("ValidatorText result: " . print_r($validatorTextResult, true));
+
         // Валидация изображений
         $validatorImg = new AdminProductImageValidator();
         $validatorImgResult = $validatorImg->validate($files);
-error_log("ValidatorImg result: " . print_r($validatorImgResult, true));
+
         // Объединяем ошибки
         $errors = array_merge( $validatorTextResult['errors'],  $validatorImgResult['errors']);
         if(!empty($errors)) {
@@ -122,6 +121,8 @@ error_log("ValidatorImg result: " . print_r($validatorImgResult, true));
         $data = $this->getRequestData();
         $files = $data['_files'] ?? [];
         unset($data['_files']);
+        error_log("API create() data: " . print_r($data, true));
+        error_log("API create() files: " . print_r($files, true));
 
         // существующие изображения (например, массив id или путей)
         $existingImages = $data['existing_images'] ?? [];
@@ -130,11 +131,12 @@ error_log("ValidatorImg result: " . print_r($validatorImgResult, true));
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($data);
+        error_log("ValidatorText result: " . print_r($validatorTextResult, true));
 
         // Валидация новых изображений (только то, что реально загружено через dropzone)
         $validatorImg = new AdminProductImageValidator();
         $validatorImgResult = $validatorImg->validate($files);
-
+error_log("ValidatorImg result: " . print_r($validatorImgResult, true));
         // Объединяем ошибки
         $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
         if (!empty($errors)) {
