@@ -74,6 +74,18 @@
       </div>
 
       <div class="admin-form__field">
+        <label class="admin-form__label" for="stock">Сток</label>
+        <input 
+          id="stock" 
+          name="stock" 
+          class="admin-form__input input" 
+          type="text"
+          value="<?php echo 1;?>"
+          readonly
+        />
+      </div>
+
+      <div class="admin-form__field">
         <label class="admin-form__label" for="url">Ссылка</label>
         <input id="url" name="url" class="admin-form__input input" type="text"
                 value="<?php echo isset($_POST['url']) ? h($_POST['url']) : h($product->getUrl()); ?>"
@@ -100,7 +112,7 @@
       <div class="admin-form__field">
           <label class="admin-form__label" for="subCat">Категория</label>
           <div class="admin-form__row">
-              <select class="select" name="subCat" id="subCategory" data-current-cat="<?php echo h($product->getCategory()->getId()) ?>"></select>
+              <select class="select" name="category_id" id="subCategory" data-current-cat="<?php echo h($product->getCategory()->getId()) ?>"></select>
   
               <a 
                 class="button button--s button--primary" 
@@ -113,7 +125,7 @@
       <div class="admin-form__field">
         <label class="admin-form__label" for="brands">Выберите бренд</label>
         <div class="admin-form__row">
-          <select class="select" name="brand" id="brands"></select>
+          <select class="select" name="brand_id" id="brands"></select>
   
           <a 
             class="button button--s button--primary" 
@@ -147,6 +159,11 @@
     </div>
 
     <div class="admin-form__column admin-form__column--imgs">
+      <div class="admin-form__field">
+        <?php foreach ($product->getImages() as $img): ?>
+            <input type="hidden" name="existing_images[]" value="<?php echo h($img->getId()); ?>">
+        <?php endforeach; ?>
+      </div>
       <div class="admin-form__field">
       
           <label class="admin-form__label" for="file">Фотографии товара</label>

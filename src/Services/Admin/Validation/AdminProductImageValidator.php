@@ -26,13 +26,19 @@ final class AdminProductImageValidator
         ];
     }
 
-    private function isCoversExist (array $data): bool
+    private function isCoversExist(array $data): bool
     {
-      if(isset($data['cover']) && !empty($data['cover'])) {return true;}
+        $hasNewFiles = isset($data['cover']) && !empty($data['cover']['name'][0]);
+        $hasExisting = isset($data['existing_images']) && !empty($data['existing_images']);
 
-      $this->errors['cover'][] =  'Добавьте изображения товара'; 
-      return false;
-    } 
+        if ($hasNewFiles || $hasExisting) {
+            return true; // файлы есть, ошибок нет
+        }
+
+        $this->errors['cover'][] = 'Добавьте изображения товара';
+        return false;
+    }
+
 
     private function isFileName(array $data): void
     {

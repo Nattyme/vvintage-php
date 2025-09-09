@@ -114,19 +114,23 @@ class ProductApiController extends BaseApiController
         $this->success(['product' => $this->serializer->toItem($product)]);
     }    
 
-    public function update(int $id): void 
+    public function edit(int $id): void 
     {
         // $this->isAdmin(); // проверка прав
 
+    error_log("edit() вызван!", 3, __DIR__ . '/debug.log');
         $data = $this->getRequestData();
         $files = $data['_files'] ?? [];
         unset($data['_files']);
         error_log("API create() data: " . print_r($data, true));
         error_log("API create() files: " . print_r($files, true));
 
-        // существующие изображения (например, массив id или путей)
+        // существующие изображения (например, массив id )
         $existingImages = $data['existing_images'] ?? [];
+
         unset($data['existing_images']);
+   
+error_log("Existing images: " . print_r($existingImages, true));
 
         // Валидация текста
         $validatorText = new AdminProductValidator();
