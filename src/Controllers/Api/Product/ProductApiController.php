@@ -154,10 +154,10 @@ class ProductApiController extends BaseApiController
             $validatorImgResult['data'],
             ['full' => [536, 566], 'small' => [350, 478]]
         );
-// error_log(print_r($errors, true));
-// error_log(print_r($validatorImgResult['errors'], true));
-// error_log(print_r($processedNewImages, true));
-        // Обновляем продукт (старые изображения остаются как есть)
+
+        // Удаляем существующие изображения, если нужно
+        $imageService->updateExistIamges($id, $text['existing_images']);
+
         $success = $this->service->updateProduct(
             $id,
             $validatorTextResult['data'],   // текстовые данные

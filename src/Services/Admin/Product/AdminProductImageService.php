@@ -66,8 +66,13 @@ final class AdminProductImageService extends ProductImageService
                 'final_small'    => $sizes['small'][0] . '-' . $baseName,
             ];
         }
-   error_log(print_r( $processed, true));
         return $processed;
+    }
+
+    public function updateExistIamges(int $id, array $images): void 
+    {
+      // Получим все изображения продука из БД по id
+      $imagesDB = $this->repository->getAllImages($id);
     }
 
 
