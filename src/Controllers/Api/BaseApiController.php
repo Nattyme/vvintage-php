@@ -81,7 +81,7 @@ class BaseApiController
         }
   
         
-error_log(print_r($_FILES, true));
+
         return ['_text' => $decodedPost, '_files' => $_FILES];
 
       }

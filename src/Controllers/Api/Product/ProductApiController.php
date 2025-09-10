@@ -121,15 +121,9 @@ class ProductApiController extends BaseApiController
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
         // unset($productData);
-  error_log(print_r( $files , true));
+
   // error_log(print_r( $files, true));
-        // существующие изображения (например, массив id )
-        // $existingImages = $data['existing_images'] ?? [];
-        // $existingImages = $data['existing_images'] ?? [];
-        // $files = $filesData['cover'] ?? [];
-      // error_log(print_r( $data, true));
-      // error_log(print_r( $files, true));
-      // error_log(print_r(  $existingImages, true));
+    
     
         $structuredImages = $this->getStructuredImages($files, $text['existing_images']);
         // $structuredImages = $this->getStructuredImages($files);
@@ -137,6 +131,7 @@ class ProductApiController extends BaseApiController
         // unset($productData['existing_images']);
 
 
+  // error_log(print_r( $files, true));
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($text);
@@ -145,7 +140,7 @@ class ProductApiController extends BaseApiController
         $validatorImg = new AdminProductImageValidator();
         // $validatorImgResult = $validatorImg->validate($files);
   
-        $validatorImgResult = $validatorImg->validate($structuredImages);
+        $validatorImgResult = $validatorImg->validate($structuredImages, $text['existing_images']);
 
         // Объединяем ошибки
         $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
@@ -159,8 +154,8 @@ class ProductApiController extends BaseApiController
             $validatorImgResult['data'],
             ['full' => [536, 566], 'small' => [350, 478]]
         );
-// error_log(print_r($$validatorTextResult['data'], true));
-// error_log(print_r($structuredImages, true));
+// error_log(print_r($errors, true));
+// error_log(print_r($validatorImgResult['errors'], true));
 // error_log(print_r($processedNewImages, true));
         // Обновляем продукт (старые изображения остаются как есть)
         $success = $this->service->updateProduct(
@@ -196,13 +191,13 @@ class ProductApiController extends BaseApiController
         }
 
         // 2. Добавляем существующие изображения из формы
-        foreach ($existing as $i => $existingId) {
-            // Если нужно, можно добавить реальные имена файлов или url
-            $images[] = [
-                'existing_id' => $existingId,
-                'image_order' => count($images) // порядок после новых
-            ];
-        }
+        // foreach ($existing as $i => $existingId) {
+        //     // Если нужно, можно добавить реальные имена файлов или url
+        //     $images[] = [
+        //         'existing_id' => $existingId,
+        //         'image_order' => count($images) // порядок после новых
+        //     ];
+        // }
 
         return $images;
     }

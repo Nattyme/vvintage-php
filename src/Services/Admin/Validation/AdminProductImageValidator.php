@@ -9,29 +9,24 @@ final class AdminProductImageValidator
 
   
 
-    public function validate(array $data): array
+    public function validate(array $data, array $existing_images): array
     {
-        $files = $this->isCoversExist($data) ? $data['cover'] : [];
-       
-        $images = $this->getStructuredImages($files );
+        $files = $this->isCoversExist($data, $existing_images) ? $data : [];
    
-        foreach ($images as $image) {
-            $this->validateImage($image);
+        foreach ($files as $file) {
+            $this->validateImage($file);
         }
-
-  
+       
         return [
           'errors' => $this->errors,
-          'data' => $images
+          'data' =>  $files
         ];
     }
 
-    private function isCoversExist(array $data): bool
+    private function isCoversExist(array $data, array $existing_images): bool
     {
-      // error_log(print_r($data, true));
         $hasNewFiles = isset($data['cover']) && !empty($data['cover']['name'][0]);
-        // $hasNewFiles = isset($data['cover']) && !empty($data['cover']['name'][0]);
-        $hasExisting = isset($data['existing_images']) && !empty($data['existing_images']);
+        $hasExisting = !empty($existing_images);
 
         if ($hasNewFiles || $hasExisting) {
             return true; // файлы есть, ошибок нет

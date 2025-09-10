@@ -32,6 +32,7 @@ final class AdminProductImageService extends ProductImageService
      */
     public function prepareImages(array $files, array $sizes): array
     {
+   
         $processed = [];
         //  $coverImages = saveSliderImg('cover', [350, 478], 12, 'products', [536, 566], [350, 478]);
         foreach ($files as $file) {
@@ -65,7 +66,7 @@ final class AdminProductImageService extends ProductImageService
                 'final_small'    => $sizes['small'][0] . '-' . $baseName,
             ];
         }
-
+   error_log(print_r( $processed, true));
         return $processed;
     }
 
