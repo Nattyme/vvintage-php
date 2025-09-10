@@ -10,6 +10,36 @@ use Vvintage\DTO\Product\ProductInputDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
 
 interface ProductImageRepositoryInterface
- {
+{
+  /**
+     * Получить все изображения продукта, отсортированные по порядку
+  */
+  public function getAllImages(int $product_id): array;
 
+  /**
+   * Получить изображение по id
+  */
+  public function getImageById(int $id): ?ProductImageOutputDTO;
+
+  /**
+   * Добавить новое изображение продукта
+   */
+  public function addImage(ProductImageInputDTO $input): ProductImageOutputDTO;
+   
+  /**
+     * Обновить существующее изображение
+  */
+  public function updateImage(int $id, ProductImageInputDTO $input): ProductImageOutputDTO;
+
+  /**
+   * Удалить одно изображение
+   */
+  public function removeImage(int $id): void;
+
+  public function removeImagesByIds(array $ids): void;
+
+  /**
+     * Удалить все изображения продукта
+  */
+  public function removeAllImages(int $product_id): void;
 }
