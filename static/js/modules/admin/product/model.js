@@ -28,16 +28,37 @@ const initModel = () => {
         formData.append('existing_images[]', item.name);
       }
     });
+
   };
 
   const sendProduct = async () => {
     return await api.createProduct(formData); // передаём FormData
   };
 
-  const updateProduct = async (id, orderedFiles) => {
+  // const updateProduct = async (id, orderedFiles) => {
+  //   const formData = new FormData();
+
+  //   // отделяем новые и старые
+  //   orderedFiles.forEach(file => {
+  //     if (file.file) {
+  //       formData.append('cover[]', file.file);
+  //     } else {
+  //       formData.append('existing_images[]', file.name);
+  //     }
+  //   });
+
+  //   // добавляешь остальные текстовые поля
+  //   formData.append('title', '...');
+  //   formData.append('price', '...');
+
+  //   return await api.updateProduct(id, formData);
+  // };
+
+  const updateProduct = async (id, orderedFiles) => {    
     // orderedFiles содержит и новые, и существующие
     setSortedFiles(orderedFiles);
-    formData.append('_method', 'PUT'); // обязательно для PHP
+    // formData.append('_method', 'PUT'); // обязательно для PHP
+  
     return await api.updateProduct(id, formData); // передаём FormData
   }
 

@@ -67,7 +67,8 @@ class BaseApiController
       }
 
       if(stripos($contentType, 'multipart/form-data') !== false) {
-        return array_merge($_POST, ['_files' => $_FILES]);
+   
+        return ['_text' => $_POST, '_files' => $_FILES];
       }
 
       return $_POST; // fallback

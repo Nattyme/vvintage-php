@@ -56,45 +56,64 @@ export async function createProduct(data, files = []) {
   // if (!res.ok) throw new Error('Ошибка создания продукта');
   // return await res.json();
 }
-export async function updateProduct(id, data, files = []) {
-  let body;
 
-  if (data instanceof FormData) {
-    body = data;
-  } else {
-    body = new FormData();
-    Object.entries(data).forEach(([key, value]) => body.append(key, value));
-  }
-
-  // добавляем файлы, если есть
-  if (files.length > 0) {
-    files.forEach(file => body.append('cover[]', file));
-  }
-
-  // обязательно поле _method для PHP
-  body.append('_method', 'PUT');
-
-  console.log("Отправляем body:");
-  for (let [key, value] of body.entries()) {
-    console.log(key, value);
-  }
-
+export async function updateProduct(id, formData) {
+  // formData.append('_method', 'PUT');
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+    }
+    
   const res = await fetch(`${API_BASE}/products/${id}`, {
-    method: 'POST', // отправляем POST, сервер увидит _method=PUT
+    method: 'POST',
     credentials: 'include',
-    body, // FormData — без headers
+    body: formData
   });
 
-  let responseData;
-  try {
-    responseData = await res.json();
-  } catch (e) {
-    throw new Error('Сервер вернул некорректный ответ');
-  }
-
+  const responseData = await res.json();
   if (!res.ok) throw responseData;
   return responseData;
 }
+
+
+// export async function updateProduct(id, data, files = []) {
+//   let body;
+
+//   if (data instanceof FormData) {
+//     body = data;
+//   } else {
+//     body = new FormData();
+//     Object.entries(data).forEach(([key, value]) => body.append(key, value));
+//   }
+
+//   // добавляем файлы, если есть
+//   if (files.length > 0) {
+//     files.forEach(file => body.append('cover[]', file));
+//   }
+
+//   // обязательно поле _method для PHP
+//   body.append('_method', 'PUT');
+
+//   console.log("Отправляем body:");
+//   for (let [key, value] of body.entries()) {
+//     console.log(key, value);
+//   }
+
+//   const res = await fetch(`${API_BASE}/products/${id}`, {
+//     method: 'POST', // отправляем POST, сервер увидит _method=PUT
+//     credentials: 'include',
+//     body, // FormData — без headers
+//   });
+
+//   let responseData;
+//   try {
+//     responseData = await res.json();
+//   } catch (e) {
+//     throw new Error('Сервер вернул некорректный ответ');
+//   }
+
+//   if (!res.ok) throw responseData;
+//   return responseData;
+// }
 
 
 // export async function updateProduct(id, data) {

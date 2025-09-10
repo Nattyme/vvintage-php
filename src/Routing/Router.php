@@ -230,7 +230,7 @@
 
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $productApiController->getOne($id);
-                } elseif ($method === 'PUT') {
+                } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && ($method === 'PUT')) {
                     $productApiController->edit($id);
                 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
                     $productApiController->delete($id);

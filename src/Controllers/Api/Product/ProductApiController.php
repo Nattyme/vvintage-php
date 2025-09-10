@@ -117,33 +117,36 @@ class ProductApiController extends BaseApiController
     public function edit(int $id): void 
     {
         // $this->isAdmin(); // проверка прав
-        $data = $this->getRequestData();
-        $filesData = $data['_files'] ?? [];
-        unset($data['_files']);
-        error_log("API create() data: " . var_dump($data, true));
-        error_log("API create() files: " . print_r($files, true));
-
+        $productData = $this->getRequestData();
+        $text = $productData['_text'];
+        $files = $productData['_files']['cover'] ?? [];
+        unset($productData);
+  error_log(print_r( $text, true));
+  error_log(print_r( $files, true));
         // существующие изображения (например, массив id )
         // $existingImages = $data['existing_images'] ?? [];
-        $existing = $data['existing_images'] ?? [];
-        $files = $filesData['cover'] ?? [];
-
-$structuredImages = $this->getStructuredImages($files, $existing);
+        // $existingImages = $data['existing_images'] ?? [];
+        // $files = $filesData['cover'] ?? [];
+      // error_log(print_r( $data, true));
+      // error_log(print_r( $files, true));
+      // error_log(print_r(  $existingImages, true));
+    
+        $structuredImages = $this->getStructuredImages($files, $text['existing_images']);
+        // $structuredImages = $this->getStructuredImages($files);
 
         unset($data['existing_images']);
-   
-error_log("Existing images: " . print_r($existingImages, true));
-  error_log(var_dump($structuredImages, true));
-  error_log(var_dump($files, true));
+
+
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($data);
-        error_log("ValidatorText result: " . print_r($validatorTextResult, true));
 
         // Валидация новых изображений (только то, что реально загружено через dropzone)
         $validatorImg = new AdminProductImageValidator();
-        $validatorImgResult = $validatorImg->validate($files);
-error_log("ValidatorImg result: " . print_r($validatorImgResult, true));
+        // $validatorImgResult = $validatorImg->validate($files);
+  
+        $validatorImgResult = $validatorImg->validate($structuredImages);
+
         // Объединяем ошибки
         $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
         if (!empty($errors)) {
@@ -156,7 +159,9 @@ error_log("ValidatorImg result: " . print_r($validatorImgResult, true));
             $validatorImgResult['data'],
             ['full' => [536, 566], 'small' => [350, 478]]
         );
-
+// error_log(print_r($$validatorTextResult['data'], true));
+// error_log(print_r($structuredImages, true));
+// error_log(print_r($processedNewImages, true));
         // Обновляем продукт (старые изображения остаются как есть)
         $success = $this->service->updateProduct(
             $id,

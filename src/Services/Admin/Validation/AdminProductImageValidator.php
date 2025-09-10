@@ -12,7 +12,7 @@ final class AdminProductImageValidator
     public function validate(array $data): array
     {
         $files = $this->isCoversExist($data) ? $data['cover'] : [];
-
+       
         $images = $this->getStructuredImages($files );
    
         foreach ($images as $image) {
@@ -28,7 +28,9 @@ final class AdminProductImageValidator
 
     private function isCoversExist(array $data): bool
     {
+      // error_log(print_r($data, true));
         $hasNewFiles = isset($data['cover']) && !empty($data['cover']['name'][0]);
+        // $hasNewFiles = isset($data['cover']) && !empty($data['cover']['name'][0]);
         $hasExisting = isset($data['existing_images']) && !empty($data['existing_images']);
 
         if ($hasNewFiles || $hasExisting) {
