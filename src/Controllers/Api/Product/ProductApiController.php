@@ -117,21 +117,24 @@ class ProductApiController extends BaseApiController
     public function edit(int $id): void 
     {
         // $this->isAdmin(); // проверка прав
-
-    error_log("edit() вызван!", 3, __DIR__ . '/debug.log');
         $data = $this->getRequestData();
-        $files = $data['_files'] ?? [];
+        $filesData = $data['_files'] ?? [];
         unset($data['_files']);
-        error_log("API create() data: " . print_r($data, true));
+        error_log("API create() data: " . var_dump($data, true));
         error_log("API create() files: " . print_r($files, true));
 
         // существующие изображения (например, массив id )
-        $existingImages = $data['existing_images'] ?? [];
+        // $existingImages = $data['existing_images'] ?? [];
+        $existing = $data['existing_images'] ?? [];
+        $files = $filesData['cover'] ?? [];
+
+$structuredImages = $this->getStructuredImages($files, $existing);
 
         unset($data['existing_images']);
    
 error_log("Existing images: " . print_r($existingImages, true));
-
+  error_log(var_dump($structuredImages, true));
+  error_log(var_dump($files, true));
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($data);
@@ -158,7 +161,8 @@ error_log("ValidatorImg result: " . print_r($validatorImgResult, true));
         $success = $this->service->updateProduct(
             $id,
             $validatorTextResult['data'],   // текстовые данные
-            $existingImages,                // какие картинки оставить
+            $structuredImages,                // какие картинки оставить
+            // $existingImages,                // какие картинки оставить
             $processedNewImages             // новые картинки
         );
 
@@ -168,6 +172,36 @@ error_log("ValidatorImg result: " . print_r($validatorImgResult, true));
 
         $this->success(['id' => $id], 200);
     }
+
+    private function getStructuredImages(array $files, array $existing = []): array 
+    {
+        $images = [];
+
+        // 1. Обрабатываем новые загруженные файлы
+        foreach ($files['name'] ?? [] as $i => $name) {
+            if ($files['error'][$i] === UPLOAD_ERR_NO_FILE) continue; // пропускаем пустые
+            $images[] = [
+                'file_name'   => $name,
+                'tmp_name'    => $files['tmp_name'][$i],
+                'type'        => $files['type'][$i],
+                'size'        => $files['size'][$i],
+                'error'       => $files['error'][$i],
+                'image_order' => $i
+            ];
+        }
+
+        // 2. Добавляем существующие изображения из формы
+        foreach ($existing as $i => $existingId) {
+            // Если нужно, можно добавить реальные имена файлов или url
+            $images[] = [
+                'existing_id' => $existingId,
+                'image_order' => count($images) // порядок после новых
+            ];
+        }
+
+        return $images;
+    }
+
 
    
 }

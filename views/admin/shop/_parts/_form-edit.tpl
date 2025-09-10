@@ -9,6 +9,9 @@
   <div class="admin-form__row">
     <div class="admin-form__column">
       <div class="admin-form__field">
+        <input type="hidden" name="_method" value="PUT">
+      </div>
+      <div class="admin-form__field">
         <label class="admin-form__label" for="title">Дата последнего обновления</label>
       
         <input  id="title" name="title" class="admin-form__input input" type="text"

@@ -176,6 +176,7 @@
         $productApiController = new ProductApiController();
 
         $uri = preg_replace('#^api/#', '', $routeData->uri);
+        $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
         switch (true) {
            
             // --- Categories ---
@@ -225,10 +226,11 @@
 
             case preg_match('#^products/(\d+)$#',  $uri, $matches): 
                 $id = (int)$matches[1];
+                    file_put_contents(__DIR__.'/debug.log', "In products case, id=$id, method=$method\n", FILE_APPEND);
+
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $productApiController->getOne($id);
-                } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-
+                } elseif ($method === 'PUT') {
                     $productApiController->edit($id);
                 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
                     $productApiController->delete($id);

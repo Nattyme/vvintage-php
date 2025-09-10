@@ -63,6 +63,17 @@ final class AdminProductImageValidator
     {
       $images = [];
 
+       // AdminProductImageValidator (или helper)
+      foreach ($files as $key => $file) {
+          if (isset($file['name']) && !is_array($file['name'])) {
+              // оборачиваем в массив
+              foreach (['name', 'type', 'tmp_name', 'error', 'size'] as $field) {
+                  $file[$field] = [$file[$field]];
+              }
+              $files[$key] = $file;
+          }
+      }
+
       for ($i = 0; $i < count($files['name'] ?? []); $i++) {
           $images[] = [
               'file_name' => $files['name'][$i],
@@ -73,6 +84,9 @@ final class AdminProductImageValidator
               'image_order' => $i 
           ];
       }
+
+     
+
 
       return $images;
 
