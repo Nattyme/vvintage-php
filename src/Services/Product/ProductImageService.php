@@ -9,7 +9,7 @@ use Vvintage\Repositories\Product\ProductImageRepository;
 class ProductImageService
 {
 
-  private ProductImageRepository $repository;
+  protected ProductImageRepository $repository;
 
   public function __construct() 
   {

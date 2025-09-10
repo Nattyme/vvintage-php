@@ -439,15 +439,36 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     // }
 
     /** Обновляет существующий продукт через DTO */
-    public function updateProduct(ProductDTO $dto): ?int
-    {
-        if (!$dto->id) {
-            return null; // нельзя обновить без ID
-        }
+  public function updateProductData(int $productId, ProductInputDTO $dto, array $translations = []): bool
+  {
+      $bean = $this->loadBean(self::TABLE_PRODUCTS, $productId);
 
-        return $this->saveProduct($dto);
-    }
+      if (!$bean->id) {
+          throw new RuntimeException("Product with ID {$productId} not found");
+      }
 
+      $bean->category_id = $dto->category_id;
+      $bean->brand_id = $dto->brand_id;
+      $bean->slug = $dto->slug;
+      $bean->title = $dto->title;
+      $bean->description = $dto->description;
+      $bean->price = $dto->price;
+      $bean->url = $dto->url;
+      $bean->sku = $dto->sku;
+      $bean->stock = $dto->stock;
+      $bean->status = $dto->status;
+      $bean->edit_time = $dto->edit_time;
+
+      $this->saveBean($bean);
+
+      // если пришли новые переводы → пересохраняем
+      if (!empty($translations)) {
+          $translateDto = $this->createTranslateInputDto($translations, $productId);
+          $this->saveProductTranslation($translateDto);
+      }
+
+      return true;
+  }
 
 
 
@@ -663,4 +684,45 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
       return $ids;
     }
+
+    /**
+     * Добавляет новые изображения для продукта
+     * 
+     * @param int $productId
+     * @param ProductImageInputDTO[] $imagesDto
+     * @return array|null  Массив ID добавленных изображений или null при ошибке
+    */
+    public function addProductImages(int $productId, array $imagesDto): ?array
+    {
+        if (empty($imagesDto)) {
+            return [];
+        }
+
+        $ids = [];
+
+        foreach ($imagesDto as $dto) {
+            if (!$dto) {
+                return null;
+            }
+
+            $bean = $this->createProductImageBean();
+
+            $bean->product_id = $productId;
+            $bean->filename = $dto->filename;
+            $bean->image_order = $dto->image_order;
+            $bean->alt = $dto->alt;
+
+            $this->saveBean($bean);
+
+            $id = (int) $bean->id;
+            if (!$id) {
+                return null;
+            }
+
+            $ids[] = $id;
+        }
+
+        return $ids;
+    }
+
 }

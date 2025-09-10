@@ -13,6 +13,7 @@ use Vvintage\Repositories\AbstractRepository;
 use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\DTO\Product\ProductImageOutputDTO;
 
+
 final class ProductImageRepository extends AbstractRepository implements ProductImageRepositoryInterface
 {
     private const TABLE = 'productimages';

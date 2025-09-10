@@ -92,10 +92,27 @@ final class AdminProductService extends ProductService
         return $productId;
     }
 
-    public function updateProduct(int $id, $data, $existingImages, $processedNewImages) 
+    public function updateProduct(int $id, array $data, array $processedNewImages): bool
     {
-      dd($id);
+        // 1. Собираем DTO продукта
+        $productDto = $this->createProductInputDto($data);
+        $translations = $data['translations'] ?? [];
+
+        // 2. Обновляем сам продукт (текстовые поля, цену и т.п.)
+        $updated = $this->repository->updateProduct($id, $productDto, $translations);
+
+        if (! $updated) {
+            return false;
+        }
+
+        // 3. Если есть новые картинки → добавляем
+        if (!empty($processedNewImages)) {
+            $this->repository->addProductImages($id, $processedNewImages);
+        }
+
+        return true;
     }
+
 
 
     private function createProductInputDto(array $data): ProductInputDTO

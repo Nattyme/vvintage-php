@@ -15,6 +15,7 @@ final class AdminProductImageService extends ProductImageService
 
     public function __construct()
     {
+        parent::__construct();
         $this->tmpFolder   = ROOT . 'usercontent/tmp/product_images/';
         $this->finalFolder = ROOT . 'usercontent/products/';
 
@@ -69,10 +70,20 @@ final class AdminProductImageService extends ProductImageService
         return $processed;
     }
 
-    public function updateExistIamges(int $id, array $images): void 
+    public function updateExistImages(int $id, array $images): void 
     {
+      // error_log(print_r( $images, true));
+      $newIds = array_map(fn($img) => $img['id'], $images);
+
       // Получим все изображения продука из БД по id
       $imagesDB = $this->repository->getAllImages($id);
+      $existingIds = array_map(fn($img) => $img->id, $imagesDB);
+
+      // Получаем список id, которых нет в новом массиве
+      $idsToDelete = array_diff($existingIds, $newIds);
+
+      // Удаляем лишние
+      $this->repository->removeImagesByIds($idsToDelete);
     }
 
 
