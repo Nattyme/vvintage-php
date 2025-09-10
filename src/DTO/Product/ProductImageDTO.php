@@ -30,5 +30,10 @@ class ProductImageDTO
       return $this->id;
     }
 
+    public function getOrder(): int
+    {
+      return $this->image_order;
+    }
+
 
 }

@@ -70,14 +70,24 @@ const initModel = () => {
   const getUploadedFiles = () => {
     return uploadedFiles;
   }
-
-  const addExistingFile = (url, name = null) => {
+  const addExistingFile = (url, name = null, id = null, order = null) => {
     currentFiles.push({
-      name: name || `existing_${Date.now()}`, // если имя не передали
-      url: url,                               // сразу используем готовый URL
-      file: null                              // это не File, а уже сохранённое изображение
+      name: name || `existing_${Date.now()}`, 
+      id: id,
+      url: url,  
+      file: null
     });
   };
+
+  // const addExistingFile = (url, name = null) => {
+  //   currentFiles.push({
+  //     name: name || `existing_${Date.now()}`, // если имя не передали
+  //     id: id,
+  //     order: order_id,
+  //     url: url,                               // сразу используем готовый URL
+  //     file: null                              // это не File, а уже сохранённое изображение
+  //   });
+  // };
 
 
   return {

@@ -28,9 +28,18 @@ const initView = () => {
     return previewContainer.querySelectorAll('[data-preview="image-wrapper"]');
   };
 
+  // const getCurrentImages = () => {
+  //   const currentImages = getCurrentImagesDom();
+  //   return Array.from(currentImages).map(wrapper => wrapper.dataset.url);
+  // };
   const getCurrentImages = () => {
-    const currentImages = getCurrentImagesDom();
-    return Array.from(currentImages).map(wrapper => wrapper.dataset.url);
+    const currentImages = getCurrentImagesDom(); // возвращает NodeList или массив элементов
+    return Array.from(currentImages).map(wrapper => ({
+      url: wrapper.dataset.url,
+      id: wrapper.dataset.id,       // ID из базы (если существующее изображение)
+      order: parseInt(wrapper.dataset.order, 10), // порядок
+      name: wrapper.dataset.name    // имя файла
+    }));
   };
 
  

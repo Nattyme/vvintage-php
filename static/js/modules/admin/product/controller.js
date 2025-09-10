@@ -46,6 +46,8 @@ const initNewProductFormEvents = () => {
 
   formModel.setFormData(formElement);
   const orderedFiles = previewModel.getCurrentFiles();
+  
+  
   if (orderedFiles) {
     formModel.clearFilesData();
     formModel.setSortedFiles(orderedFiles);

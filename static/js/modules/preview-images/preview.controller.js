@@ -25,7 +25,13 @@ const initPreviewContainerEvents = () => {
   // 1. ИНИЦИАЛИЗАЦИЯ PHP-изображений
   // ===============================
   const urls = view.getCurrentImages();
-  urls.forEach((url) => model.addExistingFile(url));
+  console.log(urls);
+
+  urls.forEach((image) => {
+    model.addExistingFile(image.url, image.name, image.id);
+  });
+  
+  // urls.forEach((url) => model.addExistingFile(url));
   view.toggleActiveClass(previewContainer); // активируем контейнер, если есть изображения
 
 

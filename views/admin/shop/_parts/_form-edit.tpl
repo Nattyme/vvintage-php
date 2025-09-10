@@ -180,7 +180,14 @@
             <!-- PREVIEW IMG -->
             <div class="block-upload__preview" data-preview="container" data-dragg-preview>
               <?php foreach ($product->getImages() as $image) : ?>
-                <div class="block-upload__img-wrapper" data-preview="image-wrapper" draggable="true" data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>"        >
+                <div 
+                    class="block-upload__img-wrapper" 
+                    data-preview="image-wrapper" 
+                    draggable="true" 
+                    data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>"
+                    data-id="<?php echo $image->getId();?>"
+                    data-name="<?php echo $image->getFilename();?>"
+                >
                   <img 
                     id = "<?php echo $image->getId();?>"
                     src="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>" 
