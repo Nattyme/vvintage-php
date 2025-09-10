@@ -120,9 +120,9 @@ class ProductApiController extends BaseApiController
         $productData = $this->getRequestData();
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
-        unset($productData);
-  error_log(print_r( $text, true));
-  error_log(print_r( $files, true));
+        // unset($productData);
+  error_log(print_r( $files , true));
+  // error_log(print_r( $files, true));
         // существующие изображения (например, массив id )
         // $existingImages = $data['existing_images'] ?? [];
         // $existingImages = $data['existing_images'] ?? [];
@@ -134,12 +134,12 @@ class ProductApiController extends BaseApiController
         $structuredImages = $this->getStructuredImages($files, $text['existing_images']);
         // $structuredImages = $this->getStructuredImages($files);
 
-        unset($data['existing_images']);
+        // unset($productData['existing_images']);
 
 
         // Валидация текста
         $validatorText = new AdminProductValidator();
-        $validatorTextResult = $validatorText->validate($data);
+        $validatorTextResult = $validatorText->validate($text);
 
         // Валидация новых изображений (только то, что реально загружено через dropzone)
         $validatorImg = new AdminProductImageValidator();

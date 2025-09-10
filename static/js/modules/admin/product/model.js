@@ -19,22 +19,11 @@ const initModel = () => {
   const setSortedFiles = (files) => {
     clearFilesData();
 
-    // files.forEach(item => {
-    //   if (item.file) {
-    //     // новые файлы
-    //     formData.append('cover[]', item.file);
-    //   } else if (item.name) {
-    //     // уже существующие изображения
-    //     formData.append('existing_images[]', item.name);
-    //   }
-    // });
     files.forEach(item => {
       if (item.file) {
         // новые файлы
-        formData.append('cover[]', JSON.stringify({
-          file: item.file,
-          order: item.order
-        }));
+        formData.append('cover[]', item.file);
+
       } else if (item.id) {
         // существующие изображения
         formData.append('existing_images[]', JSON.stringify({
@@ -43,6 +32,7 @@ const initModel = () => {
         }));
       }
     });
+
 
 
   };

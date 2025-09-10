@@ -67,8 +67,23 @@ class BaseApiController
       }
 
       if(stripos($contentType, 'multipart/form-data') !== false) {
-   
-        return ['_text' => $_POST, '_files' => $_FILES];
+         // Сначала копируем все POST-поля
+        $decodedPost = $_POST;
+
+        // Декодируем только JSON-поля
+
+        if (!empty($_POST['existing_images']) && is_array($_POST['existing_images'])) {
+            $decodedPost['existing_images'] = array_map(function($item) {
+                return is_string($item) && ($decoded = json_decode($item, true)) !== null
+                    ? $decoded
+                    : $item;
+            }, $_POST['existing_images']);
+        }
+  
+        
+error_log(print_r($_FILES, true));
+        return ['_text' => $decodedPost, '_files' => $_FILES];
+
       }
 
       return $_POST; // fallback
