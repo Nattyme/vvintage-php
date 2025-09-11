@@ -444,7 +444,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
       $bean = $this->loadBean(self::TABLE_PRODUCTS, $productId);
 
       if (!$bean->id) {
-          throw new RuntimeException("Product with ID {$productId} not found");
+          throw new RuntimeException("Продукт с ID {$productId} не найден");
       }
 
       $bean->category_id = $dto->category_id;
@@ -615,41 +615,80 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
   
     }
 
+    // public function saveProductTranslation(array $translateDto): ?array
+    // {
+    //   foreach( $translateDto as $dto) {
+    //     if (!$dto) {
+    //         return null;
+    //     }
+    //   }
+
+    //   $ids = [];
+
+    //   foreach($translateDto as $dto) {
+    //       // Создаем или загружаем перевод
+    //       $bean = $this->createProductTranslateBean();
+
+    //       $bean->product_id = $dto->product_id;
+    //       $bean->slug = $dto->slug;
+    //       $bean->locale = $dto->locale;
+    //       $bean->title = $dto->title;
+    //       $bean->description = $dto->description;
+    //       $bean->meta_title = $dto->meta_title;
+    //       $bean->meta_description = $dto->meta_description;
+
+    //       $this->saveBean($bean);
+          
+    //       $id = (int) $bean->id;
+
+    //       if (!$id) {
+    //         return null;
+    //       }
+
+    //       $ids[] = $id;
+    //   }
+
+    //   return $ids;
+    // }
+
     public function saveProductTranslation(array $translateDto): ?array
     {
-      foreach( $translateDto as $dto) {
-        if (!$dto) {
-            return null;
+        $ids = [];
+
+        foreach ($translateDto as $dto) {
+            if (!$dto) {
+                return null;
+            }
+
+            // ищем существующий перевод
+            $bean = R::findOne(
+                self::TABLE_PRODUCTS_TRANSLATION,
+                ' product_id = ? AND locale = ? ',
+                [$dto->product_id, $dto->locale]
+            );
+
+            if (!$bean) {
+                // если нет → создаём новый
+                $bean = $this->createProductTranslateBean();
+                $bean->product_id = $dto->product_id;
+                $bean->locale = $dto->locale;
+            }
+
+            // обновляем данные
+            $bean->slug = $dto->slug;
+            $bean->title = $dto->title;
+            $bean->description = $dto->description;
+            $bean->meta_title = $dto->meta_title;
+            $bean->meta_description = $dto->meta_description;
+
+            $this->saveBean($bean);
+
+            $ids[] = (int) $bean->id;
         }
-      }
 
-      $ids = [];
-
-      foreach($translateDto as $dto) {
-          // Создаем или загружаем перевод
-          $bean = $this->createProductTranslateBean();
-
-          $bean->product_id = $dto->product_id;
-          $bean->slug = $dto->slug;
-          $bean->locale = $dto->locale;
-          $bean->title = $dto->title;
-          $bean->description = $dto->description;
-          $bean->meta_title = $dto->meta_title;
-          $bean->meta_description = $dto->meta_description;
-
-          $this->saveBean($bean);
-          
-          $id = (int) $bean->id;
-
-          if (!$id) {
-            return null;
-          }
-
-          $ids[] = $id;
-      }
-
-      return $ids;
+        return $ids;
     }
+
 
     public function saveProductImages(array $imagesDto): ?array
     {

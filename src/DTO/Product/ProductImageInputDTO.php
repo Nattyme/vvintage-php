@@ -13,10 +13,10 @@ final class ProductImageInputDTO extends ProductImageDTO
     public ?string $alt;
 
     public function __construct(array $data)
-    {
+    {    error_log(print_r($data, true));
     
         $this->product_id = (int) ($data['product_id'] ?? 0);
-        $this->filename = (string) ($data['cover'] ?? '');
+        $this->filename = (string) ($data['filename'] ?? '');
         $this->image_order = (int) ($data['image_order'] ?? 1);
         $this->alt = $data['alt'] ?? null;
 

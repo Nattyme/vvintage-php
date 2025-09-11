@@ -8,6 +8,7 @@ use Vvintage\Services\Admin\Product\AdminProductImageService;
 
 /** DTO */
 use Vvintage\DTO\Product\ProductInputDTO;
+use Vvintage\DTO\Product\ProductImageInputDTO;
 
 
 
@@ -99,19 +100,55 @@ final class AdminProductService extends ProductService
         $translations = $data['translations'] ?? [];
 
         // 2. Обновляем сам продукт (текстовые поля, цену и т.п.)
-        $updated = $this->repository->updateProduct($id, $productDto, $translations);
+        $updated = $this->repository->updateProductData($id, $productDto, $translations);
 
         if (! $updated) {
             return false;
         }
 
-        // 3. Если есть новые картинки → добавляем
-        if (!empty($processedNewImages)) {
-            $this->repository->addProductImages($id, $processedNewImages);
+        // 3. Конвертация изображений в DTO
+        $imagesDto = [];
+    
+        foreach ($processedNewImages as $img) {
+            if (empty($img)) {
+                continue;
+            }
+
+            $imagesDto[] = new ProductImageInputDTO([
+                'filename' => $img['final_full'] ?? '',
+                'image_order' => $img['image_order'] ?? 0,
+                'alt' => $img['alt'] ?? '',
+            ]);
+        }
+
+        // 4. Добавляем новые картинки
+        if (!empty($imagesDto)) {
+            $this->repository->addProductImages($id, $imagesDto);
         }
 
         return true;
     }
+
+    // public function updateProduct(int $id, array $data, array $processedNewImages): bool
+    // {
+    //     // 1. Собираем DTO продукта
+    //     $productDto = $this->createProductInputDto($data);
+    //     $translations = $data['translations'] ?? [];
+
+    //     // 2. Обновляем сам продукт (текстовые поля, цену и т.п.)
+    //     $updated = $this->repository->updateProductData($id, $productDto, $translations);
+
+    //     if (! $updated) {
+    //         return false;
+    //     }
+
+    //     // 3. Если есть новые картинки → добавляем
+    //     if (!empty($processedNewImages)) {
+    //         $this->repository->addProductImages($id, $processedNewImages);
+    //     }
+
+    //     return true;
+    // }
 
 
 

@@ -29,7 +29,7 @@ interface ProductRepositoryInterface
     /** UPDATE */
     public function updateStatus(int $productId, string $status): bool;
 
-    public function updateProduct(ProductDTO $dto): ?int;
+    public function updateProductData(int $productId, ProductInputDTO $dto, array $translations = []): bool;
 
     public function bulkUpdate(array $ids, array $data): void;
 
