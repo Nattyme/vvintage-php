@@ -12,57 +12,73 @@ export async function getProduct(id) {
   return await res.json();
 }
 
-export async function createProduct(data, files = []) {
-  let body;
-  let headers = {};
-
-  if (data instanceof FormData) {
-    // если сразу FormData — просто используем её
-    body = data;
-  } else if (files.length > 0) {
-    body = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      body.append(key, value);
-    });
-    files.forEach(file => body.append('cover[]', file));
-  } else {
-    headers['Content-Type'] = 'application/json';
-    body = JSON.stringify(data);
-  }
-
+export async function createProduct(formData) {
   const res = await fetch(`${API_BASE}/products`, {
     method: 'POST',
     credentials: 'include',
-    headers,
-    body
+    body: formData
   });
 
-   let responseData;
-    try {
-      responseData = await res.json(); // читаем тело даже при ошибке
-    } catch (e) {
-      throw new Error('Сервер вернул некорректный ответ');
-    }
+  let responseData;
+  try {
+    responseData = await res.json();
+  } catch (e) {
+    throw new Error('Сервер вернул не-JSON (возможно HTML-ошибка или редирект)');
+  }
 
-    if (!res.ok) {
-      // бросаем сам JSON с ошибками, чтобы поймать его в catch
-      throw responseData;
-    }
-
-    return responseData;
-
-
-
-  // if (!res.ok) throw new Error('Ошибка создания продукта');
-  // return await res.json();
+  if (!res.ok) throw responseData;
+  return responseData;
 }
+
+
+// export async function createProduct(data, files = []) {
+
+//   let body;
+//   let headers = {};
+
+//   if (data instanceof FormData) {
+//     // если сразу FormData — просто используем её
+//     body = data;
+//   } else if (files.length > 0) {
+//     body = new FormData();
+//     Object.entries(data).forEach(([key, value]) => {
+//       body.append(key, value);
+//     });
+//     files.forEach(file => body.append('cover[]', file));
+//   } else {
+//     headers['Content-Type'] = 'application/json';
+//     body = JSON.stringify(data);
+//   }
+
+//   const res = await fetch(`${API_BASE}/products`, {
+//     method: 'POST',
+//     credentials: 'include',
+//     headers,
+//     body
+//   });
+
+//    let responseData;
+//     try {
+//       responseData = await res.json(); // читаем тело даже при ошибке
+//     } catch (e) {
+//       throw new Error('Сервер вернул некорректный ответ');
+//     }
+
+//     if (!res.ok) {
+//       // бросаем сам JSON с ошибками, чтобы поймать его в catch
+//       throw responseData;
+//     }
+
+//     return responseData;
+
+
+
+//   // if (!res.ok) throw new Error('Ошибка создания продукта');
+//   // return await res.json();
+// }
 
 export async function updateProduct(id, formData) {
   // formData.append('_method', 'PUT');
-    for (var pair of formData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]);
-    }
-    
   const res = await fetch(`${API_BASE}/products/${id}`, {
     method: 'POST',
     credentials: 'include',
@@ -70,6 +86,7 @@ export async function updateProduct(id, formData) {
   });
 
   const responseData = await res.json();
+  
   if (!res.ok) throw responseData;
   return responseData;
 }

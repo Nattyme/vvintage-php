@@ -187,6 +187,7 @@
                     data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>"
                     data-id="<?php echo $image->getId();?>"
                     data-name="<?php echo $image->getFilename();?>"
+                    data-order="<?php echo $image->getOrder();?>"
                 >
                   <img 
                     id = "<?php echo $image->getId();?>"

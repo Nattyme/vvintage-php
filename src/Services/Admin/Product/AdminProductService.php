@@ -75,16 +75,16 @@ final class AdminProductService extends ProductService
         return $result;
     }
 
-    public function createProductDraft(array $data, array $images,  array $processedImages): int
+    public function createProductDraft(array $data, array $images, array $processedImages): int
     {
      
         $data['status'] = 'hidden'; // или draft
- 
         $productDto = $this->createProductInputDto($data);
-        $translations = $data['translations'] ?? [];
-        $productImages = $images ?? [];
 
-        $productId = $this->repository->saveProduct($productDto, $translations,  $productImages, $processedImages);
+        $translations = $data['translations'] ?? [];
+        $imagesDto = $this->buildImageDtos($processedImages);
+    
+        $productId = $this->repository->saveProduct($productDto, $translations,  $images, $processedImages);
 
         if( ! $productId) {
           return null;
@@ -93,7 +93,7 @@ final class AdminProductService extends ProductService
         return $productId;
     }
 
-    public function updateProduct(int $id, array $data, array $processedNewImages): bool
+    public function updateProduct(int $id, array $data, array $processedImages): bool
     {
         // 1. Собираем DTO продукта
         $productDto = $this->createProductInputDto($data);
@@ -107,19 +107,20 @@ final class AdminProductService extends ProductService
         }
 
         // 3. Конвертация изображений в DTO
-        $imagesDto = [];
+        $imagesDto = $this->buildImageDtos($processedNewImages);
+        // $imagesDto = [];
     
-        foreach ($processedNewImages as $img) {
-            if (empty($img)) {
-                continue;
-            }
+        // foreach ($processedNewImages as $img) {
+        //     if (empty($img)) {
+        //         continue;
+        //     }
 
-            $imagesDto[] = new ProductImageInputDTO([
-                'filename' => $img['final_full'] ?? '',
-                'image_order' => $img['image_order'] ?? 0,
-                'alt' => $img['alt'] ?? '',
-            ]);
-        }
+        //     $imagesDto[] = new ProductImageInputDTO([
+        //         'filename' => $img['final_full'] ?? '',
+        //         'image_order' => $img['image_order'] ?? 0,
+        //         'alt' => $img['alt'] ?? '',
+        //     ]);
+        // }
 
         // 4. Добавляем новые картинки
         if (!empty($imagesDto)) {
@@ -210,4 +211,24 @@ final class AdminProductService extends ProductService
     {
       return $this->imageService->addImages($productId, $files);
     }
+
+    private function buildImageDtos(array $processedImages): array
+    {
+        $imagesDto = [];
+
+        foreach ($processedImages as $img) {
+            if (empty($img)) {
+                continue;
+            }
+
+            $imagesDto[] = new ProductImageInputDTO([
+                'filename'    => $img['final_full'] ?? '',
+                'image_order' => $img['image_order'] ?? 0,
+                'alt'         => $img['alt'] ?? '',
+            ]);
+        }
+
+        return $imagesDto;
+    }
+
 }

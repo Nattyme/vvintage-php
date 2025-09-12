@@ -29,22 +29,23 @@ class ProductApiController extends BaseApiController
     public function create(): void
     {
         // $this->isAdmin(); // проверка прав
-
-        $data = $this->getRequestData();
-        $files = $data['_files'] ?? [];
-        unset($data['_files']);
-
+        $productData = $this->getRequestData();
+        $text = $productData['_text'];
+        $files = $productData['_files']['cover'] ?? [];
 
         // Валидация текста
         $validatorText = new AdminProductValidator();
-        $validatorTextResult = $validatorText->validate($data);
+        $validatorTextResult = $validatorText->validate($text);
+  // error_log(print_r( $validatorTextResult, true));
+        $structuredImages = $this->getStructuredImages($files);
 
         // Валидация изображений
         $validatorImg = new AdminProductImageValidator();
-        $validatorImgResult = $validatorImg->validate($files);
+        $validatorImgResult = $validatorImg->validate($structuredImages);
 
         // Объединяем ошибки
         $errors = array_merge( $validatorTextResult['errors'],  $validatorImgResult['errors']);
+            //  error_log(print_r($errors, true));
         if(!empty($errors)) {
           $this->error($errors, 422);
         }
@@ -69,6 +70,97 @@ class ProductApiController extends BaseApiController
 
         $this->success(['id' => $productId], 201);
     }
+
+    public function edit(int $id): void 
+    {
+        // $this->isAdmin(); // проверка прав
+        $productData = $this->getRequestData();
+        $text = $productData['_text'];
+        $files = $productData['_files']['cover'] ?? [];
+        // unset($productData);
+
+        // error_log(print_r( $files, true));
+    
+    
+        $structuredImages = $this->getStructuredImages($files);
+        // $structuredImages = $this->getStructuredImages($files);
+
+        // unset($productData['existing_images']);
+
+
+          // error_log(print_r( $files, true));
+        // Валидация текста
+        $validatorText = new AdminProductValidator();
+        $validatorTextResult = $validatorText->validate($text);
+
+        // Валидация новых изображений (только то, что реально загружено через dropzone)
+        $validatorImg = new AdminProductImageValidator();
+        // $validatorImgResult = $validatorImg->validate($files);
+  
+        $validatorImgResult = $validatorImg->validate($structuredImages, $text['existing_images']);
+
+        // Объединяем ошибки
+        $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
+        if (!empty($errors)) {
+            $this->error($errors, 422);
+        }
+
+        // Подготовка новых изображений (только для новых файлов)
+        $imageService = new AdminProductImageService();
+        $processedNewImages = $imageService->prepareImages(
+            $validatorImgResult['data'],
+            ['full' => [536, 566], 'small' => [350, 478]]
+        );
+
+        // Удаляем существующие изображения, если нужно
+        $imageService->updateExistImages($id, $text['existing_images']);
+
+        // error_log(print_r( $validatorTextResult['data'], true));
+        $success = $this->service->updateProduct(
+            $id,
+            $validatorTextResult['data'],   // текстовые данные
+            // $structuredImages,                // какие картинки оставить
+            // $existingImages,                // какие картинки оставить
+            $processedNewImages             // новые картинки
+        );
+
+        if (!$success) {
+            $this->error(['Не удалось обновить продукт'], 500);
+        }
+
+        $this->success(['id' => $id], 200);
+    }
+
+    private function getStructuredImages(array $files): array 
+    {
+        //  error_log(print_r($files, true));
+        $images = [];
+
+        // 1. Обрабатываем новые загруженные файлы
+        foreach ($files['name'] ?? [] as $i => $name) {
+            if ($files['error'][$i] === UPLOAD_ERR_NO_FILE) continue; // пропускаем пустые
+            $images[] = [
+                'file_name'   => $name,
+                'tmp_name'    => $files['tmp_name'][$i],
+                'type'        => $files['type'][$i],
+                'size'        => $files['size'][$i],
+                'error'       => $files['error'][$i],
+                'image_order' => $i
+            ];
+        }
+
+        // 2. Добавляем существующие изображения из формы
+        // foreach ($existing as $i => $existingId) {
+        //     // Если нужно, можно добавить реальные имена файлов или url
+        //     $images[] = [
+        //         'existing_id' => $existingId,
+        //         'image_order' => count($images) // порядок после новых
+        //     ];
+        // }
+
+        return $images;
+    }
+
 
     // Список всех активных продуктов
     public function getAll(): array 
@@ -114,94 +206,6 @@ class ProductApiController extends BaseApiController
         $this->success(['product' => $this->serializer->toItem($product)]);
     }    
 
-    public function edit(int $id): void 
-    {
-        // $this->isAdmin(); // проверка прав
-        $productData = $this->getRequestData();
-        $text = $productData['_text'];
-        $files = $productData['_files']['cover'] ?? [];
-        // unset($productData);
-
-  // error_log(print_r( $files, true));
-    
-    
-        $structuredImages = $this->getStructuredImages($files, $text['existing_images']);
-        // $structuredImages = $this->getStructuredImages($files);
-
-        // unset($productData['existing_images']);
-
-
-  // error_log(print_r( $files, true));
-        // Валидация текста
-        $validatorText = new AdminProductValidator();
-        $validatorTextResult = $validatorText->validate($text);
-
-        // Валидация новых изображений (только то, что реально загружено через dropzone)
-        $validatorImg = new AdminProductImageValidator();
-        // $validatorImgResult = $validatorImg->validate($files);
-  
-        $validatorImgResult = $validatorImg->validate($structuredImages, $text['existing_images']);
-
-        // Объединяем ошибки
-        $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
-        if (!empty($errors)) {
-            $this->error($errors, 422);
-        }
-
-        // Подготовка новых изображений (только для новых файлов)
-        $imageService = new AdminProductImageService();
-        $processedNewImages = $imageService->prepareImages(
-            $validatorImgResult['data'],
-            ['full' => [536, 566], 'small' => [350, 478]]
-        );
-
-        // Удаляем существующие изображения, если нужно
-        $imageService->updateExistImages($id, $text['existing_images']);
-
-  // error_log(print_r( $validatorTextResult['data'], true));
-        $success = $this->service->updateProduct(
-            $id,
-            $validatorTextResult['data'],   // текстовые данные
-            // $structuredImages,                // какие картинки оставить
-            // $existingImages,                // какие картинки оставить
-            $processedNewImages             // новые картинки
-        );
-
-        if (!$success) {
-            $this->error(['Не удалось обновить продукт'], 500);
-        }
-
-        $this->success(['id' => $id], 200);
-    }
-
-    private function getStructuredImages(array $files, array $existing = []): array 
-    {
-        $images = [];
-
-        // 1. Обрабатываем новые загруженные файлы
-        foreach ($files['name'] ?? [] as $i => $name) {
-            if ($files['error'][$i] === UPLOAD_ERR_NO_FILE) continue; // пропускаем пустые
-            $images[] = [
-                'file_name'   => $name,
-                'tmp_name'    => $files['tmp_name'][$i],
-                'type'        => $files['type'][$i],
-                'size'        => $files['size'][$i],
-                'error'       => $files['error'][$i],
-                'image_order' => $i
-            ];
-        }
-
-        // 2. Добавляем существующие изображения из формы
-        // foreach ($existing as $i => $existingId) {
-        //     // Если нужно, можно добавить реальные имена файлов или url
-        //     $images[] = [
-        //         'existing_id' => $existingId,
-        //         'image_order' => count($images) // порядок после новых
-        //     ];
-        // }
-
-        return $images;
-    }
 
 
    

@@ -1,11 +1,11 @@
-const initView = () => {
-  const form = document.querySelector('#form-new, #form-edit');
+const initView = (formSelector) => {
+  const form = document.querySelector(formSelector);
   
   if (!form) return;
 
   const notification = document.querySelector('.notifications');
   const notificationTitle = document.querySelector('.notifications__title');
-  if (!notification || !notificationTitle) return;
+  if (!notification || !notificationTitle) return null;
 
   let noteText = '';
 

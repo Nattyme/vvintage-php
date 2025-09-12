@@ -1,8 +1,10 @@
-import initNewProductFormEvents from './controller.js';
-import * as api from './../../api/product/api.js';
+import initCreateProductFormEvents from './createController.js';
+import initEditProductFormEvents from './editController.js';
+
+
 const initNewProductForm = () => {
-  if (!initNewProductFormEvents) return;
-  initNewProductFormEvents();
+  initCreateProductFormEvents();
+  initEditProductFormEvents();
 }
 
 export default initNewProductForm;

@@ -78,9 +78,7 @@ class BaseApiController
                     ? $decoded
                     : $item;
             }, $_POST['existing_images']);
-        }
-  
-        
+        }        
 
         return ['_text' => $decodedPost, '_files' => $_FILES];
 

@@ -100,7 +100,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
             $imagesDto[] = new ProductImageInputDTO([
                 'product_id' => (int) $productId,
-                'cover' => (string) ($finalImage['cover'] ?? ''),
+                'filename' => (string) ($finalImage['filename'] ?? ''),
                 'image_order' => (int) ($image['image_order'] ?? 1),
                 'alt' => $image['alt'] ?? ''
             ]);
@@ -312,13 +312,14 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,
             'images' => $imagesDTO,
         ]);
+    
         return Product::fromDTO($dto);
     }
 
     private function fetchImageDTOs(array $row): array
     {
         $imagesRows = R::getAll(
-            'SELECT id, product_id, filename, image_order 
+            'SELECT * 
              FROM ' . self::TABLE_PRODUCT_IMAGES . '
              WHERE product_id = ? 
              ORDER BY image_order',
@@ -531,7 +532,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         if (!$dto) {
             return null;
         }
-     
+   
         // Транзакция сохранения продукта
         try {
           
@@ -576,6 +577,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
           $imageService = new AdminProductImageService();
           // 3. Финализируем файлы после проверки
           $finalImages = $imageService->finalizeImages($processedImages);
+      
           // Создаём DTO для изображений 
           $imagesDto = $this->createImagesInputDto($images, $finalImages, $productId);
           

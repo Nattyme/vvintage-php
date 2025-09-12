@@ -1,17 +1,15 @@
-import previewModel from "./../../preview-images/preview.model.js";
+import previewModel from "../../preview-images/preview.model.js";
 import initView from "./view.js";
 import initModel from "./model.js";
 
-const initNewProductFormEvents = () => {
+const initEditProductFormEvents = () => {
   // const previewModel = initPreviewModel();
   const formModel = initModel();
-  const formView = initView();
+  const formView = initView('#form-edit');
 
-  if (!formView || !formModel) return;
+  if (!formView) return;
 
   const formElement = formView.getFormElement();
-
-  
   if (!formElement) return;
     console.log(formElement);
 
@@ -39,63 +37,53 @@ const initNewProductFormEvents = () => {
     }
 
     formElement.addEventListener('submit', async (event) => {
-  event.preventDefault();
+      event.preventDefault();
 
-  const productId = formElement.dataset.product; // берём id товара один раз
-  console.log('Product ID:', productId);
+      const productId = formElement.dataset.product; // берём id товара один раз
+      if(!productId) return;
+      console.log('Product ID:', productId);
 
-  formModel.setFormData(formElement);
-  const orderedFiles = previewModel.getCurrentFiles();
+      formModel.setFormData(formElement);
+      const orderedFiles = previewModel.getCurrentFiles();
   
   
-  if (orderedFiles) {
-    formModel.clearFilesData();
-    formModel.setSortedFiles(orderedFiles);
-  }
+      if (orderedFiles) {
+        formModel.clearFilesData();
+        formModel.setSortedFiles(orderedFiles);
+      }
 
-  try {
-    let res;
-    if (productId) {
-      // редактирование
-      res = await formModel.updateProduct(productId, orderedFiles);
-    } else {
-      // создание
-      res = await formModel.sendProduct();
-    }
+      try {
+        const res = await formModel.updateProduct(productId, orderedFiles);
+        console.log('Ответ сервера:', res);
 
-    console.log('Ответ сервера:', res);
+        if (res.success) {
+          formView.resetForm();
+          previewModel.reset();
+          formView.displayNotification({ type: 'success', title: res.success[0] });
+          window.location.href = '/admin/shop';
+        } else if (res.errors && Object.keys(res.errors).length > 0) {
+          const errorMessages = [];
+          Object.entries(res.errors).forEach(([field, messages]) => {
+            if (Array.isArray(messages)) {
+              messages.forEach(msg => errorMessages.push(`${field}: ${msg}`));
+            } else {
+              errorMessages.push(`${field}: ${messages}`);
+            }
+          });
 
-    if (res.success) {
-      formView.resetForm();
-      previewModel.reset();
-      formView.displayNotification({ type: 'success', title: res.success[0] });
-      window.location.href = '/admin/shop';
-      return;
-    }
-
-    if (res.errors && Object.keys(res.errors).length > 0) {
-      const errorMessages = [];
-      Object.entries(res.errors).forEach(([field, messages]) => {
-        if (Array.isArray(messages)) {
-          messages.forEach(msg => errorMessages.push(`${field}: ${msg}`));
-        } else {
-          errorMessages.push(`${field}: ${messages}`);
+          formView.displayNotification({ type: 'error', title: 'Ошибка при отправке формы' });
+          formView.addNotificationText(errorMessages);
+          formView.scrollToElement('note');
         }
-      });
 
-      formView.displayNotification({ type: 'error', title: 'Ошибка при отправке формы' });
-      formView.addNotificationText(errorMessages);
-      formView.scrollToElement('note');
-    }
+      } catch (err) {
+        console.log("Ошибка сети или сервера:", err);
 
-  } catch (err) {
-    console.log("Ошибка сети или сервера:", err);
-
-    const errorMessages = err.errors ? flattenErrors(err.errors) : ["Не удалось отправить форму"];
-    formView.displayNotification({ type: 'error', title: 'Ошибка при отправке формы' });
-    formView.addNotificationText(errorMessages);
-    formView.scrollToElement('note');
-  }
+        const errorMessages = err.errors ? flattenErrors(err.errors) : ["Не удалось отправить форму"];
+        formView.displayNotification({ type: 'error', title: 'Ошибка при отправке формы' });
+        formView.addNotificationText(errorMessages);
+        formView.scrollToElement('note');
+      }
 });
 
 
@@ -190,4 +178,4 @@ const initNewProductFormEvents = () => {
 
 }
 
-export default initNewProductFormEvents;
+export default initEditProductFormEvents;

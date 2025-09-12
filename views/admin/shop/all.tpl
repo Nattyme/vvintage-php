@@ -66,7 +66,7 @@
 
           <tr data-status="<?php echo $product->getStatus();?>">
             <td class="product-table__img">
-            <?php if (file_exists(ROOT . 'usercontent/products/' . $mainImage->getFilename())) : ?>
+            <?php if ($mainImage && file_exists(ROOT . 'usercontent/products/' . $mainImage->getFilename())) : ?>
               <img 
                 src="<?php echo HOST . 'usercontent/products/' . h($mainImage->getFilename());?>" 
                 srcset="<?php echo HOST . 'usercontent/products/' . h($mainImage->getFilename());?>" 

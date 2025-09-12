@@ -108,8 +108,8 @@ final class AdminProductImageService extends ProductImageService
             }
 
             $finalPaths[] = [
-                'cover'  => basename($finalFull),
-                'cover_small' => basename($finalSmall),
+                'filename'  => basename($finalFull),
+                'filename_small' => basename($finalSmall),
             ];
         }
 
@@ -133,8 +133,8 @@ final class AdminProductImageService extends ProductImageService
     public function cleanupFinal(array $images): void
     {
         foreach ($images as $img) {
-            @unlink($this->finalFolder . $img['cover']);
-            @unlink($this->finalFolder . $img['cover_small']);
+            @unlink($this->finalFolder . $img['filename']);
+            @unlink($this->finalFolder . $img['filename_small']);
         }
     }
 
