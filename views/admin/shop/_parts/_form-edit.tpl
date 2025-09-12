@@ -8,9 +8,9 @@
 
   <div class="admin-form__row">
     <div class="admin-form__column">
-      <div class="admin-form__field">
-        <input type="hidden" name="_method" value="PUT">
-      </div>
+      
+      <input type="hidden" name="_method" value="PUT">
+    
       <div class="admin-form__field">
         <label class="admin-form__label" for="title">Дата последнего обновления</label>
       
@@ -23,9 +23,9 @@
         <div class="admin-form__item" data-control="tab">
           <!-- Навигация -->
           <div class="tab__nav" data-control="tab-nav">
-            
+            <?php $firstKey = array_key_first($languages); ?>
             <?php foreach ($languages as $code => $value ) : ?>
-              <button type="button" class="tab__nav-button tab__nav-button--flags" data-control="tab-button" 
+              <button type="button" class="tab__nav-button tab__nav-button--flags <?php echo $code === $firstKey ? 'active' : ''; ?>" data-control="tab-button" 
                       title="Перейти в редактирование текст на кнопке статуса">
                 <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . $code;?>">
               </button>
@@ -36,9 +36,10 @@
           <!-- Блоки с контентом -->
           <div class="admin-form__item">
             <div class="tab__content" data-control="tab-content">
+              <?php $firstKey = array_key_first($languages); ?>
               <?php foreach ($languages as $code => $value ) : ?>
-                <div class="tab__block" data-control="tab-block">
-                <?php include ROOT . "views/admin/shop/translations/_fields.tpl";?>
+                <div class="tab__block  <?php echo $code === $firstKey ? 'active' : ''; ?>" data-control="tab-block">
+                  <?php include ROOT . "views/admin/shop/translations/_fields.tpl";?>
                 </div>
               <?php endforeach;?>
             </div>
@@ -162,11 +163,11 @@
     </div>
 
     <div class="admin-form__column admin-form__column--imgs">
-      <div class="admin-form__field">
-        <?php foreach ($product->getImages() as $img): ?>
-            <input type="hidden" name="existing_images[]" value="<?php echo h($img->getId()); ?>">
-        <?php endforeach; ?>
-      </div>
+   
+      <?php foreach ($product->getImages() as $img): ?>
+          <input type="hidden" name="existing_images[]" value="<?php echo h($img->getId()); ?>">
+      <?php endforeach; ?>
+    
       <div class="admin-form__field">
       
           <label class="admin-form__label" for="file">Фотографии товара</label>
