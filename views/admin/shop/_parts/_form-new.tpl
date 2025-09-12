@@ -29,7 +29,7 @@
           <!--// Блоки с контентом -->
         </div>
       </div>
-
+<!-- 
       <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название товара</label>
         <input 
@@ -41,7 +41,7 @@
           placeholder="Введите название" 
           required
         />
-      </div>
+      </div> -->
 
       <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название для страницы товара (латиницей: chasy-chanel)</label>
@@ -144,10 +144,10 @@
           </div>
       </div>
 
-      <div class="admin-form__field">
+      <!-- <div class="admin-form__field">
         <label class="admin-form__text" for="description">Описание товара</label>
         <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="description" rows="5" cols="1" id="description"><?php echo isset($_POST['description']) ? h($_POST['description']) : ''; ?></textarea>
-      </div>
+      </div> -->
 
       <div class="admin-form__field">
           <label class="admin-form__label" for="status">Статус</label>

@@ -36,7 +36,7 @@ class ProductApiController extends BaseApiController
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($text);
-  // error_log(print_r( $validatorTextResult, true));
+  error_log(print_r( $validatorTextResult, true));
         $structuredImages = $this->getStructuredImages($files);
 
         // Валидация изображений

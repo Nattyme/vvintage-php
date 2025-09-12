@@ -95,6 +95,27 @@ final class AdminProductValidator
     /**
      * Синхронизация переводов: если остальные языки пустые — заполняем английским
      */
+    // private function synchronize(array $translations, array $data): array
+    // {
+    //     // Основные поля берем с русского
+    //     $data['title'] = $translations['ru']['title'] ?? '';
+    //     $data['description'] = $translations['ru']['description'] ?? '';
+
+    //     // Убедимся, что английский существует
+    //     $translations['en']['title'] = $translations['en']['title'] ?? '';
+    //     $translations['en']['description'] = $translations['en']['description'] ?? '';
+
+    //     // Остальные языки — если пусто, подставляем английский
+    //     foreach ($translations as $lang => $trans) {
+    //         if (in_array($lang, ['ru','en'], true)) continue;
+
+    //         $translations[$lang]['title'] =  $trans['title'] ?: $translations['en']['title'];;
+    //         $translations[$lang]['description'] = $trans['description'] ?: $translations['en']['description'];
+    //     }
+
+    //     $data['translations'] = $translations;
+    //     return $data;
+    // }
     private function synchronize(array $translations, array $data): array
     {
         // Основные поля берем с русского
@@ -105,17 +126,23 @@ final class AdminProductValidator
         $translations['en']['title'] = $translations['en']['title'] ?? '';
         $translations['en']['description'] = $translations['en']['description'] ?? '';
 
-        // Остальные языки — если пусто, подставляем английский
-        foreach ($translations as $lang => $trans) {
-            if (in_array($lang, ['ru','en'], true)) continue;
+        foreach ($translations as $lang => &$trans) {
+            if (in_array($lang, ['ru', 'en'], true)) continue;
 
-            $translations[$lang]['title'] = $trans['title'] ?? $translations['en']['title'];
-            $translations[$lang]['description'] = $trans['description'] ?? $translations['en']['description'];
+            $titleEmpty = !isset($trans['title']) || trim($trans['title']) === '';
+            $descEmpty  = !isset($trans['description']) || trim($trans['description']) === '';
+
+            if ($titleEmpty && $descEmpty) {
+                // если оба поля пустые — подставляем английские значения
+                $trans['title'] = $translations['en']['title'];
+                $trans['description'] = $translations['en']['description'];
+            }
         }
 
         $data['translations'] = $translations;
         return $data;
     }
+
 
 
   /**
