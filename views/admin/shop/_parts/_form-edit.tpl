@@ -47,12 +47,7 @@
           <!--// Блоки с контентом -->
         </div>
       </div>
-      <div class="admin-form__field">
-        <label class="admin-form__label" for="title">Название товара</label>
-        <input id="title" name="title" class="admin-form__input input" type="text"
-                value="<?php echo isset($_POST['title']) ? h($_POST['title']) : h($product->getTitle()); ?>"
-                placeholder="Введите название" required/>
-      </div>
+
 
       <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название для страницы товара (латиницей: chasy-chanel)</label>
@@ -139,12 +134,6 @@
         </div>
       </div>
 
-      <div class="admin-form__field">
-        <label class="admin-form__label" for="editor">Описание товара</label>
-        <textarea class="admin-form__textarea" placeholder="Введите описание товара" name="content" rows="5" cols="1" id="editor">
-          <?php echo isset($_POST['content']) ? h($_POST['content']) : h($product->getContent()); ?>
-        </textarea>
-      </div>
 
         <div class="admin-form__field">
             <label class="admin-form__label" for="status">Статус</label>
