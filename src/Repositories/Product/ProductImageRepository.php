@@ -124,14 +124,16 @@ final class ProductImageRepository extends AbstractRepository implements Product
 
     public function updateImagesOrder(int $productId, array $images): void
     {
-        foreach ($images as $img) {
-            $bean = $this->loadBean('product_images', $img['id']);
+        foreach ($images as $index => $img) {
+            $bean = $this->loadBean(self::TABLE, (int) $img['id']);
             if ($bean && $bean->product_id == $productId) {
-                $bean->image_order = $img['image_order'];
+                // Порядок берём из позиции элемента в массиве
+                $bean->image_order = $index;
                 $this->saveBean($bean);
             }
         }
     }
+
 
 
 }

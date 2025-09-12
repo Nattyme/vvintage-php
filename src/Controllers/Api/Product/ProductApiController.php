@@ -114,7 +114,7 @@ class ProductApiController extends BaseApiController
         );
 
         // Удаляем существующие изображения, если нужно
-        $imageService->updateExistImages($id, $text['existing_images']);
+        // $imageService->updateExistImages($id, $text['existing_images']);
 
         // error_log(print_r( $validatorTextResult['data'], true));
         $success = $this->service->updateProduct(

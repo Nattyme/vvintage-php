@@ -93,7 +93,7 @@ final class AdminProductService extends ProductService
         return $productId;
     }
 
-    public function updateProduct(int $id, array $data, array $processedImages): bool
+    public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool
     {
         // 1. Собираем DTO продукта
         $productDto = $this->createProductInputDto($data);
