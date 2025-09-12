@@ -36,7 +36,7 @@ class ProductApiController extends BaseApiController
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($text);
-  error_log(print_r( $validatorTextResult, true));
+
         $structuredImages = $this->getStructuredImages($files);
 
         // Валидация изображений
@@ -77,9 +77,10 @@ class ProductApiController extends BaseApiController
         $productData = $this->getRequestData();
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
+        $existingImages = $text['existing_images'] ?? []; // массив с id и image_order
         // unset($productData);
 
-        // error_log(print_r( $files, true));
+        error_log(print_r(  $text['existing_images'], true));
     
     
         $structuredImages = $this->getStructuredImages($files);
@@ -97,7 +98,7 @@ class ProductApiController extends BaseApiController
         $validatorImg = new AdminProductImageValidator();
         // $validatorImgResult = $validatorImg->validate($files);
   
-        $validatorImgResult = $validatorImg->validate($structuredImages, $text['existing_images']);
+        $validatorImgResult = $validatorImg->validate($structuredImages, $existingImages);
 
         // Объединяем ошибки
         $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
@@ -120,7 +121,7 @@ class ProductApiController extends BaseApiController
             $id,
             $validatorTextResult['data'],   // текстовые данные
             // $structuredImages,                // какие картинки оставить
-            // $existingImages,                // какие картинки оставить
+            $existingImages,                // существующие изображения с новым порядком
             $processedNewImages             // новые картинки
         );
 

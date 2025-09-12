@@ -39,10 +39,11 @@ interface ProductImageRepositoryInterface
    */
   public function removeImage(int $id): void;
 
-  public function removeImagesByIds(array $ids): void;
 
   /**
      * Удалить все изображения продукта
   */
   public function removeAllImages(int $product_id): void;
+  public function deleteImagesNotInList(int $productId, array $keepIds): void;
+  public function updateImagesOrder(int $productId, array $images): void;
 }

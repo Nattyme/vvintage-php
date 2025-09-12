@@ -81,19 +81,6 @@ final class ProductImageRepository extends AbstractRepository implements Product
         }
     }
 
-    public function removeImagesByIds(array $ids): void
-    {
-        if (empty($ids)) return;
-
-        $placeholders = implode(',', array_fill(0, count($ids), '?'));
-        $beans = $this->findAll(self::TABLE, "WHERE id IN ($placeholders)", $ids);
-
-        foreach ($beans as $bean) {
-            $this->deleteBean($bean);
-        }
-    }
-
-
     /**
      * Удалить все изображения продукта
      */
@@ -118,4 +105,33 @@ final class ProductImageRepository extends AbstractRepository implements Product
             'alt' => (string) $bean->alt,
         ]);
     }
+
+    public function deleteImagesNotInList(int $productId, array $keepIds): void
+    {
+        if (empty($keepIds)) {
+            $beans = $this->findAll('product_images', 'WHERE product_id = ?', [$productId]);
+        } else {
+            $placeholders = implode(',', array_fill(0, count($keepIds), '?'));
+            $params = array_merge([$productId], $keepIds);
+            $beans = $this->findAll('product_images', "WHERE product_id = ? AND id NOT IN ($placeholders)", $params);
+        }
+
+        foreach ($beans as $bean) {
+            $this->deleteBean($bean);
+        }
+    }
+
+
+    public function updateImagesOrder(int $productId, array $images): void
+    {
+        foreach ($images as $img) {
+            $bean = $this->loadBean('product_images', $img['id']);
+            if ($bean && $bean->product_id == $productId) {
+                $bean->image_order = $img['image_order'];
+                $this->saveBean($bean);
+            }
+        }
+    }
+
+
 }

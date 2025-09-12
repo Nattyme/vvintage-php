@@ -106,8 +106,18 @@ final class AdminProductService extends ProductService
             return false;
         }
 
+        // 2. Удаляем изображения, которых нет в existingImages
+        $existingIds = array_column($existingImages, 'id');
+        $this->imageService->deleteImagesNotInList($id, $existingIds);
+
+        // 3. Обновляем порядок оставшихся изображений
+        $this->imageService->updateImagesOrder($id, $existingImages);
+
+
+
+
         // 3. Конвертация изображений в DTO
-        $imagesDto = $this->buildImageDtos($processedNewImages);
+        $imagesDto = $this->buildImageDtos($processedImages);
         // $imagesDto = [];
     
         // foreach ($processedNewImages as $img) {
