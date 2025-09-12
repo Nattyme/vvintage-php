@@ -138,4 +138,14 @@ final class AdminProductImageService extends ProductImageService
         }
     }
 
+    public function deleteImagesNotInList (int $productId, array $keepIds): void 
+    {
+      $this->repository->deleteImagesNotInList($productId, $keepIds);
+    }
+    
+    public function updateImagesOrder(int $productId, array $images): void 
+    {
+      $this->repository->updateImagesOrder($productId, $images);
+    }
+
 }

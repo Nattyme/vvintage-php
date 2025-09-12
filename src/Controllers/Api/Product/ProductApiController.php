@@ -80,7 +80,7 @@ class ProductApiController extends BaseApiController
         $existingImages = $text['existing_images'] ?? []; // массив с id и image_order
         // unset($productData);
 
-        error_log(print_r(  $text['existing_images'], true));
+       
     
     
         $structuredImages = $this->getStructuredImages($files);

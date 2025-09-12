@@ -109,11 +109,11 @@ final class ProductImageRepository extends AbstractRepository implements Product
     public function deleteImagesNotInList(int $productId, array $keepIds): void
     {
         if (empty($keepIds)) {
-            $beans = $this->findAll('product_images', 'WHERE product_id = ?', [$productId]);
+            $beans = $this->findAll(self::TABLE, 'WHERE product_id = ?', [$productId]);
         } else {
             $placeholders = implode(',', array_fill(0, count($keepIds), '?'));
             $params = array_merge([$productId], $keepIds);
-            $beans = $this->findAll('product_images', "WHERE product_id = ? AND id NOT IN ($placeholders)", $params);
+            $beans = $this->findAll(self::TABLE, "WHERE product_id = ? AND id NOT IN ($placeholders)", $params);
         }
 
         foreach ($beans as $bean) {

@@ -108,6 +108,7 @@ final class AdminProductService extends ProductService
 
         // 2. Удаляем изображения, которых нет в existingImages
         $existingIds = array_column($existingImages, 'id');
+         error_log(print_r(  $existingIds, true));
         $this->imageService->deleteImagesNotInList($id, $existingIds);
 
         // 3. Обновляем порядок оставшихся изображений
