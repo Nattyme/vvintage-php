@@ -24,14 +24,15 @@ use Vvintage\DTO\Category\CategoryInputDTO;
 final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
 {
     private const TABLE = 'categories';
-    private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
-    private string $currentLang;
-    private const DEFAULT_LANG = 'ru';
+    // private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
+    // private string $currentLang;
+    // private const DEFAULT_LANG = 'ru';
     private CategoryTranslationRepository $translations;
 
-    public function __construct(string $currentLang)
+    // public function __construct(string $currentLang)
+    public function __construct()
     {
-       $this->currentLang = $currentLang;
+      //  $this->currentLang = $currentLang;
        $this->translations = new CategoryTranslationRepository();
     }
 
