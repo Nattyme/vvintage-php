@@ -13,6 +13,7 @@ use Vvintage\Contracts\Category\CategoryRepositoryInterface;
 
 /** Абстрактный репозиторий */
 use Vvintage\Repositories\AbstractRepository;
+use Vvintage\Repositories\Category\CategoryTranslationRepository;
 
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryDTO;
@@ -26,53 +27,28 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
     private string $currentLang;
     private const DEFAULT_LANG = 'ru';
+    private CategoryTranslationRepository $translations;
 
     public function __construct(string $currentLang)
     {
        $this->currentLang = $currentLang;
+       $this->translations = new CategoryTranslationRepository();
     }
 
-    /**
-     * Загружает переводы из categories_translation
-     */
-    private function loadTranslations(int $categoryId): array
-    {
-        $sql = 'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?';
-        $rows = $this->getAll($sql, [$categoryId]);
-
-        $translations = [];
-        foreach ($rows as $row) {
-            $translations[$row['locale']] = [
-                'title' => $row['title'],
-                'description' => $row['description'],
-                'meta_title' => $row['meta_title'],
-                'meta_description' => $row['meta_description'],
-            ];
-        }
-
-        return $translations;
-    }
 
     private function mapBeanToCategory(OODBBean $bean): Category
     {
- 
-        $translations = $this->loadTranslations((int) $bean->id);
 
-        $translatedData = $translations[$this->currentLang] ?? $translations[self::DEFAULT_LANG] ?? [
-            'title' => '',
-            'description' => '',
-            'meta_title' => '',
-            'meta_description' => ''
-        ];
+      $translatedData = $this->translations->getTranslationsArray((int) $bean->id);
 
 
-        $dto = new CategoryInputDTO([
-            'id' => (int) $bean->id,
-            'title' => (string) $bean->title,
-            'parent_id' => (int) $bean->parent_id,
-            'image' => (string) $bean->image,
-            'translations' => $translations
-        ]);
+      $dto = new CategoryInputDTO([
+          'id' => (int) $bean->id,
+          'title' => (string) $bean->title,
+          'parent_id' => (int) $bean->parent_id,
+          'image' => (string) $bean->image,
+          'translations' => $translations
+      ]);
 
         return Category::fromDTO($dto);
     }
@@ -89,27 +65,6 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return $this->mapBeanToCategory($bean);
     }
 
-    // public function getAllCategories(): array
-    // {
-    //     $beans = $this->findAll(self::TABLE_CATEGORIES);
-
-    //     return array_map([$this, 'mapBeanToCategory'], $beans);
-    // }
-
-    // private function getAllCategoriesTranslated(array $params): array 
-    // {
-    //   $sql = '
-    //       SELECT c.id, c.parent_id, c.image,
-    //         ct.title, ct.description, ct.meta_title, ct.meta_description
-    //       FROM categories c
-    //       LEFT JOIN categories_translation ct
-    //         ON c.id = ct.category_id AND ct.locale = ?
-    //   ';
-
-    //   $beans = $this->findAll(self::TABLE_CATEGORIES, $sql, $params);
-
-    //    return array_map([$this, 'mapBeanToCategory'], $beans);
-    // }
 
     public function getAllCategories(): array
     {
@@ -164,97 +119,19 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
         // НЕ удаляем все переводы
         foreach ($cat->getAllTranslations() as $locale => $translation) {
-            // ищем перевод для этой локали
-            $transBean = $this->findOneBy(
-                self::TABLE_CATEGORIES_TRANSLATION,
-                'category_id = ? AND locale = ?',
-                [$id, $locale]
-            );
+          // ищем перевод для этой локали
+          $transBean =  $this->translations->findTranslations($id, $locale);
 
-            if (!$transBean) {
-                // если нет — создаём новый
-                $transBean = $this->createBean(self::TABLE_CATEGORIES_TRANSLATION);
-                $transBean->category_id = $id;
-                $transBean->locale = $locale;
-            }
+          if (!$transBean) {
+            // если нет — создаём новый
+            $this->translations->createTranslation();
+          }
 
-            // Обновляем только те поля, что реально пришли
-            if (array_key_exists('title', $translation)) {
-                $transBean->title = $translation['title'];
-            }
-            if (array_key_exists('description', $translation)) {
-                $transBean->description = $translation['description'];
-            }
-            if (array_key_exists('meta_title', $translation)) {
-                $transBean->meta_title = $translation['meta_title'];
-            }
-            if (array_key_exists('meta_description', $translation)) {
-                $transBean->meta_description = $translation['meta_description'];
-            }
-
-            $this->saveBean($transBean);
+          $this->translations->updateTranslations( $transBean, $translation);
         }
 
         return $id;
     }
-
-
-    // public function saveCategory(Category $cat): int
-    // {
-    
-    //     $bean = $cat->getId() ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId()) : $this->createBean(self::TABLE_CATEGORIES);
-
-    //     $bean->title = $cat->getTitle(); // по умолчанию ru
-    //     $bean->parent_id = $cat->getParentId();
-    //     $bean->slug = $cat->getSlug();
-    //     $bean->image = $cat->getImage();
-    //     $bean->seo_title = $cat->getSeoTitle();
-    //     $bean->seo_description = $cat->getSeoDescription();
-
-    //     $id = (int) $this->saveBean($bean);
-
-    //     // Сохраняем переводы в отдельную таблицу
-    //     R::exec('DELETE FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?', [$id]);
-    //     foreach ($cat->getAllTranslations() as $locale => $translation) {
-    //         $transBean = $this->createBean(self::TABLE_CATEGORIES_TRANSLATION);
-    //         $transBean->category_id = $id;
-    //         $transBean->locale = $locale;
-    //         $transBean->title = $translation['title'] ?? '';
-    //         $transBean->description = $translation['description'] ?? '';
-    //         $transBean->meta_title = $translation['meta_title'] ?? '';
-    //         $transBean->meta_description = $translation['meta_description'] ?? '';
-    //         $this->saveBean($transBean);
-    //     }
-
-    //     return $id;
-    // }
-    // public function saveCategory(Category $cat): int
-    // {
-    //     $bean = $cat->getId() ? $this->loadBean(self::TABLE_CATEGORIES, $cat->getId()) : $this->createBean(self::TABLE_CATEGORIES);
-
-    //     $bean->title = $cat->getTitle(); // по умолчанию ru
-    //     $bean->parent_id = $cat->getParentId();
-    //     $bean->image = $cat->getImage();
-    //     $bean->seo_title = $cat->getSeoTitle();
-    //     $bean->seo_description = $cat->getSeoDescription();
-
-    //     $id = (int) $this->saveBean($bean);
-
-    //     // Сохраняем переводы в отдельную таблицу
-    //     R::exec('DELETE FROM ' . self::TABLE_CATEGORIES_TRANSLATION .' WHERE category_id = ?', [$id]);
-    //     foreach ($cat->getAllTranslations() as $locale => $translation) {
-    //         $transBean = $this->createBean(self::TABLE_CATEGORIES_TRANSLATION);
-    //         $transBean->category_id = $id;
-    //         $transBean->locale = $locale;
-    //         $transBean->title = $translation['title'] ?? '';
-    //         $transBean->description = $translation['description'] ?? '';
-    //         $transBean->meta_title = $translation['meta_title'] ?? '';
-    //         $transBean->meta_description = $translation['meta_description'] ?? '';
-    //         $this->saveBean($transBean);
-    //     }
-
-    //     return $id;
-    // }
 
     public function updateCategory(Category $cat): int
     {
@@ -272,21 +149,6 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     }
 
     
-
-   
-    private function mapBeanToArray(OODBBean $bean): array
-    {
-      $translations = $this->loadTranslations((int) $bean->id);
-
-      return [
-          'id' => (int) $bean->id,
-          'title' => (string) $bean->title,
-          'parent_id' => (int) $bean->parent_id,
-          'image' => (string) $bean->image,
-          'translations' => $translations
-      ];
-    }
-
     // Для api
     public function getMainCategoriesArray(): array
     {
@@ -294,7 +156,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         $beans = $this->findAll(self::TABLE, 'parent_id IS NULL');
 
         // Сбрасываем ключи и преобразуем в массивы
-        return array_values(array_map([$this, 'mapBeanToArray'], $beans));
+        return array_values(array_map([$this->translations, 'getTranslationsArray'], $beans));
     }
 
     public function getSubCategoriesArray(?int $parent_id = null): array
@@ -306,7 +168,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
             $beans = $this->findAll(self::TABLE, 'parent_id IS NOT NULL');
         }
 
-        return array_values(array_map([$this, 'mapBeanToArray'], $beans));
+        return array_values(array_map([$this->translations, 'getTranslationsArray'], $beans));
     }
 
 
@@ -316,7 +178,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         $beans = $this->findAll(self::TABLE);
 
         // Сбрасываем ключи и преобразуем в массивы
-        return array_values(array_map([$this, 'mapBeanToArray'], $beans));
+        return array_values(array_map([$this->translations, 'getTranslationsArray'], $beans));
     }
 
 
@@ -375,6 +237,8 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
       $bean = $this->loadBean(self::TABLE, $id);
       $this->deleteBean($bean);
     }
+
+  
 
 
 }

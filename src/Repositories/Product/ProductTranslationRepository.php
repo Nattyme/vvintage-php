@@ -80,7 +80,7 @@ final class ProductTranslationRepository extends AbstractRepository implements P
             }
 
             // ищем существующий перевод
-            $bean = $this->findOneBy(self::TABLE_PRODUCTS_TRANSLATION, ' product_id = ? AND locale = ? ', [$dto->product_id, $dto->locale]);
+            $bean = $this->findOneBy(self::TABLE, ' product_id = ? AND locale = ? ', [$dto->product_id, $dto->locale]);
 
             if (!$bean) {
                 // если нет → создаём новый

@@ -40,7 +40,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private const TABLE_BRANDS_TRANSLATION = 'brandstranslation';
 
     private const TABLE_CATEGORIES = 'categories';
-    private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
+    // private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
 
     // private const DEFAULT_LOCALE = 'ru';
     // private string $currentLocale;
