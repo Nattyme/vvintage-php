@@ -24,7 +24,7 @@
   </header>
 
   <form class="form-products-table" method="POST">
-    <div class="admin-form__row">
+    <div class="admin-form__row admin-form__header">
       <select class="select" name="action">
         <option value="">— Выберите действие —</option>
         <?php foreach ($productViewModel['actions'] as $key => $value) : ?>

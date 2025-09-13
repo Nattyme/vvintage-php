@@ -4,41 +4,47 @@
     <?php include ROOT . "views/components/success.tpl"; ?>
 
 
-    <header class="admin-form__header admin-form__row">
+    <header class="admin-form__header">
+      <div class="admin-form__header-form admin-form__row">
         <a href="<?php echo HOST . 'admin/category-new';?>" class="button button--m button--outline" data-btn="add">
           Новый раздел
         </a>
 
-      <!-- SEARCH FORM-->
-      <form method="GET" action="" class="search" role="search">
-        <label for="query" class="visually-hidden">Найти</label>
-        <input 
-          id="query"
-          type="text" 
-          name="query" 
-          placeholder="Найти" 
-          value="<?php echo h($searchQuery); ?>"
-        >
+        <!-- SEARCH FORM-->
+        <form method="GET" action="" class="search" role="search">
+          <label for="query" class="visually-hidden">Найти</label>
+          <input 
+            id="query"
+            type="text" 
+            name="query" 
+            placeholder="Найти" 
+            value="<?php echo h($searchQuery); ?>"
+          >
 
-        <button type="search-submit">
-          <svg class="icon icon--loupe">
-            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
-          </svg>
-        </button>
-      </form>
-      <!-- SEARCH FORM-->
+          <button type="search-submit">
+            <svg class="icon icon--loupe">
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
+            </svg>
+          </button>
+        </form>
+        <!-- SEARCH FORM-->
+      </div>
+      <div class="admin-form__header-form admin-form__row">
+        <form method="GET" action="" class="form-products-table__actions">
+          <select class="select" name="action">
+            <option value="">— Все разделы —</option>
+            <?php foreach ($mainCats as $mainCat) : ?>
+              <option value="<?php echo h($mainCat->getId()); ?>" <?php echo ($filterSection == $mainCat->getId()) ? 'selected' : '' ?>>
+                <?php echo h($mainCat->getTitle()) ?>
+              </option>
+            <?php endforeach;?>
+          </select>
+          <button type="submit" class="button button--s button--primary">Применить</button>
+        </form>
+      </div>
+
     </header>
-    <form method="GET" action="" class="form-products-table__actions">
-      <select class="select" name="action">
-        <option value="">— Все разделы —</option>
-        <?php foreach ($mainCats as $mainCat) : ?>
-          <option value="<?php echo h($mainCat->getId()); ?>" <?php echo ($filterSection == $mainCat->getId()) ? 'selected' : '' ?>>
-            <?php echo h($mainCat->getTitle()) ?>
-          </option>
-        <?php endforeach;?>
-      </select>
-      <button type="submit" class="button button--s button--primary">Применить</button>
-    </form>
+
 
     <!-- Таблица -->
     <table class="table">
