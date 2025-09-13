@@ -82,7 +82,7 @@ final class AdminProductService extends ProductService
         $productDto = $this->createProductInputDto($data);
 
         $translations = $data['translations'] ?? [];
-        $imagesDto = $this->buildImageDtos($processedImages);
+        // $imagesDto = $this->imageService->buildImageDtos($processedImages);
     
         $productId = $this->repository->saveProduct($productDto, $translations,  $images, $processedImages);
 
@@ -99,47 +99,73 @@ final class AdminProductService extends ProductService
         $productDto = $this->createProductInputDto($data);
         $translations = $data['translations'] ?? [];
 
-        // 2. Обновляем сам продукт (текстовые поля, цену и т.п.)
-        $updated = $this->repository->updateProductData($id, $productDto, $translations);
+        // 2. Собираем DTO изображений для репозитория
+        $imagesDto = $this->imageService->buildImageDtos($id, $processedImages); // метод возвращает ProductImageInputDTO[]
 
-        if (! $updated) {
+        // 3. Передаем всё в репозиторий
+        try {
+            $updated = $this->repository->updateProductData(
+                $id,
+                $productDto,
+                $imagesDto,
+                $translations
+            );
+        } catch (\Throwable $e) {
+  
             return false;
         }
 
-        // 2. Удаляем изображения, которых нет в existingImages
-        $existingIds = array_column($existingImages, 'id');
-         error_log(print_r(  $existingIds, true));
-        $this->imageService->deleteImagesNotInList($id, $existingIds);
-
-        // 3. Обновляем порядок оставшихся изображений
-        $this->imageService->updateImagesOrder($id, $existingImages);
-
-
-
-
-        // 3. Конвертация изображений в DTO
-        $imagesDto = $this->buildImageDtos($processedImages);
-        // $imagesDto = [];
-    
-        // foreach ($processedNewImages as $img) {
-        //     if (empty($img)) {
-        //         continue;
-        //     }
-
-        //     $imagesDto[] = new ProductImageInputDTO([
-        //         'filename' => $img['final_full'] ?? '',
-        //         'image_order' => $img['image_order'] ?? 0,
-        //         'alt' => $img['alt'] ?? '',
-        //     ]);
-        // }
-
-        // 4. Добавляем новые картинки
-        if (!empty($imagesDto)) {
-            $this->repository->addProductImages($id, $imagesDto);
-        }
-
-        return true;
+        return $updated;
     }
+
+
+    // public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool
+    // {
+    //     // 1. Собираем DTO продукта
+    //     $productDto = $this->createProductInputDto($data);
+    //     $translations = $data['translations'] ?? [];
+
+    //     // 2. Обновляем сам продукт (текстовые поля, цену и т.п.)
+    //     $updated = $this->repository->updateProductData($id, $productDto, $processedImages, $dtoImagesFromRequest, $translations);
+
+    //     if (! $updated) {
+    //         return false;
+    //     }
+
+    //     // 2. Удаляем изображения, которых нет в existingImages
+    //     $existingIds = array_column($existingImages, 'id');
+    //      error_log(print_r(  $existingIds, true));
+    //     $this->imageService->updateProduct;
+
+    //     // 3. Обновляем порядок оставшихся изображений
+    //     $this->imageService->updateImagesOrder($id, $existingImages);
+
+
+
+
+    //     // 3. Конвертация изображений в DTO
+    //     $imagesDto = $this->buildImageDtos($processedImages);
+    //     // $imagesDto = [];
+    
+    //     // foreach ($processedNewImages as $img) {
+    //     //     if (empty($img)) {
+    //     //         continue;
+    //     //     }
+
+    //     //     $imagesDto[] = new ProductImageInputDTO([
+    //     //         'filename' => $img['final_full'] ?? '',
+    //     //         'image_order' => $img['image_order'] ?? 0,
+    //     //         'alt' => $img['alt'] ?? '',
+    //     //     ]);
+    //     // }
+
+    //     // 4. Добавляем новые картинки
+    //     if (!empty($imagesDto)) {
+    //         $this->repository->addProductImages($id, $imagesDto);
+    //     }
+
+    //     return true;
+    // }
 
     // public function updateProduct(int $id, array $data, array $processedNewImages): bool
     // {
@@ -223,23 +249,48 @@ final class AdminProductService extends ProductService
       return $this->imageService->addImages($productId, $files);
     }
 
-    private function buildImageDtos(array $processedImages): array
-    {
-        $imagesDto = [];
+    // private function buildImageDtos(array $processedImages): array
+    // {
+    //     $imagesDto = [];
 
-        foreach ($processedImages as $img) {
-            if (empty($img)) {
-                continue;
-            }
+    //     foreach ($processedImages as $img) {
+    //         // если изображение уже в базе — пропускаем
+    //         if (!empty($img['id'])) {
+    //             continue;
+    //         }
 
-            $imagesDto[] = new ProductImageInputDTO([
-                'filename'    => $img['final_full'] ?? '',
-                'image_order' => $img['image_order'] ?? 0,
-                'alt'         => $img['alt'] ?? '',
-            ]);
-        }
+    //         if (empty($img['final_full'])) {
+    //             continue; // пустой файл игнорируем
+    //         }
 
-        return $imagesDto;
-    }
+    //         $imagesDto[] = new ProductImageInputDTO([
+    //             'filename' => $img['final_full'],
+    //             'image_order' => $img['image_order'] ?? 0,
+    //             'alt' => $img['alt'] ?? '',
+    //         ]);
+    //     }
+
+    //     return $imagesDto;
+    // }
+
+
+    // private function buildImageDtos(array $processedImages): array
+    // {
+    //     $imagesDto = [];
+
+    //     foreach ($processedImages as $img) {
+    //         if (empty($img)) {
+    //             continue;
+    //         }
+
+    //         $imagesDto[] = new ProductImageInputDTO([
+    //             'filename'    => $img['final_full'] ?? '',
+    //             'image_order' => $img['image_order'] ?? 0,
+    //             'alt'         => $img['alt'] ?? '',
+    //         ]);
+    //     }
+
+    //     return $imagesDto;
+    // }
 
 }

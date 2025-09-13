@@ -18,6 +18,12 @@ final class ProductImageRepository extends AbstractRepository implements Product
 {
     private const TABLE = 'productimages';
 
+    /** Создаёт новый OODBBean для изображения продукта */
+    private function createProductImageBean(): OODBBean 
+    {
+        return $this->createBean(self::TABLE);
+    }
+
     /**
      * Получить все изображения продукта, отсортированные по порядку
      */
@@ -60,7 +66,7 @@ final class ProductImageRepository extends AbstractRepository implements Product
      */
     public function updateImage(int $id, ProductImageInputDTO $input): ProductImageOutputDTO
     {
-      error_log(print_r($input, true));
+      // error_log(print_r($input, true));
         $bean = $this->loadBean(self::TABLE, $id);
         $bean->filename = $input->filename;
         $bean->image_order = $input->image_order;
@@ -134,6 +140,114 @@ final class ProductImageRepository extends AbstractRepository implements Product
             }
         }
     }
+
+    public function createImagesInputDto(array $images, array $finalImages, int $productId): array
+    {
+        $imagesDto = [];
+
+        // перебираем finalImages — это итог с filename
+        foreach ($finalImages as $index => $finalImage) {
+            $filename = $finalImage['filename'] ?? '';
+            if (!$filename) {
+                throw new RuntimeException("Пустое имя файла для изображения на позиции {$index}");
+            }
+
+            // ищем соответствующий $images[$index] или берём дефолт
+            $image = $images[$index] ?? [];
+            $imagesDto[] = new ProductImageInputDTO([
+                'product_id' => $productId,
+                'filename' => (string) $filename,
+                'image_order' => (int) ($image['image_order'] ?? $index),
+                'alt' => $image['alt'] ?? '',
+            ]);
+        }
+
+        return $imagesDto;
+    }
+
+    public function fetchImageDTOs(array $row): array
+    {
+      $sql = 'SELECT * 
+             FROM ' . self::TABLE_PRODUCT_IMAGES . '
+             WHERE product_id = ? 
+             ORDER BY image_order';
+
+      $imagesRows = $this->getAll($sql, [$row['id']]);
+      return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
+    }
+    
+    public function saveProductImages(array $imagesDto): ?array
+    {
+        $ids = [];
+        // error_log(print_r($imagesDto, true));
+        foreach($imagesDto as $dto) {
+            if (!$dto) return null;
+
+            // ПРОВЕРКА: существует ли файл
+            if (!file_exists(ROOT . 'usercontent/products/' . $dto->filename)) {
+                throw new RuntimeException("Файл {$dto->filename} не найден. Сохранение изображения отменено.");
+            }
+
+            $bean = $this->createProductImageBean();
+            $bean->product_id = $dto->product_id;
+            $bean->filename = $dto->filename;
+            $bean->image_order = $dto->image_order;
+            $bean->alt = $dto->alt;
+
+            $this->saveBean($bean);
+
+            $id = (int) $bean->id;
+            if (!$id) return null;
+
+            $ids[] = $id;
+        }
+
+        return $ids;
+    }
+
+    /**
+     * Добавляет новые изображения для продукта
+     * 
+     * @param int $productId
+     * @param ProductImageInputDTO[] $imagesDto
+     * @return array|null  Массив ID добавленных изображений или null при ошибке
+    */
+    public function addProductImages(int $productId, array $imagesDto): ?array
+    {
+        if (empty($imagesDto)) {
+            return [];
+        }
+
+        $ids = [];
+
+        foreach ($imagesDto as $dto) {
+            if (!$dto) {
+                return null;
+            }
+
+            $bean = $this->createProductImageBean();
+
+            $bean->product_id = $productId;
+            $bean->filename = $dto->filename;
+            $bean->image_order = $dto->image_order;
+            $bean->alt = $dto->alt;
+
+            $this->saveBean($bean);
+
+            $id = (int) $bean->id;
+            if (!$id) {
+                return null;
+            }
+
+            $ids[] = $id;
+        }
+
+        return $ids;
+    }
+
+
+
+
 
 
 

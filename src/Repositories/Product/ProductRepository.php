@@ -11,6 +11,7 @@ use RuntimeException;
 /** Контракты */
 use Vvintage\Contracts\Product\ProductRepositoryInterface;
 use Vvintage\Repositories\AbstractRepository;
+use Vvintage\Repositories\Product\ProductImageRepository;
 
 /** Модели */
 use Vvintage\Models\Product\Product;
@@ -26,13 +27,13 @@ use Vvintage\DTO\Category\CategoryDTO;
 use Vvintage\DTO\Category\CategoryOutputDTO;
 use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
-use Vvintage\DTO\Product\ProductTranslationInputDTO;
+// use Vvintage\DTO\Product\ProductTranslationInputDTO;
 use Vvintage\Services\Admin\Product\AdminProductImageService;
 
 final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
     private const TABLE_PRODUCTS = 'products';
-    private const TABLE_PRODUCTS_TRANSLATION = 'productstranslation';
+    // private const TABLE_PRODUCTS_TRANSLATION = 'productstranslation';
     private const TABLE_PRODUCT_IMAGES = 'productimages';
 
     private const TABLE_BRANDS = 'brands';
@@ -41,12 +42,16 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private const TABLE_CATEGORIES = 'categories';
     private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
 
-    private const DEFAULT_LOCALE = 'ru';
-    private string $currentLocale;
+    // private const DEFAULT_LOCALE = 'ru';
+    // private string $currentLocale;
 
-    public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
+    private ProductImageRepository $imageRepo;
+
+    // public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
+    public function __construct()
     {
-        $this->currentLocale = $currentLocale;
+        // $this->currentLocale = $currentLocale;
+        $this->imageRepo = new ProductImageRepository();
     }
 
     /**
@@ -61,65 +66,42 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return $this->createBean(self::TABLE_PRODUCTS);
     }
 
-     /** Создаёт новый OODBBean для перевода продукта */
-    private function createProductTranslateBean(): OODBBean 
-    {
-        return $this->createBean(self::TABLE_PRODUCTS_TRANSLATION);
-    }
+    //  /** Создаёт новый OODBBean для перевода продукта */
+    // private function createProductTranslateBean(): OODBBean 
+    // {
+    //     return $this->createBean(self::TABLE_PRODUCTS_TRANSLATION);
+    // }
 
     /** Создаёт новый OODBBean для изображения продукта */
-    private function createProductImageBean(): OODBBean 
-    {
-        return $this->createBean(self::TABLE_PRODUCT_IMAGES);
-    }
+    // private function createProductImageBean(): OODBBean 
+    // {
+    //     return $this->createBean(self::TABLE_PRODUCT_IMAGES);
+    // }
 
 
 
     /************ CRETE DTO ********/
-    private function createTranslateInputDto(array $data, int $productId): array
-    {
-      $productTranslationsDto = [];
+    // private function createTranslateInputDto(array $data, int $productId): array
+    // {
+    //   $productTranslationsDto = [];
   
-      foreach($data as $locale => $translate) {
-          $productTranslationsDto[] = new ProductTranslationInputDTO([
-              'product_id' => (int) $productId,
-              'slug' => (string) ($translate['slug'] ?? ''),
-              'locale' => (string) $locale, 
-              'title' => (string) ($translate['title'] ?? ''),
-              'description' => (string) ($translate['description'] ?? ''),
-              'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
-              'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
-          ]);
-      }
+    //   foreach($data as $locale => $translate) {
+    //       $productTranslationsDto[] = new ProductTranslationInputDTO([
+    //           'product_id' => (int) $productId,
+    //           'slug' => (string) ($translate['slug'] ?? ''),
+    //           'locale' => (string) $locale, 
+    //           'title' => (string) ($translate['title'] ?? ''),
+    //           'description' => (string) ($translate['description'] ?? ''),
+    //           'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
+    //           'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
+    //       ]);
+    //   }
          
-      return  $productTranslationsDto;
+    //   return  $productTranslationsDto;
 
-    }
+    // }
 
-    private function createImagesInputDto(array $images, array $finalImages, int $productId): array
-    {
-        $imagesDto = [];
-
-        // перебираем finalImages — это итог с filename
-        foreach ($finalImages as $index => $finalImage) {
-            $filename = $finalImage['filename'] ?? '';
-            if (!$filename) {
-                throw new RuntimeException("Пустое имя файла для изображения на позиции {$index}");
-            }
-
-            // ищем соответствующий $images[$index] или берём дефолт
-            $image = $images[$index] ?? [];
-            $imagesDto[] = new ProductImageInputDTO([
-                'product_id' => $productId,
-                'filename' => (string)$filename,
-                'image_order' => (int) ($image['image_order'] ?? $index),
-                'alt' => $image['alt'] ?? '',
-            ]);
-        }
-
-        return $imagesDto;
-    }
-
+  
     private function createCategoryOutputDTO (array $row): CategoryOutputDTO
     {
         $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
@@ -363,16 +345,16 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return Product::fromDTO($dto);
     }
 
-    private function fetchImageDTOs(array $row): array
-    {
-      $sql = 'SELECT * 
-             FROM ' . self::TABLE_PRODUCT_IMAGES . '
-             WHERE product_id = ? 
-             ORDER BY image_order';
+    // private function fetchImageDTOs(array $row): array
+    // {
+    //   $sql = 'SELECT * 
+    //          FROM ' . self::TABLE_PRODUCT_IMAGES . '
+    //          WHERE product_id = ? 
+    //          ORDER BY image_order';
 
-      $imagesRows = getAll($sql, [$row['id']]);
-      return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
-    }
+    //   $imagesRows = $this->getAll($sql, [$row['id']]);
+    //   return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
+    // }
 
     /**
       ********** ::: // FETCH ::: **********
@@ -487,66 +469,117 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     }
 
     /** Обновляет существующий продукт через DTO */
-    public function updateProductData(int $productId, ProductInputDTO $dto, array $translations = []): bool
-    {
+    public function updateProductData(
+        int $productId,
+        ProductInputDTO $dto,
+        array $imagesDto,                // новые и обработанные изображения
+        array $translations = []
+    ): bool {
         $this->begin();
-        try 
-        {
-          $bean = $this->loadBean(self::TABLE_PRODUCTS, $productId);
+        try {
+            // 1. Обновляем продукт
+            $bean = $this->loadBean(self::TABLE_PRODUCTS, $productId);
+            if (!$bean->id) throw new RuntimeException("Продукт {$productId} не найден");
 
-          if (!$bean->id) {
-              throw new RuntimeException("Продукт с ID {$productId} не найден");
-          }
+            $bean->category_id = $dto->category_id;
+            $bean->brand_id = $dto->brand_id;
+            $bean->slug = $dto->slug;
+            $bean->title = $dto->title;
+            $bean->description = $dto->description;
+            $bean->price = $dto->price;
+            $bean->url = $dto->url;
+            $bean->sku = $dto->sku;
+            $bean->stock = $dto->stock;
+            $bean->status = $dto->status;
+            $bean->edit_time = $dto->edit_time;
+            $this->saveBean($bean);
 
-          $bean->category_id = $dto->category_id;
-          $bean->brand_id = $dto->brand_id;
-          $bean->slug = $dto->slug;
-          $bean->title = $dto->title;
-          $bean->description = $dto->description;
-          $bean->price = $dto->price;
-          $bean->url = $dto->url;
-          $bean->sku = $dto->sku;
-          $bean->stock = $dto->stock;
-          $bean->status = $dto->status;
-          $bean->edit_time = $dto->edit_time;
+            // 2. Сохраняем переводы
+            if (!empty($translations)) {
+                $translateDto = $this->createTranslateInputDto($translations, $productId);
+                $this->saveProductTranslation($translateDto);
+            }
+
+            // 3. Сохраняем изображения через репозиторий изображений
+            if (!empty($imagesDto)) {
+                $imageRepo = new ProductImageRepository();
+                foreach ($imagesDto as $image) {
+                    if (!isset($image->id)) {
+                        $imageRepo->addImage($image);
+                    } else {
+                        $imageRepo->updateImage($image->id, $image);
+                    }
+                }
+            }
+
+            $this->commit();
+            return true;
+        } catch (\Throwable $e) {
+            $this->rollback();
+            throw $e; // откатит изменения и даст понять, что была ошибка
+        }
+    }
+
+    // public function updateProductData(int $productId, ProductInputDTO $dto, array $processedImages, $dtoImagesFromRequest, array $translations = []): bool
+    // {
+    //     $this->begin();
+    //     try 
+    //     {
+    //       $bean = $this->loadBean(self::TABLE_PRODUCTS, $productId);
+
+    //       if (!$bean->id) {
+    //           throw new RuntimeException("Продукт с ID {$productId} не найден");
+    //       }
+
+    //       $bean->category_id = $dto->category_id;
+    //       $bean->brand_id = $dto->brand_id;
+    //       $bean->slug = $dto->slug;
+    //       $bean->title = $dto->title;
+    //       $bean->description = $dto->description;
+    //       $bean->price = $dto->price;
+    //       $bean->url = $dto->url;
+    //       $bean->sku = $dto->sku;
+    //       $bean->stock = $dto->stock;
+    //       $bean->status = $dto->status;
+    //       $bean->edit_time = $dto->edit_time;
 
           
-          $this->saveBean($bean);
+    //       $this->saveBean($bean);
 
-          // если пришли новые переводы → пересохраняем
-          if (!empty($translations)) {
-              $translateDto = $this->createTranslateInputDto($translations, $productId);
-              $this->saveProductTranslation($translateDto);
-          }
+    //       // если пришли новые переводы → пересохраняем
+    //       if (!empty($translations)) {
+    //           $translateDto = $this->createTranslateInputDto($translations, $productId);
+    //           $this->saveProductTranslation($translateDto);
+    //       }
 
-          // если есть обработка изображений — делать её внутри той же транзакции:
-          if (!empty($processedImages)) {
-              $imageService = new AdminProductImageService();
-              $finalImages = $imageService->finalizeImages($processedImages);
-              $imagesDto = $this->createImagesInputDto($dtoImagesFromRequest??[], $finalImages, $productId);
-              $imagesIds = $this->saveProductImages($imagesDto);
-              if ($imagesIds === null || count($imagesIds) === 0) {
-                  throw new RuntimeException("Не удалось сохранить изображения при редактировании");
-              }
-          }
+    //       // если есть обработка изображений — делать её внутри той же транзакции:
+    //       if (!empty($processedImages)) {
+    //           $imageService = new AdminProductImageService();
+    //           $finalImages = $imageService->finalizeImages($processedImages);
+    //           $imagesDto = $this->createImagesInputDto($dtoImagesFromRequest??[], $finalImages, $productId);
+    //           $imagesIds = $this->saveProductImages($imagesDto);
+    //           if ($imagesIds === null || count($imagesIds) === 0) {
+    //               throw new RuntimeException("Не удалось сохранить изображения при редактировании");
+    //           }
+    //       }
 
-          $this->commit();
-          return true;
-        }
-        catch (\Throwable $e)
-        {
-          $this->rollback();
-          // безопасно чистим файлы только если $imageService определён
-          if (isset($imageService)) {
-              $imageService->cleanup($processedImages);
-              if (!empty($finalImages)) {
-                  $imageService->cleanupFinal($finalImages);
-              }
-          }
-          throw $e;
-        }
+    //       $this->commit();
+    //       return true;
+    //     }
+    //     catch (\Throwable $e)
+    //     {
+    //       $this->rollback();
+    //       // безопасно чистим файлы только если $imageService определён
+    //       if (isset($imageService)) {
+    //           $imageService->cleanup($processedImages);
+    //           if (!empty($finalImages)) {
+    //               $imageService->cleanupFinal($finalImages);
+    //           }
+    //       }
+    //       throw $e;
+    //     }
 
-    }
+    // }
 
     /**
       ********** ::: // UPDATE ::: **********
@@ -555,20 +588,20 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
 
 
-  // public function deleteExtraImagesExceptMain(int $productId): void
-  // {
-  //     // Проверяем, есть ли главное изображение (order = 0)
-  //     $sql = 'SELECT COUNT(*) FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
-  //             WHERE product_id = ? AND image_order = 0';
-  //     $mainExists = $this->getCellValue($sql, [$productId]);
+    // public function deleteExtraImagesExceptMain(int $productId): void
+    // {
+    //     // Проверяем, есть ли главное изображение (order = 0)
+    //     $sql = 'SELECT COUNT(*) FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+    //             WHERE product_id = ? AND image_order = 0';
+    //     $mainExists = $this->getCellValue($sql, [$productId]);
 
-  //     if ($mainExists) {
-  //         // Удаляем все изображения, у которых order != 0
-  //         $sql = 'DELETE FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
-  //                 WHERE product_id = ? AND image_order != 0';
-  //         $this->execute($sql, [$productId]);
-  //     }
-  // }
+    //     if ($mainExists) {
+    //         // Удаляем все изображения, у которых order != 0
+    //         $sql = 'DELETE FROM ' . self::TABLE_PRODUCT_IMAGES . ' 
+    //                 WHERE product_id = ? AND image_order != 0';
+    //         $this->execute($sql, [$productId]);
+    //     }
+    // }
 
     
     /**
@@ -632,9 +665,9 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
           $finalImages = $imageService->finalizeImages($processedImages);
       
           // Создаём DTO для изображений 
-          $imagesDto = $this->createImagesInputDto($images, $finalImages, $productId);
+          $imagesDto = $this->imageRepo->createImagesInputDto($images, $finalImages, $productId);
           
-
+          error_log(print_r(  $imagesDto, true));
           // 2. Проверяем что все filename есть
           foreach ($imagesDto as $dto) {
               if (!$dto->filename) {
@@ -669,74 +702,103 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     }
 
 
-    public function saveProductTranslation(array $translateDto): ?array
-    {
-        $ids = [];
+    // public function saveProductTranslation(array $translateDto): ?array
+    // {
+    //     $ids = [];
 
-        foreach ($translateDto as $dto) {
-            if (!$dto) {
-                return null;
-            }
+    //     foreach ($translateDto as $dto) {
+    //         if (!$dto) {
+    //             return null;
+    //         }
 
-            // ищем существующий перевод
-            $bean = $this->findOneBy(self::TABLE_PRODUCTS_TRANSLATION, ' product_id = ? AND locale = ? ', [$dto->product_id, $dto->locale]);
+    //         // ищем существующий перевод
+    //         $bean = $this->findOneBy(self::TABLE_PRODUCTS_TRANSLATION, ' product_id = ? AND locale = ? ', [$dto->product_id, $dto->locale]);
 
-            if (!$bean) {
-                // если нет → создаём новый
-                $bean = $this->createProductTranslateBean();
-                $bean->product_id = $dto->product_id;
-                $bean->locale = $dto->locale;
-            }
+    //         if (!$bean) {
+    //             // если нет → создаём новый
+    //             $bean = $this->createProductTranslateBean();
+    //             $bean->product_id = $dto->product_id;
+    //             $bean->locale = $dto->locale;
+    //         }
 
-            // обновляем данные
-            $bean->slug = $dto->slug;
-            $bean->title = $dto->title;
-            $bean->description = $dto->description;
-            $bean->meta_title = $dto->meta_title;
-            $bean->meta_description = $dto->meta_description;
+    //         // обновляем данные
+    //         $bean->slug = $dto->slug;
+    //         $bean->title = $dto->title;
+    //         $bean->description = $dto->description;
+    //         $bean->meta_title = $dto->meta_title;
+    //         $bean->meta_description = $dto->meta_description;
 
-            $this->saveBean($bean);
+    //         $this->saveBean($bean);
 
-            $ids[] = (int) $bean->id;
-        }
+    //         $ids[] = (int) $bean->id;
+    //     }
 
-        return $ids;
-    }
+    //     return $ids;
+    // }
 
 
-    public function saveProductImages(array $imagesDto): ?array
-    {
-      foreach( $imagesDto as $dto) {
-        if (!$dto) {
-            return null;
-        }
-      }
+    // public function saveProductImages(array $imagesDto): ?array
+    // {
+    //   foreach( $imagesDto as $dto) {
+    //     if (!$dto) {
+    //         return null;
+    //     }
+    //   }
 
-      $ids = [];
+    //   $ids = [];
 
-      foreach($imagesDto as $dto) {
-          // Создаем или загружаем изображения 
-          $bean = $this->createProductImageBean();
+    //   foreach($imagesDto as $dto) {
+    //       // Создаем или загружаем изображения 
+    //       $bean = $this->createProductImageBean();
 
-          $bean->product_id = $dto->product_id;
-          $bean->filename = $dto->filename;
-          $bean->image_order = $dto->image_order;
-          $bean->alt = $dto->alt;
+    //       $bean->product_id = $dto->product_id;
+    //       $bean->filename = $dto->filename;
+    //       $bean->image_order = $dto->image_order;
+    //       $bean->alt = $dto->alt;
           
 
-          $this->saveBean($bean);
+    //       $this->saveBean($bean);
           
-          $id = (int) $bean->id;
+    //       $id = (int) $bean->id;
 
-          if (!$id) {
-            return null;
-          }
+    //       if (!$id) {
+    //         return null;
+    //       }
 
-          $ids[] = $id;
-      }
+    //       $ids[] = $id;
+    //   }
 
-      return $ids;
-    }
+    //   return $ids;
+    // }
+    // public function saveProductImages(array $imagesDto): ?array
+    // {
+    //     $ids = [];
+    //     // error_log(print_r($imagesDto, true));
+    //     foreach($imagesDto as $dto) {
+    //         if (!$dto) return null;
+
+    //         // ПРОВЕРКА: существует ли файл
+    //         if (!file_exists(ROOT . 'usercontent/products/' . $dto->filename)) {
+    //             throw new RuntimeException("Файл {$dto->filename} не найден. Сохранение изображения отменено.");
+    //         }
+
+    //         $bean = $this->createProductImageBean();
+    //         $bean->product_id = $dto->product_id;
+    //         $bean->filename = $dto->filename;
+    //         $bean->image_order = $dto->image_order;
+    //         $bean->alt = $dto->alt;
+
+    //         $this->saveBean($bean);
+
+    //         $id = (int) $bean->id;
+    //         if (!$id) return null;
+
+    //         $ids[] = $id;
+    //     }
+
+    //     return $ids;
+    // }
+
 
     /**
       ********** ::: // SAVE ::: **********
@@ -749,62 +811,62 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
      * @param ProductImageInputDTO[] $imagesDto
      * @return array|null  Массив ID добавленных изображений или null при ошибке
     */
-    public function addProductImages(int $productId, array $imagesDto): ?array
-    {
-        if (empty($imagesDto)) {
-            return [];
-        }
+    // public function addProductImages(int $productId, array $imagesDto): ?array
+    // {
+    //     if (empty($imagesDto)) {
+    //         return [];
+    //     }
 
-        $ids = [];
+    //     $ids = [];
 
-        foreach ($imagesDto as $dto) {
-            if (!$dto) {
-                return null;
-            }
+    //     foreach ($imagesDto as $dto) {
+    //         if (!$dto) {
+    //             return null;
+    //         }
 
-            $bean = $this->createProductImageBean();
+    //         $bean = $this->createProductImageBean();
 
-            $bean->product_id = $productId;
-            $bean->filename = $dto->filename;
-            $bean->image_order = $dto->image_order;
-            $bean->alt = $dto->alt;
+    //         $bean->product_id = $productId;
+    //         $bean->filename = $dto->filename;
+    //         $bean->image_order = $dto->image_order;
+    //         $bean->alt = $dto->alt;
 
-            $this->saveBean($bean);
+    //         $this->saveBean($bean);
 
-            $id = (int) $bean->id;
-            if (!$id) {
-                return null;
-            }
+    //         $id = (int) $bean->id;
+    //         if (!$id) {
+    //             return null;
+    //         }
 
-            $ids[] = $id;
-        }
+    //         $ids[] = $id;
+    //     }
 
-        return $ids;
-    }
+    //     return $ids;
+    // }
 
 
     /**
       ********** ::: // OTHER ::: **********
     */
-    private function loadTranslations(int $productId): array
-    {
-        $sql = 'SELECT *
-                FROM ' . self::TABLE_PRODUCTS_TRANSLATION .' 
-                WHERE product_id = ?';
-        $rows = $this->getAll($sql, [$productId]);
+    // private function loadTranslations(int $productId): array
+    // {
+    //     $sql = 'SELECT *
+    //             FROM ' . self::TABLE_PRODUCTS_TRANSLATION .' 
+    //             WHERE product_id = ?';
+    //     $rows = $this->getAll($sql, [$productId]);
 
 
-        $translations = [];
-        foreach ($rows as $row) {
-            $translations[$row['locale']] = [
-                'title' => $row['title'] ?? '',
-                'description' => $row['description'] ?? '',
-                'meta_title' => $row['meta_title'] ?? '',
-                'meta_description' => $row['meta_description'] ?? '',
-            ];
-        }
-        return $translations;
-    }
+    //     $translations = [];
+    //     foreach ($rows as $row) {
+    //         $translations[$row['locale']] = [
+    //             'title' => $row['title'] ?? '',
+    //             'description' => $row['description'] ?? '',
+    //             'meta_title' => $row['meta_title'] ?? '',
+    //             'meta_description' => $row['meta_description'] ?? '',
+    //         ];
+    //     }
+    //     return $translations;
+    // }
 
 
     public function bulkUpdate(array $ids, array $data): void

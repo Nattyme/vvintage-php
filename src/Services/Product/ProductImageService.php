@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Product;
 
 use Vvintage\DTO\Product\ProductImageDTO;
+use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\Repositories\Product\ProductImageRepository;
 
 class ProductImageService
@@ -80,6 +81,55 @@ class ProductImageService
       'total' => $total
     ];
   }
+
+  public function buildImageDtos(int $productId, array $processedImages): array
+  {
+      $imagesDto = [];
+
+      foreach ($processedImages as $img) {
+          if (!empty($img['id'])) {
+              continue; // уже существующие изображения
+          }
+
+          if (empty($img['final_full'])) {
+              continue; // пустые файлы игнорируем
+          }
+
+          $imagesDto[] = new ProductImageInputDTO([
+              'product_id' => $productId,
+              'filename' => $img['final_full'],
+              'image_order' => $img['image_order'] ?? 0,
+              'alt' => $img['alt'] ?? '',
+          ]);
+      }
+
+      return $imagesDto;
+  }
+
+
+  // public function buildImageDtos(array $processedImages): array
+  // {
+  //     $imagesDto = [];
+
+  //     foreach ($processedImages as $img) {
+  //         // если изображение уже в базе — пропускаем
+  //         if (!empty($img['id'])) {
+  //             continue;
+  //         }
+
+  //         if (empty($img['final_full'])) {
+  //             continue; // пустой файл игнорируем
+  //         }
+
+  //         $imagesDto[] = new ProductImageInputDTO([
+  //             'filename' => $img['final_full'],
+  //             'image_order' => $img['image_order'] ?? 0,
+  //             'alt' => $img['alt'] ?? '',
+  //         ]);
+  //     }
+
+  //     return $imagesDto;
+  // }
 
  
 

@@ -29,7 +29,7 @@ interface ProductRepositoryInterface
     /** UPDATE */
     public function updateStatus(int $productId, string $status): bool;
 
-    public function updateProductData(int $productId, ProductInputDTO $dto, array $translations = []): bool;
+    public function updateProductData(int $productId, ProductInputDTO $dto, array $imagesDto, array $translations = []): bool;
 
     public function bulkUpdate(array $ids, array $data): void;
 
@@ -40,6 +40,4 @@ interface ProductRepositoryInterface
 
     public function saveProductImages(array $imagesDto): ?array;
 
-    /** DELETE / EXTRA */
-    public function deleteExtraImagesExceptMain(int $productId): void;
 }
