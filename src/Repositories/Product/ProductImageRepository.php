@@ -60,6 +60,7 @@ final class ProductImageRepository extends AbstractRepository implements Product
      */
     public function updateImage(int $id, ProductImageInputDTO $input): ProductImageOutputDTO
     {
+      error_log(print_r($input, true));
         $bean = $this->loadBean(self::TABLE, $id);
         $bean->filename = $input->filename;
         $bean->image_order = $input->image_order;

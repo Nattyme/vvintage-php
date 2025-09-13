@@ -43,22 +43,6 @@ abstract class AbstractRepository
     }
 
 
-    /**
-     * @param string $table Название таблицы
-     * @param string|null $sql Дополнительные условия (например, WHERE, ORDER BY и т.д.)
-     * @param array $params Параметры для SQL-запроса
-     * @return OODBBean[]
-     */
-    // protected function findAll(string $table, ?string $sql = null, array $params = []): array
-    // {  
-    //     if ($sql === null) {
-    //         $sql = 'ORDER BY id ASC';
-    //     } elseif (!preg_match('/^\s*(WHERE|ORDER BY)/i', $sql)) {
-    //         $sql = 'WHERE ' . $sql;
-    //     }
-     
-    //     return R::findAll($table, $sql, $params);
-    // }
     protected function findAll(string $table, ?string $sql = null, array $params = []): array
     {
         // Если $sql пустой, просто выбираем все записи
@@ -122,6 +106,33 @@ abstract class AbstractRepository
     {
       return R::getAll($sql, $params);
     }
+    
+    /**
+     * Выполняет SQL-запрос (INSERT/UPDATE/DELETE и т.п.).
+     *
+     * @param string $sql SQL-запрос с плейсхолдерами.
+     * @param array $params Параметры для запроса.
+     * @return int Количество затронутых строк.
+     */
+    protected function execute(string $sql, array $params = []): int
+    {
+        return R::exec($sql, $params);
+    }
+
+    /**
+     * Возвращает одно значение из базы (одно поле, одну "ячейку").
+     *
+     * @param string $sql SQL-запрос с плейсхолдерами.
+     * @param array $params Параметры для запроса.
+     * @return mixed|null Значение ячейки или null, если ничего не найдено.
+     */
+    protected function getCellValue(string $sql, array $params = []): mixed
+    {
+        $value = R::getCell($sql, $params);
+        return $value !== null ? $value : null;
+    }
+
+   
 
 
 }
