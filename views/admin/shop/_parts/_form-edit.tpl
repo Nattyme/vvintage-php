@@ -124,7 +124,7 @@
       <div class="admin-form__field">
         <label class="admin-form__label" for="brands">Выберите бренд</label>
         <div class="admin-form__row">
-          <select class="select" name="brand_id" id="brands"></select>
+          <select class="select" name="brand_id" id="brands" data-brand="<?php echo h($product->getBrandId());?>"></select>
   
           <a 
             class="button button--s button--primary" 

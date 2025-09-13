@@ -396,8 +396,8 @@ final class AdminProductValidator
     private function validateStatus (?string $statusData): void 
     {
         $this->errors['status'] = [];
-        if (!isset($statusData) || !in_array($statusData, ['active','hidden'], true)) {
-            $this->errors['status'][] = 'Поле статус должно быть "Активный" или "Невидимый"';
+        if (!isset($statusData) || !in_array($statusData, ['active','hidden', 'archived'], true)) {
+            $this->errors['status'][] = 'Поле статус должно быть "Активный", "Невидимый" или "В архиве';
         }
         if (empty($this->errors['status'])) {
             unset($this->errors['status']);
