@@ -25,12 +25,12 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 {
     private const TABLE_BRANDS = 'brands';
     // private const TABLE_BRANDS_TRANSLATION = 'brandstranslation';
-    private BrandTranslationRepository $translations;
+    private BrandTranslationRepository $translationRepo;
 
     public function __construct()
     {
       //  $this->currentLang = $currentLang;
-      $this->translations = new BrandTranslationRepository();
+      $this->translationRepo = new BrandTranslationRepository();
     }
 
 
@@ -86,7 +86,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
     private function mapBeanToBrand(OODBBean $bean): Brand
     {
-        $translations = $this->translations->loadTranslations((int) $bean->id);
+        $translations = $this->translationRepo->loadTranslations((int) $bean->id);
 
         $dto = new BrandDTO([
             'id' => (int) $bean->id,
@@ -100,7 +100,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
     private function mapBeanToArray(OODBBean $bean): array
     {
-      $translations = $this->translations->loadTranslations((int) $bean->id);
+      $translations = $this->translationRepo->loadTranslations((int) $bean->id);
 
       return [
           'id' => (int) $bean->id,
@@ -196,7 +196,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
         // Сохраняем переводы
         foreach ($dto->translations as $locale => $fields) {
-            $this->translations->saveTranslations($brandId, $locale, $fields);
+            $this->translationRepo->saveTranslations($brandId, $locale, $fields);
         }
 
         return $brandId;

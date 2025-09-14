@@ -27,20 +27,20 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     // private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
     // private string $currentLang;
     // private const DEFAULT_LANG = 'ru';
-    private CategoryTranslationRepository $translations;
+    private CategoryTranslationRepository $translationRepo;
 
     // public function __construct(string $currentLang)
     public function __construct()
     {
       //  $this->currentLang = $currentLang;
-       $this->translations = new CategoryTranslationRepository();
+       $this->translationRepo = new CategoryTranslationRepository();
     }
 
 
     private function mapBeanToCategory(OODBBean $bean): Category
     {
 
-      $translatedData = $this->translations->getTranslationsArray((int) $bean->id);
+      $translations = $this->translationRepo->getTranslationsArray((int) $bean->id);
 
 
       $dto = new CategoryInputDTO([
@@ -121,14 +121,14 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         // НЕ удаляем все переводы
         foreach ($cat->getAllTranslations() as $locale => $translation) {
           // ищем перевод для этой локали
-          $transBean =  $this->translations->findTranslations($id, $locale);
+          $transBean =  $this->translationRepo->findTranslations($id, $locale);
 
           if (!$transBean) {
             // если нет — создаём новый
-            $this->translations->createTranslation();
+            $this->translationRepo->createTranslation($id, $locale);
           }
 
-          $this->translations->updateTranslations( $transBean, $translation);
+          $this->translationRepo->updateTranslations( $transBean, $translation);
         }
 
         return $id;
@@ -157,7 +157,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         $beans = $this->findAll(self::TABLE, 'parent_id IS NULL');
 
         // Сбрасываем ключи и преобразуем в массивы
-        return array_values(array_map([$this->translations, 'getTranslationsArray'], $beans));
+        return array_values(array_map([$this->translationRepo, 'getTranslationsArray'], $beans));
     }
 
     public function getSubCategoriesArray(?int $parent_id = null): array
@@ -169,7 +169,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
             $beans = $this->findAll(self::TABLE, 'parent_id IS NOT NULL');
         }
 
-        return array_values(array_map([$this->translations, 'getTranslationsArray'], $beans));
+        return array_values(array_map([$this->translationRepo, 'getTranslationsArray'], $beans));
     }
 
 
@@ -179,7 +179,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         $beans = $this->findAll(self::TABLE);
 
         // Сбрасываем ключи и преобразуем в массивы
-        return array_values(array_map([$this->translations, 'getTranslationsArray'], $beans));
+        return array_values(array_map([$this->translationRepo, 'getTranslationsArray'], $beans));
     }
 
 

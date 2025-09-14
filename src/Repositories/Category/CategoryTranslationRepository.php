@@ -102,14 +102,14 @@ final class CategoryTranslationRepository extends AbstractRepository implements 
               );
     }
 
-    public function createTranslation() 
+    public function createTranslation(int $id, string $locale): void 
     {
       $transBean = $this->createBean(self::TABLE);
       $transBean->category_id = $id;
       $transBean->locale = $locale;
     }
 
-    public function updateTranslations( OODBBean $transBean, array $translation) 
+    public function updateTranslations( OODBBean $transBean, array $translation): void 
     {
       // Обновляем только те поля, что реально пришли
       if (array_key_exists('title', $translation)) {
