@@ -23,4 +23,21 @@ final class AdminBrandService extends BrandService
     { 
       return $this->repository->createBrand($dto); 
     }
+
+        
+    public function saveBrand(BrandInputDTO $dto, array $translations): int
+    {
+        $this->brandRepo->begin();
+
+        try {
+            $brandId = $this->brandRepo->save($dto);
+            $this->translationRepo->saveTranslations($brandId, $translations);
+
+            $this->brandRepo->commit();
+            return $brandId;
+        } catch (\Throwable $e) {
+            $this->brandRepo->rollback();
+            throw $e;
+        }
+    }
 }

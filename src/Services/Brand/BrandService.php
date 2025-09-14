@@ -9,6 +9,7 @@ use Vvintage\Models\Brand\Brand;
 use Vvintage\Services\Base\BaseService;
 
 use Vvintage\Repositories\Brand\BrandRepository;
+use Vvintage\Repositories\Brand\BrandTranslationRepository;
 
 use Vvintage\DTO\Brand\BrandInputDTO;
 
@@ -23,7 +24,7 @@ class BrandService extends BaseService
     {
        parent::__construct();
        $this->brandRepo = new BrandRepository();
-       $this->translationRepo = new BrandTranslationRepository();
+       $this->translationRepo = new BrandTranslationRepository($this->currentLang);
     }
 
     public function getAllBrands(): array
@@ -47,22 +48,19 @@ class BrandService extends BaseService
       return $this->repository->getBrandsArray();
     }
 
-
-    
-    public function saveBrand(BrandInputDTO $dto, array $translations): int
+    public function getBrandTranslations(int $brandId): array
     {
-        $this->brandRepo->begin();
+        $translations = $this->translationRepo->findTranslations($brandId, $this->locale);
 
-        try {
-            $brandId = $this->brandRepo->save($dto);
-            $this->translationRepo->saveTranslations($brandId, $translations);
-
-            $this->brandRepo->commit();
-            return $brandId;
-        } catch (\Throwable $e) {
-            $this->brandRepo->rollback();
-            throw $e;
+        if (!$translations) {
+            // fallback
+            $translations = $this->translationRepo->findTranslations($brandId, $this->locale);
         }
+
+        return $translations;
     }
+
+
+
 
 }

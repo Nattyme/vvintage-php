@@ -13,13 +13,15 @@ use Vvintage\Repositories\AbstractRepository;
 final class BrandTranslationRepository extends AbstractRepository implements BrandTranslationRepositoryInterface
 {
     private const TABLE = 'brandstranslation';
-    private const DEFAULT_LOCALE = 'ru';
-    private string $currentLocale;
+    // private const DEFAULT_LOCALE = 'ru';
+    // private string $defaultLocale;
+    // private string $currentLocale;
 
-    public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
-    {
-        $this->currentLocale = $currentLocale;
-    }
+    // public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
+    // public function __construct()
+    // {
+    //     $this->currentLocale = $currentLocale;
+    // }
 
     public function createTranslationsBean(): OODBBean 
     {
@@ -28,10 +30,8 @@ final class BrandTranslationRepository extends AbstractRepository implements Bra
 
     public function loadTranslations(int $id): array
     {
-        $rows = R::getAll(
-            'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE .' WHERE brand_id = ?',
-            [$id]
-        );
+        $sql = 'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE .' WHERE brand_id = ?';
+        $rows = $this->getAll($sql, [$id]);
 
         $translations = [];
         foreach ($rows as $row) {

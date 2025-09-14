@@ -14,7 +14,7 @@ use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 
 /** Абстрактный репозиторий */
 use Vvintage\Repositories\AbstractRepository;
-use Vvintage\Repositories\Brand\BrandTranslationRepository;
+// use Vvintage\Repositories\Brand\BrandTranslationRepository;
 
 use Vvintage\Models\Brand\Brand;
 use Vvintage\DTO\Brand\BrandDTO;
@@ -24,13 +24,11 @@ use Vvintage\DTO\Brand\BrandDTO;
 final class BrandRepository extends AbstractRepository implements BrandRepositoryInterface
 {
     private const TABLE_BRANDS = 'brands';
-    // private const TABLE_BRANDS_TRANSLATION = 'brandstranslation';
-    private BrandTranslationRepository $translationRepo;
+    // private BrandTranslationRepository $translationRepo;
 
     public function __construct()
     {
-      //  $this->currentLang = $currentLang;
-      $this->translationRepo = new BrandTranslationRepository();
+      // $this->translationRepo = new BrandTranslationRepository();
     }
 
 
