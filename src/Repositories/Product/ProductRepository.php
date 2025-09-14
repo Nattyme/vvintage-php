@@ -33,24 +33,24 @@ use Vvintage\Services\Admin\Product\AdminProductImageService;
 final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
     private const TABLE_PRODUCTS = 'products';
-    // private const TABLE_PRODUCTS_TRANSLATION = 'productstranslation';
+    private const TABLE_PRODUCTS_TRANSLATION = 'productstranslation';
     private const TABLE_PRODUCT_IMAGES = 'productimages';
 
     private const TABLE_BRANDS = 'brands';
     private const TABLE_BRANDS_TRANSLATION = 'brandstranslation';
 
     private const TABLE_CATEGORIES = 'categories';
-    // private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
+    private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
 
     // private const DEFAULT_LOCALE = 'ru';
-    // private string $currentLocale;
+    private string $locale;
 
     private ProductImageRepository $imageRepo;
 
     // public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
-    public function __construct()
+    public function __construct(string $locale)
     {
-        // $this->currentLocale = $currentLocale;
+        $this->locale = $locale;
         $this->imageRepo = new ProductImageRepository();
     }
 
@@ -193,8 +193,8 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     */
     public function getProductById(int $id): ?Product
     {
-        $rows = $this->uniteProductRawData(['productId' => $id]);
-        return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
+        return $this->uniteProductRawData(['productId' => $id]);
+        // return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
     }
 
     public function getProductsByParam(string $sql ='', array $params = []): array
@@ -313,37 +313,37 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     /**
       ********** ::: FETCH ::: **********
     */
-    private function fetchProductWithJoins(array $row): Product
-    {
+    // private function fetchProductWithJoins(array $row): Product
+    // {
 
-        $productId = (int) $row['id'];
-        $translations = $this->loadTranslations($productId);
-        $categoryDTO = $this->createCategoryOutputDTO($row);
-        $brandDTO = $this->createBrandDTOFromArray($row);
-        $imagesDTO = $this->fetchImageDTOs($row);
+    //     $productId = (int) $row['id'];
+    //     $translations = $this->loadTranslations($productId);
+    //     $categoryDTO = $this->createCategoryOutputDTO($row);
+    //     $brandDTO = $this->createBrandDTOFromArray($row);
+    //     $imagesDTO = $this->fetchImageDTOs($row);
 
-        $dto = new ProductDTO([
-            'id' => $productId,
-            'categoryDTO' => $categoryDTO,
-            'brandDTO' => $brandDTO,
-            'slug' => (string) $row['slug'],
-            'title' => (string) $row['title'],
-            'description' => (string) $row['description'],
-            'price' => (string) $row['price'],
-            'url' => (string) $row['url'],
-            'status' => (string) $row['status'],
-            'sku' => (string) $row['sku'],
-            'stock' => (int) $row['stock'],
-            'datetime' => (string) $row['datetime'],
-            'edit_time' => (string) $row['edit_time'],
-            'images_total' => count($imagesDTO),
-            'translations' => $translations,
-            'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,
-            'images' => $imagesDTO,
-        ]);
+    //     $dto = new ProductDTO([
+    //         'id' => $productId,
+    //         'categoryDTO' => $categoryDTO,
+    //         'brandDTO' => $brandDTO,
+    //         'slug' => (string) $row['slug'],
+    //         'title' => (string) $row['title'],
+    //         'description' => (string) $row['description'],
+    //         'price' => (string) $row['price'],
+    //         'url' => (string) $row['url'],
+    //         'status' => (string) $row['status'],
+    //         'sku' => (string) $row['sku'],
+    //         'stock' => (int) $row['stock'],
+    //         'datetime' => (string) $row['datetime'],
+    //         'edit_time' => (string) $row['edit_time'],
+    //         'images_total' => count($imagesDTO),
+    //         'translations' => $translations,
+    //         'locale' => $this->currentLocale ?? self::DEFAULT_LOCALE,
+    //         'images' => $imagesDTO,
+    //     ]);
     
-        return Product::fromDTO($dto);
-    }
+    //     return Product::fromDTO($dto);
+    // }
 
     // private function fetchImageDTOs(array $row): array
     // {
@@ -366,7 +366,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     */
     private function uniteProductRawData(array $data): array
     {
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
+        // $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
 
         $sql = '
             SELECT 
@@ -407,7 +407,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
                 ON bt.brand_id = b.id AND bt.locale = ?
         ';
 
-        $bindings = [$locale, $locale, $locale];
+        $bindings = [$this->locale, $this->locale, $this->locale];
 
         // фильтры
         if (!empty($data['productId'])) {

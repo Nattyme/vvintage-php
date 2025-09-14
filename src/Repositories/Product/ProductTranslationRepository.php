@@ -16,11 +16,11 @@ final class ProductTranslationRepository extends AbstractRepository implements P
 {
     private const TABLE = 'productstranslation';
     private const DEFAULT_LOCALE = 'ru';
-    private string $currentLocale;
+    private string $locale;
 
-    public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
+    public function __construct(string $locale = self::DEFAULT_LOCALE)
     {
-        $this->currentLocale = $currentLocale;
+        $this->locale = $locale;
     }
 
     

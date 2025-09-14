@@ -8,17 +8,19 @@ use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
 use Vvintage\Repositories\AbstractRepository;
+/** Контракты */
+use Vvintage\Contracts\Category\CategoryTranslationRepositoryInterface;
 
 
 final class CategoryTranslationRepository extends AbstractRepository implements CategoryTranslationRepositoryInterface
 {
     private const TABLE = 'categoriestranslation';
     private const DEFAULT_LOCALE = 'ru';
-    private string $currentLocale;
+    private string $locale;
 
-    public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
+    public function __construct(string $locale = self::DEFAULT_LOCALE)
     {
-        $this->currentLocale = $currentLocale;
+        $this->locale = $locale;
     }
 
       
@@ -84,7 +86,7 @@ final class CategoryTranslationRepository extends AbstractRepository implements 
     {
       $translations = $this->loadTranslations($id);
 
-      return $translations[$this->currentLang] ?? $translations[self::DEFAULT_LANG] ?? [
+      return $translations[$this->locale] ?? $translations[self::DEFAULT_LANG] ?? [
             'title' => '',
             'description' => '',
             'meta_title' => '',

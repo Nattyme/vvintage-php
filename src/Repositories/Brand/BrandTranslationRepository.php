@@ -9,6 +9,9 @@ use RedBeanPHP\OODBBean;
 
 use Vvintage\Repositories\AbstractRepository;
 
+/** Контракты */
+use Vvintage\Contracts\Brand\BrandTranslationRepositoryInterface;
+
 
 final class BrandTranslationRepository extends AbstractRepository implements BrandTranslationRepositoryInterface
 {

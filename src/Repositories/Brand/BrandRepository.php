@@ -23,7 +23,7 @@ use Vvintage\DTO\Brand\BrandDTO;
 
 final class BrandRepository extends AbstractRepository implements BrandRepositoryInterface
 {
-    private const TABLE_BRANDS = 'brands';
+    private const TABLE = 'brands';
     // private BrandTranslationRepository $translationRepo;
 
     public function __construct()
@@ -32,55 +32,55 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     }
 
 
-    private function uniteProductRawData(?int $id = null): array
-    {
-        $sql = '
-            SELECT 
-                b.*,
-                bt.locale,
-                bt.title,
-                bt.description,
-                bt.meta_title,
-                bt.meta_description
-            FROM ' . self::TABLE_BRANDS . ' b
-            LEFT JOIN ' . self::TABLE_BRANDS_TRANSLATION . ' bt ON bt.brand_id = b.id AND bt.locale = ?
+    // private function uniteProductRawData(?int $id = null): array
+    // {
+    //     $sql = '
+    //         SELECT 
+    //             b.*,
+    //             bt.locale,
+    //             bt.title,
+    //             bt.description,
+    //             bt.meta_title,
+    //             bt.meta_description
+    //         FROM ' . self::TABLE . ' b
+    //         LEFT JOIN ' . self::TABLE_BRANDS_TRANSLATION . ' bt ON bt.brand_id = b.id AND bt.locale = ?
 
-        ';
+    //     ';
 
-        $locale = 'ru';
-        $bindings = [$locale];
+    //     $locale = 'ru';
+    //     $bindings = [$locale];
 
-        if ($id !== null) {
-            $sql .= ' WHERE b.id = ? GROUP BY b.id LIMIT 1';
-            $bindings[] = $id;
+    //     if ($id !== null) {
+    //         $sql .= ' WHERE b.id = ? GROUP BY b.id LIMIT 1';
+    //         $bindings[] = $id;
 
-            // Заворачиваем в массив
-            $row = R::getRow($sql, $bindings);
-            return $row ? [$row] : [];
-        } else {
-            $sql .= ' GROUP BY b.id ORDER BY b.id DESC';
-            return R::getAll($sql, $bindings);
-        }
-    }
+    //         // Заворачиваем в массив
+    //         $row = R::getRow($sql, $bindings);
+    //         return $row ? [$row] : [];
+    //     } else {
+    //         $sql .= ' GROUP BY b.id ORDER BY b.id DESC';
+    //         return $this->getAll($sql, $bindings);
+    //     }
+    // }
 
-    public function createBrandDTOFromArray(array $row): BrandDTO
-    {
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-        return new BrandDTO([
-            'id' => (int) $row['brand_id'],
-            'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
-            'image' => (string) ($row['brand_image'] ?? ''),
-            'translations' => [
-                $locale => [
-                    'title' => $row['brand_title_translation'] ?? '',
-                    'description' => $row['brand_description'] ?? '',
-                    'seo_title' => $row['brand_meta_title'] ?? '',
-                    'seo_description' => $row['brand_meta_description'] ?? '',
-                ]
-            ],
-            'locale' => $locale,
-        ]);
-    }
+    // public function createBrandDTOFromArray(array $row): BrandDTO
+    // {
+    //     $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
+    //     return new BrandDTO([
+    //         'id' => (int) $row['brand_id'],
+    //         'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
+    //         'image' => (string) ($row['brand_image'] ?? ''),
+    //         'translations' => [
+    //             $locale => [
+    //                 'title' => $row['brand_title_translation'] ?? '',
+    //                 'description' => $row['brand_description'] ?? '',
+    //                 'seo_title' => $row['brand_meta_title'] ?? '',
+    //                 'seo_description' => $row['brand_meta_description'] ?? '',
+    //             ]
+    //         ],
+    //         'locale' => $locale,
+    //     ]);
+    // }
 
     private function mapBeanToBrand(OODBBean $bean): Brand
     {
@@ -111,7 +111,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     // Находит бренд по id и возвращает объект
     public function getBrandById(int $id): ?Brand
     {
-        $bean = $this->findById(self::TABLE_BRANDS, $id);
+        $bean = $this->findById(self::TABLE, $id);
 
         if (!$bean || !$bean->id) {
             return null;
@@ -123,7 +123,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     /** Находим все бренды и возвращаем в виде массива объектов */
     public function getAllBrands(): array
     {
-      $beans = $this->findAll( self::TABLE_BRANDS );
+      $beans = $this->findAll( self::TABLE );
 
       if (empty($beans)) {
             return [];
@@ -139,7 +139,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
             return [];
         }
 
-        $beans = $this->findByIds(self::TABLE_BRANDS, $ids);
+        $beans = $this->findByIds(self::TABLE, $ids);
 
         if (empty($beans)) {
             return [];
@@ -150,14 +150,14 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     
     public function getAllBrandsCount(?string $sql = null, array $params = []): int
     {
-      return $this->countAll(self::TABLE_BRANDS, $sql, $params);
+      return $this->countAll(self::TABLE, $sql, $params);
     }
 
     // Для api
     public function getBrandsArray(): array
     {
         // Достаём все категории, у которых parent_id = NULL
-        $beans = $this->findAll(self::TABLE_BRANDS);
+        $beans = $this->findAll(self::TABLE);
 
         // Сбрасываем ключи и преобразуем в массивы
         return array_values(array_map([$this, 'mapBeanToArray'], $beans));
@@ -166,7 +166,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
      /** Создаёт новый OODBBean для бренда */
     private function createBrandBean(): OODBBean 
     {
-        return $this->createBean(self::TABLE_BRANDS);
+        return $this->createBean(self::TABLE);
     }
 
 
@@ -179,7 +179,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
         // Создаем или загружаем основной бренд
         $brandBean = $dto->id 
-            ? $this->findById(self::TABLE_BRANDS, $dto->id)
+            ? $this->findById(self::TABLE, $dto->id)
             : $this->createBrandBean();
 
         $brandBean->title = $dto->title;
@@ -220,7 +220,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
     public function existsByTitle(string $cleaned): ?int
     {
-      return $this->countAll(self::TABLE_BRANDS, 'LOWER(title) = ?', [mb_strtolower($cleaned)]);
+      return $this->countAll(self::TABLE, 'LOWER(title) = ?', [mb_strtolower($cleaned)]);
     }
 
 }

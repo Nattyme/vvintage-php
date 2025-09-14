@@ -18,7 +18,7 @@ class CategoryService extends BaseService
     public function __construct()
     {
         parent::__construct();
-        $this->repository = new CategoryRepository($this->currentLang);
+        $this->repository = new CategoryRepository($this->locale);
     }
 
     public function getCategoryById(int $id): ?Category
@@ -66,7 +66,7 @@ class CategoryService extends BaseService
         foreach ($allCategories as $category) {
             $categoriesById[$category->getId()] = [
                 'id' => $category->getId(),
-                'title' => $category->getTranslatedTitle($this->currentLang),
+                'title' => $category->getTranslatedTitle($this->locale),
                 'parentId' => $category->getParentId(),
                 'children' => []
             ];

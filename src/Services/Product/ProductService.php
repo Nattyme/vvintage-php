@@ -7,10 +7,13 @@ namespace Vvintage\Services\Product;
 /** Модель */
 use Vvintage\Models\Product\Product;
 use Vvintage\Repositories\Product\ProductRepository;
+use Vvintage\Repositories\Product\ProductTranslationRepository;
 
+use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Category\CategoryService;
-use Vvintage\Services\Base\BaseService;
+use Vvintage\Services\Brand\BrandService;
+
 use Vvintage\DTO\Product\ProductFilterDTO;
 
 require_once ROOT . "./libs/functions.php";
@@ -18,8 +21,10 @@ require_once ROOT . "./libs/functions.php";
 class ProductService extends BaseService
 {
     protected ProductRepository $repository;
-    private CategoryService $categoryService;
-    private ProductImageService $productImageService;
+    protected ProductTranslationRepository $translationRepo;
+    protected CategoryService $categoryService;
+    protected BrandService $brandService;
+    protected ProductImageService $productImageService;
 
     private array $status = [
       'active'   => 'Активный',
@@ -30,8 +35,10 @@ class ProductService extends BaseService
     public function __construct()
     {
         parent::__construct();
-        $this->repository = new ProductRepository($this->currentLang);
+        $this->repository = new ProductRepository($this->locale);
+        $this->translationRepo = new ProductTranslationRepository($this->locale);
         $this->categoryService = new CategoryService();
+        $this->brandService = new BrandService();
         $this->productImageService = new ProductImageService();
     }
 
@@ -42,7 +49,8 @@ class ProductService extends BaseService
 
     public function getProductById(int $id): ?Product
     {
-        return $this->repository->getProductById($id);
+        $rows = $this->repository->getProductById($id);
+        return $rows ? $this->createProductDTOFromArray($rows[0]) : null;
     }
 
     public function getActiveProducts(): array 
@@ -99,6 +107,35 @@ class ProductService extends BaseService
     public function getFilteredProducts(ProductFilterDTO $filter): array 
     {
         return $this->repository->getFilteredProducts($filter);
+    }
+
+    protected function createProductDTOFromArray(array $row): ProductDTO
+    {
+        $productId = (int) $row['id'];
+        $translations = $this->translationRepo->loadTranslations($productId);
+        $categoryDTO = $this->categoryService->createCategoryOutputDTO($row);
+        $brandDTO = $this->brandService->createBrandDTOFromArray($row);
+        $imagesDTO = $this->productImageService->fetchImageDTOs($row);
+
+        return new ProductDTO([
+            'id' => $productId,
+            'categoryDTO' => $categoryDTO,
+            'brandDTO' => $brandDTO,
+            'slug' => (string) $row['slug'],
+            'title' => (string) $row['title'],
+            'description' => (string) $row['description'],
+            'price' => (string) $row['price'],
+            'url' => (string) $row['url'],
+            'status' => (string) $row['status'],
+            'sku' => (string) $row['sku'],
+            'stock' => (int) $row['stock'],
+            'datetime' => (string) $row['datetime'],
+            'edit_time' => (string) $row['edit_time'],
+            'images_total' => count($imagesDTO),
+            'translations' => $translations,
+            'locale' => $this->locale ?? self::DEFAULT_LOCALE,
+            'images' => $imagesDTO
+        ]);
     }
 
 }

@@ -24,7 +24,7 @@ class BrandService extends BaseService
     {
        parent::__construct();
        $this->brandRepo = new BrandRepository();
-       $this->translationRepo = new BrandTranslationRepository($this->currentLang);
+       $this->translationRepo = new BrandTranslationRepository($this->locale);
     }
 
     public function getAllBrands(): array
@@ -58,6 +58,53 @@ class BrandService extends BaseService
         }
 
         return $translations;
+    }
+
+    public function getBrandDTO(int $brandId): ?BrandDTO
+    {
+        $brand = $this->brandRepo->getBrandById($brandId);
+        if (!$brand) return null;
+        
+        // получаем переводы из репозитория переводов
+        $translations = $this->translationRepo->findTranslations(
+            $brandId,
+            $this->locale
+        ) ?? $this->translationRepo->findTranslations($brandId, $this->localeService->getDefaultLocale());
+
+        return new BrandOutputDTO([
+            'id' => $brand->getId(),
+            'title' => $translations['title'] ?? $brand->getTitle(),
+            'image' => $brand->getImage(),
+            'translations' => [$this->locale => $translations ?? []],
+        ]);
+    }
+
+
+    public function getBrandWithTranslations(int $brandId): array
+    {
+        // 1. Берём основной бренд
+        $brand = $this->brandRepo->getBrandById($brandId);
+        if (!$brand) {
+            return [];
+        }
+
+        // 2. Берём переводы из отдельного репозитория
+        $translations = $this->translationRepo->findTranslations($brandId, $this->locale);
+
+        if (!$translations) {
+            // fallback на дефолтный язык
+            $translations = $this->translationRepo->findTranslations($brandId, $this->localeService->getDefaultLocale());
+        }
+
+        // 3. Объединяем данные в сервисе
+        return [
+            'id' => $brand->getId(),
+            'title' => $translations['title'] ?? $brand->getTitle(),
+            'description' => $translations['description'] ?? '',
+            'seo_title' => $translations['meta_title'] ?? '',
+            'seo_description' => $translations['meta_description'] ?? '',
+            'image' => $brand->getImage(),
+        ];
     }
 
 

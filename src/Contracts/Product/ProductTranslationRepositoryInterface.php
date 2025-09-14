@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Contracts\Product;
 
+use RedBeanPHP\OODBBean;
 use Vvintage\Models\Product\Product;
 use Vvintage\DTO\Product\ProductDTO;
 

@@ -11,10 +11,12 @@ abstract class BaseService
 {    
   protected string $locale;
   protected FlashMessage $flash;
+  protected LocaleService $localeService;
 
   public function __construct()
   {
-    $this->locale = $locale->getCurrentLocale();
+    $this->localeService = new LocaleService();
+    $this->locale = $this->localeService->getCurrentLocale();
     $this->flash = new FlashMessage ();
   }
 

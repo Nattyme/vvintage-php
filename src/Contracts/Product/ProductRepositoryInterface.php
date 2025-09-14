@@ -36,8 +36,8 @@ interface ProductRepositoryInterface
     /** SAVE */
     public function saveProduct(ProductInputDTO $dto, array $translations, array $images, array  $processedImages): ?int;
 
-    public function saveProductTranslation(array $translateDto): ?array;
+    // public function saveProductTranslation(array $translateDto): ?array;
 
-    public function saveProductImages(array $imagesDto): ?array;
+    // public function saveProductImages(array $imagesDto): ?array;
 
 }
