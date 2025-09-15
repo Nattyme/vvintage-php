@@ -9,6 +9,9 @@ use Vvintage\Models\Category\Category;
 use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Services\Base\BaseService;
 
+use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Category\CategoryOutputDTO;
+
 require_once ROOT . "./libs/functions.php";
 
 class CategoryService extends BaseService
@@ -89,5 +92,23 @@ class CategoryService extends BaseService
        return $this->repository->getAllCategoriesCount();
     }
 
+    public function createCategoryOutputDTO (array $row): CategoryOutputDTO
+    {
+        return new CategoryOutputDTO([
+            'id' => (int) $row['category_id'],
+            'title' => (string) ($row['category_title_translation'] ?: $row['category_title']),
+            'parent_id' => (int) ($row['category_parent_id'] ?? 0),
+            'image' => (string) ($row['category_image'] ?? ''),
+            'translations' => [
+                $this->locale => [
+                    'title' => $row['category_title_translation'] ?? '',
+                    'description' => $row['category_description'] ?? '',
+                    'seo_title' => $row['category_meta_title'] ?? '',
+                    'seo_description' => $row['category_meta_description'] ?? '',
+                ]
+            ],
+            'locale' => $this->locale,
+        ]);
+    }
   
 }

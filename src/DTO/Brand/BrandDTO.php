@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Brand;
 
-final class BrandDTO
+class BrandDTO
 {
     public int $id;
     public string $title;

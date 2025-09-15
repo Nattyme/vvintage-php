@@ -32,7 +32,7 @@ use Vvintage\Services\Admin\Product\AdminProductImageService;
 
 final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
-    private const TABLE_PRODUCTS = 'products';
+    private const TABLE = 'products';
     private const TABLE_PRODUCTS_TRANSLATION = 'productstranslation';
     private const TABLE_PRODUCT_IMAGES = 'productimages';
 
@@ -48,9 +48,8 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private ProductImageRepository $imageRepo;
 
     // public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
-    public function __construct(string $locale)
+    public function __construct()
     {
-        $this->locale = $locale;
         $this->imageRepo = new ProductImageRepository();
     }
 
@@ -102,44 +101,44 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     // }
 
   
-    private function createCategoryOutputDTO (array $row): CategoryOutputDTO
-    {
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-        return new CategoryOutputDTO([
-            'id' => (int) $row['category_id'],
-            'title' => (string) ($row['category_title_translation'] ?: $row['category_title']),
-            'parent_id' => (int) ($row['category_parent_id'] ?? 0),
-            'image' => (string) ($row['category_image'] ?? ''),
-            'translations' => [
-                $locale => [
-                    'title' => $row['category_title_translation'] ?? '',
-                    'description' => $row['category_description'] ?? '',
-                    'seo_title' => $row['category_meta_title'] ?? '',
-                    'seo_description' => $row['category_meta_description'] ?? '',
-                ]
-            ],
-            'locale' => $locale,
-        ]);
-    }
+    // private function createCategoryOutputDTO (array $row): CategoryOutputDTO
+    // {
+    //     $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
+    //     return new CategoryOutputDTO([
+    //         'id' => (int) $row['category_id'],
+    //         'title' => (string) ($row['category_title_translation'] ?: $row['category_title']),
+    //         'parent_id' => (int) ($row['category_parent_id'] ?? 0),
+    //         'image' => (string) ($row['category_image'] ?? ''),
+    //         'translations' => [
+    //             $locale => [
+    //                 'title' => $row['category_title_translation'] ?? '',
+    //                 'description' => $row['category_description'] ?? '',
+    //                 'seo_title' => $row['category_meta_title'] ?? '',
+    //                 'seo_description' => $row['category_meta_description'] ?? '',
+    //             ]
+    //         ],
+    //         'locale' => $locale,
+    //     ]);
+    // }
 
-    private function createBrandDTOFromArray(array $row): BrandDTO
-    {
-        $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-        return new BrandDTO([
-            'id' => (int) $row['brand_id'],
-            'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
-            'image' => (string) ($row['brand_image'] ?? ''),
-            'translations' => [
-                $locale => [
-                    'title' => $row['brand_title_translation'] ?? '',
-                    'description' => $row['brand_description'] ?? '',
-                    'seo_title' => $row['brand_meta_title'] ?? '',
-                    'seo_description' => $row['brand_meta_description'] ?? '',
-                ]
-            ],
-            'locale' => $locale,
-        ]);
-    }
+    // private function createBrandDTOFromArray(array $row): BrandDTO
+    // {
+    //     $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
+    //     return new BrandDTO([
+    //         'id' => (int) $row['brand_id'],
+    //         'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
+    //         'image' => (string) ($row['brand_image'] ?? ''),
+    //         'translations' => [
+    //             $locale => [
+    //                 'title' => $row['brand_title_translation'] ?? '',
+    //                 'description' => $row['brand_description'] ?? '',
+    //                 'seo_title' => $row['brand_meta_title'] ?? '',
+    //                 'seo_description' => $row['brand_meta_description'] ?? '',
+    //             ]
+    //         ],
+    //         'locale' => $locale,
+    //     ]);
+    // }
 
     /**
       ********** ::: // CREATE ::: **********
@@ -234,8 +233,8 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     public function getLastProducts(int $count): array
     {
-        $rows = $this->uniteProductRawData(['limit' => $count]);
-        return array_map([$this, 'fetchProductWithJoins'], $rows);
+        return $this->uniteProductRawData(['limit' => $count]);
+        // return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
 
     public function getFilteredProducts(ProductFilterDTO $filterDto): array
@@ -392,7 +391,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
                 bt.meta_title AS brand_meta_title,
                 bt.meta_description AS brand_meta_description,
                 GROUP_CONCAT(DISTINCT pi.filename ORDER BY pi.image_order) AS images
-            FROM ' . self::TABLE_PRODUCTS .' p
+            FROM ' . self::TABLE .' p
             LEFT JOIN ' . self::TABLE_PRODUCTS_TRANSLATION .' pt 
                 ON pt.product_id = p.id AND pt.locale = ?
             LEFT JOIN ' . self::TABLE_PRODUCT_IMAGES .' pi 

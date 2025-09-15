@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Product;
 
-final class ProductInputDTO extends ProductDTO
+final class ProductOutputDTO extends ProductDTO
 {
-    public ?int $id = null;
+    public int $id;
     public int $category_id;
     public int $brand_id;
 

@@ -5,9 +5,9 @@ namespace Vvintage\DTO\Product;
 use Vvintage\DTO\Category\CategoryDTO;
 use Vvintage\DTO\Brand\BrandDTO;
 
-final class ProductDTO
+class ProductDTO
 {
-    public int $id;
+    // public int $id;
     public int $category_id;
     public string $category_title;
     public ?CategoryDTO $categoryDTO;
@@ -19,7 +19,7 @@ final class ProductDTO
     public string $slug;
     public string $title;
     public string $description;
-    public string $price;
+    public int $price;
     public string $url;
     public string $status;
     public string $sku;
@@ -36,7 +36,7 @@ final class ProductDTO
 
     public function __construct(array $data)
     {
-        $this->id = (int) ($data['id'] ?? 0);
+        // $this->id = (int) ($data['id'] ?? 0);
 
         $this->category_id = (int) ($data['category_id'] ?? 0);
         $this->category_title = (string) isset($data['category_title']) ? $data['category_title'] : '';

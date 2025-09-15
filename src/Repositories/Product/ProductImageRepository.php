@@ -168,12 +168,12 @@ final class ProductImageRepository extends AbstractRepository implements Product
     public function fetchImageDTOs(array $row): array
     {
       $sql = 'SELECT * 
-             FROM ' . self::TABLE_PRODUCT_IMAGES . '
+             FROM ' . self::TABLE . '
              WHERE product_id = ? 
              ORDER BY image_order';
 
-      $imagesRows = $this->getAll($sql, [$row['id']]);
-      return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
+      return $this->getAll($sql, [$row['id']]);
+      // return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
     }
     
     public function saveProductImages(array $imagesDto): ?array

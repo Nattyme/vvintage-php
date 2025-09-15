@@ -15,6 +15,7 @@ use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Brand\BrandService;
 
 use Vvintage\DTO\Product\ProductFilterDTO;
+use Vvintage\DTO\Product\ProductOutputDTO;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -68,7 +69,6 @@ class ProductService extends BaseService
       return $this->repository->getProductsByParam('status = ?', ['hidden']);
     }
 
-
     //    $result['number_of_pages'] = $number_of_pages;
     // $result['page_number'] = $page_number;
     // $result['sql_page_limit'] =  $sql_page_limit;
@@ -77,9 +77,10 @@ class ProductService extends BaseService
         return $this->repository->getAllProducts(['limit' => $pagination['sql_page_limit'] ?? '']);
     }
 
-    public function getLastProducts(int $count): array
+    public function getLastProducts(int $count): ProductOutputDTO
     {
-      return $this->repository->getLastProducts($count);
+      $rows = $this->repository->getLastProducts($count);
+      return $rows ? $this->createProductDTOFromArray($rows[0]) : null;
     }
 
     public function countProducts(): int
@@ -109,15 +110,15 @@ class ProductService extends BaseService
         return $this->repository->getFilteredProducts($filter);
     }
 
-    protected function createProductDTOFromArray(array $row): ProductDTO
+    protected function createProductDTOFromArray(array $row): ProductOutputDTO
     {
         $productId = (int) $row['id'];
         $translations = $this->translationRepo->loadTranslations($productId);
         $categoryDTO = $this->categoryService->createCategoryOutputDTO($row);
         $brandDTO = $this->brandService->createBrandDTOFromArray($row);
-        $imagesDTO = $this->productImageService->fetchImageDTOs($row);
+        $imagesDTO = $this->productImageService->createImageDTO($row);
 
-        return new ProductDTO([
+        return new ProductOutputDTO([
             'id' => $productId,
             'categoryDTO' => $categoryDTO,
             'brandDTO' => $brandDTO,
