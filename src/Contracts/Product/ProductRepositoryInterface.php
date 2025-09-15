@@ -18,7 +18,7 @@ interface ProductRepositoryInterface
 
     public function getAllProducts(array $data = []): array;
 
-    public function getProductsByIds(array $ids): array;
+    // public function getProductsByIds(array $ids): array;
 
     public function getAllProductsCount(?string $sql = null, array $params = []): int;
 

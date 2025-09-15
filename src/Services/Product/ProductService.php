@@ -56,17 +56,23 @@ class ProductService extends BaseService
 
     public function getActiveProducts(): array 
     {
-      return $this->repository->getProductsByParam('status = ?', ['active']);
+      $rows =  $this->repository->getProductsByParam('status = ?', ['active']);
+      
+      // Применяем fetchProductWithJoins к каждому объекту OODBBean
+      return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
     public function getArchivedProducts(): array 
     {
-      return $this->repository->getProductsByParam('status = ?', ['archived']);
+      $rows = $this->repository->getProductsByParam('status = ?', ['archived']);
+      // Применяем fetchProductWithJoins к каждому объекту OODBBean
+      return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
     public function getHiddenProducts(): array 
     {
-      return $this->repository->getProductsByParam('status = ?', ['hidden']);
+      $rows =  $this->repository->getProductsByParam('status = ?', ['hidden']);
+      return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
     //    $result['number_of_pages'] = $number_of_pages;
@@ -74,7 +80,8 @@ class ProductService extends BaseService
     // $result['sql_page_limit'] =  $sql_page_limit;
     public function getAll($pagination = []): array
     {
-        return $this->repository->getAllProducts(['limit' => $pagination['sql_page_limit'] ?? '']);
+        $rows = $this->repository->getAllProducts(['limit' => $pagination['sql_page_limit'] ?? '']);
+        return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
     public function getLastProducts(int $count): ProductOutputDTO
@@ -138,5 +145,13 @@ class ProductService extends BaseService
             'images' => $imagesDTO
         ]);
     }
+
+
+    protected function uniteProductData(array $data) 
+    {
+      $products = $this->repository->uniteProductRawData($data);
+    }
+
+    
 
 }
