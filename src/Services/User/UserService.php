@@ -44,7 +44,7 @@ class UserService extends BaseService
     $this->userRepository = new UserRepository ();
     $this->addressService = new AddressService();
     $this->orderRepository = new OrderRepository();
-    $this->productService = new ProductService( $this->currentLang);
+    $this->productService = new ProductService();
   }
 
   public function getUserByID(int $id): ?User

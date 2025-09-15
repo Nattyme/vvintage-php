@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Admin\Brand;
 
 use Vvintage\Services\Brand\BrandService;
-use Vvintage\DTO\Brand\BrandDTO;
+use Vvintage\DTO\Brand\BrandOutputDTO;
 
 
 final class AdminBrandService extends BrandService
@@ -41,7 +41,7 @@ final class AdminBrandService extends BrandService
         }
     }
 
-    private function createBrandDTOFromArray(array $row): BrandDTO
+    public function createBrandDTOFromArray(array $row): BrandOutputDTO
     {
       return new BrandOutputDTO([
           'id' => (int) $row['brand_id'],

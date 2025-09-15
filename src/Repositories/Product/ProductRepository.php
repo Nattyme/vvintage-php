@@ -42,9 +42,6 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private const TABLE_CATEGORIES = 'categories';
     private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
 
-    // private const DEFAULT_LOCALE = 'ru';
-    private string $locale;
-
     private ProductImageRepository $imageRepo;
 
     // public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
@@ -228,7 +225,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     public function getAllProductsCount(?string $sql = null, array $params = []): int
     {
-        return $this->countAll(self::TABLE_PRODUCTS, $sql, $params);
+        return $this->countAll(self::TABLE, $sql, $params);
     }
 
     public function getLastProducts(int $count): array
