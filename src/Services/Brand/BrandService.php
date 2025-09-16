@@ -41,12 +41,28 @@ class BrandService extends BaseService
     
     public function getBrandById( int $id): ?Brand 
     {
-      return $this->repository->getBrandById( $id);
+      $brand = $this->repository->getBrandById($id);
+
+      if (!$brand) {
+          return null;
+      }
+
+      $translation = $this->getBrandTranslations($id);
+      $brand->setTranslations($translation);
+
+      return $brand;
     }
 
     public function getBrandsArray(): array
     {
-      return $this->repository->getBrandsArray();
+      $brands = $this->repository->getBrandsArray();
+
+      if (!$brands) {
+        return [];
+      }
+
+      $this->setBrandsWithTranslations($brands);
+      return $brands;
     }
 
     public function getBrandTranslations(int $brandId): array
@@ -169,6 +185,15 @@ class BrandService extends BaseService
     //       'translations' => $translations
     //   ];
     // }
+
+      private function setBrandsWithTranslations(array $brands): array
+      {
+          foreach ($brands as $brand) {
+              $translations = $this->translationRepo->getTranslationsArray($brand->getId());
+              $brand->setTranslations($translations);
+          }
+          return $brands;
+      }
 
 
 }

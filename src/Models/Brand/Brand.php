@@ -43,6 +43,12 @@ final class Brand
         
         return $brand;
     }
+
+    public function setTranslations(array $data): void 
+    {
+      $this->translations = $data;
+    }
+
     
     
     // Геттеры 

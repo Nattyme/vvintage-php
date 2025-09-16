@@ -117,20 +117,20 @@ class ProductService extends BaseService
         return $this->repository->getFilteredProducts($filter);
     }
 
-    protected function createProductDTOFromArray(array $row): ProductOutputDTO
+    private function createProductDTOFromArray(array $row): ProductOutputDTO
     {
         $productId = (int) $row['id'];
         $translations = $this->translationRepo->loadTranslations($productId);
         $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
         $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
-        dd( $brandOutputDTO);
+     
         // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
         $imagesDTO = $this->productImageService->createImageDTO($row);
 
         return new ProductOutputDTO([
             'id' => $productId,
             'categoryDTO' => $categoryOutputDTO,
-            'brandDTO' => $brandDTO,
+            'brandDTO' => $brandOutputDTO,
             'slug' => (string) $row['slug'],
             'title' => (string) $row['title'],
             'description' => (string) $row['description'],

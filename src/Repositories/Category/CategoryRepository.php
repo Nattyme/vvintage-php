@@ -64,7 +64,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
           'image' => (string) $bean->image
       ]);
 
-        return Category::fromDTO($dto);
+      return Category::fromDTO($dto);
     }
 
 
@@ -85,13 +85,6 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         $beans = $this->findAll(self::TABLE);
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
-
-    // public function getCategoriesByIds(array $ids): array
-    // {
-    //     $beans = $this->findByIds(self::TABLE, $ids);
-
-    //     return array_map([$this, 'mapBeanToCategory'], $beans);
-    // }
 
     public function getMainCats(): array
     {

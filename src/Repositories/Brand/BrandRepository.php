@@ -160,7 +160,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         $beans = $this->findAll(self::TABLE);
 
         // Сбрасываем ключи и преобразуем в массивы
-        return array_values(array_map([$this, 'mapBeanToArray'], $beans));
+        return array_values(array_map([$this, 'mapBeanToBrand'], $beans));
     }
 
      /** Создаёт новый OODBBean для бренда */
@@ -177,7 +177,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
             return null;
         }
 
-        // Создаем или загружаем основной бренд
+        // Создаем или загружаем бренд
         $brandBean = $dto->id 
             ? $this->findById(self::TABLE, $dto->id)
             : $this->createBrandBean();
@@ -225,13 +225,10 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
     private function mapBeanToBrand(OODBBean $bean): Brand
     {
-        $translations = $this->translationRepo->loadTranslations((int) $bean->id);
-
         $dto = new BrandDTO([
             'id' => (int) $bean->id,
             'title' => (string) $bean->title,
-            'image' => (string) $bean->image,
-            'translations' => $translations
+            'image' => (string) $bean->image
         ]);
 
         return Brand::fromDTO($dto);

@@ -49,14 +49,26 @@ final class BrandTranslationRepository extends AbstractRepository implements Bra
         return $translations;
     }
 
-    public function findTranslations(int $id, string $locale) 
+    public function findTranslations(int $id, string $locale): array
     {
-        return  $this->findOneBy(
-                  self::TABLE,
-                  'brand_id = ? AND locale = ?',
-                  [$id, $locale]
-              );
+        $bean = $this->findOneBy(self::TABLE, 'brand_id = ? AND locale = ?', [$id, $locale]);
+   
+        if (!$bean) {
+            return [];
+        }
+
+        return [
+            'id' => $bean->id,
+            'brand_id' => $bean->brand_id,
+            'locale' => $bean->locale,
+            'title' => $bean->title,
+            'description' => $bean->description,
+            'meta_title' => $bean->meta_title,
+            'meta_description' => $bean->meta_description
+        ];
     }
+
+   
 
     public function saveTranslations($brandId, $locale, $fields): void
     {

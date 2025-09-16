@@ -270,7 +270,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     public function getProducts(array $filters = []): array
     {
-        $sql = 'SELECT id, slug, title, description, price, status, sku, stock, datetime, edit_time, category_id, brand_id
+        $sql = 'SELECT id, slug, title, description, price, status, url, sku, stock, datetime, edit_time, category_id, brand_id
                 FROM ' . self::TABLE . ' WHERE 1=1';
 
         $params = [];
