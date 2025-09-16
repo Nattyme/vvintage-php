@@ -24,7 +24,7 @@ interface ProductRepositoryInterface
 
     public function getLastProducts(int $count): array;
 
-    public function getFilteredProducts(ProductFilterDTO $filterDto): array;
+    // public function getFilteredProducts(ProductFilterDTO $filterDto): array;
 
     /** UPDATE */
     public function updateStatus(int $productId, string $status): bool;

@@ -92,23 +92,30 @@ class CategoryService extends BaseService
        return $this->repository->getAllCategoriesCount();
     }
 
-    public function createCategoryOutputDTO (array $row): CategoryOutputDTO
+    public function getCategoryOutputDTO(array $product): CategoryOutputDTO
     {
-        return new CategoryOutputDTO([
-            'id' => (int) $row['category_id'],
-            'title' => (string) ($row['category_title_translation'] ?: $row['category_title']),
-            'parent_id' => (int) ($row['category_parent_id'] ?? 0),
-            'image' => (string) ($row['category_image'] ?? ''),
-            'translations' => [
-                $this->locale => [
-                    'title' => $row['category_title_translation'] ?? '',
-                    'description' => $row['category_description'] ?? '',
-                    'seo_title' => $row['category_meta_title'] ?? '',
-                    'seo_description' => $row['category_meta_description'] ?? '',
-                ]
-            ],
-            'locale' => $this->locale,
-        ]);
+
+    }
+
+    public function createCategoryOutputDTO (int $id): CategoryOutputDTO
+    {
+      $category = $this->getCategoryById($id);
+   
+      return new CategoryOutputDTO([
+          'id' => (int) $category->getId(),
+          'title' => (string) ($category->getTranslatedTitle() ?: $category->getTitle()),
+          'parent_id' => (int) ($category->getParentId() ?? 0),
+          'image' => (string) ($category->getImage() ?? ''),
+          'translations' => [
+              $this->locale => [
+                  'title' => $category->getTranslatedTitle() ?? '',
+                  'description' => $category->getTranslatedDescription() ?? '',
+                  'seo_title' => $category->getSeoTitle() ?? '',
+                  'seo_description' => $category->getSeoDescription() ?? '',
+              ]
+          ],
+          'locale' => $this->locale,
+      ]);
     }
   
 }

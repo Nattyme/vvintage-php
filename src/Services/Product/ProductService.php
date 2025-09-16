@@ -121,13 +121,15 @@ class ProductService extends BaseService
     {
         $productId = (int) $row['id'];
         $translations = $this->translationRepo->loadTranslations($productId);
-        $categoryDTO = $this->categoryService->createCategoryOutputDTO($row);
-        $brandDTO = $this->brandService->createBrandDTOFromArray($row);
+        $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
+        $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
+        dd( $brandOutputDTO);
+        // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
         $imagesDTO = $this->productImageService->createImageDTO($row);
 
         return new ProductOutputDTO([
             'id' => $productId,
-            'categoryDTO' => $categoryDTO,
+            'categoryDTO' => $categoryOutputDTO,
             'brandDTO' => $brandDTO,
             'slug' => (string) $row['slug'],
             'title' => (string) $row['title'],

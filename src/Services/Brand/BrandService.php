@@ -18,13 +18,13 @@ require_once ROOT . "./libs/functions.php";
 
 class BrandService extends BaseService
 {
-    private BrandRepository $brandRepo;
+    private BrandRepository $repository;
     private BrandTranslationRepository $translationRepo;
 
     public function __construct()
     {
        parent::__construct();
-       $this->brandRepo = new BrandRepository();
+       $this->repository = new BrandRepository();
        $this->translationRepo = new BrandTranslationRepository($this->locale);
     }
 
@@ -63,7 +63,7 @@ class BrandService extends BaseService
 
     public function getBrandDTO(int $brandId): ?BrandDTO
     {
-        $brand = $this->brandRepo->getBrandById($brandId);
+        $brand = $this->repository->getBrandById($brandId);
         if (!$brand) return null;
         
         // получаем переводы из репозитория переводов
@@ -84,7 +84,7 @@ class BrandService extends BaseService
     public function getBrandWithTranslations(int $brandId): array
     {
         // 1. Берём основной бренд
-        $brand = $this->brandRepo->getBrandById($brandId);
+        $brand = $this->repository->getBrandById($brandId);
         if (!$brand) {
             return [];
         }
@@ -108,22 +108,40 @@ class BrandService extends BaseService
         ];
     }
 
-    public function createBrandDTOFromArray(array $row): BrandOutputDTO
+    public function createBrandOutputDTO(int $id): BrandOutputDTO
     {
+        $brand = $this->getBrandById($id);
         return new BrandOutputDTO([
-            'id' => (int) $row['brand_id'],
-            'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
+            'id' => (int) $brand->getId(),
+            'title' => (string) ($brand->getTranslatedTitle() ?: $brand->getTitle()),
             'image' => (string) ($row['brand_image'] ?? ''),
             'translations' => [
                 $this->locale => [
-                    'title' => $row['brand_title_translation'] ?? '',
-                    'description' => $row['brand_description'] ?? '',
-                    'seo_title' => $row['brand_meta_title'] ?? '',
-                    'seo_description' => $row['brand_meta_description'] ?? '',
+                    'title' => $brand->getTranslatedTitle() ?? '',
+                    'description' => $brand->getTranslatedDescription() ?? '',
+                    'seo_title' => $brand-> getSeoTitle() ?? '',
+                    'seo_description' => $brand->getSeoDescription() ?? '',
                 ]
             ],
             'locale' => $this->locale,
         ]);
     }
+    // public function createBrandDTOFromArray(array $row): BrandOutputDTO
+    // {
+    //     return new BrandOutputDTO([
+    //         'id' => (int) $row['brand_id'],
+    //         'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
+    //         'image' => (string) ($row['brand_image'] ?? ''),
+    //         'translations' => [
+    //             $this->locale => [
+    //                 'title' => $row['brand_title_translation'] ?? '',
+    //                 'description' => $row['brand_description'] ?? '',
+    //                 'seo_title' => $row['brand_meta_title'] ?? '',
+    //                 'seo_description' => $row['brand_meta_description'] ?? '',
+    //             ]
+    //         ],
+    //         'locale' => $this->locale,
+    //     ]);
+    // }
 
 }
