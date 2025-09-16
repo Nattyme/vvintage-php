@@ -7,6 +7,7 @@ namespace Vvintage\Services\Category;
 /** Модель */
 use Vvintage\Models\Category\Category;
 use Vvintage\Repositories\Category\CategoryRepository;
+use Vvintage\Repositories\Category\CategoryTranslationRepository;
 use Vvintage\Services\Base\BaseService;
 
 use Vvintage\DTO\Category\CategoryDTO;
@@ -17,17 +18,28 @@ require_once ROOT . "./libs/functions.php";
 class CategoryService extends BaseService
 {
     protected CategoryRepository $repository;
+    protected CategoryTranslationRepository $translationRepo;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->repository = new CategoryRepository($this->locale);
+        $this->translationRepo = new CategoryTranslationRepository();
     }
 
     public function getCategoryById(int $id): ?Category
     {
-      return $this->repository->getCategoryById($id);
+        $category = $this->repository->getCategoryById($id);
+
+        if (!$category) {
+            return [];
+        }
+
+        $translations = $this->translationRepo->getTranslationsArray($id);
+        $category->setTranslations($translations);
+
+        return $category;
     }
+
 
     public function getMainCategoriesArray(): array
     {
@@ -41,32 +53,71 @@ class CategoryService extends BaseService
 
     public function getAllCategoriesArray(): array
     {
-      return $this->repository->getAllCategoriesArray();
+      $categories = $this->repository->getAllCategoriesArray();
+
+      if (empty($categories)) {
+        return [];
+      }
+
+      $this->setCategoriesWithTranslations($categories);
+
+      return $categories;
     }
 
 
     
     public function getMainCategories(): array
     {
-      return $this->repository->getMainCats();
+      $categories = $this->repository->getMainCats();
+      if (empty($categories)) {
+        return [];
+      }
+
+      $this->setCategoriesWithTranslations($categories);
+
+      return $categories;
     }
     public function getSubCategories(): array
     {
-      return $this->repository->getSubCats();
+      $categories =  $this->repository->getSubCats();
+
+      if (empty($categories)) {
+        return [];
+      }
+
+      $this->setCategoriesWithTranslations($categories);
+
+      return $categories;
     }
+
     public function getAllCategories($pagination = null): array
     {
-      return $this->repository->getAllCategories($pagination);
+      $categories =  $this->repository->getAllCategories($pagination);
+
+      if (empty($categories)) {
+        return [];
+      }
+
+      $this->setCategoriesWithTranslations($categories);
+
+      return $categories;
     }
 
     public function getCategoryTree() {
         // Получим все категории
-        $allCategories = $this->repository->getAllCategories(); 
+        $categories = $this->repository->getAllCategories();
+
+        if (empty($categories)) {
+          return [];
+        }
+
+        $this->setCategoriesWithTranslations($categories);
+
         $tree = [];
 
         // сначала создаём индекс категорий по id
         $categoriesById = [];
-        foreach ($allCategories as $category) {
+        foreach ($categories as $category) {
             $categoriesById[$category->getId()] = [
                 'id' => $category->getId(),
                 'title' => $category->getTranslatedTitle($this->locale),
@@ -92,10 +143,6 @@ class CategoryService extends BaseService
        return $this->repository->getAllCategoriesCount();
     }
 
-    public function getCategoryOutputDTO(array $product): CategoryOutputDTO
-    {
-
-    }
 
     public function createCategoryOutputDTO (int $id): CategoryOutputDTO
     {
@@ -117,5 +164,14 @@ class CategoryService extends BaseService
           'locale' => $this->locale,
       ]);
     }
-  
+
+    private function setCategoriesWithTranslations(array $categories): array
+    {
+        foreach ($categories as $category) {
+            $translations = $this->translationRepo->getTranslationsArray($category->getId());
+            $category->setTranslations($translations);
+        }
+        return $categories;
+    }
+
 }

@@ -64,6 +64,11 @@ final class Category
         return $category;
     }
 
+    public function setTranslations(array $data): void 
+    {
+      $this->translations = $data;
+    }
+
     // Получение названия в нужной локали, иначе fallback title
     public function getTitle(?string $locale = null): string
     {

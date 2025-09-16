@@ -37,18 +37,31 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     }
 
 
+
+
+    // private function mapBeanToCategory(OODBBean $bean): Category
+    // {
+
+    //   $translations = $this->translationRepo->getTranslationsArray((int) $bean->id);
+
+
+    //   $dto = new CategoryInputDTO([
+    //       'id' => (int) $bean->id,
+    //       'title' => (string) $bean->title,
+    //       'parent_id' => (int) $bean->parent_id,
+    //       'image' => (string) $bean->image,
+    //       'translations' => $translations
+    //   ]);
+
+    //     return Category::fromDTO($dto);
+    // }
     private function mapBeanToCategory(OODBBean $bean): Category
     {
-
-      $translations = $this->translationRepo->getTranslationsArray((int) $bean->id);
-
-
       $dto = new CategoryInputDTO([
           'id' => (int) $bean->id,
           'title' => (string) $bean->title,
           'parent_id' => (int) $bean->parent_id,
-          'image' => (string) $bean->image,
-          'translations' => $translations
+          'image' => (string) $bean->image
       ]);
 
         return Category::fromDTO($dto);
@@ -73,12 +86,12 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
-    public function getCategoriesByIds(array $ids): array
-    {
-        $beans = $this->findByIds(self::TABLE, $ids);
+    // public function getCategoriesByIds(array $ids): array
+    // {
+    //     $beans = $this->findByIds(self::TABLE, $ids);
 
-        return array_map([$this, 'mapBeanToCategory'], $beans);
-    }
+    //     return array_map([$this, 'mapBeanToCategory'], $beans);
+    // }
 
     public function getMainCats(): array
     {

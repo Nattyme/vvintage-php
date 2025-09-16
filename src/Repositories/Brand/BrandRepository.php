@@ -82,31 +82,31 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     //     ]);
     // }
 
-    private function mapBeanToBrand(OODBBean $bean): Brand
-    {
-        $translations = $this->translationRepo->loadTranslations((int) $bean->id);
+    // private function mapBeanToBrand(OODBBean $bean): Brand
+    // {
+    //     $translations = $this->translationRepo->loadTranslations((int) $bean->id);
 
-        $dto = new BrandDTO([
-            'id' => (int) $bean->id,
-            'title' => (string) $bean->title,
-            'image' => (string) $bean->image,
-            'translations' => $translations
-        ]);
+    //     $dto = new BrandDTO([
+    //         'id' => (int) $bean->id,
+    //         'title' => (string) $bean->title,
+    //         'image' => (string) $bean->image,
+    //         'translations' => $translations
+    //     ]);
 
-        return Brand::fromDTO($dto);
-    }
+    //     return Brand::fromDTO($dto);
+    // }
 
-    private function mapBeanToArray(OODBBean $bean): array
-    {
-      $translations = $this->translationRepo->loadTranslations((int) $bean->id);
+    // private function mapBeanToArray(OODBBean $bean): array
+    // {
+    //   $translations = $this->translationRepo->loadTranslations((int) $bean->id);
 
-      return [
-          'id' => (int) $bean->id,
-          'title' => (string) $bean->title,
-          'image' => (string) $bean->image,
-          'translations' => $translations
-      ];
-    }
+    //   return [
+    //       'id' => (int) $bean->id,
+    //       'title' => (string) $bean->title,
+    //       'image' => (string) $bean->image,
+    //       'translations' => $translations
+    //   ];
+    // }
 
     // Находит бренд по id и возвращает объект
     public function getBrandById(int $id): ?Brand
@@ -221,6 +221,20 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     public function existsByTitle(string $cleaned): ?int
     {
       return $this->countAll(self::TABLE, 'LOWER(title) = ?', [mb_strtolower($cleaned)]);
+    }
+
+    private function mapBeanToBrand(OODBBean $bean): Brand
+    {
+        $translations = $this->translationRepo->loadTranslations((int) $bean->id);
+
+        $dto = new BrandDTO([
+            'id' => (int) $bean->id,
+            'title' => (string) $bean->title,
+            'image' => (string) $bean->image,
+            'translations' => $translations
+        ]);
+
+        return Brand::fromDTO($dto);
     }
 
 }

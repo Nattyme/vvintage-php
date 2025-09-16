@@ -144,4 +144,31 @@ class BrandService extends BaseService
     //     ]);
     // }
 
+    // private function mapBeanToBrand(OODBBean $bean): Brand
+    // {
+    //     $translations = $this->translationRepo->loadTranslations((int) $bean->id);
+
+    //     $dto = new BrandDTO([
+    //         'id' => (int) $bean->id,
+    //         'title' => (string) $bean->title,
+    //         'image' => (string) $bean->image,
+    //         'translations' => $translations
+    //     ]);
+
+    //     return Brand::fromDTO($dto);
+    // }
+
+    // private function mapBeanToArray(OODBBean $bean): array
+    // {
+    //   $translations = $this->translationRepo->loadTranslations((int) $bean->id);
+
+    //   return [
+    //       'id' => (int) $bean->id,
+    //       'title' => (string) $bean->title,
+    //       'image' => (string) $bean->image,
+    //       'translations' => $translations
+    //   ];
+    // }
+
+
 }
