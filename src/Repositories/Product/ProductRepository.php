@@ -82,7 +82,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     
     public function getAllProducts(array $filters = []): array
     {
-     
+   
         return $this->getProducts($filters);
         // return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
@@ -270,30 +270,33 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     public function getProducts(array $filters = []): array
     {
-        $sql = 'SELECT id, slug, title, description, price, status, url, sku, stock, datetime, edit_time, category_id, brand_id
+        $sql = 'SELECT id, category_id, brand_id, slug, title, description, price, url, sku, stock, datetime, status, edit_time
                 FROM ' . self::TABLE . ' WHERE 1=1';
 
         $params = [];
 
-        if (!empty($filters['id'])) {
+        if (isset($filters['id'])) {
             $sql .= ' AND id = ?';
             $params[] = $filters['id'];
         }
 
-        if (!empty($filters['status'])) {
+        if (isset($filters['status'])) {
             $sql .= ' AND status = ?';
             $params[] = $filters['status'];
         }
 
-        if (!empty($filters['category_id'])) {
+        if (isset($filters['category_id'])) {
             $sql .= ' AND category_id = ?';
             $params[] = $filters['category_id'];
         }
 
         $sql .= ' ORDER BY datetime DESC';
 
-        if (!empty($filters['limit'])) {
-            $sql .= ' LIMIT ' . (int) $filters['limit'];
+        // if (isset($filters['limit'])) {
+        //     $sql .= ' LIMIT ' . (int) $filters['limit'];
+        // }
+        if (isset($filters['limit']) && (int)$filters['limit'] > 0) {
+            $sql .= ' LIMIT ' . (int)$filters['limit'];
         }
 
         return $this->getAll($sql, $params);

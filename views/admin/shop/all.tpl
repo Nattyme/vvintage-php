@@ -60,45 +60,45 @@
       <tbody class="product-table__body">
         <?php foreach ($productViewModel['products'] as $product) : ?>
           <?php 
-              $images = $productViewModel['imagesByProductId'][$product->getId()] ?? null;
+              $images = $product->images ?? null;
               $mainImage = $images['main'] ?? null;
           ?>
 
-          <tr data-status="<?php echo $product->getStatus();?>">
+          <tr data-status="<?php echo $product->status;?>">
             <td class="product-table__img">
-            <?php if ($mainImage && file_exists(ROOT . 'usercontent/products/' . $mainImage->getFilename())) : ?>
+            <?php if ($mainImage && file_exists(ROOT . 'usercontent/products/' . $mainImage->filename)) : ?>
               <img 
-                src="<?php echo HOST . 'usercontent/products/' . h($mainImage->getFilename());?>" 
-                srcset="<?php echo HOST . 'usercontent/products/' . h($mainImage->getFilename());?>" 
-                alt="<?php echo h($product->getTitle());?>" loading="lazy"
+                src="<?php echo HOST . 'usercontent/products/' . h($mainImage->filename);?>" 
+                srcset="<?php echo HOST . 'usercontent/products/' . h($mainImage->filename);?>" 
+                alt="<?php echo h($product->title);?>" loading="lazy"
               >
             <?php else : ?>
               <img 
                 src="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" 
-                srcset="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" alt="<?php echo h($product->getTitle());?>"
+                srcset="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" alt="<?php echo h($product->title);?>"
               >
             <?php endif; ?>
             </td>
             <td class="product-table__item product-table__item--title">
               <!-- link-to-page -->
-              <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit/<?php echo u($product->getId()); ?>">
-                <?php echo htmlspecialchars($product->getTitle() ? h($product->getTitle()) : ''); ?>
+              <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit/<?php echo u($product->id); ?>">
+                <?php echo htmlspecialchars($product->title ? h($product->title) : ''); ?>
               </a>
             </td>
             <td>
-              <?php echo h($product->getBrandTitle()); ?>
+              <?php echo h($product->title); ?>
             </td>
             <td>
-              <?php echo h($product->getCategoryTitle() ?? '');?>
+              <?php echo h($product->category_title ?? '');?>
             </td>
             <td>
-              <?php echo h($product->getPrice() ?? ''); ?>  &euro;
+              <?php echo h($product->price ?? ''); ?>  &euro;
             </td>
             <td>
-              <a class="link link-above-others" href="<?php echo !empty($product->getUrl()) ? $product->getUrl() : '';?>">vinted.fr</a>
+              <a class="link link-above-others" href="<?php echo !empty($product->url) ? $product->url : '';?>">vinted.fr</a>
             </td>
             <td>
-              <?php echo h(rus_date('j. m. Y. H:i', $product->getDateTime()->getTimestamp()));?>
+              <?php echo h($product->datetime);?>
             </td>
             <td class="product-table__item product-table__item--checkbox link-above-others">
               <label>
@@ -106,8 +106,8 @@
                   class="table__checkbox-hidden real-checkbox" 
                   type="checkbox" 
                   name="products[]" 
-                  data-check="<?php echo h($product->getId());?>"
-                  value="<?php echo h($product->getId());?>"
+                  data-check="<?php echo h($product->id);?>"
+                  value="<?php echo h($product->id);?>"
                 >
                 <span class="table__checkbox-fake custom-checkbox"></span>
               </label>

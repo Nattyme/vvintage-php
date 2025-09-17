@@ -81,6 +81,9 @@ class ProductService extends BaseService
     public function getAll($pagination = []): array
     {
         $rows = $this->repository->getAllProducts(['limit' => $pagination['sql_page_limit'] ?? '']);
+
+        if(empty($rows)) return [];
+
         return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
@@ -97,9 +100,10 @@ class ProductService extends BaseService
 
 
 
-    public function getProductImages(Product $product): array
+    public function getProductImages(ProductOutputDTO $product): array
     {
-        return $this->productImageService->splitImages($product->getImages());
+
+      return $this->productImageService->splitImages($product->getImages());
     }
 
     public function getProductImagesData(array $images): array
@@ -126,9 +130,12 @@ class ProductService extends BaseService
      
         // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
         $imagesDTO = $this->productImageService->createImageDTO($row);
-
-        return new ProductOutputDTO([
+        $images = $this->productImageService->getImageViewData($imagesDTO);
+    
+        $dto = new ProductOutputDTO([
             'id' => $productId,
+            'category_id' => $row['category_id'],
+            'brand_id' => $row['brand_id'],
             'categoryDTO' => $categoryOutputDTO,
             'brandDTO' => $brandOutputDTO,
             'slug' => (string) $row['slug'],
@@ -144,8 +151,11 @@ class ProductService extends BaseService
             'images_total' => count($imagesDTO),
             'translations' => $translations,
             'locale' => $this->locale ?? self::DEFAULT_LOCALE,
-            'images' => $imagesDTO
+            'images' => $images
         ]);
+
+        return $dto;
+     
     }
 
 

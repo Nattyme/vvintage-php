@@ -53,21 +53,21 @@ class AdminProductController extends BaseAdminController
     // Устанавливаем пагинацию
     $pagination = pagination($productsPerPage, 'products');
     $products = $this->adminProductService->getAll($pagination);
+   
     $total = $this->adminProductService->countProducts();
     $actions = $this->adminProductService->getActions();
 
-    $imagesByProductId = [];
+    // $imagesByProductId = [];
 
-    foreach ($products as $product) {
-        $imagesMainAndOthers = $this->adminProductService->getProductImages($product);
-        $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
-    }
+    // foreach ($products as $product) {
+    //     $imagesMainAndOthers = $this->adminProductService->getProductImages($product);
+    //     $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
+    // }
 
     // Формируем единую модель для передачи в шаблон
     $productViewModel = [
         'products' => $products,
         'total' => $total,
-        'imagesByProductId' => $imagesByProductId,
         'actions'=> $actions
     ];
         

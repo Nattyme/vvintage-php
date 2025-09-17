@@ -2,19 +2,18 @@
 declare(strict_types=1);
 
 namespace Vvintage\DTO\Product;
-use Vvintage\DTO\Category\CategoryDTO;
-use Vvintage\DTO\Brand\BrandDTO;
+use Vvintage\DTO\Category\CategoryOutputDTO;
+use Vvintage\DTO\Brand\BrandOutputDTO;
 
 class ProductDTO
 {
-    // public int $id;
     public int $category_id;
     public string $category_title;
-    public ?CategoryDTO $categoryDTO;
+    public ?CategoryOutputDTO $categoryDTO;
 
     public int $brand_id;
     public string $brand_title;
-    public ?BrandDTO $brandDTO;
+    public ?BrandOutputDTO $brandDTO;
 
     public string $slug;
     public string $title;
@@ -50,7 +49,7 @@ class ProductDTO
         $this->slug = (string) ($data['slug'] ?? '');
         $this->title = (string) ($data['title'] ?? '');
         $this->description = (string) ($data['description'] ?? '');
-        $this->price = isset($data['price']) ? (string) $data['price'] : '';
+        $this->price = isset($data['price']) ? (int) $data['price'] : '';
         $this->url = (string) ($data['url'] ?? '');
         $this->status = (string) ($data['status'] ?? '');
         

@@ -44,13 +44,12 @@ final class AdminProductService extends ProductService
     {
         $imagesByProductId = [];
 
-
         foreach ($products as $product) {
-            $imagesMainAndOthers = $this->productImageService->splitImages($product->getImages());
+            $imagesMainAndOthers = $this->productImageService->splitImages($products->images);
             $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
         }
 
-        return  $imagesByProductId;
+        return $imagesByProductId;
     }
 
     public function publishProduct(int $productId): bool
