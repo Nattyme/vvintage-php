@@ -154,6 +154,7 @@
     <div class="admin-form__column admin-form__column--imgs">
    
       <?php foreach ($product->images as $img): ?>
+
           <input type="hidden" name="existing_images[]" value="<?php echo h($img->id); ?>">
       <?php endforeach; ?>
     

@@ -166,6 +166,11 @@ class ProductService extends BaseService
       $products = $this->repository->uniteProductRawData($data);
     }
 
+    public function getFlatImages(array $images) 
+    {
+      return $this->productImageService->getFlatImages($images);
+    }
+
     
 
 }

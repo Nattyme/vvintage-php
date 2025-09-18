@@ -105,7 +105,7 @@ class AdminProductController extends BaseAdminController
     if (!$id) $this->redirect('admin/shop');
 
     $product = $this->adminProductService->getProductById($id);
-  
+    $product->images = $this->adminProductService->getFlatImages($product->images);
     $statusList = $this->adminProductService->getStatusList();
 
     $this->renderLayout('shop/edit',  [

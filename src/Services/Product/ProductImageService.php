@@ -112,6 +112,21 @@ class ProductImageService
     return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
   }
 
+   public function getFlatImages(array $data): array 
+  {
+    $images = [];
+
+    if (!empty($data['main'])) {
+        $images[] = $data['main'];
+    }
+
+    if (!empty($data['others'])) {
+        $images = array_merge($images, $data['others']);
+    }
+
+    return $images;
+
+  }
 
   // public function buildImageDtos(array $processedImages): array
   // {
