@@ -3,7 +3,7 @@
   method="POST" 
   class="admin-form" 
   enctype="multipart/form-data"
-  data-product="<?php echo h($product->getId());?>"
+  data-product="<?php echo h($product->id);?>"
 >
 
   <div class="admin-form__row">
@@ -13,9 +13,9 @@
     
       <div class="admin-form__field">
         <label class="admin-form__label" for="title">Дата последнего обновления</label>
-      
+  
         <input  id="title" name="title" class="admin-form__input input" type="text"
-                value="<?php echo h(rus_date('j. m. Y. H:i', $product->getEditTime()));?>"
+                value="<?php echo h(rus_date('j. m. Y. H:i', $product->edit_time));?>"
                 placeholder="Введите название" disabled
         />
       </div>
@@ -52,14 +52,14 @@
       <div class="admin-form__field">
         <label class="admin-form__label" for="title">Название для страницы товара (латиницей: chasy-chanel)</label>
         <input id="slug" name="slug" class="admin-form__input input" type="text"
-                value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : h($product->getSlug()); ?>"
+                value="<?php echo isset($_POST['slug']) ? h($_POST['slug']) : h($product->slug); ?>"
                 placeholder="Введите название старницы" required/>
       </div>
 
       <div class="admin-form__field">
         <label class="admin-form__label" for="price">Цена</label>
         <input id="price" name="price" class="admin-form__input input" type="text"
-                value="<?php echo isset($_POST['getPrice']) ? h($_POST['getPrice']) : h($product->getPrice()); ?>"
+                value="<?php echo isset($_POST['getPrice']) ? h($_POST['getPrice']) : h($product->price); ?>"
                 placeholder="Введите цену в &euro;" required
         />
       </div>
@@ -67,7 +67,7 @@
       <div class="admin-form__field">
         <label class="admin-form__label" for="sku">Артикул</label>
         <input id="sku" name="sku" class="admin-form__input input" type="text"
-                value="<?php echo isset($_POST['sku']) ? h($_POST['sku']) : h($product->getSku()); ?>"
+                value="<?php echo isset($_POST['sku']) ? h($_POST['sku']) : h($product->sku); ?>"
                 placeholder="Введите артикул" 
         />
       </div>
@@ -87,7 +87,7 @@
       <div class="admin-form__field">
         <label class="admin-form__label" for="url">Ссылка</label>
         <input id="url" name="url" class="admin-form__input input" type="text"
-                value="<?php echo isset($_POST['url']) ? h($_POST['url']) : h($product->getUrl()); ?>"
+                value="<?php echo isset($_POST['url']) ? h($_POST['url']) : h($product->url); ?>"
                 placeholder="Введите ссылку на vinted.fr" 
                 required
         />
@@ -98,7 +98,7 @@
       <div class="admin-form__field">
           <label class="admin-form__label" for="mainCat">Раздел</label>
           <div class="admin-form__row">
-            <select class="select" name="mainCat" id="category" data-current-parent="<?php echo h($product->getCategory()->getParentId()) ?>"></select>
+            <select class="select" name="mainCat" id="category" data-current-parent="<?php echo h($product->categoryDTO->parent_id) ?>"></select>
       
             <a 
               class="button button--s button--primary" 
@@ -111,7 +111,7 @@
       <div class="admin-form__field">
           <label class="admin-form__label" for="subCat">Категория</label>
           <div class="admin-form__row">
-              <select class="select" name="category_id" id="subCategory" data-current-cat="<?php echo h($product->getCategory()->getId()) ?>"></select>
+              <select class="select" name="category_id" id="subCategory" data-current-cat="<?php echo h($product->categoryDTO->id) ?>"></select>
   
               <a 
                 class="button button--s button--primary" 
@@ -124,7 +124,7 @@
       <div class="admin-form__field">
         <label class="admin-form__label" for="brands">Выберите бренд</label>
         <div class="admin-form__row">
-          <select class="select" name="brand_id" id="brands" data-brand="<?php echo h($product->getBrandId());?>"></select>
+          <select class="select" name="brand_id" id="brands" data-brand="<?php echo h($product->brandDTO->id);?>"></select>
   
           <a 
             class="button button--s button--primary" 
@@ -141,7 +141,7 @@
             
               <select class="select" name="status" id="status">
                 <?php foreach ($statusList as $key => $value) : ?>
-                  <option <?php echo $product->getStatus() === $key ? 'selected' : '';?> value="<?php echo h($key);?>">
+                  <option <?php echo $product->status === $key ? 'selected' : '';?> value="<?php echo h($key);?>">
                     <?php echo h($value);?>
                   </option>
                 <?php endforeach; ?>
@@ -153,8 +153,8 @@
 
     <div class="admin-form__column admin-form__column--imgs">
    
-      <?php foreach ($product->getImages() as $img): ?>
-          <input type="hidden" name="existing_images[]" value="<?php echo h($img->getId()); ?>">
+      <?php foreach ($product->images as $img): ?>
+          <input type="hidden" name="existing_images[]" value="<?php echo h($img->id); ?>">
       <?php endforeach; ?>
     
       <div class="admin-form__field">
@@ -169,19 +169,19 @@
 
             <!-- PREVIEW IMG -->
             <div class="block-upload__preview" data-preview="container" data-dragg-preview>
-              <?php foreach ($product->getImages() as $image) : ?>
+              <?php foreach ($product->images as $image) : ?>
                 <div 
                     class="block-upload__img-wrapper" 
                     data-preview="image-wrapper" 
                     draggable="true" 
-                    data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>"
-                    data-id="<?php echo $image->getId();?>"
-                    data-name="<?php echo $image->getFilename();?>"
-                    data-order="<?php echo $image->getOrder();?>"
+                    data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->filename;?>"
+                    data-id="<?php echo $image->id;?>"
+                    data-name="<?php echo $image->filename;?>"
+                    data-order="<?php echo $image->order;?>"
                 >
                   <img 
-                    id = "<?php echo $image->getId();?>"
-                    src="<?php echo HOST . 'usercontent/products/' . '350-' . $image->getFilename();?>" 
+                    id = "<?php echo $image->id;?>"
+                    src="<?php echo HOST . 'usercontent/products/' . '350-' . $image->filename;?>" 
                     loading="lazy"
                            
                   >

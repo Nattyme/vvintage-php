@@ -57,13 +57,6 @@ class AdminProductController extends BaseAdminController
     $total = $this->adminProductService->countProducts();
     $actions = $this->adminProductService->getActions();
 
-    // $imagesByProductId = [];
-
-    // foreach ($products as $product) {
-    //     $imagesMainAndOthers = $this->adminProductService->getProductImages($product);
-    //     $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
-    // }
-
     // Формируем единую модель для передачи в шаблон
     $productViewModel = [
         'products' => $products,
@@ -112,6 +105,7 @@ class AdminProductController extends BaseAdminController
     if (!$id) $this->redirect('admin/shop');
 
     $product = $this->adminProductService->getProductById($id);
+  
     $statusList = $this->adminProductService->getStatusList();
 
     $this->renderLayout('shop/edit',  [

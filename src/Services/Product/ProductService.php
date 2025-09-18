@@ -54,7 +54,27 @@ class ProductService extends BaseService
         // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
         $imagesDTO = $this->productImageService->createImageDTO($row);
         $images = $this->productImageService->getImageViewData($imagesDTO);
-        $dto = new ProductOutputDTO($row);
+ 
+        $dto = new ProductOutputDTO([
+          'id' => $row['id'],
+          'category_id' => $row['category_id'],
+          'categoryDTO' => $categoryOutputDTO,
+          'brand_id' => $row['brand_id'],
+          'brandDTO' => $brandOutputDTO,
+          'slug' => $row['slug'],
+          'title' => $row['title'],
+          'description' => $row['description'],
+          'price' => $row['price'],
+          'url' => $row['url'],
+          'sku' => $row['sku'],
+          'stock' => $row['stock'],
+          'datetime' => $row['datetime'],
+
+          'status' => $row['status'],
+          'edit_time' => $row['edit_time'],
+          'images' => $images,
+          'translations' => $translations
+        ]);
       
         return $dto;
      
@@ -65,10 +85,11 @@ class ProductService extends BaseService
     }
 
 
-    public function getProductById(int $id): ?Product
+    public function getProductById(int $id): ProductOutputDTO
     {
         $rows = $this->repository->getProductById($id);
-        return $rows ? $this->createProductDTOFromArray($rows[0]) : null;
+
+        return $rows ? $this->createProductDTOFromArray($rows) : null;
     }
 
     public function getActiveProducts(): array 

@@ -12,8 +12,8 @@ final class ProductOutputDTO extends ProductDTO
     // public int $category_id;
     // public int $brand_id;
 
-    // public CategoryOutputDTO $categoryDTO;
-    // public BrandOutputDTO $brandDTO;
+    // public array $categoryDTO;
+    // public array $brandDTO;
     // public string $slug;
     // public string $title;
     // public string $description;

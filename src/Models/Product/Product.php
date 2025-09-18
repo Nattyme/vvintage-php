@@ -92,7 +92,7 @@ class Product
       $product->status = (string) ($data['status'] ?? '');
       $product->sku =  (string) ($data['sku'] ?? '');
       $product->stock =  (int) ($data['stock'] ?? 0);
-      $product->datetime =  (string) ($data['datetime'] ?? '');
+      $product->datetime =  $data['datetime'];
       $product->edit_time =  (string) ($data['edit_time'] ?? '');
 
       $product->images = $data['images'] ?? [];

@@ -12,7 +12,7 @@ use Vvintage\DTO\Product\ProductFilterDTO;
 interface ProductRepositoryInterface
  {
     /** GET */
-    public function getProductById(int $id): ?Product;
+    public function getProductById(int $id): array;
 
     public function getProductsByParam(string $sql = '', array $params = []): array;
 

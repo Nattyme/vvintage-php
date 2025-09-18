@@ -67,11 +67,11 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     /**
       ********** ::: GET ::: **********
     */
-    public function getProductById(int $id): ?Product
+    public function getProductById(int $id): array
     {
       $data = $this->getProducts(['id' => $id])[0];
-      
-      return Product::fromArray($data);
+ 
+      return $data;
         // return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
     }
 
