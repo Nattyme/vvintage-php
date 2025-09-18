@@ -43,6 +43,23 @@ class ProductService extends BaseService
         $this->productImageService = new ProductImageService();
     }
 
+    
+    private function createProductDTOFromArray(array $row): ProductOutputDTO
+    {
+        $productId = (int) $row['id'];
+        $translations = $this->translationRepo->loadTranslations($productId);
+        $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
+        $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
+ 
+        // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
+        $imagesDTO = $this->productImageService->createImageDTO($row);
+        $images = $this->productImageService->getImageViewData($imagesDTO);
+        $dto = new ProductOutputDTO($row);
+      
+        return $dto;
+     
+    }
+
     public function getStatusList(): array {
       return $this->status;
     }
@@ -121,42 +138,6 @@ class ProductService extends BaseService
         return $this->repository->getFilteredProducts($filter);
     }
 
-    private function createProductDTOFromArray(array $row): ProductOutputDTO
-    {
-        $productId = (int) $row['id'];
-        $translations = $this->translationRepo->loadTranslations($productId);
-        $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
-        $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
-     
-        // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
-        $imagesDTO = $this->productImageService->createImageDTO($row);
-        $images = $this->productImageService->getImageViewData($imagesDTO);
-    
-        $dto = new ProductOutputDTO([
-            'id' => $productId,
-            'category_id' => $row['category_id'],
-            'brand_id' => $row['brand_id'],
-            'categoryDTO' => $categoryOutputDTO,
-            'brandDTO' => $brandOutputDTO,
-            'slug' => (string) $row['slug'],
-            'title' => (string) $row['title'],
-            'description' => (string) $row['description'],
-            'price' => (string) $row['price'],
-            'url' => (string) $row['url'],
-            'status' => (string) $row['status'],
-            'sku' => (string) $row['sku'],
-            'stock' => (int) $row['stock'],
-            'datetime' => (string) $row['datetime'],
-            'edit_time' => (string) $row['edit_time'],
-            'images_total' => count($imagesDTO),
-            'translations' => $translations,
-            'locale' => $this->locale ?? self::DEFAULT_LOCALE,
-            'images' => $images
-        ]);
-
-        return $dto;
-     
-    }
 
 
     protected function uniteProductData(array $data) 

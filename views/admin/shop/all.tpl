@@ -60,6 +60,7 @@
       <tbody class="product-table__body">
         <?php foreach ($productViewModel['products'] as $product) : ?>
           <?php 
+
               $images = $product->images ?? null;
               $mainImage = $images['main'] ?? null;
           ?>
@@ -98,7 +99,7 @@
               <a class="link link-above-others" href="<?php echo !empty($product->url) ? $product->url : '';?>">vinted.fr</a>
             </td>
             <td>
-              <?php echo h($product->datetime);?>
+              <?php echo h(rus_date('j. m. Y. H:i', $product->datetime->getTimestamp()));?>
             </td>
             <td class="product-table__item product-table__item--checkbox link-above-others">
               <label>

@@ -23,7 +23,6 @@ final class ProductOutputDTO extends ProductDTO
     // public int $stock;
     // public string $status;
     // public string $locale;
-    // public string $datetime;
     // public string $edit_time;
 
     public function __construct(array $data)
@@ -42,7 +41,7 @@ final class ProductOutputDTO extends ProductDTO
         // $this->stock = (int) ($data['stock'] ?? 0);
         // $this->url = (string) ($data['url'] ?? '');
         // $this->status = (string) ($data['status'] ?? '');
-        // $this->datetime = (string) ($data['datetime'] ?? '');
+
         // $this->edit_time = (string) ($data['edit_time'] ?? '');
 
         // $this->locale = (string) ($data['locale'] ?? 'ru');

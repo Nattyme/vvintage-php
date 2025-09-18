@@ -69,7 +69,9 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     */
     public function getProductById(int $id): ?Product
     {
-        return $this->getProducts(['id' => $id]);
+      $data = $this->getProducts(['id' => $id])[0];
+      
+      return Product::fromArray($data);
         // return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
     }
 
@@ -292,15 +294,63 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
         $sql .= ' ORDER BY datetime DESC';
 
-        // if (isset($filters['limit'])) {
-        //     $sql .= ' LIMIT ' . (int) $filters['limit'];
-        // }
         if (isset($filters['limit']) && (int)$filters['limit'] > 0) {
             $sql .= ' LIMIT ' . (int)$filters['limit'];
         }
 
-        return $this->getAll($sql, $params);
+        $rows = $this->getAll($sql, $params);
+
+        // тут нормализуем
+        return array_map(function(array $row) {
+            if (!empty($row['datetime'])) {
+                // поддержка timestamp и строк
+                $row['datetime'] = is_numeric($row['datetime'])
+                    ? (new \DateTime())->setTimestamp((int)$row['datetime'])
+                    : new \DateTime($row['datetime']);
+            } else {
+                $row['datetime'] = new \DateTime(); // fallback
+            }
+            
+            return $row;
+        }, $rows);
     }
+
+
+    // public function getProducts(array $filters = []): array
+    // {
+    //     $sql = 'SELECT id, category_id, brand_id, slug, title, description, price, url, sku, stock, datetime, status, edit_time
+    //             FROM ' . self::TABLE . ' WHERE 1=1';
+
+    //     $params = [];
+
+    //     if (isset($filters['id'])) {
+    //         $sql .= ' AND id = ?';
+    //         $params[] = $filters['id'];
+    //     }
+
+    //     if (isset($filters['status'])) {
+    //         $sql .= ' AND status = ?';
+    //         $params[] = $filters['status'];
+    //     }
+
+    //     if (isset($filters['category_id'])) {
+    //         $sql .= ' AND category_id = ?';
+    //         $params[] = $filters['category_id'];
+    //     }
+
+    //     $sql .= ' ORDER BY datetime DESC';
+
+    //     // if (isset($filters['limit'])) {
+    //     //     $sql .= ' LIMIT ' . (int) $filters['limit'];
+    //     // }
+    //     if (isset($filters['limit']) && (int)$filters['limit'] > 0) {
+    //         $sql .= ' LIMIT ' . (int)$filters['limit'];
+    //     }
+
+        
+
+    //     return $this->getAll($sql, $params);
+    // }
 
 
     // public function getProducts(array $filters = []): array
