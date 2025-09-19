@@ -75,6 +75,7 @@ class ProductApiController extends BaseApiController
     {
         // $this->isAdmin(); // проверка прав
         $productData = $this->getRequestData();
+        error_log( print_r($productData, true));
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
         $existingImages = $text['existing_images'] ?? []; // массив с id и image_order

@@ -191,7 +191,9 @@ final class AdminProductService extends ProductService
 
     private function createProductInputDto(array $data): ProductInputDTO
     {
-        return new ProductInputDTO([
+        $isNew = empty($data['id']); // если id нет — новый продукт
+
+        $dataDto = new ProductInputDTO([
                 'category_id' => (int) ($data['category_id'] ?? 1),
                 'brand_id' => (int) ($data['brand_id'] ?? 1),
                 'slug' => (string) ($data['slug'] ?? ''),
@@ -202,9 +204,15 @@ final class AdminProductService extends ProductService
                 'stock' => (int) ( (int) $data['stock'] ?? 0),
                 'url' => (string) ($data['url'] ?? ''),
                 'status' => (string) ($data['status'] ?? ''),
-                'datetime' => (new \DateTime())->format('Y-m-d H:i:s'),
                 'edit_time' => time()
               ]);
+
+        if ($isNew) {
+            $dataDto->datetime = new \DateTime();
+        }
+
+        return $dataDto;
+
     }
 
 

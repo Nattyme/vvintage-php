@@ -18,7 +18,7 @@ final class ProductInputDTO extends ProductDTO
     public int $stock;
     public string $status;
     public string $locale;
-    public string $datetime;
+    public ?\Datetime $datetime;
     public string $edit_time;
 
     public function __construct(array $data)
@@ -35,8 +35,15 @@ final class ProductInputDTO extends ProductDTO
         $this->stock = (int) ($data['stock'] ?? 0);
         $this->url = (string) ($data['url'] ?? '');
         $this->status = (string) ($data['status'] ?? '');
-        $this->datetime = (string) ($data['datetime'] ?? '');
-        $this->edit_time = (string) ($data['edit_time'] ?? '');
+
+        // Только при создании нового продукта
+        if (empty($this->id)) {
+            $this->datetime = $data['datetime'] ?? new \DateTime();
+        } else {
+            $this->datetime = $data['datetime'] ?? null; // или оставить unset
+        }
+
+        $this->edit_time =  (string) $data['edit_time'] ?? (new \DateTime())->format('Y-m-d H:i:s');;
 
         // $this->locale = (string) ($data['locale'] ?? 'ru');
     }
