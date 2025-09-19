@@ -53,6 +53,7 @@ class BrandService extends BaseService
       return $brand;
     }
 
+    // Для api
     public function getBrandsArray(): array
     {
       $brands = $this->repository->getBrandsArray();
@@ -61,17 +62,37 @@ class BrandService extends BaseService
         return [];
       }
 
-      $this->setBrandsWithTranslations($brands);
-      return $brands;
+      $brandsWithTranslation = array_map(function ($brand) {
+          return $this->addBrandTranslate($brand);
+      }, $brands);
+
+      return array_values($brandsWithTranslation);
     }
+
+    private function addBrandTranslate(array $brand): array
+    {
+      $translations = $this->translationRepo->getTranslationsArray($brand['id'], $this->locale ?? []);
+
+      return array_merge($brand, [
+        'title' => $translations['title'] ?? null,
+        'description' => $translations['description'] ?? null,
+        'seo_title' => $translations['meta_title'] ?? null,
+        'seo_description' => $translations['meta_description'] ?? null,
+      ]);
+    }
+    // Для api
+
+
+
+
 
     public function getBrandTranslations(int $brandId): array
     {
-        $translations = $this->translationRepo->findTranslations($brandId, $this->locale);
+        $translations = $this->translationRepo->getTranslationsArray($brandId, $this->locale);
 
         if (!$translations) {
             // fallback
-            $translations = $this->translationRepo->findTranslations($brandId, $this->locale);
+            $translations = $this->translationRepo->getTranslationsArray($brandId, $this->locale);
         }
 
         return $translations;
@@ -83,10 +104,10 @@ class BrandService extends BaseService
         if (!$brand) return null;
         
         // получаем переводы из репозитория переводов
-        $translations = $this->translationRepo->findTranslations(
+        $translations = $this->translationRepo->getTranslationsArray(
             $brandId,
             $this->locale
-        ) ?? $this->translationRepo->findTranslations($brandId, $this->localeService->getDefaultLocale());
+        ) ?? $this->translationRepo->getTranslationsArray($brandId, $this->localeService->getDefaultLocale());
 
         return new BrandOutputDTO([
             'id' => $brand->getId(),
@@ -106,11 +127,11 @@ class BrandService extends BaseService
         }
 
         // 2. Берём переводы из отдельного репозитория
-        $translations = $this->translationRepo->findTranslations($brandId, $this->locale);
+        $translations = $this->translationRepo->getTranslationsArray($brandId, $this->locale);
 
         if (!$translations) {
             // fallback на дефолтный язык
-            $translations = $this->translationRepo->findTranslations($brandId, $this->localeService->getDefaultLocale());
+            $translations = $this->translationRepo->getTranslationsArray($brandId, $this->localeService->getDefaultLocale());
         }
 
         // 3. Объединяем данные в сервисе
@@ -142,58 +163,8 @@ class BrandService extends BaseService
             'locale' => $this->locale,
         ]);
     }
-    // public function createBrandDTOFromArray(array $row): BrandOutputDTO
-    // {
-    //     return new BrandOutputDTO([
-    //         'id' => (int) $row['brand_id'],
-    //         'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
-    //         'image' => (string) ($row['brand_image'] ?? ''),
-    //         'translations' => [
-    //             $this->locale => [
-    //                 'title' => $row['brand_title_translation'] ?? '',
-    //                 'description' => $row['brand_description'] ?? '',
-    //                 'seo_title' => $row['brand_meta_title'] ?? '',
-    //                 'seo_description' => $row['brand_meta_description'] ?? '',
-    //             ]
-    //         ],
-    //         'locale' => $this->locale,
-    //     ]);
-    // }
 
-    // private function mapBeanToBrand(OODBBean $bean): Brand
-    // {
-    //     $translations = $this->translationRepo->loadTranslations((int) $bean->id);
-
-    //     $dto = new BrandDTO([
-    //         'id' => (int) $bean->id,
-    //         'title' => (string) $bean->title,
-    //         'image' => (string) $bean->image,
-    //         'translations' => $translations
-    //     ]);
-
-    //     return Brand::fromDTO($dto);
-    // }
-
-    // private function mapBeanToArray(OODBBean $bean): array
-    // {
-    //   $translations = $this->translationRepo->loadTranslations((int) $bean->id);
-
-    //   return [
-    //       'id' => (int) $bean->id,
-    //       'title' => (string) $bean->title,
-    //       'image' => (string) $bean->image,
-    //       'translations' => $translations
-    //   ];
-    // }
-
-      private function setBrandsWithTranslations(array $brands): array
-      {
-          foreach ($brands as $brand) {
-              $translations = $this->translationRepo->getTranslationsArray($brand->getId());
-              $brand->setTranslations($translations);
-          }
-          return $brands;
-      }
+ 
 
 
 }

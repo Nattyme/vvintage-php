@@ -82,6 +82,7 @@ final class CategoryTranslationRepository extends AbstractRepository implements 
         return $ids;
     }
 
+    // Для api
     public function getTranslationsArray(int $id, string $locale): array 
     {
    
@@ -95,6 +96,7 @@ final class CategoryTranslationRepository extends AbstractRepository implements 
         ];
 
     }
+    // Для api
 
     public function findTranslations(int $id, string $locale) 
     {

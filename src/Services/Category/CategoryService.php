@@ -43,9 +43,16 @@ class CategoryService extends BaseService
         return $category;
     }
 
+
+    // Методы возвращают массив для api
     public function getMainCategoriesArray(): array
     {
         $categories = $this->repository->createMainCategoriesArray();
+
+        if (!$categories) {
+          return [];
+        }
+        
         $categoriesWithTranslation = array_map(function ($category) {
             return $this->addCategoryTranslate($category);
         }, $categories);
@@ -74,6 +81,16 @@ class CategoryService extends BaseService
             'seo_description' => $translations['meta_description'] ?? null,
         ]);
     }
+
+     // Методы возвращают массив для api
+
+
+
+
+
+
+
+
 
 
     public function getAllCategoriesArray(): array

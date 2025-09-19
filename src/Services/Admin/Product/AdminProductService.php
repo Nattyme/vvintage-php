@@ -229,6 +229,7 @@ final class AdminProductService extends ProductService
 
     public function handleStatusAction(array $data): void 
     {
+  
         if ( 
           isset($data['action-submit']) && 
           (isset($data['action']) && !empty($data['action'])) &&

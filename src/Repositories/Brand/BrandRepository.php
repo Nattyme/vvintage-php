@@ -116,8 +116,9 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         if (!$bean || !$bean->id) {
             return null;
         }
+        $brandArray = $this->mapBeanToBrand($bean);
 
-        return $this->mapBeanToBrand($bean);
+        return Brand::fromArray($brandArray);
     }
 
     /** Находим все бренды и возвращаем в виде массива объектов */
@@ -162,6 +163,9 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         // Сбрасываем ключи и преобразуем в массивы
         return array_values(array_map([$this, 'mapBeanToBrand'], $beans));
     }
+
+
+    
 
      /** Создаёт новый OODBBean для бренда */
     private function createBrandBean(): OODBBean 
@@ -223,15 +227,12 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
       return $this->countAll(self::TABLE, 'LOWER(title) = ?', [mb_strtolower($cleaned)]);
     }
 
-    private function mapBeanToBrand(OODBBean $bean): Brand
+    private function mapBeanToBrand(OODBBean $bean): array
     {
-        $dto = new BrandDTO([
+        return [
             'id' => (int) $bean->id,
-            'title' => (string) $bean->title,
             'image' => (string) $bean->image
-        ]);
-
-        return Brand::fromDTO($dto);
+        ];
     }
 
 }
