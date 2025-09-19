@@ -157,29 +157,23 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     
     // Для api
-    public function getMainCategoriesArray($locale): array
+    public function createMainCategoriesArray(): array
     {
-        // Достаём все категории, у которых parent_id = NULL
         $beans = $this->findAll(self::TABLE, 'parent_id IS NULL');
 
-         // Пробегаемся по категориям и совмещаем с переводами
-        return array_values(array_map(function ($bean) use ($locale) {
-            $translations = $this->translationRepo->getTranslationsArray((int) $bean->id, $locale);
-
+        return array_map(function ($bean) {
             return [
                 'id' => $bean->id,
                 'parent_id' => $bean->parent_id,
                 'slug' => $bean->slug,
                 'image' => $bean->image,
-                'title' => $translations['title'] ?? null,
-                'description' => $translations['description'] ?? null,
-                'seo_title' => $translations['meta_title'] ?? null,
-                'seo_description' => $translations['meta_description'] ?? null,
             ];
-        }, $beans));
+        }, $beans);
+      
     }
 
-    public function getSubCategoriesArray(string $locale, ?int $parent_id = null): array
+
+    public function createSubCategoriesArray(?int $parent_id = null): array
     {
 
         if ($parent_id !== null) {
@@ -188,20 +182,15 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
             $beans = $this->findAll(self::TABLE, 'parent_id IS NOT NULL');
         }
 
-        return array_values(array_map(function ($bean) use ($locale) {
-            $translations = $this->translationRepo->getTranslationsArray((int) $bean->id, $locale);
-
+        return array_map(function ($bean) {
             return [
                 'id' => $bean->id,
                 'parent_id' => $bean->parent_id,
                 'slug' => $bean->slug,
                 'image' => $bean->image,
-                'title' => $translations['title'] ?? null,
-                'description' => $translations['description'] ?? null,
-                'seo_title' => $translations['meta_title'] ?? null,
-                'seo_description' => $translations['meta_description'] ?? null,
             ];
-        }, $beans));
+        }, $beans);
+
     }
 
 

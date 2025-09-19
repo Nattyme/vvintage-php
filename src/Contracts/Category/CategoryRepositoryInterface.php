@@ -15,7 +15,8 @@ interface CategoryRepositoryInterface
     public function getCategoryWithChildren(int $id): array;
     public function getParentCategory(Category $category): ?Category;
     public function getSubCats(): array;
-    public function getSubCategoriesArray(string $locale, ?int $parent_id = null): array;
+    public function createMainCategoriesArray(): array;
+    public function createSubCategoriesArray(?int $parent_id = null): array;
 
     public function saveCategory(Category $cat): int;
     public function findCatsByParentId(?int $parentId = null): array;

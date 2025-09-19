@@ -43,16 +43,38 @@ class CategoryService extends BaseService
         return $category;
     }
 
-
     public function getMainCategoriesArray(): array
     {
-      return $this->repository->getMainCategoriesArray($this->locale);
+        $categories = $this->repository->createMainCategoriesArray();
+        $categoriesWithTranslation = array_map(function ($category) {
+            return $this->addCategoryTranslate($category);
+        }, $categories);
+
+        return array_values($categoriesWithTranslation);
     }
 
-    public function getSubCategoriesArray($parent_id = null): array
+    public function getSubCategoriesArray(?int $parent_id = null): array
     {
-      return $this->repository->getSubCategoriesArray($this->locale, $parent_id);
+        $categories = $this->repository->createSubCategoriesArray($parent_id);
+        $categoriesWithTranslation = array_map(function ($category) {
+            return $this->addCategoryTranslate($category);
+        }, $categories);
+
+        return array_values($categoriesWithTranslation);
     }
+
+    private function addCategoryTranslate(array $category): array
+    {
+        $translations = $this->translationRepo->getTranslationsArray((int) $category['id'], $this->locale) ?? [];
+
+        return array_merge($category, [
+            'title' => $translations['title'] ?? null,
+            'description' => $translations['description'] ?? null,
+            'seo_title' => $translations['meta_title'] ?? null,
+            'seo_description' => $translations['meta_description'] ?? null,
+        ]);
+    }
+
 
     public function getAllCategoriesArray(): array
     {
