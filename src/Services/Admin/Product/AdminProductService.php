@@ -93,36 +93,133 @@ final class AdminProductService extends ProductService
 
         return $productId;
     }
-
     public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool 
-    {
-      $this->repository->begin(); // начало транзакции
+{
+    // Массив для временных файлов, чтобы их удалить при ошибке
+    $tmpFilesToCleanup = [];
 
-      try {
-        // 1. Создаём продукт
+    $this->repository->begin(); // начало транзакции
+
+    try {
+        // 1. Обновляем продукт
         $productDto = $this->createProductInputDto($data);
         $this->repository->updateProductData($id, $productDto);
 
-        // 2. Создаём перевод продукта
-        if(!empty($data['translations'])) {
-          $translateDto = $this->createTranslateInputDto($data['translations'], $id);
-          $this->translationRepo->saveProductTranslation($translateDto);
+        // 2. Обновляем перевод продукта
+        if (!empty($data['translations'])) {
+            $translateDto = $this->createTranslateInputDto($data['translations'], $id);
+            $this->translationRepo->saveProductTranslation($translateDto);
         }
 
-        // 3. Создаём изображения продукта
-        $imagesDto = $this->imageService->buildImageDtos($id, $processedImages);
+        // 3. Подготавливаем изображения (tmp + resize)
+        $sizes = [
+            'full'  => [536, 566],
+            'small' => [350, 478]
+        ];
+
+        $imagesTMP = $this->imageService->prepareImages($processedImages, $sizes);
+
+        // Собираем tmp-файлы для возможного удаления при ошибке
+        foreach ($imagesTMP as $img) {
+            $tmpFilesToCleanup[] = $img['tmp_full'];
+            $tmpFilesToCleanup[] = $img['tmp_small'];
+        }
+
+        // 4. Сохраняем имена изображений в БД
+        $imagesDto = $this->imageService->buildImageDtos($id, $imagesTMP);
+        if (empty($imagesDto)) {
+            throw new \RuntimeException("Нет изображений для сохранения в БД");
+        }
         $this->imageService->updateImages($imagesDto);
 
+        // 5. Обновляем существующие изображения, если нужно
+        $this->imageService->updateImagesOrder($id, $existingImages);
 
-        $this->repository->commit(); // если всё ок
+        // 6. Всё ок — подтверждаем транзакцию
+        $this->repository->commit();
+
+        // 7. Переносим файлы в финальную папку (только после успешного commit)
+        $finalPaths = $this->imageService->finalizeImages($imagesTMP);
+
+        // 8. Удаляем tmp-файлы
+        $this->imageService->cleanup($imagesTMP);
+
         return true;
 
-      }
-      catch (\Throwable $error) {
-        $this->repository->rollback(); // транзакция откатывает все изменения
-        throw $error;
-      }
+    } catch (\Throwable $error) {
+        // откатываем БД
+        $this->repository->rollback();
+
+        // удаляем tmp-файлы
+        foreach ($tmpFilesToCleanup as $file) {
+            @unlink($file);
+        }
+
+        throw $error; // пробрасываем дальше
     }
+}
+
+
+    // public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool 
+    // {
+    //   $this->repository->begin(); // начало транзакции
+
+    //   try {
+    //     // 1. Создаём продукт
+    //     $productDto = $this->createProductInputDto($data);
+    //     $this->repository->updateProductData($id, $productDto);
+
+    //     // 2. Создаём перевод продукта
+    //     if(!empty($data['translations'])) {
+    //       $translateDto = $this->createTranslateInputDto($data['translations'], $id);
+    //       $this->translationRepo->saveProductTranslation($translateDto);
+    //     }
+
+    //     // 3. Сохраняем изображения продукта
+    //     $sizes = [
+    //       'full' => [536, 566],
+    //       'small' => [350, 478]
+    //     ];
+     
+    //     $imagesTMP = $this->imageService->prepareImages($processedImages, $sizes); // tmp + resize
+
+    //     // Сохраняем имена файлов в массив для возможного отката
+    //     foreach ($imagesTMP as $img) {
+    //         $filesToCleanup[] = $img['tmp_full'];
+    //         $filesToCleanup[] = $img['tmp_small'];
+    //     }
+
+
+    //     $this->imageService->saveProductImages($id, $imagesTMP); // сохраняем имена в БД
+    //     $finalPaths = $this->imageService->finalizeImages($imagesTMP);
+    //     $this->imageService->cleanup($imagesTMP);    
+    //     // $imagesDto = $this->imageService->buildImageDtos($id, $processedImages);
+    //     // $this->imageService->updateImages($imagesDto);
+
+
+    //     $this->repository->commit(); // если всё ок
+    //     return true;
+
+    //   }
+    //   catch (\Throwable $error) {
+    //     $this->repository->rollback(); // транзакция откатывает все изменения
+
+    //     // tmp
+    //     foreach ($imagesTMP as $img) {
+    //         @unlink($img['tmp_full']);
+    //         @unlink($img['tmp_small']);
+    //     }
+
+    //     // финальные
+    //     foreach ($finalPaths ?? [] as $fp) {
+    //         @unlink($this->imageService->finalFolder . $fp['filename']);
+    //         @unlink($this->imageService->finalFolder . $fp['filename_small']);
+    //     }
+
+
+    //     throw $error;
+    //   }
+    // }
 
  
     private function createProductInputDto(array $data): ProductInputDTO

@@ -75,7 +75,7 @@ class ProductApiController extends BaseApiController
     {
         // $this->isAdmin(); // проверка прав
         $productData = $this->getRequestData();
-        error_log( print_r($productData, true));
+        // error_log( print_r($productData, true));
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
         $existingImages = $text['existing_images'] ?? []; // массив с id и image_order
@@ -108,11 +108,11 @@ class ProductApiController extends BaseApiController
         }
 
         // Подготовка новых изображений (только для новых файлов)
-        $imageService = new AdminProductImageService();
-        $processedNewImages = $imageService->prepareImages(
-            $validatorImgResult['data'],
-            ['full' => [536, 566], 'small' => [350, 478]]
-        );
+        // $imageService = new AdminProductImageService();
+        // $processedNewImages = $imageService->prepareImages(
+        //     $validatorImgResult['data'],
+        //     ['full' => [536, 566], 'small' => [350, 478]]
+        // );
 
         // Удаляем существующие изображения, если нужно
         // $imageService->updateExistImages($id, $text['existing_images']);
@@ -123,7 +123,7 @@ class ProductApiController extends BaseApiController
             $validatorTextResult['data'],   // текстовые данные
             // $structuredImages,                // какие картинки оставить
             $existingImages,                // существующие изображения с новым порядком
-            $processedNewImages             // новые картинки
+            $validatorImgResult['data']          // новые картинки
         );
 
         if (!$success) {

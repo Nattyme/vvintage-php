@@ -178,7 +178,7 @@
                     data-url="<?php echo HOST . 'usercontent/products/' . '350-' . $image->filename;?>"
                     data-id="<?php echo $image->id;?>"
                     data-name="<?php echo $image->filename;?>"
-                    data-order="<?php echo $image->order;?>"
+                    data-order="<?php echo $image->image_order;?>"
                 >
                   <img 
                     id = "<?php echo $image->id;?>"

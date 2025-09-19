@@ -33,10 +33,11 @@ final class AdminProductImageService extends ProductImageService
      */
     public function prepareImages(array $files, array $sizes): array
     {
-   
+  
         $processed = [];
         //  $coverImages = saveSliderImg('cover', [350, 478], 12, 'products', [536, 566], [350, 478]);
         foreach ($files as $file) {
+              // error_log(print_r($file, true));
             $tmpName = $file['tmp_name'];
             $kaboom = explode(".", $file['file_name']);
             $fileExt = end($kaboom);
@@ -84,6 +85,12 @@ final class AdminProductImageService extends ProductImageService
 
       // Удаляем лишние
       $this->repository->removeImagesByIds($idsToDelete);
+    }
+
+    public function saveProductImages($id, $processedImages): void
+    {
+        $imagesDto = $this->buildImageDtos($id, $processedImages);
+        $this->updateImages($imagesDto);
     }
 
 

@@ -59,7 +59,7 @@ final class ProductImageRepository extends AbstractRepository implements Product
         $result = $this->saveBean($bean);
 
         if (!$result) {
-          throw new \RuntimeException("Не удалось сохранить изображение {$input->filename}");
+          throw new \RuntimeException("Не удалось сохранить название изображения {$input->filename}");
         }
 
         return $this->mapBeanToImageOutputDto($bean);

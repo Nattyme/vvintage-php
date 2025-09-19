@@ -280,7 +280,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
           // Создаём DTO для изображений 
           $imagesDto = $this->imageRepo->createImagesInputDto($images, $finalImages, $productId);
           
-          error_log(print_r(  $imagesDto, true));
+      
           // 2. Проверяем что все filename есть
           foreach ($imagesDto as $dto) {
               if (!$dto->filename) {
