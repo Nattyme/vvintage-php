@@ -50,7 +50,7 @@ class ProductService extends BaseService
         $translations = $this->translationRepo->loadTranslations($productId);
         $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
         $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
- 
+
         // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
         $imagesDTO = $this->productImageService->createImageDTO($row);
         $images = $this->productImageService->getImageViewData($imagesDTO);

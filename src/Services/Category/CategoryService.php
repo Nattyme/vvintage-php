@@ -34,7 +34,10 @@ class CategoryService extends BaseService
             return [];
         }
 
-        $translations = $this->translationRepo->getTranslationsArray($id);
+        $translations = $this->translationRepo->getTranslationsArray($id, $this->locale) 
+        ?? 
+        $this->translationRepo->getTranslationsArray($id, $this->defaultLocale);
+       
         $category->setTranslations($translations);
 
         return $category;
@@ -43,12 +46,12 @@ class CategoryService extends BaseService
 
     public function getMainCategoriesArray(): array
     {
-      return $this->repository->getMainCategoriesArray();
+      return $this->repository->getMainCategoriesArray($this->locale);
     }
 
     public function getSubCategoriesArray($parent_id = null): array
     {
-      return $this->repository->getSubCategoriesArray($parent_id);
+      return $this->repository->getSubCategoriesArray($this->locale, $parent_id);
     }
 
     public function getAllCategoriesArray(): array
@@ -168,7 +171,7 @@ class CategoryService extends BaseService
     private function setCategoriesWithTranslations(array $categories): array
     {
         foreach ($categories as $category) {
-            $translations = $this->translationRepo->getTranslationsArray($category->getId());
+            $translations = $this->translationRepo->getTranslationsArray($category->getId(), $this->locale);
             $category->setTranslations($translations);
         }
         return $categories;

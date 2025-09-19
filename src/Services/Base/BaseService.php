@@ -10,6 +10,7 @@ use Vvintage\Services\Locale\LocaleService;
 abstract class BaseService
 {    
   protected string $locale;
+  protected string $defaultLocale;
   protected FlashMessage $flash;
   protected LocaleService $localeService;
 
@@ -18,6 +19,7 @@ abstract class BaseService
     $this->localeService = new LocaleService();
     $this->locale = $this->localeService->getCurrentLocale();
     $this->flash = new FlashMessage ();
+    $this->defaultLocale = $this->localeService->getDefaultLocale();
   }
 
 }

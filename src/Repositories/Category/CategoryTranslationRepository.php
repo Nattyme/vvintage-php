@@ -82,11 +82,12 @@ final class CategoryTranslationRepository extends AbstractRepository implements 
         return $ids;
     }
 
-    public function getTranslationsArray($id): array 
+    public function getTranslationsArray(int $id, string $locale): array 
     {
+   
       $translations = $this->loadTranslations($id);
 
-      return $translations[$this->locale] ?? $translations[self::DEFAULT_LANG] ?? [
+      return $translations[$locale] ?? [
             'title' => '',
             'description' => '',
             'meta_title' => '',

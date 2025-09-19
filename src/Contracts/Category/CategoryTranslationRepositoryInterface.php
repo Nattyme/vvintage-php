@@ -16,7 +16,7 @@ interface CategoryTranslationRepositoryInterface
   public function createCategoryTranslateBean(): OODBBean;
   public function loadTranslations(int $categoryId): array;
   public function saveProductTranslation(array $translateDto): ?array;
-  public function getTranslationsArray($id): array;
+  public function getTranslationsArray(int $id, string $locale): array;
   public function findTranslations(int $id, string $locale);
   public function createTranslation(int $id, string $locale): void;
   public function updateTranslations( OODBBean $transBean, array $translation);
