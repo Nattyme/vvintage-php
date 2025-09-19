@@ -10,6 +10,8 @@ use Vvintage\Services\Admin\Product\AdminProductImageService;
 use Vvintage\DTO\Product\ProductInputDTO;
 use Vvintage\DTO\Product\ProductImageInputDTO;
 
+use Vvintage\DTO\Product\ProductTranslationInputDTO;
+
 
 
 final class AdminProductService extends ProductService
@@ -92,30 +94,65 @@ final class AdminProductService extends ProductService
         return $productId;
     }
 
-    public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool
+    public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool 
     {
-        // 1. Собираем DTO продукта
+      $this->repository->begin(); // начало транзакции
+
+      try {
+        // 1. Создаём продукт
         $productDto = $this->createProductInputDto($data);
-        $translations = $data['translations'] ?? [];
+        $this->repository->updateProductData($id, $productDto);
 
-        // 2. Собираем DTO изображений для репозитория
-        $imagesDto = $this->imageService->buildImageDtos($id, $processedImages); // метод возвращает ProductImageInputDTO[]
-
-        // 3. Передаем всё в репозиторий
-        try {
-            $updated = $this->repository->updateProductData(
-                $id,
-                $productDto,
-                $imagesDto,
-                $translations
-            );
-        } catch (\Throwable $e) {
-  
-            return false;
+        // 2. Создаём перевод продукта
+        if(!empty($data['translations'])) {
+          $translateDto = $this->createTranslateInputDto($data['translations'], $id);
+          $this->translationRepo->saveProductTranslation($translateDto);
         }
 
-        return $updated;
+        // 3. Создаём изображения продукта
+        $imagesDto = $this->productImageService->buildImageDtos($id, $processedImages);
+        foreach ($imagesDto as $image) {
+            if (!isset($image->id)) {
+                $this->imageRepository->addImage($image);
+            } else {
+                $this->imageRepository->updateImage($image->id, $image);
+            }
+        }
+
+        $this->repository->commit(); // если всё ок
+        return true;
+
+      }
+      catch (\Throwable $error) {
+        $this->repository->rollback(); // транзакция откатывает все изменения
+        throw $error;
+      }
     }
+
+    // public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool
+    // {
+    //     // 1. Собираем DTO продукта
+    //     $productDto = $this->createProductInputDto($data);
+    //     $translations = $data['translations'] ?? [];
+
+    //     // 2. Собираем DTO изображений для репозитория
+    //     $imagesDto = $this->imageService->buildImageDtos($id, $processedImages); // метод возвращает ProductImageInputDTO[]
+
+    //     // 3. Передаем обновляем
+    //     try {
+    //         $updated = $this->repository->updateProductData(
+    //             $id,
+    //             $productDto,
+    //             $imagesDto,
+    //             $translations
+    //         );
+    //     } catch (\Throwable $e) {
+  
+    //         return false;
+    //     }
+
+    //     return $updated;
+    // }
 
 
     // public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool
@@ -212,6 +249,26 @@ final class AdminProductService extends ProductService
         }
 
         return $dataDto;
+
+    }
+
+    private function createTranslateInputDto(array $data, int $productId): array
+    {
+      $productTranslationsDto = [];
+  
+      foreach($data as $locale => $translate) {
+          $productTranslationsDto[] = new ProductTranslationInputDTO([
+              'product_id' => (int) $productId,
+              'slug' => (string) ($translate['slug'] ?? ''),
+              'locale' => (string) $locale, 
+              'title' => (string) ($translate['title'] ?? ''),
+              'description' => (string) ($translate['description'] ?? ''),
+              'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
+              'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
+          ]);
+      }
+         
+      return  $productTranslationsDto;
 
     }
 

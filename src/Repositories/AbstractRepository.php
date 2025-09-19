@@ -8,6 +8,32 @@ use RedBeanPHP\OODBBean;
 
 abstract class AbstractRepository
 {
+  // Методы тразакций
+
+  // Открывает транзакцию 
+  public function begin(): void
+  {
+    R::begin();
+  }
+
+  // Пожтверждает транзакцию
+  public function commit(): void
+  {
+    R::commit();
+  }
+
+  // отменяет транзакцию
+  public function rollback(): void
+  {
+    R::rollback();
+  }
+
+ 
+  // Методы тразакций
+
+
+
+
     protected function loadBean(string $table, int $id): ?OODBBean
     {
         return $id > 0 ? R::load($table, $id) : null;
@@ -84,28 +110,12 @@ abstract class AbstractRepository
         return (int) R::count($table, $sql, $params);
     }
 
-    // Открывает транзакцию 
-    protected function begin(): void
-    {
-      R::begin();
-    }
-
-    // Пожтверждает транзакцию
-    protected function commit(): void
-    {
-      R::commit();
-    }
-
-    // отменяет транзакцию
-    protected function rollback(): void
-    {
-      R::rollback();
-    }
-
+   
     protected function getAll(string $sql, array $params): array
     {
       return R::getAll($sql, $params);
     }
+
     
     /**
      * Выполняет SQL-запрос (INSERT/UPDATE/DELETE и т.п.).
