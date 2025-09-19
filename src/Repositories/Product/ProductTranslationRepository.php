@@ -75,9 +75,13 @@ final class ProductTranslationRepository extends AbstractRepository implements P
         $ids = [];
 
         foreach ($translateDto as $dto) {
+            // if (!$dto) {
+            //     return null;
+            // }
             if (!$dto) {
-                return null;
+              throw new \RuntimeException("Не удалось обновить переводы продукта");
             }
+
 
             // ищем существующий перевод
             $bean = $this->findOneBy(self::TABLE, ' product_id = ? AND locale = ? ', [$dto->product_id, $dto->locale]);
@@ -96,7 +100,11 @@ final class ProductTranslationRepository extends AbstractRepository implements P
             $bean->meta_title = $dto->meta_title;
             $bean->meta_description = $dto->meta_description;
 
-            $this->saveBean($bean);
+            $result = $this->saveBean($bean);
+
+            if (!$result) {
+              throw new \RuntimeException("Не удалось обновить переводы продукта");
+            }
 
             $ids[] = (int) $bean->id;
         }

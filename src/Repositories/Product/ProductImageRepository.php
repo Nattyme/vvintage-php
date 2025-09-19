@@ -56,7 +56,11 @@ final class ProductImageRepository extends AbstractRepository implements Product
         $bean->image_order = $input->image_order;
         $bean->alt = $input->alt;
 
-        $this->saveBean($bean);
+        $result = $this->saveBean($bean);
+
+        if (!$result) {
+          throw new \RuntimeException("Не удалось сохранить изображение {$input->filename}");
+        }
 
         return $this->mapBeanToImageOutputDto($bean);
     }
@@ -72,7 +76,11 @@ final class ProductImageRepository extends AbstractRepository implements Product
         $bean->image_order = $input->image_order;
         $bean->alt = $input->alt;
 
-        $this->saveBean($bean);
+        $result = $this->saveBean($bean);
+
+        if (!$result) {
+          throw new \RuntimeException("Не удалось обновить список изображений");
+        }
 
         return $this->mapBeanToImageOutputDto($bean);
     }

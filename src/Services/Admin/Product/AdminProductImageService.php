@@ -148,6 +148,17 @@ final class AdminProductImageService extends ProductImageService
       $this->repository->updateImagesOrder($productId, $images);
     }
 
+    public function updateImages(array $imagesDto): void 
+    {
+      foreach ($imagesDto as $image) {
+        if (!isset($image->id)) {
+            $this->repository->addImage($image);
+        } else {
+            $this->repository->updateImage($image->id, $image);
+        }
+      }
+    }
+
    
 
 }
