@@ -29,7 +29,7 @@ class ProductImageService
       $otherImages = [];
 
       foreach ($images as $img) {
-          if ($img->image_order === 1 && $mainImage === null) {
+          if ($img->image_order === 0 && $mainImage === null) {
               $mainImage = $img;
           } else {
               $otherImages[] = $img;

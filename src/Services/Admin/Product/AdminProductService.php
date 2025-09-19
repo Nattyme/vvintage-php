@@ -93,71 +93,72 @@ final class AdminProductService extends ProductService
 
         return $productId;
     }
+    
     public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool 
-{
-    // Массив для временных файлов, чтобы их удалить при ошибке
-    $tmpFilesToCleanup = [];
+    {
+        $tmpFilesToCleanup = [];
 
-    $this->repository->begin(); // начало транзакции
+        $this->repository->begin(); // начало транзакции
 
-    try {
-        // 1. Обновляем продукт
-        $productDto = $this->createProductInputDto($data);
-        $this->repository->updateProductData($id, $productDto);
+        try {
+            // 1. Обновляем продукт
+            $productDto = $this->createProductInputDto($data);
+            $this->repository->updateProductData($id, $productDto);
 
-        // 2. Обновляем перевод продукта
-        if (!empty($data['translations'])) {
-            $translateDto = $this->createTranslateInputDto($data['translations'], $id);
-            $this->translationRepo->saveProductTranslation($translateDto);
+            // 2. Обновляем перевод продукта
+            if (!empty($data['translations'])) {
+                $translateDto = $this->createTranslateInputDto($data['translations'], $id);
+                $this->translationRepo->saveProductTranslation($translateDto);
+            }
+
+            // 3. Подготавливаем изображения (tmp + resize)
+            $sizes = [
+                'full'  => [536, 566],
+                'small' => [350, 478]
+            ];
+
+            $imagesTMP = $this->imageService->prepareImages($processedImages, $sizes);
+
+            // Собираем tmp-файлы для возможного удаления при ошибке
+            foreach ($imagesTMP as $img) {
+                $tmpFilesToCleanup[] = $img['tmp_full'];
+                $tmpFilesToCleanup[] = $img['tmp_small'];
+            }
+
+            // 4. Сохраняем новые изображения, если есть
+            $imagesDto = $this->imageService->buildImageDtos($id, $imagesTMP);
+            if (!empty($imagesDto)) {
+                $this->imageService->updateImages($imagesDto);
+            }
+
+            // 5. Обновляем порядок существующих изображений, если есть
+            if (!empty($existingImages)) {
+                $this->imageService->updateImagesOrder($id, $existingImages);
+            }
+
+            // 6. Подтверждаем транзакцию
+            $this->repository->commit();
+
+            // 7. Переносим файлы в финальную папку (только после успешного commit)
+            if (!empty($imagesTMP)) {
+                $finalPaths = $this->imageService->finalizeImages($imagesTMP);
+                $this->imageService->cleanup($imagesTMP);
+            }
+
+            return true;
+
+        } catch (\Throwable $error) {
+            $this->repository->rollback();
+
+            // удаляем tmp-файлы
+            foreach ($tmpFilesToCleanup as $file) {
+                @unlink($file);
+            }
+
+            throw $error;
         }
-
-        // 3. Подготавливаем изображения (tmp + resize)
-        $sizes = [
-            'full'  => [536, 566],
-            'small' => [350, 478]
-        ];
-
-        $imagesTMP = $this->imageService->prepareImages($processedImages, $sizes);
-
-        // Собираем tmp-файлы для возможного удаления при ошибке
-        foreach ($imagesTMP as $img) {
-            $tmpFilesToCleanup[] = $img['tmp_full'];
-            $tmpFilesToCleanup[] = $img['tmp_small'];
-        }
-
-        // 4. Сохраняем имена изображений в БД
-        $imagesDto = $this->imageService->buildImageDtos($id, $imagesTMP);
-        if (empty($imagesDto)) {
-            throw new \RuntimeException("Нет изображений для сохранения в БД");
-        }
-        $this->imageService->updateImages($imagesDto);
-
-        // 5. Обновляем существующие изображения, если нужно
-        $this->imageService->updateImagesOrder($id, $existingImages);
-
-        // 6. Всё ок — подтверждаем транзакцию
-        $this->repository->commit();
-
-        // 7. Переносим файлы в финальную папку (только после успешного commit)
-        $finalPaths = $this->imageService->finalizeImages($imagesTMP);
-
-        // 8. Удаляем tmp-файлы
-        $this->imageService->cleanup($imagesTMP);
-
-        return true;
-
-    } catch (\Throwable $error) {
-        // откатываем БД
-        $this->repository->rollback();
-
-        // удаляем tmp-файлы
-        foreach ($tmpFilesToCleanup as $file) {
-            @unlink($file);
-        }
-
-        throw $error; // пробрасываем дальше
     }
-}
+
 
 
     // public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool 
