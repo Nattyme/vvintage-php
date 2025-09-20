@@ -11,7 +11,6 @@ use RuntimeException;
 /** Контракты */
 use Vvintage\Contracts\Product\ProductRepositoryInterface;
 use Vvintage\Repositories\AbstractRepository;
-use Vvintage\Repositories\Product\ProductImageRepository;
 
 /** Модели */
 use Vvintage\Models\Product\Product;
@@ -21,39 +20,17 @@ use Vvintage\Models\Brand\Brand;
 /** DTO */
 use Vvintage\DTO\Product\ProductDTO;
 use Vvintage\DTO\Product\ProductInputDTO;
-use Vvintage\DTO\Product\ProductImageDTO;
-use Vvintage\DTO\Product\ProductImageInputDTO;
-use Vvintage\DTO\Category\CategoryDTO;
-use Vvintage\DTO\Category\CategoryOutputDTO;
-use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
-// use Vvintage\DTO\Product\ProductTranslationInputDTO;
-use Vvintage\Services\Admin\Product\AdminProductImageService;
+
 
 final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
     private const TABLE = 'products';
-    private const TABLE_PRODUCTS_TRANSLATION = 'productstranslation';
-    private const TABLE_PRODUCT_IMAGES = 'productimages';
 
-    private const TABLE_BRANDS = 'brands';
-    private const TABLE_BRANDS_TRANSLATION = 'brandstranslation';
-
-    private const TABLE_CATEGORIES = 'categories';
-    private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
-
-    private ProductImageRepository $imageRepo;
-
-    // public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
-    public function __construct()
-    {
-        $this->imageRepo = new ProductImageRepository();
-    }
 
     /**
       ********** ::: CREATE ::: **********
     */
-
 
     /************ CRETE BEAN ********/
     /** Создаёт новый OODBBean для продукта */
