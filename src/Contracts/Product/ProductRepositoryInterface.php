@@ -32,7 +32,7 @@ interface ProductRepositoryInterface
     public function bulkUpdate(array $ids, array $data): void;
 
     /** SAVE */
-    public function saveProduct(ProductInputDTO $dto, array $translations, array $images, array  $processedImages): ?int;
+    public function saveProduct(ProductInputDTO $dto): ?int;
 
     // public function saveProductTranslation(array $translateDto): ?array;
 

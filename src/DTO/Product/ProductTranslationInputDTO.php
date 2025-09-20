@@ -5,7 +5,7 @@ namespace Vvintage\DTO\Product;
 
 final class ProductTranslationInputDTO
 {
-    public int $product_id;
+    public ?int $product_id;
     public string $slug;
     public string $locale;
     public string $title;

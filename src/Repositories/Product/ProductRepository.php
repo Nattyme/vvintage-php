@@ -221,97 +221,42 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
       ********** ::: SAVE ::: **********
     */
     /** Создаёт новый продукт через DTO */
-    public function saveProduct(ProductInputDTO $dto, array $translations, array $images, array  $processedImages): ?int
+    public function saveProduct(ProductInputDTO $dto): ?int
     {
       if (!$dto) {
-          return null;
+        throw new RuntimeException("Не получены данные для создания продукта");
+        return null;
       }
 
-      $imageService = new AdminProductImageService();
-   
-      // Транзакция сохранения продукта
-      try {
-          
-          // Открывает транзакцию 
-          $this->begin();
+     
+      // Создаем или загружаем продукт
+      $bean = $dto->id 
+          ? $this->findById(self::TABLE, $dto->id)
+          : $this->createProductBean();
 
-          // 1. сохраняем продукт
-          // 2. сохраняем переводы
-          // 3. сохраняем изображения
+      $bean->category_id = $dto->category_id;
+      $bean->brand_id = $dto->brand_id;
+      $bean->slug = $dto->slug;
+      $bean->title = $dto->title;
+      $bean->description = $dto->description;
+      $bean->price = $dto->price;
+      $bean->url = $dto->url;
+      $bean->sku = $dto->sku;
+      $bean->stock = $dto->stock;
+      $bean->datetime = $dto->datetime;
+      $bean->status = $dto->status;
+      $bean->edit_time = $dto->edit_time;
 
-          // Создаем или загружаем продукт
-          $bean = $dto->id 
-              ? $this->findById(self::TABLE_PRODUCTS, $dto->id)
-              : $this->createProductBean();
+      $this->saveBean($bean);
 
-          $bean->category_id = $dto->category_id;
-          $bean->brand_id = $dto->brand_id;
-          $bean->slug = $dto->slug;
-          $bean->title = $dto->title;
-          $bean->description = $dto->description;
-          $bean->price = $dto->price;
-          $bean->url = $dto->url;
-          $bean->sku = $dto->sku;
-          $bean->stock = $dto->stock;
-          $bean->datetime = $dto->datetime;
-          $bean->status = $dto->status;
-          $bean->edit_time = $dto->edit_time;
+      // ID продукта
+      $productId = (int)$bean->id;
 
-          $this->saveBean($bean);
-
-          // ID продукта
-          $productId = (int)$bean->id;
-
-          if (!$productId) {
-            throw new RuntimeException("Не удалось сохранить продукт");
-          }
-   
-          // Создаем DTO для переводов и сохраняем в БД
-          $translateDto = $this->createTranslateInputDto($translations, $productId);
-          $translateIds = $this->saveProductTranslation($translateDto);
-          if ($translateIds === null || count($translateIds) === 0) {
-              throw new RuntimeException("Не удалось сохранить переводы");
-          }
-
-       
-          // 3. Финализируем файлы после проверки
-          $finalImages = $imageService->finalizeImages($processedImages);
-      
-          // Создаём DTO для изображений 
-          $imagesDto = $this->imageRepo->createImagesInputDto($images, $finalImages, $productId);
-          
-      
-          // 2. Проверяем что все filename есть
-          foreach ($imagesDto as $dto) {
-              if (!$dto->filename) {
-                  throw new RuntimeException("Пустое имя файла для изображения");
-              }
-          }
-
-         
-          $imagesIds = $this->saveProductImages($imagesDto);
-
- 
-          if (!$productId || !$translateIds || !$imagesIds) {
-              throw new RuntimeException("Не удалось сохранить продукт");
-          }
-
-          $this->commit();
-          return $productId;
-
-        
+      if (!$productId) {
+        throw new RuntimeException("Не удалось сохранить продукт");
       }
-      catch (\Throwable $e) {
-        $this->rollback(); // откатываем изменения
 
-         // удаляем все возможные файлы
-        $imageService->cleanup($processedImages);
-        if (!empty($finalImages)) $imageService->cleanupFinal($finalImages);
-
-        // $imageService->cleanup($processedImages);
-        throw $e;      // пробрасываем ошибку выше
-      }
-  
+      return $productId;
     }
 
 

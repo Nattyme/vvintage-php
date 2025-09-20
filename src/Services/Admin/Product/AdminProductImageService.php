@@ -12,6 +12,11 @@ final class AdminProductImageService extends ProductImageService
 {
     private string $tmpFolder;
     private string $finalFolder;
+    private const IMAGE_SIZES = [
+      'full'  => [536, 566],
+      'small' => [350, 478]
+    ];
+
 
     public function __construct()
     {
@@ -31,7 +36,7 @@ final class AdminProductImageService extends ProductImageService
         /**
      * Подготавливает изображения: грузит в tmp + делает ресайзы
      */
-    public function prepareImages(array $files, array $sizes): array
+    public function prepareImages(array $files): array
     {
   
         $processed = [];
@@ -54,8 +59,8 @@ final class AdminProductImageService extends ProductImageService
             $fullTmp  = $this->tmpFolder . 'full_' . $baseName;;
             $smallTmp = $this->tmpFolder . 'small_' . $baseName;
 
-            resize_and_crop($tmpFile, $fullTmp,  $sizes['full'][0],  $sizes['full'][1]);
-            resize_and_crop($tmpFile, $smallTmp, $sizes['small'][0], $sizes['small'][1]);
+            resize_and_crop($tmpFile, $fullTmp,  self::IMAGE_SIZES['full'][0],  self::IMAGE_SIZES['full'][1]);
+            resize_and_crop($tmpFile, $smallTmp, self::IMAGE_SIZES['small'][0], self::IMAGE_SIZES['small'][1]);
 
             // исходник tmp больше не нужен → сразу удаляем
             @unlink($tmpFile);
@@ -65,7 +70,7 @@ final class AdminProductImageService extends ProductImageService
                 'tmp_small'      => $smallTmp,
                 'original_name'  => $tmpName,
                 'final_full'     => $baseName,
-                'final_small'    => $sizes['small'][0] . '-' . $baseName,
+                'final_small'    => self::IMAGE_SIZES['small'][0] . '-' . $baseName,
             ];
         }
         return $processed;
@@ -165,7 +170,5 @@ final class AdminProductImageService extends ProductImageService
         }
       }
     }
-
-   
 
 }

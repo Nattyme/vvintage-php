@@ -33,29 +33,29 @@ class ProductApiController extends BaseApiController
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
 
-        // Валидация текста
+        // // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($text);
 
         $structuredImages = $this->getStructuredImages($files);
 
-        // Валидация изображений
+        // // Валидация изображений
         $validatorImg = new AdminProductImageValidator();
         $validatorImgResult = $validatorImg->validate($structuredImages);
 
-        // Объединяем ошибки
+        // // Объединяем ошибки
         $errors = array_merge( $validatorTextResult['errors'],  $validatorImgResult['errors']);
-            //  error_log(print_r($errors, true));
+          
         if(!empty($errors)) {
           $this->error($errors, 422);
         }
 
-        // Подготовка изображений
-        $imageService = new AdminProductImageService();
-        $processedImages = $imageService->prepareImages(
-          $validatorImgResult['data'],
-          ['full' => [536, 566],'small' => [350, 478]]
-        );
+        // // Подготовка изображений
+        // $imageService = new AdminProductImageService();
+        // $processedImages = $imageService->prepareImages(
+        //   $validatorImgResult['data'],
+        //   ['full' => [536, 566],'small' => [350, 478]]
+        // );
 
         // Создание продукта
         $productId = $this->service->createProductDraft(
@@ -75,30 +75,20 @@ class ProductApiController extends BaseApiController
     {
         // $this->isAdmin(); // проверка прав
         $productData = $this->getRequestData();
-        // error_log( print_r($productData, true));
+        
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
         $existingImages = $text['existing_images'] ?? []; // массив с id и image_order
-        // unset($productData);
-
-       
     
     
         $structuredImages = $this->getStructuredImages($files);
-        // $structuredImages = $this->getStructuredImages($files);
-
-        // unset($productData['existing_images']);
-
-
-          // error_log(print_r( $files, true));
+       
         // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($text);
 
         // Валидация новых изображений (только то, что реально загружено через dropzone)
         $validatorImg = new AdminProductImageValidator();
-        // $validatorImgResult = $validatorImg->validate($files);
-  
         $validatorImgResult = $validatorImg->validate($structuredImages, $existingImages);
 
         // Объединяем ошибки
@@ -107,17 +97,7 @@ class ProductApiController extends BaseApiController
             $this->error($errors, 422);
         }
 
-        // Подготовка новых изображений (только для новых файлов)
-        // $imageService = new AdminProductImageService();
-        // $processedNewImages = $imageService->prepareImages(
-        //     $validatorImgResult['data'],
-        //     ['full' => [536, 566], 'small' => [350, 478]]
-        // );
 
-        // Удаляем существующие изображения, если нужно
-        // $imageService->updateExistImages($id, $text['existing_images']);
-
-        // error_log(print_r( $validatorTextResult['data'], true));
         $success = $this->service->updateProduct(
             $id,
             $validatorTextResult['data'],   // текстовые данные
