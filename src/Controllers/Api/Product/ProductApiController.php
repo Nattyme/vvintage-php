@@ -74,7 +74,7 @@ class ProductApiController extends BaseApiController
         $files = $productData['_files']['cover'] ?? [];
         $fileOrders = $text['cover_order'] ?? []; //  порядок новых изображений с фронта
         $existingImages = $text['existing_images'] ?? []; // массив с id и image_order
-error_log(print_r($fileOrders, true));
+
         // Структурируем новые изображения и добавляем порядок
         $structuredImages = $this->getStructuredImages($files);
        

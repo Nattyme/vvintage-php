@@ -143,19 +143,46 @@ final class AdminProductImageService extends ProductImageService
     /**
      * Удаляет уже перемещённые финальные версии
      */
-    public function cleanupFinal(array $images): void
-    {
-        foreach ($images as $img) {
-            @unlink($this->finalFolder . $img['filename']);
-            @unlink($this->finalFolder . $img['filename_small']);
-        }
-    }
+    // public function cleanupFinal(array $images): void
+    // {
+    //     foreach ($images as $img) {
+    //         @unlink($this->finalFolder . $img['filename']);
+    //         @unlink($this->finalFolder . $img['filename_small']);
+    //     }
+    // }
+
+  public function cleanupFinal(array $images): void
+  {
+      foreach ($images as $img) {
+          // Объект DTO
+          if (is_object($img)) {
+              $filename = $img->filename ?? null;
+              $filenameSmall = self::IMAGE_SIZES['small'][0] . '-' . $img->filename ?? null;
+          } 
+          // Массив
+          elseif (is_array($img)) {
+              $filename = $img['filename'] ?? null;
+              $filenameSmall = self::IMAGE_SIZES['small'][0] . '-' . $img['filename'] ?? null;
+          } 
+          else {
+              continue; // если вдруг что-то другое пришло
+          }
+
+          if ($filename) {
+              @unlink($this->finalFolder . $filename);
+          }
+          if ($filenameSmall) {
+              @unlink($this->finalFolder . $filenameSmall);
+          }
+      }
+  }
+
 
     public function deleteImagesNotInList (int $productId, array $keepIds): void 
     {
       $this->repository->deleteImagesNotInList($productId, $keepIds);
     }
-    
+
     public function updateImagesOrder(int $productId, array $images): void 
     {
       $this->repository->updateImagesOrder($productId, $images);

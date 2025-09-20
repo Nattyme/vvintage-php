@@ -128,6 +128,11 @@ class ProductImageService
 
   }
 
+  public function getProductImagesAll(int $productId): array 
+  {
+    return $this->repository->getAllImages($productId);
+  }
+
   // public function buildImageDtos(array $processedImages): array
   // {
   //     $imagesDto = [];
