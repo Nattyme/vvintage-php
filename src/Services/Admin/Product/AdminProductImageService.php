@@ -71,6 +71,7 @@ final class AdminProductImageService extends ProductImageService
                 'original_name'  => $tmpName,
                 'final_full'     => $baseName,
                 'final_small'    => self::IMAGE_SIZES['small'][0] . '-' . $baseName,
+                'image_order'    => $file['image_order'] ?? 0
             ];
         }
         return $processed;

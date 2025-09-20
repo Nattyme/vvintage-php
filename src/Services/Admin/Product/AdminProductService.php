@@ -110,6 +110,7 @@ final class AdminProductService extends ProductService
               $this->imageService->updateImages($imagesDto);
           }
 
+  
           // 5. Обновляем порядок существующих изображений, если есть
           if (!empty($existingImages)) {
               $this->imageService->updateImagesOrder($id, $existingImages);
@@ -130,9 +131,7 @@ final class AdminProductService extends ProductService
           $this->repository->rollback();
 
           // удаляем tmp-файлы
-          foreach ($tmpFilesToCleanup as $file) {
-              @unlink($file);
-          }
+          $this->imageService->cleanup($imagesTMP);
 
           throw $error;
       }

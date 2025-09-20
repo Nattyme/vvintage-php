@@ -50,12 +50,6 @@ class ProductApiController extends BaseApiController
           $this->error($errors, 422);
         }
 
-        // // Подготовка изображений
-        // $imageService = new AdminProductImageService();
-        // $processedImages = $imageService->prepareImages(
-        //   $validatorImgResult['data'],
-        //   ['full' => [536, 566],'small' => [350, 478]]
-        // );
 
         // Создание продукта
         $productId = $this->service->createProductDraft(
@@ -78,10 +72,16 @@ class ProductApiController extends BaseApiController
         
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
+        $fileOrders = $text['cover_order'] ?? []; //  порядок новых изображений с фронта
         $existingImages = $text['existing_images'] ?? []; // массив с id и image_order
-    
-    
+error_log(print_r($fileOrders, true));
+        // Структурируем новые изображения и добавляем порядок
         $structuredImages = $this->getStructuredImages($files);
+       
+        foreach ($structuredImages as $i => &$img) {
+            $img['image_order'] = $fileOrders[$i] ?? 0; // порядок с фронта
+        }
+        unset($img);
        
         // Валидация текста
         $validatorText = new AdminProductValidator();

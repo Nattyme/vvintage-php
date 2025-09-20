@@ -19,16 +19,18 @@ const initModel = () => {
   const setSortedFiles = (files) => {
     clearFilesData();
 
-    files.forEach(item => {
+    files.forEach((item, index) => {
       if (item.file) {
         // новые файлы
         formData.append('cover[]', item.file);
+        formData.append('cover_order[]', index); // порядок для каждого файла
 
       } else if (item.id) {
         // существующие изображения
         formData.append('existing_images[]', JSON.stringify({
           id: item.id,
-          name: item.name
+          name: item.name,
+          image_order: index   
         }));
       }
     });
