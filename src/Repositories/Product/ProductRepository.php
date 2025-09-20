@@ -59,7 +59,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     /** Создаёт новый OODBBean для продукта */
     private function createProductBean(): OODBBean 
     {
-        return $this->createBean(self::TABLE_PRODUCTS);
+        return $this->createBean(self::TABLE);
     }
 
   

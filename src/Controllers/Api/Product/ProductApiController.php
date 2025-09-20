@@ -33,6 +33,11 @@ class ProductApiController extends BaseApiController
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
 
+        // Проверяем что вернлся массив, а не json строка
+        if (!is_array($files)) {
+            $files = [];
+        }
+
         // // Валидация текста
         $validatorText = new AdminProductValidator();
         $validatorTextResult = $validatorText->validate($text);
@@ -45,7 +50,7 @@ class ProductApiController extends BaseApiController
 
         // // Объединяем ошибки
         $errors = array_merge( $validatorTextResult['errors'],  $validatorImgResult['errors']);
-          
+          error_log(print_r( $errors, true));
         if(!empty($errors)) {
           $this->error($errors, 422);
         }
@@ -55,7 +60,7 @@ class ProductApiController extends BaseApiController
         $productId = $this->service->createProductDraft(
           $validatorTextResult['data'], 
           $validatorImgResult['data'],  
-          $processedImages
+           $structuredImages 
         ); 
 
         if (!$productId) {
@@ -117,6 +122,10 @@ class ProductApiController extends BaseApiController
     {
         //  error_log(print_r($files, true));
         $images = [];
+
+        if (!isset($files['name']) || !is_array($files['name'])) {
+            return $images; 
+        }
 
         // 1. Обрабатываем новые загруженные файлы
         foreach ($files['name'] ?? [] as $i => $name) {

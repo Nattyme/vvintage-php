@@ -243,7 +243,7 @@ final class AdminProductService extends ProductService
   //     }
   // }
 
-  public function createProductDraft(array $data, array $images, array $processedImages): int
+  public function createProductDraft(array $data, array $images): int
   {
     
       $data['status'] = 'hidden'; // или draft
@@ -267,7 +267,7 @@ final class AdminProductService extends ProductService
         }
   
         // 3. Подготавливаем изображения (tmp + resize)
-        $imagesTMP = $this->imageService->prepareImages($processedImages);
+        $imagesTMP = $this->imageService->prepareImages($images);
 
         // Собираем tmp-файлы для возможного удаления при ошибке
         foreach ($imagesTMP as $img) {
