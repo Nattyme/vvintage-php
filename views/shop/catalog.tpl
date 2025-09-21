@@ -31,11 +31,6 @@
             <?php if (isset($viewModel['products']) && !empty($viewModel['products']) ): ?>
                 <div class="products__cards">
                     <?php foreach ($viewModel['products'] as $product) : ?>
-                      <?php 
-                          $images = $viewModel['imagesByProductId'][$product->getId()] ?? null;
-                          $mainImage = $images['main'] ?? null;
-                      ?>
-            
                       <?php include ROOT . 'views/shop/_parts/_card.tpl';?>
                     <?php endforeach; ?>  
                 </div>

@@ -1,88 +1,19 @@
-<!-- <a href="<?php echo HOST . 'shop/' . u($product->getId());?>" class="card">
-  
-    <div class="card__img">
-        <?php if (file_exists(ROOT . 'usercontent/products/' . $mainImage->getFilename())) : ?>
-          <picture>
-            <source
-              srcset="<?php echo HOST . 'usercontent/products/' . $mainImage->getFilename();?>"
-              type="image/webp"
-            />
-            <source
-              srcset="<?php echo HOST . 'usercontent/products/' . $mainImage->getFilename();?>"
-              type="image/jpeg"
-          
-              />
-              <img 
-                src="<?php echo HOST . 'usercontent/products/' . $mainImage->getFilename();?>" 
-                srcset="<?php echo HOST . 'usercontent/products/' . $mainImage->getFilename();?>" alt="" loading="lazy"
-              >
-        
-          </picture>
-        <?php else : ?>
-          <picture>
-            <source
-              srcset="<?php echo HOST . 'usercontent/products/' . 'no-photo.jpg';?>"
-              type="image/webp"
-            />
-            <source
-              srcset="<?php echo HOST . 'usercontent/products/' . 'no-photo.jpg';?>"
-              type="image/jpeg"
-          
-              />
-              <img 
-                src="<?php echo HOST . 'usercontent/products/' . 'no-photo.jpg';?>" 
-                srcset="<?php echo HOST . 'usercontent/products/' . 'no-photo.jpg';?>" alt="" loading="lazy"
-              >
-        
-          </picture>
-        <?php endif; ?>
-    </div>
-
-
-    <div class="fav-button-wrapper">
-      <div 
-        href="<?php echo HOST . 'addtofav?id=' . u($product->getId());?>" 
-        class="fav-button <?php echo isProductInFav($product->getId()) ? 'fav-button--active' : '';?>"
-      >
-          <svg class="icon icon--favorite">
-            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>"></use>
-          </svg>
-
-      </div>
-    </div>
-
-
-    <div class="card__desc">
-      <div class="card__title block__text">
-        <h4 class="h4 block__desc">
-          <?php echo $product->getTitle() !== null ? h($product->getTitle()) : 'Название продукта';?>
-        </h4>
-      </div>
-      <div class="card__row flex-block">
-        <div class="card__price">
-          <span><?php echo $product->getPrice() !== null ? h($product->getPrice()) : '5000';?>&nbsp;&euro;</span>
-        </div>
-      </div>
-    </div>
-</a>
-  -->
-
 <div class="card">
-  
+
   <div class="card__img">
-    <?php if (file_exists(ROOT . 'usercontent/products/' . $mainImage->getFilename())) : ?>
+    <?php if ( isset($product->images['main']) && (file_exists(ROOT . 'usercontent/products/' . $product->images['main']->filename) )) : ?>
       <picture>
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . $mainImage->getFilename();?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . $product->images['main']->filename;?>"
           type="image/webp"
         />
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . $mainImage->getFilename();?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . $product->images['main']->filename;?>"
           type="image/jpeg"
         />
         <img 
-          src="<?php echo HOST . 'usercontent/products/' . $mainImage->getFilename();?>"
-          srcset="<?php echo HOST . 'usercontent/products/' . $mainImage->getFilename();?>"
+          src="<?php echo HOST . 'usercontent/products/' . $product->images['main']->filename;?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . $product->images['main']->filename;?>"
           alt=""
           loading="lazy"
         >
@@ -109,8 +40,8 @@
 
   <div class="fav-button-wrapper">
     <a href="" 
-      class="fav-button <?php echo isProductInFav($product->getId()) ? 'fav-button--active' : '';?>"
-      data-id="<?php echo $product->getId();?>"
+      class="fav-button <?php echo isProductInFav($product->id) ? 'fav-button--active' : '';?>"
+      data-id="<?php echo $product->id;?>"
       aria-label="Добавить в избранное"
     >
       <svg class="icon icon--favorite" viewBox="0 0 20 20">
@@ -123,14 +54,14 @@
   </div>
 
   <div class="card__desc">
-    <a href="<?php echo HOST . 'shop/' . u($product->getId());?>" class="card__title link-to-page block__text">
+    <a href="<?php echo HOST . 'shop/' . u($product->id);?>" class="card__title link-to-page block__text">
       <h4 class="h4 block__desc">
-        <?php echo $product->getTitle() !== null ? h($product->getTitle()) : 'Название продукта';?>
+        <?php echo $product->title !== null ? h($product->title) : 'Название продукта';?>
       </h4>
     </a>
     <div class="card__row flex-block">
       <div class="card__price">
-        <span><?php echo $product->getPrice() !== null ? h($product->getPrice()) : '5000';?>&nbsp;&euro;</span>
+        <span><?php echo $product->price !== null ? h($product->price) : '5000';?>&nbsp;&euro;</span>
       </div>
     </div>
   </div>
