@@ -25,7 +25,7 @@
       foreach ($viewModel['products'] as $product) :
 
         // Получаем главное изображения 
-        $images = $viewModel['imagesByProductId'][$product->getId()] ?? null;
+        $images = $product->images ?? null;
         $mainImage = $images['main'] ?? null;
 
         include ROOT . 'views/cart/_parts/_product.tpl';

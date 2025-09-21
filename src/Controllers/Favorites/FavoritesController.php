@@ -13,7 +13,6 @@ use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
 use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
-use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Models\User\User;

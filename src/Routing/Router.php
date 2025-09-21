@@ -41,6 +41,7 @@
   use Vvintage\Services\Page\Breadcrumbs;
   use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\Seo\SeoService;
+  use Vvintage\Services\Product\ProductService;
 
 
   /** Модели */
@@ -366,7 +367,6 @@
        * @var UserInreface $userModel
       */
       $userModel = $sessionService->getLoggedInUser();
-      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
 
       // Получаем корзину и ее модель
@@ -374,6 +374,7 @@
       $cart = $userModel->getCart();
 
       $productRepository = new ProductRepository();
+      $productService = new ProductService();
 
       /**
        * Получаем хранилище
@@ -382,7 +383,7 @@
       $cartStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
-      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $flash);
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
 
       $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $breadcrumbs );
 

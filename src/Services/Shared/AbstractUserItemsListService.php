@@ -8,7 +8,9 @@ use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
 /** Репозитории */
+use Vvintage\Services\Base\BaseService;
 use Vvintage\Repositories\Product\ProductRepository;
+use Vvintage\Services\Product\ProductService;
 
 /** Модели */
 use Vvintage\Models\Shared\AbstractUserItemsList;
@@ -16,34 +18,34 @@ use Vvintage\Models\Shared\AbstractUserItemsList;
 /** Сервисы */
 use Vvintage\Services\Messages\FlashMessage;
 
-abstract class AbstractUserItemsListService
+abstract class AbstractUserItemsListService extends BaseService
 {
     private $userModel;
     private $itemsModel;
     private $items;
     private $itemsStore;
-    private $productRepository;
-    private FlashMessage $notes;
+    private ProductService $productService;
 
     public function __construct( 
       UserInterface $userModel, 
       AbstractUserItemsList $itemsModel, 
       array $items, 
       UserItemsListStoreInterface $itemsStore, 
-      ProductRepository $productRepository, 
-      FlashMessage $notes)
+      ProductService $productService, 
+      )
     {
+      parent::__construct();
       $this->userModel = $userModel;
       $this->itemsModel = $itemsModel;
       $this->items = $items;
       $this->itemsStore = $itemsStore;
-      $this->productRepository = $productRepository;
-      $this->notes = $notes;
+      $this->productService = $productService;
     }
 
     public function getListItems ()
     {
-      return !empty($this->items) ? $this->productRepository->getProductsByIds($this->items) : [];
+   
+      return !empty($this->items) ? $this->productService->getProductsByIds($this->items) : [];
     }
 
     public function addItem($itemId)

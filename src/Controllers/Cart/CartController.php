@@ -11,11 +11,7 @@ use Vvintage\Routing\RouteData;
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
-// /** Репозитории */
-// use Vvintage\Repositories\User\UserRepository;
-// use Vvintage\Repositories\Product\ProductRepository;
-
-/** Абстракции */
+/* Абстракции */
 use Vvintage\Models\Shared\AbstractUserItemsList;
 
 /** Контракты */
@@ -68,6 +64,18 @@ final class CartController extends BaseController
       $this->breadcrumbsService = $breadcrumbs;
     }
 
+    public function index(RouteData $routeData): void
+    {
+      // Получаем продукты
+      $products = $this->cartService->getListItems();
+     
+      $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
+      $this->setRouteData($routeData); // <-- передаём routeData
+
+      // Показываем страницу
+      $this->renderPage($routeData, $products, $this->cartModel, $totalPrice);
+    }
+
     private function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
     {  
       // Название страницы
@@ -76,19 +84,19 @@ final class CartController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-      $imageService = new ProductImageService();
+      // $imageService = new ProductImageService();
 
-      $imagesByProductId = [];
+      // $imagesByProductId = [];
 
-      foreach ($products as $product) {
-          $imagesMainAndOthers = $imageService->splitImages($product->getImages());
-          $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
-      }
+      // foreach ($products as $product) {
+      //     $imagesMainAndOthers = $imageService->splitImages($product->getImages());
+      //     $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
+      // }
 
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'products' => $products,
-          'imagesByProductId' => $imagesByProductId,
+          // 'imagesByProductId' => $imagesByProductId,
           'totalPrice' => $totalPrice
       ];
 
@@ -104,16 +112,7 @@ final class CartController extends BaseController
     }
 
 
-    public function index(RouteData $routeData): void
-    {
-      // Получаем продукты
-      $products = $this->cartService->getListItems();
-      $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
-      $this->setRouteData($routeData); // <-- передаём routeData
-
-      // Показываем страницу
-      $this->renderPage($routeData, $products, $this->cartModel, $totalPrice);
-    }
+   
 
     public function addItem(int $productId, RouteData $routeData): void
     {

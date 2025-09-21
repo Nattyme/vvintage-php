@@ -24,14 +24,14 @@ final class Cart extends AbstractUserItemsList
         // создаём словарь: productId => Product
         $productMap = [];
         foreach ($products as $product) {
-            $productMap[$product->getId()] = $product;
+            $productMap[$product->id] = $product;
         }
 
         // считаем сумму
         $total = 0;
         foreach ($this->items as $id => $quantity) {
             if (isset($productMap[$id])) {
-                $total += $productMap[$id]->getPrice() * $quantity;
+                $total += $productMap[$id]->price * $quantity;
             }
         }
 
