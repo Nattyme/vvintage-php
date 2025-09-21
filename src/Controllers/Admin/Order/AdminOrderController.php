@@ -34,23 +34,26 @@ class AdminOrderController extends BaseAdminController
   {
     $this->isAdmin();
     $this->adminOrderService->handleStatusAction($_POST);
-    $this->renderAll($routeData);
+    $this->setRouteData($routeData);
+    $this->renderAll();
   }
 
   public function single(RouteData $routeData)
   {
     $this->isAdmin();
-    $this->renderSingle($routeData);
+    $this->setRouteData($routeData);
+    $this->renderSingle();
   }
 
   public function delete(RouteData $routeData)
   {
     $this->isAdmin();
-    $this->renderSingle($routeData);
+    $this->setRouteData($routeData);
+    $this->renderSingle();
   }
 
 
-  private function renderAll(RouteData $routeData): void
+  private function renderAll(): void
   {
     // Название страницы
     $pageTitle = self::PAGE_ORDERS_ALL;
@@ -81,20 +84,19 @@ class AdminOrderController extends BaseAdminController
         
     $this->renderLayout('orders/all',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'pagination' => $pagination,
       'orderViewModel' => $orderViewModel
     ]);
 
   }
 
-  private function renderSingle(RouteData $routeData): void
+  private function renderSingle(): void
   {
     // Название страницы
     $pageTitle = self::PAGE_ORDERS_SINGLE;
 
-    $order = $this->adminOrderService->getOrderById((int) $routeData->uriGetParam);
-
+    $order = $this->adminOrderService->getOrderById((int) $this->routeData->uriGet);
 
     $actions = $this->adminOrderService->getActions();
     $statusData = $this->adminOrderService->getStatusData();
@@ -107,7 +109,7 @@ class AdminOrderController extends BaseAdminController
         
     $this->renderLayout('orders/single',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'order' => $order,
       'actions'=> $actions,
       'statusData' => $statusData,
@@ -116,7 +118,7 @@ class AdminOrderController extends BaseAdminController
 
   }
 
-  private function renderDelete(RouteData $routeData): void
+  private function renderDelete(): void
   {
     // Название страницы
     $pageTitle = self::PAGE_ORDERS_DELETE;
@@ -138,9 +140,6 @@ class AdminOrderController extends BaseAdminController
       // Если нет ошибок
       if ( empty($_SESSION['errors'])) {
         $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
-        // $brand->title = $_POST['title'];
-
-        // R::store($brand);
 
         $_SESSION['success'][] = ['title' => 'Бренд успешно обновлен.'];
       }
@@ -155,7 +154,7 @@ class AdminOrderController extends BaseAdminController
         
     $this->renderLayout('orders/delete',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'brand' => $brand,
       'languages' => $this->languages,
       'currentLang' => $currentLang,
