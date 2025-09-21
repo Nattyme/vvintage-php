@@ -85,7 +85,7 @@ final class CategoryTranslationRepository extends AbstractRepository implements 
     // Для api
     public function getTranslationsArray(int $id, string $locale): array 
     {
-   
+
       $translations = $this->loadTranslations($id);
 
       return $translations[$locale] ?? [

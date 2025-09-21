@@ -67,6 +67,16 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
       return Category::fromDTO($dto);
     }
 
+    private function mapBeanToCategoryArray (OODBBean $bean): array
+    {
+      return [
+          'id' => (int) $bean->id,
+          'title' => (string) $bean->title,
+          'parent_id' => (int) $bean->parent_id,
+          'image' => (string) $bean->image
+      ];
+    }
+
 
     public function getCategoryById(int $id): ?Category
     {
@@ -83,7 +93,15 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     public function getAllCategories(): array
     {
         $beans = $this->findAll(self::TABLE);
+   
         return array_map([$this, 'mapBeanToCategory'], $beans);
+    }
+
+    public function getAllCategoriesApi(): array
+    {
+        $beans = $this->findAll(self::TABLE);
+   
+        return array_map([$this, 'mapBeanToCategoryArray'], $beans);
     }
 
     public function getMainCats(): array
@@ -200,7 +218,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         $beans = $this->findAll(self::TABLE);
 
         // Сбрасываем ключи и преобразуем в массивы
-        return array_values(array_map([$this->translationRepo, 'getTranslationsArray'], $beans));
+        return array_values(array_map([$this, 'mapBeanToCategory'], $beans));
     }
 
 

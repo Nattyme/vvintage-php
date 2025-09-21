@@ -87,8 +87,9 @@ class CategoryApiController extends BaseApiController
     public function getAllCategories(): void
     {
         try {
-            // Вызов метода сервиса, который возвращает массив главных категорий.
-            $categories = $this->service->getAllCategoriesArray();
+            // Вызов метода сервиса, который возвращает массив все категорий.
+            $categories = $this->service->getAllCategoriesArrayApi();
+
 
             // Отправляем заголовок HTTP, говорящий браузеру (или клиенту API), что ответ — это JSON в кодировке UTF-8.
             header('Content-Type: application/json; charset=utf-8');

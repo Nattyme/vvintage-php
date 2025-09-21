@@ -34,9 +34,9 @@ class CategoryService extends BaseService
             return [];
         }
 
-        $translations = $this->translationRepo->getTranslationsArray($id, $this->locale) 
+        $translations = $this->translationRepo->getTranslationsArray((int) $id, $this->locale) 
         ?? 
-        $this->translationRepo->getTranslationsArray($id, $this->defaultLocale);
+        $this->translationRepo->getTranslationsArray((int) $id, $this->defaultLocale);
        
         $category->setTranslations($translations);
 
@@ -70,9 +70,30 @@ class CategoryService extends BaseService
         return array_values($categoriesWithTranslation);
     }
 
+    
+    public function getAllCategoriesArrayApi(): array
+    {
+      $categories = $this->repository->getAllCategoriesApi();
+
+
+      if (empty($categories)) {
+        return [];
+      }
+
+      $categoriesWithTranslation = array_map(function ($category) {
+                                      return $this->addCategoryTranslate($category);
+                                  }, $categories);
+
+      return array_values($categoriesWithTranslation);
+    }
+
+
     private function addCategoryTranslate(array $category): array
     {
-        $translations = $this->translationRepo->getTranslationsArray((int) $category['id'], $this->locale) ?? [];
+        $id = (int) $category['id'];
+
+        error_log(print_r($id, true));
+        $translations = $this->translationRepo->getTranslationsArray($id, $this->locale) ?? [];
 
         return array_merge($category, [
             'title' => $translations['title'] ?? null,
@@ -97,13 +118,14 @@ class CategoryService extends BaseService
     {
       $categories = $this->repository->getAllCategoriesArray();
 
+
       if (empty($categories)) {
         return [];
       }
 
       $this->setCategoriesWithTranslations($categories);
 
-      return $categories;
+      return array_values($categories);
     }
 
 
@@ -210,7 +232,9 @@ class CategoryService extends BaseService
     private function setCategoriesWithTranslations(array $categories): array
     {
         foreach ($categories as $category) {
-            $translations = $this->translationRepo->getTranslationsArray($category->getId(), $this->locale);
+            $id = (int) $category->getId();
+          
+            $translations = $this->translationRepo->getTranslationsArray( $id, $this->locale);
             $category->setTranslations($translations);
         }
         return $categories;

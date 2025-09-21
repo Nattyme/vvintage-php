@@ -209,6 +209,7 @@
                 break;
 
             case preg_match('#^categories-data$#',  $uri):
+              error_log('hey');
                 $categoryApiController->getAllCategories();
                 break;
 
