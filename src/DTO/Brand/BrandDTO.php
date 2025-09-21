@@ -7,18 +7,19 @@ class BrandDTO
 {
     public int $id;
     public string $title;
-    public string $description;
+    // public string $description;
     public string $image;
     public array $translations; // ['ru' => ['title'=>..., 'description'=>...], 'en' => [...]];
+    // public string $locale;
 
     public function __construct(array $data)
     {
         $this->id = (int)($data['id'] ?? 0);
-        $this->title = (string)($data['title'] ?? '');
-        $this->description = (string)($data['description'] ?? '');
+        // $this->title = (string)($data['title'] ?? '');
+        // $this->description = (string)($data['description'] ?? '');
         $this->image = (string)($data['image'] ?? '');
 
-        $this->translations = [];
+        
         if (isset($data['translations']) && is_array($data['translations'])) {
             foreach ($data['translations'] as $locale => $fields) {
                 $this->translations[$locale] = [];
@@ -35,6 +36,9 @@ class BrandDTO
                     $this->translations[$locale]['meta_description'] = (string)$fields['meta_description'];
                 }
             }
+        } else {
+          $this->translations = [];
         }
+        // $this->locale = (string) $data['locale'];
     }
 }

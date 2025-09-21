@@ -15,7 +15,7 @@ final class Brand
     private ?string $image;
 
     private array $translations = [];
-    private string $currentLocale = 'ru';
+    // private string $currentLocale = 'ru';
 
     private function __construct() {}
   
@@ -39,7 +39,7 @@ final class Brand
         $brand->title = (string) ($data['title'] ?? '');
         $brand->image = (string) ($data['image'] ?? '');
         $brand->translations = $data['translations'] ?? [];
-        $brand->currentLocale = (string) ($data['locale'] ?? 'ru');
+        // $brand->currentLocale = (string) ($data['locale'] ?? 'ru');
         
         return $brand;
     }
@@ -78,25 +78,35 @@ final class Brand
 
     public function getTranslatedTitle(?string $locale = null): string 
     {
-        $locale = $locale ?? $this->currentLocale;
+        if ($locale) {
+            return $this->translations['title'] ?? '';
+        }
 
-        return $this->translations[$locale]['title'] ?? $this->title;
+        return  $this->title;
     }
 
     public function getTranslatedDescription(?string $locale = null): string 
     {
-        $locale = $locale ?? $this->currentLocale;
+        if ($locale) {
+          return $this->translations['description'] ?? '';
+        }
 
-        return $this->translations[$locale]['description'] ?? '';
+        return $this->description;
     }
 
 
     public function getSeoTitle(?string $locale = null): string {
-        return $this->getTranslations($locale)['meta_title'] ?? $this->title;
+        if ($locale) {
+          return $this->translations['meta_title'] ?? '';
+        }
+        return $this->title;
     }
 
     public function getSeoDescription(?string $locale = null): string {
-        return $this->getTranslations($locale)['meta_description'] ?? '';
+        if ($locale) {
+          return $this->translations['meta_description'] ?? '';
+        }
+         return $this->description;
     }
 
 

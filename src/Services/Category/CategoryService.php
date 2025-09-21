@@ -197,10 +197,10 @@ class CategoryService extends BaseService
           'image' => (string) ($category->getImage() ?? ''),
           'translations' => [
               $this->locale => [
-                  'title' => $category->getTranslatedTitle() ?? '',
-                  'description' => $category->getTranslatedDescription() ?? '',
-                  'seo_title' => $category->getSeoTitle() ?? '',
-                  'seo_description' => $category->getSeoDescription() ?? '',
+                  'title' => $category->getTranslatedTitle($this->locale) ?? '',
+                  'description' => $category->getTranslatedDescription($this->locale) ?? '',
+                  'seo_title' => $category->getSeoTitle($this->locale) ?? '',
+                  'seo_description' => $category->getSeoDescription($this->locale) ?? '',
               ]
           ],
           'locale' => $this->locale,

@@ -31,7 +31,14 @@ class BrandService extends BaseService
     public function getAllBrands(): array
     {
       return  $this->repository->getAllBrands();
+    
     }
+    public function getAllBrandsDto(): array
+    {
+      $rows =  $this->repository->getAllBrands();
+      return array_map([$this, 'createBrandDTOFromArray'], $rows);
+    }
+
 
     public function getAllBrandsCount(): int
     {
@@ -52,6 +59,25 @@ class BrandService extends BaseService
 
       return $brand;
     }
+
+    private function createBrandDTOFromArray(array $row): BrandOutputDTO
+    {
+        $brandId = (int) $row['id'];
+        $translations = $this->translationRepo->loadTranslations($brandId);
+ 
+        return new BrandOutputDTO([
+            'id' => (int) $brandId,
+            // 'title' => (string) ($brand->getTranslatedTitle($this->locale) ?? ''),
+            'image' => (string) ($row['brand_image'] ?? ''),
+            'translations' => $translations
+            // 'locale' => $this->locale,
+        ]);
+     
+    }
+
+
+
+
 
     // Для api
     public function getBrandsArray(): array
@@ -148,19 +174,21 @@ class BrandService extends BaseService
     public function createBrandOutputDTO(int $id): BrandOutputDTO
     {
         $brand = $this->getBrandById($id);
+   
+      
         return new BrandOutputDTO([
             'id' => (int) $brand->getId(),
-            'title' => (string) ($brand->getTranslatedTitle() ?: $brand->getTitle()),
+            'title' => (string) ($brand->getTranslatedTitle($this->locale) ?? ''),
             'image' => (string) ($row['brand_image'] ?? ''),
             'translations' => [
                 $this->locale => [
-                    'title' => $brand->getTranslatedTitle() ?? '',
-                    'description' => $brand->getTranslatedDescription() ?? '',
-                    'seo_title' => $brand-> getSeoTitle() ?? '',
-                    'seo_description' => $brand->getSeoDescription() ?? '',
+                    'title' => $brand->getTranslatedTitle($this->locale) ?? '',
+                    'description' => $brand->getTranslatedDescription($this->locale) ?? '',
+                    'meta_title' => $brand-> getSeoTitle($this->locale) ?? '',
+                    'meta_description' => $brand->getSeoDescription($this->locale) ?? '',
                 ]
             ],
-            'locale' => $this->locale,
+            // 'locale' => $this->locale,
         ]);
     }
 

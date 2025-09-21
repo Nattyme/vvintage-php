@@ -154,9 +154,21 @@ class ProductService extends BaseService
         return $this->productImageService->countAll($images);
     }
 
-    public function getFilteredProducts(ProductFilterDTO $filter): array 
+    public function getFilteredProducts(ProductFilterDTO $filters): array 
     {
-        return $this->repository->getFilteredProducts($filter);
+        if ($filters instanceof ProductFilterDTO) {
+            $filters = [
+                'categories' => $filters->categories,
+                'brands'     => $filters->brands,
+                'priceMin'   => $filters->priceMin,
+                'priceMax'   => $filters->priceMax,
+                'sort'       => $filters->sort,
+                'page'       => $filters->page,
+            ];
+        }
+        $rows = $this->repository->getProducts($filters);
+   
+        return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
 

@@ -154,26 +154,36 @@ final class Category
 
     public function getTranslatedTitle(?string $locale = null): string 
     {
-        $locale = $locale ?? $this->currentLocale;
+        if ($locale) {
+            return $this->translations['title'] ?? '';
+        }
 
-        return $this->translations[$locale]['title'] ?? $this->title;
+        return $this->title;
     }
 
     public function getTranslatedDescription(?string $locale = null): string 
     {
-        $locale = $locale ?? $this->currentLocale;
+        if ($locale) {
+          return $this->translations['description'] ?? '';
+        }
 
-        return ($this->translations[$locale]['description'] ?? $this->getDescription()) ?? '';
+        return $this->description ?? '';
     }
 
 
     public function getSeoTitle(?string $locale = null): string {
-        $locale = $locale ?? $this->currentLocale;
-        return $this->translations[$locale]['meta_title'] ?? $this->title;
+        if ($locale) {
+          return $this->translations['meta_title'] ?? '';
+        }
+  
+        return $this->title;
     }
 
     public function getSeoDescription(?string $locale = null): string {
-        $locale = $locale ?? $this->currentLocale;
-        return $this->translations[$locale]['meta_description'] ?? $this->title;
+        if ($locale) {
+          return $this->translations['meta_description'] ?? '';
+        }
+       
+        return $this->description;
     }
 }

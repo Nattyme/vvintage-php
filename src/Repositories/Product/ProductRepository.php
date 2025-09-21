@@ -19,6 +19,7 @@ use Vvintage\Models\Brand\Brand;
 
 /** DTO */
 use Vvintage\DTO\Product\ProductDTO;
+use Vvintage\DTO\Product\ProductOutputDTO;
 use Vvintage\DTO\Product\ProductInputDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
 
@@ -100,7 +101,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private function updatePartial(int $id, array $data): bool
     {     
       
-        $productBean = $this->loadBean(self::TABLE_PRODUCTS, $id);
+        $productBean = $this->loadBean(self::TABLE, $id);
      
         if (!$productBean->id) {
             throw new RuntimeException("Product with ID {$id} not found");
@@ -168,6 +169,11 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             $params[] = $filters['category_id'];
         }
 
+        if (isset($filters['brand_id'])) {
+            $sql .= ' AND brand_id = ?';
+            $params[] = $filters['brand_id'];
+        }
+
         $sql .= ' ORDER BY datetime DESC';
 
         if (isset($filters['limit']) && (int)$filters['limit'] > 0) {
@@ -176,7 +182,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
         $rows = $this->getAll($sql, $params);
 
-        // тут нормализуем
+        //  нормализуем
         return array_map(function(array $row) {
             if (!empty($row['datetime'])) {
                 // поддержка timestamp и строк

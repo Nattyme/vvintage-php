@@ -60,7 +60,7 @@ final class CatalogController extends BaseController
 
       $products = $this->productService->getFilteredProducts($filterDto);
       $categories = $this->categoryService->getCategoryTree();
-      $brands = $this->brandService->getAllBrands();
+      $brands = $this->brandService->getAllBrandsDto();
 
       // Название страницы
       $pageTitle = 'Каталог товаров';
@@ -73,18 +73,19 @@ final class CatalogController extends BaseController
 
       $seo = [];
       // получаем SEO DTO
-      foreach($products as $product) {
-        $seo[$product->getId()] = $this->seoService->getSeoForPage('product', $product);
-      }
+  
+      // foreach($products as $product) {
+      //   $seo[$product->getId()] = $this->seoService->getSeoForPage('product', $product);
+      // }
 
       $total = $this->productService->countProducts();
 
       $imagesByProductId = [];
 
-      foreach ($products as $product) {
-          $imagesMainAndOthers = $this->productService->getProductImages($product);
-          $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
-      }
+      // foreach ($products as $product) {
+      //     $imagesMainAndOthers = $this->productService->getProductImages($product);
+      //     $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
+      // }
 
 
       // Это кол-во товаров, показанных на этой странице
@@ -98,7 +99,7 @@ final class CatalogController extends BaseController
           'filterDto' => $filterDto,
           'brands' => $brands,
           'categories' => $categories,
-          'imagesByProductId' => $imagesByProductId,
+          // 'imagesByProductId' => $imagesByProductId,
           'total' => $total,
           'shown' => $shown,
           'locale' => $this->currentLang
