@@ -54,6 +54,7 @@
       </thead>
       <tbody>
         <?php foreach ($orderViewModel['orders'] as $order) : ?>
+      
           <?php include ROOT . 'views/admin/orders/parts/_order-in-list.tpl'; ?>
         <?php endforeach; ?> 
       </tbody>

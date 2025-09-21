@@ -36,7 +36,7 @@ final class Order
   {
    
     $order = new self();
-    // $order->id = $dto->id;
+    $order->id = $dto->id;
     $order->name = $dto->name;
     $order->surname = $dto->surname;
     $order->email = $dto->email;

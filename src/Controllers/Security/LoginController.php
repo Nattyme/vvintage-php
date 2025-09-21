@@ -23,7 +23,7 @@ use Vvintage\Store\UserItemsList\UserItemsListStore;
 
 /** Репозитории */
 use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Repositories\Product\ProductRepository;
+use Vvintage\Services\Product\ProductService;
 
 /** Роутинг */
 use Vvintage\Routing\RouteData;
@@ -35,16 +35,16 @@ use Vvintage\Services\Translator\Translator;
 final class LoginController extends BaseController
 {
   private UserRepository $userRepository;
-  private ProductRepository $productRepository;
+  private ProductService $productService;
   protected array $languages;
   protected string $currentLang;
   protected Translator $translator;
 
-  public function __construct(UserRepository $userRepository, ProductRepository $productRepository) 
+  public function __construct(UserRepository $userRepository) 
   {
     parent::__construct(); // Важно!
     $this->userRepository = $userRepository;
-    $this->productRepository = $productRepository;
+    $this->productService = new ProductService();
     $this->translator = setTranslator(); // берём уже установленный переводчик
     $this->languages = LanguageConfig::getAvailableLanguages();
     $this->currentLang = LanguageConfig::getCurrentLocale();
@@ -94,11 +94,11 @@ final class LoginController extends BaseController
     $user = $this->createUserModels();
     // Здесь возвращается guest Store
     $cartService = new CartService(
-      $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productRepository, $this->flash
+      $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productService
     );
 
     $favService = new FavoritesService(
-      $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productRepository, $this->flash
+      $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productService
     );
     $userItemsMergeService = new UserItemsMergeService($favService, $cartService);
 

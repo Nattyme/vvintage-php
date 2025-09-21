@@ -65,6 +65,7 @@ class AdminOrderController extends BaseAdminController
     $pagination = pagination($ordersPerPage, self::TABLE_ORDERS);
 
     $orders = $this->adminOrderService->getAllOrders($pagination);
+
     $total = $this->adminOrderService->getAllOrdersCount();
  
     $actions = $this->adminOrderService->getActions();

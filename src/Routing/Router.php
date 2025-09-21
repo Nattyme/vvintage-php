@@ -262,9 +262,8 @@
       $setNewPassService = new PasswordSetNewService($userRepository);
 
       $validator = new LoginValidator($userRepository);
-      $productRepository = new ProductRepository();
 
-      $loginController = new LoginController($userRepository, $productRepository);
+      $loginController = new LoginController($userRepository);
       $regController = new RegistrationController();
       $resetController = new PasswordResetController();
       $setNewPassController = new PasswordSetNewController( $setNewPassService);
