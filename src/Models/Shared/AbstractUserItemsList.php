@@ -5,7 +5,7 @@ namespace Vvintage\Models\Shared;
 
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\UserInterface;
-use Vvintage\Repositories\UserRepository;
+use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 

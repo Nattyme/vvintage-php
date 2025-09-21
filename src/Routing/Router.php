@@ -407,7 +407,6 @@
        * @var UserInreface $userModel
       */
       $userModel = $sessionService->getLoggedInUser();
-      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
 
       // Получаем избранное и ее модель
@@ -424,7 +423,7 @@
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
                     
-      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productRepository, $flash);
+      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
       $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs );
 
       switch ($routeData->uriModule) {
@@ -455,24 +454,23 @@
       }
 
       $userRepository = $userModel->getRepository();
-      $productRepository = new ProductRepository();
-      $flash = new FlashMessage();
-      $validator = new NewOrderValidator($userRepository, $flash);
+      $validator = new NewOrderValidator($userRepository);
       $breadcrumbs = new Breadcrumbs();
 
 
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
       $cart = $userModel->getCart();
+      $productService = new ProductService();
 
 
       $cartStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( $userRepository ) 
                     : new GuestItemsListStore();
 
-      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productRepository, $flash);
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
 
-      $orderService = new OrderService($flash);
+      $orderService = new OrderService();
       $controller = new OrderController(
         $orderService, 
         $cartService, 

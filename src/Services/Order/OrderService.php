@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Vvintage\Services\Order;
 
 use Vvintage\Models\Order\Order;
-
 use Vvintage\Repositories\Order\OrderRepository;
-use Vvintage\Repositories\Product\ProductRepository;
-// use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Base\BaseService;
+use Vvintage\Services\Product\ProductService;
+use Vvintage\Models\User\UserInterface;
+ use Vvintage\Models\User\User;
+  use Vvintage\Models\User\GuestUser;
 
 /** DTO */
 use Vvintage\DTO\Order\OrderDTO;
@@ -21,7 +21,7 @@ use Vvintage\DTO\Order\OrderDTO;
 class OrderService extends BaseService
 {
     protected OrderRepository $orderRepository;
-    private ProductRepository $productRepository;
+    private ProductService $productService;
 
     
     private array $status = [
@@ -40,7 +40,7 @@ class OrderService extends BaseService
     {
       parent::__construct();
       $this->orderRepository = new OrderRepository();
-      $this->productRepository = new ProductRepository();;
+      $this->productService = new ProductService();
     }
 
     public function getStatusData(): array 
@@ -53,14 +53,14 @@ class OrderService extends BaseService
         return !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
 
-    public function create(OrderDTO $dto)
+    public function create(OrderDTO $dto, $userModel)
     {
       // Создаем объект заказа через метод 
       $order = Order::fromDTO($dto);
       $order->setCart( $this->prepareCartData($order->getCart()));
-      
+   
       // Сохраняем заказ в БД
-      return $this->orderRepository->create($order, $this->user);
+      return $this->orderRepository->createOrder($order, $userModel);
     }
 
     private function prepareCartData(array $cart): array
@@ -68,7 +68,7 @@ class OrderService extends BaseService
         $result = [];
 
         // 1. Получаем продукты по id-шникам
-        $productData = $this->productRepository->findProductsByIds($cart);
+        $productData = $this->productService->getProductsByIds($cart) ?? [];
 
         // 2. Преобразуем корзину в массив с нужной информацией
         foreach ($cart as $productId => $amount) {
@@ -79,9 +79,9 @@ class OrderService extends BaseService
             $product = $productData[$productId];
 
             $result[] = [
-                'id'     => (int) $product['id'],
-                'title'  => $product['title'],
-                'price'  => (float) $product['price'],
+                'id'     => (int) $product->id,
+                'title'  => $product->title,
+                'price'  => (float) $product->price,
                 'amount' => (int) $amount,
             ];
         }

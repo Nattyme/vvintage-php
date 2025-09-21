@@ -27,9 +27,9 @@
                 </div>
                 <?php foreach ($products as $product) : ?>
                     <div class="form-order__table-row">
-                      <p><?php echo h($product->getTitle());?></p>
-                      <p><?php echo h($product->getTitle());?></p>
-                      <p><?php echo h($cartModel->getQuantity($product->getId())); ?></p>
+                      <p><?php echo h($product->title);?></p>
+                      <p><?php echo h($product->title);?></p>
+                      <p><?php echo h($cartModel->getQuantity($product->id)); ?></p>
                     </div>
                   <?php endforeach; ?>
                 <div class="form-order__total form-order__table-row">

@@ -11,7 +11,7 @@ use Vvintage\DTO\Order\OrderDTO;
 
 final class Order
 {
-  private int $id = 0;
+  private ?int $id;
   private string $name = '';
   private string $surname = '';
   private string $email = '';
@@ -36,7 +36,7 @@ final class Order
   {
    
     $order = new self();
-    $order->id = $dto->id;
+    // $order->id = $dto->id;
     $order->name = $dto->name;
     $order->surname = $dto->surname;
     $order->email = $dto->email;

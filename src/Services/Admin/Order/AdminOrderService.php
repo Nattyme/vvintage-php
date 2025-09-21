@@ -28,9 +28,9 @@ final class AdminOrderService extends OrderService
   ];
 
 
-  public function __construct(FlashMessage $note)
+  public function __construct()
   {
-    parent::__construct($note);
+    parent::__construct();
   }
   
 

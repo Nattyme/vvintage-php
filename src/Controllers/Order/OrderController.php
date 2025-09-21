@@ -96,15 +96,11 @@ final class OrderController extends BaseController
       }
 
 
-      $dataForDTO = [
-
-      ];
-      
       // Вызываем DTO
-      $orderDTO = new OrderDTO($_POST, $this->cart, $totalPrice, $this->userModel->getId());
+      $orderDTO = OrderDTO::fromForm($_POST, $this->cart, $totalPrice, $this->userModel->getId());
       // $orderDTO->validate();
 
-      $order = $this->orderService->create($orderDTO);
+      $order = $this->orderService->create($orderDTO, $this->userModel);
 
       if ($order !== null) {
           // Очищаем корзину
@@ -127,6 +123,7 @@ final class OrderController extends BaseController
 
     public function renderCreated($routeData) 
     {
+      $this->setRouteData($routeData);
       // Название страницы
       $pageTitle = 'Заказ оформлен!';
 

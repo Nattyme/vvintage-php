@@ -26,7 +26,7 @@ class AdminOrderController extends BaseAdminController
   public function __construct()
   {
     parent::__construct();
-    $this->adminOrderService = new AdminOrderService($this->flash);
+    $this->adminOrderService = new AdminOrderService();
 
   }
 

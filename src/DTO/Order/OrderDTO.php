@@ -5,7 +5,7 @@ namespace Vvintage\DTO\Order;
 
 final class OrderDTO
 {
-    public int $id;
+    public ?int $id;
     public string $name;
     public string $surname;
     public string $email;
