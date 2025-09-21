@@ -59,6 +59,28 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return $this->getAll("{$sql}", $params);
     }
 
+    public function getProductsByIds(array $ids): array
+    {
+        $beans = $this->findByIds(self::TABLE, $ids);
+
+        // экспортируем beans в массивы
+        $rows = array_map(fn($bean) => $bean->export(), $beans);
+
+        // нормализуем datetime
+        return array_map(function(array $row) {
+            if (!empty($row['datetime'])) {
+                $row['datetime'] = is_numeric($row['datetime'])
+                    ? (new \DateTime())->setTimestamp((int)$row['datetime'])
+                    : new \DateTime($row['datetime']);
+            } else {
+                $row['datetime'] = new \DateTime(); // fallback
+            }
+
+            return $row;
+        }, $rows);
+    }
+
+
     
     public function getAllProducts(array $filters = []): array
     {

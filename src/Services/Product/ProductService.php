@@ -46,6 +46,7 @@ class ProductService extends BaseService
     
     private function createProductDTOFromArray(array $row): ProductOutputDTO
     {
+  
         $productId = (int) $row['id'];
         $translations = $this->translationRepo->loadTranslations($productId);
         $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
@@ -55,6 +56,8 @@ class ProductService extends BaseService
         $imagesDTO = $this->productImageService->createImageDTO($row);
 
         $images = $this->productImageService->getImageViewData($imagesDTO);
+        
+        // $datetime = isset($row['datetime']) ? new \DateTime($row['datetime']) : null;
 
         $dto = new ProductOutputDTO([
           'id' => $row['id'],
@@ -88,12 +91,29 @@ class ProductService extends BaseService
     }
 
 
-    public function getProductById(int $id): ProductOutputDTO
+    public function getProductById(int $id): ?ProductOutputDTO
     {
         $rows = $this->repository->getProductById($id);
 
         return $rows ? $this->createProductDTOFromArray($rows) : null;
     }
+
+    public function getProductsByIds(array $ids): array
+    {
+        if (empty($ids)) return [];
+
+        // Изменяем ассоциативный массив - берем только значения
+        $ids = array_keys($ids);
+
+        // Получаем все продукты за один запрос
+        $rows = $this->repository->getProductsByIds($ids);
+
+        if (empty($rows)) return [];
+
+        // Преобразуем в DTO
+        return array_map([$this, 'createProductDTOFromArray'], $rows);
+    }
+
 
     public function getActiveProducts(): array 
     {
@@ -128,7 +148,7 @@ class ProductService extends BaseService
         return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
-    public function getLastProducts(int $count): ProductOutputDTO
+    public function getLastProducts(int $count): ?ProductOutputDTO
     {
       $rows = $this->repository->getLastProducts($count);
       return $rows ? $this->createProductDTOFromArray($rows[0]) : null;

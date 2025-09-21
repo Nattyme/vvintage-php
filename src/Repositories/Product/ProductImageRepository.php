@@ -175,6 +175,7 @@ final class ProductImageRepository extends AbstractRepository implements Product
 
     public function fetchImageDTOs(array $row): array
     {
+     
       $sql = 'SELECT * 
              FROM ' . self::TABLE . '
              WHERE product_id = ? 

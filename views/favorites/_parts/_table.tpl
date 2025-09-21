@@ -17,9 +17,9 @@
     <?php foreach ($viewModel['products'] as $product) :
 
         // Получаем главное изображения 
-        $images = $viewModel['imagesByProductId'][$product->getId()] ?? null;
-        $mainImage = $images['main'] ?? null;
-
+     
+        $mainImage = $product->images['main'] ?? null;
+ 
         include ROOT . 'views/favorites/_parts/_product.tpl';
       endforeach;
     ?>

@@ -80,7 +80,7 @@ final class CatalogController extends BaseController
 
       $total = $this->productService->countProducts();
 
-      $imagesByProductId = [];
+      // $imagesByProductId = [];
 
       // foreach ($products as $product) {
       //     $imagesMainAndOthers = $this->productService->getProductImages($product);

@@ -30,6 +30,7 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Product\ProductImageService;
+use Vvintage\Services\Product\ProductService;
 
 
 /** Абстракции */
@@ -61,6 +62,7 @@ final class FavoritesController extends BaseController
       $this->userModel = $userModel;
       $this->favModel = $favModel;
       $this->fav_list = $fav_list;
+      $this->favStore = $favStore;
       $this->breadcrumbsService = $breadcrumbs;
     }
 
@@ -69,9 +71,9 @@ final class FavoritesController extends BaseController
       $this->setRouteData($routeData); // <-- передаём routeData
 
       // Получаем продукты
-      $productRepo = new ProductRepository();
-      $products = !empty($this->fav_list) ?  $productRepo->getProductsByIds($this->fav_list) : [];
-   
+      $productService = new ProductService();
+      $products = !empty($this->fav_list) ?  $productService->getProductsByIds($this->fav_list) : [];
+
       // Показываем страницу
       $this->renderPage($routeData, $products, $this->favModel);
     }
@@ -84,19 +86,11 @@ final class FavoritesController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-         // Получаем изображения продуктов
-      $imageService = new ProductImageService();
-      $imagesByProductId = [];
-
-      foreach ($products as $product) {
-          $imagesMainAndOthers = $imageService->splitImages($product->getImages());
-          $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
-      }
-
+ 
       // Формируем единую модель для передачи в шаблон
+ 
       $viewModel = [
-          'products' => $products,
-          'imagesByProductId' => $imagesByProductId
+        'products' => $products
       ];
 
       // Подключение шаблонов страницы

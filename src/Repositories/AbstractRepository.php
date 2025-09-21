@@ -95,6 +95,7 @@ abstract class AbstractRepository
             return [];
         }
 
+        
         // Подготовим placeholders (?, ?, ?) и массив параметров
         $placeholders = R::genSlots($ids);
         $sql = "id IN ($placeholders) ORDER BY id DESC";

@@ -110,7 +110,10 @@ class ProductImageService
 
   public function createImageDTO (array $row): array
   {
+
     $imagesRows = $this->repository->fetchImageDTOs($row); 
+  
+     
     return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
   }
 
