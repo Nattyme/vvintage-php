@@ -15,7 +15,7 @@ class BrandDTO
     public function __construct(array $data)
     {
         $this->id = (int)($data['id'] ?? 0);
-        // $this->title = (string)($data['title'] ?? '');
+        $this->title = (string)($data['title'] ?? '');
         // $this->description = (string)($data['description'] ?? '');
         $this->image = (string)($data['image'] ?? '');
 
@@ -38,6 +38,7 @@ class BrandDTO
             }
         } else {
           $this->translations = [];
+          
         }
         // $this->locale = (string) $data['locale'];
     }

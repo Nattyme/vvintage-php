@@ -40,13 +40,13 @@
 
   <div class="fav-button-wrapper">
     <a 
-      class="fav-button <?php echo isProductInFav($viewModel['product']->getId()) ? 'fav-button--active' : '';?>"
+      class="fav-button <?php echo isProductInFav($viewModel['product']->id) ? 'fav-button--active' : '';?>"
       href="
         <?php 
-            if (isProductInFav($viewModel['product']->getId())) {
-              echo HOST . 'removefromfav?id=' . u($viewModel['product']->getId());
+            if (isProductInFav($viewModel['product']->id)) {
+              echo HOST . 'removefromfav?id=' . u($viewModel['product']->id);
             } else {
-               echo HOST . 'addtofav?id=' . u($viewModel['product']->getId());
+               echo HOST . 'addtofav?id=' . u($viewModel['product']->id);
             }
         ?>
       " 

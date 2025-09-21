@@ -51,27 +51,27 @@ final class ProductController extends BaseController
         }
 
 
-        $productImagesData = $this->productService->getProductImagesData($product->getImages());
-        $related = $product->getRelated();
+        // $productImagesData = $this->productService->getProductImagesData($product->images);
+        // $related = $product->getRelated();
         $statusList = $this->productService->getStatusList();
 
         // Формируем единую модель для передачи в шаблон
         $viewModel = [
             'product' => $product,
-            'imagesTotal' =>  $productImagesData['total'],
-            'main' => $productImagesData['main'],
-            'gallery' => $productImagesData['gallery'], 
-            'related' => $related,
+            'imagesTotal' =>  $product->images['total'],
+            'main' => $product->images['main'],
+            'gallery' => $product->images['gallery'], 
+            // 'related' => $related,
             'statusList'=> $statusList,
         ];
 
         // Название страницы и хлебные крошки
-        $seo = $this->seoService->getSeoForPage('product', $product);
-        $breadcrumbs = $this->breadcrumbsService->generate($routeData, $product->getTitle());
+        // $seo = $this->seoService->getSeoForPage('product', $product);
+        $breadcrumbs = $this->breadcrumbsService->generate($routeData, $product->title);
 
         // Подключение шаблонов страницы
         $this->renderLayout('shop/product', [
-              'seo' => $seo,
+              // 'seo' => $seo,
               'routeData' => $routeData,
               'breadcrumbs' => $breadcrumbs,
               'viewModel' => $viewModel,

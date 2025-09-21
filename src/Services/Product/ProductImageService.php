@@ -29,6 +29,7 @@ class ProductImageService
       $otherImages = [];
 
       foreach ($images as $img) {
+  
           if ($img->image_order === 0 && $mainImage === null) {
               $mainImage = $img;
           } else {
@@ -69,6 +70,7 @@ class ProductImageService
 
   public function getImageViewData(array $images): array
   {
+    
     // Делим массив изображений на два массива - главное и другие
     $mainAndOthers = $this->splitImages($images);
     $gallery = $this->splitVisibleHidden($mainAndOthers['others']);

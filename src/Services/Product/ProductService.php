@@ -53,13 +53,16 @@ class ProductService extends BaseService
 
         // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
         $imagesDTO = $this->productImageService->createImageDTO($row);
+
         $images = $this->productImageService->getImageViewData($imagesDTO);
- 
+
         $dto = new ProductOutputDTO([
           'id' => $row['id'],
           'category_id' => $row['category_id'],
+          'category_title' => $categoryOutputDTO->title,
           'categoryDTO' => $categoryOutputDTO,
           'brand_id' => $row['brand_id'],
+          'brand_title' => $brandOutputDTO->title,
           'brandDTO' => $brandOutputDTO,
           'slug' => $row['slug'],
           'title' => $row['title'],
