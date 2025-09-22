@@ -6,7 +6,7 @@ namespace Vvintage\DTO\Brand;
 class BrandDTO
 {
     public int $id;
-    public string $title;
+    // public string $title;
     // public string $description;
     public string $image;
     public array $translations; // ['ru' => ['title'=>..., 'description'=>...], 'en' => [...]];
@@ -15,7 +15,7 @@ class BrandDTO
     public function __construct(array $data)
     {
         $this->id = (int)($data['id'] ?? 0);
-        $this->title = (string)($data['title'] ?? '');
+        // $this->title = (string)($data['title'] ?? '');
         // $this->description = (string)($data['description'] ?? '');
         $this->image = (string)($data['image'] ?? '');
 
@@ -37,7 +37,7 @@ class BrandDTO
                 }
             }
         } else {
-          $this->translations = [];
+        $this->translations = [];
           
         }
         // $this->locale = (string) $data['locale'];

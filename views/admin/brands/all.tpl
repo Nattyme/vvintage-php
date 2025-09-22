@@ -47,24 +47,24 @@
 
           <tr>
             <td >
-                <?php echo h($brand->getId());?>
+                <?php echo h($brand->id);?>
             </td>
             
             <td>
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit/<?php echo u($brand->getId());?>">
-                <?php echo h($brand->getTranslatedTitle());?>
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit/<?php echo u($brand->id);?>">
+                <?php echo h($brand->title);?>
               </a>
             </td>
             <td>
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit/<?php echo u($brand->getId());?>">
-                <?php echo h($brand->getTranslatedDescription());?>
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/brand-edit/<?php echo u($brand->id);?>">
+                <?php echo h($brand->description);?>
               </a>
             </td>
             <td>
               <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
-                href="<?php echo HOST . "admin/";?>admin/brand-delete/<?php echo u($brand->getId());?>"
-                aria-label="Удалить категорию <?php echo h($brand->getTitle());?>"
+                href="<?php echo HOST . "admin/";?>admin/brand-delete/<?php echo u($brand->id);?>"
+                aria-label="Удалить категорию <?php echo h($brand->title);?>"
               >
 
                   <span class="leftright"></span><span class="rightleft"> </span>
