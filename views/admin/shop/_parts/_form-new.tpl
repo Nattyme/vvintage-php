@@ -18,7 +18,6 @@
           <!-- Блоки с контентом -->
           <div class="admin-form__item">
             <div class="tab__content" data-control="tab-content">
-              <?php $firstKey = array_key_first($languages); ?>
               <?php foreach ($languages as $code => $value ) : ?>
                 <div class="tab__block <?php echo $code === $firstKey ? 'active' : ''; ?>" data-control="tab-block">
                 <?php include ROOT . "views/admin/shop/translations/_fields.tpl";?>

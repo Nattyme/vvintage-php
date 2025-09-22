@@ -33,9 +33,9 @@
             <div class="admin-form__item" data-control="tab">
               <!-- Навигация -->
               <div class="tab__nav" data-control="tab-nav">
-                
+                <?php $firstKey = array_key_first($languages); ?>
                 <?php foreach ($languages as $code => $value ) : ?>
-                  <button type="button" class="tab__nav-button tab__nav-button--flags" data-control="tab-button" 
+                  <button type="button" class="tab__nav-button tab__nav-button--flags <?php echo $code === $firstKey ? 'active' : ''; ?>" data-control="tab-button" 
                           title="Перейти в редактирование языка <?php echo $code; ?>">
                     <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#flag-' . $code;?>">
                   </button>
@@ -47,7 +47,7 @@
               <div class="admin-form__item">
                 <div class="tab__content" data-control="tab-content">
                   <?php foreach ($languages as $code => $value ) : ?>
-                    <div class="tab__block" data-control="tab-block">
+                    <div class="tab__block <?php echo $code === $firstKey ? 'active' : ''; ?>" data-control="tab-block">
                     <?php include (ROOT . "views/admin/categories/translations/_fields.tpl");?>
                     </div>
                   <?php endforeach;?>
