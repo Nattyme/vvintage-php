@@ -101,12 +101,7 @@ class AdminOrderController extends BaseAdminController
     $actions = $this->adminOrderService->getActions();
     $statusData = $this->adminOrderService->getStatusData();
 
-    $orderViewModel = [
-      'order' => $order,
-      'actions'=> $actions,
-      'statusData' => $statusData
-    ];
-        
+ 
     $this->renderLayout('orders/single',  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,

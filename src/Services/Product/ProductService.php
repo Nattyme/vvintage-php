@@ -46,7 +46,6 @@ class ProductService extends BaseService
     
     private function createProductDTOFromArray(array $row): ProductOutputDTO
     {
-  
         $productId = (int) $row['id'];
         $translations = $this->translationRepo->loadTranslations($productId);
         $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
@@ -68,8 +67,8 @@ class ProductService extends BaseService
           'brand_title' => $brandOutputDTO->title,
           'brandDTO' => $brandOutputDTO,
           'slug' => $row['slug'],
-          'title' => $row['title'],
-          'description' => $row['description'],
+          'title' => $translations[$this->locale]['title'],
+          'description' => $translations[$this->locale]['description'],
           'price' => $row['price'],
           'url' => $row['url'],
           'sku' => $row['sku'],

@@ -26,7 +26,28 @@ function resize_and_crop($source_image_path, $thumbnail_image_path, $result_widt
       case IMAGETYPE_PNG:
           $source_gdim = imagecreatefrompng($source_path);
           break;
+      case IMAGETYPE_WEBP:
+          $source_gdim = imagecreatefromwebp($source_path);
+          break;
+      case IMAGETYPE_AVIF:
+          $source_gdim = imagecreatefromavif($source_path);
+          break;
+      default:
+          $source_gdim = null;
+          break;
   }
+
+  // switch ($source_type) {
+  //     case IMAGETYPE_GIF:
+  //         $source_gdim = imagecreatefromgif($source_path);
+  //         break;
+  //     case IMAGETYPE_JPEG:
+  //         $source_gdim = imagecreatefromjpeg($source_path);
+  //         break;
+  //     case IMAGETYPE_PNG:
+  //         $source_gdim = imagecreatefrompng($source_path);
+  //         break;
+  // }
 
   $source_aspect_ratio = $source_width / $source_height;
   $desired_aspect_ratio = $result_width / $result_height;

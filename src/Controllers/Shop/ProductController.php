@@ -50,7 +50,6 @@ final class ProductController extends BaseController
             return;
         }
 
-
         // $productImagesData = $this->productService->getProductImagesData($product->images);
         // $related = $product->getRelated();
         $statusList = $this->productService->getStatusList();

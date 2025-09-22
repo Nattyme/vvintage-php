@@ -48,6 +48,7 @@ class AdminProductController extends BaseAdminController
     // Название страницы
     $pageTitle = 'Все товары';
 
+
     $productsPerPage = 9;
 
     // Устанавливаем пагинацию

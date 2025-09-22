@@ -23,7 +23,7 @@ if( isset($_FILES['upload']['name']) && $_FILES['upload']['tmp_name'] !== '') {
   }
 
   // 2.3 Проверка на формат файла
-  if (!preg_match("/\.(gif|jpg|jpeg|png)$/i", $fileName)) {
+  if (!preg_match("/\.(gif|jpg|jpe|webp|png)$/i", $fileName)) {
     $message = 'Файл изображения должен быть в формате gif, jpg, jpeg или png.';
   }
 

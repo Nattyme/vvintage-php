@@ -6,6 +6,19 @@
 
     <!-- table order info -->
     <div class="admin-form__field">
+      <!-- SELECT -->
+      <form method="GET" action="" class="form-products-table__actions">
+          <select class="select" name="action">
+            <option value="">— Выберите действие —</option>
+            <?php foreach ($actions as $key => $value) : ?>
+              <option value="<?php echo $key;?>" <?php $key === $statusData[$order->getStatus()] ? 'selected' : '';?> >
+                <?php echo $value;?>
+              </option>
+            <?php endforeach;?>
+          </select>
+        <button name="action-submit" type="submit" class="button button--s button--primary">Применить</button>
+      </form>
+      <!-- // SELECT -->
 
       <table class="table">
 

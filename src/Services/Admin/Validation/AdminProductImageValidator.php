@@ -53,7 +53,7 @@ final class AdminProductImageValidator
 
     private function isFileType(array $data): void
     {
-      if (isset($data['file_name']) && preg_match("/\.(gif|jpg|jpeg|png)$/i", $data['file_name'])) {return;}
+      if (isset($data['file_name']) && preg_match("/\.(gif|jpg|jpeg|webp|png)$/i", $data['file_name'])) {return;}
       $this->errors['type'] = 'Недопустимый формат файла. Файл изображения должен быть в формате gif, jpg, jpeg или png. ';
     }
 
