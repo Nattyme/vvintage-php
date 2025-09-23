@@ -103,26 +103,26 @@ class AdminBrandController extends BaseAdminController
                       ? 'Не удалось обновить бренд. Проверьте данные.' 
                       : 'Не удалось сохранить новый бренд. Проверьте данные.');
               } else {
-                  $translations = [];
-                  foreach ($_POST['title'] as $lang => $title) {
-                      $translations[$lang] = [
-                          'title' => $_POST['title'][$lang] ?? '',
-                          'description' => $_POST['description'][$lang] ?? '',
-                          'meta_title' => $_POST['meta_title'][$lang] ?? '',
-                          'meta_description' => $_POST['meta_description'][$lang] ?? '',
-                      ];
-                  }
+                  // $translations = [];
+                  // foreach ($_POST['title'] as $lang => $title) {
+                  //     $translations[$lang] = [
+                  //         'title' => $_POST['title'][$lang] ?? '',
+                  //         'description' => $_POST['description'][$lang] ?? '',
+                  //         'meta_title' => $_POST['meta_title'][$lang] ?? '',
+                  //         'meta_description' => $_POST['meta_description'][$lang] ?? '',
+                  //     ];
+                  // }
 
-                  $mainLang = 'ru';
+                  // $mainLang = 'ru';
 
-                  $brandDTO = new BrandDTO([
-                      'title' => $_POST['title'][$mainLang] ?? '',
-                      'description' => $_POST['description'][$mainLang] ?? '',
-                      'image' => $_POST['image'] ?? '',
-                      'translations' => $translations,
-                  ]);
+                  // $brandDTO = new BrandDTO([
+                  //     'title' => $_POST['title'][$mainLang] ?? '',
+                  //     'description' => $_POST['description'][$mainLang] ?? '',
+                  //     'image' => $_POST['image'] ?? '',
+                  //     'translations' => $translations,
+                  // ]);
 
-                  $brand = Brand::fromDTO($brandDTO);
+                  // $brand = Brand::fromDTO($brandDTO);
 
                   $saved = $brandId
                       ? $this->service->updateBrand($brandId, $_POST)

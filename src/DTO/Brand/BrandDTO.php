@@ -5,7 +5,7 @@ namespace Vvintage\DTO\Brand;
 
 class BrandDTO
 {
-    public int $id;
+    // public int $id;
     // public string $title;
     // public string $description;
     public string $image;
@@ -14,7 +14,7 @@ class BrandDTO
 
     public function __construct(array $data)
     {
-        $this->id = (int)($data['id'] ?? 0);
+        // $this->id = (int)($data['id'] ?? 0);
         // $this->title = (string)($data['title'] ?? '');
         // $this->description = (string)($data['description'] ?? '');
         $this->image = (string)($data['image'] ?? '');

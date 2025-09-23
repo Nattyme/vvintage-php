@@ -28,24 +28,6 @@ class BrandService extends BaseService
        $this->translationRepo = new BrandTranslationRepository($this->locale);
     }
 
-    public function getAllBrands(): array
-    {
-      return  $this->repository->getAllBrands();
-    
-    }
-    public function getAllBrandsDto(): array
-    {
-      $rows =  $this->repository->getAllBrands();
-      return array_map([$this, 'createBrandDTOFromArray'], $rows);
-    }
-
-
-    public function getAllBrandsCount(): int
-    {
-      return $this->repository->getAllBrandsCount();
-    }
-
-    
     public function getBrandById( int $id): ?Brand 
     {
       $brand = $this->repository->getBrandById($id);
@@ -60,24 +42,25 @@ class BrandService extends BaseService
       return $brand;
     }
 
-    private function createBrandDTOFromArray(array $row): BrandOutputDTO
+    public function getAllBrands(): array
     {
-        $brandId = (int) $row['id'];
-        $translations = $this->translationRepo->loadTranslations($brandId);
- 
-        return new BrandOutputDTO([
-            'id' => (int) $brandId,
-            'title' => (string)  ($translations[$this->locale]['title'] ?? ''),
-            'description' => (string) ($translations[$this->locale]['description'] ?? ''),
-            'image' => (string) ($row['brand_image'] ?? ''),
-            'translations' => $translations
-            // 'locale' => (string) $this->locale,
-        ]);
-     
+      return  $this->repository->getAllBrands();
+    
+    }
+    public function getAllBrandsDto(): array
+    {
+      $rows =  $this->repository->getAllBrands();
+      return array_map([$this, 'createBrandOutputDTO'], array_column($rows, 'id'));
     }
 
 
+    public function getAllBrandsCount(): int
+    {
+      return $this->repository->getAllBrandsCount();
+    }
 
+    
+ 
 
 
     // Для api
@@ -172,13 +155,16 @@ class BrandService extends BaseService
         ];
     }
 
-    public function createBrandOutputDTO(int $id): BrandOutputDTO
+    public function createBrandOutputDTO(int $id): ?BrandOutputDTO
     {
         $brand = $this->getBrandById($id);
-   
+
+        if(!$brand) return null;
+
+        $translations = $this->translationRepo->loadTranslations($id);
       
         return new BrandOutputDTO([
-            'id' => (int) $brand->getId(),
+            'id' => (int) $id,
             'title' => (string) ($brand->getTranslatedTitle($this->locale) ?? ''),
             'image' => (string) ($row['brand_image'] ?? ''),
             'translations' => [
@@ -192,6 +178,22 @@ class BrandService extends BaseService
             // 'locale' => $this->locale,
         ]);
     }
+
+    // private function createBrandDTOFromArray(array $row): BrandOutputDTO
+    // {
+    //     $brandId = (int) $row['id'];
+    //     $translations = $this->translationRepo->loadTranslations($brandId);
+ 
+    //     return new BrandOutputDTO([
+    //         'id' => (int) $brandId,
+    //         'title' => (string)  ($translations[$this->locale]['title'] ?? ''),
+    //         'description' => (string) ($translations[$this->locale]['description'] ?? ''),
+    //         'image' => (string) ($row['brand_image'] ?? ''),
+    //         'translations' => $translations
+    //         // 'locale' => (string) $this->locale,
+    //     ]);
+     
+    // }
 
  
 

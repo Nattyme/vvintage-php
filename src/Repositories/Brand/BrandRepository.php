@@ -24,11 +24,18 @@ use Vvintage\DTO\Brand\BrandDTO;
 final class BrandRepository extends AbstractRepository implements BrandRepositoryInterface
 {
     private const TABLE = 'brands';
-    // private BrandTranslationRepository $translationRepo;
 
-    public function __construct()
+    // Находит бренд по id и возвращает объект
+    public function getBrandById(int $id): ?Brand
     {
-      // $this->translationRepo = new BrandTranslationRepository();
+        $bean = $this->findById(self::TABLE, $id);
+
+        if (!$bean || !$bean->id) {
+            return null;
+        }
+        $brandArray = $this->mapBeanToBrand($bean);
+
+        return Brand::fromArray($brandArray);
     }
 
 
@@ -108,18 +115,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     //   ];
     // }
 
-    // Находит бренд по id и возвращает объект
-    public function getBrandById(int $id): ?Brand
-    {
-        $bean = $this->findById(self::TABLE, $id);
-
-        if (!$bean || !$bean->id) {
-            return null;
-        }
-        $brandArray = $this->mapBeanToBrand($bean);
-
-        return Brand::fromArray($brandArray);
-    }
+ 
 
     /** Находим все бренды и возвращаем в виде массива объектов */
     public function getAllBrands(): array
@@ -194,11 +190,6 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         $brandId = (int)$brandBean->id;
         if (!$brandId) {
             return null;
-        }
-
-        // Сохраняем переводы
-        foreach ($dto->translations as $locale => $fields) {
-            $this->translationRepo->saveTranslations($brandId, $locale, $fields);
         }
 
         return $brandId;
