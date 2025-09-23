@@ -78,15 +78,15 @@ class AdminBrandController extends BaseAdminController
 
       if ($brandId && !$brand) {
           $this->flash->pushError('Бренд не найден.');
-          // форма не существует — можно сделать редирект или показать пустую страницу
-          $this->renderLayout('brands/single', [
-              'pageTitle' => 'Бренды - редактирование',
-              'routeData' => $routeData,
-              'brand' => null,
-              'languages' => $this->languages,
-              'currentLang' => $this->currentLang,
-              'flash' => $this->flash
-          ]);
+          // форма не существует редирект или показать пустую страницу
+          // $this->renderLayout('brands/single', [
+          //     'pageTitle' => 'Бренды - редактирование',
+          //     'routeData' => $routeData,
+          //     'brand' => null,
+          //     'languages' => $this->languages,
+          //     'currentLang' => $this->currentLang,
+          //     'flash' => $this->flash
+          // ]);
           return;
       }
 
@@ -103,30 +103,11 @@ class AdminBrandController extends BaseAdminController
                       ? 'Не удалось обновить бренд. Проверьте данные.' 
                       : 'Не удалось сохранить новый бренд. Проверьте данные.');
               } else {
-                  // $translations = [];
-                  // foreach ($_POST['title'] as $lang => $title) {
-                  //     $translations[$lang] = [
-                  //         'title' => $_POST['title'][$lang] ?? '',
-                  //         'description' => $_POST['description'][$lang] ?? '',
-                  //         'meta_title' => $_POST['meta_title'][$lang] ?? '',
-                  //         'meta_description' => $_POST['meta_description'][$lang] ?? '',
-                  //     ];
-                  // }
-
-                  // $mainLang = 'ru';
-
-                  // $brandDTO = new BrandDTO([
-                  //     'title' => $_POST['title'][$mainLang] ?? '',
-                  //     'description' => $_POST['description'][$mainLang] ?? '',
-                  //     'image' => $_POST['image'] ?? '',
-                  //     'translations' => $translations,
-                  // ]);
-
-                  // $brand = Brand::fromDTO($brandDTO);
+        
 
                   $saved = $brandId
                       ? $this->service->updateBrand($brandId, $_POST)
-                      : $this->service->createBrand($brandDTO);
+                      : $this->service->createBrandDraft($_POST);
 
                   if ($saved) {
                       $this->flash->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');

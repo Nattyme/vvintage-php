@@ -16,37 +16,43 @@ final class AdminBrandService extends BrandService
       parent::__construct();
     }
 
-    public function createBrandDraft(array $data, array $images): ?int
+    public function createBrandDraft(array $data): ?int
     {
       if (!$data) return null;
 
-    
-      // $brand = Brand::fromDTO($dto);
-      
-      // return $this->repository->createBrand($dto);
-       
-            // Сохраняем переводы
-        // foreach ($dto->translations as $locale => $fields) {
-        //     $this->translationRepo->saveTranslations($brandId, $locale, $fields);
-        // }
-
-      $this->repository->begin(); // начало транзакции
+      // начало транзакции
+      $this->repository->begin(); 
 
         try {
           $brandDto = $this->createBrandInputDTO($data);
-          $brandId = $this->repository->createBrand($dto);
-
-          if( !$brandId) {
+   dd($data);
+          $brandId = $this->repository->createBrand($brandDto);
+    
+          if(!$brandId) {
             throw new RuntimeException("Не удалось создать бренд");
             return null;
           }
 
+          if (empty($data['translations'])) {
+            throw new RuntimeException("Не удалось сохранить бренд");
+            return null;
+          }
+
+
+
+
       
           if (!empty($data['translations'])) {
+   
             $translateDto = $this->createTranslateInputDto($data['translations'], $brandId);
-            $this->translationRepo->saveProductTranslation($translateDto);
+       
+      
+            foreach($translateDto as $dto) {
+              $this->translationRepo->saveTranslations($dto);
+            }
           }
-    
+
+        
           // Подтверждаем транзакцию
           $this->repository->commit();
 
@@ -65,39 +71,14 @@ final class AdminBrandService extends BrandService
 
     public function createBrandInputDTO(array $data): ?BrandInputDTO
     {
-        $translations = [];
-        foreach ($data['title'] as $lang => $title) {
-            $translations[$lang] = [
-                'title' => $data['title'][$lang] ?? '',
-                'description' => $data['description'][$lang] ?? '',
-                'meta_title' => $data['meta_title'][$lang] ?? '',
-                'meta_description' => $data['meta_description'][$lang] ?? '',
-            ];
-        }
-
-        $mainLang = 'ru';
 
         return new BrandInputDTO([
-            'title' => $translations[$mainLang['title']] ?? '',
-            'description' => $translations[$mainLang['description']] ?? '',
+            // 'title' => $translations[$mainLang]['title'] ?? '',
+            // 'description' => $translations[$mainLang]['description'] ?? '',
             'image' => $data['image'] ?? '',
-            'translations' => $translations,
+            // 'translations' => $translations,
         ]);
-        // $brand = $this->repository->getBrandById($brandId);
-        // if (!$brand) return null;
-        
-        // получаем переводы из репозитория переводов
-        // $translations = $this->translationRepo->getTranslationsArray(
-        //     $brandId,
-        //     $this->locale
-        // ) ?? $this->translationRepo->getTranslationsArray($brandId, $this->localeService->getDefaultLocale());
-
-        // return new BrandOutputDTO([
-        //     'id' => $brand->getId(),
-        //     'title' => $translations['title'] ?? $brand->getTitle(),
-        //     'image' => $brand->getImage(),
-        //     'translations' => [$this->locale => $translations ?? []],
-        // ]);
+  
     }
 
     public function createTranslateInputDto(array $data, $brandId): array 
@@ -106,7 +87,7 @@ final class AdminBrandService extends BrandService
 
       foreach($data as $locale => $translate) {
           $brandTranslationsDto[] = new BrandTranslationInputDTO([
-              'brand_id' => (int) ($brandId ?? 0),
+              'brand_id' => (int) $brandId,
               'locale' => (string) $locale, 
               'title' => (string) ($translate['title'] ?? ''),
               'description' => (string) ($translate['description'] ?? ''),

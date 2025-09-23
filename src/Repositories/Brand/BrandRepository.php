@@ -18,6 +18,7 @@ use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\Brand\Brand;
 use Vvintage\DTO\Brand\BrandDTO;
+use Vvintage\DTO\Brand\BrandInputDTO;
 
 
 
@@ -174,7 +175,8 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     public function saveBrand(BrandDTO $dto): ?int
     {
         if (!$dto) {
-            return null;
+          throw new RuntimeException("Не удалось сохранить бренд");
+          return null;
         }
 
         // Создаем или загружаем бренд
@@ -188,8 +190,10 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         $this->saveBean($brandBean);
 
         $brandId = (int)$brandBean->id;
+
         if (!$brandId) {
-            return null;
+          throw new RuntimeException("Не удалось сохранить бренд");
+          return null;
         }
 
         return $brandId;
@@ -197,7 +201,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
    
 
     /** Создаёт новый бренд через DTO */
-    public function createBrand(BrandDTO $dto): ?int
+    public function createBrand(BrandInputDTO $dto): ?int
     {
         return $this->saveBrand($dto);
     }

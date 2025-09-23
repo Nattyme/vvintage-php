@@ -9,7 +9,7 @@ class BrandDTO
     // public string $title;
     // public string $description;
     public string $image;
-    public array $translations; // ['ru' => ['title'=>..., 'description'=>...], 'en' => [...]];
+    // public array $translations; // ['ru' => ['title'=>..., 'description'=>...], 'en' => [...]];
     // public string $locale;
 
     public function __construct(array $data)
@@ -20,26 +20,26 @@ class BrandDTO
         $this->image = (string)($data['image'] ?? '');
 
         
-        if (isset($data['translations']) && is_array($data['translations'])) {
-            foreach ($data['translations'] as $locale => $fields) {
-                $this->translations[$locale] = [];
-                if (isset($fields['title'])) {
-                    $this->translations[$locale]['title'] = (string)$fields['title'];
-                }
-                if (isset($fields['description'])) {
-                    $this->translations[$locale]['description'] = (string)$fields['description'];
-                }
-                if (isset($fields['meta_title'])) {
-                    $this->translations[$locale]['meta_title'] = (string)$fields['meta_title'];
-                }
-                if (isset($fields['meta_description'])) {
-                    $this->translations[$locale]['meta_description'] = (string)$fields['meta_description'];
-                }
-            }
-        } else {
-        $this->translations = [];
+        // if (isset($data['translations']) && is_array($data['translations'])) {
+        //     foreach ($data['translations'] as $locale => $fields) {
+        //         $this->translations[$locale] = [];
+        //         if (isset($fields['title'])) {
+        //             $this->translations[$locale]['title'] = (string)$fields['title'];
+        //         }
+        //         if (isset($fields['description'])) {
+        //             $this->translations[$locale]['description'] = (string)$fields['description'];
+        //         }
+        //         if (isset($fields['meta_title'])) {
+        //             $this->translations[$locale]['meta_title'] = (string)$fields['meta_title'];
+        //         }
+        //         if (isset($fields['meta_description'])) {
+        //             $this->translations[$locale]['meta_description'] = (string)$fields['meta_description'];
+        //         }
+        //     }
+        // } else {
+        // $this->translations = [];
           
-        }
+        // }
         // $this->locale = (string) $data['locale'];
     }
 }

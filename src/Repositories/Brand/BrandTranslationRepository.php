@@ -16,16 +16,8 @@ use Vvintage\Contracts\Brand\BrandTranslationRepositoryInterface;
 final class BrandTranslationRepository extends AbstractRepository implements BrandTranslationRepositoryInterface
 {
     private const TABLE = 'brandstranslation';
-    // private const DEFAULT_LOCALE = 'ru';
-    // private string $defaultLocale;
-    // private string $currentLocale;
-
-    // public function __construct(string $currentLocale = self::DEFAULT_LOCALE)
-    // public function __construct()
-    // {
-    //     $this->currentLocale = $currentLocale;
-    // }
-
+  
+    
     public function createTranslationsBean(): OODBBean 
     {
       return $this->createBean(self::TABLE);
@@ -97,7 +89,11 @@ final class BrandTranslationRepository extends AbstractRepository implements Bra
         $translationBean->meta_title = $fields['meta_title'] ?? '';
         $translationBean->meta_description = $fields['meta_description'] ?? '';
 
-        $this->saveBean($translationBean);
+        $result = $this->saveBean($translationBean);
+
+        if (!$result) {
+          throw new RuntimeException("Не удалось сохранить перевод бренда");
+        }
     }
 
   

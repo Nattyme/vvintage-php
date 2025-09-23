@@ -18,14 +18,14 @@ require_once ROOT . "./libs/functions.php";
 
 class BrandService extends BaseService
 {
-    private BrandRepository $repository;
-    private BrandTranslationRepository $translationRepo;
+    protected BrandRepository $repository;
+    protected BrandTranslationRepository $translationRepo;
 
     public function __construct()
     {
        parent::__construct();
        $this->repository = new BrandRepository();
-       $this->translationRepo = new BrandTranslationRepository($this->locale);
+       $this->translationRepo = new BrandTranslationRepository();
     }
 
     public function getBrandById( int $id): ?Brand 
