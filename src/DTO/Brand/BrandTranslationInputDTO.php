@@ -5,7 +5,7 @@ namespace Vvintage\DTO\Brand;
 
 final class BrandTranslationInputDTO
 {
-    public string $brand_id;
+    public int $brand_id;
     public string $locale;
     public string $title;
     public string $description;
@@ -14,7 +14,7 @@ final class BrandTranslationInputDTO
 
     public function __construct(array $data)
     {
-        $this->product_id = (int) ($data['brand_id'] ?? 0);
+        $this->brand_id = (int) ($data['brand_id'] ?? 0);
         $this->locale = (string) ($data['locale'] ?? 'ru');
         $this->title = (string) ($data['title'] ?? '');
         $this->description = (string) ($data['description'] ?? '');

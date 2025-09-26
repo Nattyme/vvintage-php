@@ -17,7 +17,7 @@ final class BrandTranslationRepository extends AbstractRepository implements Bra
 {
     private const TABLE = 'brandstranslation';
   
-    
+
     public function createTranslationsBean(): OODBBean 
     {
       return $this->createBean(self::TABLE);
@@ -89,7 +89,7 @@ final class BrandTranslationRepository extends AbstractRepository implements Bra
         $translationBean->meta_title = $fields['meta_title'] ?? '';
         $translationBean->meta_description = $fields['meta_description'] ?? '';
 
-        $result = $this->saveBean($translationBean);
+        $this->saveBean($translationBean);
 
         if (!$result) {
           throw new RuntimeException("Не удалось сохранить перевод бренда");

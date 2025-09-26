@@ -25,7 +25,11 @@ final class AdminBrandService extends BrandService
 
         try {
           $brandDto = $this->createBrandInputDTO($data);
-   dd($data);
+          if(!$brandDto) {
+            throw new RuntimeException("Не удалось создать бренд");
+            return null;
+          }
+
           $brandId = $this->repository->createBrand($brandDto);
     
           if(!$brandId) {
@@ -38,17 +42,17 @@ final class AdminBrandService extends BrandService
             return null;
           }
 
-
-
-
       
           if (!empty($data['translations'])) {
-   
             $translateDto = $this->createTranslateInputDto($data['translations'], $brandId);
-       
-      
+
+            if (empty($translateDto)) {
+              throw new RuntimeException("Не удалось сохранить бренд");
+              return null;
+            }
+     
             foreach($translateDto as $dto) {
-              $this->translationRepo->saveTranslations($dto);
+              $result = $this->translationRepo->saveTranslations($brandId, $dto->locale, $dto);
             }
           }
 
@@ -96,7 +100,7 @@ final class AdminBrandService extends BrandService
           ]);
       }
           
-      return  $brandTranslationsDto;
+      return $brandTranslationsDto;
 
     }
 

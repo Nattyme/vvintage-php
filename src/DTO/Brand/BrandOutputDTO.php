@@ -6,8 +6,8 @@ namespace Vvintage\DTO\Brand;
 final class BrandOutputDTO extends BrandDTO
 {
     public int $id;
-    public string $title;
-    public string $description;
+    public ?string $title;
+    public ?string $description;
 
     public function __construct(array $data)
     {
