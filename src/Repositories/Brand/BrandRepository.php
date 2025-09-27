@@ -172,8 +172,9 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
 
     /** Сохраняет бренд с DTO */
-    public function saveBrand(BrandDTO $dto): ?int
+    public function saveBrand(BrandInputDTO $dto): ?int
     {
+
         if (!$dto) {
           throw new RuntimeException("Не удалось сохранить бренд");
           return null;
@@ -203,6 +204,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     /** Создаёт новый бренд через DTO */
     public function createBrand(BrandInputDTO $dto): ?int
     {
+      // dd($this->saveBrand($dto));
         return $this->saveBrand($dto);
     }
 

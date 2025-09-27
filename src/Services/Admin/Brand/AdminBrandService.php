@@ -44,6 +44,7 @@ final class AdminBrandService extends BrandService
 
       
           if (!empty($data['translations'])) {
+            
             $translateDto = $this->createTranslateInputDto($data['translations'], $brandId);
 
             if (empty($translateDto)) {
@@ -125,7 +126,7 @@ final class AdminBrandService extends BrandService
         $this->brandRepo->begin();
 
         try {
-            $brandId = $this->brandRepo->save($dto);
+            $brandId = $this->brandRepo->saveBrand($dto);
             $this->translationRepo->saveTranslations($brandId, $translations);
 
             $this->brandRepo->commit();

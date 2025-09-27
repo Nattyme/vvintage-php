@@ -15,9 +15,9 @@ class BrandDTO
     public function __construct(array $data)
     {
         // $this->id = (int)($data['id'] ?? 0);
-        $this->title = (string)($data['title'] ?? null);
-        $this->description = (string)($data['description'] ?? null);
-        $this->image = (string)($data['image'] ?? null);
+        $this->title = $data['title'] ?? null;
+        $this->description = $data['description'] ?? null;
+        $this->image = $data['image'] ?? null;
 
         
         // if (isset($data['translations']) && is_array($data['translations'])) {
