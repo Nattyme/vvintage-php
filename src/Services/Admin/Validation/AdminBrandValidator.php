@@ -15,7 +15,7 @@ final class AdminBrandValidator
         $this->flash = new FlashMessage();
     }
 
-    public function new(array &$data): bool
+    public function validate(array &$data): bool
     {
         $valid = true;
 

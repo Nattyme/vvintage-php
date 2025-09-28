@@ -90,24 +90,25 @@ class AdminBrandController extends BaseAdminController
           return;
       }
 
+
       if (isset($_POST['submit'])) {
           // Проверка CSRF
           if (!check_csrf($_POST['csrf'] ?? '')) {
               $this->flash->pushError('Неверный токен безопасности.');
           } else {
               // Валидация
-              $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
+              $validate = $this->validator->validate($_POST);
+              // $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
 
               if (!$validate) {
                   $this->flash->pushError($brandId 
                       ? 'Не удалось обновить бренд. Проверьте данные.' 
                       : 'Не удалось сохранить новый бренд. Проверьте данные.');
               } else {
-        
-
+                  $translations = $_POST['translations'];
                   $saved = $brandId
-                      ? $this->service->updateBrand($brandId, $_POST)
-                      : $this->service->createBrandDraft($_POST);
+                      ? $this->service->updateBrand($brandId, $translations)
+                      : $this->service->createBrandDraft($translations);
 
                   if ($saved) {
                       $this->flash->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
@@ -139,7 +140,7 @@ class AdminBrandController extends BaseAdminController
 
   private function renderEdit(RouteData $routeData): void
   {
-      $this->handleBrandForm($routeData, (int)$routeData->uriGetParam);
+      $this->handleBrandForm($routeData, (int)$routeData->uriGet);
   }
 
 

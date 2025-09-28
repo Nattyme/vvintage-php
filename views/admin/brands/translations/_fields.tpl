@@ -1,5 +1,6 @@
 <div class="lang-group lang-group--<?php echo $code;?>" data-lang="<?php echo $code;?>">
   <div class="admin-form__field">
+
     <label class="admin-form__label" for="title-<?php echo $code;?>">Название бренда</label>
     <input 
       id="title-<?php echo $code;?>" 
@@ -10,7 +11,8 @@
       value="<?php 
           echo isset($_POST['title'][$code]) 
           ? h($_POST['title'][$code] ) 
-          : (isset($brand) && $brand->getTitle() ? h($brand->getTitle()) : '');
+          : (isset($brand) && $brand->getTranslatedTitle($code) 
+          ? h($brand->getTranslatedTitle($code)) : '');
       ?>"
     />
   </div>
@@ -24,7 +26,7 @@
       placeholder="Введите описание бренда"
     ><?php 
       echo isset($_POST['description'][$code]) 
-      ? h($_POST['title'][$code] ) 
+      ? h($_POST['description'][$code] ) 
       : (isset($brand) && $brand->getTranslatedDescription($code) 
       ? h($brand->getTranslatedDescription($code)) : '');
     ?></textarea>
@@ -42,7 +44,7 @@
       value="<?php 
         echo isset($_POST['meta_title'][$code]) 
         ? h($_POST['meta_title'][$code] ) 
-        : (isset($brand) && $brand->getSeoTitle() ? h($brand->getSeoTitle()) : '');
+        : (isset($brand) && $brand->getSeoTitle($code) ? h($brand->getSeoTitle($code)) : '');
       ?>"
     />
   </div>

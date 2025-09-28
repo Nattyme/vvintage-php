@@ -82,7 +82,7 @@ final class Brand
             return $this->translations['title'] ?? '';
         }
 
-        return  $this->title;
+        return $this->title;
     }
 
     public function getTranslatedDescription(?string $locale = null): string 

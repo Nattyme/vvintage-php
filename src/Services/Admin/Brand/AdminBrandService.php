@@ -16,61 +16,61 @@ final class AdminBrandService extends BrandService
       parent::__construct();
     }
 
-    public function createBrandDraft(array $data): ?int
+    public function createBrandDraft(array $translations): ?int
     {
-      if (!$data) return null;
+      if (!$translations ) return null;
 
       // начало транзакции
       $this->repository->begin(); 
 
-        try {
-          $brandDto = $this->createBrandInputDTO($data);
-          if(!$brandDto) {
-            throw new RuntimeException("Не удалось создать бренд");
-            return null;
-          }
+      try {
+        $brandDto = $this->createBrandInputDTO($translations );
+        if(!$brandDto) {
+          throw new RuntimeException("Не удалось создать бренд");
+          return null;
+        }
 
-          $brandId = $this->repository->createBrand($brandDto);
+        $brandId = $this->repository->createBrand($brandDto);
+  
+        if(!$brandId) {
+          throw new RuntimeException("Не удалось создать бренд");
+          return null;
+        }
+
+        if (empty($translations)) {
+          throw new RuntimeException("Не удалось сохранить бренд");
+          return null;
+        }
+
     
-          if(!$brandId) {
-            throw new RuntimeException("Не удалось создать бренд");
-            return null;
-          }
+        if (!empty($translations)) {
+          
+          $translateDto = $this->createTranslateInputDto($translations, $brandId);
 
-          if (empty($data['translations'])) {
+          if (empty($translateDto)) {
             throw new RuntimeException("Не удалось сохранить бренд");
             return null;
           }
+    
+          foreach($translateDto as $dto) {
+            $result = $this->translationRepo->saveTranslations($brandId, $dto->locale, $dto);
+          }
+        }
 
       
-          if (!empty($data['translations'])) {
-            
-            $translateDto = $this->createTranslateInputDto($data['translations'], $brandId);
-
-            if (empty($translateDto)) {
-              throw new RuntimeException("Не удалось сохранить бренд");
-              return null;
-            }
-     
-            foreach($translateDto as $dto) {
-              $result = $this->translationRepo->saveTranslations($brandId, $dto->locale, $dto);
-            }
-          }
-
-        
-          // Подтверждаем транзакцию
-          $this->repository->commit();
+        // Подтверждаем транзакцию
+        $this->repository->commit();
 
 
-          return $brandId;
+        return $brandId;
 
-        }
+      }
 
-        catch (\Throwable $error) 
-        {
-          $this->repository->rollback();
-          throw $error;
-        }
+      catch (\Throwable $error) 
+      {
+        $this->repository->rollback();
+        throw $error;
+      }
       
     }
 
@@ -88,6 +88,7 @@ final class AdminBrandService extends BrandService
 
     public function createTranslateInputDto(array $data, $brandId): array 
     {
+      
       $brandTranslationsDto = [];
 
       foreach($data as $locale => $translate) {
@@ -100,14 +101,37 @@ final class AdminBrandService extends BrandService
               'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
           ]);
       }
-          
+       
       return $brandTranslationsDto;
 
     }
 
-    public function updateBrand (int $id, array $data) 
+    public function updateBrand (int $brandId, array $translations) 
     { 
-      return $this->repository->updateBrand($id, $data); 
+
+      // $dto = $this->createTranslateInputDto($data, $id);
+
+      // return $this->translationRepo->saveTranslations($id, $dto); 
+
+      $this->translationRepo->begin();
+
+
+      try {
+        if (!empty($translations)) {
+          
+          $translateDto = $this->createTranslateInputDto($translations, $brandId);
+
+          foreach($translateDto as $dto) {
+            $result = $this->translationRepo->saveTranslations($dto->brand_id, $dto->locale, $dto);
+          }
+
+          return true;
+      
+        }
+      } catch (\Throwable $e) {
+        $this->translationRepo->rollback();
+        throw $e;
+      }
     } 
     
     // public function createBrand (array $data) 
