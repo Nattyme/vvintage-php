@@ -26,19 +26,19 @@ final class AdminBrandService extends BrandService
       try {
         $brandDto = $this->createBrandInputDTO($translations );
         if(!$brandDto) {
-          throw new RuntimeException("Не удалось создать бренд");
+          throw new \RuntimeException("Не удалось создать бренд");
           return null;
         }
 
         $brandId = $this->repository->createBrand($brandDto);
   
         if(!$brandId) {
-          throw new RuntimeException("Не удалось создать бренд");
+          throw new \RuntimeException("Не удалось создать бренд");
           return null;
         }
 
         if (empty($translations)) {
-          throw new RuntimeException("Не удалось сохранить бренд");
+          throw new \RuntimeException("Не удалось сохранить бренд");
           return null;
         }
 
@@ -48,7 +48,7 @@ final class AdminBrandService extends BrandService
           $translateDto = $this->createTranslateInputDto($translations, $brandId);
 
           if (empty($translateDto)) {
-            throw new RuntimeException("Не удалось сохранить бренд");
+            throw new \RuntimeException("Не удалось сохранить бренд");
             return null;
           }
     
@@ -108,11 +108,6 @@ final class AdminBrandService extends BrandService
 
     public function updateBrand (int $brandId, array $translations) 
     { 
-
-      // $dto = $this->createTranslateInputDto($data, $id);
-
-      // return $this->translationRepo->saveTranslations($id, $dto); 
-
       $this->translationRepo->begin();
 
 
@@ -134,16 +129,6 @@ final class AdminBrandService extends BrandService
       }
     } 
     
-    // public function createBrand (array $data) 
-    // { 
-    //   if (!$data) return null;
-
-    //   $dto = $this->createBrandInputDTO($data);
-    //   $brand = Brand::fromDTO($dto);
-      
-    //   return $this->repository->createBrand($dto); 
-    // }
-
         
     public function saveBrand(BrandInputDTO $dto, array $translations): int
     {
@@ -178,6 +163,12 @@ final class AdminBrandService extends BrandService
           'locale' => $this->locale,
       ]);
     }
+
+    public function deleteBrand(int $id): void
+    {
+      $this->repository->deleteBrand($id);
+    }
+
 
     
 }

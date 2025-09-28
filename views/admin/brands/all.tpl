@@ -63,8 +63,8 @@
             <td>
               <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
-                href="<?php echo HOST . "admin/";?>admin/brand-delete/<?php echo u($brand->id);?>"
-                aria-label="Удалить категорию <?php echo h($brand->title);?>"
+                href="<?php echo HOST . 'admin/brand-delete/' . u($brand->id);?>"
+                aria-label="Удалить бренд <?php echo h($brand->title);?>"
               >
 
                   <span class="leftright"></span><span class="rightleft"> </span>

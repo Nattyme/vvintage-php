@@ -232,4 +232,11 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         ];
     }
 
+    public function deleteBrand(int $id): void
+    {
+      $bean = $this->loadBean(self::TABLE, $id);
+      $this->deleteBean($bean);
+    }
+
+
 }

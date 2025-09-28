@@ -27,28 +27,32 @@ class AdminBrandController extends BaseAdminController
   public function all(RouteData $routeData)
   {
     $this->isAdmin();
+    $this->setRouteData($routeData);
     $this->renderAll($routeData);
   }
 
   public function edit(RouteData $routeData)
   {
     $this->isAdmin();
+    $this->setRouteData($routeData);
     $this->renderEdit($routeData);
   }
 
   public function new(RouteData $routeData)
   {
     $this->isAdmin();
+    $this->setRouteData($routeData);
     $this->renderNew($routeData);
   }
 
   public function delete (RouteData $routeData)
   {
     $this->isAdmin();
+    $this->setRouteData($routeData);
     $this->renderDelete($routeData);
   }
 
-  private function renderAll(RouteData $routeData): void
+  private function renderAll(): void
   {
     // Название страницы
     $pageTitle = 'Бренды';
@@ -62,7 +66,7 @@ class AdminBrandController extends BaseAdminController
         
     $this->renderLayout('brands/all',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
+      'routeData' => $this->routeData,
       'brands' => $brands,
       'pagination' => $pagination,
       'flash' => $this->flash
@@ -72,7 +76,7 @@ class AdminBrandController extends BaseAdminController
 
   }
 
-  private function handleBrandForm(RouteData $routeData, ?int $brandId = null): void
+  private function handleBrandForm(?int $brandId = null): void
   {
       $brand = $brandId ? $this->service->getBrandById($brandId) : null;
 
@@ -124,7 +128,7 @@ class AdminBrandController extends BaseAdminController
       // Всегда рендерим форму (новая или с ошибками)
       $this->renderLayout('brands/single', [
           'pageTitle' => $brandId ? 'Бренды - редактирование' : 'Бренды - создание',
-          'routeData' => $routeData,
+          'routeData' => $this->routeData,
           'brand' => $brand,
           'languages' => $this->languages,
           'currentLang' => $this->currentLang,
@@ -133,34 +137,47 @@ class AdminBrandController extends BaseAdminController
   }
 
 
-  private function renderNew(RouteData $routeData): void
+  private function renderNew(): void
   {
-      $this->handleBrandForm($routeData);
+      $this->handleBrandForm();
   }
 
-  private function renderEdit(RouteData $routeData): void
+  private function renderEdit(): void
   {
-      $this->handleBrandForm($routeData, (int)$routeData->uriGet);
+      $this->handleBrandForm((int) $this->routeData->uriGet);
   }
 
 
-  private function renderDelete(RouteData $routeData): void
+  private function renderDelete(): void
   {
     // Название страницы
-    $pageTitle = 'Бренды';
+    $pageTitle = 'Удалить бренд';
 
-    $brandsPerPage = 9;
+    $id = $this->routeData->uriGet ? (int) $this->routeData->uriGet : null;
 
-    // Устанавливаем пагинацию
-    $pagination = pagination($brandsPerPage, 'brands');
-    $brands = $this->service->getAllBrands($pagination);
-    $total = $this->service->getAllBrandsCount();
-        
-    $this->renderLayout('brands/all',  [
+    if (!$id) $this->redirect('admin/brand');
+
+    $brand = $this->service->getBrandById($id);
+
+    if (isset($_POST['submit'])) {
+
+      $csrfToken = $_POST['csrf'] ?? '';
+
+      if (!$csrfToken) {
+        $this->flash->pushSuccess('Неверный токен безопасности');
+        $this->redirect('admin/brand');
+      }
+
+      $this->service->deleteBrand($id);
+
+      $this->flash->pushSuccess('Бренд успешно удален.');
+      $this->redirect('admin/brand');
+    }
+
+    $this->renderLayout('brands/delete',  [
       'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-      'brands' => $brands,
-      'pagination' => $pagination,
+      'routeData' => $this->routeData,
+      'brand' => $brand,
       'flash' => $this->flash
     ]);
 
