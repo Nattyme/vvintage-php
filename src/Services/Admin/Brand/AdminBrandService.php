@@ -137,6 +137,10 @@ final class AdminBrandService extends BrandService
         try {
             $brandId = $this->brandRepo->saveBrand($dto);
             $this->translationRepo->saveTranslations($brandId, $translations);
+            $defaultTranslation = $this->translationRepo->getTranslationsArray($brandId, $this->defaultLocale);
+            dd($this->translationRepo->getTranslationsArray($brandId, $this->defaultLocale));
+            $defaultTranslationDto = new BrandInputDTO($defaultTranslation);
+            $this->brandRepo->updateBrand($defaultTranslationDto);
 
             $this->brandRepo->commit();
             return $brandId;
@@ -167,6 +171,11 @@ final class AdminBrandService extends BrandService
     public function deleteBrand(int $id): void
     {
       $this->repository->deleteBrand($id);
+    }
+
+    public function getTranslations(int $brandId): array 
+    {
+      return $this->translationRepo->loadTranslations($brandId);
     }
 
 

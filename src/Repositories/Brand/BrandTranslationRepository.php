@@ -84,6 +84,13 @@ final class BrandTranslationRepository extends AbstractRepository implements Bra
         $translationBean = $this->findOneBy(self::TABLE, 'brand_id = ? AND locale = ?', [$brandId, $locale]) 
                       ?? $this->createTranslationsBean();
 
+        // если новый bean — задаём brand_id и locale
+        if (!$translationBean->id) {
+            $translationBean->brand_id = $brandId;
+            $translationBean->locale = $locale;
+        }
+
+
         $translationBean->title = $fields->title ?? null;
         $translationBean->description = $fields->description ?? null;
         $translationBean->meta_title = $fields->meta_title ?? null;

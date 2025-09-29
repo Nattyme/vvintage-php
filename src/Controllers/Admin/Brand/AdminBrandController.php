@@ -79,6 +79,10 @@ class AdminBrandController extends BaseAdminController
   private function handleBrandForm(?int $brandId = null): void
   {
       $brand = $brandId ? $this->service->getBrandById($brandId) : null;
+      if($brand) {
+        $translations = $this->service->getTranslations($brandId);
+        $brand->setTranslations($translations);
+      }
 
       if ($brandId && !$brand) {
           $this->flash->pushError('Бренд не найден.');

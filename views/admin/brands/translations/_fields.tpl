@@ -1,6 +1,5 @@
 <div class="lang-group lang-group--<?php echo $code;?>" data-lang="<?php echo $code;?>">
   <div class="admin-form__field">
-
     <label class="admin-form__label" for="title-<?php echo $code;?>">Название бренда</label>
     <input 
       id="title-<?php echo $code;?>" 
@@ -11,8 +10,8 @@
       value="<?php 
           echo isset($_POST['title'][$code]) 
           ? h($_POST['title'][$code] ) 
-          : (isset($brand) && $brand->getTranslatedTitle($code) 
-          ? h($brand->getTranslatedTitle($code)) : '');
+          : (isset($brand) && !empty($translations) && isset($translations[$code]['title'])  
+          ? h($translations[$code]['title']) : '');
       ?>"
     />
   </div>
@@ -27,8 +26,8 @@
     ><?php 
       echo isset($_POST['description'][$code]) 
       ? h($_POST['description'][$code] ) 
-      : (isset($brand) && $brand->getTranslatedDescription($code) 
-      ? h($brand->getTranslatedDescription($code)) : '');
+      : ((isset($brand) && !empty($translations) && isset($translations[$code]['description']))
+      ? h($translations[$code]['description']) : '');
     ?></textarea>
   </div>
 
@@ -44,10 +43,12 @@
       value="<?php 
         echo isset($_POST['meta_title'][$code]) 
         ? h($_POST['meta_title'][$code] ) 
-        : (isset($brand) && $brand->getSeoTitle($code) ? h($brand->getSeoTitle($code)) : '');
+        : (isset($brand) && !empty($translations) && isset($translations[$code]['meta_title'])
+        ? h($translations[$code]['meta_title']) : '');
       ?>"
     />
   </div>
+
 
   <div class="admin-form__field">
     <label class="admin-form__label" for="meta_description-<?php echo $code;?>">SEO описание страницы</label>
@@ -59,8 +60,9 @@
     ><?php 
       echo isset($_POST['meta_description'][$code]) 
       ? h($_POST['meta_description'][$code] ) 
-      : (isset($brand) && $brand->getSeoDescription($code) 
-      ? h($brand->getSeoDescription($code)) : '');
+      : (isset($brand) && !empty($translations) && isset($translations[$code]['meta_description'])
+      ? h($translations[$code]['meta_description']) : '');
     ?></textarea>
   </div>
+           
 </div>

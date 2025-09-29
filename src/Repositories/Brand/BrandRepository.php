@@ -209,8 +209,9 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     }
 
     /** Обновляет существующий бренд через DTO */
-    public function updateBrand(BrandDTO $dto): ?int
+    public function updateBrand(BrandInputDTO $dto): ?int
     {
+      dd($dto);
         if (!$dto->id) {
             return null; // нельзя обновить без ID
         }
