@@ -69,23 +69,72 @@ abstract class AbstractRepository
     }
 
 
-    protected function findAll(string $table, ?string $sql = null, array $params = []): array
-    {
-        // Если $sql пустой, просто выбираем все записи
-        if (empty($sql)) {
-            $sql = '';
+    // protected function findAll(string $table, ?string $sql = null, array $params = []): array
+    // {
+    //     // Если $sql пустой, просто выбираем все записи
+    //     if (empty($sql)) {
+    //         $sql = '';
+    //     }
+
+    //     // Если есть условия и они не начинаются с WHERE, добавляем WHERE
+    //     if ($sql && !preg_match('/^\s*WHERE/i', $sql)) {
+    //         $sql = 'WHERE ' . $sql;
+    //     }
+
+
+
+    //     // вызываем RedBeanPHP
+    //     return R::findAll($table, $sql, $params);
+    // }
+
+    // Пример вызова:  $this->findAll(
+    //   table: 'users',
+    //   conditions: ['status = ?'],
+    //   params: ['active'],
+    //   orderBy: 'created_at DESC',
+    //   limit: 10,
+    //   offset: 20
+    // );
+   protected function findAll(
+    string $table,
+    array $conditions = [],       // условия WHERE, например ['age > ?']
+    array $params = [],           // параметры для условий
+    ?string $orderBy = null,      // сортировка, например 'name ASC'
+    ?int $limit = null,           // лимит, например 10
+    ?int $offset = null,          // смещение для пагинации
+    ?string $groupBy = null       // GROUP BY, например 'role'
+    ): array {
+        $sqlParts = [];
+
+        // WHERE
+        if (!empty($conditions)) {
+            $sqlParts[] = 'WHERE ' . implode(' AND ', $conditions);
         }
 
-        // Если есть условия и они не начинаются с WHERE, добавляем WHERE
-        if ($sql && !preg_match('/^\s*WHERE/i', $sql)) {
-            $sql = 'WHERE ' . $sql;
+        // GROUP BY
+        if ($groupBy) {
+            $sqlParts[] = 'GROUP BY ' . $groupBy;
         }
 
+        // ORDER BY
+        if ($orderBy) {
+            $sqlParts[] = 'ORDER BY ' . $orderBy;
+        }
 
+        // LIMIT + OFFSET
+        if ($limit !== null) {
+            $sqlParts[] = 'LIMIT ' . $limit;
+            if ($offset !== null) {
+                $sqlParts[] = 'OFFSET ' . $offset;
+            }
+        }
 
-        // вызываем RedBeanPHP
+        $sql = implode(' ', $sqlParts);
+
         return R::findAll($table, $sql, $params);
     }
+
+
 
 
 

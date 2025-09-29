@@ -56,7 +56,7 @@ final class MessageRepository extends AbstractRepository implements MessageRepos
     /** Находим все бренды и возвращаем в виде массива объектов */
     public function getAllMessages(): array
     {
-      $beans = $this->findAll( self::TABLE );
+      $beans = $this->findAll( table: self::TABLE );
 
       if (empty($beans)) {
             return [];

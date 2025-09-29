@@ -92,14 +92,14 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     public function getAllCategories(): array
     {
-        $beans = $this->findAll(self::TABLE);
+        $beans = $this->findAll(table: self::TABLE);
    
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
     public function getAllCategoriesApi(): array
     {
-        $beans = $this->findAll(self::TABLE);
+        $beans = $this->findAll(table: self::TABLE);
    
         return array_map([$this, 'mapBeanToCategoryArray'], $beans);
     }
@@ -111,16 +111,19 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     public function getSubCats(): array
     {
-        $beans = $this->findAll(self::TABLE, 'parent_id IS NOT NULL');
+        // $beans = $this->findAll(table: self::TABLE, 'parent_id IS NOT NULL');
+        $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NOT NULL']);
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
     public function findCatsByParentId(?int $parentId = null): array
     {
         if ($parentId === null) {
-            $beans = $this->findAll(self::TABLE, 'parent_id IS NULL');
+            // $beans = $this->findAll(table: self::TABLE, 'parent_id IS NULL');
+            $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NULL']);
         } else {
-            $beans = $this->findAll(self::TABLE, 'parent_id = ?', [$parentId]);
+            // $beans = $this->findAll(self::TABLE, 'parent_id = ?', [$parentId]);
+            $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id = ?'], params: [$parentId]);
         }
 
         return array_map([$this, 'mapBeanToCategory'], $beans);
@@ -177,7 +180,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     // Для api
     public function createMainCategoriesArray(): array
     {
-        $beans = $this->findAll(self::TABLE, 'parent_id IS NULL');
+        $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NULL']);
 
         return array_map(function ($bean) {
             return [
@@ -195,9 +198,9 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     {
 
         if ($parent_id !== null) {
-            $beans = $this->findAll(self::TABLE, 'parent_id = ?', [$parent_id]);
+            $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id = ?'], params: [$parent_id]);
         } else {
-            $beans = $this->findAll(self::TABLE, 'parent_id IS NOT NULL');
+            $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NOT NULL']);
         }
 
         return array_map(function ($bean) {
@@ -215,7 +218,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     public function getAllCategoriesArray(): array
     {
         // Достаём все категории без фильтра
-        $beans = $this->findAll(self::TABLE);
+        $beans = $this->findAll(table: self::TABLE);
 
         // Сбрасываем ключи и преобразуем в массивы
         return array_values(array_map([$this, 'mapBeanToCategory'], $beans));
@@ -247,7 +250,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
             return [];
         }
 
-        $childrenBeans = $this->findAll(self::TABLE, 'parent_id = ?', [$id]);
+        $childrenBeans = $this->findAll(table: self::TABLE, conditions: ['parent_id = ?'], params: [$id]);
         // $childrenBeans = R::findAll('categories', 'parent_id = ?', [$id]);
 
         $result = [$this->mapBeanToCategory($parentBean)];

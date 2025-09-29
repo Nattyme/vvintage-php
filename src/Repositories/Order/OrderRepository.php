@@ -121,7 +121,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
     public function getOrdersByUserId(int $id): array
     {
         $orders = [];
-        $beans = $this->findAll(self::TABLE, 'user_id = ?', [$id]);
+        $beans = $this->findAll(table: self::TABLE, conditions: ['user_id = ?'], params: [$id]);
 
         foreach($beans as $bean) {
           $orders[] = Order::fromBean($bean);
@@ -132,7 +132,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
 
     public function getAllOrders(): array
     {
-        $beans = $this->findAll(self::TABLE);
+        $beans = $this->findAll(table: self::TABLE);
 
         if (empty($beans)) {
           return [];

@@ -39,89 +39,10 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         return Brand::fromArray($brandArray);
     }
 
-
-    // private function uniteProductRawData(?int $id = null): array
-    // {
-    //     $sql = '
-    //         SELECT 
-    //             b.*,
-    //             bt.locale,
-    //             bt.title,
-    //             bt.description,
-    //             bt.meta_title,
-    //             bt.meta_description
-    //         FROM ' . self::TABLE . ' b
-    //         LEFT JOIN ' . self::TABLE_BRANDS_TRANSLATION . ' bt ON bt.brand_id = b.id AND bt.locale = ?
-
-    //     ';
-
-    //     $locale = 'ru';
-    //     $bindings = [$locale];
-
-    //     if ($id !== null) {
-    //         $sql .= ' WHERE b.id = ? GROUP BY b.id LIMIT 1';
-    //         $bindings[] = $id;
-
-    //         // Заворачиваем в массив
-    //         $row = R::getRow($sql, $bindings);
-    //         return $row ? [$row] : [];
-    //     } else {
-    //         $sql .= ' GROUP BY b.id ORDER BY b.id DESC';
-    //         return $this->getAll($sql, $bindings);
-    //     }
-    // }
-
-    // public function createBrandDTOFromArray(array $row): BrandDTO
-    // {
-    //     $locale = $this->currentLocale ?? self::DEFAULT_LOCALE;
-    //     return new BrandDTO([
-    //         'id' => (int) $row['brand_id'],
-    //         'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
-    //         'image' => (string) ($row['brand_image'] ?? ''),
-    //         'translations' => [
-    //             $locale => [
-    //                 'title' => $row['brand_title_translation'] ?? '',
-    //                 'description' => $row['brand_description'] ?? '',
-    //                 'seo_title' => $row['brand_meta_title'] ?? '',
-    //                 'seo_description' => $row['brand_meta_description'] ?? '',
-    //             ]
-    //         ],
-    //         'locale' => $locale,
-    //     ]);
-    // }
-
-    // private function mapBeanToBrand(OODBBean $bean): Brand
-    // {
-    //     $translations = $this->translationRepo->loadTranslations((int) $bean->id);
-
-    //     $dto = new BrandDTO([
-    //         'id' => (int) $bean->id,
-    //         'title' => (string) $bean->title,
-    //         'image' => (string) $bean->image,
-    //         'translations' => $translations
-    //     ]);
-
-    //     return Brand::fromDTO($dto);
-    // }
-
-    // private function mapBeanToArray(OODBBean $bean): array
-    // {
-    //   $translations = $this->translationRepo->loadTranslations((int) $bean->id);
-
-    //   return [
-    //       'id' => (int) $bean->id,
-    //       'title' => (string) $bean->title,
-    //       'image' => (string) $bean->image,
-    //       'translations' => $translations
-    //   ];
-    // }
-
- 
-
     /** Находим все бренды и возвращаем в виде массива объектов */
     public function getAllBrands(): array
     {
-      $beans = $this->findAll( self::TABLE );
+      $beans = $this->findAll( table: self::TABLE );
 
       if (empty($beans)) {
             return [];
@@ -155,7 +76,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     public function getBrandsArray(): array
     {
         // Достаём все категории, у которых parent_id = NULL
-        $beans = $this->findAll(self::TABLE);
+        $beans = $this->findAll(table: self::TABLE);
 
         // Сбрасываем ключи и преобразуем в массивы
         return array_values(array_map([$this, 'mapBeanToBrand'], $beans));
@@ -204,7 +125,6 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     /** Создаёт новый бренд через DTO */
     public function createBrand(BrandInputDTO $dto): ?int
     {
-      // dd($this->saveBrand($dto));
         return $this->saveBrand($dto);
     }
 

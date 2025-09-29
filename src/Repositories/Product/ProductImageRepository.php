@@ -29,7 +29,13 @@ final class ProductImageRepository extends AbstractRepository implements Product
      */
     public function getAllImages(int $product_id): array
     {
-        $beans = $this->findAll(self::TABLE, 'WHERE product_id = ? ORDER BY image_order ASC', [$product_id]);
+        $beans = $this->findAll(
+            table: self::TABLE,
+            conditions: ['product_id = ?'],  // массив условий 
+            params: [$product_id],           // значения для подстановки
+            orderBy: 'image_order ASC'       // сортировка
+        );
+
         return array_map([$this, 'mapBeanToImageOutputDto'], $beans);
     }
 
@@ -101,7 +107,7 @@ final class ProductImageRepository extends AbstractRepository implements Product
      */
     public function removeAllImages(int $product_id): void
     {
-        $beans = $this->findAll(self::TABLE, 'WHERE product_id = ?', [$product_id]);
+        $beans = $this->findAll(table: self::TABLE, conditions: ['product_id = ?'], params: [$product_id]);
         foreach ($beans as $bean) {
             $this->deleteBean($bean);
         }
@@ -124,11 +130,16 @@ final class ProductImageRepository extends AbstractRepository implements Product
     public function deleteImagesNotInList(int $productId, array $keepIds): void
     {
         if (empty($keepIds)) {
-            $beans = $this->findAll(self::TABLE, 'WHERE product_id = ?', [$productId]);
+            $beans = $this->findAll(table: self::TABLE, conditions: ['product_id = ?'], params: [$productId]);
         } else {
             $placeholders = implode(',', array_fill(0, count($keepIds), '?'));
             $params = array_merge([$productId], $keepIds);
-            $beans = $this->findAll(self::TABLE, "WHERE product_id = ? AND id NOT IN ($placeholders)", $params);
+            $beans = $this->findAll(
+                table: self::TABLE,
+                conditions: ["product_id = ? AND id NOT IN ($placeholders)"], // массив условий
+                params: $params
+            );
+
         }
 
         foreach ($beans as $bean) {

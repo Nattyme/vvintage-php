@@ -123,7 +123,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
      */
     public function getAllUsers(): array
     {
-        $beans = $this->findAll(self::TABLE_USERS);
+        $beans = $this->findAll(table: self::TABLE_USERS);
 
         if (empty($beans)) {
           return [];

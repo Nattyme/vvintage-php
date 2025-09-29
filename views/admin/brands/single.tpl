@@ -31,7 +31,7 @@
         <!-- Блоки с контентом -->
         <div class="admin-form__item">
           <div class="tab__content" data-control="tab-content">
-            <?php $translations = $brand->getTranslations(); ?>
+            <?php $translations = isset($brand) ? $brand->getTranslations() : null; ?>
             <?php foreach ($languages as $code => $value ) : ?>
                 <div class="tab__block <?php echo $code === $firstKey ? 'active' : ''; ?>" data-control="tab-block">
                   <?php include ROOT . "views/admin/brands/translations/_fields.tpl";?>

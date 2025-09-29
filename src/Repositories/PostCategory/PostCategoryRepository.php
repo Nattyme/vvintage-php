@@ -166,7 +166,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     
     public function getAllCategories(): array
     {
-        $beans = $this->findAll(self::TABLE);
+        $beans = $this->findAll(table: self::TABLE);
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
@@ -180,9 +180,9 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     public function getPostCatsByParentId(?int $id = null): array
     {
         if ($id === null) {
-            $beans = $this->findAll(self::TABLE, 'parent_id IS NULL');
+            $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NULL']);
         } else {
-            $beans = $this->findAll(self::TABLE, 'parent_id = ?', [$id]);
+            $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id = ?'], params: [$id]);
         }
 
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
