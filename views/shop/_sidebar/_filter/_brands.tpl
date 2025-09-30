@@ -1,3 +1,4 @@
+
 <div class="filter__group">
   <h3 class="filter__title">Бренды</h3>
   <ul class="filter__list" data-show-count="5">
@@ -13,6 +14,7 @@
             <?php echo in_array( $brand->id, $_GET['brand'] ?? []) ? 'checked' : '';?>
           >
           <span class="filter__checkbox-custom custom-checkbox"></span>
+
           <span class="filter__checkbox-label"><?php echo h($brand->translations[$viewModel['locale']]['title']);?></span>
         </label>
       </li>

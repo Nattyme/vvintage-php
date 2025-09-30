@@ -68,33 +68,6 @@ abstract class AbstractRepository
         return $bean ?: null;
     }
 
-
-    // protected function findAll(string $table, ?string $sql = null, array $params = []): array
-    // {
-    //     // Если $sql пустой, просто выбираем все записи
-    //     if (empty($sql)) {
-    //         $sql = '';
-    //     }
-
-    //     // Если есть условия и они не начинаются с WHERE, добавляем WHERE
-    //     if ($sql && !preg_match('/^\s*WHERE/i', $sql)) {
-    //         $sql = 'WHERE ' . $sql;
-    //     }
-
-
-
-    //     // вызываем RedBeanPHP
-    //     return R::findAll($table, $sql, $params);
-    // }
-
-    // Пример вызова:  $this->findAll(
-    //   table: 'users',
-    //   conditions: ['status = ?'],
-    //   params: ['active'],
-    //   orderBy: 'created_at DESC',
-    //   limit: 10,
-    //   offset: 20
-    // );
    protected function findAll(
     string $table,
     array $conditions = [],       // условия WHERE, например ['age > ?']

@@ -42,7 +42,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     /** Находим все бренды и возвращаем в виде массива объектов */
     public function getAllBrands(): array
     {
-      $beans = $this->findAll( table: self::TABLE );
+      $beans = $this->findAll( table: self::TABLE, orderBy: 'title ASC');
 
       if (empty($beans)) {
             return [];
@@ -76,7 +76,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     public function getBrandsArray(): array
     {
         // Достаём все категории, у которых parent_id = NULL
-        $beans = $this->findAll(table: self::TABLE);
+        $beans = $this->findAll(table: self::TABLE, orderBy: 'title ASC');
 
         // Сбрасываем ключи и преобразуем в массивы
         return array_values(array_map([$this, 'mapBeanToBrand'], $beans));
