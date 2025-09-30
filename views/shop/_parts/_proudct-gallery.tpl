@@ -31,7 +31,7 @@
     </figure>
   <?php endforeach; ?>
 
-  <?php foreach($viewModel['gallery']['visible'] as $image) : ?>
+  <?php foreach($viewModel['gallery']['hidden'] as $image) : ?>
     <a 
       data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
       data-thumb="<?php echo HOST . 'usercontent/products/' . h($image->getFilename());?>">
