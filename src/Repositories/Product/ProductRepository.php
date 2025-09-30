@@ -47,9 +47,9 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     */
     public function getProductById(int $id): array
     {
-      $data = $this->getProducts(['id' => $id])[0];
- 
-      return $data;
+      $data = array_values($this->getProducts(['id' => $id]));
+
+      return $data[0];
         // return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
     }
 
@@ -168,72 +168,168 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return true;
     }
 
-  public function getProducts(array $filters = []): array
-  {
-      $conditions = [];
-      $params = [];
+    public function getProducts(array $filters = []): array
+    {
 
-      // Фильтр по категориям (список)
-      if (!empty($filters['categories'])) {
-          $placeholders = R::genSlots($filters['categories']); // ?, ?, ?
-          $conditions[] = "category_id IN ($placeholders)";
-          $params = array_merge($params, $filters['categories']);
-      }
+        $conditions = [];
+        $params = [];
 
-      // Фильтр по брендам (список)
-      if (!empty($filters['brands'])) {
-          $placeholders = R::genSlots($filters['brands']);
-          $conditions[] = "brand_id IN ($placeholders)";
-          $params = array_merge($params, $filters['brands']);
-      }
+        /**
+         * --- Старый стиль ---
+         */
+        if (isset($filters['id'])) {
+            $conditions[] = "id = ?";
+            $params[] = (int)$filters['id'];
+        }
 
-      // Фильтр по цене
-      if (!empty($filters['priceMin'])) {
-          $conditions[] = "price >= ?";
-          $params[] = (float)$filters['priceMin'];
-      }
+        if (isset($filters['status'])) {
+            $conditions[] = "status = ?";
+            $params[] = $filters['status'];
+        }
 
-      if (!empty($filters['priceMax'])) {
-          $conditions[] = "price <= ?";
-          $params[] = (float)$filters['priceMax'];
-      }
+        if (isset($filters['category_id'])) {
+            $conditions[] = "category_id = ?";
+            $params[] = (int)$filters['category_id'];
+        }
 
-      // Сортировка
-      $orderBy = 'datetime DESC';
-      if (!empty($filters['sort'])) {
-          $orderBy = $filters['sort']; // тут лучше whitelist сделать
-      }
+        if (isset($filters['brand_id'])) {
+            $conditions[] = "brand_id = ?";
+            $params[] = (int)$filters['brand_id'];
+        }
 
-      // Пагинация
-      $limit = 20;
-      $offset = 0;
-      if (!empty($filters['page']) && $filters['page'] > 1) {
-          $offset = ($filters['page'] - 1) * $limit;
-      }
+        if (isset($filters['limit']) && (int)$filters['limit'] > 0) {
+            $limit = (int)$filters['limit'];
+        } else {
+            $limit = 20;
+        }
 
-      // Универсальный findAll
-      $beans = $this->findAll(
-          self::TABLE,
-          $conditions,
-          $params,
-          $orderBy,
-          $limit,
-          $offset
-      );
+        /**
+         * --- Новый стиль (DTO) ---
+         */
+        if (!empty($filters['categories'])) {
+            $placeholders = R::genSlots($filters['categories']);
+            $conditions[] = "category_id IN ($placeholders)";
+            $params = array_merge($params, $filters['categories']);
+        }
 
-      // Нормализация дат
-      return array_map(function(\RedBeanPHP\OODBBean $bean) {
-          $row = $bean->export();
+        if (!empty($filters['brands'])) {
+            $placeholders = R::genSlots($filters['brands']);
+            $conditions[] = "brand_id IN ($placeholders)";
+            $params = array_merge($params, $filters['brands']);
+        }
 
-          $row['datetime'] = !empty($row['datetime'])
-              ? (is_numeric($row['datetime'])
-                  ? (new \DateTime())->setTimestamp((int)$row['datetime'])
-                  : new \DateTime($row['datetime']))
-              : new \DateTime();
+        if (!empty($filters['priceMin'])) {
+            $conditions[] = "price >= ?";
+            $params[] = (float)$filters['priceMin'];
+        }
 
-          return $row;
-      }, $beans);
-  }
+        if (!empty($filters['priceMax'])) {
+            $conditions[] = "price <= ?";
+            $params[] = (float)$filters['priceMax'];
+        }
+
+        $orderBy = 'datetime DESC';
+        if (!empty($filters['sort'])) {
+            $orderBy = $filters['sort']; // лучше whitelist
+        }
+
+        $offset = 0;
+        if (!empty($filters['page']) && $filters['page'] > 1) {
+            $offset = ($filters['page'] - 1) * $limit;
+        }
+
+        // Вызов универсального метода
+        $beans = $this->findAll(
+            self::TABLE,
+            $conditions,
+            $params,
+            $orderBy,
+            $limit,
+            $offset
+        );
+
+        // Нормализация
+        return array_map(function(\RedBeanPHP\OODBBean $bean) {
+            $row = $bean->export();
+
+            $row['datetime'] = !empty($row['datetime'])
+                ? (is_numeric($row['datetime'])
+                    ? (new \DateTime())->setTimestamp((int)$row['datetime'])
+                    : new \DateTime($row['datetime']))
+                : new \DateTime();
+
+            return $row;
+        }, $beans);
+    }
+
+
+  // public function getProducts(array $filters = []): array
+  // {
+
+  //     $conditions = [];
+  //     $params = [];
+
+  //     // Фильтр по категориям (список)
+  //     if (!empty($filters['categories'])) {
+  //         $placeholders = R::genSlots($filters['categories']); // ?, ?, ?
+  //         $conditions[] = "category_id IN ($placeholders)";
+  //         $params = array_merge($params, $filters['categories']);
+  //     }
+
+  //     // Фильтр по брендам (список)
+  //     if (!empty($filters['brands'])) {
+  //         $placeholders = R::genSlots($filters['brands']);
+  //         $conditions[] = "brand_id IN ($placeholders)";
+  //         $params = array_merge($params, $filters['brands']);
+  //     }
+
+  //     // Фильтр по цене
+  //     if (!empty($filters['priceMin'])) {
+  //         $conditions[] = "price >= ?";
+  //         $params[] = (float)$filters['priceMin'];
+  //     }
+
+  //     if (!empty($filters['priceMax'])) {
+  //         $conditions[] = "price <= ?";
+  //         $params[] = (float)$filters['priceMax'];
+  //     }
+
+  //     // Сортировка
+  //     $orderBy = 'datetime DESC';
+  //     if (!empty($filters['sort'])) {
+  //         $orderBy = $filters['sort']; // тут лучше whitelist сделать
+  //     }
+
+  //     // Пагинация
+  //     $limit = 20;
+  //     $offset = 0;
+  //     if (!empty($filters['page']) && $filters['page'] > 1) {
+  //         $offset = ($filters['page'] - 1) * $limit;
+  //     }
+
+  //     // Универсальный findAll
+  //     $beans = $this->findAll(
+  //         self::TABLE,
+  //         $conditions,
+  //         $params,
+  //         $orderBy,
+  //         $limit,
+  //         $offset
+  //     );
+
+  //     // Нормализация дат
+  //     return array_map(function(\RedBeanPHP\OODBBean $bean) {
+  //         $row = $bean->export();
+
+  //         $row['datetime'] = !empty($row['datetime'])
+  //             ? (is_numeric($row['datetime'])
+  //                 ? (new \DateTime())->setTimestamp((int)$row['datetime'])
+  //                 : new \DateTime($row['datetime']))
+  //             : new \DateTime();
+
+  //         return $row;
+  //     }, $beans);
+  // }
 
 
 

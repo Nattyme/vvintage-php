@@ -80,7 +80,7 @@ class ProductService extends BaseService
           'images' => $images,
           'translations' => $translations
         ]);
-      
+ 
         return $dto;
      
     }
@@ -147,10 +147,11 @@ class ProductService extends BaseService
         return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
-    public function getLastProducts(int $count): ?ProductOutputDTO
+    public function getLastProducts(int $count): ?array
     {
       $rows = $this->repository->getLastProducts($count);
-      return $rows ? $this->createProductDTOFromArray($rows[0]) : null;
+
+      return $rows ? array_map([$this, 'createProductDTOFromArray'], $rows) : null;
     }
 
     public function countProducts(): int
@@ -178,19 +179,41 @@ class ProductService extends BaseService
 
     public function getFilteredProducts(ProductFilterDTO $filters): array 
     {
-        if ($filters instanceof ProductFilterDTO) {
-            $filters = [
-                'categories' => $filters->categories,
-                'brands'     => $filters->brands,
-                'priceMin'   => $filters->priceMin,
-                'priceMax'   => $filters->priceMax,
-                'sort'       => $filters->sort,
-                'page'       => $filters->page,
-            ];
-        }
-        $rows = $this->repository->getProducts($filters);
+      $categories = !empty($filters->categories) ? $filters->categories : null;
+
    
-        return array_map([$this, 'createProductDTOFromArray'], $rows);
+    
+      if( $categories && count( $categories) === 1) {
+        $id = (int) $categories[0];
+        $category = $this->categoryService->getCategoryById($id) ?? null;
+        $parend_id = $category->getParentId() ?? null;
+    
+        if(!$parend_id) {
+          $subCategories = $this->categoryService->getSubCategoriesArray($id);
+          
+          // Получаем только id из массива подкатегорий
+          $subCategoryIds = array_column($subCategories, 'id');
+
+          // Теперь можно подставить эти id в фильтр
+          if (!empty($subCategoryIds)) {
+              $filters->categories = $subCategoryIds;
+          }
+        }
+      
+      }
+      if ($filters instanceof ProductFilterDTO) {
+          $filters = [
+              'categories' => $filters->categories,
+              'brands'     => $filters->brands,
+              'priceMin'   => $filters->priceMin,
+              'priceMax'   => $filters->priceMax,
+              'sort'       => $filters->sort,
+              'page'       => $filters->page,
+          ];
+      }
+      $rows = $this->repository->getProducts($filters);
+  
+      return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
 

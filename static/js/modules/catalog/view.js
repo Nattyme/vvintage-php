@@ -325,7 +325,7 @@ const renderMenuTree = (cats, level = 1, baseUrl = 'https://vvintage') => {
       <ul class="${ulClassMap[1]}">
         ${cats.map(cat => `
           <li class="${liClass}" id="${cat.id}">
-            <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}" data-cat="${cat.id}">
+            <a href="${baseUrl}/shop?${encodeURIComponent('category[]')}=${cat.id}" class="${linkClass}" data-cat="${cat.id}">
               ${cat.title}
             </a>
           </li>
@@ -333,6 +333,19 @@ const renderMenuTree = (cats, level = 1, baseUrl = 'https://vvintage') => {
       </ul>
     `;
   }
+  // if (level === 1) {
+  //   return `
+  //     <ul class="${ulClassMap[1]}">
+  //       ${cats.map(cat => `
+  //         <li class="${liClass}" id="${cat.id}">
+  //           <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}" data-cat="${cat.id}">
+  //             ${cat.title}
+  //           </a>
+  //         </li>
+  //       `).join('')}
+  //     </ul>
+  //   `;
+  // }
 
   // 2-й и 3-й уровень: только LI
   return cats.map(cat => `

@@ -324,21 +324,34 @@
       $productController = new ProductController($seoService, $breadcrumbs );
       $catalogController  = new CatalogController($seoService, $breadcrumbs );
 
-      if ( isset($routeData->uriGet) && $routeData->uriGet === 'cat' && !empty($routeData->uriGetParam) ) {
-        require ROOT . 'modules/shop/categories.php';
-      } else if ( isset($routeData->uriGet) && $routeData->uriGet === 'brand' && !empty($routeData->uriGetParam) ) {
-        require ROOT . 'modules/shop/brands.php';
-      } else if ( isset($routeData->uriGet) && $routeData->uriGet === 'subcat' && !empty($routeData->uriGetParam)) {
-        require ROOT . 'modules/shop/subcat.php';
-      } else if ( isset($routeData->uriGet) && $routeData->uriGet !== 'cat' && $routeData->uriGet !== 'subcat') {
-        $productController->index($routeData);
-      } else if (isset($routeData->uriGet) && $routeData->uriGet === 'shop') {
-        $catalogController->index($routeData);
-      }
-      else {
-        $catalogController->index($routeData);
-      }
+      $catalogController->index($routeData);
     }
+    // private static function routeShop(RouteData $routeData) {
+    //   $languages = LanguageConfig::getAvailableLanguages();
+    //   $currentLang = LanguageConfig::getCurrentLocale();
+    //   $breadcrumbs = new Breadcrumbs();
+
+    //   // Инициализируем SEO-сервис
+    //   $seoService = new SeoService();
+    //   $productController = new ProductController($seoService, $breadcrumbs );
+    //   $catalogController  = new CatalogController($seoService, $breadcrumbs );
+
+    //   if ( isset($routeData->uriGet) && $routeData->uriGet === 'cat' && !empty($routeData->uriGetParam) ) {
+    //     dd($routeData->uriGet);
+    //     require ROOT . 'modules/shop/categories.php';
+    //   } else if ( isset($routeData->uriGet) && $routeData->uriGet === 'brand' && !empty($routeData->uriGetParam) ) {
+    //     require ROOT . 'modules/shop/brands.php';
+    //   } else if ( isset($routeData->uriGet) && $routeData->uriGet === 'subcat' && !empty($routeData->uriGetParam)) {
+    //     require ROOT . 'modules/shop/subcat.php';
+    //   } else if ( isset($routeData->uriGet) && $routeData->uriGet !== 'cat' && $routeData->uriGet !== 'subcat') {
+    //     $productController->index($routeData);
+    //   } else if (isset($routeData->uriGet) && $routeData->uriGet === 'shop') {
+    //     $catalogController->index($routeData);
+    //   }
+    //   else {
+    //     $catalogController->index($routeData);
+    //   }
+    // }
 
       
     private static function routeBlog(RouteData $routeData) {
