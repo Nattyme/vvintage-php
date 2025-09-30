@@ -33,3 +33,5 @@ php_value error_reporting -1
   # Всё остальное идёт в index.php, но избегаем зацикливания
   RewriteRule ^.*$ index.php [QSA,L]
 </IfModule>
+
+

@@ -179,6 +179,7 @@ class ProductService extends BaseService
 
     public function getFilteredProducts(ProductFilterDTO $filters): array 
     {
+     
       $categories = !empty($filters->categories) ? $filters->categories : null;
 
    

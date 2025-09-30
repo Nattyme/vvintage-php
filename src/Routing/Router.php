@@ -324,6 +324,10 @@
       $productController = new ProductController($seoService, $breadcrumbs );
       $catalogController  = new CatalogController($seoService, $breadcrumbs );
 
+      if ( isset($routeData->uriGet) ) {
+        $productController->index($routeData);
+      }
+
       $catalogController->index($routeData);
     }
     // private static function routeShop(RouteData $routeData) {

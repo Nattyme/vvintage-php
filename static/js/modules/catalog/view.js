@@ -346,11 +346,11 @@ const renderMenuTree = (cats, level = 1, baseUrl = 'https://vvintage') => {
   //     </ul>
   //   `;
   // }
-
+  
   // 2-й и 3-й уровень: только LI
   return cats.map(cat => `
     <li class="${liClass}" id="${cat.id}" data-cat="${cat.id}">
-      <a href="${baseUrl}/shop/cat/${cat.id}" class="${linkClass}" data-cat="${cat.id}">
+      <a href="${baseUrl}/shop?${encodeURIComponent('category[]')}=${cat.id}" class="${linkClass}" data-cat="${cat.id}">
         ${level === 2 && cat.image ? `
           <svg class="icon icon--${cat.image}">
             <use href="${baseUrl}/static/img/svgsprite/sprite.symbol.svg#${cat.image}"></use>

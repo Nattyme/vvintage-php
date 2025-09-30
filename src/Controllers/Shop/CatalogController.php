@@ -49,6 +49,16 @@ final class CatalogController extends BaseController
     {
       $this->setRouteData($routeData); // <-- передаём routeData
 
+      // Название страницы
+      $pageTitle = 'Каталог товаров';
+      $productsPerPage = 9;
+      $pagination = pagination($productsPerPage, 'products');
+// Array
+// (
+//     [number_of_pages] => 5
+//     [page_number] => 1
+//     [sql_page_limit] => LIMIT 0, 9
+// )
 
       $filterDto = new ProductFilterDTO([
           'brands'    => $_GET['brand'] ?? [],
@@ -61,11 +71,6 @@ final class CatalogController extends BaseController
       $products = $this->productService->getFilteredProducts($filterDto);
       $categories = $this->categoryService->getCategoryTree();
       $brands = $this->brandService->getAllBrandsDto();
-
-      // Название страницы
-      $pageTitle = 'Каталог товаров';
-      $productsPerPage = 9;
-      $pagination = pagination($productsPerPage, 'products');
 
       // Получаем продукты с учётом пагинации
       $products = $this->productService->getFilteredProducts($filterDto);
@@ -80,14 +85,6 @@ final class CatalogController extends BaseController
 
       $total = $this->productService->countProducts();
 
-      // $imagesByProductId = [];
-
-      // foreach ($products as $product) {
-      //     $imagesMainAndOthers = $this->productService->getProductImages($product);
-      //     $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
-      // }
-
-
       // Это кол-во товаров, показанных на этой странице
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -99,7 +96,6 @@ final class CatalogController extends BaseController
           'filterDto' => $filterDto,
           'brands' => $brands,
           'categories' => $categories,
-          // 'imagesByProductId' => $imagesByProductId,
           'total' => $total,
           'shown' => $shown,
           'locale' => $this->currentLang
