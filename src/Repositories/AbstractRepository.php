@@ -68,15 +68,16 @@ abstract class AbstractRepository
         return $bean ?: null;
     }
 
-   protected function findAll(
-    string $table,
-    array $conditions = [],       // условия WHERE, например ['age > ?']
-    array $params = [],           // параметры для условий
-    ?string $orderBy = null,      // сортировка, например 'name ASC'
-    ?int $limit = null,           // лимит, например 10
-    ?int $offset = null,          // смещение для пагинации
-    ?string $groupBy = null       // GROUP BY, например 'role'
-    ): array {
+    protected function findAll(
+      string $table,
+      array $conditions = [],       // условия WHERE, например ['age > ?']
+      array $params = [],           // параметры для условий
+      ?string $orderBy = null,      // сортировка, например 'name ASC'
+      ?int $limit = null,           // лимит, например 10
+      ?int $offset = null,          // смещение для пагинации
+      ?string $groupBy = null       // GROUP BY, например 'role'
+      ): array 
+    {
         $sqlParts = [];
 
         // WHERE

@@ -168,56 +168,124 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         return true;
     }
 
+  public function getProducts(array $filters = []): array
+  {
+      $conditions = [];
+      $params = [];
 
-    public function getProducts(array $filters = []): array
-    {
-        $sql = 'SELECT id, category_id, brand_id, slug, title, description, price, url, sku, stock, datetime, status, edit_time
-                FROM ' . self::TABLE . ' WHERE 1=1';
+      // Фильтр по категориям (список)
+      if (!empty($filters['categories'])) {
+          $placeholders = R::genSlots($filters['categories']); // ?, ?, ?
+          $conditions[] = "category_id IN ($placeholders)";
+          $params = array_merge($params, $filters['categories']);
+      }
 
-        $params = [];
+      // Фильтр по брендам (список)
+      if (!empty($filters['brands'])) {
+          $placeholders = R::genSlots($filters['brands']);
+          $conditions[] = "brand_id IN ($placeholders)";
+          $params = array_merge($params, $filters['brands']);
+      }
 
-        if (isset($filters['id'])) {
-            $sql .= ' AND id = ?';
-            $params[] = $filters['id'];
-        }
+      // Фильтр по цене
+      if (!empty($filters['priceMin'])) {
+          $conditions[] = "price >= ?";
+          $params[] = (float)$filters['priceMin'];
+      }
 
-        if (isset($filters['status'])) {
-            $sql .= ' AND status = ?';
-            $params[] = $filters['status'];
-        }
+      if (!empty($filters['priceMax'])) {
+          $conditions[] = "price <= ?";
+          $params[] = (float)$filters['priceMax'];
+      }
 
-        if (isset($filters['category_id'])) {
-            $sql .= ' AND category_id = ?';
-            $params[] = $filters['category_id'];
-        }
+      // Сортировка
+      $orderBy = 'datetime DESC';
+      if (!empty($filters['sort'])) {
+          $orderBy = $filters['sort']; // тут лучше whitelist сделать
+      }
 
-        if (isset($filters['brand_id'])) {
-            $sql .= ' AND brand_id = ?';
-            $params[] = $filters['brand_id'];
-        }
+      // Пагинация
+      $limit = 20;
+      $offset = 0;
+      if (!empty($filters['page']) && $filters['page'] > 1) {
+          $offset = ($filters['page'] - 1) * $limit;
+      }
 
-        $sql .= ' ORDER BY datetime DESC';
+      // Универсальный findAll
+      $beans = $this->findAll(
+          self::TABLE,
+          $conditions,
+          $params,
+          $orderBy,
+          $limit,
+          $offset
+      );
 
-        if (isset($filters['limit']) && (int)$filters['limit'] > 0) {
-            $sql .= ' LIMIT ' . (int)$filters['limit'];
-        }
+      // Нормализация дат
+      return array_map(function(\RedBeanPHP\OODBBean $bean) {
+          $row = $bean->export();
 
-        $rows = $this->getAll($sql, $params);
+          $row['datetime'] = !empty($row['datetime'])
+              ? (is_numeric($row['datetime'])
+                  ? (new \DateTime())->setTimestamp((int)$row['datetime'])
+                  : new \DateTime($row['datetime']))
+              : new \DateTime();
 
-        //  нормализуем
-        return array_map(function(array $row) {
-            if (!empty($row['datetime'])) {
-                // поддержка timestamp и строк
-                $row['datetime'] = is_numeric($row['datetime'])
-                    ? (new \DateTime())->setTimestamp((int)$row['datetime'])
-                    : new \DateTime($row['datetime']);
-            } else {
-                $row['datetime'] = new \DateTime(); // fallback
-            }
+          return $row;
+      }, $beans);
+  }
+
+
+
+    // public function getProducts(array $filters = []): array
+    // {
+    //     $sql = 'SELECT id, category_id, brand_id, slug, title, description, price, url, sku, stock, datetime, status, edit_time
+    //             FROM ' . self::TABLE . ' WHERE 1=1';
+
+    //     $params = [];
+
+    //     if (isset($filters['id'])) {
+    //         $sql .= ' AND id = ?';
+    //         $params[] = $filters['id'];
+    //     }
+
+    //     if (isset($filters['status'])) {
+    //         $sql .= ' AND status = ?';
+    //         $params[] = $filters['status'];
+    //     }
+
+    //     if (isset($filters['category_id'])) {
+    //         $sql .= ' AND category_id = ?';
+    //         $params[] = $filters['category_id'];
+    //     }
+
+    //     if (isset($filters['brand_id'])) {
+    //         $sql .= ' AND brand_id = ?';
+    //         $params[] = $filters['brand_id'];
+    //     }
+
+    //     $sql .= ' ORDER BY datetime DESC';
+
+    //     if (isset($filters['limit']) && (int)$filters['limit'] > 0) {
+    //         $sql .= ' LIMIT ' . (int)$filters['limit'];
+    //     }
+
+    //     $rows = $this->getAll($sql, $params);
+
+    //     //  нормализуем
+    //     return array_map(function(array $row) {
+    //         if (!empty($row['datetime'])) {
+    //             // поддержка timestamp и строк
+    //             $row['datetime'] = is_numeric($row['datetime'])
+    //                 ? (new \DateTime())->setTimestamp((int)$row['datetime'])
+    //                 : new \DateTime($row['datetime']);
+    //         } else {
+    //             $row['datetime'] = new \DateTime(); // fallback
+    //         }
             
-            return $row;
-        }, $rows);
-    }
+    //         return $row;
+    //     }, $rows);
+    // }
     /**
       ********** ::: // UPDATE ::: **********
     */

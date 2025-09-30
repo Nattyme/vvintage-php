@@ -87,7 +87,7 @@
               </a>
             </td>
             <td>
-              <?php echo h($product->title); ?>
+              <?php echo h($product->brand_title); ?>
             </td>
             <td>
               <?php echo h($product->category_title ?? '');?>
