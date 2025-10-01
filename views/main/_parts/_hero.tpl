@@ -23,7 +23,7 @@
       </div>
       <a href="<?php echo HOST;?>shop" class="hero__button">
         <span class="button button--l button--primary">
-            <?php echo h(__('button.goto.shop', [], 'buttons'));?>: 
+            <?php echo h(__('button.goto.shop', [], 'buttons'));?>
         </span>
       </a>
     </div>
