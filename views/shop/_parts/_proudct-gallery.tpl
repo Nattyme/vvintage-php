@@ -3,14 +3,14 @@
   <figure class="gallery__item gallery__item--1">
     <a 
       href="<?php echo HOST . 'usercontent/products/' . u($viewModel['main']->getFilename());?>" 
-      data-thumb="<?php echo HOST . 'usercontent/products/' . h($viewModel['main']->getFilename());?>"
+      data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' . h($viewModel['main']->getFilename());?>"
       data-fancybox="gallery">
 
       <picture>
         <img 
           class="product__img product__img--main"
-          src="<?php echo HOST . 'usercontent/products/' . u($viewModel['main']->getFilename());?>" 
-          srcset="<?php echo HOST . 'usercontent/products/' . u($viewModel['main']->getFilename());?>" alt="" loading="lazy"
+          src="<?php echo HOST . 'usercontent/products/' . '350-' . u($viewModel['main']->getFilename());?>" 
+          srcset="<?php echo HOST . 'usercontent/products/' . '350-' . u($viewModel['main']->getFilename());?>" alt="" loading="lazy"
         >
       </picture>
     </a>
@@ -19,12 +19,12 @@
   <?php foreach ($viewModel['gallery']['visible'] as $i => $image) : ?>
     <figure class="gallery__item gallery__item--<?php echo $i + 2; ?>">
       <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
-          data-thumb="<?php echo HOST . 'usercontent/products/' . h($image->getFilename());?>">
+          data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' .  h($image->getFilename());?>">
         <picture>
           <img 
             class="product__img"
-            src="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
-            srcset="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" alt="" loading="lazy"
+            src="<?php echo HOST . 'usercontent/products/' . '350-' . u($image->getFilename());?>" 
+            srcset="<?php echo HOST . 'usercontent/products/' . '350-' . u($image->getFilename());?>" alt="" loading="lazy"
           >
         </picture>
       </a>
@@ -34,7 +34,7 @@
   <?php foreach($viewModel['gallery']['hidden'] as $image) : ?>
     <a 
       data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
-      data-thumb="<?php echo HOST . 'usercontent/products/' . h($image->getFilename());?>">
+      data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' . h($image->getFilename());?>">
     </a>
   <?php endforeach; ?>
 
