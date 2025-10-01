@@ -12,6 +12,7 @@ use Vvintage\Repositories\Product\ProductTranslationRepository;
 use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Category\CategoryService;
+use Vvintage\Services\Shared\PaginationService;
 use Vvintage\Services\Brand\BrandService;
 
 use Vvintage\DTO\Product\ProductFilterDTO;
@@ -26,6 +27,7 @@ class ProductService extends BaseService
     protected CategoryService $categoryService;
     protected BrandService $brandService;
     protected ProductImageService $productImageService;
+    protected PaginationService $paginationService;
 
     private array $status = [
       'active'   => 'Активный',
@@ -41,6 +43,7 @@ class ProductService extends BaseService
         $this->categoryService = new CategoryService();
         $this->brandService = new BrandService();
         $this->productImageService = new ProductImageService();
+        $this->paginationService = new PaginationService();
     }
 
     
@@ -181,15 +184,13 @@ class ProductService extends BaseService
     {
      
       $categories = !empty($filters->categories) ? $filters->categories : null;
-
-   
     
       if( $categories && count( $categories) === 1) {
         $id = (int) $categories[0];
         $category = $this->categoryService->getCategoryById($id) ?? null;
-        $parend_id = $category->getParentId() ?? null;
+        $parent_id = $category->getParentId() ?? null;
     
-        if(!$parend_id) {
+        if(!$parent_id) {
           $subCategories = $this->categoryService->getSubCategoriesArray($id);
           
           // Получаем только id из массива подкатегорий
@@ -202,19 +203,47 @@ class ProductService extends BaseService
         }
       
       }
+
       if ($filters instanceof ProductFilterDTO) {
           $filters = [
               'categories' => $filters->categories,
               'brands'     => $filters->brands,
               'priceMin'   => $filters->priceMin,
               'priceMax'   => $filters->priceMax,
-              'sort'       => $filters->sort,
-              'page'       => $filters->page,
+              'sort'       => $filters->sort
           ];
       }
-      $rows = $this->repository->getProducts($filters);
+
+      $products = $this->repository->getProducts($filters);
+      $totalItems = count($products);
+
+      $filters = $this->addPaginationToFilter($filters, $totalItems);
+ 
+
+      // Теперь получаем только продукты для этой страницы
+      $productsPage = $this->repository->getProducts($filters);
+      $products = array_map([$this, 'createProductDTOFromArray'], $productsPage);
+
+      return ['products' => $products, 'total' => $totalItems, 'filters' => $filters];
+
+      // $rows = $this->repository->getProducts($filters);
   
-      return array_map([$this, 'createProductDTOFromArray'], $rows);
+      // return array_map([$this, 'createProductDTOFromArray'], $products);
+    }
+
+    public function addPaginationToFilter($filters, $totalItems)
+    {
+      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+      $pagination = $this->paginationService->paginate( totalItems: $totalItems, currentPage: $currentPage, perPage: 10);
+
+      // Добавляем пагинацию в фильтры
+      $filters['pagination']['page_number'] = $pagination['current_page'];
+      $filters['pagination']['perPage'] = $pagination['perPage'];
+      $filters['pagination']['number_of_pages'] = $pagination['number_of_pages'];
+  
+      // $filters['perPage'] = $pagination['perPage'];
+      // $filters['number_of_pages'] = $pagination['number_of_pages'];
+      return $filters;
     }
 
 

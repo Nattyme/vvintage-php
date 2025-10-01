@@ -3,43 +3,31 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Shared;
 
-use RedBeanPHP\R;
-
 class PaginationService
 {
     private int $defaultPerPage;
 
-    public function __construct(int $defaultPerPage = 5)
+    public function __construct(int $defaultPerPage = 20)
     {
         $this->defaultPerPage = $defaultPerPage;
     }
 
-    public function paginate(
-        int $resultsPerPage,
-        string $table,
-        array $conditions = [],
-        array $params = [],
-        ?int $currentPage = null
-    ): array {
-        $resultsPerPage = $resultsPerPage > 0 ? $resultsPerPage : $this->defaultPerPage;
+    public function paginate(int $totalItems, int $currentPage = 1, ?int $perPage = null): array
+    {
+        $perPage = $perPage && $perPage > 0 ? $perPage : $this->defaultPerPage;
 
-        $where = !empty($conditions) ? 'WHERE ' . implode(' AND ', $conditions) : '';
-        $numberOfResults = R::count($table, $where, $params);
+        $numberOfPages = (int)ceil($totalItems / $perPage);
 
-        $numberOfPages = (int)ceil($numberOfResults / $resultsPerPage);
+        if ($currentPage < 1) $currentPage = 1;
+        if ($currentPage > $numberOfPages) $currentPage = $numberOfPages > 0 ? $numberOfPages : 1;
 
-        $pageNumber = $currentPage ?? (isset($_GET['page']) ? (int)$_GET['page'] : 1);
-        if ($pageNumber < 1) $pageNumber = 1;
-        if ($pageNumber > $numberOfPages) $pageNumber = $numberOfPages > 0 ? $numberOfPages : 1;
+        $offset = ($currentPage - 1) * $perPage;
 
-        $offset = ($pageNumber - 1) * $resultsPerPage;
-
-        // Возвращаем готовые данные для findAll
         return [
-            'limit'           => $resultsPerPage,
+            'perPage'           => $perPage,
             'offset'          => $offset,
             'number_of_pages' => $numberOfPages,
-            'current_page'    => $pageNumber,
+            'current_page'    => $currentPage,
         ];
     }
 }

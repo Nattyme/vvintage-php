@@ -170,13 +170,31 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
 
     public function getProducts(array $filters = []): array
     {
-
         $conditions = [];
         $params = [];
 
-        /**
-         * --- Старый стиль ---
-         */
+        // применяем простые фильтры
+        [$conditions, $params, $limit] = $this->applySimpleFilters($filters, $conditions, $params);
+
+        // применяем сложные фильтры
+        [$conditions, $params, $limit, $offset, $orderBy] = $this->applyAdvancedFilters($filters, $conditions, $params, $limit);
+
+        // Вызов универсального метода
+        $beans = $this->findAll(
+            self::TABLE,
+            $conditions,
+            $params,
+            $orderBy,
+            $limit,
+            $offset
+        );
+
+        // нормализация дат
+        return array_map([$this, 'normalizeRow'], $beans);
+    }
+
+    private function applySimpleFilters(array $filters, array $conditions, array $params): array
+    {
         if (isset($filters['id'])) {
             $conditions[] = "id = ?";
             $params[] = (int)$filters['id'];
@@ -197,27 +215,28 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             $params[] = (int)$filters['brand_id'];
         }
 
-        if (isset($filters['limit']) && (int)$filters['limit'] > 0) {
-            $limit = (int)$filters['limit'];
-        } else {
-            $limit = 20;
-        }
+        $limit = !empty($filters['perPage']) ? (int)$filters['perPage'] : 20;
 
-        /**
-         * --- Новый стиль (DTO) ---
-         */
+        return [$conditions, $params, $limit];
+    }
+
+    private function applyAdvancedFilters(array $filters, array $conditions, array $params, int $limit): array
+    {
+        // категории
         if (!empty($filters['categories'])) {
             $placeholders = R::genSlots($filters['categories']);
             $conditions[] = "category_id IN ($placeholders)";
             $params = array_merge($params, $filters['categories']);
         }
 
+        // бренды
         if (!empty($filters['brands'])) {
             $placeholders = R::genSlots($filters['brands']);
             $conditions[] = "brand_id IN ($placeholders)";
             $params = array_merge($params, $filters['brands']);
         }
 
+        // цена
         if (!empty($filters['priceMin'])) {
             $conditions[] = "price >= ?";
             $params[] = (float)$filters['priceMin'];
@@ -228,160 +247,33 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             $params[] = (float)$filters['priceMax'];
         }
 
+        // сортировка
         $orderBy = 'datetime DESC';
-        if (!empty($filters['sort'])) {
-            $orderBy = $filters['sort']; // лучше whitelist
+        $allowedSorts = ['price ASC', 'price DESC', 'datetime DESC'];
+        if (!empty($filters['sort']) && in_array($filters['sort'], $allowedSorts)) {
+            $orderBy = $filters['sort'];
         }
 
+        // пагинация
         $offset = 0;
         if (!empty($filters['page']) && $filters['page'] > 1) {
             $offset = ($filters['page'] - 1) * $limit;
         }
 
-        // Вызов универсального метода
-        $beans = $this->findAll(
-            self::TABLE,
-            $conditions,
-            $params,
-            $orderBy,
-            $limit,
-            $offset
-        );
-
-        // Нормализация
-        return array_map(function(\RedBeanPHP\OODBBean $bean) {
-            $row = $bean->export();
-
-            $row['datetime'] = !empty($row['datetime'])
-                ? (is_numeric($row['datetime'])
-                    ? (new \DateTime())->setTimestamp((int)$row['datetime'])
-                    : new \DateTime($row['datetime']))
-                : new \DateTime();
-
-            return $row;
-        }, $beans);
+        return [$conditions, $params, $limit, $offset, $orderBy];
     }
 
+    private function normalizeRow(\RedBeanPHP\OODBBean $bean): array
+    {
+        $row = $bean->export();
+        $row['datetime'] = !empty($row['datetime'])
+            ? (is_numeric($row['datetime'])
+                ? (new \DateTime())->setTimestamp((int)$row['datetime'])
+                : new \DateTime($row['datetime']))
+            : new \DateTime();
+        return $row;
+    }
 
-  // public function getProducts(array $filters = []): array
-  // {
-
-  //     $conditions = [];
-  //     $params = [];
-
-  //     // Фильтр по категориям (список)
-  //     if (!empty($filters['categories'])) {
-  //         $placeholders = R::genSlots($filters['categories']); // ?, ?, ?
-  //         $conditions[] = "category_id IN ($placeholders)";
-  //         $params = array_merge($params, $filters['categories']);
-  //     }
-
-  //     // Фильтр по брендам (список)
-  //     if (!empty($filters['brands'])) {
-  //         $placeholders = R::genSlots($filters['brands']);
-  //         $conditions[] = "brand_id IN ($placeholders)";
-  //         $params = array_merge($params, $filters['brands']);
-  //     }
-
-  //     // Фильтр по цене
-  //     if (!empty($filters['priceMin'])) {
-  //         $conditions[] = "price >= ?";
-  //         $params[] = (float)$filters['priceMin'];
-  //     }
-
-  //     if (!empty($filters['priceMax'])) {
-  //         $conditions[] = "price <= ?";
-  //         $params[] = (float)$filters['priceMax'];
-  //     }
-
-  //     // Сортировка
-  //     $orderBy = 'datetime DESC';
-  //     if (!empty($filters['sort'])) {
-  //         $orderBy = $filters['sort']; // тут лучше whitelist сделать
-  //     }
-
-  //     // Пагинация
-  //     $limit = 20;
-  //     $offset = 0;
-  //     if (!empty($filters['page']) && $filters['page'] > 1) {
-  //         $offset = ($filters['page'] - 1) * $limit;
-  //     }
-
-  //     // Универсальный findAll
-  //     $beans = $this->findAll(
-  //         self::TABLE,
-  //         $conditions,
-  //         $params,
-  //         $orderBy,
-  //         $limit,
-  //         $offset
-  //     );
-
-  //     // Нормализация дат
-  //     return array_map(function(\RedBeanPHP\OODBBean $bean) {
-  //         $row = $bean->export();
-
-  //         $row['datetime'] = !empty($row['datetime'])
-  //             ? (is_numeric($row['datetime'])
-  //                 ? (new \DateTime())->setTimestamp((int)$row['datetime'])
-  //                 : new \DateTime($row['datetime']))
-  //             : new \DateTime();
-
-  //         return $row;
-  //     }, $beans);
-  // }
-
-
-
-    // public function getProducts(array $filters = []): array
-    // {
-    //     $sql = 'SELECT id, category_id, brand_id, slug, title, description, price, url, sku, stock, datetime, status, edit_time
-    //             FROM ' . self::TABLE . ' WHERE 1=1';
-
-    //     $params = [];
-
-    //     if (isset($filters['id'])) {
-    //         $sql .= ' AND id = ?';
-    //         $params[] = $filters['id'];
-    //     }
-
-    //     if (isset($filters['status'])) {
-    //         $sql .= ' AND status = ?';
-    //         $params[] = $filters['status'];
-    //     }
-
-    //     if (isset($filters['category_id'])) {
-    //         $sql .= ' AND category_id = ?';
-    //         $params[] = $filters['category_id'];
-    //     }
-
-    //     if (isset($filters['brand_id'])) {
-    //         $sql .= ' AND brand_id = ?';
-    //         $params[] = $filters['brand_id'];
-    //     }
-
-    //     $sql .= ' ORDER BY datetime DESC';
-
-    //     if (isset($filters['limit']) && (int)$filters['limit'] > 0) {
-    //         $sql .= ' LIMIT ' . (int)$filters['limit'];
-    //     }
-
-    //     $rows = $this->getAll($sql, $params);
-
-    //     //  нормализуем
-    //     return array_map(function(array $row) {
-    //         if (!empty($row['datetime'])) {
-    //             // поддержка timestamp и строк
-    //             $row['datetime'] = is_numeric($row['datetime'])
-    //                 ? (new \DateTime())->setTimestamp((int)$row['datetime'])
-    //                 : new \DateTime($row['datetime']);
-    //         } else {
-    //             $row['datetime'] = new \DateTime(); // fallback
-    //         }
-            
-    //         return $row;
-    //     }, $rows);
-    // }
     /**
       ********** ::: // UPDATE ::: **********
     */

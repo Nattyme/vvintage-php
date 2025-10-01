@@ -68,24 +68,31 @@ final class CatalogController extends BaseController
           'sort'      => $_GET['sort'] ?? null,
       ]);
 
-      $products = $this->productService->getFilteredProducts($filterDto);
+      // $products = $this->productService->getFilteredProducts($filterDto);
       $categories = $this->categoryService->getCategoryTree();
       $brands = $this->brandService->getAllBrandsDto();
 
       // Получаем продукты с учётом пагинации
-      $products = $this->productService->getFilteredProducts($filterDto);
+      $filteredProductsData = $this->productService->getFilteredProducts($filterDto);
+
+      $products =  $filteredProductsData['products'];
+      $total = $filteredProductsData['total'];
+      $filters = $filteredProductsData['filters'];
+      $pagination = $filters['pagination'];
+      // $total = $this->productService->countProducts();
+  
       $mainCategories = $this->categoryService->getMainCategories();
 
-      $seo = [];
+      // $seo = [];
       // получаем SEO DTO
   
       // foreach($products as $product) {
       //   $seo[$product->getId()] = $this->seoService->getSeoForPage('product', $product);
       // }
 
-      $total = $this->productService->countProducts();
 
       // Это кол-во товаров, показанных на этой странице
+   
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
         

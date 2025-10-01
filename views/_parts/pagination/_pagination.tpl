@@ -1,6 +1,7 @@
 <div class="section-pagination">
   
   <?php 
+
   // Кнопка "назад" 
   include ROOT . "views/_parts/pagination/_button-prev.tpl";
   
