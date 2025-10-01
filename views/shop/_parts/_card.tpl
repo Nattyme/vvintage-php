@@ -38,20 +38,22 @@
     <?php endif; ?>
   </div>
 
-  <div class="fav-button-wrapper">
-    <a href="" 
-      class="fav-button <?php echo isProductInFav($product->id) ? 'fav-button--active' : '';?>"
-      data-id="<?php echo $product->id;?>"
-      aria-label="Добавить в избранное"
-    >
-      <svg class="icon icon--favorite" viewBox="0 0 20 20">
-        <!-- нижний слой: белый толстый контур -->
-        <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>" class="stroke-white"/>
-        <!-- верхний слой: основной цвет -->
-        <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>" class="stroke-main"/>
-      </svg>
-    </a>
-  </div>
+  <?php if (isProductInFav($product->id)) : ?>
+    <div class="fav-button-wrapper">
+      <a href="" 
+        class="fav-button <?php echo isProductInFav($product->id) ? 'fav-button--active' : '';?>"
+        data-id="<?php echo $product->id;?>"
+        aria-label="Добавить в избранное"
+      >
+        <svg class="icon icon--favorite" viewBox="0 0 20 20">
+          <!-- нижний слой: белый толстый контур -->
+          <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>" class="stroke-white"/>
+          <!-- верхний слой: основной цвет -->
+          <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#favorite';?>" class="stroke-main"/>
+        </svg>
+      </a>
+    </div>
+  <?php endif;?>
 
   <div class="card__desc">
     <a href="<?php echo HOST . 'shop/' . u($product->id);?>" class="card__title link-to-page block__text">

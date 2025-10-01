@@ -8,7 +8,7 @@
     
       <div class="filter__buttons">
         <button type="submit" class="button button--primary button--s">Применить фильтры</button>
-        <a href="<?php echo HOST . 'shop'; ?>" class="button button--outline button--s">Сбросить фильтры</a>
+        <a href="<?php echo HOST . 'shop'; ?>" class="button button--outline button--s">Сбросить</a>
       </div>
   </div>
 </aside>
