@@ -60,7 +60,7 @@
               </button>
             <?php  else : ?>
               <a href="<?php echo HOST . 'addtocart?id=' . u($viewModel['product']->id);?>" class="button button--primary button--xl">
-                <?php echo h(__('button.cart.add', [], 'buttons'));?>: 
+                <?php echo h(__('button.cart.add', [], 'buttons'));?>
               </a>
             <?php endif;?>
           </div>   

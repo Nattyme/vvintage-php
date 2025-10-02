@@ -16,7 +16,7 @@
 
 
     <section class="delivery__schema">
-      <div class="section-title">
+      <div class="delivery__title">
         <h3 class="h3">Оформление заказа</h3>
       </div>
       <ul class="schema">
@@ -171,7 +171,7 @@
 
 
   <section class="prices">
-    <div class="section-title">
+    <div class="delivery__title">
       <h3 class="h3">Тарифы</h3>
     </div>
 
@@ -323,7 +323,7 @@
 
   <section class="terms">
     <div class="container">
-          <div class="section-title">
+          <div class="delivery__title">
             <h3 class="h3">Гарантии и условия поставки </h3>
           </div>
           <ul>
@@ -341,7 +341,7 @@
 
   <section class="payment">
     <div class="container">
-      <div class="section-title">
+      <div class="delivery__title">
         <h3 class="h3">Способы оплаты</h3>
       </div>
 

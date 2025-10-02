@@ -3,11 +3,10 @@
   
   <ul class="filter__list" data-control="tab" id="filter-category">
     <?php foreach($viewModel['categories'] as $category) : ?>
-      <li class="filter__item accordion__item" data-section="<?php $category['id'];?>">
+      <li class="filter__item accordion__item <?php if (!empty($category['children'])) echo ' filter__item--has-sublist'; ?>" data-section="<?php echo $category['id']; ?>">
         <button type="button" class="filter__btn accordion__btn">
           <?php echo $category['title'];?>
         </button>
-
         <?php if(!empty($category['children'])) : ?>
         <ul class="filter__sub-list accordion__content">
           <?php foreach($category['children'] as $child) : ?>
@@ -26,6 +25,7 @@
           <?php endforeach; ?>
         </ul>
         <?php endif; ?>
+
       </li>
     <?php endforeach;?>
   </ul>

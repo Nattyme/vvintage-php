@@ -20,7 +20,7 @@ const addAccordion = (type, selector) => {
   const showContent = (e, btn) => {
     e.preventDefault();
     const {currentItem, currentContent} = findContentAndItem(btn);
-
+    if(!currentContent || !currentItem) return;
     if (e.target.closest('a') && e.target.closest('a').dataset) {
       const linkData = e.target.closest('a').dataset;
       if(linkData.btn === 'edit' || linkData.btn === 'remove') return linkData.btn;
