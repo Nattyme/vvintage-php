@@ -218,11 +218,10 @@ class ProductService extends BaseService
       $products = $this->repository->getProducts($filters);
 
       if( $perPage) {
-    
         $totalItems = count($products);   // Считаем общее кол-во
         // Добавляем данные по пагинации в фильтр
         $filters = $this->addPaginationToFilter($filters, $totalItems, $perPage);
-
+ 
         // Теперь получаем только продукты для этой страницы
         $products = $this->repository->getProducts($filters);
         

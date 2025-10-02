@@ -11,6 +11,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="<?php echo HOST . 'static/img/favicons/apple-touch-icon.png'; ?>" />
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <link rel="stylesheet" href="<?php echo HOST . 'static/css/main.css'; ?>" />
 
   <?php 

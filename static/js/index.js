@@ -46,8 +46,11 @@ const initEverything = async () => {
   addAccordion("many", "#sidebar");
   addAccordion("many", "#filter-category");
   addAccordion("many", "#prices");
-  
+
+  // библиотеки
   fancyBox();
+  AOS.init();
+
   const pathHolder = document.querySelector("[data-config]");
   if (!pathHolder) return;
   const path = pathHolder.dataset.config;
