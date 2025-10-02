@@ -19,7 +19,9 @@
               <h1 class="h1 product-card__title"><?php echo h($viewModel['product']->title);?></h1>
             </div>
             <div class="product-card__row">
-              <a href="#" class="product-card__brand"><?php echo h($viewModel['product']->brand_title);?></a>
+              <a href="<?php echo HOST . 'shop?brand[]=' . h($viewModel['product']->brand_id) ;?>" class="product-card__brand">
+                <?php echo h($viewModel['product']->brand_title);?>
+              </a>
             </div>
             <div class="product-card__row">
               <div class="product-card__price">

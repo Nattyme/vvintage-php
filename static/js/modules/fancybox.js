@@ -1,5 +1,4 @@
 function fancyBox () {
-  console.log('ПРИВЕТ МАМА');
   const dataBox = document.querySelector('[data-fancybox]');
   if (!dataBox) return;
   
