@@ -22,7 +22,7 @@ function formatDate($date, $format = 'd.m.Y H:i'): string {
 // Форматирование цены
 // echo formatPrice(15990); // 15 990 ₽
 function formatPrice($price): string {
-  return number_format($price, 0, ',', ' ') . ' ₽';
+  return number_format($price, 0, ',', ' ') . '&nbsp;&euro';
 }
 
 // Обрезка текста

@@ -25,7 +25,7 @@
             </div>
             <div class="product-card__row">
               <div class="product-card__price">
-                <span class="price"><?php echo h($viewModel['product']->price);?>&nbsp;&euro;
+                <span class="price"><?php echo formatPrice(h($viewModel['product']->price));?>;
                 </span>
               </div>
             </div>
@@ -34,7 +34,11 @@
           <dl class="product-card__list">
             <div class="product-card__item  product-card__item--title">
               <dt><?php echo h(__('product.brand.title', [], 'product'));?></dt>
-              <dd><a href=""><?php echo h($viewModel['product']->brand_title);?></a></dd>
+              <dd>
+                <a href="<?php echo HOST . 'shop?brand[]=' . h($viewModel['product']->brand_id) ;?>" class="product-card__brand">
+                  <?php echo h($viewModel['product']->brand_title);?>
+                </a>
+              </dd>
             </div>
             <!-- <div class="product-card__item"> -->
               <!-- <dt><?php echo h(__('product.item.condition', [], 'product'));?></dt> -->

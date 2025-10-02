@@ -61,12 +61,15 @@
         <?php echo $product->title !== null ? h($product->title) : 'Название продукта';?>
       </h4>
     </a>
-    <div class="card__row flex-block">
-      <div class="card__price">
-        <span><?php echo $product->price !== null ? h($product->price) : '5000';?>&nbsp;&euro;</span>
-      </div>
+    <a href="<?php echo HOST . 'shop?brand[]=' . h($product->brand_id) ;?>" class="card__brand">
+      <?php echo h($product->brand_title);?>
+    </a>
+    
+    <div class="card__price">
+      <span><?php echo $product->price !== null ? h($product->price) : '5000';?>&nbsp;&euro;</span>
     </div>
+  
   </div>
-    </div>
+</div>
 
  
