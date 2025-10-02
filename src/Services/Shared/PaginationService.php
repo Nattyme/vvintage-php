@@ -5,9 +5,9 @@ namespace Vvintage\Services\Shared;
 
 class PaginationService
 {
-    private int $defaultPerPage;
+    private ?int $defaultPerPage = null;
 
-    public function __construct(int $defaultPerPage = 20)
+    public function __construct(?int $defaultPerPage = null)
     {
         $this->defaultPerPage = $defaultPerPage;
     }
@@ -20,6 +20,7 @@ class PaginationService
 
         if ($currentPage < 1) $currentPage = 1;
         if ($currentPage > $numberOfPages) $currentPage = $numberOfPages > 0 ? $numberOfPages : 1;
+
 
         $offset = ($currentPage - 1) * $perPage;
 

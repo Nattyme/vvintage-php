@@ -55,9 +55,9 @@
             <svg class="icon icon--cart">
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#cart'; ?>"></use>
             </svg>
-            <?php if (!empty($cartCount)) : ?>
+            <?php if (!empty($_SESSION['cart'])) : ?>
               <div class="counter__widget counter__widget--cart">
-                <span class="text-ellipsis"><?php echo h($cartCount); ?></span>
+                <span class="text-ellipsis"><?php echo h(count($_SESSION['cart'])); ?></span>
               </div>
             <?php endif; ?>
           </a>

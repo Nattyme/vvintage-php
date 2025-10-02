@@ -172,7 +172,7 @@
 
   <section class="prices">
     <div class="delivery__title">
-      <h3 class="h3">Тарифы</h3>
+      <h3 class=" h3">Тарифы</h3>
     </div>
 
     <div class="prices__cards" id="prices">
@@ -277,7 +277,9 @@
 
     
   <section class="post-logos">
-      <p class="post-text">Доставка заказов государственными почтовыми службами:</p>
+    <div class="delivery__title">
+      <p class="h3">Доставка заказов государственными почтовыми службами:</p>
+    </div>
       <ul class="logos">
         <li class="logos__item">
           <a href="https://www.laposte.fr/" class="logos__link">

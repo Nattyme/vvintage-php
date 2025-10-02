@@ -180,9 +180,9 @@ class ProductService extends BaseService
         return $this->productImageService->countAll($images);
     }
 
-    public function getFilteredProducts(ProductFilterDTO $filters): array 
+    public function getFilteredProducts(ProductFilterDTO $filters, ?int $perPage = null): array 
     {
-     
+    //  dd($filters);
       $categories = !empty($filters->categories) ? $filters->categories : null;
     
       if( $categories && count( $categories) === 1) {
@@ -214,32 +214,35 @@ class ProductService extends BaseService
           ];
       }
 
+      // Получаем массив продуктов по фильтру
       $products = $this->repository->getProducts($filters);
-      $totalItems = count($products);
 
-      $filters = $this->addPaginationToFilter($filters, $totalItems);
- 
+      if( $perPage) {
+    
+        $totalItems = count($products);   // Считаем общее кол-во
+        // Добавляем данные по пагинации в фильтр
+        $filters = $this->addPaginationToFilter($filters, $totalItems, $perPage);
 
-      // Теперь получаем только продукты для этой страницы
-      $productsPage = $this->repository->getProducts($filters);
-      $products = array_map([$this, 'createProductDTOFromArray'], $productsPage);
+        // Теперь получаем только продукты для этой страницы
+        $products = $this->repository->getProducts($filters);
+        
+      }
+
+      $products = array_map([$this, 'createProductDTOFromArray'], $products);
 
       return ['products' => $products, 'total' => $totalItems, 'filters' => $filters];
-
-      // $rows = $this->repository->getProducts($filters);
-  
-      // return array_map([$this, 'createProductDTOFromArray'], $products);
     }
 
-    public function addPaginationToFilter($filters, $totalItems)
+    public function addPaginationToFilter($filters, $totalItems, $perPage)
     {
       $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-      $pagination = $this->paginationService->paginate( totalItems: $totalItems, currentPage: $currentPage, perPage: 10);
+      $pagination = $this->paginationService->paginate( totalItems: $totalItems, currentPage: $currentPage, perPage: $perPage);
 
       // Добавляем пагинацию в фильтры
       $filters['pagination']['page_number'] = $pagination['current_page'];
       $filters['pagination']['perPage'] = $pagination['perPage'];
       $filters['pagination']['number_of_pages'] = $pagination['number_of_pages'];
+      $filters['pagination']['offset'] = $pagination['offset'];
   
       // $filters['perPage'] = $pagination['perPage'];
       // $filters['number_of_pages'] = $pagination['number_of_pages'];

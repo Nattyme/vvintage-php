@@ -51,8 +51,8 @@ final class CatalogController extends BaseController
 
       // Название страницы
       $pageTitle = 'Каталог товаров';
-      $productsPerPage = 9;
-      $pagination = pagination($productsPerPage, 'products');
+      $productsPerPage = 12;
+      // $pagination = pagination($productsPerPage, 'products');
 // Array
 // (
 //     [number_of_pages] => 5
@@ -66,6 +66,8 @@ final class CatalogController extends BaseController
           'priceMin'  => $_GET['priceMin'] ?? null,
           'priceMax'  => $_GET['priceMax'] ?? null,
           'sort'      => $_GET['sort'] ?? null,
+          'page' => (int) $_GET['page'] ?? 1,
+          'perPage' => (int) $productsPerPage ?? 10
       ]);
 
       // $products = $this->productService->getFilteredProducts($filterDto);
@@ -73,14 +75,14 @@ final class CatalogController extends BaseController
       $brands = $this->brandService->getAllBrandsDto();
 
       // Получаем продукты с учётом пагинации
-      $filteredProductsData = $this->productService->getFilteredProducts($filterDto);
-
+      $filteredProductsData = $this->productService->getFilteredProducts( filters: $filterDto, perPage: 15);
+// dd($filteredProductsData);
       $products =  $filteredProductsData['products'];
       $total = $filteredProductsData['total'];
       $filters = $filteredProductsData['filters'];
       $pagination = $filters['pagination'];
       // $total = $this->productService->countProducts();
-  
+      // dd($products);
       $mainCategories = $this->categoryService->getMainCategories();
 
       // $seo = [];

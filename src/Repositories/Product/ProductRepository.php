@@ -171,22 +171,26 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     public function getProducts(array $filters = []): array
     {
         $conditions = [];
+        $pagination = [];
         $params = [];
+        if(isset($filters['pagination'])) {
+           $pagination = $filters['pagination'];
+        }
 
         // применяем простые фильтры
-        [$conditions, $params, $limit] = $this->applySimpleFilters($filters, $conditions, $params);
+        [$conditions, $params] = $this->applySimpleFilters($filters, $conditions, $params);
 
         // применяем сложные фильтры
-        [$conditions, $params, $limit, $offset, $orderBy] = $this->applyAdvancedFilters($filters, $conditions, $params, $limit);
+        [$conditions, $params, $orderBy] = $this->applyAdvancedFilters($filters, $conditions, $params);
 
         // Вызов универсального метода
         $beans = $this->findAll(
-            self::TABLE,
-            $conditions,
-            $params,
-            $orderBy,
-            $limit,
-            $offset
+            table: self::TABLE,
+            conditions: $conditions,
+            params: $params,
+            orderBy: $orderBy,
+            limit: $pagination['perPage'] ?? null,
+            offset: $pagination['offset'] ?? null
         );
 
         // нормализация дат
@@ -215,13 +219,14 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             $params[] = (int)$filters['brand_id'];
         }
 
-        $limit = !empty($filters['perPage']) ? (int)$filters['perPage'] : 20;
+        // $limit = !empty($filters['perPage']) ? (int)$filters['perPage'] : 20;
 
-        return [$conditions, $params, $limit];
+        return [$conditions, $params];
     }
 
-    private function applyAdvancedFilters(array $filters, array $conditions, array $params, int $limit): array
+    private function applyAdvancedFilters(array $filters, array $conditions, array $params): array
     {
+
         // категории
         if (!empty($filters['categories'])) {
             $placeholders = R::genSlots($filters['categories']);
@@ -254,13 +259,8 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
             $orderBy = $filters['sort'];
         }
 
-        // пагинация
-        $offset = 0;
-        if (!empty($filters['page']) && $filters['page'] > 1) {
-            $offset = ($filters['page'] - 1) * $limit;
-        }
 
-        return [$conditions, $params, $limit, $offset, $orderBy];
+        return [$conditions, $params, $orderBy];
     }
 
     private function normalizeRow(\RedBeanPHP\OODBBean $bean): array
