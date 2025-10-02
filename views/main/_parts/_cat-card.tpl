@@ -1,9 +1,5 @@
 <a href="<?php echo HOST . 'shop/cat/' . u($category->getId());?>" class="card-small">
   <div class="card-small__img">
-    <svg class="icon icon--arrow-right">
-      <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#arrow-right';?>"></use>
-    </svg>
-
     <picture>
       <!-- <source srcset="<?php echo HOST . 'static/img/cats/' . h($category->getImage()) . 'static/img/cats/' . h($category->getImage());?>" type="image/webp" /> -->
       <source srcset="<?php echo HOST . 'static/img/cats/' . h($category->getImage());?>" type="image/jpeg" />
