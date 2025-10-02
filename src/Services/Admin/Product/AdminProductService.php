@@ -101,6 +101,7 @@ final class AdminProductService extends ProductService
           // Собираем tmp-файлы для возможного удаления при ошибке
           foreach ($imagesTMP as $img) {
               $tmpFilesToCleanup[] = $img['tmp_full'];
+              $tmpFilesToCleanup[] = $img['tmp_medium'];
               $tmpFilesToCleanup[] = $img['tmp_small'];
           }
 
@@ -108,17 +109,11 @@ final class AdminProductService extends ProductService
           // 5. Удаляем старые изображения, которых больше нет в форме
           $keepIds = array_column($existingImages, 'id');
           $imagesInDb = $this->imageService->getProductImagesAll($id); // получаем мапссив DTO всех изображений из БД
-          // error_log(print_r(   $imagesInDb, true));
+
           $idsDb = array_map(fn($img) => $img->id, $imagesInDb);
           $idsToDelete = array_diff($idsDb, $keepIds); //  массив id изображений для удаления в БД
 
-           // 4. Сохраняем новые изображения, если есть
-          $newImagesDto = $this->imageService->buildImageDtos($id, $imagesTMP);
-         
-          if (!empty($newImagesDto)) {
-              $this->imageService->updateImages($newImagesDto);
-          }
-
+    
 
           if (!empty($idsToDelete)) {
               // достаём имена файлов по этим id
@@ -126,14 +121,20 @@ final class AdminProductService extends ProductService
                   $imagesInDb,
                   fn($img) => in_array($img->id, $idsToDelete)
               );
-    // error_log(print_r($imagesToDelete, true));
+
               // удаляем из БД
               $this->imageService->deleteImagesNotInList($id, $keepIds);
 
               // удаляем файлы
               $this->imageService->cleanupFinal($imagesToDelete);
           }
-     
+
+           // 4. Сохраняем новые изображения, если есть
+          $newImagesDto = $this->imageService->buildImageDtos($id, $imagesTMP);
+         
+          if (!empty($newImagesDto)) {
+              $this->imageService->updateImages($newImagesDto);
+          }
 
   
           // 5. Обновляем порядок существующих изображений, если есть
@@ -161,87 +162,8 @@ final class AdminProductService extends ProductService
           throw $error;
       }
   }
-  // public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool 
-  // {
-  //     $tmpFilesToCleanup = [];
 
-  //     $this->repository->begin(); // начало транзакции
-
-  //     try {
-  //         // 1. Обновляем продукт
-  //         $productDto = $this->createProductInputDto($data);
-  //         $this->repository->updateProductData($id, $productDto);
-
-  //         // 2. Обновляем перевод продукта
-  //         if (!empty($data['translations'])) {
-  //             $translateDto = $this->createTranslateInputDto($data['translations'], $id);
-  //             $this->translationRepo->saveProductTranslation($translateDto);
-  //         }
-
-  //         // 3. Подготавливаем изображения (tmp + resize)
-  //         $imagesTMP = $this->imageService->prepareImages($processedImages);
-
-  //         // Собираем tmp-файлы для возможного удаления при ошибке
-  //         foreach ($imagesTMP as $img) {
-  //             $tmpFilesToCleanup[] = $img['tmp_full'];
-  //             $tmpFilesToCleanup[] = $img['tmp_small'];
-  //         }
-
-  //         // 4. Сохраняем новые изображения, если есть
-  //         $newImagesDto = $this->imageService->buildImageDtos($id, $imagesTMP);
-         
-  //         if (!empty($newImagesDto)) {
-  //             $this->imageService->updateImages($newImagesDto);
-  //         }
-
-  //         // 5. Удаляем старые изображения, которых больше нет в форме
-  //         $keepIds = array_column($existingImages, 'id');
-  //         $imagesInDb = $this->imageService->getProductImagesAll($id); // получаем мапссив DTO всех изображений из БД
-  //         // error_log(print_r(   $imagesInDb, true));
-  //         $idsDb = array_map(fn($img) => $img->id, $imagesInDb);
-  //         $idsToDelete = array_diff($idsDb, $keepIds); //  массив id изображений для удаления в БД
-
-  //         if (!empty($idsToDelete)) {
-  //             // достаём имена файлов по этим id
-  //             $imagesToDelete = array_filter(
-  //                 $imagesInDb,
-  //                 fn($img) => in_array($img->id, $idsToDelete)
-  //             );
-  //   // error_log(print_r($imagesToDelete, true));
-  //             // удаляем из БД
-  //             $this->imageService->deleteImagesNotInList($id, $keepIds);
-
-  //             // удаляем файлы
-  //             $this->imageService->cleanupFinal($imagesToDelete);
-  //         }
-     
-
-  
-  //         // 5. Обновляем порядок существующих изображений, если есть
-  //         if (!empty($existingImages)) {
-  //             $this->imageService->updateImagesOrder($id, $existingImages);
-  //         }
-
-  //         // 6. Подтверждаем транзакцию
-  //         $this->repository->commit();
-
-  //         // 7. Переносим файлы в финальную папку (только после успешного commit)
-  //         if (!empty($imagesTMP)) {
-  //             $finalPaths = $this->imageService->finalizeImages($imagesTMP);
-  //             $this->imageService->cleanup($imagesTMP);
-  //         }
-
-  //         return true;
-
-  //     } catch (\Throwable $error) {
-  //         $this->repository->rollback();
-
-  //         // удаляем tmp-файлы
-  //         $this->imageService->cleanup($imagesTMP);
-
-  //         throw $error;
-  //     }
-  // }
+ 
 
   public function createProductDraft(array $data, array $images): int
   {

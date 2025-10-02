@@ -387,9 +387,7 @@
 
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
-      $cart = $userModel->getCart();
-
-      $productRepository = new ProductRepository();
+      $cart = $userModel->getCart();;
       $productService = new ProductService();
 
       /**
@@ -428,8 +426,8 @@
       // Получаем избранное и ее модель
       $favModel = $userModel->getFavModel();
       $fav = $userModel->getFavList();
+      $productService = new ProductService();
 
-      $productRepository = new ProductRepository();
 
       /**
        * Получаем хранилище
