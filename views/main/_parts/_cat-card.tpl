@@ -1,4 +1,4 @@
-<a href="<?php echo HOST . 'shop/cat/' . u($category->getId());?>" class="card-small">
+<a href="<?php echo HOST . 'shop?category[]=' . u($category->getId());?>" class="card-small">
   <div class="card-small__img">
     <picture>
       <!-- <source srcset="<?php echo HOST . 'static/img/cats/' . h($category->getImage()) . 'static/img/cats/' . h($category->getImage());?>" type="image/webp" /> -->

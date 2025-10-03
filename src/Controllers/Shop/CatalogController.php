@@ -52,6 +52,7 @@ final class CatalogController extends BaseController
       // Название страницы
       $pageTitle = 'Каталог товаров';
       $productsPerPage = 12;
+      $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
       // $pagination = pagination($productsPerPage, 'products');
 // Array
 // (
@@ -66,7 +67,7 @@ final class CatalogController extends BaseController
           'priceMin'  => $_GET['priceMin'] ?? null,
           'priceMax'  => $_GET['priceMax'] ?? null,
           'sort'      => $_GET['sort'] ?? null,
-          'page' => (int) $_GET['page'] ?? 1,
+          'page' =>  $page,
           'perPage' => (int) $productsPerPage ?? 10
       ]);
 

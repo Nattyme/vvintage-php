@@ -17,6 +17,7 @@
   </figure>
 
   <?php foreach ($viewModel['gallery']['visible'] as $i => $image) : ?>
+    <?php $isLast = $i === count($viewModel['gallery']['visible']) - 1; ?>
     <figure class="gallery__item gallery__item--<?php echo $i + 2; ?>">
       <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
           data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' .  h($image->getFilename());?>">
@@ -27,8 +28,22 @@
             srcset="<?php echo HOST . 'usercontent/products/' . '350-' . u($image->getFilename());?>" alt="" loading="lazy"
           >
         </picture>
+
+        <?php 
+          $countedHidden = count($viewModel['gallery']['hidden']) ?? null;
+
+          // Проверяем: есть ли скрытые и это ли последний показываемый элемент
+          if ($countedHidden && $isLast ) : 
+        ?>
+          <span class="gallery__counter">
+            <span>+ <?php echo h($countedHidden);?></span>
+          </span>
+         <?php endif;?>
       </a>
+
     </figure>
+
+
   <?php endforeach; ?>
 
   <?php foreach($viewModel['gallery']['hidden'] as $image) : ?>
@@ -57,5 +72,5 @@
 
     </a>
   </div>
-  
+
 </div>

@@ -96,8 +96,9 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     }
 
     public function getLastProducts(int $count): array
-    {
-        return $this->getProducts(['limit' => $count]);
+    { 
+        $filter['pagination']['perPage'] = $count;
+        return $this->getProducts( $filter);
         // return $this->uniteProductRawData(['limit' => $count]);
         // return array_map([$this, 'fetchProductWithJoins'], $rows);
     }
@@ -183,13 +184,14 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
         // применяем сложные фильтры
         [$conditions, $params, $orderBy] = $this->applyAdvancedFilters($filters, $conditions, $params);
 
+
         // Вызов универсального метода
         $beans = $this->findAll(
             table: self::TABLE,
             conditions: $conditions,
             params: $params,
             orderBy: $orderBy,
-            limit: $pagination['perPage'] ?? null,
+            limit:  $pagination['perPage'] ?? null,
             offset: $pagination['offset'] ?? null
         );
 

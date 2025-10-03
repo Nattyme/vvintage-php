@@ -8,7 +8,7 @@
 
         <!-- Галерея изображений -->
         <div class="product__gallery-container">
-          <?php include ROOT . 'views/shop/_parts/_proudct-gallery.tpl'; ?>
+          <?php include ROOT . 'views/shop/_parts/_product-gallery.tpl'; ?>
         </div>
         <!-- // Галерея изображений -->
 
