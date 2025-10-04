@@ -179,23 +179,4 @@ class BrandService extends BaseService
         ]);
     }
 
-    // private function createBrandDTOFromArray(array $row): BrandOutputDTO
-    // {
-    //     $brandId = (int) $row['id'];
-    //     $translations = $this->translationRepo->loadTranslations($brandId);
- 
-    //     return new BrandOutputDTO([
-    //         'id' => (int) $brandId,
-    //         'title' => (string)  ($translations[$this->locale]['title'] ?? ''),
-    //         'description' => (string) ($translations[$this->locale]['description'] ?? ''),
-    //         'image' => (string) ($row['brand_image'] ?? ''),
-    //         'translations' => $translations
-    //         // 'locale' => (string) $this->locale,
-    //     ]);
-     
-    // }
-
- 
-
-
 }

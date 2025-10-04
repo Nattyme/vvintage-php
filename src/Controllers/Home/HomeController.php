@@ -63,6 +63,7 @@ final class HomeController extends BaseController
       // Получим категории, продукты и посты
       $categories = $this->categoryService->getMainCategories();
       $pagesTitles = $this->pageService->getPagesTitle();
+      dd($pagesTitles);
       $products = $this->productService->getLastProducts(4);
       $posts = $this->postService->getLastPosts(3);
  

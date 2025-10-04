@@ -31,4 +31,15 @@ final class PageRepository extends AbstractRepository implements PageRepositoryI
     
     return new Page($bean);
   }
+
+  public function getAllPages(): array
+  {
+      // Вызов универсального метода
+      $beans = $this->findAll(
+          table: self::TABLE
+      );
+
+   
+      return array_map([$this, ''], $beans);
+  }
 }

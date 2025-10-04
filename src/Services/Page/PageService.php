@@ -8,8 +8,15 @@ use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Repositories\Page\PageTranslationRepository;
 use Vvintage\Repositories\Page\PageFieldRepository;
 
-final class PageService
+final class PageService extends BaseService
 {
+  public function __construct()
+  {
+      parent::__construct();
+      $this->repository = new PageRepository();
+      $this->translationRepo = new PageTranslationRepository();
+  }
+
   public function getPageBySlug(string $slug): ?Page
   {
     // Здесь дописать валидацию
@@ -34,5 +41,28 @@ final class PageService
 
     return $pageModel;
   }
+
+
+  public function getPageTranslations(int $pageId): array
+  {
+      $translations = $this->translationRepo->getTranslationsArray($pageId, $this->locale);
+
+      if (!$translations) {
+          // fallback
+          $translations = $this->translationRepo->getTranslationsArray($pageId, $this->defaultLocale);
+      }
+
+      return $translations;
+  }
+
+  public function getPagesTitle(): array
+  {
+      $rows = $this->repository->getAllPages();
+
+      if(empty($rows)) return [];
+
+      return array_map([$this, 'createPageDTOFromArray'], $rows);
+  }
+
 
 }
