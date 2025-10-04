@@ -5,6 +5,7 @@ namespace Vvintage\Services\Page;
 
 use Vvintage\Models\Page\Page;
 use Vvintage\Repositories\Page\PageRepository;
+use Vvintage\Repositories\Page\PageTranslationRepository;
 use Vvintage\Repositories\Page\PageFieldRepository;
 
 final class PageService

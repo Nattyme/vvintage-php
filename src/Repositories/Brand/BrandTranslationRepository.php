@@ -23,6 +23,31 @@ final class BrandTranslationRepository extends AbstractRepository implements Bra
       return $this->createBean(self::TABLE);
     }
 
+    public function saveTranslations($brandId, $locale, $fields): void
+    {
+     
+        $translationBean = $this->findOneBy(self::TABLE, 'brand_id = ? AND locale = ?', [$brandId, $locale]) 
+                      ?? $this->createTranslationsBean();
+
+        // если новый bean — задаём brand_id и locale
+        if (!$translationBean->id) {
+            $translationBean->brand_id = $brandId;
+            $translationBean->locale = $locale;
+        }
+
+
+        $translationBean->title = $fields->title ?? null;
+        $translationBean->description = $fields->description ?? null;
+        $translationBean->meta_title = $fields->meta_title ?? null;
+        $translationBean->meta_description = $fields->meta_description ?? null;
+
+        $result = $this->saveBean($translationBean);
+
+        if (!$result) {
+          throw new RuntimeException("Не удалось сохранить перевод бренда");
+        }
+    }
+
     public function loadTranslations(int $id): array
     {
         $sql = 'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE .' WHERE brand_id = ?';
@@ -78,30 +103,7 @@ final class BrandTranslationRepository extends AbstractRepository implements Bra
 
    
 
-    public function saveTranslations($brandId, $locale, $fields): void
-    {
-     
-        $translationBean = $this->findOneBy(self::TABLE, 'brand_id = ? AND locale = ?', [$brandId, $locale]) 
-                      ?? $this->createTranslationsBean();
-
-        // если новый bean — задаём brand_id и locale
-        if (!$translationBean->id) {
-            $translationBean->brand_id = $brandId;
-            $translationBean->locale = $locale;
-        }
-
-
-        $translationBean->title = $fields->title ?? null;
-        $translationBean->description = $fields->description ?? null;
-        $translationBean->meta_title = $fields->meta_title ?? null;
-        $translationBean->meta_description = $fields->meta_description ?? null;
-
-        $result = $this->saveBean($translationBean);
-
-        if (!$result) {
-          throw new RuntimeException("Не удалось сохранить перевод бренда");
-        }
-    }
+  
 
   
 
