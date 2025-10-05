@@ -10,5 +10,6 @@ return [
   'button.goto.shop' => 'ショップへ',
   'button.goto.blog' => 'ブログへ',
   'button.cart.add' => 'カートに追加',
-  'button.cart.order' => '注文する'
+  'button.cart.order' => '注文する',
+  'button.products.add' => '商品を追加'
 ];

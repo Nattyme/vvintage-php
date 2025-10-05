@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 return [
   'product-list.header.cart.empty' => 'カートは空です',
+  'product-list.header.fav.empty' => 'お気に入りリストは空です', 
   'product-list.table.title' => '商品',
   'product-list.table.qty' => '数量',
   'product-list.table.price' => '価格',

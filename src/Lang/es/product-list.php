@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 return [
   'product-list.header.cart.empty' => 'El carrito está vacío',
+  'product-list.header.fav.empty' => 'La lista de favoritos está vacía',
   'product-list.table.title' => 'Producto',
   'product-list.table.qty' => 'Cantidad',
   'product-list.table.price' => 'Precio',

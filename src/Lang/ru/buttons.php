@@ -12,5 +12,7 @@ return [
   'button.readmore' => 'Подробнее',
   'button.cart.add' => 'Добавить в корзину',
   'button.item.incart' => 'Товар в корзине',
-  'button.cart.order' => 'Оформить заказ'
+  'button.cart.order' => 'Оформить заказ',
+  'button.products.add' => 'Добавить товары'
 ];
+

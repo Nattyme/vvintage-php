@@ -10,5 +10,7 @@ return [
   'button.goto.shop' => 'Aller au magasin',
   'button.goto.blog' => 'Aller au blog',
   'button.cart.add' => 'Ajouter au panier',
-  'button.cart.order' => 'Passer la commande'
+  'button.cart.order' => 'Passer la commande',
+  'button.products.add' => 'Ajouter des produits'
 ];
+

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 return [
   'product-list.header.cart.empty' => '购物车为空',
+  'product-list.header.fav.empty' => '收藏列表为空',
   'product-list.table.title' => '商品',
   'product-list.table.qty' => '数量',
   'product-list.table.price' => '价格',

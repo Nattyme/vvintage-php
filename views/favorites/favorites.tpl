@@ -17,8 +17,12 @@
           <!--// cart table-->
         <?php else : ?>
           <div class="page-cart__empty">
-            <h1 class="page-cart__title page-cart__title-wrapper">Список избранного пуст</h1>
-            <a href="<?php echo HOST;?>shop" class="button button--primary button--m">Добавить товары</a>
+            <h1 class="page-cart__title page-cart__title-wrapper">
+              <?php echo h(__('product-list.header.fav.empty', [], 'product-list'));?>
+            </h1>
+            <a href="<?php echo HOST;?>shop" class="button button--primary button--m">
+              <?php echo h(__('button.products.add', [], 'buttons'));?>
+            </a>
           </div>
         <?php endif; ?>
 
