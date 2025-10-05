@@ -9,20 +9,22 @@ use Vvintage\DTO\Page\PageOutputDTO;
 use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Repositories\Page\PageTranslationRepository;
 use Vvintage\Repositories\Page\PageFieldRepository;
+use Vvintage\Repositories\Page\PageFieldTranslationRepository;
 
 class PageService extends BaseService
 {
   protected PageRepository $repository;
   protected PageFieldRepository $fieldsRepository;
   protected PageTranslationRepository $translationRepo;
+  protected PageFieldTranslationRepository $fieldsTranslationRepo;
 
   public function __construct()
   {
       parent::__construct();
       $this->repository = new PageRepository();
       $this->translationRepo = new PageTranslationRepository();
-      $this->fieldsRepository = new PageTranslationRepository();
-      $this->translationFieldsRepo = new PageTranslationRepository();
+      $this->fieldsRepository = new PageFieldRepository();
+      $this->fieldsTranslationRepo = new PageFieldTranslationRepository();
   }
 
   public function getPageBySlug(string $slug): ?Page
@@ -35,15 +37,21 @@ class PageService extends BaseService
       return null;
     }
 
-    $pageModel = PageRepository::getPageBySlug($slug);
+    $pageModel = $this->repository->getPageBySlug($slug);
     if(!$pageModel) {
       return null;
     }
 
-    // Получаем поля страницы и задаем модели
-    $pageFieldRepo = new PageFieldRepository( (int) $pageModel->getId() );
+    // // Получаем данные полей страницы
+    // $fields = [];
 
-    $pageFields = $pageFieldRepo->getFieldsByPageId();
+    // foreach($pageModel->getFields() as $field) {
+    //   $fields[$field->getName()] = $field->getValue();
+    // }
+
+    $pageId = $pageModel->getId();
+    // Получаем поля страницы и задаем модели
+    $pageFields = $this->fieldsRepository->getFieldsByPageId( (int) $pageId);
 
     $pageModel->setFields($pageFields);
 

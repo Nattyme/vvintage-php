@@ -69,6 +69,18 @@ final class Page
       ];
   }
 
+  public function exportWithFields(): array 
+  {
+      return [
+        'id' => $this->id,
+        'slug' => $this->slug,
+        'title' => $this->title,
+        'content' => $this->content,
+        'visible' => $this->visible,
+        'fields' => $this->fields
+      ];
+  }
+
   public function getFieldsValue(string $name):? string 
   {
     foreach($this->fields as $field) {
@@ -79,4 +91,13 @@ final class Page
 
     return null;
   }
+
+  public function getFieldsAssoc(): array {
+      $assoc = [];
+      foreach ($this->fields as $field) {
+          $assoc[$field['name']] = $field['value'];
+      }
+      return $assoc;
+  }
+
 }

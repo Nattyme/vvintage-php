@@ -7,7 +7,7 @@
         </div>
         <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
       </div>
-
+  
       <div class="contacts__map-wrapper">
         <div class="contacts__map" id="map" style="width: 100%; height: 476px">
    

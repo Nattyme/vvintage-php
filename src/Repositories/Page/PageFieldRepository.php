@@ -8,7 +8,7 @@ use RedBeanPHP\R; // Подключаем readbean
 
 
 /** Контракты */
-use Vvintage\Contracts\Page\PageFieldRepositoryInterface;
+// use Vvintage\Contracts\Page\PageFieldRepositoryInterface;
 
 /** Абстрактный репозиторий */
 use Vvintage\Repositories\AbstractRepository;
@@ -17,24 +17,27 @@ use Vvintage\Repositories\AbstractRepository;
 use Vvintage\Models\Page\PageField;
 
 
-final class PageFieldRepository extends AbstractRepository implements PageFieldRepositoryInterface
+// final class PageFieldRepository extends AbstractRepository implements PageFieldRepositoryInterface
+final class PageFieldRepository extends AbstractRepository
 {
-   private int $pageId;
+  //  private int $pageId;
+  private const TABLE = 'pagefields';
 
-   public function __construct(int $pageId) {
-    $this->pageId = $pageId;
-   }
+  //  public function __construct(int $pageId) {
+  //   $this->pageId = $pageId;
+  //  }
 
-  public function getFieldsByPageId (): array
+  public function getFieldsByPageId ($pageId): array
   {
-    // Найдём страницу
-    $bean = $this->loadBean('pages', $this->pageId);
-
     // Получить список всех связанных полей страницы
-    $fields = $bean->ownPagefieldsList;
+    $beans = $this->findAll(table: self::TABLE, conditions: ['page_id = ?'], params: [$pageId]);
 
     // Преобразуем каждый bean из pagefield в объект модели PageField
-    return array_map(fn($bean) => new PageField($bean), $fields);
+    // преобразуем каждый bean в массив
+    return array_map(function($bean) {
+        return $bean->export();
+    }, $beans);
+    // return array_map(fn($bean) => new PageField($bean), $fields);
 
   }
 

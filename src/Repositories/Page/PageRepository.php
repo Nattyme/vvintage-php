@@ -21,7 +21,7 @@ use Vvintage\Models\Page\Page;
 final class PageRepository extends AbstractRepository implements PageRepositoryInterface
 {
   private const TABLE = 'pages';
-  public static function getPageBySlug(string $slug): ?Page
+  public function getPageBySlug(string $slug): ?Page
   {
     // Подключение к БД и выброрка страницы по slug
     $bean = R::findOne('pages', 'slug = ?', [$slug]);
@@ -45,7 +45,7 @@ final class PageRepository extends AbstractRepository implements PageRepositoryI
         params: $params
     );
 
-    // нормализация дат (преобразуем каждый bean в массив)
+    // преобразуем каждый bean в массив
     return array_map(function($bean) {
         return $bean->export();
     }, $beans);

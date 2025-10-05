@@ -12,7 +12,7 @@ use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
 use Vvintage\Controllers\AdminPanel\AdminPanelController;
 use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Page\PageService;
+// use Vvintage\Services\Page\PageService;
 
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
@@ -28,7 +28,7 @@ abstract class BaseController
   protected Translator $translator;
   protected FlashMessage $flash;
   protected SessionService $sessionService;
-  protected PageService $pageService;
+  // protected PageService $pageService;
 
   public function __construct()
   {
@@ -36,7 +36,7 @@ abstract class BaseController
       $this->translator = setTranslator(); // берём уже установленный переводчик
       $this->languages = LanguageConfig::getAvailableLanguages();
       $this->currentLang = LanguageConfig::getCurrentLocale();
-      $this->pageService = new PageService($this->currentLang);
+      // $this->pageService = new PageService($this->currentLang);
       $this->flash = new FlashMessage();
       $this->sessionService = new SessionService();
       
@@ -73,7 +73,6 @@ abstract class BaseController
       'languages' => $this->languages,
       'currentLang' => $this->currentLang,
       'flash' => $this->flash,
-      'navigation' => $this->pageService->getLocalePagesNavTitles(),
       'isBlogPage' => $isBlogPage
     ]) );
 

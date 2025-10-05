@@ -93,7 +93,8 @@
       switch ($routeData->uriModule) {
         case '':
         case 'main':
-          self::routeHome($routeData);
+          self::routePages($routeData);
+          // self::routeHome($routeData);
           // require ROOT . 'modules/main/index.php';
           break;
 
@@ -487,32 +488,38 @@
     {
       $pageService = new PageService();
       $breadcrumbs = new Breadcrumbs();
-      $pageModel = $pageService->getPageBySlug($routeData->uriModule);
+      // $pageModel = $pageService->getPageBySlug($routeData->uriModule);
 
-      $controller = new PageController($pageModel, $breadcrumbs);
+      // $controller = new PageController($pageModel, $breadcrumbs);
+      $controller = new PageController();
+      
+      $controller->index($routeData);
 
-      switch ($routeData->uriModule) {
-        case 'delivery':
-          $controller->index($routeData);
-          break;
+      // switch ($routeData->uriModule) {
+      //   case 'main':
+      //     $controller->index($routeData);
+      //     break;
+      //   case 'delivery':
+      //     $controller->index($routeData);
+      //     break;
 
-        case 'contacts':
-          $controller->index($routeData);
-          break;
+      //   case 'contacts':
+      //     $controller->index($routeData);
+      //     break;
 
-        case 'about':
-          $controller->index($routeData);
-          break;
+      //   case 'about':
+      //     $controller->index($routeData);
+      //     break;
 
         
-      }
+      // }
     }
 
-    private static function routeHome(RouteData $routeData)
-    {
-      $controller = new HomeController();
-      $controller->index($routeData);
-    }
+    // private static function routeHome(RouteData $routeData)
+    // {
+    //   $controller = new HomeController();
+    //   $controller->index($routeData);
+    // }
 
 
 
