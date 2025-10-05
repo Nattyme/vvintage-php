@@ -492,27 +492,18 @@
 
       // $controller = new PageController($pageModel, $breadcrumbs);
       $controller = new PageController();
-      
-      $controller->index($routeData);
 
-      // switch ($routeData->uriModule) {
-      //   case 'main':
-      //     $controller->index($routeData);
-      //     break;
-      //   case 'delivery':
-      //     $controller->index($routeData);
-      //     break;
-
-      //   case 'contacts':
-      //     $controller->index($routeData);
-      //     break;
-
-      //   case 'about':
-      //     $controller->index($routeData);
-      //     break;
-
-        
-      // }
+      switch ($routeData->uriModule) {
+        case '':
+          $controller->home($routeData);
+          break;
+        case 'main':
+          $controller->home($routeData);
+          break;
+        default :
+          $controller->index($routeData);
+          break;
+      }
     }
 
     // private static function routeHome(RouteData $routeData)

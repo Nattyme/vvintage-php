@@ -8,7 +8,7 @@
       <div class="arrival__cards-wrapper">
         <div class="cards-row">
           <?php foreach($products as $product) : ?>
-            <?php include ROOT . 'views/main/_parts/_product-card.tpl'; ?>
+            <?php include ROOT . 'views/pages/main/_parts/_product-card.tpl'; ?>
           <?php endforeach; ?>
         </div>
       </div>
