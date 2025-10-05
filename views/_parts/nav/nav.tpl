@@ -1,22 +1,15 @@
 <nav class="menu-nav">
+
   <ul class="menu-nav__list menu-nav__list--header">
+    <?php foreach($navigation as $link) : ?>
     <li class="menu-nav__item">
-      <a class="menu-nav__link" href="<?php echo HOST;?>">Главная</a>
+      <a class="menu-nav__link" href="<?php echo HOST . $link['slug'];?>">
+        <?php echo h($link['title']);?>
+      </a>
     </li>
-    <li class="menu-nav__item">
-      <a class="menu-nav__link menu-nav__inner-menu-nav" href="<?php echo HOST;?>shop">Магазин</a>
-    </li>
-    <li class="menu-nav__item">
-      <a class="menu-nav__link" href="<?php echo HOST;?>about">О нас</a>
-    </li>
-    <li class="menu-nav__item">
-      <a class="menu-nav__link" href="<?php echo HOST;?>delivery">Доставка</a>
-    </li>
-    <li class="menu-nav__item">
-      <a class="menu-nav__link" href="<?php echo HOST;?>contacts">Контакты</a>
-    </li>
-    <li class="menu-nav__item">
-      <a class="menu-nav__link" href="<?php echo HOST;?>blog">Блог</a>
-    </li>
+    <?php endforeach; ?>
   </ul>
 </nav>
+    <!-- <li class="menu-nav__item">
+      <a class="menu-nav__link" href="">Главная</a>
+    </li> -->

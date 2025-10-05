@@ -20,7 +20,7 @@ use Vvintage\Models\Page\Page;
 // final class PageTranslationRepository extends AbstractRepository implements PageRepositoryInterface
 final class PageTranslationRepository extends AbstractRepository 
 {
-  private const TABLE = 'pagestranslation';
+    private const TABLE = 'pagestranslation';
 
     public function loadTranslations(int $id): array
     {

@@ -15,7 +15,6 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Post\PostService;
-use Vvintage\Services\Page\PageService;
 
 use Vvintage\Models\Category\Category;
 use Vvintage\Models\Blog\Post;
@@ -27,7 +26,6 @@ final class HomeController extends BaseController
     private CategoryService $categoryService;
     private ProductService $productService;
     private PostService $postService;
-    private PageService $pageService;
 
 
     public function __construct(
@@ -36,7 +34,6 @@ final class HomeController extends BaseController
       parent::__construct(); // Важно!
       $this->categoryService = new CategoryService($this->languages, $this->currentLang);
       $this->productService = new ProductService($this->currentLang);
-      $this->pageService = new PageService($this->currentLang);
       $this->postService = new PostService($this->languages, $this->currentLang);
     }
 
@@ -62,8 +59,6 @@ final class HomeController extends BaseController
 
       // Получим категории, продукты и посты
       $categories = $this->categoryService->getMainCategories();
-      $pagesTitles = $this->pageService->getPagesTitle();
-      dd($pagesTitles);
       $products = $this->productService->getLastProducts(4);
       $posts = $this->postService->getLastPosts(3);
  

@@ -84,7 +84,7 @@ abstract class AbstractRepository
         if (!empty($conditions)) {
             $sqlParts[] = 'WHERE ' . implode(' AND ', $conditions);
         }
-
+     
         // GROUP BY
         if ($groupBy) {
             $sqlParts[] = 'GROUP BY ' . $groupBy;

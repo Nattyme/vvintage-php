@@ -486,11 +486,10 @@
     private static function routePages(RouteData $routeData)
     {
       $pageService = new PageService();
-      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
       $pageModel = $pageService->getPageBySlug($routeData->uriModule);
 
-      $controller = new PageController($pageModel, $pageService, $breadcrumbs);
+      $controller = new PageController($pageModel, $breadcrumbs);
 
       switch ($routeData->uriModule) {
         case 'delivery':

@@ -4,17 +4,25 @@ declare(strict_types=1);
 namespace Vvintage\Services\Page;
 
 use Vvintage\Models\Page\Page;
+use Vvintage\Services\Base\BaseService;
+use Vvintage\DTO\Page\PageOutputDTO;
 use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Repositories\Page\PageTranslationRepository;
 use Vvintage\Repositories\Page\PageFieldRepository;
 
-final class PageService extends BaseService
+class PageService extends BaseService
 {
+  protected PageRepository $repository;
+  protected PageFieldRepository $fieldsRepository;
+  protected PageTranslationRepository $translationRepo;
+
   public function __construct()
   {
       parent::__construct();
       $this->repository = new PageRepository();
       $this->translationRepo = new PageTranslationRepository();
+      $this->fieldsRepository = new PageTranslationRepository();
+      $this->translationFieldsRepo = new PageTranslationRepository();
   }
 
   public function getPageBySlug(string $slug): ?Page
@@ -55,13 +63,49 @@ final class PageService extends BaseService
       return $translations;
   }
 
-  public function getPagesTitle(): array
+  public function getLocalePagesNavTitles(?string $locale = null): array
   {
-      $rows = $this->repository->getAllPages();
+      $locale = $locale ?? $this->locale;
+      $rows = $this->repository->getLocalePagesNavTitles();
 
-      if(empty($rows)) return [];
+      if (empty($rows)) return [];
 
-      return array_map([$this, 'createPageDTOFromArray'], $rows);
+      return array_map(function ($row) use ($locale) {
+          $translations = $this->translationRepo->loadTranslations((int)$row['id']);
+          return [
+              'id' => $row['id'],
+              'slug' => $row['slug'],
+              'title' => $translations[$locale]['title'] ?? $row['title']
+          ];
+      }, $rows);
+  }
+
+
+  public function getPages($filter = []): array
+  {
+    $rows = $this->repository->getAllPages($filter);
+
+    if(empty($rows)) return [];
+
+    return array_map([$this, 'createPageDTOFromArray'], $rows);
+  }
+
+  private function createPageDTOFromArray(array $row): PageOutputDTO
+  {
+      $pageId = (int) $row['id'];
+      $translations = $this->translationRepo->loadTranslations($pageId);
+
+      $dto = new PageOutputDTO([
+        'id' => $pageId,
+        'slug' => $row['slug'],
+        'title' => $translations[$this->locale]['title'],
+        'visible' => (int) $row['visible'],
+        'show_in_navigation' => (int) $row['show_in_navigation'],
+        'translations' => $translations
+      ]);
+
+      return $dto;
+    
   }
 
 

@@ -41,22 +41,17 @@
           <p><a href="<?php HOST;?>">О предоставлении услуг</a></p>
         </div>
       </div>
-      
+    
       <div class="footer__nav">
         <?php if(!$isBlogPage) : ?>
           <ul class="nav-list">
-            <li class="nav-list__item">
-            <a class="nav-list__link" href="<?php echo HOST;?>">Главная</a>
-            </li>
-            <li class="nav-list__item">
-            <a class="nav-list__link nav-list__inner-nav" href="<?php echo HOST . 'shop';?>">Магазин</a>
-            </li>
-            <li class="nav-list__item">
-            <a class="nav-list__link" href="<?php echo HOST . 'about';?>">О нас</a>
-            </li>
-            <li class="nav-list__item">
-            <a class="nav-list__link" href="<?php echo HOST . 'contact';?>">Контакты</a>
-            </li>
+            <?php foreach($navigation as $link) : ?>
+              <li class="nav-list__item">
+                <a class="nav-list__link" href="<?php echo HOST . $link['slug'];?>">
+                  <?php echo h($link['title']);?>
+                </a>
+              </li>
+            <?php endforeach; ?>
           </ul>
         <?php endif; ?>
       </div>

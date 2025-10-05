@@ -9,14 +9,14 @@ use RedBeanPHP\OODBBean; // для обозначения типа даннны�
 final class PageField
 {
   private int $id;
-  private int $pages_id;
+  private int $page_id;
   private string $name;
   private string $value;
 
   public function __construct (OODBBean $bean) {
 
     $this->id = (int) $bean->id;
-    $this->pages_id = (int) $bean->pages_id;
+    $this->page_id = (int) $bean->page_id;
     $this->name = $bean->name ?? 'Старница не найдена.';
     $this->value = $bean->value ?? 'Ошибка 404. Старница не найдена.';
   }
@@ -29,7 +29,7 @@ final class PageField
   {
       return [
         'id' => $this->id,
-        'pages_id' => $this->pages_id,
+        'page_id' => $this->page_id,
         'name' => $this->name,
         'value' => $this->value,
       ];
