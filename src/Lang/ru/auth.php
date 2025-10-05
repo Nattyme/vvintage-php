@@ -17,5 +17,7 @@ return [
   'auth.label.new_password' => 'Новый пароль',
   'auth.placeholder.email' => 'Введите ваш email',
   'auth.placeholder.password' => 'Введите ваш пароль',
-  'auth.page.slogan' => 'интернет-магазин уникальных вещей'
+  'auth.page.slogan' => 'интернет-магазин уникальных вещей',
+  'auth.page.ways.separator' => 'или',
+  'auth.page.login.google' => 'Войти через Google'
 ];

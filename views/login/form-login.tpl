@@ -1,27 +1,33 @@
 
 <form class="authorization-form" method="POST" name="formLogin" action="<?php echo HOST; ?>login">
   <div class="authorization-form__heading">
-    <h2 class="heading">Вход</h2>
+    <h2 class="heading">
+      <?php echo h(__('auth.login.tooltip', [], 'auth'));?>
+    </h2>
   </div>
   <?php include ROOT . "views/components/errors.tpl"; ?>
   <?php include ROOT . "views/components/success.tpl"; ?>
 
   <?php if(empty($_SESSION['success'])) : ?>
     <div class="authorization-form__field">
-      <lable for="email" class="authorization-form__field-title">Email</lable>
+      <lable for="email" class="authorization-form__field-title">
+        <?php echo h(__('auth.label.email', [], 'auth'));?>
+      </lable>
       <input 
         id="email"
         name="email" 
         class="input" 
         value="info2@mail.ru" 
         type="email" 
-        placeholder="Введите ваш email" 
+        placeholder="<?php echo h(__('auth.placeholder.email', [], 'auth'));?>" 
         required 
       />
     </div>
 
     <div class="authorization-form__field">
-      <label for="password" class="authorization-form__field-title">Пароль</label>
+      <label for="password" class="authorization-form__field-title">
+        <?php echo h(__('auth.label.password', [], 'auth'));?>
+      </label>
 
       <input 
         id="password" 
@@ -29,18 +35,22 @@
         class="input" 
         value="111111" 
         type="password" 
-        placeholder="Введите пароль" 
+        placeholder="<?php echo h(__('auth.placeholder.password', [], 'auth'));?>" 
         required 
       />
     </div>
 
     <div class="authorization-form__button">
-      <button name="login" value="login" type="submit" class="button button--m button--primary button--with-icon">Войти</button>
+      <button name="login" value="login" type="submit" class="button button--m button--primary button--with-icon">
+        <?php echo h(__('auth.action.enter', [], 'auth'));?>
+      </button>
     </div>
 
     <!-- Разделитель с линиями и текстом "или" -->
     <div class="divider">
-      <span>или</span>
+      <span>
+        <?php echo h(__('auth.page.ways.separator', [], 'auth'));?>
+      </span>
     </div>
 
     <button class="gsi-material-button">
@@ -55,8 +65,12 @@
             <path fill="none" d="M0 0h48v48H0z"></path>
           </svg>
         </div>
-        <span class="gsi-material-button-contents">Sign in with Google</span>
-        <span style="display: none;">Sign in with Google</span>
+        <span class="gsi-material-button-contents">
+           <?php echo h(__('auth.page.login.google', [], 'auth'));?>
+        </span>
+        <span style="display: none;">
+           <?php echo h(__('auth.page.login.google', [], 'auth'));?>
+        </span>
       </div>
     </button>
     <!-- CSRF-токен -->
@@ -67,14 +81,18 @@
 
 <!-- links -->
 <div class="authorization__links">
-  <h2 class="authorization__subtitle">Не&#160;зарегестрированы?</h2>
+  <h2 class="authorization__subtitle">
+    <?php echo h(__('auth.tooltip.not_registered', [], 'auth'));?>
+  </h2>
   <div class="authorization-form__button">
-    <a href="<?php echo HOST; ?>registration" class="button button--m button--outline button--outline-transparent button--with-icon">Регистрация</a>
+    <a href="<?php echo HOST; ?>registration" class="button button--m button--outline button--outline-transparent button--with-icon">
+      <?php echo h(__('auth.register.profile', [], 'auth'));?>
+    </a>
   </div>
 
   <div class="authorization-form__button">
     <a href="<?php echo HOST; ?>lost-password" class="button button--m button--outline button--outline-transparent button--with-icon">
-      Восстановить
+      <?php echo h(__('auth.restore.password', [], 'auth'));?>
     </a>
   </div>
 

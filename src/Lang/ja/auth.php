@@ -16,4 +16,6 @@ return [
   'auth.placeholder.email' => 'メールアドレスを入力してください',
   'auth.placeholder.password' => 'パスワードを入力してください',
   'auth.page.slogan' => 'ユニークなアイテムのオンラインショップ',
+  'auth.page.ways.separator' => 'または',
+  'auth.page.login.google' => 'Googleでサインイン'
 ];

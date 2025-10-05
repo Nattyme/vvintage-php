@@ -16,4 +16,6 @@ return [
   'auth.placeholder.email' => 'Entrez votre email',
   'auth.placeholder.password' => 'Entrez votre mot de passe',
   'auth.page.slogan' => 'boutique en ligne d’articles uniques',
+  'auth.page.ways.separator' => 'ou',
+  'auth.page.login.google' => 'Se connecter avec Google'
 ];

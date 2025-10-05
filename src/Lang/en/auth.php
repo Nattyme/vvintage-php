@@ -15,5 +15,7 @@ return [
   'auth.label.password' => 'Password',
   'auth.placeholder.email' => 'Enter your email',
   'auth.placeholder.password' => 'Enter your password',
-  'auth.page.slogan' => 'online store of unique items'
+  'auth.page.slogan' => 'online store of unique items',
+  'auth.page.ways.separator' => 'or',
+  'auth.page.login.google' => 'Sign in with Google'
 ];

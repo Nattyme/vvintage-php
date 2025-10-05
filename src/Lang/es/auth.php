@@ -15,5 +15,7 @@ return [
   'auth.label.password' => 'Contraseña',
   'auth.placeholder.email' => 'Introduce tu correo electrónico',
   'auth.placeholder.password' => 'Introduce tu contraseña',
-  'auth.page.slogan' => 'tienda online de artículos únicos'
+  'auth.page.slogan' => 'tienda online de artículos únicos',
+  'auth.page.ways.separator' => 'o',
+  'auth.page.login.google' => 'Iniciar sesión con Google'
 ];
