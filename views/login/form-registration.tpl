@@ -1,6 +1,8 @@
 <form class="authorization-form authorization-form--registration" name="formRegistration" method="POST" action="<?php echo HOST; ?>registration">
   <div class="authorization-form__heading">
-    <h2 class="heading">Регистрация</h2>
+    <h2 class="heading">
+      <?php echo h(__('auth.register.profile', [], 'auth'));?>
+    </h2>
   </div>
 
   <?php include ROOT . "views/components/errors.tpl"; ?>
@@ -41,14 +43,16 @@
 
   <div class="authorization-form__button">
     <button name="register" value="register" type="submit" class="button button--l button--primary button--with-icon">
-      Отправить
+      <?php echo h(__('button.submit', [], 'buttons'));?>
     </button>
   </div>
 
   
   <!-- Разделитель с линиями и текстом "или" -->
   <div class="divider">
-    <span>или</span>
+    <span>
+      <?php echo h(__('auth.page.ways.separator', [], 'auth'));?>
+    </span>
   </div>
 
   <button class="gsi-material-button">
@@ -63,8 +67,12 @@
           <path fill="none" d="M0 0h48v48H0z"></path>
         </svg>
       </div>
-      <span class="gsi-material-button-contents">Sign up with Google</span>
-      <span style="display: none;">Sign up with Google</span>
+      <span class="gsi-material-button-contents">
+        <?php echo h(__('auth.page.login.google', [], 'auth'));?>
+      </span>
+      <span style="display: none;">
+        <?php echo h(__('auth.page.login.google', [], 'auth'));?>
+      </span>
     </div>
   </button>
 </form>
@@ -76,7 +84,9 @@
   </h2>
 
   <div class="authorization-form__button">
-    <a href="<?php echo HOST.'login'; ?>" class="button button--m button--outline button--outline-transparent button--with-icon">Войти</a>
+    <a href="<?php echo HOST.'login'; ?>" class="button button--m button--outline button--outline-transparent button--with-icon">
+      <?php echo h(__('auth.action.enter', [], 'auth')) ;?>
+    </a>
   </div>
   <div class="authorization-form__button">
     <a href="<?php echo HOST . 'lost-password';?>" class="button button--m button--outline button--outline-transparent button--with-icon">
