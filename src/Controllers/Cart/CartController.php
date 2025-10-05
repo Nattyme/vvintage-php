@@ -29,6 +29,7 @@ use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Product\ProductImageService;
+use Vvintage\Services\Page\PageService;
 
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
@@ -45,6 +46,7 @@ final class CartController extends BaseController
     private array $cart;
     private UserItemsListStoreInterface $cartStore;
     private Breadcrumbs $breadcrumbsService;
+    private PageService $pageService;
 
     public function __construct(
       CartService $cartService, 
@@ -62,6 +64,7 @@ final class CartController extends BaseController
       $this->cart = $cart;
       $this->cartStore = $cartStore;
       $this->breadcrumbsService = $breadcrumbs;
+      $this->pageService = new PageService();
     }
 
     public function index(RouteData $routeData): void
@@ -106,6 +109,7 @@ final class CartController extends BaseController
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
+            'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'viewModel' => $viewModel,
             'flash' => $this->flash
       ]);

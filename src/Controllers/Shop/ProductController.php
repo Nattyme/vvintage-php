@@ -19,6 +19,7 @@ use Vvintage\Models\Product\Product;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Seo\SeoService;
+use Vvintage\Services\Page\PageService;
 
 
 
@@ -27,6 +28,7 @@ final class ProductController extends BaseController
     private ProductService $productService;
     private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
+    private PageService $pageService;
 
     public function __construct(SeoService $seoService, Breadcrumbs $breadcrumbs)
     {
@@ -34,6 +36,7 @@ final class ProductController extends BaseController
         $this->productService = new ProductService($this->currentLang);
         $this->seoService = $seoService;
         $this->breadcrumbsService = $breadcrumbs;
+        $this->pageService = new PageService();
     }
 
 
@@ -72,6 +75,7 @@ final class ProductController extends BaseController
         $this->renderLayout('shop/product', [
               // 'seo' => $seo,
               'routeData' => $routeData,
+              'navigation' => $this->pageService->getLocalePagesNavTitles(),
               'breadcrumbs' => $breadcrumbs,
               'viewModel' => $viewModel,
               'flash' => $this->flash

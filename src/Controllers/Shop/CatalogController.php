@@ -19,6 +19,7 @@ use Vvintage\Services\Brand\BrandService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Seo\SeoService;
 use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Page\PageService;
 
 use Vvintage\DTO\Product\ProductFilterDTO;
 
@@ -33,6 +34,8 @@ final class CatalogController extends BaseController
     private BrandService $brandService;
     private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
+    private PageService $pageService;
+
 
     public function __construct(SeoService $seoService, Breadcrumbs $breadcrumbs)
     {
@@ -42,6 +45,7 @@ final class CatalogController extends BaseController
       $this->brandService = new BrandService();
       $this->seoService = $seoService;
       $this->breadcrumbsService = $breadcrumbs;
+      $this->pageService = new PageService();
     }
 
 
@@ -116,6 +120,7 @@ final class CatalogController extends BaseController
       $this->renderLayout('shop/catalog', [
             'pagination' => $pagination,
             'pageTitle' => $pageTitle,
+            'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'viewModel' => $viewModel

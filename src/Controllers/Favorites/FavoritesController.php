@@ -18,6 +18,7 @@ use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
 
+
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
@@ -30,6 +31,7 @@ use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Page\PageService;
 
 
 /** Абстракции */
@@ -46,6 +48,7 @@ final class FavoritesController extends BaseController
     private array $fav_list;
     private UserItemsListStoreInterface $favStore;
     private Breadcrumbs $breadcrumbsService;
+    private PageService $pageService;
 
     public function __construct(
       FavoritesService $favService, 
@@ -63,6 +66,7 @@ final class FavoritesController extends BaseController
       $this->fav_list = $fav_list;
       $this->favStore = $favStore;
       $this->breadcrumbsService = $breadcrumbs;
+      $this->pageService = new PageService();
     }
 
     public function index(RouteData $routeData): void
@@ -98,6 +102,7 @@ final class FavoritesController extends BaseController
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
+            'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'viewModel' => $viewModel,
             'flash' => $this->flash
       ]);
