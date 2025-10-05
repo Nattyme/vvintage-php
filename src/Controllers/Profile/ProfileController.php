@@ -17,6 +17,7 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\User\UserService;
 use Vvintage\Services\Validation\ProfileValidator;
+use Vvintage\Services\Page\PageService;
 
 // use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\Product\ProductRepository;
@@ -30,13 +31,15 @@ final class ProfileController extends BaseController
   private UserService $userService;
   private Breadcrumbs $breadcrumbsService;
   private ProfileValidator $validator;
+  private PageService $pageService;
 
   public function __construct(Breadcrumbs $breadcrumbs)
   {
     parent::__construct(); // Важно!
-    $this->userService = new UserService($this->languages, $this->currentLang);
+    $this->userService = new UserService();
     $this->breadcrumbsService = $breadcrumbs;
     $this->validator = new ProfileValidator();
+    $this->pageService = new PageService();
   }
 
 
@@ -163,7 +166,9 @@ final class ProfileController extends BaseController
       $userId = $userModel->getId();
 
       // Если есть ID  - получаем данные заказа, проверя, что это заказ вошедшего в свой профиль пользователя
-      $orders = $this->userService->getOrderById((int) $routeData->uriGetParam);
+
+      $order = $this->userService->getOrderById((int) $routeData->uriGet);
+   
       // Проверка, что заказ принадлежит текущему пользователю
       if ( $order->getUserId() !== $userId) {
         $this->redirect('profile');
@@ -182,8 +187,8 @@ final class ProfileController extends BaseController
       $amountMap = array_column($products, 'amount', 'id');
 
       foreach ($productsData as &$product) {
-          $productId = $product['id'];
-          $product['amount'] = $amountMap[$productId] ?? 0;
+          $amount = $amountMap[$product->id] ?? 0;
+          $product->setAmount($amount);
       }
       unset($product);
 
@@ -225,6 +230,7 @@ final class ProfileController extends BaseController
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
+            'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'pageClass' => $pageClass,
             'userModel' => $userModel,
             'orders' => $orders,

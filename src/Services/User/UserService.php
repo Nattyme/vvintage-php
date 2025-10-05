@@ -86,7 +86,7 @@ class UserService extends BaseService
 
   public function getProductsByIds(array $ids)
   {
-    return $this->productRepository->getProductsByIds($ids);
+    return $this->productService->getProductsByIds($ids);
   }
 
   public function findBlockedUserByEmail(string $email) 

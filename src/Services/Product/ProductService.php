@@ -99,7 +99,7 @@ class ProductService extends BaseService
 
         return $rows ? $this->createProductDTOFromArray($rows) : null;
     }
-
+   
     public function getProductsByIds(array $ids): array
     {
         if (empty($ids)) return [];
