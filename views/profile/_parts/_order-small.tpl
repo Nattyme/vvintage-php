@@ -1,7 +1,8 @@
 <tr>
   <td>
     <a class="link-to-page" href="<?php echo HOST . 'profile-order/' . $order->getId();?>">
-        <?php if ( $order->getDateTime() ) echo rus_date("j F Y в G:i", $order->getDateTime()->getTimestamp());  ?>
+     
+        <?php if ( $order->getDateTime() ) echo $this->localeService->formatDateTime($order->getDateTime());  ?>
     </a>
   </td>
   <td>

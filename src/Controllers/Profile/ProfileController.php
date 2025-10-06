@@ -231,6 +231,7 @@ final class ProfileController extends BaseController
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
+    
             'pageClass' => $pageClass,
             'userModel' => $userModel,
             'orders' => $orders,
@@ -248,7 +249,7 @@ final class ProfileController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
  
-phpinfo();
+
       // dd($userModel);
       // if (isset($_POST['updateProfile'])) {
 
