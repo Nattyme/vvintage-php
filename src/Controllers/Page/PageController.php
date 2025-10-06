@@ -46,7 +46,7 @@ class PageController extends BaseController
 
     // Хлебные крошки
     $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
-
+   
     // Общий рендер
     $this->renderLayout("pages/{$slug}/index", [
         'page' => $page,
@@ -86,7 +86,7 @@ class PageController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-         
+
 
       // Показываем страницу
       $this->renderLayout("pages/{$slug}/index", [

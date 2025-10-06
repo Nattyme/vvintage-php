@@ -1,7 +1,9 @@
 <section class="cats" id="cats">
   <div class="container">
     <div class="section-title">
-      <h2 class="h2 text-bold">Категории</h2>
+      <h2 class="h2 text-bold">
+        <?php echo h($fields['categories_title']);?>
+      </h2>
     </div>
 
     <div class="cats__cards-wrapper">

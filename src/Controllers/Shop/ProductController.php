@@ -78,7 +78,9 @@ final class ProductController extends BaseController
               'navigation' => $this->pageService->getLocalePagesNavTitles(),
               'breadcrumbs' => $breadcrumbs,
               'viewModel' => $viewModel,
-              'flash' => $this->flash
+              'flash' => $this->flash,
+              'currentLang' =>  $this->pageService->currentLang,
+              'languages' => $this->pageService->languages
         ]);
     }
 }

@@ -2,7 +2,9 @@
 <section class="posts" id="posts">
     <div class="container">
       <div class="section-title">
-        <h2 class="h2 text-bold">Последнее в блоге</h2>
+        <h2 class="h2 text-bold">
+          <?php echo h($fields['new_posts_title']);?>
+        </h2>
       </div>
 
       <div class="posts__cards-wrapper">

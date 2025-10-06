@@ -40,7 +40,7 @@
   use Vvintage\Services\Validation\NewOrderValidator;
   use Vvintage\Services\Page\Breadcrumbs;
   use Vvintage\Services\Messages\FlashMessage;
-  use Vvintage\Services\Seo\SeoService;
+  use Vvintage\Services\SEO\SeoService;
   use Vvintage\Services\Product\ProductService;
 
 

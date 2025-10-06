@@ -16,6 +16,7 @@ class PostService extends BaseService
 
     public function __construct()
     {
+      parent::__construct(); // Важно!
       $this->postRepository = new PostRepository ();
       $this->postCategoryRepository = new PostCategoryRepository ();
     }
@@ -53,12 +54,12 @@ class PostService extends BaseService
 
     public function getAllMainCategories(): array
     { 
-      return $this->postCategoryRepository->getMainCats();
+      return $this->postCategoryRepository->getMainCats($this->currentLang);
     }
 
     public function getAllSubCategories(): array
     { 
-      return $this->postCategoryRepository->getSubCats();
+      return $this->postCategoryRepository->getSubCats($this->currentLang);
     }
 
     public function getLastPosts(int $count)
@@ -69,8 +70,9 @@ class PostService extends BaseService
     public function getBlogData ( array $pagination): array
     {
       $posts = $this->getAllPosts($pagination);
-      $mainCategories = $this->getAllMainCategories();
-      $subCategories = $this->getAllSubCategories();
+      $mainCategories = $this->getAllMainCategories($this->currentLang);
+    
+      $subCategories = $this->getAllSubCategories($this->currentLang);
       $totalPosts = $this->getTotalCount();
 
       return [

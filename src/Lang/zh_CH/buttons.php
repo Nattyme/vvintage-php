@@ -11,6 +11,7 @@ return [
   'button.goto.blog' => '前往博客',
   'button.cart.add' => '添加到购物车',
   'button.cart.order' => '提交订单',
-  'button.products.add' => '添加商品'
+  'button.products.add' => '添加商品',
+  'button.apply.filters' => '应用筛选',
+  'button.clear.filters' => '清除',
 ];
-

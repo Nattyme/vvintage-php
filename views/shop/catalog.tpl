@@ -36,11 +36,15 @@
                 </div>
             <?php elseif(isset($_GET) && !empty($_GET)) : ?>
               <div class="products__empty products__empty--filtered">
-                <h3>К сожалению, по вашему запросу ничего не найдено. Попробуйте изменить параметры фильтра.</h3>
+                <h3>
+                  <?php echo h(__('shop.no.results', [], 'shop')); ?>
+                </h3>
               </div>
-            <?php else : ?>
+            <?php else : ?>  
               <div class="products__empty products__empty--initial">
-                <h3>В этой категории пока нет товаров. Мы работаем над пополнением!</h3>
+                <h3>
+                   <?php echo h(__('shop.empty.category', [], 'shop')); ?>
+                </h3>
               </div>
             <?php endif;?>
           </div>

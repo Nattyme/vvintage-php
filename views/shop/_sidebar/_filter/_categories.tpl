@@ -1,5 +1,7 @@
 <div class="filter__group">
-  <h3 class="filter__title">Категории</h3>
+  <h3 class="filter__title">
+    <?php echo h(__('shop.categories', [], 'shop'));?>
+  </h3>
   
   <ul class="filter__list" data-control="tab" id="filter-category">
     <?php foreach($viewModel['categories'] as $category) : ?>

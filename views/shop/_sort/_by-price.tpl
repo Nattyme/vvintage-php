@@ -1,6 +1,10 @@
-<label for="sort">Сортировать:</label>
+<label for="sort">
+  <?php echo h(__('shop.sort', [], 'shop'));?> 
+</label>
 <select name="sort" id="sort" onchange="this.form.submit()">
-  <option value="">По умолчанию</option>
-  <option value="price_asc">Цена ↑</option>
-  <option value="price_desc">Цена ↓</option>
+  <option value="">
+    <?php echo h(__('shop.default', [], 'shop'));?> 
+  </option>
+  <option value="price_asc"><?php echo h(__('shop.price', [], 'shop'));?> ↑</option>
+  <option value="price_desc"><?php echo h(__('shop.price', [], 'shop'));?> ↓</option>
 </select>

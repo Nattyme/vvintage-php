@@ -10,8 +10,8 @@ interface PostCategoryRepositoryInterface
     public function getCategoryById(int $id): ?PostCategory;
     public function getAllCategories(): array; 
     public function getCategoriesByIds(array $ids): array;
-    public function getMainCats(): array;
-    public function getSubCats(): array;
+    public function getMainCats(string $currentLang): array;
+    public function getSubCats(string $currentLang): array;
     public function getPostCatsByParentId(?int $id = null): array;
     public function getParentCategory(PostCategory $childCategrory): ?PostCategory;
     public function savePostCat(PostCategory $cat): int;

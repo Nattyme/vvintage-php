@@ -45,11 +45,11 @@ class PostCategoryService extends BaseService
     
     public function getMainCategories(): array
     {
-      return $this->repository->getMainCats();
+      return $this->repository->getMainCats($this->currentLang);
     }
     public function getSubCategories(): array
     {
-      return $this->repository->getSubCats();
+      return $this->repository->getSubCats($this->currentLang);
     }
     public function getAllCategories($pagination = null): array
     {

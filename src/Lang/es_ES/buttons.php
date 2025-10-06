@@ -11,5 +11,7 @@ return [
   'button.goto.blog' => 'Ir al blog',
   'button.cart.add' => 'Añadir al carrito',
   'button.cart.order' => 'Realizar pedido',
-  'button.products.add' => 'Agregar productos'
+  'button.products.add' => 'Agregar productos',
+  'button.apply.filters' => 'Aplicar filtros',
+  'button.clear.filters' => 'Limpiar',
 ];

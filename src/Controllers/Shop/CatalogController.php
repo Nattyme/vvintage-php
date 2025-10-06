@@ -54,7 +54,7 @@ final class CatalogController extends BaseController
       $this->setRouteData($routeData); // <-- передаём routeData
 
       // Название страницы
-      $pageTitle = 'Каталог товаров';
+      // $pageTitle = 'Каталог товаров';
       $productsPerPage = 12;
       $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
@@ -89,6 +89,16 @@ final class CatalogController extends BaseController
       // foreach($products as $product) {
       //   $seo[$product->getId()] = $this->seoService->getSeoForPage('product', $product);
       // }
+
+      $pageModel = $this->pageService->getPageBySlug($routeData->uriModule);
+
+      // получаем общие данные страницы 
+      $this->setRouteData($routeData); // <-- передаём routeData
+      $page = $pageModel->export();
+      $fields = $pageModel->getFieldsAssoc();
+
+      // Название страницы
+      $pageTitle = $pageModel->getTitle();
 
 
       // Это кол-во товаров, показанных на этой странице

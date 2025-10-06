@@ -85,8 +85,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     // }
     private function createCategoryOutputDTOFromArray(array $row): PostCategoryOutputDTO
     {
-        $locale = $this->currentLang ?? self::DEFAULT_LANG;
-
+      $locale = 'ru';
         return new PostCategoryOutputDTO([
             'id' => (int) $row['id'],
             'title' => (string) ($row['category_title_translation'] ?? ''),
@@ -112,7 +111,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     }
 
 
-    private function unitePostRawData(?int $categoryId = null): array
+    private function unitePostRawData(string $currentLang, ?int $categoryId = null): array
     {
         $sql = '
             SELECT 
@@ -125,8 +124,8 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
             LEFT JOIN ' . self::TABLE_TRANSLATION .' ct ON ct.category_id = c.id AND ct.locale = ?
         ';
 
-        $locale = $this->currentLang ?? self::DEFAULT_LANG;
-        $bindings = [$locale];
+     
+        $bindings = [$currentLang];
 
         if ($categoryId !== null) {
             $sql .= ' WHERE c.id = ? GROUP BY c.id LIMIT 1';
@@ -178,9 +177,9 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
-    public function getMainCats(): array
+    public function getMainCats(string $currentLang): array
     {
-        $rows = $this->unitePostRawData();
+        $rows = $this->unitePostRawData($currentLang);
 
         $mainCategories = array_filter($rows, function ($row) {
             return $row['parent_id'] === null;
@@ -197,9 +196,9 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
     
 
-    public function getSubCats(): array
+    public function getSubCats($currentLang): array
     {
-        $rows = $this->unitePostRawData();
+        $rows = $this->unitePostRawData($currentLang);
 
         $subCategories = array_filter($rows, function ($row) {
             return $row['parent_id'] !== null;

@@ -20,6 +20,7 @@ use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Validation\NewOrderValidator;
 use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Page\PageService;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -46,6 +47,7 @@ final class OrderController extends BaseController
     private UserItemsListStoreInterface $cartStore;
     private NewOrderValidator $validator;
     private Breadcrumbs $breadcrumbsService;
+    private PageService $pageService;
   
 
     public function __construct(
@@ -68,6 +70,7 @@ final class OrderController extends BaseController
       $this->cartStore = $cartStore;
       $this->validator = $validator;
       $this->breadcrumbsService = $breadcrumbs;
+      $this->pageService = new PageService();
     }
 
     public function index(RouteData $routeData): void
@@ -146,7 +149,10 @@ final class OrderController extends BaseController
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'flash' => $this->flash
+            'flash' => $this->flash,
+            'navigation' => $this->pageService->getLocalePagesNavTitles(),
+            'currentLang' =>  $this->pageService->currentLang,
+            'languages' => $this->pageService->languages
       ]);
     }
 
@@ -166,7 +172,10 @@ final class OrderController extends BaseController
             'products' => $products,
             'totalPrice' => $totalPrice,
             'breadcrumbs' => $breadcrumbs,
-            'flash' => $this->flash
+            'flash' => $this->flash,
+            'navigation' => $this->pageService->getLocalePagesNavTitles(),
+            'currentLang' =>  $this->pageService->currentLang,
+            'languages' => $this->pageService->languages
       ]);
     }
 }

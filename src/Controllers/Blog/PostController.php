@@ -13,7 +13,7 @@ use Vvintage\Routing\RouteData;
 /** Сервисы */
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Post\PostService;
-use Vvintage\Services\Seo\SeoService;
+use Vvintage\Services\SEO\SeoService;
 
 
 final class PostController extends BaseController
@@ -27,7 +27,7 @@ final class PostController extends BaseController
         parent::__construct(); // Важно!
         $this->seoService = new SeoService();
         $this->breadcrumbsService = $breadcrumbs;
-        $this->postService = new PostService( $this->languages, $this->currentLang);
+        $this->postService = new PostService();
     }
 
 
@@ -74,7 +74,9 @@ final class PostController extends BaseController
               'seo' => $seo,
               'routeData' => $routeData,
               'viewModel' => $viewModel,
-              'flash' => $this->flash
+              'flash' => $this->flash,
+              'currentLang' =>  $this->postService->currentLang,
+              'languages' => $this->postService->languages
         ]);
     }
 }

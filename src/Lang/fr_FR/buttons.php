@@ -7,10 +7,12 @@ return [
   'button.submit' => 'Envoyer',
   'button.cancel' => 'Annuler',
   'button.login' => 'Se connecter',
-  'button.goto.shop' => 'Aller au magasin',
+  'button.goto.shop' => 'Aller à la boutique',
   'button.goto.blog' => 'Aller au blog',
   'button.cart.add' => 'Ajouter au panier',
   'button.cart.order' => 'Passer la commande',
-  'button.products.add' => 'Ajouter des produits'
+  'button.products.add' => 'Ajouter des produits',
+  'button.apply.filters' => 'Appliquer les filtres',
+  'button.clear.filters' => 'Effacer',
 ];
 

@@ -23,7 +23,7 @@ final class BlogController extends BaseController
     ) {
         parent::__construct(); // Важно!
         $this->breadcrumbsService = $breadcrumbs;
-        $this->postService = new PostService( $this->languages, $this->currentLang );
+        $this->postService = new PostService();
     }
 
     
@@ -60,7 +60,9 @@ final class BlogController extends BaseController
           'routeData' => $routeData,
           'breadcrumbs' => $breadcrumbs,
           'viewModel' => $viewModel,
-          'flash' => $this->flash
+          'flash' => $this->flash,
+          'currentLang' =>  $this->postService->currentLang,
+          'languages' => $this->postService->languages
       ]);
     }
 }
