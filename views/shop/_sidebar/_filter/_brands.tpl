@@ -15,7 +15,7 @@
           >
           <span class="filter__checkbox-custom custom-checkbox"></span>
 
-          <span class="filter__checkbox-label"><?php echo h($brand->translations[$viewModel['locale']]['title']);?></span>
+          <span class="filter__checkbox-label"><?php echo h($brand->translations[$currentLang]['title']);?></span>
         </label>
       </li>
     <?php endforeach;?>

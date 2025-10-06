@@ -104,7 +104,9 @@ final class FavoritesController extends BaseController
             'breadcrumbs' => $breadcrumbs,
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'viewModel' => $viewModel,
-            'flash' => $this->flash
+            'flash' => $this->flash,
+            'currentLang' =>  $this->pageService->currentLang,
+            'languages' => $this->pageService->languages
       ]);
      
     }

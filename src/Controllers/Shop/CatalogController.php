@@ -57,13 +57,7 @@ final class CatalogController extends BaseController
       $pageTitle = 'Каталог товаров';
       $productsPerPage = 12;
       $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-      // $pagination = pagination($productsPerPage, 'products');
-// Array
-// (
-//     [number_of_pages] => 5
-//     [page_number] => 1
-//     [sql_page_limit] => LIMIT 0, 9
-// )
+
 
       $filterDto = new ProductFilterDTO([
           'brands'    => $_GET['brand'] ?? [],
@@ -81,7 +75,6 @@ final class CatalogController extends BaseController
 
       // Получаем продукты с учётом пагинации
       $filteredProductsData = $this->productService->getFilteredProducts( filters: $filterDto, perPage: 15);
-// dd($filteredProductsData);
       $products =  $filteredProductsData['products'];
       $total = $filteredProductsData['total'];
       $filters = $filteredProductsData['filters'];
@@ -102,7 +95,7 @@ final class CatalogController extends BaseController
    
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
-        
+
 
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
@@ -111,8 +104,7 @@ final class CatalogController extends BaseController
           'brands' => $brands,
           'categories' => $categories,
           'total' => $total,
-          'shown' => $shown,
-          'locale' => $this->currentLang
+          'shown' => $shown
       ];
 
 
@@ -123,7 +115,9 @@ final class CatalogController extends BaseController
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'viewModel' => $viewModel
+            'viewModel' => $viewModel,
+            'currentLang' =>  $this->pageService->currentLang,
+            'languages' => $this->pageService->languages
       ]);
     }
 }

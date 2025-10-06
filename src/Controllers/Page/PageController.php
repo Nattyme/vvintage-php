@@ -26,7 +26,7 @@ class PageController extends BaseController
   public function __construct ()
   {
     parent::__construct(); // Важно!
-    $this->pageService = new PageService($this->currentLang);
+    $this->pageService = new PageService();
     $this->breadcrumbsService = new Breadcrumbs();
   }
 
@@ -54,7 +54,9 @@ class PageController extends BaseController
         'fields' => $fields,
         'navigation' => $this->pageService->getLocalePagesNavTitles(),
         'breadcrumbs' => $breadcrumbs,
-        'pageTitle' => $pageTitle
+        'pageTitle' => $pageTitle,
+        'currentLang' => $this->pageService->currentLang,
+        'languages' => $this->pageService->languages
     ]);
   }
 
@@ -65,10 +67,9 @@ class PageController extends BaseController
       $slug = $routeData->uriModule ?: 'main';  
       $this->setRouteData($routeData); // <-- передаём routeData
 
-      $categoryService = new CategoryService($this->languages, $this->currentLang);
-      $productService = new ProductService($this->currentLang);
-      $postService = new PostService($this->languages, $this->currentLang);
-
+      $categoryService = new CategoryService();
+      $productService = new ProductService();
+      $postService = new PostService();
   
       // Получим категории, продукты и посты
       $categories = $categoryService->getMainCategories();
@@ -85,7 +86,7 @@ class PageController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-  
+         
 
       // Показываем страницу
       $this->renderLayout("pages/{$slug}/index", [
@@ -97,9 +98,10 @@ class PageController extends BaseController
         'fields' => $fields,
         'navigation' => $this->pageService->getLocalePagesNavTitles(),
         'breadcrumbs' => $breadcrumbs,
-        'pageTitle' => $pageTitle
+        'pageTitle' => $pageTitle,
+        'currentLang' => $this->pageService->currentLang,
+        'languages' => $this->pageService->languages
       ]);
-      // $this->renderPage($routeData, $categories, $products, $posts);
   }
 
   private function renderPage (RouteData $routeData, $categories, $products, $posts): void 

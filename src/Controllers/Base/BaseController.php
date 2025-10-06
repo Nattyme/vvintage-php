@@ -15,30 +15,30 @@ use Vvintage\Services\Messages\FlashMessage;
 // use Vvintage\Services\Page\PageService;
 
 // Пеервод на другие языки
-use Vvintage\Config\LanguageConfig;
-use Vvintage\Services\Locale\LocaleService;
-use Vvintage\Services\Translator\Translator;
+// use Vvintage\Config\LanguageConfig;
+// use Vvintage\Services\Locale\LocaleService;
+// use Vvintage\Services\Translator\Translator;
 
 
 abstract class BaseController
 {    
   protected array $settings;
-  protected array $languages;
-  protected string $currentLang;
+  // protected array $languages;
+  // protected string $currentLang;
   protected RouteData $routeData; 
   protected Translator $translator;
   protected FlashMessage $flash;
   protected SessionService $sessionService;
-  protected LocaleService $localeService;
+  // protected LocaleService $localeService;
   // protected PageService $pageService;
 
   public function __construct()
   {
       $this->settings = Settings::all(); 
-      $this->localeService = new LocaleService();
-      $this->translator = setTranslator(); // берём уже установленный переводчик
-      $this->languages = LanguageConfig::getAvailableLanguages();
-      $this->currentLang = $this->localeService->getCurrentLang();
+      // $this->localeService = new LocaleService();
+      // $this->translator = setTranslator(); // берём уже установленный переводчик
+      // $this->languages = LanguageConfig::getAvailableLanguages();
+      // $this->currentLang = $this->localeService->getCurrentLang();
       // $this->pageService = new PageService($this->currentLang);
       $this->flash = new FlashMessage();
       $this->sessionService = new SessionService();
@@ -73,8 +73,8 @@ abstract class BaseController
     extract( array_merge($vars, [
       'settings' => $this->settings, 
       'adminData' => $adminData,
-      'languages' => $this->languages,
-      'currentLang' => $this->currentLang,
+      // 'languages' => $this->languages,
+      // 'currentLang' => $this->currentLang,
       'flash' => $this->flash,
       'isBlogPage' => $isBlogPage
     ]) );

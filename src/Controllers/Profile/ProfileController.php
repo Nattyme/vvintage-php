@@ -18,6 +18,7 @@ use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\User\UserService;
 use Vvintage\Services\Validation\ProfileValidator;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Locale\LocaleService;
 
 // use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\Product\ProductRepository;
@@ -32,6 +33,7 @@ final class ProfileController extends BaseController
   private Breadcrumbs $breadcrumbsService;
   private ProfileValidator $validator;
   private PageService $pageService;
+  protected LocaleService $localeService;
 
   public function __construct(Breadcrumbs $breadcrumbs)
   {
@@ -40,6 +42,7 @@ final class ProfileController extends BaseController
     $this->breadcrumbsService = $breadcrumbs;
     $this->validator = new ProfileValidator();
     $this->pageService = new PageService();
+    $this->localeService = new LocaleService();
   }
 
 
@@ -196,26 +199,6 @@ final class ProfileController extends BaseController
   }
 
 
-  // private function renderProfile (RouteData $routeData, ?User $userModel): void 
-  // {  
-  //     // Название страницы
-  //     $pageTitle = 'Профиль пользователя';
-  //     $pageClass = "profile-page";
-
-  //     // Хлебные крошки
-  //     $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
-
-  //     // Подключение шаблонов страницы
-  //     $this->renderLayout('profile/profile', [
-  //           'pageTitle' => $pageTitle,
-  //           'routeData' => $routeData,
-  //           'breadcrumbs' => $breadcrumbs,
-  //           'pageClass' => $pageClass,
-  //           'userModel' => $userModel,
-  //           'flash' => $this->flash
-  //     ]);
-  // }
-
   private function renderProfileFull(RouteData $routeData, ?User $userModel, ?array $orders): void
   {
       // Название страницы
@@ -231,11 +214,12 @@ final class ProfileController extends BaseController
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
-    
             'pageClass' => $pageClass,
             'userModel' => $userModel,
             'orders' => $orders,
-            'flash' => $this->flash
+            'flash' => $this->flash,
+            'currentLang' =>  $this->pageService->currentLang,
+            'languages' => $this->pageService->languages
       ]);
   }
 
@@ -265,6 +249,9 @@ final class ProfileController extends BaseController
             'userModel' => $userModel,
             'uriGet' => $uriGet,
             'address' => $address,
+            'navigation' => $this->pageService->getLocalePagesNavTitles(),
+            'currentLang' =>  $this->pageService->currentLang,
+            'languages' => $this->pageService->languages
       ]);
   }
 
@@ -314,38 +301,6 @@ final class ProfileController extends BaseController
 
       $this->redirect('profile', (string)$userModel->getId());
      
-      
-
-    
-
-      // $updatedData = $this->userService->handleFormData($userModel, $data);
-
-      // Удаление аватарки
-      // if ( isset($_POST['delete-avatar']) && $_POST['delete-avatar'] == 'on') {
-      //   $avatarFolderLocation = ROOT . 'usercontent/avatars/';
-        
-      //   // Если есть старое изображение - удаляем 
-      //   if (file_exists($avatarFolderLocation . $user->avatar) && !empty($user->avatar)) {
-      //     unlink($avatarFolderLocation . $user->avatar);
-      //   }
-
-      //   if (file_exists($avatarFolderLocation . $user->avatarSmall) && !empty($user->avatarSmall)) {
-      //     unlink($avatarFolderLocation . $user->avatarSmall);
-      //   }
-
-      //   // Удалить записи файла в БД
-      //   $user->avatar = '';
-      //   $user->avatarSmall = '';
-      // }
-    
-      // R::store($user);
-
-      // if ($user->id ===  $_SESSION['logged_user']['id']) {
-      //   $_SESSION['logged_user'] = $user;
-      // }
-      
-      // $this->redirect('profile', (string) $userModel->getId());
-    
     }
   }
 

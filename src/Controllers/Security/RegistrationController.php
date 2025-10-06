@@ -11,19 +11,21 @@ use Vvintage\Services\Validation\RegistrationValidator;
 
 final class RegistrationController extends BaseController
 {
+  private RegistrationService $service;
+
   public function __construct()
   {
       parent::__construct(); // Важно!
+      $this->service = new RegistrationService();
   }
 
   public function index ($routeData) {
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
-      $regService = new RegistrationService();
       $validator = new RegistrationValidator();
 
       if ( $validator->validate( $_POST )) {
-        $newUser = $regService->registrateUser( $_POST );
+        $newUser = $this->service->registrateUser( $_POST );
 
         if (!$newUser) {
           $this->flash->pushError('Что-то пошло не так. Попробуйте ещё раз.');
@@ -39,7 +41,8 @@ final class RegistrationController extends BaseController
     $pageTitle = "Регистрация";
     $pageClass = "authorization-page";
     $flash = $this->flash;
-
+    $currentLang =  $this->service->currentLang;
+    $languages = $this->service->languages;
     
     //Сохраняем код ниже в буфер
     ob_start();

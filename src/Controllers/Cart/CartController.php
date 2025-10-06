@@ -87,19 +87,9 @@ final class CartController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-      // $imageService = new ProductImageService();
-
-      // $imagesByProductId = [];
-
-      // foreach ($products as $product) {
-      //     $imagesMainAndOthers = $imageService->splitImages($product->getImages());
-      //     $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
-      // }
-
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'products' => $products,
-          // 'imagesByProductId' => $imagesByProductId,
           'totalPrice' => $totalPrice
       ];
 
@@ -111,7 +101,9 @@ final class CartController extends BaseController
             'breadcrumbs' => $breadcrumbs,
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'viewModel' => $viewModel,
-            'flash' => $this->flash
+            'flash' => $this->flash,
+            'currentLang' =>  $this->pageService->currentLang,
+            'languages' => $this->pageService->languages
       ]);
     }
 

@@ -13,20 +13,22 @@ use Vvintage\Routing\RouteData;
 
 final class PasswordResetController extends BaseController
 {
+  private PasswordResetService $service;
+
   public function __construct()
   {
       parent::__construct(); // Важно!
+      $this->service = new PasswordResetService( new UserRepository(), $this->flash);
   }
 
   public function index ($routeData) 
   {
     if (isset($_POST['lost-password'])) {
-      $resetPassService = new PasswordResetService( new UserRepository(), $this->flash);
-      $validator = new PasswordResetValidator($resetPassService, $this->flash);
+      $validator = new PasswordResetValidator($this->service, $this->flash);
       $resultEmail = false;
 
       if ($validator->validate($_POST)) {
-        $result = $resetPassService->processPasswordResetRequest($_POST['email']);
+        $result = $this->service->processPasswordResetRequest($_POST['email']);
 
         if ($result['success']) {
           $resultEmail = true;
@@ -49,6 +51,8 @@ final class PasswordResetController extends BaseController
     $pageTitle = "Восстановить пароль";
     $pageClass = "authorization-page";
     $flash = $this->flash;
+    $currentLang =  $this->service->currentLang;
+    $languages = $this->service->languages;
  
     //Сохраняем код ниже в буфер
     ob_start();

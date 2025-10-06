@@ -33,7 +33,7 @@ final class ProductController extends BaseController
     public function __construct(SeoService $seoService, Breadcrumbs $breadcrumbs)
     {
         parent::__construct(); // Важно!
-        $this->productService = new ProductService($this->currentLang);
+        $this->productService = new ProductService();
         $this->seoService = $seoService;
         $this->breadcrumbsService = $breadcrumbs;
         $this->pageService = new PageService();

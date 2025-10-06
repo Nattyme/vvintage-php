@@ -23,10 +23,10 @@ final class LocaleService
 
     public function __construct()
     {
-        $this->currentLang = $_SESSION['locale'] ?? LanguageConfig::getDefaultLang();
+        $this->currentLang = $_SESSION['locale'] ?? LanguageConfig::getDefault();
 
         if (!array_key_exists($this->currentLang, LanguageConfig::getAvailableLanguages())) {
-            $this->currentLang = LanguageConfig::getDefaultLang();
+            $this->currentLang = LanguageConfig::getDefault();
         }
 
         $this->currentLocale = $this->buildLocale($this->currentLang);

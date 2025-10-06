@@ -5,12 +5,14 @@ namespace Vvintage\Services\Base;
 
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Config\LanguageConfig;
 
 
 abstract class BaseService
 {    
-  protected string $currentLang;
-  protected string $defaultLocale;
+  public string $currentLang;
+  public string $defaultLocale;
+  public array $languages;
   protected FlashMessage $flash;
   protected LocaleService $localeService;
 
@@ -20,6 +22,7 @@ abstract class BaseService
     $this->currentLang = $this->localeService->getCurrentLang();
     $this->flash = new FlashMessage ();
     $this->defaultLocale = $this->localeService->getDefaultLocale();
+    $this->languages = LanguageConfig::getAvailableLanguages();
   }
 
 }

@@ -141,6 +141,8 @@ final class LoginController extends BaseController
     $pageTitle = "Вход на сайт";
     $pageClass = "authorization-page";
     $flash = $this->flash;
+    $currentLang =  $this->productService->currentLang;
+    $languages = $this->productService->languages;
     
     ob_start();
     include ROOT . 'views/login/form-login.tpl';
