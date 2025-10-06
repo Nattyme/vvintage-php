@@ -9,7 +9,7 @@ use Vvintage\Services\Locale\LocaleService;
 
 abstract class BaseService
 {    
-  protected string $locale;
+  protected string $currentLang;
   protected string $defaultLocale;
   protected FlashMessage $flash;
   protected LocaleService $localeService;
@@ -17,7 +17,7 @@ abstract class BaseService
   public function __construct()
   {
     $this->localeService = new LocaleService();
-    $this->locale = $this->localeService->getCurrentLocale();
+    $this->currentLang = $this->localeService->getCurrentLang();
     $this->flash = new FlashMessage ();
     $this->defaultLocale = $this->localeService->getDefaultLocale();
   }

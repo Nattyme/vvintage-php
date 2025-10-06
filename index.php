@@ -10,6 +10,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Routing\Router;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Config\LanguageConfig;
+use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Services\Translator\Translator;
 
 // Старт сесии (хранение ошибок, уведомлений, данных пользователя)
@@ -26,25 +27,20 @@ require_once ROOT . 'libs/functions.php'; // подключаем пользов
 
 
 // 1. Обработка смены языка и редирект
-if (isset($_GET['lang']) && LanguageConfig::isSupported($_GET['lang'])) {
-    $_SESSION['locale'] = $_GET['lang'];
-
-    // Редирект на URL без ?lang
-    $url = strtok($_SERVER["REQUEST_URI"], '?');
-    header("Location: $url");
-    exit;
+$localeService = new LocaleService();
+if (isset($_GET['lang'])) {
+  $localeService->setCurrentLang($_GET['lang']);
+  
+  $url = strtok($_SERVER["REQUEST_URI"], '?');
+  header("Location: $url");
+  exit;
 }
 
-
-// Выбор языка
-$currentLang = LanguageConfig::getCurrentLocale();
-
-//Определяем текущую локаль
-// $locale = $_SESSION['locale'] ?? 'ru';
+$currentLang = $localeService->getCurrentLang(); 
 
 // Подключение перводчика
-$translator = new Translator($currentLang); // создаем объект переводчика доступен глобально
-$translator->setLocale($currentLang); // вызываем метод setLocale()
+$translator = new Translator($localeService->getCurrentLocale()); // создаем объект переводчика доступен глобально
+// $translator->setLocale($currentLang); // вызываем метод setLocale()
 setTranslator($translator);           // сохраняем объект глобально (в функции)
 
 // setTranslator($translator); // сохраняем его

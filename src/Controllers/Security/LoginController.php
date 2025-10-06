@@ -36,18 +36,12 @@ final class LoginController extends BaseController
 {
   private UserRepository $userRepository;
   private ProductService $productService;
-  protected array $languages;
-  protected string $currentLang;
-  protected Translator $translator;
 
   public function __construct(UserRepository $userRepository) 
   {
     parent::__construct(); // Важно!
     $this->userRepository = $userRepository;
     $this->productService = new ProductService();
-    $this->translator = setTranslator(); // берём уже установленный переводчик
-    $this->languages = LanguageConfig::getAvailableLanguages();
-    $this->currentLang = LanguageConfig::getCurrentLocale();
   }
 
   public function index(RouteData $routeData): void

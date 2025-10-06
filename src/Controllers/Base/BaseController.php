@@ -16,6 +16,7 @@ use Vvintage\Services\Messages\FlashMessage;
 
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
+use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Services\Translator\Translator;
 
 
@@ -28,14 +29,16 @@ abstract class BaseController
   protected Translator $translator;
   protected FlashMessage $flash;
   protected SessionService $sessionService;
+  protected LocaleService $localeService;
   // protected PageService $pageService;
 
   public function __construct()
   {
       $this->settings = Settings::all(); 
+      $this->localeService = new LocaleService();
       $this->translator = setTranslator(); // берём уже установленный переводчик
       $this->languages = LanguageConfig::getAvailableLanguages();
-      $this->currentLang = LanguageConfig::getCurrentLocale();
+      $this->currentLang = $this->localeService->getCurrentLang();
       // $this->pageService = new PageService($this->currentLang);
       $this->flash = new FlashMessage();
       $this->sessionService = new SessionService();

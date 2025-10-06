@@ -18,16 +18,6 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     private const TABLE = 'postscategories';
     private const TABLE_TRANSLATION = 'postscategoriestranslation';
 
-    private string $currentLang;
-    private const DEFAULT_LANG = 'ru';
-
-
-
-    public function __construct(string $currentLang = self::DEFAULT_LANG)
-    {
-        $this->currentLang = $currentLang;
-    }
-
     private function loadTranslations(int $categoryId): array
     {
         $sql =  'SELECT locale, title, description, meta_title, meta_description 

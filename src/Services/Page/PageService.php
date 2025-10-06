@@ -61,7 +61,7 @@ class PageService extends BaseService
 
   public function getPageTranslations(int $pageId): array
   {
-      $translations = $this->translationRepo->getTranslationsArray($pageId, $this->locale);
+      $translations = $this->translationRepo->getTranslationsArray($pageId, $this->currentLang);
 
       if (!$translations) {
           // fallback
@@ -73,7 +73,7 @@ class PageService extends BaseService
 
   public function getLocalePagesNavTitles(?string $locale = null): array
   {
-      $locale = $locale ?? $this->locale;
+      $locale = $locale ?? $this->currentLang;
       $rows = $this->repository->getLocalePagesNavTitles();
 
       if (empty($rows)) return [];
@@ -106,7 +106,7 @@ class PageService extends BaseService
       $dto = new PageOutputDTO([
         'id' => $pageId,
         'slug' => $row['slug'],
-        'title' => $translations[$this->locale]['title'],
+        'title' => $translations[$this->currentLang]['title'],
         'visible' => (int) $row['visible'],
         'show_in_navigation' => (int) $row['show_in_navigation'],
         'translations' => $translations

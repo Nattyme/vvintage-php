@@ -3,24 +3,21 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Post;
 
+use Vvintage\Services\Base\BaseService;
 use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Repositories\PostCategory\PostCategoryRepository;
 use Vvintage\Models\Post\Post;
 use Vvintage\DTO\Post\PostDTO;
 
-class PostService
+class PostService extends BaseService
 {
-    private array $languages;
-    private string $currentLang;
     private PostRepository $postRepository;
     private PostCategoryRepository $postCategoryRepository;
 
-    public function __construct(array $languages, string $currentLang)
+    public function __construct()
     {
-      $this->languages = $languages;
-      $this->currentLang = $currentLang;
-      $this->postRepository = new PostRepository ( $this->currentLang );
-      $this->postCategoryRepository = new PostCategoryRepository ( $this->currentLang );
+      $this->postRepository = new PostRepository ();
+      $this->postCategoryRepository = new PostCategoryRepository ();
     }
 
     public function getAllPosts(array $pagination): array

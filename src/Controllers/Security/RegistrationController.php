@@ -9,23 +9,11 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Security\RegistrationService;
 use Vvintage\Services\Validation\RegistrationValidator;
 
-// Пеервод на другие языки
-use Vvintage\Config\LanguageConfig;
-use Vvintage\Services\Translator\Translator;
-
-
 final class RegistrationController extends BaseController
 {
-  protected array $languages;
-  protected string $currentLang;
-  protected Translator $translator;
-
   public function __construct()
   {
       parent::__construct(); // Важно!
-      $this->translator = setTranslator(); // берём уже установленный переводчик
-      $this->languages = LanguageConfig::getAvailableLanguages();
-      $this->currentLang = LanguageConfig::getCurrentLocale();
   }
 
   public function index ($routeData) {

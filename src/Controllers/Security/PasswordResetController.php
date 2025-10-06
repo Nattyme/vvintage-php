@@ -11,22 +11,11 @@ use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Validation\PasswordResetValidator;
 use Vvintage\Routing\RouteData;
 
-// Пеервод на другие языки
-use Vvintage\Config\LanguageConfig;
-use Vvintage\Services\Translator\Translator;
-
 final class PasswordResetController extends BaseController
 {
-  protected array $languages;
-  protected string $currentLang;
-  protected Translator $translator;
-
   public function __construct()
   {
       parent::__construct(); // Важно!
-      $this->translator = setTranslator(); // берём уже установленный переводчик
-      $this->languages = LanguageConfig::getAvailableLanguages();
-      $this->currentLang = LanguageConfig::getCurrentLocale();
   }
 
   public function index ($routeData) 

@@ -24,12 +24,8 @@ use Vvintage\DTO\Category\CategoryInputDTO;
 final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
 {
     private const TABLE = 'categories';
-    // private const TABLE_CATEGORIES_TRANSLATION = 'categoriestranslation';
-    // private string $currentLang;
-    // private const DEFAULT_LANG = 'ru';
     private CategoryTranslationRepository $translationRepo;
 
-    // public function __construct(string $currentLang)
     public function __construct()
     {
       //  $this->currentLang = $currentLang;
@@ -37,24 +33,6 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     }
 
 
-
-
-    // private function mapBeanToCategory(OODBBean $bean): Category
-    // {
-
-    //   $translations = $this->translationRepo->getTranslationsArray((int) $bean->id);
-
-
-    //   $dto = new CategoryInputDTO([
-    //       'id' => (int) $bean->id,
-    //       'title' => (string) $bean->title,
-    //       'parent_id' => (int) $bean->parent_id,
-    //       'image' => (string) $bean->image,
-    //       'translations' => $translations
-    //   ]);
-
-    //     return Category::fromDTO($dto);
-    // }
     private function mapBeanToCategory(OODBBean $bean): Category
     {
       $dto = new CategoryInputDTO([

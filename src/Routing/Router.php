@@ -316,8 +316,6 @@
 
     // ::::::::::::: SHOP :::::::::::::::::::
     private static function routeShop(RouteData $routeData) {
-      $languages = LanguageConfig::getAvailableLanguages();
-      $currentLang = LanguageConfig::getCurrentLocale();
       $breadcrumbs = new Breadcrumbs();
 
       // Инициализируем SEO-сервис

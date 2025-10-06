@@ -15,15 +15,7 @@ use Vvintage\Repositories\AbstractRepository;
 final class ProductTranslationRepository extends AbstractRepository implements ProductTranslationRepositoryInterface
 {
     private const TABLE = 'productstranslation';
-    private const DEFAULT_LOCALE = 'ru';
-    private string $locale;
-
-    public function __construct(string $locale = self::DEFAULT_LOCALE)
-    {
-        $this->locale = $locale;
-    }
-
-    
+  
      /** Создаёт новый OODBBean для перевода продукта */
     public function createProductTranslateBean(): OODBBean 
     {

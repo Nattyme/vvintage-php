@@ -81,7 +81,7 @@ class BrandService extends BaseService
 
     private function addBrandTranslate(array $brand): array
     {
-      $translations = $this->translationRepo->getTranslationsArray($brand['id'], $this->locale ?? []);
+      $translations = $this->translationRepo->getTranslationsArray($brand['id'], $this->currentLang ?? []);
 
       return array_merge($brand, [
         'title' => $translations['title'] ?? null,
@@ -98,11 +98,11 @@ class BrandService extends BaseService
 
     public function getBrandTranslations(int $brandId): array
     {
-        $translations = $this->translationRepo->getTranslationsArray($brandId, $this->locale);
+        $translations = $this->translationRepo->getTranslationsArray($brandId, $this->currentLang);
 
         if (!$translations) {
             // fallback
-            $translations = $this->translationRepo->getTranslationsArray($brandId, $this->locale);
+            $translations = $this->translationRepo->getTranslationsArray($brandId, $this->currentLang);
         }
 
         return $translations;
@@ -116,14 +116,14 @@ class BrandService extends BaseService
         // получаем переводы из репозитория переводов
         $translations = $this->translationRepo->getTranslationsArray(
             $brandId,
-            $this->locale
+            $this->currentLang
         ) ?? $this->translationRepo->getTranslationsArray($brandId, $this->localeService->getDefaultLocale());
 
         return new BrandOutputDTO([
             'id' => $brand->getId(),
             'title' => $translations['title'] ?? $brand->getTitle(),
             'image' => $brand->getImage(),
-            'translations' => [$this->locale => $translations ?? []],
+            'translations' => [$this->currentLang => $translations ?? []],
         ]);
     }
 
@@ -137,7 +137,7 @@ class BrandService extends BaseService
         }
 
         // 2. Берём переводы из отдельного репозитория
-        $translations = $this->translationRepo->getTranslationsArray($brandId, $this->locale);
+        $translations = $this->translationRepo->getTranslationsArray($brandId, $this->currentLang);
 
         if (!$translations) {
             // fallback на дефолтный язык
@@ -165,14 +165,14 @@ class BrandService extends BaseService
       
         return new BrandOutputDTO([
             'id' => (int) $id,
-            'title' => (string) ($brand->getTranslatedTitle($this->locale) ?? ''),
+            'title' => (string) ($brand->getTranslatedTitle($this->currentLang) ?? ''),
             'image' => (string) ($row['brand_image'] ?? ''),
             'translations' => [
-                $this->locale => [
-                    'title' => $brand->getTranslatedTitle($this->locale) ?? '',
-                    'description' => $brand->getTranslatedDescription($this->locale) ?? '',
-                    'meta_title' => $brand-> getSeoTitle($this->locale) ?? '',
-                    'meta_description' => $brand->getSeoDescription($this->locale) ?? '',
+                $this->currentLang => [
+                    'title' => $brand->getTranslatedTitle($this->currentLang) ?? '',
+                    'description' => $brand->getTranslatedDescription($this->currentLang) ?? '',
+                    'meta_title' => $brand-> getSeoTitle($this->currentLang) ?? '',
+                    'meta_description' => $brand->getSeoDescription($this->currentLang) ?? '',
                 ]
             ],
             // 'locale' => $this->locale,

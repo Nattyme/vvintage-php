@@ -8,17 +8,19 @@ use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
+use Vvintage\Services\Locale\LocaleService;
 
 
 class BaseApiController 
 {
     protected array $languages;
     protected string $currentLang;
-
+    protected LocaleService $localeService;
 
     public function __construct() {
+      $this->localeService = new LocaleService();
       $this->languages = LanguageConfig::getAvailableLanguages();
-      $this->currentLang = LanguageConfig::getCurrentLocale();
+      $this->currentLang = $this->localeService->getCurrentLang();
       
       if (session_status() === PHP_SESSION_NONE) {
           session_start();

@@ -18,7 +18,7 @@ class PostCategoryService extends BaseService
     public function __construct()
     {
         parent::__construct();
-        $this->repository = new PostCategoryRepository($this->locale);
+        $this->repository = new PostCategoryRepository($this->currentLang);
     }
 
     public function getCategoryById(int $id): ?PostCategory

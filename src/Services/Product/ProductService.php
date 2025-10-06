@@ -38,8 +38,8 @@ class ProductService extends BaseService
     public function __construct()
     {
         parent::__construct();
-        $this->repository = new ProductRepository($this->locale);
-        $this->translationRepo = new ProductTranslationRepository($this->locale);
+        $this->repository = new ProductRepository();
+        $this->translationRepo = new ProductTranslationRepository();
         $this->categoryService = new CategoryService();
         $this->brandService = new BrandService();
         $this->productImageService = new ProductImageService();
@@ -70,8 +70,8 @@ class ProductService extends BaseService
           'brand_title' => $brandOutputDTO->title,
           'brandDTO' => $brandOutputDTO,
           'slug' => $row['slug'],
-          'title' => $translations[$this->locale]['title'],
-          'description' => $translations[$this->locale]['description'],
+          'title' => $translations[$this->currentLang]['title'],
+          'description' => $translations[$this->currentLang]['description'],
           'price' => $row['price'],
           'url' => $row['url'],
           'sku' => $row['sku'],
