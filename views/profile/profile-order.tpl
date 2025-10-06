@@ -43,7 +43,7 @@
             </td>
           </tr>   
           <tr>
-            <th>Имя Фамилия</th>
+            <th>Имя и Фамилия</th>
             <td>
               <?php echo $order->getName() . ' ' . $order->getSurname();?>
             </td>
@@ -67,20 +67,22 @@
 
             <tr>
               <td>
-                <img src="<?php echo HOST . 'usercontent/products/' . $product['filename_small'];?>" alt="<?php echo $product['title'] ;?>">
+                <img src="<?php echo HOST . 'usercontent/products/' . 'small-' . $product->images['main']->filename;?>" alt="<?php echo $product->title;?>">
               </td>
-              <td><?php echo $product['title'];?></td>
+              <td><?php echo $product->title;?></td>
 
               <td>
-                <?php echo format_price($product['price']);?> 
+                <?php echo format_price($product->price);?> 
               </td>
 
-              <td><?php echo $product['amount'];?></td>
+              <td><?php echo $product->amount;?></td>
             </tr>
           <?php endforeach; ?>
         </table>
 
-        <a href="<?php echo HOST . 'profile';?>">Назад в профиль</a>
+        <a href="<?php echo HOST . 'profile';?>">
+          <?php echo h(__('profile.back', [], 'profile'));?>
+        </a>
       </div>
     </div>
   </section>

@@ -50,42 +50,54 @@
                 </legend>
                 <div class="form-order__input-wrapper">
                   <div class="form-order__field">
-                    <label class="form-order__label" for="name">Имя</label>
-                    <input type="text" class="form-input input" placeholder="Имя" name="name" id="name">
+                    <label class="form-order__label" for="name">
+                      <?php echo h(__('order.first_name', [], 'order'));?>
+                    </label>
+                    <input type="text" class="form-input input" placeholder="<?php echo h(__('order.first_name.placeholder', [], 'order'));?>" name="name" id="name">
                   </div>
 
                   <div class="form-order__field">
-                    <label class="form-order__label" for="surname">Фамилия</label>
-                    <input type="text" class="form-input input" placeholder="Фамилия" name="surname" id="surname">
+                    <label class="form-order__label" for="surname">
+                      <?php echo h(__('order.last_name', [], 'order'));?>
+                    </label>
+                    <input type="text" class="form-input input" placeholder="<?php echo h(__('order.last_name.placeholder', [], 'order'));?>" name="surname" id="surname">
                   </div>
                   
                   <div class="form-order__field">
-                    <label class="form-order__label" for="email">Электронная почта</label>
-                    <input type="text" class="form-input input input" placeholder="E-mail" name="email" id="email">
+                    <label class="form-order__label" for="email">
+                      <?php echo h(__('order.email', [], 'order'));?>
+                    </label>
+                    <input type="text" class="form-input input input" placeholder="<?php echo h(__('order.email.placeholder', [], 'order'));?>" name="email" id="email">
                   </div>
 
                   <div class="form-order__field">
-                    <label class="form-order__label" for="phone">Телефон</label>
-                    <input type="text" class="form-input input" placeholder="Телефон" name="phone" id="phone">
+                    <label class="form-order__label" for="phone">
+                      <?php echo h(__('order.phone', [], 'order'));?>
+                    </label>
+                    <input type="text" class="form-input input" placeholder="<?php echo h(__('order.phone.placeholder', [], 'order'));?>" name="phone" id="phone">
                   </div>
                  
                 </div>
               </fieldset>
               <fieldset class="form-order__block">
                   <legend class="form-order__title form-order__title-wrapper form-order__title-block">
-                    <h3>Данные по доставке</h3>
+                    <h3>
+                      <?php echo h(__('order.shipping_data', [], 'order'));?>
+                    </h3>
                   </legend>
 
                  <div class="form-order__field">
-                    <label class="form-order__label" for="address"><h3>Адрес доставки</h3></label>
-                    <textarea class="textarea" name="address" placeholder="Введите адрес доставки" title="Адрес доставки" id="address"></textarea>
+                    <label class="form-order__label" for="address"><h3>
+                      <?php echo h(__('order.address', [], 'order'));?>
+                    </h3></label>
+                    <textarea class="textarea" name="address" placeholder="<?php echo h(__('order.address.placeholder', [], 'order'));?>" title="<?php echo h(__('order.address', [], 'order'));?>" id="address"></textarea>
                   </div>
                
                   <div class="form-order__field">
                     <label class="form-order__label" for="message">
-                      <h3>Комментарии</h3>
+                      <h3><?php echo h(__('order.comment', [], 'order'));?></h3>
                     </label>
-                    <textarea type="text" class="textarea" name="message" placeholder="Введите ваш комментарий"  id="message"></textarea>
+                    <textarea type="text" class="textarea" name="message" placeholder="<?php echo h(__('order.comment.placeholder', [], 'order'));?>"  id="message"></textarea>
                 
                   </div>
               </fieldset>
@@ -140,9 +152,11 @@
           <!-- // CSRF-токен -->
 
           <div class="form-order__button-wrapper">
-            <a class="button button--outline button--l" href="<?php HOST;?>cart">Вернуться в корзину </a>
+            <a class="button button--outline button--l" href="<?php HOST;?>cart">
+              <?php echo h(__('order.return_to_cart', [], 'order'));?>
+            </a>
             <button class="button button--primary button--l" type="submit" name="submit">
-              Разместить заказ
+               <?php echo h(__('order.place_order', [], 'order'));?>
             </button>
           </div>
        

@@ -22,8 +22,8 @@
               <img src="<?php echo HOST . 'static/img/svgsprite/stack/svg/sprite.stack.svg#success';?>" alt="success">
             </div>
             <div class="order__text">
-              <p class="order__title"> Заказ успешно оформлен</p>
-              <p class="order__message">Мы свяжемся с вами в ближайшее время!</p>
+              <p class="order__title"><?php echo h(__('order.success', [], 'order'));?></p>
+              <p class="order__message"><?php echo h(__('order.contact_soon', [], 'order'));?></p>
             </div>
   
           </div>

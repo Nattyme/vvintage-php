@@ -19,6 +19,6 @@
     ?>
   </td>
   <td>
-    <?php echo format_price($order->getPrice());?> руб.
+    <?php echo format_price($order->getPrice());?> &euro;.
   </td>
 </tr>
