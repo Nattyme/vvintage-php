@@ -248,7 +248,7 @@ final class ProfileController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
  
-
+phpinfo();
       // dd($userModel);
       // if (isset($_POST['updateProfile'])) {
 
