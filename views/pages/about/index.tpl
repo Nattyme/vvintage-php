@@ -1,16 +1,12 @@
 <main class="inner-page">
+
   <section class="about-us">
     <div class="container">
       <div class="about-us__header">
         <div class="section-title">
-          <h1 class="h1">О&#160;нас</h1>
+          <h1 class="h1"><?php echo $pageTitle;?></h1>
         </div>
-
-        <div class="breadcrumbs">
-          <a href="<?php echo HOST . 'main';?>" class="breadcrumb ">Главная</a>
-          <span>&#8212;</span>
-          <a href="#!" class="breadcrumb breadcrumb--active">О&#160;компании</a>
-        </div>
+        <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
       </div>
 
       <div class="about-us__articles-wrapper">
@@ -26,23 +22,9 @@
           </div>
           <div class="article__content">
             <header class="article__title">
-              <h2 class="h2">Что мы&#160;предлагаем</h2>
+              <h2 class="h2"><?php echo h($fields['intro_title']['value']);?></h2>
             </header>
-            <div class="article__text">
-              <p>
-                VVintage&#160;&#8212; это сайт, который предлагает большой ассортимент винтажных вещей известных брендов из&#160;Европы (Франция, Италия,
-                Бельгия, Испания) c&#160;доставкой на&#160;ваш адрес. Все товары находятся в&#160;Европе и&#160;высылаются покупателям в&#160;любую точку мира
-                под заказ.
-              </p>
-              <p>
-                У&#160;нас вы&#160;можете приобрести редкую парфюмерию, косметику, украшения, сумки, товары для дома, одежду и&#160;обувь. Также
-                вы&#160;можете оставить нам заявку на&#160;поиск парфюмерных редкостей.
-              </p>
-              <p>
-                Все товары вляются оригинальными товарами, которые продаются в&#160;Европе. Их&#160;происхождение гарантируется либо сертификатами
-                аутенфикации, которые предоставляются вместе с&#160;товарами, либо, если это невозможно, теми площадками, с&#160;которых они выкупаются.
-              </p>
-            </div>
+            <div class="article__text"><?php echo  $fields['intro_text']['value'];?></div>
           </div>
         </article>
       </div>

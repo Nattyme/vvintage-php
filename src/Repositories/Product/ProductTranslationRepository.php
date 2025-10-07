@@ -62,6 +62,20 @@ final class ProductTranslationRepository extends AbstractRepository implements P
         return $translations;
     }
 
+    public function getTranslationsArray(int $id, string $locale): array 
+    {
+
+      $translations = $this->loadTranslations($id);
+
+      return $translations[$locale] ?? [
+            'title' => '',
+            'description' => '',
+            'meta_title' => '',
+            'meta_description' => ''
+        ];
+
+    }
+
     public function saveProductTranslation(array $translateDto): ?array
     {
         $ids = [];

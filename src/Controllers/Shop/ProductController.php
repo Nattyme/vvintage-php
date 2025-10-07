@@ -45,15 +45,14 @@ final class ProductController extends BaseController
         $this->setRouteData($routeData);
      
         $id = (int) $routeData->uriGet; // получаем id товара из URL  
-        $product = $this->productService->getProductById($id);
+        $product = $this->productService->getLocaledProductById($id);
 
         if (!$product) {
             http_response_code(404);
             echo 'Товар не найден';
             return;
         }
-
-        // $productImagesData = $this->productService->getProductImagesData($product->images);
+   
         // $related = $product->getRelated();
         $statusList = $this->productService->getStatusList();
 

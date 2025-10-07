@@ -90,15 +90,14 @@ final class CatalogController extends BaseController
       //   $seo[$product->getId()] = $this->seoService->getSeoForPage('product', $product);
       // }
 
-      $pageModel = $this->pageService->getPageBySlug($routeData->uriModule);
+      $page = $this->pageService->getPageBySlug($routeData->uriModule);
 
       // получаем общие данные страницы 
       $this->setRouteData($routeData); // <-- передаём routeData
-      $page = $pageModel->export();
-      $fields = $pageModel->getFieldsAssoc();
+      // $page = $pageModel->export();
 
       // Название страницы
-      $pageTitle = $pageModel->getTitle();
+      $pageTitle = $page['title'];
 
 
       // Это кол-во товаров, показанных на этой странице

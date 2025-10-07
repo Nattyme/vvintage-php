@@ -34,15 +34,15 @@ class PageController extends BaseController
   { 
     $slug = $routeData->uriModule ?: 'main';  
  
-    $pageModel = $this->pageService->getPageBySlug($slug);
+    $page = $this->pageService->getPageBySlug($slug);
 
     // получаем общие данные страницы 
     $this->setRouteData($routeData); // <-- передаём routeData
-    $page = $pageModel->export();
-    $fields = $pageModel->getFieldsAssoc();
+    // $page = $pageModel->export();
+    // $fields = $pageModel->getFieldsAssoc();
 
     // Название страницы
-    $pageTitle = $pageModel->getTitle();
+    $pageTitle = $page['title'];
 
     // Хлебные крошки
     $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -51,7 +51,7 @@ class PageController extends BaseController
     $this->renderLayout("pages/{$slug}/index", [
         'page' => $page,
         'routeData' => $routeData,
-        'fields' => $fields,
+        'fields' => $page['fields'],
         'navigation' => $this->pageService->getLocalePagesNavTitles(),
         'breadcrumbs' => $breadcrumbs,
         'pageTitle' => $pageTitle,
@@ -76,12 +76,10 @@ class PageController extends BaseController
       $products = $productService->getLastProducts(4);
       $posts = $postService->getLastPosts(3);
 
-      $pageModel = $this->pageService->getPageBySlug($slug);
-      $page = $pageModel->export();
-      $fields = $pageModel->getFieldsAssoc();
+      $page = $this->pageService->getPageBySlug($slug);
 
       // Название страницы
-      $pageTitle = $pageModel->getTitle();
+      $pageTitle = $page['title'];
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -95,7 +93,7 @@ class PageController extends BaseController
         'categories' => $categories,
         'products' => $products,
         'posts' => $posts,
-        'fields' => $fields,
+        'fields' => $page['fields'],
         'navigation' => $this->pageService->getLocalePagesNavTitles(),
         'breadcrumbs' => $breadcrumbs,
         'pageTitle' => $pageTitle,

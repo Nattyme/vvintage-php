@@ -11,9 +11,9 @@
       <div class="contacts__map-wrapper">
         <div class="contacts__map" id="map" style="width: 100%; height: 476px">
    
-          <?php if (!empty($fields['map'])): ?>
+          <?php if (!empty($fields['map']['value'])): ?>
             <iframe 
-              src="<?php echo $fields['map'];?>" 
+              src="<?php echo $fields['map']['value'];?>" 
               width="600" height="450" 
               style="border:0;" 
               allowfullscreen="" 
@@ -32,34 +32,34 @@
             <?php echo h(__('contacts.contact.title', [], 'contacts'));?>
           </h3>
           <ul class="contacts__list">
-            <?php if (!empty($fields['phone'])): ?>
+            <?php if (!empty($fields['phone']['value'])): ?>
               <li class="contacts__item">
                 <svg class="icon icon--phone">
                   <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#phone'; ?>"></use>
                 </svg>
-                <a href="tel:<?php echo h($fields['phone']); ?>" class="contacts__link">
-                  <?php echo h($fields['phone']); ?>
+                <a href="tel:<?php echo h($fields['phone']['value']); ?>" class="contacts__link">
+                  <?php echo h($fields['phone']['value']); ?>
                 </a>
               </li>
             <?php endif; ?>
 
-            <?php if (!empty($fields['email'])): ?>
+            <?php if (!empty($fields['email']['value'])): ?>
               <li class="contacts__item">
                 <svg class="icon icon--mail">
                   <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#mail'; ?>"></use>
                 </svg>
-                <a href="mailto:<?php echo h($fields['email']); ?>" class="contacts__link">
-                  <?php echo h($fields['email']); ?>
+                <a href="mailto:<?php echo h($fields['email']['value']); ?>" class="contacts__link">
+                  <?php echo h($fields['email']['value']); ?>
                 </a>
               </li>
             <?php endif; ?>
 
-            <?php if (!empty($fields['address'])): ?>
+            <?php if (!empty($fields['address']['value'])): ?>
               <li class="contacts__item">
                 <svg class="icon icon--location">
                   <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#location'; ?>"></use>
                 </svg>
-                <p><?php echo nl2br(h($fields['address'])); ?></p>
+                <p><?php echo nl2br(h($fields['address']['value'])); ?></p>
               </li>
             <?php endif; ?>
           </ul>

@@ -42,7 +42,7 @@ final class PageTranslationRepository extends AbstractRepository
 
     public function getTranslationsArray(int $id, string $locale): array 
     {
-   
+
       $translations = $this->loadTranslations($id);
 
       return $translations[$locale] ?? [

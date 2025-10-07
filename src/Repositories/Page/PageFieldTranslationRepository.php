@@ -24,16 +24,13 @@ final class PageFieldTranslationRepository extends AbstractRepository
 
     public function loadTranslations(int $id): array
     {
-        $sql = 'SELECT locale, title, description, meta_title, meta_description FROM ' . self::TABLE .' WHERE page_id = ?';
+        $sql = 'SELECT locale, value FROM ' . self::TABLE .' WHERE field_id = ?';
         $rows = $this->getAll($sql, [$id]);
 
         $translations = [];
         foreach ($rows as $row) {
             $translations[$row['locale']] = [
-                'title' => $row['title'],
-                'description' => $row['description'],
-                'meta_title' => $row['meta_title'],
-                'meta_description' => $row['meta_description'],
+                'value' => $row['value'],
             ];
         }
 
@@ -45,12 +42,7 @@ final class PageFieldTranslationRepository extends AbstractRepository
    
       $translations = $this->loadTranslations($id);
 
-      return $translations[$locale] ?? [
-            'title' => '',
-            'description' => '',
-            'meta_title' => '',
-            'meta_description' => ''
-        ];
+      return $translations[$locale] ?? [];
 
     }
 }

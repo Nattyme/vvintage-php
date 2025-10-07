@@ -27,7 +27,7 @@ class PageService extends BaseService
       $this->fieldsTranslationRepo = new PageFieldTranslationRepository();
   }
 
-  public function getPageBySlug(string $slug): ?Page
+  public function getPageBySlug(string $slug): array
   {
     // Здесь дописать валидацию
     $slug = trim($slug);
@@ -38,24 +38,44 @@ class PageService extends BaseService
     }
 
     $pageModel = $this->repository->getPageBySlug($slug);
+
     if(!$pageModel) {
       return null;
     }
 
+    $pageId = $pageModel->getId();
+    $pageTranslations = $this->translationRepo->getTranslationsArray($pageId, $this->currentLang);
+  
+    $pageFields = $this->fieldsRepository->getFieldsByPageId($pageId);
+    $translatedFields = [];
+
+    foreach( $pageFields as $field) {
+       $translation = $this->fieldsTranslationRepo->getTranslationsArray( (int) $field['id'], $this->currentLang);
+
+       if(!empty($translation)) {
+         $translatedFields[$field['name']] = $translation;
+       } else {
+        $translatedFields[$field['name']] = ['value' => $field['value']];
+       }
+    }
+
+    if(!empty($translatedFields)) {
+      $pageTranslations['fields'] = $translatedFields;
+    }
+      //  $pageFields = $this->fieldsTranslationRepo->getTranslationsArray( (int) $pageId, $this->currentLang);
     // // Получаем данные полей страницы
     // $fields = [];
 
     // foreach($pageModel->getFields() as $field) {
     //   $fields[$field->getName()] = $field->getValue();
     // }
-
-    $pageId = $pageModel->getId();
+    
     // Получаем поля страницы и задаем модели
-    $pageFields = $this->fieldsRepository->getFieldsByPageId( (int) $pageId);
+ 
 
-    $pageModel->setFields($pageFields);
-
-    return $pageModel;
+//     $pageModel->setFields($translatedFields);
+// dd($pageModel);
+    return $pageTranslations;
   }
 
 

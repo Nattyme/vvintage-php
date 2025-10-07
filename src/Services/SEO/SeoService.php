@@ -6,6 +6,7 @@ namespace Vvintage\Services\SEO;
 use Vvintage\DTO\Common\SeoDTO;
 use Vvintage\Services\SEO\ProductSeoStrategy;
 use Vvintage\Services\SEO\PostSeoStrategy;
+use Vvintage\Services\Base\BaseService;
 // use Vvintage\Services\SEO\ProductSeoStrategy;
 
 

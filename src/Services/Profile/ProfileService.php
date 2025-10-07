@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Vvintage\Services\Profile;
 
 
-
 class ProfileService
 {
     private array $languages;

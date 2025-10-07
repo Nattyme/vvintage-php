@@ -47,10 +47,17 @@ class ProductService extends BaseService
     }
 
     
-    private function createProductDTOFromArray(array $row): ProductOutputDTO
+    private function createProductDTOFromArray(array $row, ?string $currentLang = null): ProductOutputDTO
     {
         $productId = (int) $row['id'];
-        $translations = $this->translationRepo->loadTranslations($productId);
+
+        $tranlations = [];
+
+        if($currentLang) {
+          $translations = $this->translationRepo->getTranslationsArray($productId, $currentLang);
+        } else {
+          $translations = $this->translationRepo->loadTranslations($productId);
+        }
         $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
         $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
 
@@ -70,8 +77,8 @@ class ProductService extends BaseService
           'brand_title' => $brandOutputDTO->title,
           'brandDTO' => $brandOutputDTO,
           'slug' => $row['slug'],
-          'title' => $translations[$this->currentLang]['title'],
-          'description' => $translations[$this->currentLang]['description'],
+          'title' => $translations[$this->currentLang]['title'] ?? $translations['title'],
+          'description' => $translations[$this->currentLang]['description'] ?? $translations['description'],
           'price' => $row['price'],
           'url' => $row['url'],
           'sku' => $row['sku'],
@@ -98,6 +105,13 @@ class ProductService extends BaseService
         $rows = $this->repository->getProductById($id);
 
         return $rows ? $this->createProductDTOFromArray($rows) : null;
+    }
+
+    public function getLocaledProductById(int $id): ?ProductOutputDTO
+    {
+        $rows = $this->repository->getProductById($id);
+
+        return $rows ? $this->createProductDTOFromArray($rows, $this->currentLang) : null;
     }
    
     public function getProductsByIds(array $ids): array

@@ -3,7 +3,7 @@
     <div class="container">
       <div class="section-title">
         <h2 class="h2 text-bold">
-          <?php echo h($fields['new_products_title']);?>
+          <?php echo h($fields['new_products_title']['value']);?>
         </h2>
       </div>
 

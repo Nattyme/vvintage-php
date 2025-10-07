@@ -6,7 +6,9 @@
         <!-- Заголовок и хлебные крошки -->
         <header class="shop-header">
           <div class="shop-header__title">
-            <h1 class="h1">Магазин</h1>
+            <h1 class="h1">
+              <?php echo h($pageTitle);?>
+            </h1>
           </div>
           <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
 

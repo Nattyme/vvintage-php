@@ -2,7 +2,7 @@
   <div class="container">
     <div class="section-title">
       <h2 class="h2 text-bold">
-        <?php echo h($fields['categories_title']);?>
+        <?php echo h($fields['categories_title']['value']);?>
       </h2>
     </div>
 
