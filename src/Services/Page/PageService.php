@@ -62,19 +62,7 @@ class PageService extends BaseService
     if(!empty($translatedFields)) {
       $pageTranslations['fields'] = $translatedFields;
     }
-      //  $pageFields = $this->fieldsTranslationRepo->getTranslationsArray( (int) $pageId, $this->currentLang);
-    // // Получаем данные полей страницы
-    // $fields = [];
 
-    // foreach($pageModel->getFields() as $field) {
-    //   $fields[$field->getName()] = $field->getValue();
-    // }
-    
-    // Получаем поля страницы и задаем модели
- 
-
-//     $pageModel->setFields($translatedFields);
-// dd($pageModel);
     return $pageTranslations;
   }
 

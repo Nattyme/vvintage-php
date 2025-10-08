@@ -12,9 +12,10 @@ final class Brand
 
     private int $id;
     private string $title;
+    private ?string $description;
     private ?string $image;
 
-    private array $translations = [];
+    private ?array $translations = [];
     // private string $currentLocale = 'ru';
 
     private function __construct() {}
@@ -25,6 +26,7 @@ final class Brand
         $brand = new self();
         $brand->id = (int) $dto->id;
         $brand->title = (string) $dto->title;
+        $brand->description = (string) ($dto->description ?? null);
         $brand->image = (string) $dto->image;
 
         $brand->translations = $dto->translations;
@@ -37,6 +39,7 @@ final class Brand
         $brand = new self();
         $brand->id = (int) ($data['id'] ?? 0);
         $brand->title = (string) ($data['title'] ?? '');
+        $brand->description = (string) ($data['description'] ?? '');
         $brand->image = (string) ($data['image'] ?? '');
         $brand->translations = $data['translations'] ?? [];
         // $brand->currentLocale = (string) ($data['locale'] ?? 'ru');

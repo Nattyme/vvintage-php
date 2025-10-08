@@ -73,6 +73,7 @@ class PageController extends BaseController
   
       // Получим категории, продукты и посты
       $categories = $categoryService->getMainCategories();
+
       $products = $productService->getLastProducts(4);
       $posts = $postService->getLastPosts(3);
 

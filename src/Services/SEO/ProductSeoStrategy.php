@@ -18,15 +18,16 @@ class ProductSeoStrategy implements SeoStrategyInterface
 
     public function getSeo(): SeoDTO
     {
-      $locale = $this->product->getCurrentLocale();
-      $translations = $this->product->getTranslations();
+      $currentLang = $this->product->getCurrentLang();
+ 
+      $translations = $this->product->getCurrentTranslations();
 
         
       return new SeoDTO(
-        $translations['title'] ?? $translations['title'] ?? '',
-        $translations['meta_description'] ?? $translations['title'] ?? '',
-        $translations['meta_title'] ?? $translations['title'] ?? '',
-        $translations['meta_description'] ?? $translations['description'] ?? ''
+        title: $translations['title'] ?? $translations['title'] ?? '',
+        description: $translations['description'] ?? $translations['title'] ?? '',
+        meta_title: $translations['meta_title'] ?? $translations['title'] ?? '',
+        meta_description: $translations['meta_description'] ?? $translations['description'] ?? ''
       );
     }
   

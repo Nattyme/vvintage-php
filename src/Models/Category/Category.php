@@ -12,6 +12,7 @@ final class Category
 {
     private int $id;
     private string $title;
+    private ?string $description;
     private int $parent_id;
     private string $slug;
     private string $image;
@@ -27,6 +28,7 @@ final class Category
 
         $category->id = $dto->id;
         $category->title = $dto->title;
+        $category->description = $dto->description ?? null;
         $category->parent_id = $dto->parent_id;
         $category->slug = $dto->slug;
         $category->image = $dto->image;
@@ -41,6 +43,7 @@ final class Category
 
         $category->id = $dto->id;
         $category->title = $dto->title;
+        $category->description = $dto->description ?? null;
         $category->parent_id = $dto->parent_id;
         $category->slug = $dto->slug;
         $category->image = $dto->image;
@@ -54,7 +57,8 @@ final class Category
         $category = new self();
 
         $category->id = (int) ($data['id'] ?? 0);
-        $category->title = (string) ($data['title'] ?? '');
+        $category->title = (string) ($data['translations'] ?? '');
+        $category->description = (string) ($data['description'] ?? '');
         $category->parent_id = (int) ($data['parent_id'] ?? 0);
         $category->slug = (string) ($data['slug'] ?? '');
         $category->image = (string) ($data['image'] ?? '');
@@ -93,21 +97,6 @@ final class Category
       return $this->slug;
     }
 
-    // public function getSeoTitle(?string $locale = null): string
-    // {
-    //     $locale = $locale ?? $this->currentLocale;
-
-    //     return $this->translations[$locale]['seo_title'] ?? '';
-    // }
-
-    // public function getSeoDescription(?string $locale = null): string
-    // {
-    //     $locale = $locale ?? $this->currentLocale;
-
-    //     return $this->translations[$locale]['seo_description']
-    //         ?? '';
-    // }
-
     public function getId(): int
     {
         return $this->id;
@@ -138,10 +127,6 @@ final class Category
     {
         $this->currentLocale = $locale;
     }
-
-
-
-
     
     public function getTranslations(?string $locale = null): array
     {
@@ -179,7 +164,8 @@ final class Category
         return $this->title;
     }
 
-    public function getSeoDescription(?string $locale = null): string {
+    public function getSeoDescription(?string $locale = null): ?string 
+    {
         if ($locale) {
           return $this->translations['meta_description'] ?? '';
         }

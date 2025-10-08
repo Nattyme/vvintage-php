@@ -3,7 +3,7 @@
     <div class="container">
       <div class="page-cart__header">
         <div class="section-title">
-          <h1 class="h1">Избранное</h1>
+          <h1 class="h1"><?php echo h($pageTitle);?></h1>
         </div>
        <?php include 'views/_parts/breadcrumbs/breadcrumbs.tpl';?>
       </div>

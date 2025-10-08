@@ -14,7 +14,8 @@ use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\DTO\Product\ProductImageOutputDTO;
 
 
-final class ProductImageRepository extends AbstractRepository implements ProductImageRepositoryInterface
+// final class ProductImageRepository extends AbstractRepository implements ProductImageRepositoryInterface
+final class ProductImageRepository extends AbstractRepository 
 {
     private const TABLE = 'productimages';
 
@@ -192,6 +193,18 @@ final class ProductImageRepository extends AbstractRepository implements Product
              ORDER BY image_order';
 
       return $this->getAll($sql, [$row['id']]);
+      // return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
+    }
+
+    public function getImagesByProductId (int $productId): array
+    {
+     
+      $sql = 'SELECT * 
+             FROM ' . self::TABLE . '
+             WHERE product_id = ? 
+             ORDER BY image_order';
+
+      return $this->getAll($sql, [$productId]);
       // return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
     }
     

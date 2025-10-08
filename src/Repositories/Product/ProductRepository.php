@@ -24,7 +24,8 @@ use Vvintage\DTO\Product\ProductInputDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
 
 
-final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
+// final class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
+final class ProductRepository extends AbstractRepository 
 {
     private const TABLE = 'products';
 
@@ -45,6 +46,7 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     /**
       ********** ::: GET ::: **********
     */
+      
     public function getProductById(int $id): array
     {
       $data = array_values($this->getProducts(['id' => $id]));
@@ -52,6 +54,51 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
       return $data[0];
         // return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
     }
+
+    public function getModelProductById(int $id): ?Product
+    {
+      $bean = array_values($this->getProductsModels(['id' => $id]))[0];
+      $data = $bean->export();
+ 
+      return Product::fromArray($data);
+    
+    }
+
+    public function getProductsModels(array $filters = []): array
+    {
+        $conditions = [];
+        $pagination = [];
+        $params = [];
+        if(isset($filters['pagination'])) {
+           $pagination = $filters['pagination'];
+        }
+
+        // применяем простые фильтры
+        [$conditions, $params] = $this->applySimpleFilters($filters, $conditions, $params);
+
+        // применяем сложные фильтры
+        [$conditions, $params, $orderBy] = $this->applyAdvancedFilters($filters, $conditions, $params);
+
+
+        // Вызов универсального метода
+        $beans = $this->findAll(
+            table: self::TABLE,
+            conditions: $conditions,
+            params: $params,
+            orderBy: $orderBy,
+            limit:  $pagination['perPage'] ?? null,
+            offset: $pagination['offset'] ?? null
+        );
+
+        // нормализация дат
+        return $beans;
+        // return array_map([$this, 'normalizeRow'], $beans);
+    }
+
+
+
+
+
 
     public function getProductsByParam(string $sql ='', array $params = []): array
     {
@@ -268,11 +315,13 @@ final class ProductRepository extends AbstractRepository implements ProductRepos
     private function normalizeRow(\RedBeanPHP\OODBBean $bean): array
     {
         $row = $bean->export();
+       
         $row['datetime'] = !empty($row['datetime'])
             ? (is_numeric($row['datetime'])
                 ? (new \DateTime())->setTimestamp((int)$row['datetime'])
                 : new \DateTime($row['datetime']))
             : new \DateTime();
+  
         return $row;
     }
 

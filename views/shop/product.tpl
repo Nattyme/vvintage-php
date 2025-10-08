@@ -1,4 +1,5 @@
 <main class="product-page">
+
   <section class="product">
     <div class="container">
       <header class="shop-header">
@@ -18,6 +19,7 @@
             <div class="product-card__row">
               <h1 class="h1 product-card__title"><?php echo h($viewModel['product']->title);?></h1>
             </div>
+           
             <div class="product-card__row">
               <a href="<?php echo HOST . 'shop?brand[]=' . h($viewModel['product']->brand_id) ;?>" class="product-card__brand">
                 <?php echo h($viewModel['product']->brand_title);?>

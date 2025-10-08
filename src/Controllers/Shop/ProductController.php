@@ -21,6 +21,8 @@ use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Seo\SeoService;
 use Vvintage\Services\Page\PageService;
 
+use Vvintage\DTO\Product\ProductOutputDTOfromModel;
+
 
 
 final class ProductController extends BaseController
@@ -45,9 +47,10 @@ final class ProductController extends BaseController
         $this->setRouteData($routeData);
      
         $id = (int) $routeData->uriGet; // получаем id товара из URL  
-        $product = $this->productService->getLocaledProductById($id);
+        $productModel = $this->productService->getProductLocaledModelById($id);
+        $this->productService->setImages($productModel);
 
-        if (!$product) {
+        if (!$productModel) {
             http_response_code(404);
             echo 'Товар не найден';
             return;
@@ -55,13 +58,18 @@ final class ProductController extends BaseController
    
         // $related = $product->getRelated();
         $statusList = $this->productService->getStatusList();
-
+        $imagesDtos = $this->productService->getImagesDTO($productModel->getImages());
+        $images = $this->productService->getProductImagesData( $imagesDtos);
+        $productModel->setImages($images);
+  
+        $product = new ProductOutputDTOfromModel($productModel);
+   
         // Формируем единую модель для передачи в шаблон
         $viewModel = [
             'product' => $product,
-            'imagesTotal' =>  $product->images['total'],
-            'main' => $product->images['main'],
-            'gallery' => $product->images['gallery'], 
+            'imagesTotal' => $productModel->getImages()['total'],
+            'main' => $productModel->getImages()['main'],
+            'gallery' => $productModel->getImages()['gallery'], 
             // 'related' => $related,
             'statusList'=> $statusList,
         ];
@@ -70,9 +78,12 @@ final class ProductController extends BaseController
         // $seo = $this->seoService->getSeoForPage('product', $product);
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $product->title);
 
+        $seo = $this->seoService->getSeoForPage('product', $productModel);
+  
         // Подключение шаблонов страницы
         $this->renderLayout('shop/product', [
-              // 'seo' => $seo,
+              'seo' => $seo,
+              'currentLang' => $this->productService->currentLang,
               'routeData' => $routeData,
               'navigation' => $this->pageService->getLocalePagesNavTitles(),
               'breadcrumbs' => $breadcrumbs,

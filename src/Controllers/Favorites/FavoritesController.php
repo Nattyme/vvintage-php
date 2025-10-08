@@ -83,8 +83,10 @@ final class FavoritesController extends BaseController
 
     private function renderPage (RouteData $routeData, array $products, Favorites $favModel): void 
     {  
+      $page = $this->pageService->getPageBySlug($routeData->uriModule);
+
       // Название страницы
-      $pageTitle = 'Избранное';
+      $pageTitle = $page['title'];
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -98,6 +100,7 @@ final class FavoritesController extends BaseController
 
       // Подключение шаблонов страницы
       $this->renderLayout('favorites/favorites', [
+            'pageTitle' => $pageTitle,
             'favModel' => $this->favModel,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,

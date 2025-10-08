@@ -81,8 +81,10 @@ final class CartController extends BaseController
 
     private function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
     {  
+      $page = $this->pageService->getPageBySlug($routeData->uriModule);
+      
       // Название страницы
-      $pageTitle = 'Корзина товаров';
+      $pageTitle = $page['title'];
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);

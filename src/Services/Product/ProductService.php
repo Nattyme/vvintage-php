@@ -113,6 +113,55 @@ class ProductService extends BaseService
 
         return $rows ? $this->createProductDTOFromArray($rows, $this->currentLang) : null;
     }
+
+    public function getProductModelById(int $id): ?Product
+    {
+      $productModel = $this->repository->getModelProductById($id);
+      $productId  = $productModel->getId();
+
+      $translations = $this->translationRepo->loadTranslations($productId);
+      
+      $productModel->setTranslations($translations);
+
+      return $productModel;
+    }
+
+    public function getProductLocaledModelById(int $id): ?Product
+    {
+      $productModel = $this->repository->getModelProductById($id);
+      $productId  = $productModel->getId();
+
+      $translations = $this->translationRepo->getTranslationsArray($productId, $this->currentLang);
+      $productModel->setTranslations($translations);
+
+
+      $category = $this->categoryService->getCategoryById($productModel->getCategoryId());
+      // $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO($productModel->getCategoryId());
+      $productModel->setCategory($category);
+      $productModel->setCurrentLang($this->currentLang);
+
+      $brand = $this->brandService->getBrandById($productModel->getBrandId());
+      $productModel->setBrand($brand);
+
+      // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
+  
+
+      // $images = $this->productImageService->getImageViewData($imagesDTO);
+      // $productModel->setImages($images);
+
+      return $productModel;
+    }
+
+    public function setImages(Product $productModel): void 
+    {
+      $images = $this->productImageService->getProductImages( $productModel->getId());
+      $productModel->setImages($images);
+    }
+
+    public function getImagesDTO(array $images): array
+    {
+      return $this->productImageService->getImagesDTOs($images);
+    }
    
     public function getProductsByIds(array $ids): array
     {

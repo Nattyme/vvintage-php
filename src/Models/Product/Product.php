@@ -21,7 +21,9 @@ class Product
     private int $id;
 
     private Category $category;  
-    private Brand $brand;  
+    private int $category_id;  
+    private Brand $brand; 
+    private int $brand_id;
     
     private string $slug;
     private string $title;
@@ -34,7 +36,7 @@ class Product
     private \Datetime $datetime;
     private string $edit_time;
     private array $translations;
-    private string $currentLocale = 'ru';
+    private string $currentLang = 'ru';
     private ?array $images;      // массив изображений
 
     const PRODUCT_CONDITIONS = [
@@ -71,7 +73,7 @@ class Product
       $product->datetime = new \Datetime ();
       $product->edit_time = $dto->edit_time;
       $product->translations = $dto->translations;
-      $product->currentLocale = $dto->locale ?? 'ru';
+      $product->currentLang = $dto->locale ?? 'ru';
       $product->images = $dto->images;
       
 
@@ -83,22 +85,30 @@ class Product
       $product = new self();
 
       $product->id = (int) ($data['id'] ?? 0);
+      $product->category_id = (int) ($data['category_id'] ?? 0);
+      $product->brand_id = (int) ($data['brand_id'] ?? 0);
 
       $product->slug = (string) ($data['slug'] ?? '');
-      $product->title = (string) ($data['title'] ?? '');
-      $product->description = (string) ($data['description'] ?? '');
+      $product->title = (string) ($data['translations']['title'] ?? '');
+      $product->description = (string) ($data['translations']['description'] ?? '');
       $product->price = (string) ($data['price'] ?? '');
       $product->url = (string) ($data['url'] ?? '');
       $product->status = (string) ($data['status'] ?? '');
       $product->sku =  (string) ($data['sku'] ?? '');
       $product->stock =  (int) ($data['stock'] ?? 0);
-      $product->datetime =  $data['datetime'];
+
+      $product->datetime = !empty($data['datetime'])
+            ? (is_numeric($data['datetime'])
+                ? (new \DateTime())->setTimestamp((int)$data['datetime'])
+                : new \DateTime($data['datetime']))
+            : new \DateTime();
+
       $product->edit_time =  (string) ($data['edit_time'] ?? '');
 
       $product->images = $data['images'] ?? [];
 
       $product->translations = $data['translations'] ?? [];
-      $product->currentLocale = (string) ($data['locale'] ?? 'ru');
+      $product->currentLang = (string) ($data['locale'] ?? 'ru');
 
       return $product;
     }
@@ -117,15 +127,41 @@ class Product
         return $this->id;
     }
 
-    public function getTitle(): string
+    public function getCategoryId(): int
     {
-        return $this->title;
+       return $this->category_id;
+    }
+
+     public function getCategory(): Category
+    {
+      return $this->category;
+    }
+    
+    public function getBrand(): Brand
+    {
+      return $this->brand;
     }
 
     public function getBrandId(): int
     {
-        return $this->brand->getId();
+       return $this->brand_id;
     }
+
+    public function getTitle(): string
+    {
+        return $this->translations['title'];
+    }
+
+    public function getDescription(): string
+    {
+        return $this->translations['description'];
+    }
+
+
+    // public function getBrandId(): int
+    // {
+    //     return $this->brand->getId();
+    // }
 
     public function getBrandTitle(): string
     {
@@ -142,11 +178,7 @@ class Product
         return $this->price;
     }
 
-    public function getContent(): string
-    {
-        return $this->description;
-    }
-
+   
     public function getDatetime(): \Datetime
     {
         return $this->datetime;
@@ -157,18 +189,15 @@ class Product
         return $this->edit_time;
     }
 
-    public function getCategory(): Category
-    {
-      return $this->category;
-    }
+   
 
     public function getCategoryTitle(): string {
         return $this->category->getTitle();
     }
 
-    public function getCurrentLocale(): string 
+    public function getCurrentLang(): string 
     {
-      return $this->currentLocale;
+      return $this->currentLang;
     }
       
     public function getTranslations(): ?array
@@ -201,18 +230,18 @@ class Product
       return $this->status;
     }
 
-    public function getTranslatedTitle(?string $locale = null): string 
+    public function getTranslatedTitle(?string $currentLang = null): string 
     {
-        $locale = $locale ?? $this->currentLocale;
+        $this->currentLang = $currentLang ?? $this->currentLang;
 
-        return $this->translations[$locale]['title'] ?? $this->title;
+        return $this->translations['title'];
     }
 
     public function getTranslatedDescription(?string $locale = null): string 
     {
-        $locale = $locale ?? $this->currentLocale;
+        $this->currentLang = $currentLang ?? $this->currentLang;
 
-        return ($this->translations[$locale]['description'] ?? $this->getDescription()) ?? '';
+        return $this->translations['description'];
     }
 
 
@@ -225,4 +254,36 @@ class Product
         $locale = $locale ?? $this->currentLocale;
         return $this->translations[$locale]['meta_description'] ?? $this->title;
     }
+
+    public function setTranslations(array $translations): void 
+    {
+      $this->translations = $translations;
+    }
+
+    public function setCategory($category): void
+    {
+      $this->category = $category;
+    }
+
+    public function setBrand($brand): void
+    {
+      $this->brand = $brand;
+    }
+
+    public function setImages($images): void 
+    {
+      $this->images = $images;
+    }
+
+    public function getCurrentTranslations(): array
+    {
+      return $this->translations;
+    }
+
+    public function setCurrentLang(string $currentLang): void 
+    {
+      $this->currentLang = $currentLang;
+    }
+
+  
 }

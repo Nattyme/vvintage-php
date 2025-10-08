@@ -117,6 +117,18 @@ class ProductImageService
     return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
   }
 
+  public function getImagesDTOs (array $images): array
+  {
+    return array_map(fn($image) => new ProductImageDTO($image), $images);
+  }
+
+  public function getProductImages (int $productId): array
+  {
+    $imagesRows = $this->repository->getImagesByProductId($productId); 
+
+    return $imagesRows ;
+  }
+
    public function getFlatImages(array $data): array 
   {
     $images = [];
@@ -138,30 +150,5 @@ class ProductImageService
     return $this->repository->getAllImages($productId);
   }
 
-  // public function buildImageDtos(array $processedImages): array
-  // {
-  //     $imagesDto = [];
-
-  //     foreach ($processedImages as $img) {
-  //         // если изображение уже в базе — пропускаем
-  //         if (!empty($img['id'])) {
-  //             continue;
-  //         }
-
-  //         if (empty($img['final_full'])) {
-  //             continue; // пустой файл игнорируем
-  //         }
-
-  //         $imagesDto[] = new ProductImageInputDTO([
-  //             'filename' => $img['final_full'],
-  //             'image_order' => $img['image_order'] ?? 0,
-  //             'alt' => $img['alt'] ?? '',
-  //         ]);
-  //     }
-
-  //     return $imagesDto;
-  // }
-
- 
 
 }

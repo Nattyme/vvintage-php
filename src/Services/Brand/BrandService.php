@@ -165,7 +165,7 @@ class BrandService extends BaseService
       
         return new BrandOutputDTO([
             'id' => (int) $id,
-            'title' => (string) ($brand->getTranslatedTitle($this->currentLang) ?? ''),
+            'title' => (string) ($translations[$this->currentLang]['title'] ?? ''),
             'image' => (string) ($row['brand_image'] ?? ''),
             'translations' => [
                 $this->currentLang => [
