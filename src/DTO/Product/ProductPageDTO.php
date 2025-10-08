@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Product;
 use Vvintage\DTO\Product\ProductDTO;
-use Vvintage\DTO\Category\CategoryOutputDTOfromModel;
-use Vvintage\DTO\Brand\BrandOutputDTOfromModel;
+use Vvintage\DTO\Category\CategoryForProductDTO;
+use Vvintage\DTO\Brand\BrandForProductDTO;
 use Vvintage\Models\Product\Product;
 
-final class ProductOutputDTOfromModel 
+final class ProductPageDTO 
 {
     public int $id;
     public int $category_id;
     public ?string $category_title;
-    public ?CategoryOutputDTOfromModel $categoryDTO;
+    public ?CategoryForProductDTO $categoryDTO;
 
     public int $brand_id;
     public ?string $brand_title;
-    public ?BrandOutputDTOfromModel $brandDTO;
+    public ?BrandForProductDTO $brandDTO;
 
     public string $slug;
     public string $title;
@@ -42,11 +42,11 @@ final class ProductOutputDTOfromModel
         $this->id = (int) ($product->getId() ?? 0);
 
         $this->category_id = (int) ($product->getCategoryId() ?? 0);
-        $this->categoryDTO = new CategoryOutputDTOfromModel($product->getCategory()) ?? null;
+        $this->categoryDTO = new CategoryForProductDTO($product->getCategory()) ?? null;
         $this->category_title = $this->categoryDTO->title ?? null;
 
         $this->brand_id = (int) ($product->getBrandId() ?? 0);
-        $this->brandDTO = new BrandOutputDTOfromModel($product->getBrand()) ?? null;
+        $this->brandDTO = new BrandForProductDTO($product->getBrand()) ?? null;
         $this->brand_title = $this->brandDTO->title ?? null;
       // $this->translations = $product->getCurrentTranslations() ?? [];
 
@@ -61,18 +61,6 @@ final class ProductOutputDTOfromModel
         $this->stock = (int) ($product->getStock() ?? 0);
         $this->datetime = $product->getDatetime();
         $this->edit_time = (string) ($product->getEditTime() ?? '');
-
-        $imagesRaw = $product->getImages() ?? null;
-   
-        if (is_array($imagesRaw)) {
-            $this->images = $imagesRaw;
-        } elseif (is_string($imagesRaw)) {
-            $this->images = array_filter(explode(',', $imagesRaw));
-        } else {
-            $this->images = null;
-        }
-
-        $this->imagesTotal = isset($this->images) ? count($this->images) : null;
         $this->currentLang = (string) ($product->getCurrentLang() ?? 'ru'); // локаль по умолчанию
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="<?php echo (isset($seo) && method_exists($seo, 'getCurrentLang')) ? h($seo->getCurrentLang()) : 'ru'; ?>">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -23,16 +23,18 @@
   <!-- SEO: description -->
   <meta name="description" content="<?php echo (isset($seo) && method_exists($seo, 'getDescription')) ? h($seo->getDescription()) : ''; ?>">
 
+  <!-- robots -->
+  <meta name="robots" content="index,follow">
+  
   <!-- Canonical -->
   <link rel="canonical" href="<?php echo h(HOST . ltrim($_SERVER['REQUEST_URI'], '/')); ?>">
-
-  <!-- Meta language -->
-  <meta name="language" content="<?php echo h($currentLang ?? 'ru'); ?>">
 
   <!-- Open Graph -->
   <meta property="og:title" content="<?php echo (isset($seo) && method_exists($seo, 'getTitle')) ? h($seo->getTitle()) : ''; ?>">
   <meta property="og:description" content="<?php echo (isset($seo) && method_exists($seo, 'getDescription')) ? h($seo->getDescription()) : ''; ?>">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="<?php echo (isset($seo) && method_exists($seo, 'getOgImage')) ? h($seo->getOgImage()) : ''; ?>">
+  <meta property="og:locale" content="<?php echo (isset($seo) && method_exists($seo, 'getCurrentLang')) ? h($seo->getCurrentLang()) : 'ru'; ?>">
 
   <!-- Twitter Meta (если понадобится) -->
   <!-- 
@@ -42,6 +44,7 @@
   <meta name="twitter:image" content="<?php echo h($ogImage ?? HOST . 'static/img/default-og.png'); ?>">
   -->
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+  <script type="application/ld+json"></script>
 </head>
 
 <?php if (isset($pageClass) && $pageClass === 'authorization-page'): ?> 

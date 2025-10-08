@@ -21,7 +21,7 @@ use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Seo\SeoService;
 use Vvintage\Services\Page\PageService;
 
-use Vvintage\DTO\Product\ProductOutputDTOfromModel;
+use Vvintage\DTO\Product\ProductPageDTO;
 
 
 
@@ -61,12 +61,12 @@ final class ProductController extends BaseController
         $imagesDtos = $this->productService->getImagesDTO($productModel->getImages());
         $images = $this->productService->getProductImagesData( $imagesDtos);
         $productModel->setImages($images);
-  
-        $product = new ProductOutputDTOfromModel($productModel);
+ 
+        $productDto = new ProductPageDTO($productModel);
    
         // Формируем единую модель для передачи в шаблон
         $viewModel = [
-            'product' => $product,
+            'product' => $productDto,
             'imagesTotal' => $productModel->getImages()['total'],
             'main' => $productModel->getImages()['main'],
             'gallery' => $productModel->getImages()['gallery'], 
@@ -76,7 +76,7 @@ final class ProductController extends BaseController
 
         // Название страницы и хлебные крошки
         // $seo = $this->seoService->getSeoForPage('product', $product);
-        $breadcrumbs = $this->breadcrumbsService->generate($routeData, $product->title);
+        $breadcrumbs = $this->breadcrumbsService->generate($routeData, $productDto->title);
 
         $seo = $this->seoService->getSeoForPage('product', $productModel);
   

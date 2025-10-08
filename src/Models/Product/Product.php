@@ -74,7 +74,7 @@ class Product
       $product->edit_time = $dto->edit_time;
       $product->translations = $dto->translations;
       $product->currentLang = $dto->locale ?? 'ru';
-      $product->images = $dto->images;
+      // $product->images = $dto->images;
       
 
       return $product;
@@ -105,7 +105,7 @@ class Product
 
       $product->edit_time =  (string) ($data['edit_time'] ?? '');
 
-      $product->images = $data['images'] ?? [];
+      // $product->images = $data['images'] ?? [];
 
       $product->translations = $data['translations'] ?? [];
       $product->currentLang = (string) ($data['locale'] ?? 'ru');
@@ -260,17 +260,17 @@ class Product
       $this->translations = $translations;
     }
 
-    public function setCategory($category): void
+    public function setCategory(Category $category): void
     {
       $this->category = $category;
     }
 
-    public function setBrand($brand): void
+    public function setBrand(Brand $brand): void
     {
       $this->brand = $brand;
     }
 
-    public function setImages($images): void 
+    public function setImages(array $images): void 
     {
       $this->images = $images;
     }

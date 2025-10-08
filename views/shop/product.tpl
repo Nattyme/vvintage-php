@@ -1,5 +1,4 @@
 <main class="product-page">
-
   <section class="product">
     <div class="container">
       <header class="shop-header">

@@ -10,6 +10,7 @@ return [
   'button.goto.shop' => 'Aller à la boutique',
   'button.goto.blog' => 'Aller au blog',
   'button.cart.add' => 'Ajouter au panier',
+  'button.item.incart' => 'Article dans le panier',
   'button.cart.order' => 'Passer la commande',
   'button.products.add' => 'Ajouter des produits',
   'button.apply.filters' => 'Appliquer les filtres',
