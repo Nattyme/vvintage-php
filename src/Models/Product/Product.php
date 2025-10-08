@@ -202,7 +202,7 @@ class Product
       
     public function getTranslations(): ?array
     {
-      return $this->translations[$this->currentLocale];
+      return $this->translations;
     }
 
     public function getImages(): array

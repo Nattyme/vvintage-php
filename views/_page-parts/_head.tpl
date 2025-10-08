@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="<?php echo (isset($seo) && method_exists($seo, 'getCurrentLang')) ? h($seo->getCurrentLang()) : 'ru'; ?>">
+<html lang="<?php echo (isset($seo) && !empty($seo->currentLang)) ? h($seo->currentLang) : 'ru'; ?>">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title><?php echo (isset($seo) && method_exists($seo, 'getTitle')) ? h($seo->getTitle()) : ''; ?></title>
+  <title><?php echo (isset($seo) && !empty($seo->title)) ? h($seo->title) : ''; ?></title>
 
   <link rel="icon" type="image/x-icon" href="<?php echo HOST . 'static/img/favicons/favicon.svg'; ?>" />
   <link rel="apple-touch-icon" sizes="180x180" href="<?php echo HOST . 'static/img/favicons/apple-touch-icon.png'; ?>" />
@@ -21,20 +20,21 @@
   ?>
 
   <!-- SEO: description -->
-  <meta name="description" content="<?php echo (isset($seo) && method_exists($seo, 'getDescription')) ? h($seo->getDescription()) : ''; ?>">
+  <meta name="description" content="<?php echo (isset($seo) && !empty($seo->description)) ? h($seo->description) : ''; ?>">
 
   <!-- robots -->
-  <meta name="robots" content="index,follow">
-  
+  <meta name="robots" content="<?php echo (isset($seo) && !empty($seo->isIndexed)) ? h($seo->isIndexed) : ''; ?>">
+
   <!-- Canonical -->
   <link rel="canonical" href="<?php echo h(HOST . ltrim($_SERVER['REQUEST_URI'], '/')); ?>">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="<?php echo (isset($seo) && method_exists($seo, 'getTitle')) ? h($seo->getTitle()) : ''; ?>">
-  <meta property="og:description" content="<?php echo (isset($seo) && method_exists($seo, 'getDescription')) ? h($seo->getDescription()) : ''; ?>">
+  <meta property="og:title" content="<?php echo (isset($seo) && !empty($seo->title)) ? h($seo->title) : ''; ?>">
+  <meta property="og:description" content="<?php echo (isset($seo) && !empty($seo->description)) ? h($seo->description) : ''; ?>">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="<?php echo (isset($seo) && method_exists($seo, 'getOgImage')) ? h($seo->getOgImage()) : ''; ?>">
-  <meta property="og:locale" content="<?php echo (isset($seo) && method_exists($seo, 'getCurrentLang')) ? h($seo->getCurrentLang()) : 'ru'; ?>">
+  <meta property="og:image" content="<?php echo (isset($seo) && !empty($seo->ogImg)) ? h($seo->ogImg) : HOST . 'static/img/default-og.png'; ?>">
+
+  <meta property="og:locale" content="<?php echo (isset($seo) && !empty($seo->currentLang)) ? h($seo->currentLang) : 'ru'; ?>">
 
   <!-- Twitter Meta (если понадобится) -->
   <!-- 
@@ -44,7 +44,7 @@
   <meta name="twitter:image" content="<?php echo h($ogImage ?? HOST . 'static/img/default-og.png'); ?>">
   -->
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-  <script type="application/ld+json"></script>
+  <?php echo $seo->structuredData ?? ''; ?>
 </head>
 
 <?php if (isset($pageClass) && $pageClass === 'authorization-page'): ?> 

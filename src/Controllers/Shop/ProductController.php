@@ -79,7 +79,7 @@ final class ProductController extends BaseController
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $productDto->title);
 
         $seo = $this->seoService->getSeoForPage('product', $productModel);
-  
+ 
         // Подключение шаблонов страницы
         $this->renderLayout('shop/product', [
               'seo' => $seo,

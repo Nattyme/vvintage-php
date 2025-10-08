@@ -157,11 +157,7 @@ final class Category
 
 
     public function getSeoTitle(?string $locale = null): string {
-        if ($locale) {
-          return $this->translations['meta_title'] ?? '';
-        }
-  
-        return $this->title;
+        return  $this->translations['meta_title'] ?: $this->title ?? '';
     }
 
     public function getSeoDescription(?string $locale = null): ?string 

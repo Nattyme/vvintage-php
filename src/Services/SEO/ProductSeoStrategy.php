@@ -16,26 +16,27 @@ class ProductSeoStrategy implements SeoStrategyInterface
         $this->product = $product;
     }
 
+   
     public function getSeo(): SeoDTO
     {
-      $currentLang = $this->product->getCurrentLang();
- 
       $translations = $this->product->getCurrentTranslations();
 
-        
       return new SeoDTO(
         title: $translations['title'] ?? $translations['title'] ?? '',
         description: $translations['description'] ?? $translations['title'] ?? '',
         meta_title: $translations['meta_title'] ?? $translations['title'] ?? '',
-        meta_description: $translations['meta_description'] ?? $translations['description'] ?? ''
+        meta_description: $translations['meta_description'] ?? $translations['description'] ?? '',
+        currentLang: $this->product->getCurrentLang(),
+        structuredData: $this->getStructuredData(),
+        isIndexed: 'index,follow'
       );
     }
-  
+
     public function getStructuredData(): string
     {
-        $locale = $this->product->getCurrentLocale();
+        $currentLang = $this->product->getCurrentLang();
         $translations = $this->product->getTranslations();
-        $meta = $translations[$locale] ?? [];
+        $meta = $translations ?? [];
 
         $data = [
             "@context" => "https://schema.org",
@@ -44,12 +45,19 @@ class ProductSeoStrategy implements SeoStrategyInterface
             "description" => $meta['description'] ?? '',
             "brand" => [
                 "@type" => "Brand",
-                "name" => $this->product->getBrandTitle()
-            ]
-            // "image" => $this->product->getImageUrl(),
+                "name" => $this->product->getBrand()->getSeoTitle(),
+                "description" => $this->product->getBrand()->getSeoDescription() ?? ''
+            ],
+            "category" => $this->product->getCategory()->getSeoTitle() ?? ''
         ];
 
         return '<script type="application/ld+json">' . json_encode($data, JSON_UNESCAPED_UNICODE) . '</script>';
+    }
+
+
+    public function getOG(): array 
+    {
+
     }
 
 }
