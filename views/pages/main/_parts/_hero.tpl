@@ -3,8 +3,8 @@
     <div class="hero__background">
       <div class="hero__img-wrapper">
         <picture>
-          <source srcset="<?php echo HOST . 'static/img/hero/01.webp 1x,' . 'static/img/hero/01@2x.webp 2x';?>" type="image/webp" />
-          <source srcset="<?php echo HOST . 'static/img/hero/01.jpg 1x,' . 'static/img/hero/01@2x.jpg 2x';?>" type="image/jpeg" />
+          <source srcset="<?php echo HOST . 'static/img/hero/01.webp 1x,' . 'static/img/hero/01.webp 2x';?>" type="image/webp" />
+          <source srcset="<?php echo HOST . 'static/img/hero/01.jpg 1x,' . 'static/img/hero/01.jpg 2x';?>" type="image/jpeg" />
           <img class="hero__img" src="<?php echo HOST . 'static/img/hero/01.jpg';?>" srcset="<?php echo HOST . 'static/img/hero/01@2x.jpg';?>" alt="" />
         </picture>
       </div>
