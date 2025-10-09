@@ -4,7 +4,7 @@
     <div class="container">
       <div class="page-order__header">
         <div class="section-title">
-          <h1 class="h1">Оформление заказа</h1>
+          <h1 class="h1"><?php echo h($pageTitle);?></h1>
         </div>
 
         <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl';?>

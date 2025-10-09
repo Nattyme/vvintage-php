@@ -21,6 +21,7 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Validation\NewOrderValidator;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\SEO\SeoService;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -85,11 +86,14 @@ final class OrderController extends BaseController
       // Получаем продукты
       $products = $this->cartService->getListItems();
       $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
+
+      $page = $this->pageService->getPageBySlug($routeData->uriModule);
+      $pageTitle = $page['title'];
        
 
       if (!isRequestMethod('post') || !$this->validator->validate($_POST)) {
         // Показываем страницу
-        $this->renderForm($this->userModel, $routeData, $products, $this->cartModel, $totalPrice);
+        $this->renderForm($pageTitle, $this->userModel, $routeData, $products, $this->cartModel, $totalPrice);
         return;
       } 
       
@@ -113,10 +117,12 @@ final class OrderController extends BaseController
           header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
           exit();
       } 
+      $page = $this->pageService->getPageBySlug($routeData->uriModule);
+
 
       // сообщение об ошибке
       $this->flash->pushError("Произошла ошибка при создании заказа.");
-      $this->renderForm($this->userModel, $routeData, $products, $this->cartModel, $totalPrice);
+      $this->renderForm($pageTitle, $this->userModel, $routeData, $products, $this->cartModel, $totalPrice);
     }
 
     private function edit(Order $order, array $postData)
@@ -129,6 +135,8 @@ final class OrderController extends BaseController
       $this->setRouteData($routeData);
       // Название страницы
       $pageTitle = 'Заказ оформлен!';
+      $page = $this->pageService->getPageBySlug($routeData->uriModule); 
+      $pageTitle = $page['title'];
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -147,6 +155,7 @@ final class OrderController extends BaseController
       // Подключение шаблонов страницы
       $this->renderLayout('orders/created', [
             'pageTitle' => $pageTitle,
+            'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'flash' => $this->flash,
@@ -156,16 +165,15 @@ final class OrderController extends BaseController
       ]);
     }
 
-    private function renderForm ($userModel, $routeData, array $products, Cart $cartModel, int $totalPrice): void 
+    private function renderForm ($pageTitle, $userModel, $routeData, array $products, Cart $cartModel, int $totalPrice): void 
     {  
-      // Название страницы
-      $pageTitle = 'Оформление нового заказа';
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       // Подключение шаблонов страницы
       $this->renderLayout('orders/new', [
+            'pageTitle' => $pageTitle,
             'user' => $this->userModel,
             'pageTitle' => $pageTitle,
             'cartModel' => $cartModel,

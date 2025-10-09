@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Page;
 
 use Vvintage\Routing\RouteData;
+use Vvintage\Services\Page\PageService;
 
 class Breadcrumbs
 {
@@ -19,9 +20,12 @@ class Breadcrumbs
     public function generate(RouteData $routeData, string $currentPageTitle = ''): array
     {
         $breadcrumbs = [];
+        $pageService = new PageService();
+        $mainPageModel = $pageService->getPageModelBySlug( 'main' );
+        $mainPageTranslations = $mainPageModel->getCurrentTranslations();
 
         // Главная всегда первая
-        $breadcrumbs[] = ['title' => 'Главная', 'url' => '/'];
+        $breadcrumbs[] = ['title' => $mainPageTranslations['title'], 'url' => '/'];
 
         // Получаем части URI
         $uriParts = explode('/', trim($routeData->uri, '/'));
