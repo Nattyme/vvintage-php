@@ -294,25 +294,52 @@
       }
     }
 
-    private static function routeProfile(RouteData $routeData) {
-      $breadcrumbs = new Breadcrumbs();
-      $profileController = new ProfileController($breadcrumbs);
+    // private static function routeProfile(RouteData $routeData) {
+    //   dd($routeData);
+    //   $breadcrumbs = new Breadcrumbs();
+    //   $profileController = new ProfileController($breadcrumbs);
 
-      switch ($routeData->uriModule) {
-        case 'profile':
-          $profileController->index($routeData);
-          break;
+    //   switch ($routeData->uriModule) {
+    //     case 'profile':
+    //       $profileController->index($routeData);
+    //       break;
 
-        case 'profile-edit':
-          $profileController->edit($routeData);
-          break;
+    //     case 'profile-edit':
+    //       $profileController->edit($routeData);
+    //       break;
 
-        case 'profile-order':
-          $profileController->order($routeData);
-          // require ROOT . 'modules/profile/profile-order.php';
-          break;
-      }
+    //     case 'profile-order':
+    //       $profileController->order($routeData);
+    //       break;
+    //   }
+    // }
+
+    public static function routeProfile(RouteData $routeData)
+    {
+        $action = $routeData->uriGet ?? '';
+        $breadcrumbs = new Breadcrumbs();
+        $profileController = new ProfileController($breadcrumbs);
+
+        switch ($action) {
+            case '':
+                $profileController->index($routeData); // Профиль
+                break;
+
+            case 'edit':
+                $profileController->edit($routeData); // Редактирование профиля
+                break;
+
+            case 'orders':
+                $profileController->order($routeData);
+                break;
+
+            default:
+              // Редирект на главную
+              header("Location: /");
+              exit; // завершить скрипт
+        }
     }
+
 
     // ::::::::::::: SHOP :::::::::::::::::::
     private static function routeShop(RouteData $routeData) {

@@ -2,15 +2,8 @@
   <div class="page-profile__content">
     <div class="container">
       <!-- Заголовок и хлебные крошки -->
-      <header class="page-profile__header">
-        <div class="page-profile__title">
-          <h1 class="h1">
-            <?php echo h($pageTitle);?>
-          </h1>
-        </div>
-        <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
-
-      </header>
+      <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
+      
       <div class="profile-card">
         <?php include ROOT . "views/components/errors.tpl"; ?>
         <?php include ROOT . "views/components/success.tpl"; ?>
@@ -31,11 +24,11 @@
             </div>
 
             <?php if ($this->isAdmin()) :?>
-                <a class="button button--s button--primary" href="<?php echo HOST . 'profile-edit/'. u($userModel->getId());?>">
+                <a class="button button--s button--primary" href="<?php echo HOST . 'profile/edit/'. u($userModel->getId());?>">
                   <?php echo h(__('profile.edit', [], 'profile'));?>
                 </a>
             <?php else  : ?>
-                <a class="button button--s button--primary" href="<?php echo HOST . 'profile-edit';?>">
+                <a class="button button--s button--primary" href="<?php echo HOST . 'profile/edit';?>">
                   <?php echo h(__('profile.edit', [], 'profile'));?>
                 </a>
             <?php endif; ?>

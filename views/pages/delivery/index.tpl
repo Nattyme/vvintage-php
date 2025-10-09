@@ -2,16 +2,9 @@
   <div class="container">
 
      
-  <!-- Заголовок и хлебные крошки -->
-  <header class="delivery__header">
-    <div class="delivery__header__title">
-      <h1 class="h1">
-        <?php echo h($pageTitle);?>
-      </h1>
-    </div>
-    <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
 
-  </header>
+    <!-- Заголовок и хлебные крошки -->
+    <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
     
 
 

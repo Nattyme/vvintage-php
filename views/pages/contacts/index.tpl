@@ -1,12 +1,8 @@
 <main class="inner-page">
   <section class="contacts">
     <div class="container">
-      <div class="contacts__header">
-        <div class="section-title">
-          <h1 class="h1"><?php echo $pageTitle;?></h1>
-        </div>
-        <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
-      </div>
+      <!-- Заголовок и хлебные крошки -->
+      <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
   
       <div class="contacts__map-wrapper">
         <div class="contacts__map" id="map" style="width: 100%; height: 476px">

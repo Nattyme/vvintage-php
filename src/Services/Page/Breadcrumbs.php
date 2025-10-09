@@ -26,7 +26,7 @@ class Breadcrumbs
 
         // Главная всегда первая
         $breadcrumbs[] = ['title' => $mainPageTranslations['title'], 'url' => '/'];
-// dd($breadcrumbs);
+
         // Получаем части URI
         $uriParts = explode('/', trim($routeData->uri, '/'));
         $path = '';
@@ -43,12 +43,17 @@ class Breadcrumbs
                 $breadcrumbs[] = ['title' => $title, 'url' => ''];
             } else {
                 $pageModel = $pageService->getPageModelBySlug( $part );
-                $pageTranslations = $pageModel->getCurrentTranslations();
-                $title = $pageTranslations['title'];
+
+                if( $pageModel) {
+                  $pageTranslations = $pageModel->getCurrentTranslations();
+                  $title = $pageTranslations['title'];
+                  $breadcrumbs[] = ['title' => $title, 'url' => $path];
+                } 
+              
                 // Используем отображаемое имя из map или first сегмента
                 // $title = $this->titlesMap[$part] ?? ucfirst($part);
              
-                $breadcrumbs[] = ['title' => $title, 'url' => $path];
+               
             }
         }
 

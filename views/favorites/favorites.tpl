@@ -1,13 +1,9 @@
 <main class="inner-page">
   <section class="page-cart">
     <div class="container">
-      <div class="page-cart__header">
-        <div class="section-title">
-          <h1 class="h1"><?php echo h($pageTitle);?></h1>
-        </div>
-       <?php include 'views/_parts/breadcrumbs/breadcrumbs.tpl';?>
-      </div>
-
+      <!-- Заголовок и хлебные крошки -->
+      <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
+      
       <div class="page-cart__cart-wrapper">
         <?php include ROOT . 'views/components/success.tpl'; ?>
 

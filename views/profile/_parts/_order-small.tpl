@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <a class="link-to-page" href="<?php echo HOST . 'profile-order/' . $order->getId();?>">
+    <a class="link-to-page" href="<?php echo HOST . 'profile/order/' . $order->getId();?>">
      
         <?php if ( $order->getDateTime() ) echo h( $this->localeService->formatDateTime($order->getDateTime()) );  ?>
     </a>

@@ -48,7 +48,7 @@ final class ProfileController extends BaseController
 
   public function index(RouteData $routeData)
   {
-   
+  
     $orders = null;
     $this->setRouteData($routeData);
     $uriGet = $this->routeData->uriGet ?? null;
@@ -100,12 +100,12 @@ final class ProfileController extends BaseController
   public function edit(RouteData $routeData)
   {
       $this->setRouteData($routeData);
-
+      $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule);
+   
       $userModel = null;
+      $uriGet = $this->routeData->uriGet ?? null;
 
       if ( $this->isAdmin() ) {
-        $uriGet = $this->routeData->uriGet ?? null;
- 
         // проверка на доп параметр 
         if (!empty( $uriGet ) ) {
            
@@ -147,7 +147,7 @@ final class ProfileController extends BaseController
       }
 
 
-      $this->renderProfileEdit($routeData, $userModel, $uriGet, $address);
+      $this->renderProfileEdit(routeData: $routeData, userModel: $userModel, uriGet: $uriGet, address: $address);
 
   }
 
@@ -202,8 +202,10 @@ final class ProfileController extends BaseController
   private function renderProfileFull(RouteData $routeData, ?User $userModel, ?array $orders): void
   {
       // Название страницы
-      $pageTitle = 'Профиль пользователя';
+      $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule);
+
       $pageClass = "profile-page";
+      $pageTitle =  $pageModel->getTitle();
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -223,23 +225,20 @@ final class ProfileController extends BaseController
       ]);
   }
 
-  private function renderProfileEdit (RouteData $routeData, ?User $userModel, $uriGet, $address): void 
+  private function renderProfileEdit (RouteData $routeData, ?User $userModel, $address, int|string|null $uriGet = null): void 
   {  
       // Название страницы
-      $pageTitle = 'Редактирование профиля пользователя';
-      $pageClass = "profile-page";
+      $slug = $uriGet ? $routeData->uriModule . '/' . $uriGet : $routeData->uriModule;
+      $pageModel = $this->pageService->getPageModelBySlug($slug);
+      $pageTitle = $pageModel->getTitle();
 
+
+      $pageClass = "profile-page";
+      $pageTitle =  $pageModel->getTitle();
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
  
-
-      // dd($userModel);
-      // if (isset($_POST['updateProfile'])) {
-
-      //   $this->updateUserAndGoToProfile($userModel);
-      // }
-
       // Подключение шаблонов страницы
       $this->renderLayout('profile/profile-edit', [
             'pageTitle' => $pageTitle,

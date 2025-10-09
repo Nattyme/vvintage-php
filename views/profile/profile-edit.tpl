@@ -3,7 +3,8 @@
   <section class="profile">
     <div class="container">
       <div class="profile__title">
-        <h2 class="h2">Профиль пользователя</h2>
+        <!-- Заголовок и хлебные крошки -->
+        <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
         <p>
       
           <?php 
@@ -23,9 +24,8 @@
   <?php else: ?>
   <section class="profile">
     <div class="container">
-      <div class="profile__title">
-        <h2 class="h2">Редактировать профиль</h2>
-      </div>
+      <!-- Заголовок и хлебные крошки -->
+      <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
 
 
       <div class="profile__body profile__form-wrapper">
