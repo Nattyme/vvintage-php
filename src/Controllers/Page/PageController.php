@@ -9,6 +9,7 @@ use Vvintage\Routing\RouteData;
 
 use Vvintage\Models\Page\Page;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\SEO\SeoService;
 // use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Services\Page\Breadcrumbs;
 
@@ -17,17 +18,20 @@ use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Post\PostService;
 
+
 class PageController extends BaseController
 {
   private Page $pageModel;
   protected PageService $pageService;
+  private SeoService $seoService;
   private Breadcrumbs $breadcrumbsService;
 
-  public function __construct ()
+  public function __construct (SeoService $seoService)
   {
     parent::__construct(); // Важно!
     $this->pageService = new PageService();
     $this->breadcrumbsService = new Breadcrumbs();
+    $this->seoService = $seoService;
   }
 
   public function index(RouteData $routeData): void
@@ -78,17 +82,19 @@ class PageController extends BaseController
       $posts = $postService->getLastPosts(3);
 
       $page = $this->pageService->getPageBySlug($slug);
+      $pageModel = $this->pageService->getPageModelBySlug( $slug );
 
       // Название страницы
       $pageTitle = $page['title'];
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
-
+      $seo = $this->seoService->getSeoForPage('home', $pageModel);
 
 
       // Показываем страницу
       $this->renderLayout("pages/{$slug}/index", [
+        'seo' => $seo,
         'page' => $page,
         'routeData' => $routeData,
         'categories' => $categories,

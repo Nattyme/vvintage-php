@@ -486,10 +486,13 @@
     {
       $pageService = new PageService();
       $breadcrumbs = new Breadcrumbs();
+
+      // Инициализируем SEO-сервис
+      $seoService = new SeoService();
       // $pageModel = $pageService->getPageBySlug($routeData->uriModule);
 
       // $controller = new PageController($pageModel, $breadcrumbs);
-      $controller = new PageController();
+      $controller = new PageController( $seoService);
 
       switch ($routeData->uriModule) {
         case '':

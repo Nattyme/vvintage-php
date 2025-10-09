@@ -1,4 +1,5 @@
 <main class="inner-page">
+
   <section class="page-order">
     <div class="container">
       <div class="page-order__header">
@@ -53,28 +54,56 @@
                     <label class="form-order__label" for="name">
                       <?php echo h(__('order.first_name', [], 'order'));?>
                     </label>
-                    <input type="text" class="form-input input" placeholder="<?php echo h(__('order.first_name.placeholder', [], 'order'));?>" name="name" id="name">
+                    <input 
+                      type="text" 
+                      class="form-input input" 
+                      placeholder="<?php echo h(__('order.first_name.placeholder', [], 'order'));?>" 
+                      name="name" 
+                      id="name"
+                      value = "<?php  echo isset($user) && !empty($user->getName()) ? $user->getName() : '';?>"
+                    >
                   </div>
 
                   <div class="form-order__field">
                     <label class="form-order__label" for="surname">
                       <?php echo h(__('order.last_name', [], 'order'));?>
                     </label>
-                    <input type="text" class="form-input input" placeholder="<?php echo h(__('order.last_name.placeholder', [], 'order'));?>" name="surname" id="surname">
+                    <input 
+                      type="text" 
+                      class="form-input input" 
+                      placeholder="<?php echo h(__('order.last_name.placeholder', [], 'order'));?>" 
+                      name="surname" 
+                      id="surname"
+                      value="<?php  echo isset($user) && !empty($user->getSurname()) ? $user->getSurname() : '';?>"
+                    >
                   </div>
                   
                   <div class="form-order__field">
                     <label class="form-order__label" for="email">
                       <?php echo h(__('order.email', [], 'order'));?>
                     </label>
-                    <input type="text" class="form-input input input" placeholder="<?php echo h(__('order.email.placeholder', [], 'order'));?>" name="email" id="email">
+                    <input 
+                      type="text" 
+                      class="form-input input input" 
+                      placeholder="<?php echo h(__('order.email.placeholder', [], 'order'));?>" 
+                      name="email" 
+                      id="email"
+                      value="<?php  echo isset($user) && !empty($user->getEmail()) ? $user->getEmail() : '';?>"
+                    >
                   </div>
 
                   <div class="form-order__field">
                     <label class="form-order__label" for="phone">
                       <?php echo h(__('order.phone', [], 'order'));?>
                     </label>
-                    <input type="text" class="form-input input" placeholder="<?php echo h(__('order.phone.placeholder', [], 'order'));?>" name="phone" id="phone">
+                    <input 
+                      type="text" 
+                      class="form-input input" 
+                      placeholder="<?php echo h(__('order.phone.placeholder', [], 'order'));?>" 
+                      name="phone" 
+                      id="phone"
+                      value="<?php  echo isset($user) && !empty($user->getPhone()) ? $user->getPhone() : '';?>"
+                    >
                   </div>
                  
                 </div>
@@ -153,7 +182,7 @@
 
           <div class="form-order__button-wrapper">
             <a class="button button--outline button--l" href="<?php HOST;?>cart">
-              <?php echo h(__('order.return_to_cart', [], 'order'));?>
+              <?php echo h(__('button.cancel', [], 'buttons'));?>
             </a>
             <button class="button button--primary button--l" type="submit" name="submit">
                <?php echo h(__('order.place_order', [], 'order'));?>

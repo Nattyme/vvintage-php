@@ -89,7 +89,7 @@ final class OrderController extends BaseController
 
       if (!isRequestMethod('post') || !$this->validator->validate($_POST)) {
         // Показываем страницу
-        $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
+        $this->renderForm($this->userModel, $routeData, $products, $this->cartModel, $totalPrice);
         return;
       } 
       
@@ -116,7 +116,7 @@ final class OrderController extends BaseController
 
       // сообщение об ошибке
       $this->flash->pushError("Произошла ошибка при создании заказа.");
-      $this->renderForm($routeData, $products, $this->cartModel, $totalPrice);
+      $this->renderForm($this->userModel, $routeData, $products, $this->cartModel, $totalPrice);
     }
 
     private function edit(Order $order, array $postData)
@@ -156,7 +156,7 @@ final class OrderController extends BaseController
       ]);
     }
 
-    private function renderForm ($routeData, array $products, Cart $cartModel, int $totalPrice): void 
+    private function renderForm ($userModel, $routeData, array $products, Cart $cartModel, int $totalPrice): void 
     {  
       // Название страницы
       $pageTitle = 'Оформление нового заказа';
@@ -166,6 +166,7 @@ final class OrderController extends BaseController
 
       // Подключение шаблонов страницы
       $this->renderLayout('orders/new', [
+            'user' => $this->userModel,
             'pageTitle' => $pageTitle,
             'cartModel' => $cartModel,
             'routeData' => $routeData,

@@ -7217,7 +7217,12 @@ main.product-page {
 .widget__item--related + .widget__item--related {
   margin-top: 56px;
 }
-
+.header__nav {
+    position: relative;
+    width: 100%;
+    border-top: 1px solid var(--color-gray-100);
+    border-bottom: 1px solid var(--color-gray-100);
+}
 /*Media*/
 @media (max-width: 1500px) {
   .swiper.swiperHeaderImg {

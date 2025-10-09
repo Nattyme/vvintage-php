@@ -17,7 +17,7 @@ use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Brand\BrandService;
 use Vvintage\Services\Product\ProductImageService;
-use Vvintage\Services\Seo\SeoService;
+use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Page\PageService;
 

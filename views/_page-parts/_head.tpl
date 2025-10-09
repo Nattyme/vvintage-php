@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><?php echo (isset($seo) && !empty($seo->meta_title)) ? h($seo->meta_title) : h($seo->title) ?? ''; ?></title>
+  <title><?php echo (isset($seo) && !empty($seo->meta_title)) ? h($seo->meta_title) : ''; ?></title>
 
   <link rel="icon" type="image/x-icon" href="<?php echo HOST . 'static/img/favicons/favicon.svg'; ?>" />
   <link rel="apple-touch-icon" sizes="180x180" href="<?php echo HOST . 'static/img/favicons/apple-touch-icon.png'; ?>" />
@@ -20,7 +20,7 @@
   ?>
 
   <!-- SEO: description -->
-  <meta name="description" content="<?php echo (isset($seo) && !empty($seo->meta_description)) ? h($seo->meta_description) : h($seo->description) ?? ''; ?>">
+  <meta name="description" content="<?php echo (isset($seo) && !empty($seo->meta_description)) ? h($seo->meta_description) : ''; ?>">
 
   <!-- robots -->
   <meta name="robots" content="<?php echo (isset($seo) && !empty($seo->isIndexed)) ? h($seo->isIndexed) : ''; ?>">

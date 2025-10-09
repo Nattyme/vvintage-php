@@ -31,16 +31,31 @@ class SeoService extends BaseService
 
       switch ($pageType) {
           case 'home':
-              $strategy = new HomePageSeoStrategy();
+              $strategy = new HomePageSeoStrategy($model, $lang);
+              break;
+          case 'catalog':
+              $strategy = new CatalogSeoStrategy($model, $lang);
               break;
           case 'product':
               $strategy = new ProductSeoStrategy($model);
               break;
+          case 'about':
+              $strategy = new ProductSeoStrategy($model);
+              break;
+          case 'delivery':
+              $strategy = new ProductSeoStrategy($model);
+              break;
+          case 'profile':
+              $strategy = new ProductSeoStrategy($model);
+              break;
+          case 'cart':
+              $strategy = new ProductSeoStrategy($model);
+              break;
+          case 'favorites':
+              $strategy = new ProductSeoStrategy($model);
+              break;
           case 'post':
               $strategy = new PostSeoStrategy($model);
-              break;
-          case 'catalog':
-              $strategy = new CatalogSeoStrategy($model, $lang);
               break;
           default:
               throw new \Exception('Unknown SEO page type');
