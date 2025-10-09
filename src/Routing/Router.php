@@ -108,8 +108,8 @@
           break;
 
         case 'profile':
-        case 'profile-edit':
-        case 'profile-order':
+        case 'profile/edit':
+        case 'profile/order':
           self::routeProfile($routeData);
           break;
 
@@ -329,7 +329,7 @@
                 $profileController->edit($routeData); // Редактирование профиля
                 break;
 
-            case 'orders':
+            case 'order':
                 $profileController->order($routeData);
                 break;
 

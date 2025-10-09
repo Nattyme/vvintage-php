@@ -161,20 +161,22 @@ final class ProfileController extends BaseController
       $userModel = $this->getLoggedInUser();
 
       // если гость — редиректим
-      if ($userModel instanceof GuestUser || !$userModel) {
+      if (!$userModel || $userModel instanceof GuestUser) {
           $this->redirect('login');
       }
 
-      $userModel = $this->getLoggedInUser();
       $userId = $userModel->getId();
+      $orderId = $routeData->uriGetParams[0] ?? null;
+      
+      if (!$orderId || !$userId) {
+          $this->redirect('profile');
+      }
 
-      // Если есть ID  - получаем данные заказа, проверя, что это заказ вошедшего в свой профиль пользователя
-
-      $order = $this->userService->getOrderById((int) $routeData->uriGet);
+      $order = $this->userService->getOrderById((int) $orderId);
    
       // Проверка, что заказ принадлежит текущему пользователю
-      if ( $order->getUserId() !== $userId) {
-        $this->redirect('profile');
+      if (!$order || $order->getUserId() !== $userId) {
+          $this->redirect('profile');
       }
 
       // Получаем массив товаров из JSON формата
@@ -269,8 +271,11 @@ final class ProfileController extends BaseController
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'pageClass' => $pageClass,
+            'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'order' => $order,
-            'products' => $products
+            'products' => $products,
+            'currentLang' =>  $this->pageService->currentLang,
+            'languages' => $this->pageService->languages
       ]);
 
   }
