@@ -63,7 +63,7 @@
             <?php if (isProductInCart($viewModel['product']->id)) : ?>
             
               <button type="button" class="button button--primary button--l" disabled>
-                <?php echo h(__('button.item.incart', [], 'buttons',));?>
+                <?php echo h(__('button.item.incart', [], 'buttons'));?>
               </button>
             <?php  else : ?>
               <a href="<?php echo HOST . 'addtocart?id=' . u($viewModel['product']->id);?>" class="button button--primary button--xl">

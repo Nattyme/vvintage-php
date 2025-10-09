@@ -570,115 +570,115 @@
           break;
 
         
-      // ::::::::::::: BRANDS :::::::::::::::::::
-      case 'brand':
-        $adminBrandController->all($routeData);
-        break;
+        // ::::::::::::: BRANDS :::::::::::::::::::
+        case 'brand':
+          $adminBrandController->all($routeData);
+          break;
 
-      case 'brand-new':
-        $adminBrandController->new($routeData);
-        // require ROOT . "admin/modules/brands/new.php";
-        break;
+        case 'brand-new':
+          $adminBrandController->new($routeData);
+          // require ROOT . "admin/modules/brands/new.php";
+          break;
 
-      case 'brand-edit':
-        $adminBrandController->edit($routeData);
-        // require ROOT . "admin/modules/brands/edit.php";
-        break;
+        case 'brand-edit':
+          $adminBrandController->edit($routeData);
+          // require ROOT . "admin/modules/brands/edit.php";
+          break;
 
-      case 'brand-delete':
-        $adminBrandController->delete($routeData);
-        // require ROOT . "admin/modules/brands/delete.php";
-        break;
-
-
-      // ::::::::::::: CATEGORIES SHOP :::::::::::::::::::
-      case 'category':
-        $adminCategoryController->all($routeData);
-        // require ROOT . "admin/modules/categories/all.php";
-        break;
-
-      case 'category-new':
-        $adminCategoryController->new($routeData);
-        // require ROOT . "admin/modules/categories/new.php";
-        break;
-
-      case 'category-edit':
-        $adminCategoryController->edit($routeData);
-        // require ROOT . "admin/modules/categories/edit.php";
-        break;
-
-      case 'category-delete':
-        $adminCategoryController->delete($routeData);
-        // require ROOT . "admin/modules/categories/delete.php";
-        break;
+        case 'brand-delete':
+          $adminBrandController->delete($routeData);
+          // require ROOT . "admin/modules/brands/delete.php";
+          break;
 
 
-      // ::::::::::::: USERS :::::::::::::::::::
-      case 'users':
-        $adminUserController->all($routeData);
-        break; 
+        // ::::::::::::: CATEGORIES SHOP :::::::::::::::::::
+        case 'category':
+          $adminCategoryController->all($routeData);
+          // require ROOT . "admin/modules/categories/all.php";
+          break;
 
-      case 'user-edit':
-        $adminUserController->edit($routeData);
-        require ROOT . "admin/modules/users/edit.php";
-        break; 
+        case 'category-new':
+          $adminCategoryController->new($routeData);
+          // require ROOT . "admin/modules/categories/new.php";
+          break;
 
-      case 'user-block':
-        $adminUserController->block($routeData);
-        require ROOT . "admin/modules/users/block.php";
-        break;
+        case 'category-edit':
+          $adminCategoryController->edit($routeData);
+          // require ROOT . "admin/modules/categories/edit.php";
+          break;
 
-        // ::::::::::::: BLOG :::::::::::::::::::
-      case 'blog':
-        $adminPostController->all($routeData);
-        break;
+        case 'category-delete':
+          $adminCategoryController->delete($routeData);
+          // require ROOT . "admin/modules/categories/delete.php";
+          break;
 
-      case 'post-new':
-         $adminPostController->new($routeData);
-        break;
 
-      case 'post-edit':
-        $adminPostController->edit($routeData);
-        break;
+        // ::::::::::::: USERS :::::::::::::::::::
+        case 'users':
+          $adminUserController->all($routeData);
+          break; 
 
-      case 'post-delete':
-        $adminPostController->delete($routeData);
-        break;
+        case 'user-edit':
+          $adminUserController->edit($routeData);
+          require ROOT . "admin/modules/users/edit.php";
+          break; 
 
-      // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
-      case 'category-blog':
-        $adminPostCatController->all($routeData);
-        // require ROOT . "admin/modules/categories-blog/all.php";
-        break;
+        case 'user-block':
+          $adminUserController->block($routeData);
+          require ROOT . "admin/modules/users/block.php";
+          break;
 
-      case 'category-blog-new':
-        $adminPostCatController->new($routeData);
-        // require ROOT . "admin/modules/categories-blog/new.php";
-        break;
+          // ::::::::::::: BLOG :::::::::::::::::::
+        case 'blog':
+          $adminPostController->all($routeData);
+          break;
 
-      case 'category-blog-edit':
-        $adminPostCatController->edit($routeData);
-        // require ROOT . "admin/modules/categories-blog/edit.php";
-        break;
+        case 'post-new':
+          // $adminPostController->new($routeData);
+          break;
 
-      case 'category-blog-delete':
-         $adminPostCatController->delete($routeData);
-        // require ROOT . "admin/modules/categories-blog/delete.php";
-        break;
+        case 'post-edit':
+          $adminPostController->edit($routeData);
+          break;
 
-      // ::::::::::::: MESSAGES :::::::::::::::::::
+        case 'post-delete':
+          $adminPostController->delete($routeData);
+          break;
 
-      case 'messages':
-        $adminMessageController->all($routeData);
-        break;
+        // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
+        case 'category-blog':
+          $adminPostCatController->all($routeData);
+          // require ROOT . "admin/modules/categories-blog/all.php";
+          break;
 
-      case 'message':
-        $adminMessageController->single($routeData);
-        break;
+        case 'category-blog-new':
+          $adminPostCatController->new($routeData);
+          // require ROOT . "admin/modules/categories-blog/new.php";
+          break;
 
-      case 'message-delete':
-        $adminMessageController->delete($routeData);
-        break;
+        case 'category-blog-edit':
+          $adminPostCatController->edit($routeData);
+          // require ROOT . "admin/modules/categories-blog/edit.php";
+          break;
+
+        case 'category-blog-delete':
+          $adminPostCatController->delete($routeData);
+          // require ROOT . "admin/modules/categories-blog/delete.php";
+          break;
+
+        // ::::::::::::: MESSAGES :::::::::::::::::::
+
+        case 'messages':
+          $adminMessageController->all($routeData);
+          break;
+
+        case 'message':
+          $adminMessageController->single($routeData);
+          break;
+
+        case 'message-delete':
+          $adminMessageController->delete($routeData);
+          break;
 
     
         // // ::::::::::::: PAGES :::::::::::::::::::
@@ -729,9 +729,9 @@
         //   break;
         // // ::::::::::::: SETTINGS :::::::::::::::::::
 
-        // default: 
-        //   require ROOT . "admin/modules/main/index.php";
-        //   break;
+        default: 
+          $homeAdminController->index($routeData);
+          break;
 
      
       }

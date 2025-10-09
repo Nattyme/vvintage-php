@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Brand;
 use Vvintage\DTO\Brand\BrandDTO;
-use Vvintage\Traits\HasTranslations;
+// use Vvintage\Traits\HasTranslations;
 ;
 
 final class Brand
 {   
-    use HasTranslations;
+    // use HasTranslations;
 
     private int $id;
     private string $title;

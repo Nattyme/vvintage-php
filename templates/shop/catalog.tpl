@@ -6,7 +6,7 @@
           <div class="shop-header__title">
             <h1 class="h1">Магазин</h1>
           </div>
-          <?php include ROOT . 'templates/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
+          <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl'; ?>
         </header>
 
         <?php if ($productsTtl > 0 ) : ?>

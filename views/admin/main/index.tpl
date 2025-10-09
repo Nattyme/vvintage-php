@@ -13,9 +13,9 @@
       <div class="stats-item__value"><?php echo h($stats['posts']);?></div>
     </div>
 
-    <div class="stats-item__action">
+    <!-- <div class="stats-item__action">
       <a href="<?php echo HOST . 'admin/post-new';?>" class="button button--m button--primary">Новый пост</a>
-    </div>
+    </div> -->
   </div>
 <!-- 
   <div class="stats__item">
@@ -68,7 +68,7 @@
       <div class="stats-item__value"><?php echo h($stats['products']);?></div>
     </div>
     <div class="stats-item__action">
-      <a href="<?php echo HOST . 'admin/product-new';?>" class="button button--m button--primary">Новый товар</a>
+      <a href="<?php echo HOST . 'admin/shop-new';?>" class="button button--m button--primary">Новый товар</a>
     </div>
   </div>
 <!-- 

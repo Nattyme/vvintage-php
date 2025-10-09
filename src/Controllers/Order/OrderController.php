@@ -113,10 +113,12 @@ final class OrderController extends BaseController
           // Очищаем корзину
           $cartModel = new Cart($this->cart);
           $this->cartModel->clear($this->userModel, $cartModel);
+          $orderId = $order->export()['id'];
 
-          header('Location: ' . HOST . 'ordercreated?id=' . $order->export()['id']);
+          header('Location: ' . HOST . 'ordercreated?id=' . $orderId);
           exit();
       } 
+
       $page = $this->pageService->getPageBySlug($routeData->uriModule);
 
 
@@ -133,8 +135,8 @@ final class OrderController extends BaseController
     public function renderCreated($routeData) 
     {
       $this->setRouteData($routeData);
+      
       // Название страницы
-      $pageTitle = 'Заказ оформлен!';
       $page = $this->pageService->getPageBySlug($routeData->uriModule); 
       $pageTitle = $page['title'];
 

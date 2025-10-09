@@ -15,6 +15,7 @@
         </header>
 
         
+        
         <!-- Форма фильтров и сортировки -->
         <form class="products__form" method="GET" action="<?php HOST . 'shop';?>">
 
