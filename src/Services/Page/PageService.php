@@ -66,6 +66,48 @@ class PageService extends BaseService
     return $pageTranslations;
   }
 
+  public function getPageModelBySlug(string $slug): ?Page
+  {
+    // Здесь дописать валидацию
+    $slug = trim($slug);
+
+    // Если пустая строка
+    if($slug === '') {
+      return null;
+    }
+
+    $pageModel = $this->repository->getPageBySlug($slug);
+
+    if(!$pageModel) {
+      return null;
+    }
+
+    $pageId = $pageModel->getId();
+    $pageTranslations = $this->translationRepo->getTranslationsArray($pageId, $this->currentLang);
+ 
+    $pageModel->setTranslations($pageTranslations);
+    
+    $pageFields = $this->fieldsRepository->getFieldsByPageId($pageId);
+    $translatedFields = [];
+
+    foreach( $pageFields as $field) {
+       $translation = $this->fieldsTranslationRepo->getTranslationsArray( (int) $field['id'], $this->currentLang);
+
+       if(!empty($translation)) {
+         $translatedFields[$field['name']] = $translation;
+       } else {
+        $translatedFields[$field['name']] = ['value' => $field['value']];
+       }
+    }
+
+    if(!empty($translatedFields)) {
+      $pageTranslations['fields'] = $translatedFields;
+      $pageModel->setFields($translatedFields);
+    }
+ 
+    return $pageModel;
+  }
+
 
   public function getPageTranslations(int $pageId): array
   {

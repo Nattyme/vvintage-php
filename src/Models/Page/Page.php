@@ -13,8 +13,9 @@ final class Page
   private string $title;
   private string $content;
   private bool $visible;
+  private ?array $translations;
 
-  private array $fields = [];
+  private ?array $fields;
 
   public function __construct (OODBBean $bean) {
     $this->id = (int) $bean->id;
@@ -42,10 +43,20 @@ final class Page
 
     return $this->title;
   }
+
+  public function getCurrentTranslations(): array
+  {
+    return $this->translations ?? [];
+  }
   
   public function setFields ($fields):void
   {
     $this->fields = $fields;
+  }
+
+  public function setTranslations(array $translations): void 
+  {
+    $this->translations = $translations;
   }
 
   public function getFields(): array

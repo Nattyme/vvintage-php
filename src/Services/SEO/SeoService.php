@@ -17,24 +17,35 @@ use Vvintage\Services\Base\BaseService;
  * $seo = $seoService->getSeoForPage('product', $product);
  * 
  */
-class SeoService
+class SeoService extends BaseService
 {
-    public function getSeoForPage(string $pageType, $model = null): SeoDTO
-    {
-        switch ($pageType) {
-            case 'home':
-                $strategy = new HomePageSeoStrategy();
-                break;
-            case 'product':
-                $strategy = new ProductSeoStrategy($model);
-                break;
-            case 'post':
-                $strategy = new PostSeoStrategy($model);
-                break;
-            default:
-                throw new \Exception('Unknown SEO page type');
-        }
+  
+  public function __construct() 
+  {
+    parent::__construct();
+  }
 
-        return $strategy->getSeo();
-    }
+  public function getSeoForPage(string $pageType, $model = null): SeoDTO
+  {
+      $lang = $this->currentLang;
+
+      switch ($pageType) {
+          case 'home':
+              $strategy = new HomePageSeoStrategy();
+              break;
+          case 'product':
+              $strategy = new ProductSeoStrategy($model);
+              break;
+          case 'post':
+              $strategy = new PostSeoStrategy($model);
+              break;
+          case 'catalog':
+              $strategy = new CatalogSeoStrategy($model, $lang);
+              break;
+          default:
+              throw new \Exception('Unknown SEO page type');
+      }
+
+      return $strategy->getSeo();
+  }
 }

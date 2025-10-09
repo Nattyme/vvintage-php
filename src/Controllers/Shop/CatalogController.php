@@ -91,6 +91,7 @@ final class CatalogController extends BaseController
       // }
 
       $page = $this->pageService->getPageBySlug($routeData->uriModule);
+      $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule);
 
       // получаем общие данные страницы 
       $this->setRouteData($routeData); // <-- передаём routeData
@@ -105,7 +106,8 @@ final class CatalogController extends BaseController
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-
+      $seo = $this->seoService->getSeoForPage('catalog', $pageModel);
+// dd($seo);
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'products' => $products,
@@ -119,6 +121,7 @@ final class CatalogController extends BaseController
 
       // Подключение шаблонов страницы
       $this->renderLayout('shop/catalog', [
+            'seo' => $seo,
             'pagination' => $pagination,
             'pageTitle' => $pageTitle,
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
