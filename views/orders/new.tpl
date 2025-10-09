@@ -17,14 +17,16 @@
          <div class="form-order__details">
             <fieldset class="form-order__block">
               <legend class="form-order__title form-order__title-wrapper form-order__title-block">
-                <h3>Ваш заказ</h3>
+                <h3>
+                  <?php echo h(__('order.title', [], 'order'));?>
+                </h3>
               </legend>
 
               <div class="form-order__table">
                 <div class="form-order__table-row form-order__table-header">
-                  <p>Товар</p>
-                  <p>Цена</p>
-                  <p>Количество</p>
+                  <p><?php echo h(__('order.product', [], 'order'));?></p>
+                  <p><?php echo h(__('order.price', [], 'order'));?></p>
+                  <p><?php echo h(__('order.quantity', [], 'order'));?></p>
                 </div>
                 <?php foreach ($products as $product) : ?>
                     <div class="form-order__table-row">
@@ -34,7 +36,7 @@
                     </div>
                   <?php endforeach; ?>
                 <div class="form-order__total form-order__table-row">
-                  <p>Итого</p>
+                  <p><?php echo h(__('order.total', [], 'order'));?></p>
                   <p><?php echo h($totalPrice); ?></p>
                   <p><?php echo h(count($products));?></p>
                 </div>
@@ -47,7 +49,9 @@
           <div class="form-order__user">
               <fieldset class="form-order__block">
                 <legend class="form-order__title form-order__title-wrapper form-order__title-block">
-                  <h3>Данные покупателя</h3>
+                  <h3>
+                    <?php echo h(__('order.customer_data', [], 'order'));?>
+                  </h3>
                 </legend>
                 <div class="form-order__input-wrapper">
                   <div class="form-order__field">
