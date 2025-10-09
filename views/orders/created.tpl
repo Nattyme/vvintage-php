@@ -3,16 +3,10 @@
     <div class="container">
       <div class="order__header">
         <div class="section-title">
-          <h1 class="h1">Заказ получен</h1>
+          <h1 class="h1"><?php echo h($pageTitle);?></h1>
         </div>
       
-        <div class="breadcrumbs">
-            <a href="#!" class="breadcrumb ">Главная</a> 
-            <span>&mdash;</span> 
-            <a href="#!" class="breadcrumb ">Оформление заказа</a> 
-            <span>&mdash;</span>
-            <a href="#!" class="breadcrumb breadcrumb--active">Заказ получен</a>
-        </div>
+        <?php include ROOT . 'views/_parts/breadcrumbs/breadcrumbs.tpl';?>
       </div>
 
       <div class="order__body">
@@ -28,7 +22,7 @@
   
           </div>
           <div class="order__button">
-            <a href="<?php echo HOST . 'main';?>" class="button button--outline button--l">На главную</a>
+            <a href="<?php echo HOST . 'main';?>" class="button button--outline button--l"><?php echo h(__('button.goto.main', [], 'buttons'));?></a>
           </div>
         </div>
       </div>

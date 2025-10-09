@@ -9,6 +9,7 @@ return [
   'button.login' => 'ログイン',
   'button.goto.shop' => 'ショップへ移動',
   'button.goto.blog' => 'ブログへ',
+  'button.goto.main' => 'ホームに戻る',
   'button.cart.add' => 'カートに追加',
   'button.item.incart' => 'カートに入っています',
   'button.cart.order' => '注文する',

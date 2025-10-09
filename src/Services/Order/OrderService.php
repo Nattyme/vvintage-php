@@ -55,8 +55,10 @@ class OrderService extends BaseService
 
     public function create(OrderDTO $dto, $userModel)
     {
+ 
       // Создаем объект заказа через метод 
       $order = Order::fromDTO($dto);
+         
       $order->setCart( $this->prepareCartData($order->getCart()));
    
       // Сохраняем заказ в БД

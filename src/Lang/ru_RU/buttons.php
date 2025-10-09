@@ -9,6 +9,7 @@ return [
   'button.login' => 'Войти',
   'button.goto.shop' => 'Перейти в магазин',
   'button.goto.blog' => 'Перейти в блог',
+  'button.goto.main' => 'На главную',
   'button.readmore' => 'Подробнее',
   'button.cart.add' => 'Добавить в корзину',
   'button.item.incart' => 'Товар в корзине',

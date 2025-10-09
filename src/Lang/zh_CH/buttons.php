@@ -9,6 +9,7 @@ return [
   'button.login' => '登录',
   'button.goto.shop' => '前往商店',
   'button.goto.blog' => '前往博客',
+  'button.goto.main' => '返回首页',
   'button.cart.add' => '添加到购物车',
   'button.item.incart' => '商品已在购物车中',
   'button.cart.order' => '提交订单',

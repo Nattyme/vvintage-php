@@ -9,6 +9,7 @@ return [
   'button.login' => 'Iniciar sesión',
   'button.goto.shop' => 'Ir a la tienda',
   'button.goto.blog' => 'Ir al blog',
+  'button.goto.main' => 'Ir a inicio', 
   'button.cart.add' => 'Añadir al carrito',
   'button.item.incart' => 'Producto en el carrito',
   'button.cart.order' => 'Realizar pedido',
