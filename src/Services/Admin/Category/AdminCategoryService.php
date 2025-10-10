@@ -7,6 +7,7 @@ namespace Vvintage\Services\Admin\Category;
 use Vvintage\Models\Category\Category;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\DTO\Admin\Category\CategoryInputDTO;
+use Vvintage\DTO\Admin\Category\CategoryTranslationInputDTO;
 
 
 final class AdminCategoryService extends CategoryService
@@ -42,6 +43,7 @@ final class AdminCategoryService extends CategoryService
     
         if (!empty($data['translations'])) {
           $translateDto = $this->createTranslateInputDto($data['translations'], $categoryId);
+        
           $this->translationRepo->saveCategoryTranslation($translateDto);
         }
 
@@ -49,18 +51,6 @@ final class AdminCategoryService extends CategoryService
         $this->repository->commit();
         
         return $categoryId;
-
-
-          // $translateDto = $this->createTranslateInputDto($translations, $categoryId);
-
-          // if (empty($translateDto)) {
-          //   throw new \RuntimeException("Не удалось сохранить категорию");
-          //   return null;
-          // }
-    
-          // foreach($translateDto as $dto) {
-          //   $result = $this->translationRepo->saveTranslations($categoryId, $dto->locale, $dto);
-          // }
       }
       catch (\Throwable $error) 
       {
@@ -77,9 +67,9 @@ final class AdminCategoryService extends CategoryService
       $dataDto = new CategoryInputDTO([
               'parent_id' => $data['parent_id'] ?? 0,
               'slug' => $data['slug'] ?? null,
-              'title' => $data['title'] ?? null,
-              'description' => $textData['description'] ?? null,
-              'image' => $textData['image'] ?? null
+              'title' => $data['translations']['ru']['title'] ?? null,
+              'description' => $data['translations']['ru']['description'] ?? null,
+              'image' => $data['image'] ?? null
           ]);
 
       return $dataDto;
@@ -89,13 +79,34 @@ final class AdminCategoryService extends CategoryService
         //       'translations' => $textData['translations']
     }
 
+    private function createTranslateInputDto(array $data, int $categoryId): array
+    {
+      $categoryTranslationsDto = [];
+
+      foreach($data as $locale => $translate) {
+          $categoryTranslationsDto[] = new CategoryTranslationInputDTO([
+              'category_id' => (int) ($categoryId ?? 0),
+              'slug' => (string) ($translate['slug'] ?? ''),
+              'locale' => (string) $locale, 
+              'title' => (string) ($translate['title'] ?? ''),
+              'description' => (string) ($translate['description'] ?? ''),
+              'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
+              'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
+          ]);
+      }
+          
+      return  $categoryTranslationsDto;
+
+    }
 
 
 
 
 
 
-    
+
+
+
     public function getAllCategoriesCount(): int 
     {
       return $this->repository->getAllCategoriesCount();

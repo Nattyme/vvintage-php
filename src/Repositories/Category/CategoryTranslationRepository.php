@@ -16,15 +16,7 @@ use Vvintage\Contracts\Category\CategoryTranslationRepositoryInterface;
 final class CategoryTranslationRepository extends AbstractRepository 
 {
     private const TABLE = 'categoriestranslation';
-    private const DEFAULT_LOCALE = 'ru';
-    private string $locale;
-
-    public function __construct(string $locale = self::DEFAULT_LOCALE)
-    {
-        $this->locale = $locale;
-    }
-
-      
+  
      /** Создаёт новый OODBBean для перевода продукта */
     public function createCategoryTranslateBean(): OODBBean 
     {
@@ -49,7 +41,7 @@ final class CategoryTranslationRepository extends AbstractRepository
         return $translations;
     }
 
-    public function saveProductTranslation(array $translateDto): ?array
+    public function saveCategoryTranslation(array $translateDto): ?array
     {
         $ids = [];
 
@@ -59,12 +51,12 @@ final class CategoryTranslationRepository extends AbstractRepository
             }
 
             // ищем существующий перевод
-            $bean = $this->findOneBy(self::TABLE, ' product_id = ? AND locale = ? ', [$dto->product_id, $dto->locale]);
+            $bean = $this->findOneBy(self::TABLE, ' category_id = ? AND locale = ? ', [$dto->category_id, $dto->locale]);
 
             if (!$bean) {
                 // если нет → создаём новый
-                $bean = $this->createProductTranslateBean();
-                $bean->product_id = $dto->product_id;
+                $bean = $this->createCategoryTranslateBean();
+                $bean->category_id = $dto->category_id;
                 $bean->locale = $dto->locale;
             }
 
@@ -83,6 +75,10 @@ final class CategoryTranslationRepository extends AbstractRepository
         return $ids;
     }
 
+
+
+
+    
     // Для api
     public function getLocaleTranslation(int $id, string $locale): array 
     {
@@ -98,6 +94,10 @@ final class CategoryTranslationRepository extends AbstractRepository
 
     }
     // Для api
+
+
+
+
 
     public function findTranslations(int $id, string $locale) 
     {

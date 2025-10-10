@@ -68,7 +68,7 @@ final class AdminCategoryController extends BaseAdminController
     $cats = $this->service->getAllCategories($pagination);
     $mainCats = $this->service->getMainCategories();
     $total = $this->service->getAllCategoriesCount();
-        
+ 
     $this->renderLayout('categories/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,

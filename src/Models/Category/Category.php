@@ -57,7 +57,7 @@ final class Category
         $category = new self();
 
         $category->id = (int) ($data['id'] ?? 0);
-        $category->title = (string) ($data['translations'] ?? '');
+        $category->title = (string) ($data['title'] ?? '');
         $category->description = (string) ($data['description'] ?? '');
         $category->parent_id = (int) ($data['parent_id'] ?? 0);
         $category->slug = (string) ($data['slug'] ?? '');

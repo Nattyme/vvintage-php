@@ -49,6 +49,7 @@ final class CategoryRepository extends AbstractRepository
 
     private function mapBeanToCategoryArray (OODBBean $bean): array
     {
+     
       return [
           'id' => (int) $bean->id,
           'title' => (string) $bean->title,
@@ -73,7 +74,7 @@ final class CategoryRepository extends AbstractRepository
     public function getAllCategories(): array
     {
         $beans = $this->findAll(table: self::TABLE);
-   
+    
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
@@ -111,13 +112,13 @@ final class CategoryRepository extends AbstractRepository
 
     public function saveCategory(CategoryInputDTO $dto): int
     {
-      dd($dto);
+     
         // сохраняем основную категорию
         $bean = $dto->id
             ? $this->loadBean(self::TABLE, $dto->id)
             : $this->createBean(self::TABLE);
 
-        $bean->parent_id = $cat->parent_id;
+        $bean->parent_id = !empty($dto->parent_id) ? (int)$dto->parent_id : null;
         $bean->title = $dto->title; // по умолчанию ru
         $bean->description = $dto->description;
         $bean->slug = $dto->slug;
