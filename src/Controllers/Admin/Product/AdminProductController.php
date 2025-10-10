@@ -7,7 +7,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Product\AdminProductService;
-
+use Vvintage\DTO\Admin\Product\ProductDTO;
 
 class AdminProductController extends BaseAdminController
 {
@@ -119,12 +119,12 @@ class AdminProductController extends BaseAdminController
    
     $this->service->setImages($productModel);
     $statusList = $this->service->getStatusList();
-dd($productModel);
+
     // Формируем dto
-    $productDto = new ProductPageDTO($productModel);
+    $productDto = new ProductDTO($productModel);
 
     $this->renderLayout('shop/edit',  [
-      'product' => $product,
+      'product' => $productDto,
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,
       'statusList' => $statusList,

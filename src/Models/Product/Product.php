@@ -87,10 +87,13 @@ class Product
       $product->id = (int) ($data['id'] ?? 0);
       $product->category_id = (int) ($data['category_id'] ?? 0);
       $product->brand_id = (int) ($data['brand_id'] ?? 0);
+      $product->translations = $data['translations'] ?? [];
 
       $product->slug = (string) ($data['slug'] ?? '');
-      $product->title = (string) ($data['translations']['title'] ?? '');
-      $product->description = (string) ($data['translations']['description'] ?? '');
+
+      $product->title = (string) ($data['translations']['title'] ?? $data['title'] ?? '');
+      $product->description = (string) ($data['translations']['description'] ?? $data['description'] ?? '');
+
       $product->price = (string) ($data['price'] ?? '');
       $product->url = (string) ($data['url'] ?? '');
       $product->status = (string) ($data['status'] ?? '');
@@ -106,8 +109,6 @@ class Product
       $product->edit_time =  (string) ($data['edit_time'] ?? '');
 
       // $product->images = $data['images'] ?? [];
-
-      $product->translations = $data['translations'] ?? [];
       $product->currentLang = (string) ($data['locale'] ?? 'ru');
 
       return $product;
@@ -149,12 +150,12 @@ class Product
 
     public function getTitle(): string
     {
-        return $this->translations['title'];
+        return $this->title;
     }
 
     public function getDescription(): string
     {
-        return $this->translations['description'];
+        return $this->description;
     }
 
 

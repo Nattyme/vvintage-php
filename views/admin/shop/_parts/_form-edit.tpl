@@ -152,10 +152,9 @@
     </div>
 
     <div class="admin-form__column admin-form__column--imgs">
-   
-      <?php foreach ($product->images as $img): ?>
-
-          <input type="hidden" name="existing_images[]" value="<?php echo h($img->id); ?>">
+  
+      <?php foreach ($product->images as $image): ?>
+          <input type="hidden" name="existing_images[]" value="<?php echo h($image['id']); ?>">
       <?php endforeach; ?>
     
       <div class="admin-form__field">
@@ -171,18 +170,19 @@
             <!-- PREVIEW IMG -->
             <div class="block-upload__preview" data-preview="container" data-dragg-preview>
               <?php foreach ($product->images as $image) : ?>
+            
                 <div 
                     class="block-upload__img-wrapper" 
                     data-preview="image-wrapper" 
                     draggable="true" 
-                    data-url="<?php echo HOST . 'usercontent/products/' . 'small-' . $image->filename;?>"
-                    data-id="<?php echo $image->id;?>"
-                    data-name="<?php echo $image->filename;?>"
-                    data-order="<?php echo $image->image_order;?>"
+                    data-url="<?php echo HOST . 'usercontent/products/' . 'small-' . $image['filename'];?>"
+                    data-id="<?php echo $image['id'];?>"
+                    data-name="<?php echo $image['filename'];?>"
+                    data-order="<?php echo $image['image_order'];?>"
                 >
                   <img 
-                    id = "<?php echo $image->id;?>"
-                    src="<?php echo HOST . 'usercontent/products/' . 'small-' . $image->filename;?>" 
+                    id = "<?php echo $image['id'];?>"
+                    src="<?php echo HOST . 'usercontent/products/' . 'small-' . $image['filename'];?>" 
                     loading="lazy"
                            
                   >
