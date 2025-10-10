@@ -11,19 +11,19 @@ use Vvintage\Services\Admin\Product\AdminProductService;
 
 class AdminProductController extends BaseAdminController
 {
-  private AdminProductService $adminProductService;
+  private AdminProductService $service;
 
   public function __construct()
   {
     parent::__construct();
-    $this->adminProductService = new AdminProductService();
+    $this->service = new AdminProductService();
   }
 
   public function all (RouteData $routeData)
   {
     $this->isAdmin();
     $this->setRouteData($routeData);
-    $this->adminProductService->handleStatusAction($_POST);
+    $this->service->handleStatusAction($_POST);
     $this->renderAllProducts($routeData);
   }
 
@@ -38,7 +38,7 @@ class AdminProductController extends BaseAdminController
   {
     $this->isAdmin();
     $this->setRouteData($routeData);
-    $this->adminProductService->handleStatusAction($_POST);
+    $this->service->handleStatusAction($_POST);
     $this->renderEditProduct();
   }
 
@@ -53,10 +53,10 @@ class AdminProductController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($productsPerPage, 'products');
-    $products = $this->adminProductService->getAll($pagination);
+    $products = $this->service->getAll($pagination);
    
-    $total = $this->adminProductService->countProducts();
-    $actions = $this->adminProductService->getActions();
+    $total = $this->service->countProducts();
+    $actions = $this->service->getActions();
 
     // Формируем единую модель для передачи в шаблон
     $productViewModel = [
@@ -79,7 +79,7 @@ class AdminProductController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = "Добавить новый товар";
-    $statusList = $this->adminProductService->getStatusList();
+    $statusList = $this->service->getStatusList();
     // $pageClass = "admin-page";
 
 
@@ -105,9 +105,23 @@ class AdminProductController extends BaseAdminController
 
     if (!$id) $this->redirect('admin/shop');
 
-    $product = $this->adminProductService->getProductById($id);
-    $product->images = $this->adminProductService->getFlatImages($product->images);
-    $statusList = $this->adminProductService->getStatusList();
+    // $product = $this->service->getProductById($id);
+    // $product->images = $this->service->getFlatImages($product->images);
+    // Получаем модель продукта со всеми переводами и добавляем изображения
+    $productModel = $this->service->getProductLocaledModelById($id, true);
+
+    if (!$productModel) {
+        http_response_code(404);
+        echo 'Товар не найден';
+        $this->redirect('admin/shop');
+        return;
+    }
+   
+    $this->service->setImages($productModel);
+    $statusList = $this->service->getStatusList();
+dd($productModel);
+    // Формируем dto
+    $productDto = new ProductPageDTO($productModel);
 
     $this->renderLayout('shop/edit',  [
       'product' => $product,

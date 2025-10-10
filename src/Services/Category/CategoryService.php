@@ -34,9 +34,9 @@ class CategoryService extends BaseService
             return [];
         }
 
-        $translations = $this->translationRepo->getTranslationsArray((int) $id, $this->currentLang) 
+        $translations = $this->translationRepo->getLocaleTranslation((int) $id, $this->currentLang) 
         ?? 
-        $this->translationRepo->getTranslationsArray((int) $id, $this->defaultLocale);
+        $this->translationRepo->getLocaleTranslation((int) $id, $this->defaultLocale);
        
         $category->setTranslations($translations);
 
@@ -93,7 +93,7 @@ class CategoryService extends BaseService
         $id = (int) $category['id'];
 
         error_log(print_r($id, true));
-        $translations = $this->translationRepo->getTranslationsArray($id, $this->currentLang) ?? [];
+        $translations = $this->translationRepo->getLocaleTranslation($id, $this->currentLang) ?? [];
 
         return array_merge($category, [
             'title' => $translations['title'] ?? null,
@@ -234,7 +234,7 @@ class CategoryService extends BaseService
         foreach ($categories as $category) {
             $id = (int) $category->getId();
           
-            $translations = $this->translationRepo->getTranslationsArray( $id, $this->currentLang);
+            $translations = $this->translationRepo->getLocaleTranslation( $id, $this->currentLang);
             $category->setTranslations($translations);
         }
         return $categories;

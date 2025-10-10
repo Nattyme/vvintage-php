@@ -12,7 +12,8 @@ use Vvintage\Repositories\AbstractRepository;
 use Vvintage\Contracts\Category\CategoryTranslationRepositoryInterface;
 
 
-final class CategoryTranslationRepository extends AbstractRepository implements CategoryTranslationRepositoryInterface
+// final class CategoryTranslationRepository extends AbstractRepository implements CategoryTranslationRepositoryInterface
+final class CategoryTranslationRepository extends AbstractRepository 
 {
     private const TABLE = 'categoriestranslation';
     private const DEFAULT_LOCALE = 'ru';
@@ -83,7 +84,7 @@ final class CategoryTranslationRepository extends AbstractRepository implements 
     }
 
     // Для api
-    public function getTranslationsArray(int $id, string $locale): array 
+    public function getLocaleTranslation(int $id, string $locale): array 
     {
 
       $translations = $this->loadTranslations($id);

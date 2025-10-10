@@ -10,19 +10,13 @@ final class CategoryForProductDTO
     public string $title;
     public ?string $description;
     public ?int $parent_id;
-    public ?string $slug;
-    public ?string $image;
-    public ?array $translations; // ['ru' => [...], 'en' => [...]
 
     public function __construct(Category $category)
     {
         $this->id = (int) ($category->getId() ?? 0);
-        $this->translations = $category->getTranslations() ?? [];
-        $this->title = (string) ($this->translations['title'] ?? '');
-        $this->description = (string)($this->translations['description'] ?? '');
+        $this->title = (string) ($category->getTranslations()['title'] ?? '');
+        $this->description = (string)($category->getTranslations()['description'] ?? '');
         $this->parent_id = (int) ($category->getParentId() ?? 0);
-        $this->slug = (string) ($category->getSlug() ?? '');
-        $this->image = (string) ($category->getImage() ?? '');
     }
 
 }

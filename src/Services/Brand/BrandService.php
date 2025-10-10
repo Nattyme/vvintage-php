@@ -81,7 +81,7 @@ class BrandService extends BaseService
 
     private function addBrandTranslate(array $brand): array
     {
-      $translations = $this->translationRepo->getTranslationsArray($brand['id'], $this->currentLang ?? []);
+      $translations = $this->translationRepo->getLocaleTranslation($brand['id'], $this->currentLang ?? []);
 
       return array_merge($brand, [
         'title' => $translations['title'] ?? null,
@@ -98,11 +98,11 @@ class BrandService extends BaseService
 
     public function getBrandTranslations(int $brandId): array
     {
-        $translations = $this->translationRepo->getTranslationsArray($brandId, $this->currentLang);
+        $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->currentLang);
 
         if (!$translations) {
             // fallback
-            $translations = $this->translationRepo->getTranslationsArray($brandId, $this->currentLang);
+            $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->currentLang);
         }
 
         return $translations;
@@ -114,10 +114,10 @@ class BrandService extends BaseService
         if (!$brand) return null;
         
         // получаем переводы из репозитория переводов
-        $translations = $this->translationRepo->getTranslationsArray(
+        $translations = $this->translationRepo->getLocaleTranslation(
             $brandId,
             $this->currentLang
-        ) ?? $this->translationRepo->getTranslationsArray($brandId, $this->localeService->getDefaultLocale());
+        ) ?? $this->translationRepo->getLocaleTranslation($brandId, $this->localeService->getDefaultLocale());
 
         return new BrandOutputDTO([
             'id' => $brand->getId(),
@@ -137,11 +137,11 @@ class BrandService extends BaseService
         }
 
         // 2. Берём переводы из отдельного репозитория
-        $translations = $this->translationRepo->getTranslationsArray($brandId, $this->currentLang);
+        $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->currentLang);
 
         if (!$translations) {
             // fallback на дефолтный язык
-            $translations = $this->translationRepo->getTranslationsArray($brandId, $this->localeService->getDefaultLocale());
+            $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->localeService->getDefaultLocale());
         }
 
         // 3. Объединяем данные в сервисе

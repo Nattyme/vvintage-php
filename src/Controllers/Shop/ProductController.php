@@ -61,9 +61,9 @@ final class ProductController extends BaseController
         $imagesDtos = $this->productService->getImagesDTO($productModel->getImages());
         $images = $this->productService->getProductImagesData( $imagesDtos);
         $productModel->setImages($images);
- 
+
         $productDto = new ProductPageDTO($productModel);
-   
+
         // Формируем единую модель для передачи в шаблон
         $viewModel = [
             'product' => $productDto,
@@ -75,7 +75,6 @@ final class ProductController extends BaseController
         ];
 
         // Название страницы и хлебные крошки
-        // $seo = $this->seoService->getSeoForPage('product', $product);
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $productDto->title);
 
         $seo = $this->seoService->getSeoForPage('product', $productModel);

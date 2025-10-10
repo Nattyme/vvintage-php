@@ -13,7 +13,8 @@ use Vvintage\Repositories\AbstractRepository;
 use Vvintage\Contracts\Brand\BrandTranslationRepositoryInterface;
 
 
-final class BrandTranslationRepository extends AbstractRepository implements BrandTranslationRepositoryInterface
+// final class BrandTranslationRepository extends AbstractRepository implements BrandTranslationRepositoryInterface
+final class BrandTranslationRepository extends AbstractRepository 
 {
     private const TABLE = 'brandstranslation';
   
@@ -66,7 +67,7 @@ final class BrandTranslationRepository extends AbstractRepository implements Bra
         return $translations;
     }
 
-    public function getTranslationsArray(int $id, string $locale): array 
+    public function getLocaleTranslation(int $id, string $locale): array 
     {
    
       $translations = $this->loadTranslations($id);

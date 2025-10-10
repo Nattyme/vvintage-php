@@ -22,11 +22,9 @@ final class ProductPageDTO
     public string $title;
     public string $description;
     public int $price;
-    public string $url;
     public string $status;
     public string $sku;
     public int $stock;
-    public ?\Datetime $datetime;
     public string $edit_time;
 
     public ?array $images;
@@ -54,12 +52,10 @@ final class ProductPageDTO
         $this->title = (string) ($product->getTitle() ?? '');
         $this->description = (string) ($product->getDescription() ?? '');
         $this->price = (int) ($product->getPrice() ?? '');
-        $this->url = (string) ($product->getUrl() ?? '');
         $this->status = (string) ($product->getStatus() ?? '');
         
         $this->sku = (string) ($product->getSku() ?? '');
         $this->stock = (int) ($product->getStock() ?? 0);
-        $this->datetime = $product->getDatetime();
         $this->edit_time = (string) ($product->getEditTime() ?? '');
         $this->currentLang = (string) ($product->getCurrentLang() ?? 'ru'); // локаль по умолчанию
     }

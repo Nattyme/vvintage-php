@@ -76,6 +76,7 @@ abstract class BaseAdminController
       $this->routeData = $routeData;
   }
 
+  // $this->redirect('login');
   protected function redirect(string $pageName, string $param = ''): void 
   {
     $path = $param !== '' ? $pageName . '/' . $param : $pageName;

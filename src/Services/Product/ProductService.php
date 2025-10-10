@@ -126,12 +126,19 @@ class ProductService extends BaseService
       return $productModel;
     }
 
-    public function getProductLocaledModelById(int $id): ?Product
+    public function getProductLocaledModelById(int $id, bool $withAllTranslations = false): ?Product
     {
       $productModel = $this->repository->getModelProductById($id);
       $productId  = $productModel->getId();
 
-      $translations = $this->translationRepo->getTranslationsArray($productId, $this->currentLang);
+      if ($withAllTranslations) {
+        $translations = $this->translationRepo->loadTranslations($productId);
+      } else {
+        $translations = $this->translationRepo->getLocaleTranslation($productId, $this->currentLang);
+      }
+
+
+      // $translations = $this->translationRepo->getTranslationsArray($productId, $this->currentLang);
       $productModel->setTranslations($translations);
 
 
