@@ -54,7 +54,7 @@ final class ProfileController extends BaseController
     $uriGet = $this->routeData->uriGet ?? null;
 
     $userModel = $this->getLoggedInUser();
-
+  
     // если гость — редиректим
     if ($userModel instanceof GuestUser || !$userModel) {
         $this->redirect('login');
@@ -74,7 +74,7 @@ final class ProfileController extends BaseController
         if(!$userModel) {
           $this->redirect('profile');
         }
-        
+     
         $order = $orders = $this->userService->getOrdersByUserId($id);
 
         $this->renderProfileFull($this->routeData, $userModel, $orders);

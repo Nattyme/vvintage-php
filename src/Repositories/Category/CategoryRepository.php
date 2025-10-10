@@ -18,7 +18,7 @@ use Vvintage\Repositories\Category\CategoryTranslationRepository;
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryDTO;
 use Vvintage\DTO\Category\CategoryOutputDTO;
-use Vvintage\DTO\Category\CategoryInputDTO;
+use Vvintage\DTO\Admin\Category\CategoryInputDTO;
 
 
 final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
@@ -42,7 +42,7 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
           'image' => (string) $bean->image
       ]);
 
-      return Category::fromDTO($dto);
+      return Category::fromInputDTO($dto);
     }
 
     private function mapBeanToCategoryArray (OODBBean $bean): array

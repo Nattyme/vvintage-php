@@ -7,7 +7,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Category\AdminCategoryService;
 use Vvintage\Services\Admin\Validation\AdminCategoryValidator;
-use Vvintage\DTO\Category\CategoryInputDTO;
+use Vvintage\DTO\Admin\Category\CategoryInputDTO;
 use Vvintage\Models\Category\Category;
 
 
@@ -55,12 +55,13 @@ final class AdminCategoryController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = 'Категории';
+    $categoryPerPage = 9;
 
     // Получаем данные из GET-запроса
     $searchQuery = $_GET['query'] ?? '';
     $filterSection = $_GET['action'] ?? ''; // имя селекта - action
 
-    $categoryPerPage = 9;
+
 
     // Устанавливаем пагинацию
     $pagination = pagination($categoryPerPage, 'categories');
@@ -89,8 +90,9 @@ final class AdminCategoryController extends BaseAdminController
     $uriGet = $this->routeData->uriGet ?? null;
     $parentId = $this->routeData->uriGet ?? null;
     $mainCats = $this->service->getMainCategories();
+    $parentCategory = null;
     
-    if( $parentId) {    
+    if($parentId) {    
       $parentId = (int) $parentId;
       $parentCategory = $this->service->getCategoryById($parentId);
     }
@@ -104,9 +106,10 @@ final class AdminCategoryController extends BaseAdminController
     if(isset($_POST['submit'])) {
    
       // $validate = $this->validator->new($_POST);
-      $validate = true;
-
-      if (!$validate) {
+      $validate = $this->validator->validate($_POST);
+      
+  //  $validatorTextResult['data'], 
+      if (!$validate['errors']) {
         $this->flash->pushError('Не удалось сохранить новую категорию. Проверьте данные.');
       } else {
               $translations = [];
@@ -119,8 +122,6 @@ final class AdminCategoryController extends BaseAdminController
                   ];
               }
 
-              $mainLang = 'ru';
-
               $dto = new CategoryInputDTO([
                   'parent_id' => $_POST['parent_id'] ?? 0,
                   'slug' => $_POST['slug'] ?? '',
@@ -130,7 +131,7 @@ final class AdminCategoryController extends BaseAdminController
                   'translations' => $translations,
               ]);
 
-              $category = Category::fromDTO($dto);
+              $category = Category::fromInputDTO($dto);
 
               $saved = $this->service->createCategory( $category);
 
@@ -151,7 +152,6 @@ final class AdminCategoryController extends BaseAdminController
       'flash' => $this->flash,
       'uriGet' => $uriGet,
       'parentCategory' => $parentCategory
-      
     ]);
   }
 

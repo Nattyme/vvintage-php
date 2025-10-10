@@ -5,8 +5,9 @@ namespace Vvintage\Services\Admin\Validation;
 
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Repositories\Category\CategoryRepository;
+use Vvintage\Services\Admin\Validation\AdminBaseValidator;
 
-final class AdminCategoryValidator
+final class AdminCategoryValidator extends AdminBaseValidator
 {
     private FlashMessage $flash;
 
@@ -15,32 +16,18 @@ final class AdminCategoryValidator
         $this->flash = new FlashMessage();
     }
 
-    public function new(array &$data): bool
+    public function validate(array $data): array
     {
-        $valid = true;
+        // Сначала синхронизация — подставим английские переводы в пустые языки
+        $data = $this->synchronize($data['translations'] ?? [], $data);
 
-    
-        // Обязательные поля
-        $valid = $this->validateRequired($data, 'title', 'Заполните название категории') && $valid;
-        $valid = $this->validateRequired($data, 'description', 'Заполните описание категории') && $valid;
-        $valid = $this->validateRequired($data, 'meta_title', 'Заполните SEO заголовок страницы категории') && $valid;
-        $valid = $this->validateRequired($data, 'meta_description', 'Заполните SEO описание страницы категории') && $valid;
+        // Проверка переводов (обязательные ru и en)
+        $this->validateTranslation($data['translations']);
 
-        // Длина
-        $valid = $this->validateLength($data['title'] ?? [], 2, 255, 'Название категории') && $valid;
-        $valid = $this->validateLength($data['meta_title'] ?? [], 5, 70, 'SEO заголовок') && $valid;
-        $valid = $this->validateLength($data['meta_description'] ?? [], 10, 160, 'SEO описание') && $valid;
-
-        // Проверка допустимых символов + автоочистка
-        $valid = $this->validateAllowedChars($data, 'title', 'Название категории') && $valid;
-        // $valid = $this->validateUniqueBrand($data, 'title') && $valid;
-
-        // // Логотип
-        // if (!empty($_FILES['image']['name'])) {
-        //     $valid = $this->validateImage($_FILES['image']) && $valid;
-        // }
-
-        return $valid;
+        return [
+            'errors' => $this->errors,
+            'data' => $data
+        ];
     }
 
 

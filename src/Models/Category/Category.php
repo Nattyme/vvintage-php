@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Models\Category;
 
 use Vvintage\DTO\Category\CategoryDTO;
-use Vvintage\DTO\Category\CategoryInputDTO;
+use Vvintage\DTO\Admin\Category\CategoryInputDTO;
 use Vvintage\DTO\Category\CategoryOutputDTO;
 
 
@@ -22,7 +22,7 @@ final class Category
 
     private function __construct() {}
 
-    public static function fromDTO(CategoryInputDTO $dto): self
+    public static function fromInputDTO(CategoryInputDTO $dto): self
     {
         $category = new self();
 

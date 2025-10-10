@@ -2,20 +2,15 @@
 declare(strict_types=1);
 
 namespace Vvintage\Services\Profile;
+use Vvintage\Services\Base\BaseService;
 
-
-class ProfileService
+class ProfileService extends BaseService
 {
-    private array $languages;
-    private string $currentLang;
-    private PostRepository $postRepository;
-    private PostCategoryRepository $postCategoryRepository;
+  private ProfileService $profileService;
 
-    public function __construct(array $languages, string $currentLang)
-    {
-      $this->languages = $languages;
-      $this->currentLang = $currentLang;
-    }
-
-
+  public function __construct()
+  {
+    parent::__construct();
+    $this->service = new ProfileService();
+  }
 }

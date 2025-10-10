@@ -9,14 +9,15 @@
     </label>
     <input 
       id="title-<?php echo $code;?>" 
-      name="title[<?php echo $code;?>]" 
+      name="translations[<?php echo $code;?>][title]" 
       class="admin-form__input" 
       type="text" 
       placeholder="Введите название категории" 
       value="<?php 
-          echo isset($_POST['title'][$code]) 
-          ? h($_POST['title'][$code] ) 
-          : (isset($category) && $category->getTranslatedTitle($code) ? h($category->getTranslatedTitle($code)) : '');
+          echo isset($_POST['translations'][$code]['title']) 
+          ? h($_POST['translations'][$code]['title']) 
+          : (isset($category) && $category->translations[$code]['title']
+          ? h($category->translations[$code]['title']) : '');
       ?>"
     />
   </div>
@@ -31,30 +32,30 @@
     </label>
     <textarea 
       id="description-<?php echo $code;?>" 
-      name="description[<?php echo $code;?>]" 
+      name="translations[<?php echo $code;?>][description]" 
       class="admin-form__textarea" 
       placeholder="Введите описание категории"
     ><?php 
-      echo isset($_POST['description'][$code]) 
-      ? h($_POST['title'][$code] ) 
-      : (isset($category) && $category->getTranslatedDescription($code) 
-      ? h($category->getTranslatedDescription($code)) : '');
+      echo isset($_POST['translations'][$code]['description'])  
+      ? h($_POST['translations'][$code]['description'])  
+      : (isset($category) && $category->translations[$code]['description'] 
+      ? h($category->translations[$code]['description']) : '');
     ?></textarea>
   </div>
-
 
   <div class="admin-form__field">
     <label class="admin-form__label" for="meta_title-<?php echo $code;?>">SEO заголовок страницы</label>
     <input 
       id="meta_title-<?php echo $code;?>" 
-      name="meta_title[<?php echo $code;?>]" 
+      name="translations[<?php echo $code;?>][meta_title]" 
       class="admin-form__input" 
       type="text" 
       placeholder="Введите SEO заголовок страницы" 
       value="<?php 
-        echo isset($_POST['meta_title'][$code]) 
-        ? h($_POST['meta_title'][$code] ) 
-        : (isset($category) && $category->getSeoTitle($code) ? h($category->getSeoTitle($code)) : '');
+        echo isset($_POST['translations'][$code]['meta_title'])  
+        ? h($_POST['translations'][$code]['meta_title'])  
+        : (isset($category) && $category->translations[$code]['meta_title']
+        ? h($category->translations[$code]['meta_title']) : '');
       ?>"
     />
   </div>
@@ -63,14 +64,15 @@
     <label class="admin-form__label" for="meta_description-<?php echo $code;?>">SEO описание страницы</label>
     <textarea 
       id="meta_description-<?php echo $code;?>" 
-      name="meta_description[<?php echo $code;?>]" 
+      name="translations[<?php echo $code;?>][meta_description]" 
       class="admin-form__textarea" 
       placeholder="Введите SEO описание страницы"
     ><?php 
-      echo isset($_POST['meta_description'][$code]) 
-      ? h($_POST['meta_description'][$code] ) 
-      : (isset($category) && $category->getSeoDescription($code) 
-      ? h($category->getSeoDescription($code)) : '');
+      echo isset($_POST['translations'][$code]['meta_description']) 
+      ? h($_POST['translations'][$code]['meta_description']) 
+      : (isset($category) && $category->translations[$code]['meta_description']
+      ? h($category->translations[$code]['meta_description']) : '');
     ?></textarea>
   </div>
+
 </div>
