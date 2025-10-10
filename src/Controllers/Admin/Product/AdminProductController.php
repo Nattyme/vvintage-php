@@ -80,7 +80,6 @@ class AdminProductController extends BaseAdminController
     // Название страницы
     $pageTitle = "Добавить новый товар";
     $statusList = $this->service->getStatusList();
-    // $pageClass = "admin-page";
 
 
     $this->renderLayout('shop/new',  [
@@ -98,15 +97,12 @@ class AdminProductController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = "Редактирование товара";
-    // $pageClass = "admin-page";
 
     // Получаем продукт по Id 
     $id = $this->routeData->uriGet ? (int) $this->routeData->uriGet : null;
 
     if (!$id) $this->redirect('admin/shop');
 
-    // $product = $this->service->getProductById($id);
-    // $product->images = $this->service->getFlatImages($product->images);
     // Получаем модель продукта со всеми переводами и добавляем изображения
     $productModel = $this->service->getProductLocaledModelById($id, true);
 
