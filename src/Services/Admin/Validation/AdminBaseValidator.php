@@ -73,10 +73,7 @@ abstract class AdminBaseValidator
         // Основные поля берем с русского
         $data['title'] = $translations['ru']['title'] ?? '';
         $data['description'] = $translations['ru']['description'] ?? '';
-        $data['meta_title'] = $translations['ru']['meta_title'] ?? $data['title'];
-        $data['meta_description'] = $translations['ru']['meta_description'] ?? $data['description'];
         
-
         // Убедимся, что английский существует
         $translations['en']['title'] = $translations['en']['title'] ?? '';
         $translations['en']['description'] = $translations['en']['description'] ?? '';

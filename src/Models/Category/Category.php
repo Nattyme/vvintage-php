@@ -47,7 +47,7 @@ final class Category
         $category->parent_id = $dto->parent_id;
         $category->slug = $dto->slug;
         $category->image = $dto->image;
-        // $category->translations = $dto->translations;
+        $category->translations = $dto->translations ?? [];
 
         return $category;
     }

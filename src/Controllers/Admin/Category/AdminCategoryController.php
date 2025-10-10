@@ -104,36 +104,22 @@ final class AdminCategoryController extends BaseAdminController
     }
 
     if(isset($_POST['submit'])) {
-   
-      // $validate = $this->validator->new($_POST);
-      $validate = $this->validator->validate($_POST);
-      
-  //  $validatorTextResult['data'], 
-      if (!$validate['errors']) {
-        $this->flash->pushError('Не удалось сохранить новую категорию. Проверьте данные.');
-      } else {
-              $translations = [];
-              foreach ($_POST['title'] as $lang => $title) {
-                  $translations[$lang] = [
-                      'title' => $_POST['title'][$lang] ?? '',
-                      'description' => $_POST['description'][$lang] ?? '',
-                      'meta_title' => $_POST['meta_title'][$lang] ?? '',
-                      'meta_description' => $_POST['meta_description'][$lang] ?? '',
-                  ];
-              }
+     
+      if (!check_csrf($_POST['csrf'] ?? '')) {
+              $this->flash->pushError('Неверный токен безопасности.');
+          } else {
+              // Валидация
+              $validate = $this->validator->validate($_POST);
+              $textData = $validate['data'];
+              $errors = $validate['errors'];
+    
 
-              $dto = new CategoryInputDTO([
-                  'parent_id' => $_POST['parent_id'] ?? 0,
-                  'slug' => $_POST['slug'] ?? '',
-                  'title' => $_POST['title'][$mainLang] ?? '',
-                  'description' => $_POST['description'][$mainLang] ?? '',
-                  'image' => $_POST['image'] ?? '',
-                  'translations' => $translations,
-              ]);
-
-              $category = Category::fromInputDTO($dto);
-
-              $saved = $this->service->createCategory( $category);
+            if (!empty( $errors)) {
+              $this->flash->pushError('Не удалось сохранить новую категорию. Проверьте данные.');
+            } else {
+              // $category = Category::fromInputDTO($dto);
+              // dd(  $category );
+              $saved = $this->service->createCategoryDraft( $textData);
 
               if ($saved) {
                   $this->flash->pushSuccess('Категория успешно создана.');
@@ -142,9 +128,9 @@ final class AdminCategoryController extends BaseAdminController
                   $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
                   $this->redirect('admin/category');
               }
+            }
+          }
       }
-      
-    }
 
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,

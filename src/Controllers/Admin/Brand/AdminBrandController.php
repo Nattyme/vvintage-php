@@ -106,14 +106,16 @@ class AdminBrandController extends BaseAdminController
           } else {
               // Валидация
               $validate = $this->validator->validate($_POST);
+              $textData = $validate['data'];
+              $errors = $validate['errors'];
               // $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
 
-              if (!$validate) {
+              if (!$errors) {
                   $this->flash->pushError($brandId 
                       ? 'Не удалось обновить бренд. Проверьте данные.' 
                       : 'Не удалось сохранить новый бренд. Проверьте данные.');
               } else {
-                  $translations = $_POST['translations'];
+                  $translations = $textData['translations'];
                   $saved = $brandId
                       ? $this->service->updateBrand($brandId, $translations)
                       : $this->service->createBrandDraft($translations);

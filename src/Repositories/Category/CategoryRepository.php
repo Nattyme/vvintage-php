@@ -21,7 +21,8 @@ use Vvintage\DTO\Category\CategoryOutputDTO;
 use Vvintage\DTO\Admin\Category\CategoryInputDTO;
 
 
-final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
+// final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
+final class CategoryRepository extends AbstractRepository
 {
     private const TABLE = 'categories';
     private CategoryTranslationRepository $translationRepo;
@@ -35,14 +36,15 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     private function mapBeanToCategory(OODBBean $bean): Category
     {
-      $dto = new CategoryInputDTO([
+      return Category::fromArray([
           'id' => (int) $bean->id,
-          'title' => (string) $bean->title,
           'parent_id' => (int) $bean->parent_id,
-          'image' => (string) $bean->image
+          'title' => (string) $bean->title,
+          'description' => (string) $bean->description,
+          'slug' => (string) $bean->slug,
+          'image' => (string) $bean->image,
       ]);
 
-      return Category::fromInputDTO($dto);
     }
 
     private function mapBeanToCategoryArray (OODBBean $bean): array
@@ -107,34 +109,34 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
-    public function saveCategory(Category $cat): int
+    public function saveCategory(CategoryInputDTO $dto): int
     {
+      dd($dto);
         // сохраняем основную категорию
-        $bean = $cat->getId()
-            ? $this->loadBean(self::TABLE, $cat->getId())
+        $bean = $dto->id
+            ? $this->loadBean(self::TABLE, $dto->id)
             : $this->createBean(self::TABLE);
 
-        $bean->title = $cat->getTitle(); // по умолчанию ru
-        $bean->parent_id = $cat->getParentId();
-        $bean->slug = $cat->getSlug();
-        $bean->image = $cat->getImage();
-        $bean->seo_title = $cat->getSeoTitle();
-        $bean->seo_description = $cat->getSeoDescription();
+        $bean->parent_id = $cat->parent_id;
+        $bean->title = $dto->title; // по умолчанию ru
+        $bean->description = $dto->description;
+        $bean->slug = $dto->slug;
+        $bean->image = $dto->image;
 
         $id = (int) $this->saveBean($bean);
 
         // НЕ удаляем все переводы
-        foreach ($cat->getAllTranslations() as $locale => $translation) {
-          // ищем перевод для этой локали
-          $transBean =  $this->translationRepo->findTranslations($id, $locale);
+        // foreach ($cat->getAllTranslations() as $locale => $translation) {
+        //   // ищем перевод для этой локали
+        //   $transBean =  $this->translationRepo->findTranslations($id, $locale);
 
-          if (!$transBean) {
-            // если нет — создаём новый
-            $this->translationRepo->createTranslation($id, $locale);
-          }
+        //   if (!$transBean) {
+        //     // если нет — создаём новый
+        //     $this->translationRepo->createTranslation($id, $locale);
+        //   }
 
-          $this->translationRepo->updateTranslations( $transBean, $translation);
-        }
+        //   $this->translationRepo->updateTranslations( $transBean, $translation);
+        // }
 
         return $id;
     }
