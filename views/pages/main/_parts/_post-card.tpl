@@ -6,25 +6,25 @@
 
     <picture>
       <source
-        srcset="<?php echo HOST . 'usercontent/blog/' . $post->getCoverSmall();?>"
+        srcset="<?php echo HOST . 'usercontent/blog/' . $post->cover_small;?>"
         type="image/webp"
       />
       <source
-        srcset="<?php echo HOST . 'usercontent/blog/' . $post->getCoverSmall();?>"
+        srcset="<?php echo HOST . 'usercontent/blog/' . $post->cover_small;?>"
         type="image/jpeg"
     
         />
         <img 
-          src="<?php echo HOST . 'usercontent/products/' . $post->getCoverSmall();?>" 
-          srcset="<?php echo HOST . 'usercontent/products/' . $post->getCoverSmall();?>" alt="" loading="lazy"
+          src="<?php echo HOST . 'usercontent/products/' . $post->cover_small;?>" 
+          srcset="<?php echo HOST . 'usercontent/products/' . $post->cover_small;?>" alt="" loading="lazy"
         >
    
     </picture>
   </div>
 
   <div class="card__desc">
-    <a href="<?php echo HOST . 'shop/' . $post->getId();?>" class="card__title block__text ink-abs">
-      <h4 class="h4 block__desc"><?php echo $post->getTitle();?></h4>
+    <a href="<?php echo HOST . 'shop/' . $post->id;?>" class="card__title block__text ink-abs">
+      <h4 class="h4 block__desc"><?php echo $post->title;?></h4>
     </a>
   </div>
 </div>

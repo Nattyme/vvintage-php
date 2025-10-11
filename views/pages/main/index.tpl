@@ -4,5 +4,5 @@
   <?php /* include ROOT . 'views/main/_parts/_feature.tpl'; */?>
   <?php include ROOT . 'views/pages/main/_parts/_cats.tpl';?>
   <?php include ROOT . 'views/pages/main/_parts/_arrival.tpl'; ?>
-  <?php /* include ROOT . 'views/main/_parts/_latest-posts.tpl'; */?>
+  <?php include ROOT . 'views/pages/main/_parts/_latest-posts.tpl'; ?>
 </main>

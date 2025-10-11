@@ -16,6 +16,7 @@ use Vvintage\Models\Post\Post;
 /** DTO */
 use Vvintage\DTO\Post\PostDTO;
 use Vvintage\DTO\Post\PostListDto;
+use Vvintage\DTO\Post\PostCardDTO;
 
 class PostService extends BaseService
 {
@@ -134,7 +135,7 @@ class PostService extends BaseService
         $dtos = [];
         foreach ($models as $model) {
             $modelFull = $this->setDataToPostModel($model);
-            $dtos[] = new PostListDTO($modelFull, $this->currentLang);
+            $dtos[] = new PostCardDTO($modelFull, $this->currentLang);
         }
 
         return $dtos;

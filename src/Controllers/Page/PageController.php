@@ -79,7 +79,7 @@ class PageController extends BaseController
       $categories = $categoryService->getMainCategories();
 
       $products = $productService->getLastProducts(4);
-      $posts = $postService->getLastPosts(3);
+      $posts = $postService->getLastPosts(4);
 
       $page = $this->pageService->getPageBySlug($slug);
       $pageModel = $this->pageService->getPageModelBySlug( $slug );
