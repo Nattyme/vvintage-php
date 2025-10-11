@@ -16,13 +16,13 @@ use Vvintage\Controllers\Admin\BaseAdminController;
 
 class AdminPostController extends BaseAdminController
 {
-  private AdminPostService $adminPostService;
+  private AdminPostService $service;
   private Breadcrumbs $breadcrumbs;
 
   public function __construct(Breadcrumbs $breadcrumbs)
   {
     parent::__construct();
-    $this->adminPostService = new AdminPostService($this->languages, $this->currentLang);
+    $this->service = new AdminPostService($this->languages, $this->currentLang);
     $this->breadcrumbs = $breadcrumbs;
   }
 
@@ -240,8 +240,8 @@ class AdminPostController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($postsPerPage, 'posts');
-    $posts = $this->adminPostService->getAllPosts($pagination);
-    $total = $this->adminPostService->getTotalCount();
+    $posts = $this->service->getAllPosts($pagination);
+    $total = $this->service->getTotalCount();
 
     // Формируем единую модель для передачи в шаблон
     $postViewModel = [
@@ -280,8 +280,8 @@ class AdminPostController extends BaseAdminController
 
     // Получаем пост по Id 
     $postId = $routeData->getUriGetParam();
-    // $post = $this->adminPostService->getPost((int) $postId);
-    $postViewData =  $this->adminPostService->getPostViewData((int) $postId);
+    // $post = $this->service->getPost((int) $postId);
+    $postViewData =  $this->service->getPostViewData((int) $postId);
 
     $this->renderLayout('blog/edit',  [
       'postViewData' => $postViewData,
@@ -299,7 +299,7 @@ class AdminPostController extends BaseAdminController
 
     // Получаем пост по Id 
     $postId = $routeData->getUriGetParam();
-    $post = $this->adminPostService->getPost((int) $postId);
+    $post = $this->service->getPost((int) $postId);
 
     // Получаем главные категориии, подкатегории и бренды
     // $mainCats = $this->categoryRepository->getMainCats();

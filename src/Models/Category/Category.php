@@ -68,9 +68,9 @@ final class Category
         return $category;
     }
 
-    public function setTranslations(array $data): void 
+    public function setTranslations(array $translations): void 
     {
-      $this->translations = $data;
+      $this->translations = $translations;
     }
 
     // Получение названия в нужной локали, иначе fallback title
@@ -168,4 +168,7 @@ final class Category
        
         return $this->description;
     }
+
+    
+
 }

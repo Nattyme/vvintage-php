@@ -106,31 +106,31 @@ final class AdminCategoryController extends BaseAdminController
     if(isset($_POST['submit'])) {
      
       if (!check_csrf($_POST['csrf'] ?? '')) {
-              $this->flash->pushError('Неверный токен безопасности.');
+        $this->flash->pushError('Неверный токен безопасности.');
+      } else {
+          // Валидация
+          $validate = $this->validator->validate($_POST);
+          $textData = $validate['data'];
+          $errors = $validate['errors'];
+
+
+        if (!empty( $errors)) {
+          $this->flash->pushError('Не удалось сохранить новую категорию. Проверьте данные.');
+        } else {
+          // $category = Category::fromInputDTO($dto);
+          // dd(  $category );
+          $saved = $this->service->createCategoryDraft( $textData);
+
+          if ($saved) {
+              $this->flash->pushSuccess('Категория успешно создана.');
+              $this->redirect('admin/category');
           } else {
-              // Валидация
-              $validate = $this->validator->validate($_POST);
-              $textData = $validate['data'];
-              $errors = $validate['errors'];
-    
-
-            if (!empty( $errors)) {
-              $this->flash->pushError('Не удалось сохранить новую категорию. Проверьте данные.');
-            } else {
-              // $category = Category::fromInputDTO($dto);
-              // dd(  $category );
-              $saved = $this->service->createCategoryDraft( $textData);
-
-              if ($saved) {
-                  $this->flash->pushSuccess('Категория успешно создана.');
-                  $this->redirect('admin/category');
-              } else {
-                  $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
-                  $this->redirect('admin/category');
-              }
-            }
+              $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
+              $this->redirect('admin/category');
           }
+        }
       }
+    }
 
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
@@ -154,12 +154,16 @@ final class AdminCategoryController extends BaseAdminController
       $this->redirect('admin/category');
     } 
 
-    $category = $this->service->getCategoryById($id);
+    $categoryModel = $this->service->getCategoryById($id);
+    $categoryModel->setTranslations();
 
-    if( $category->getParentId()) {    
-      $parendId = $category->getParentId();
-      $parentCategory = $this->service->getCategoryById($parendId);
+    $parentId = $categoryModel->getParentId() ?? null;
+    if(  $parentId) {    
+      // $parentId = $categoryModel->getParentId();
+      $parentCategory = $this->service->getCategoryById($parentId);
     }
+
+
 
     // $validate = $this->validator->new($_POST);
     if(isset($_POST['submit'])) {
@@ -209,7 +213,7 @@ final class AdminCategoryController extends BaseAdminController
 
 
     }
-    
+    dd($category);
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,
