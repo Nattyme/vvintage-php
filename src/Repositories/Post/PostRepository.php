@@ -25,58 +25,79 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     private const TABLE = 'posts';
     // private const TABLE_TRANSLATION = 'poststranslation';
 
-    private const TABLE_CATEGORIES = 'postscategories';
-    private const TABLE_CATEGORIES_TRANSLATION = 'postscategoriestranslation';
+    // private const TABLE_CATEGORIES = 'postscategories';
+    // private const TABLE_CATEGORIES_TRANSLATION = 'postscategoriestranslation';
 
-    private string $currentLang;
-    private const DEFAULT_LANG = 'ru';
+    // private string $currentLang;
+    // private const DEFAULT_LANG = 'ru';
 
-    public function __construct(string $currentLang = self::DEFAULT_LANG)
+    private function createPostBean(): OODBBean 
     {
-        $this->currentLang = $currentLang;
+        return $this->createBean(self::TABLE);
     }
 
-    private function unitePostRawData(?int $postId = null): array
+    public function getPostById(int $id): ?Post
     {
-
-        $sql = '
-            SELECT 
-                p.*,
-                pt.locale,
-                pt.content,
-                pt.title,
-                pt.description,
-                pt.meta_title,
-                pt.meta_description,
-                c.id AS category_id,
-                c.title AS category_title,
-                c.parent_id AS category_parent_id,
-                c.image AS category_image,
-                ct.title AS category_title_translation,
-                ct.description AS category_description,
-                ct.meta_title AS category_meta_title,
-                ct.meta_description AS category_meta_description
-            FROM ' . self::TABLE .' p
-            LEFT JOIN ' . self::TABLE_TRANSLATION .' pt ON pt.post_id = p.id AND pt.locale = ?
-            LEFT JOIN ' . self::TABLE_CATEGORIES .' c ON p.category_id = c.id
-            LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct ON ct.category_id = c.id AND ct.locale = ?
-        ';
-
-        $locale = $this->currentLang ?? self::DEFAULT_LANG;
-        $bindings = [$locale, $locale];
-
-        if ($postId !== null) {
-            $sql .= ' WHERE p.id = ? LIMIT 1';
-            $bindings[] = $postId;
-            // ⬇Заворачиваем в массив
-            $row = R::getRow($sql, $bindings);
-
-            return $row ?[$row] : [];
-        } else {
-            $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
-            return $this->getAll($sql, $bindings);
-        }
+      $bean = array_values($this->getPosts(['id' => $id]))[0];
+      $data = $bean->export();
+ 
+      return Post::fromArray($data);
     }
+
+
+
+
+
+
+    // public function getPostById(int $id): ?Post
+    // {
+    //     $rows = $this->unitePostRawData($id);
+       
+    //     return $rows ? $this->fetchPostWithJoins($rows[0]) : null;
+    // }
+
+
+    // private function unitePostRawData(?int $postId = null): array
+    // {
+
+    //     $sql = '
+    //         SELECT 
+    //             p.*,
+    //             pt.locale,
+    //             pt.content,
+    //             pt.title,
+    //             pt.description,
+    //             pt.meta_title,
+    //             pt.meta_description,
+    //             c.id AS category_id,
+    //             c.title AS category_title,
+    //             c.parent_id AS category_parent_id,
+    //             c.image AS category_image,
+    //             ct.title AS category_title_translation,
+    //             ct.description AS category_description,
+    //             ct.meta_title AS category_meta_title,
+    //             ct.meta_description AS category_meta_description
+    //         FROM ' . self::TABLE .' p
+    //         LEFT JOIN ' . self::TABLE_TRANSLATION .' pt ON pt.post_id = p.id AND pt.locale = ?
+    //         LEFT JOIN ' . self::TABLE_CATEGORIES .' c ON p.category_id = c.id
+    //         LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct ON ct.category_id = c.id AND ct.locale = ?
+    //     ';
+
+    //     $locale = $this->currentLang ?? self::DEFAULT_LANG;
+    //     $bindings = [$locale, $locale];
+
+    //     if ($postId !== null) {
+    //         $sql .= ' WHERE p.id = ? LIMIT 1';
+    //         $bindings[] = $postId;
+    //         // ⬇Заворачиваем в массив
+    //         $row = R::getRow($sql, $bindings);
+
+    //         return $row ?[$row] : [];
+    //     } else {
+    //         $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
+    //         return $this->getAll($sql, $bindings);
+    //     }
+    // }
 
 
     private function loadTranslations(int $postId): array
@@ -145,39 +166,34 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
     // }
 
 
-    private function fetchPostWithJoins(array $row): Post
-    {
-        $postId = (int) $row['id'];
+    // private function fetchPostWithJoins(array $row): Post
+    // {
+    //     $postId = (int) $row['id'];
 
-        $translations = $this->loadTranslations($postId);
+    //     $translations = $this->loadTranslations($postId);
     
-        $categoryDTO = $this->createCategoryOutputDTO($row);
+    //     $categoryDTO = $this->createCategoryOutputDTO($row);
 
-        $dto = new PostDTO([
-            'id' => (int) $row['id'],
-            'categoryDTO' => $categoryDTO,
-            'title' => (string) $row['title'],
-            'description' => (string) $row['description'],
-            'content' => (string) $row['content'],
-            'slug' => (string) $row['slug'],
-            'views' => (int) $row['views'],
-            'cover' => (string) $row['cover'],
-            'cover_small' => (string) $row['cover_small'],
-            'datetime' => (string) $row['datetime'],
-            'translations' => $translations,
-            'locale' => $this->currentLang ?? self::DEFAULT_LANG
-        ]);
+    //     $dto = new PostDTO([
+    //         'id' => (int) $row['id'],
+    //         'categoryDTO' => $categoryDTO,
+    //         'title' => (string) $row['title'],
+    //         'description' => (string) $row['description'],
+    //         'content' => (string) $row['content'],
+    //         'slug' => (string) $row['slug'],
+    //         'views' => (int) $row['views'],
+    //         'cover' => (string) $row['cover'],
+    //         'cover_small' => (string) $row['cover_small'],
+    //         'datetime' => (string) $row['datetime'],
+    //         'translations' => $translations,
+    //         'locale' => $this->currentLang ?? self::DEFAULT_LANG
+    //     ]);
 
-        return Post::fromDTO($dto);
-    }
+    //     return Post::fromDTO($dto);
+    // }
 
    
-    public function getPostById(int $id): ?Post
-    {
-        $rows = $this->unitePostRawData($id);
-       
-        return $rows ? $this->fetchPostWithJoins($rows[0]) : null;
-    }
+ 
 
     public function getAllPosts(array $pagination): array
     {

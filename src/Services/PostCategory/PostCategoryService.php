@@ -7,6 +7,8 @@ namespace Vvintage\Services\PostCategory;
 /** Модель */
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Repositories\PostCategory\PostCategoryRepository;
+use Vvintage\Repositories\PostCategory\PostCategoryTranslationRepository;
+
 use Vvintage\Services\Base\BaseService;
 
 require_once ROOT . "./libs/functions.php";
@@ -14,11 +16,14 @@ require_once ROOT . "./libs/functions.php";
 class PostCategoryService extends BaseService
 {
     protected PostCategoryRepository $repository;
+    protected PostCategoryTranslationRepository $translationRepo;
 
     public function __construct()
     {
         parent::__construct();
-        $this->repository = new PostCategoryRepository($this->currentLang);
+        $this->repository = new PostCategoryRepository();
+        $this->translationRepo = new PostCategoryTranslationRepository();
+       
     }
 
     public function getCategoryById(int $id): ?PostCategory

@@ -153,5 +153,10 @@ final class Post
   
     }
 
+    public function setTranslations(array $translations): void 
+    {
+      $this->translations = $translations;
+    }
+
     
 }

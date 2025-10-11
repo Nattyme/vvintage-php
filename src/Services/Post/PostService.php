@@ -4,26 +4,36 @@ declare(strict_types=1);
 namespace Vvintage\Services\Post;
 
 use Vvintage\Services\Base\BaseService;
+
+/* Repository */
 use Vvintage\Repositories\Post\PostRepository;
-use Vvintage\Repositories\PostCategory\PostCategoryRepository;
+use Vvintage\Repositories\Post\PostTranslationRepository;
+use Vvintage\Services\PostCategory\PostCategoryService;
+
+/** Model */
 use Vvintage\Models\Post\Post;
+
+/** DTO */
 use Vvintage\DTO\Post\PostDTO;
 
 class PostService extends BaseService
 {
-    private PostRepository $postRepository;
-    private PostCategoryRepository $postCategoryRepository;
+    private PostRepository $repository;
+    private PostTranslationRepository $translationRepo;
+    private PostCategoryService $categoryService;
 
     public function __construct()
     {
       parent::__construct(); // Важно!
-      $this->postRepository = new PostRepository ();
-      $this->postCategoryRepository = new PostCategoryRepository ();
+      $this->repository = new PostRepository ();
+      $this->translationRepo = new PostTranslationRepository();
+      $this->categoryService = new PostCategoryService();
+      // $this->postCategoryRepository = new PostCategoryRepository ();
     }
 
     public function getAllPosts(array $pagination): array
     {
-        return $this->postRepository->getAllPosts($pagination);
+        return $this->repository->getAllPosts($pagination);
 
         // return array_map(
         //     fn($bean) => Post::fromDTO($bean),
@@ -31,20 +41,71 @@ class PostService extends BaseService
         // );
     }
 
+    private function getPostById (int $id): Post
+    {
+        $post = $this->repository->getPostById($id);
+
+        if (! $post ) {
+            return [];
+        }
+
+        $translations = $this->translationRepo->getLocaleTranslation((int) $id, $this->currentLang) 
+        ?? 
+        $this->translationRepo->getLocaleTranslation((int) $id, $this->currentLang);
+        $post->setTranslations($translations);
+
+        $category = $this->categoryService->getLocaledCategory($id);
+        $post->setCategory($category);
+        
+
+        return $post;
+
+        // $postId = (int) $row['id'];
+
+        // $translations = $this->translationRepo->loadTranslations($postId);
+    
+        // $categoryDTO = $this->createCategoryOutputDTO($row);
+
+        // $dto = new PostDTO([
+        //     'id' => (int) $row['id'],
+        //     'categoryDTO' => $categoryDTO,
+        //     'title' => (string) $row['title'],
+        //     'description' => (string) $row['description'],
+        //     'content' => (string) $row['content'],
+        //     'slug' => (string) $row['slug'],
+        //     'views' => (int) $row['views'],
+        //     'cover' => (string) $row['cover'],
+        //     'cover_small' => (string) $row['cover_small'],
+        //     'datetime' => (string) $row['datetime'],
+        //     'translations' => $translations,
+        //     'locale' => $this->currentLang ?? self::DEFAULT_LANG
+        // ]);
+
+        // return Post::fromDTO($dto);
+    }
+
+
+
+
+
+
+
+
+
     public function getTotalCount(): int
     {
-        return $this->postRepository->getAllPostsCount();
+        return $this->repository->getAllPostsCount();
     }
 
     public function add(PostDTO $dto): int
     {
         $post = Post::fromDTO($dto);
-        return $this->postRepository->save($post);
+        return $this->repository->save($post);
     }
 
     public function getPost(int $id)
     {
-      return $this->postRepository->getPostById($id);
+      return $this->repository->getPostById($id);
     }
 
     // public function getPostMainCategory(int $id)
@@ -64,7 +125,7 @@ class PostService extends BaseService
 
     public function getLastPosts(int $count)
     {
-       return $this->postRepository->getPostsByIds([3, 2 , 1]);
+       return $this->repository->getPostsByIds([3, 2 , 1]);
     }
 
     public function getBlogData ( array $pagination): array
