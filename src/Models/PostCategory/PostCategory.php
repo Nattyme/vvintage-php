@@ -9,27 +9,26 @@ use Vvintage\DTO\PostCategory\PostCategoryOutputDTO;
 
 final class PostCategory
 {
-    private int $id;
-    private string $title;
+    private ?int $id;
     private ?int $parent_id;
     private string $slug;
+    private string $title;
     private string $image;
 
     private array $translations = [];
-    private string $currentLocale = 'ru';
 
     private function __construct() {}
 
-    public static function fromDTO(PostCategoryInputDTO $dto): self
+    public static function fromBean( $bean): self
     {
         $category = new self();
 
-        $category->id = $dto->id;
-        $category->title = $dto->title;
-        $category->parent_id = $dto->parent_id;
-        $category->slug = $dto->slug;
-        $category->image = $dto->image;
-        $category->translations = $dto->translations;
+        $category->id = (int) ($bean->id ?? null);
+        $category->parent_id = (int) ($bean->parent_id ?? null);
+        $category->slug = (string) ($bean->slug ?? '');
+        $category->title = (string) ($bean->title ?? '');
+        $category->image = (string) ($bean->image ?? '');
+        $category->translations = array ($bean->translations ?? []);
 
         return $category;
     }
@@ -171,4 +170,15 @@ final class PostCategory
     {
       return $this->slug;
     }
+
+    public function setTranslations(array $translations): void 
+    {
+      $this->translations = $translations;
+    }
+
+    public function getTranslation(string $locale): array
+    {
+        return $this->translations[$locale] ?? $this->translations['ru'] ?? [];
+    }
+
 }

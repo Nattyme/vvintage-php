@@ -26,6 +26,35 @@ final class PostCategoryTranslationRepository extends AbstractRepository
       return $this->createBean(self::TABLE);
     }
 
+    public function loadTranslations(int $categoryId): array
+    {
+        $sql = 'SELECT *
+                FROM ' . self::TABLE .' 
+                WHERE category_id = ?';
+        $rows = $this->getAll($sql, [$categoryId]);
+
+
+        $translations = [];
+        foreach ($rows as $row) {
+            $translations[$row['locale']] = [
+                'title' => $row['title'] ?? '',
+                'description' => $row['description'] ?? '',
+                'meta_title' => $row['meta_title'] ?? '',
+                'meta_description' => $row['meta_description'] ?? '',
+            ];
+        }
+        return $translations;
+    }
+
+
+
+
+
+
+
+
+
+
     public function createTranslateInputDto(array $data, int $categoryId): array
     {
       $postCategoryTranslationsDto = [];
@@ -46,25 +75,7 @@ final class PostCategoryTranslationRepository extends AbstractRepository
 
     }
 
-    public function loadTranslations(int $categoryId): array
-    {
-        $sql = 'SELECT *
-                FROM ' . self::TABLE .' 
-                WHERE category_id = ?';
-        $rows = $this->getAll($sql, [$categoryId]);
-
-
-        $translations = [];
-        foreach ($rows as $row) {
-            $translations[$row['locale']] = [
-                'title' => $row['title'] ?? '',
-                'description' => $row['description'] ?? '',
-                'meta_title' => $row['meta_title'] ?? '',
-                'meta_description' => $row['meta_description'] ?? '',
-            ];
-        }
-        return $translations;
-    }
+    
     
 
     public function getLocaleTranslation(int $id, string $locale): array 

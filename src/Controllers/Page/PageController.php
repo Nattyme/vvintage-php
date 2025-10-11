@@ -80,7 +80,7 @@ class PageController extends BaseController
 
       $products = $productService->getLastProducts(4);
       $posts = $postService->getLastPosts(3);
- dd($posts);
+
       $page = $this->pageService->getPageBySlug($slug);
       $pageModel = $this->pageService->getPageModelBySlug( $slug );
 

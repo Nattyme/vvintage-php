@@ -10,6 +10,7 @@ final class PostTranslationInputDTO
     public string $locale;
     public string $title;
     public string $description;
+    public string $content;
     public string $meta_title;
     public string $meta_description;
 
@@ -21,6 +22,7 @@ final class PostTranslationInputDTO
         $this->locale = (string) ($data['locale'] ?? 'ru');
         $this->title = (string) ($data['title'] ?? '');
         $this->description = (string) ($data['description'] ?? '');
+        $this->content = (string) ($data['content'] ?? '');
         $this->meta_title = (string) ($data['meta_title'] ?? $data['title'] ?? '');
         $this->meta_description = (string) ($data['meta_description'] ?? $data['description'] ?? '');
     }

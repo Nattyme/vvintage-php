@@ -26,7 +26,6 @@ final class Post
     private string $edit_time;
 
     private array $translations;
-    private string $currentLocale = 'ru';
 
     private function __construct() {}
 
@@ -54,33 +53,60 @@ final class Post
                 : new \DateTime($data['datetime']))
             : new \DateTime();;
         $post->edit_time = (string) ($data['edit_time'] ?? '');
-dd($post);
+
         return $post;
     }
 
    
-    public static function fromDTO(PostDTO $dto): self
+    public static function fromBean($data): self
     {
+
         $post = new self();
 
-        $post->id = $dto->id;
-        $post->category = PostCategory::fromOutputDTO($dto->categoryDTO);
+        $post->id = (int) ($data->id ?? null);
+        $post->category_id = (int) ($data->category_id ?? '');
 
-        $post->title = $dto->title;
-        $post->slug = $dto->slug;
-        $post->description = $dto->description;
-        $post->content = $dto->content;
+        $post->title = (string) ($data->title ?? '');
+        $post->slug = (string) ($data->slug ?? '');
+        $post->description = (string) ($data->description ?? '');
+        $post->content = (string) ($data->content ?? '');
 
-        $post->datetime = new \Datetime ();
-        $post->views = $dto->views;
-        $post->cover = $dto->cover;
-        $post->cover_small = $dto->cover_small;
-        $post->edit_time = new \Datetime ();
-        $post->currentLocale = $dto->locale ?? 'ru';
-        $post->translations = $dto->translations;
+        $post->datetime = !empty($data['datetime'])
+            ? (is_numeric($data['datetime'])
+                ? (new \DateTime())->setTimestamp((int)$data['datetime'])
+                : new \DateTime($data['datetime']))
+            : new \DateTime();;
+        $post->edit_time = (string) ($data['edit_time'] ?? '');
+
+        $post->views = (int) ($data->views ?? null);
+        $post->cover = (string) ($data->cover ?? '');
+        $post->cover_small = (string) ("290-{$data->cover}" ?? '');
+        $post->translations = array ($data->translations ?? []);
 
         return $post;
     }
+    // public static function fromObj($dto): self
+    // {
+    //     $post = new self();
+
+    //     $post->id = $dto->id;
+    //     $post->category_id = $dto->category_id;
+
+    //     $post->title = $dto->title;
+    //     $post->slug = $dto->slug;
+    //     $post->description = $dto->description;
+    //     $post->content = $dto->content;
+
+    //     $post->datetime = new \Datetime ();
+    //     $post->views = $dto->views;
+    //     $post->cover = $dto->cover;
+    //     $post->cover_small = $dto->cover_small;
+    //     $post->edit_time = new \Datetime ();
+    //     $post->currentLocale = $dto->locale ?? 'ru';
+    //     $post->translations = $dto->translations;
+
+    //     return $post;
+    // }
 
     
     // Геттеры 
@@ -98,6 +124,11 @@ dd($post);
         // return $this->translations[$locale]['title']
         //     ?? $this->translations['ru']['title']
         //     ?? $this->title;
+    }
+
+    public function getCategoryId(): int 
+    {
+      return $this->category_id;
     }
 
 
@@ -142,16 +173,6 @@ dd($post);
       return $this->edit_time;
     }
 
-    public function getTranslations(): ?array
-    {
-      return $this->translations[$this->currentLocale];
-    }
-
-    public function getCurrentLocale(): string 
-    {
-      return $this->currentLocale;
-    }
-
     /** SEO */
     public function getMetaTitle(): ?string
     {
@@ -169,10 +190,16 @@ dd($post);
       $this->translations = $translations;
     }
 
-    public function setCategory(Category $category): void 
+    public function setCategory(PostCategory $category): void 
     {
       $this->category = $category;
     }
+
+    public function getTranslation(string $locale): array
+    {
+        return $this->translations[$locale] ?? $this->translations['ru'] ?? [];
+    }
+
 
     
 }

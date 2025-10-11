@@ -26,9 +26,15 @@ class PostCategoryService extends BaseService
        
     }
 
-    public function getCategoryById(int $id): ?PostCategory
+    public function getCategoryById(int $id, ?string $currentLang = null): ?PostCategory
     {
-      return $this->repository->getCategoryById($id);
+      $category = $this->repository->getCategoryById($id);
+
+      $id = $category->getId();
+      $translations = $this->translationRepo->loadTranslations($id);
+      $category->setTranslations($translations);
+
+      return $category;
     }
 
     public function getMainCategoriesArray(): array

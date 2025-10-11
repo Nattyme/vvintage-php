@@ -16,28 +16,28 @@ use Vvintage\DTO\PostCategory\PostCategoryOutputDTO;
 final class PostCategoryRepository extends AbstractRepository implements PostCategoryRepositoryInterface
 {
     private const TABLE = 'postscategories';
-    private const TABLE_TRANSLATION = 'postscategoriestranslation';
+    // private const TABLE_TRANSLATION = 'postscategoriestranslation';
 
-    private function loadTranslations(int $categoryId): array
-    {
-        $sql =  'SELECT locale, title, description, meta_title, meta_description 
-             FROM ' . self::TABLE_TRANSLATION . ' WHERE category_id = ?';
+    // private function loadTranslations(int $categoryId): array
+    // {
+    //     $sql =  'SELECT locale, title, description, meta_title, meta_description 
+    //          FROM ' . self::TABLE_TRANSLATION . ' WHERE category_id = ?';
 
-        $rows = $this->getAll($sql, [$categoryId]);
+    //     $rows = $this->getAll($sql, [$categoryId]);
 
-        $translations = [];
+    //     $translations = [];
 
-        foreach ($rows as $row) {
-            $translations[$row['locale']] = [
-                'title' => $row['title'],
-                'description' => $row['description'],
-                'meta_title' => $row['meta_title'],
-                'meta_description' => $row['meta_description'],
-            ];
-        }
+    //     foreach ($rows as $row) {
+    //         $translations[$row['locale']] = [
+    //             'title' => $row['title'],
+    //             'description' => $row['description'],
+    //             'meta_title' => $row['meta_title'],
+    //             'meta_description' => $row['meta_description'],
+    //         ];
+    //     }
 
-        return $translations;
-    }
+    //     return $translations;
+    // }
 
     private function mapBeanToPostCategory(OODBBean $bean): PostCategory
     {
@@ -149,7 +149,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
             return null;
         }
 
-        return $this->mapBeanToPostCategory($bean);
+        return PostCategory::fromBean($bean);
     }
 
     

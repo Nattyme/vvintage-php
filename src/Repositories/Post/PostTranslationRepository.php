@@ -36,6 +36,7 @@ final class PostTranslationRepository extends AbstractRepository
               'locale' => (string) $locale, 
               'title' => (string) ($translate['title'] ?? ''),
               'description' => (string) ($translate['description'] ?? ''),
+              'content' => (string) ($translate['content'] ?? ''),
               'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
               'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
           ]);
@@ -58,6 +59,7 @@ final class PostTranslationRepository extends AbstractRepository
             $translations[$row['locale']] = [
                 'title' => $row['title'] ?? '',
                 'description' => $row['description'] ?? '',
+                'content' => $row['content'] ?? '',
                 'meta_title' => $row['meta_title'] ?? '',
                 'meta_description' => $row['meta_description'] ?? '',
             ];

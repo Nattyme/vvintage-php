@@ -15,6 +15,7 @@ use Vvintage\Models\Post\Post;
 
 /** DTO */
 use Vvintage\DTO\Post\PostDTO;
+use Vvintage\DTO\Post\PostListDto;
 
 class PostService extends BaseService
 {
@@ -123,9 +124,20 @@ class PostService extends BaseService
       return $this->postCategoryRepository->getSubCats($this->currentLang);
     }
 
-    public function getLastPosts(int $count)
+    public function getLastPosts(int $count): array
     {
-       return $this->repository->getPostsByIds([3, 2 , 1]);
+        $models = $this->repository->getLastPosts($count);
+        if (!$models) {
+            return [];
+        }
+
+        $dtos = [];
+        foreach ($models as $model) {
+            $modelFull = $this->setDataToPostModel($model);
+            $dtos[] = new PostListDTO($modelFull, $this->currentLang);
+        }
+
+        return $dtos;
     }
 
     public function getBlogData ( array $pagination): array
@@ -162,5 +174,69 @@ class PostService extends BaseService
         'allSubCategories' => $allSubCategories,
       ];
 
+    }
+
+    private function setDataToPostModel (Post $post): ?Post 
+    {
+      // Добавим модель категории в пост
+      $categoryId = $post->getCategoryId();
+      $category = $this->categoryService->getCategoryById($categoryId);
+      $post->setCategory($category);
+
+      $id = $post->getId();
+
+      // Добавим перевод в пост
+      $translations = $this->translationRepo->loadTranslations($id);
+      $post->setTranslations($translations);
+
+      return $post;
+    }
+
+    private function createPostDTOFromArray(array $row, ?string $currentLang = null): PostOutputDTO
+    {
+        $id = (int) $row['id'];
+
+        $tranlations = [];
+
+        if($currentLang) {
+          $translations = $this->translationRepo->getTranslationsArray($productId, $currentLang);
+        } else {
+          $translations = $this->translationRepo->loadTranslations($productId);
+        }
+        $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
+        $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
+
+        // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
+        $imagesDTO = $this->productImageService->createImageDTO($row);
+
+        $images = $this->productImageService->getImageViewData($imagesDTO);
+        
+        // $datetime = isset($row['datetime']) ? new \DateTime($row['datetime']) : null;
+
+        $dto = new ProductOutputDTO([
+          'id' => $row['id'],
+          'category_id' => $row['category_id'],
+          'category_title' => $categoryOutputDTO->title,
+          'categoryDTO' => $categoryOutputDTO,
+          'brand_id' => $row['brand_id'],
+          'brand_title' => $brandOutputDTO->title,
+          'brandDTO' => $brandOutputDTO,
+          'slug' => $row['slug'],
+          'title' => $translations[$this->currentLang]['title'] ?? $translations['title'],
+          'description' => $translations[$this->currentLang]['description'] ?? $translations['description'],
+          'price' => $row['price'],
+          'url' => $row['url'],
+          'sku' => $row['sku'],
+          'stock' => $row['stock'],
+          'datetime' => $row['datetime'],
+
+          'status' => $row['status'],
+          'edit_time' => $row['edit_time'],
+          'images' => $images,
+          'translations' => $translations
+        ]);
+ 
+        return $dto;
+     
     }
 }

@@ -70,7 +70,9 @@ final class PostRepository extends AbstractRepository
             offset: $pagination['offset'] ?? null
         );
 
-        return $beans;
+        $posts = array_map(fn($bean) => Post::fromBean($bean), $beans);
+
+        return $posts;
     }
 
     private function applySimpleFilters(array $filters, array $conditions, array $params): array
@@ -114,6 +116,12 @@ final class PostRepository extends AbstractRepository
 
 
         return [$conditions, $params, $orderBy];
+    }
+
+    public function getLastPosts(int $count) 
+    {
+      $filter['pagination']['perPage'] = $count;
+      return $this->getPosts( $filter);
     }
 
 
