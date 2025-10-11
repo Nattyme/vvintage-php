@@ -56,7 +56,7 @@ class PostService extends BaseService
 
         $category = $this->categoryService->getLocaledCategory($id);
         $post->setCategory($category);
-        
+
 
         return $post;
 

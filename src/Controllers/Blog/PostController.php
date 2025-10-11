@@ -38,7 +38,9 @@ final class PostController extends BaseController
 
         $id = (int) $routeData->uriGet; // получаем id плста из URL
 
-        $post = $this->postService->getPost($id);
+        $post = $this->postService->getPostById ($id);
+dd($post);
+        // $post = $this->postService->getPost($id);
 
         if (!$post) {
             http_response_code(404);

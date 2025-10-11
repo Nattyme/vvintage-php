@@ -10,18 +10,22 @@ use Vvintage\Models\PostCategory\PostCategory;
 final class Post
 {
     private int $id;
-    private string $title;
+
     private PostCategory $category;
+    private int $category_id;
+
     private string $slug;
+    private string $title;
     private string $description;
     private string $content;
+
     private \Datetime $datetime;
     private ?int $views = 0;
     private ?string $cover = null;
     private ?string $cover_small = null;
-    private \Datetime  $edit_time;
+    private string $edit_time;
 
-    private ?array $translations = null;
+    private array $translations;
     private string $currentLocale = 'ru';
 
     private function __construct() {}
@@ -31,19 +35,26 @@ final class Post
     {
         $post = new self();
         $post->id = (int) $data['id'];
-        $post->title = $data['title'];
-        $post->category = $data['category'];
-        $post->slug = $data['slug'];
-        $post->description = $data['description'];
-        $post->content = $data['content'];
-        $post->datetime = $data['datetime'];
-        $post->views = $data['views'];
-        $post->cover = $data['cover'] ?? null;
-        $post->cover_small = $data['cover_small'] ?? null;
-        $post->edit_time = $data['edit_time'] ?? null;
-        $post->translations = $data['translations'] ?? [];
-        $post->currentLocale = (string) ($data['locale'] ?? 'ru');
 
+        $post->slug = (string) ($data['slug'] ?? null);
+        $post->title = (string) ($data['title'] ?? '');
+        $post->description = (string) ($data['description'] ?? '');
+        $post->content = (string) ($data['content'] ?? '');
+
+        $post->category_id = (int) ($data['category_id'] ?? null);
+        $post->views = (int) ($data['views'] ?? null);
+
+        
+        $post->cover = (string) ($data['cover'] ?? null);
+        $post->cover_small = (string) ($data['cover_small'] ?? null);
+
+        $post->datetime = !empty($data['datetime'])
+            ? (is_numeric($data['datetime'])
+                ? (new \DateTime())->setTimestamp((int)$data['datetime'])
+                : new \DateTime($data['datetime']))
+            : new \DateTime();;
+        $post->edit_time = (string) ($data['edit_time'] ?? '');
+dd($post);
         return $post;
     }
 
@@ -156,6 +167,11 @@ final class Post
     public function setTranslations(array $translations): void 
     {
       $this->translations = $translations;
+    }
+
+    public function setCategory(Category $category): void 
+    {
+      $this->category = $category;
     }
 
     

@@ -20,7 +20,8 @@ use Vvintage\DTO\PostCategory\PostCategoryOutputDTO;
 use Vvintage\DTO\Post\PostDTO;
 
 
-final class PostRepository extends AbstractRepository implements PostRepositoryInterface
+// final class PostRepository extends AbstractRepository implements PostRepositoryInterface
+final class PostRepository extends AbstractRepository 
 {  
     private const TABLE = 'posts';
     // private const TABLE_TRANSLATION = 'poststranslation';
@@ -42,6 +43,77 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
       $data = $bean->export();
  
       return Post::fromArray($data);
+    }
+
+    public function getPosts(array $filters = []): array 
+    {
+        $conditions = [];
+        $pagination = [];
+        $params = [];
+        if(isset($filters['pagination'])) {
+           $pagination = $filters['pagination'];
+        }
+
+        // применяем простые фильтры
+        [$conditions, $params] = $this->applySimpleFilters($filters, $conditions, $params);
+
+         // применяем сложные фильтры
+        [$conditions, $params, $orderBy] = $this->applyAdvancedFilters($filters, $conditions, $params);
+
+        // Вызов универсального метода
+        $beans = $this->findAll(
+            table: self::TABLE,
+            conditions: $conditions,
+            params: $params,
+            orderBy: $orderBy,
+            limit:  $pagination['perPage'] ?? null,
+            offset: $pagination['offset'] ?? null
+        );
+
+        return $beans;
+    }
+
+    private function applySimpleFilters(array $filters, array $conditions, array $params): array
+    {
+        if (isset($filters['id'])) {
+            $conditions[] = "id = ?";
+            $params[] = (int)$filters['id'];
+        }
+
+        // if (isset($filters['status'])) {
+        //     $conditions[] = "status = ?";
+        //     $params[] = $filters['status'];
+        // }
+
+        if (isset($filters['category_id'])) {
+            $conditions[] = "category_id = ?";
+            $params[] = (int)$filters['category_id'];
+        }
+
+        // $limit = !empty($filters['perPage']) ? (int)$filters['perPage'] : 20;
+
+        return [$conditions, $params];
+    }
+
+    private function applyAdvancedFilters(array $filters, array $conditions, array $params): array
+    {
+
+        // категории
+        if (!empty($filters['categories'])) {
+            $placeholders = R::genSlots($filters['categories']);
+            $conditions[] = "category_id IN ($placeholders)";
+            $params = array_merge($params, $filters['categories']);
+        }
+
+        // сортировка
+        $orderBy = 'datetime DESC';
+        $allowedSorts = ['id ASC', 'id DESC', 'datetime DESC'];
+        if (!empty($filters['sort']) && in_array($filters['sort'], $allowedSorts)) {
+            $orderBy = $filters['sort'];
+        }
+
+
+        return [$conditions, $params, $orderBy];
     }
 
 
@@ -210,10 +282,7 @@ final class PostRepository extends AbstractRepository implements PostRepositoryI
 
         $posts = [];
         foreach ($ids as $id) {
-            $beans = $this->unitePostRawData($id);
-            if ($beans) {
-                $posts[] = $this->fetchPostWithJoins($beans[0]);
-            }
+          $post = $this->getPostById($id);
         }
 
         return $posts;
