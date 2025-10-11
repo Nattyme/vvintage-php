@@ -36,10 +36,10 @@ final class PostController extends BaseController
     
         $this->setRouteData($routeData); // <-- передаём routeData
 
-        $id = (int) $routeData->uriGet; // получаем id плста из URL
+        $id = (int) $routeData->uriGet; // получаем id поста из URL
 
         $post = $this->postService->getPostById ($id);
-dd($post);
+
         // $post = $this->postService->getPost($id);
 
         if (!$post) {

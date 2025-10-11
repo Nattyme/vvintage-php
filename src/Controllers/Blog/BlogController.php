@@ -8,7 +8,7 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Post\PostService;
 use Vvintage\DTO\Post\PostDTO;
-
+use Vvintage\DTO\Post\PostFilterDTO;
 
 
 require_once ROOT . './libs/functions.php';
@@ -33,15 +33,31 @@ final class BlogController extends BaseController
 
       $pageTitle = 'Блог';
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
-      $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
       $pagination = pagination($postsPerPage, 'posts');
+      // Кол-во постов перенести в сервис настроек
+      $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
+
+      $filterDto = new PostFilterDTO([
+          'categories'=> $_GET['category'] ?? [],
+          'sort'      => $_GET['sort'] ?? null,
+          'search' => $_GET['q'] ?? null,
+          'page' =>  $page,
+          'perPage' => (int) $productsPerPage ?? 10
+      ]);
+
+
+      // Получаем статьи с учётом пагинации
+      $filteredPostsData = $this->postService->getFilteredPosts( filters: $filterDto, perPage: 9);
+      $posts =  $filteredPostsData['posts'];
+      $total = $filteredPostsData['total'];
+      $filters = $filteredPostsData['filters'];
+      $pagination = $filters['pagination'];
 
 
       // Получаем посты и категории
       $blogData = $this->postService->getBlogData( $pagination);
       $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($blogData['posts']);
-      $relatedPosts = $blogData['posts'];
-
+  
 
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
@@ -50,7 +66,7 @@ final class BlogController extends BaseController
           'subCategories' => $blogData['subCategories'],
           'totalPosts' =>  $blogData['totalPosts'],
           'shownPosts' => $shownPosts,
-          'relatedPosts' => $relatedPosts
+          'relatedPosts' => $blogData['relatedPosts']
       ];
 
 

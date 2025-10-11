@@ -86,6 +86,25 @@ class PostService extends BaseService
         // return Post::fromDTO($dto);
     }
 
+    public function getBlogData ( array $pagination): array
+    {
+      $posts = $this->getAllPosts($pagination);
+      dd($posts);
+      $mainCategories = $this->getAllMainCategories($this->currentLang);
+    
+      $subCategories = $this->getAllSubCategories($this->currentLang);
+      $relatedPosts = $blogData['posts'];
+      $totalPosts = $this->getTotalCount();
+
+      return [
+        'posts' => $posts,
+        'mainCategories' => $mainCategories,
+        'subCategories' => $subCategories,
+        'relatedPosts' => $relatedPosts,
+        'totalPosts' => $totalPosts
+      ];
+    }
+
 
 
 
@@ -141,21 +160,7 @@ class PostService extends BaseService
         return $dtos;
     }
 
-    public function getBlogData ( array $pagination): array
-    {
-      $posts = $this->getAllPosts($pagination);
-      $mainCategories = $this->getAllMainCategories($this->currentLang);
-    
-      $subCategories = $this->getAllSubCategories($this->currentLang);
-      $totalPosts = $this->getTotalCount();
-
-      return [
-        'posts' => $posts,
-        'mainCategories' => $mainCategories,
-        'subCategories' => $subCategories,
-        'totalPosts' => $totalPosts
-      ];
-    }
+  
 
     public function getPostViewData(int $id): array
     {
