@@ -39,6 +39,7 @@ final class PostController extends BaseController
         $id = (int) $routeData->uriGet; // получаем id поста из URL
 
         $post = $this->postService->getPostById ($id);
+        $postDto = $this->postService->getPostDto($post);
 
 
         if (!$post) {
@@ -55,10 +56,10 @@ final class PostController extends BaseController
         // $pagination = pagination($postsPerPage, 'posts');
         // $relatedPosts = $post;
         // $relatedPosts = $post->getRelated();
-dd($post);
+
         // Получаем seo страницы
         $seo = $this->seoService->getSeoForPage('post', $post);
-
+dd($seo);
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $post->getTitle());
 
@@ -71,7 +72,7 @@ dd($post);
 
         // Подключение шаблонов страницы
         $this->renderLayout('blog/post', [
-              'post' => $post,
+              'post' => $postDto,
               'seo' => $seo,
               'routeData' => $routeData,
               'viewModel' => $viewModel,

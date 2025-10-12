@@ -55,7 +55,7 @@ class PostService extends BaseService
         // );
     }
 
-    public function getPostById (int $id): PostFullDTO
+    public function getPostById (int $id): ?Post
     {
         $post = $this->repository->getPostById($id);
 
@@ -70,8 +70,13 @@ class PostService extends BaseService
         // Получаем модель категории и устанавливаем в модель поста
         $category = $this->categoryService->getCategoryById($id);
         $post->setCategory($category);
-        $dtoFactory = new PostFullDTOFactory($this->localeService);
+      
+        return $post;
+    }
 
+    public function getPostDto (Post $post): ?PostFullDTO
+    {
+        $dtoFactory = new PostFullDTOFactory($this->localeService);
         return $dtoFactory->createFromPost($post);
     }
 

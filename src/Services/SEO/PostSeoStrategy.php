@@ -16,39 +16,43 @@ class PostSeoStrategy implements SeoStrategyInterface
         $this->post = $post;
     }
 
+
     public function getSeo(): SeoDTO
     {
-      $locale = $this->post->getCurrentLocale();
-      $translations = $this->post->getTranslations();
+      $translations = $this->post->getCurrentTranslations();
 
-        
       return new SeoDTO(
-          $translations['title'] ?? $translations['title'] ?? '',
-          $translations['meta_description'] ?? $translations['title'] ?? '',
-          $translations['meta_title'] ?? $translations['title'] ?? '',
-          $translations['meta_description'] ?? $translations['description'] ?? ''
+        title: $translations['title'] ?? $translations['title'] ?? '',
+        description: $translations['description'] ?? $translations['title'] ?? '',
+        meta_title: $translations['meta_title'] ?? $translations['title'] ?? '',
+        meta_description: $translations['meta_description'] ?? $translations['description'] ?? '',
+        currentLang: $this->post->getCurrentLang(),
+        structuredData: $this->getStructuredData(),
+        isIndexed: 'index,follow'
       );
     }
 
     public function getStructuredData(): string
     {
-        $locale = $this->post->getCurrentLocale();
+        $currentLang = $this->post->getCurrentLang();
         $translations = $this->post->getTranslations();
-        $meta = $translations[$locale] ?? [];
+        $meta = $translations ?? [];
 
         $data = [
             "@context" => "https://schema.org",
-            "@type" => "Product",
+            "@type" => "Post",
             "name" => $meta['title'] ?? '',
             "description" => $meta['description'] ?? '',
-            "brand" => [
-                "@type" => "Brand",
-                "name" => $this->post->getBrandTitle()
-            ]
-            // "image" => $this->post->getImageUrl(),
+            "category" => [
+                "@type" => "Category",
+                "name" => $this->post->getCategory()->getSeoTitle(),
+                "description" => $this->post->getCategory()->getSeoDescription() ?? ''
+            ],
         ];
 
         return '<script type="application/ld+json">' . json_encode($data, JSON_UNESCAPED_UNICODE) . '</script>';
     }
+
+   
 
 }
