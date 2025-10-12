@@ -90,5 +90,12 @@ final class LocaleService
 
         return $formatter->format($dateTime);
     }
+
+    public function formatIsoDateTime(\DateTimeInterface $dateTime): string
+    {
+        // ISO 8601 формат для HTML <time datetime="...">
+        return $dateTime->format('c'); // эквивалент ISO 8601 (например, 2025-10-12T18:30:00+03:00)
+    }
+
 }
 

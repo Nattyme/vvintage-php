@@ -5,7 +5,7 @@ namespace Vvintage\DTO\PostCategory;
 
 use Vvintage\Models\PostCategory\PostCategory;
 
-final class PostCategoryListInBlog extends PostCategoryDTO
+final class PostCategoryListInBlogDto 
 {
     public ?int $parent_id;
     public string $title;

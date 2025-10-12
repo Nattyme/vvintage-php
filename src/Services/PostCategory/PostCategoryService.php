@@ -8,7 +8,7 @@ namespace Vvintage\Services\PostCategory;
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Repositories\PostCategory\PostCategoryRepository;
 use Vvintage\Repositories\PostCategory\PostCategoryTranslationRepository;
-use Vvintage\DTO\PostCategory\PostCategoryListInBlog;
+use Vvintage\DTO\PostCategory\PostCategoryListInBlogDto;
 
 use Vvintage\Services\Base\BaseService;
 
@@ -64,7 +64,7 @@ class PostCategoryService extends BaseService
         
       $categoriesWithTranslation = array_map(function ($category) {
           $this->addCategoryTranslate($category);
-          return new PostCategoryListInBlog($category, $this->currentLang);
+          return new PostCategoryListInBlogDto($category, $this->currentLang);
       }, $categories);
 
       return array_values($categoriesWithTranslation);
@@ -80,7 +80,7 @@ class PostCategoryService extends BaseService
         
       $categoriesWithTranslation = array_map(function ($category) {
           $this->addCategoryTranslate($category);
-          return new PostCategoryListInBlog($category, $this->currentLang);
+          return new PostCategoryListInBlogDto($category, $this->currentLang);
 
       }, $categories);
 

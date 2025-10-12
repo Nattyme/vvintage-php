@@ -16,6 +16,7 @@ final class BlogController extends BaseController
 {
   private Breadcrumbs $breadcrumbsService;
   private PostService $postService;
+  
 
     public function __construct(
         Breadcrumbs $breadcrumbs
@@ -23,6 +24,7 @@ final class BlogController extends BaseController
         parent::__construct(); // Важно!
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService();
+        
     }
 
     

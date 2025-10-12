@@ -11,8 +11,7 @@
   $description = h(shortText($post->description, $limit = 50));
 
   $views = $post->views ?  h($post->views) : '0';
-
-  $date = $post->edit_time;
+  $date =  $this->localeService->formatDateTime($post->date_time);
   // $rusDate = rus_date($rusDateFormat, $date);
   // $dateTime = date('Y-m-d', $date);   // Получим нужную дату в зав-ти от параметра
 ;?>

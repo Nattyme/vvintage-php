@@ -12,6 +12,7 @@ use Vvintage\Repositories\Post\PostTranslationRepository;
 /**Services */
 use Vvintage\Services\PostCategory\PostCategoryService;
 use Vvintage\Services\Shared\PaginationService;
+use Vvintage\Services\Locale\LocaleService;
 
 /** Model */
 use Vvintage\Models\Post\Post;
@@ -21,6 +22,7 @@ use Vvintage\DTO\Post\PostDTO;
 use Vvintage\DTO\Post\PostListDto;
 use Vvintage\DTO\Post\PostCardDTO;
 use Vvintage\DTO\Post\PostFilterDTO;
+use Vvintage\DTO\Post\PostListDTOFactory;
 
 class PostService extends BaseService
 {
@@ -28,6 +30,7 @@ class PostService extends BaseService
     private PostTranslationRepository $translationRepo;
     private PostCategoryService $categoryService;
     protected PaginationService $paginationService;
+    protected LocaleService $localeService;
 
     public function __construct()
     {
@@ -36,6 +39,7 @@ class PostService extends BaseService
       $this->translationRepo = new PostTranslationRepository();
       $this->categoryService = new PostCategoryService();
       $this->paginationService = new PaginationService();
+      $this->localeService = new LocaleService();
       // $this->postCategoryRepository = new PostCategoryRepository ();
     }
 
@@ -59,6 +63,7 @@ class PostService extends BaseService
 
         $translations = $this->translationRepo->getLocaleTranslation((int) $id, $this->currentLang) 
         ?? 
+
         $this->translationRepo->getLocaleTranslation((int) $id, $this->currentLang);
         $post->setTranslations($translations);
 
@@ -138,9 +143,10 @@ class PostService extends BaseService
       }
 
       $dtos = [];
+      $dtoFactory = new PostListDTOFactory($this->localeService);
       foreach ($posts as $model) {
           $modelFull = $this->setDataToPostModel($model);
-          $dtos[] = new PostListDTO($modelFull, $this->currentLang);
+          $dtos[]  = $dtoFactory->createFromPost($modelFull);
       }
 
       return ['posts' => $dtos, 'total' => $totalItems, 'filters' => $filters];

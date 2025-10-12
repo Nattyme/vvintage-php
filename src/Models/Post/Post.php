@@ -118,13 +118,21 @@ final class Post
     // Получение названия в нужной локали, иначе fallback title
     public function getTitle(?string $locale = null): string
     {
-      return $this->title;
-        // $locale = $locale ?? $this->currentLang;
+        $locale = $locale ?? null;
 
-        // return $this->translations[$locale]['title']
-        //     ?? $this->translations['ru']['title']
-        //     ?? $this->title;
+        return $this->translations[$locale]['title'] ?? $this->translations['ru']['title']
+            ?? $this->title;
     }
+
+    // Получение названия в нужной локали, иначе fallback description
+    public function getDescription(?string $locale = null): string
+    {
+      $locale = $locale ?? null;
+
+      return $this->translations[$locale]['description'] ?? $this->translations['ru']['description']
+          ?? $this->description;
+    }
+
 
     public function getCategoryId(): int 
     {
@@ -138,12 +146,7 @@ final class Post
     }
 
 
-    // Получение названия в нужной локали, иначе fallback description
-    public function getDescription(?string $locale = null): string
-    {
-        return $this->description;
-    }
-
+  
      // Получение названия в нужной локали, иначе fallback description
     public function getContent(?string $locale = null): string
     {

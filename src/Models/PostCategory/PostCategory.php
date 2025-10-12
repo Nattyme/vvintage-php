@@ -62,20 +62,29 @@ final class PostCategory
         return $category;
     }
 
-    // Получение названия в нужной локали, иначе fallback title
-    public function getTitle(): string
+    public function getTitle(?string $locale = null): string
     {
-        return $this->title;
+        $locale = $locale ?? null;
+
+        if($locale) {
+          return $this->translations[$locale]['title'];
+        }
+        return $this->translations['ru']['title']
+            ?? $this->title;
     }
 
+    // Получение названия в нужной локали, иначе fallback description
     public function getDescription(?string $locale = null): string
     {
-        $locale = $locale ?? $this->currentLocale;
+      $locale = $locale ?? null;
 
-        return $this->translations[$locale]['description']
-            ?? $this->translations['ru']['description']
-            ?? '';
+      if($locale) {
+        return $this->translations[$locale]['description'];
+      }
+      return $this->translations['ru']['description']
+          ?? $this->description;
     }
+
 
     // public function getSeoTitle(?string $locale = null): string
     // {
