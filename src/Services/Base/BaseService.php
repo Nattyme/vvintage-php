@@ -25,4 +25,6 @@ abstract class BaseService
     $this->languages = LanguageConfig::getAvailableLanguages();
   }
 
+  
+
 }

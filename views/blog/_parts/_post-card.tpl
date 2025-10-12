@@ -5,7 +5,7 @@
 
 <article class="post-card">
   <div class="post-card__img-wrapper">
-    <img src="<?php echo $coverPath . $coverFile;?>" alt="<?php echo $post->getTitle();?>">
+    <img src="<?php echo $coverPath . $coverFile;?>" alt="<?php echo $title;?>">
   </div>
   <div class="post-card__text">
     <div class="post-card__title">
@@ -18,7 +18,7 @@
           <svg class="icon icon--calendar">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#calendar';?>"></use>
           </svg>
-          <time datetime="<?php echo $dateTime;?>"><?php echo $rusDate;?></time>
+           <time datetime="<?php /* echo $dateTime; */?>"><?php /* echo $rusDate; */?></time> 
         </li>
         <li class="post-meta__views">
           <svg class="icon icon--eye">

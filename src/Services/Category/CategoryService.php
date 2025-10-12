@@ -103,7 +103,7 @@ class CategoryService extends BaseService
         ]);
     }
 
-     // Методы возвращают массив для api
+
 
 
 

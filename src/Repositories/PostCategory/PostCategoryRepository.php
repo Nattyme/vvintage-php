@@ -13,7 +13,8 @@ use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
 use Vvintage\DTO\PostCategory\PostCategoryOutputDTO;
 
 
-final class PostCategoryRepository extends AbstractRepository implements PostCategoryRepositoryInterface
+// final class PostCategoryRepository extends AbstractRepository implements PostCategoryRepositoryInterface
+final class PostCategoryRepository extends AbstractRepository 
 {
     private const TABLE = 'postscategories';
     // private const TABLE_TRANSLATION = 'postscategoriestranslation';
@@ -39,28 +40,65 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
     //     return $translations;
     // }
 
-    private function mapBeanToPostCategory(OODBBean $bean): PostCategory
+    // private function mapBeanToPostCategory(OODBBean $bean): PostCategory
+    // {
+    //     $translations = $this->loadTranslations((int) $bean->id);
+
+    //     $translatedData = $translations[$this->currentLang] ?? $translations[self::DEFAULT_LANG] ?? [
+    //       'title' => '',
+    //       'description' => '',
+    //       'meta_title' => '',
+    //       'meta_description' => ''
+    //     ];
+
+    //     $dto = new PostCategoryInputDTO([
+    //         'id' => (int) $bean->id,
+    //         'title' => (string) $bean->title,
+    //         'parent_id' => (int) $bean->parent_id,
+    //         'image' => (string) $bean->image,
+    //         'slug' => '', 
+    //         'translations' => $translations,
+    //     ]);
+
+    //     return PostCategory::fromDTO($dto);
+    // }
+
+    public function getCategoryById(int $id): ?PostCategory
     {
-        $translations = $this->loadTranslations((int) $bean->id);
+        $bean = $this->findById(self::TABLE, $id);
 
-        $translatedData = $translations[$this->currentLang] ?? $translations[self::DEFAULT_LANG] ?? [
-          'title' => '',
-          'description' => '',
-          'meta_title' => '',
-          'meta_description' => ''
-        ];
+        if (!$bean || !$bean->id) {
+            return null;
+        }
 
-        $dto = new PostCategoryInputDTO([
-            'id' => (int) $bean->id,
-            'title' => (string) $bean->title,
-            'parent_id' => (int) $bean->parent_id,
-            'image' => (string) $bean->image,
-            'slug' => '', 
-            'translations' => $translations,
-        ]);
-
-        return PostCategory::fromDTO($dto);
+        return PostCategory::fromBean($bean);
     }
+
+    public function getMainCats(): array
+    {
+        return $this->findCatsByParentId();
+    }
+
+    public function getSubCats(): array
+    {
+        $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NOT NULL']);
+        return array_map(fn($bean) => PostCategory::fromBean($bean), $beans);
+    }
+
+    public function findCatsByParentId(?int $parentId = null): array
+    {
+        if ($parentId === null) {
+            // $beans = $this->findAll(table: self::TABLE, 'parent_id IS NULL');
+            $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NULL']);
+        } else {
+            // $beans = $this->findAll(self::TABLE, 'parent_id = ?', [$parentId]);
+            $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id = ?'], params: [$parentId]);
+        }
+
+        return array_map(fn($bean) => PostCategory::fromBean($bean), $beans);
+    }
+
+   
 
     // private function createCategoryDTOFromArray(array $row): PostCategoryDTO
     // {
@@ -141,16 +179,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
 
 
-    public function getCategoryById(int $id): ?PostCategory
-    {
-        $bean = $this->findById(self::TABLE, $id);
 
-        if (!$bean || !$bean->id) {
-            return null;
-        }
-
-        return PostCategory::fromBean($bean);
-    }
 
     
     public function getAllCategories(): array
@@ -177,16 +206,7 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
         return array_map([$this, 'mapBeanToPostCategory'], $beans);
     }
 
-    public function getMainCats(string $currentLang): array
-    {
-        $rows = $this->unitePostRawData($currentLang);
-
-        $mainCategories = array_filter($rows, function ($row) {
-            return $row['parent_id'] === null;
-        });
-
-        return array_map([$this, 'mapArrayToPostCategory'], $mainCategories);
-    }
+    
 
     public function getParentCategory(PostCategory $childCategrory): ?PostCategory
     {
@@ -196,16 +216,16 @@ final class PostCategoryRepository extends AbstractRepository implements PostCat
 
     
 
-    public function getSubCats($currentLang): array
-    {
-        $rows = $this->unitePostRawData($currentLang);
+    // public function getSubCats($currentLang): array
+    // {
+    //     $rows = $this->unitePostRawData($currentLang);
 
-        $subCategories = array_filter($rows, function ($row) {
-            return $row['parent_id'] !== null;
-        });
+    //     $subCategories = array_filter($rows, function ($row) {
+    //         return $row['parent_id'] !== null;
+    //     });
 
-        return array_map([$this, 'mapArrayToPostCategory'], $subCategories);
-    }
+    //     return array_map([$this, 'mapArrayToPostCategory'], $subCategories);
+    // }
 
 
     public function savePostCat(PostCategory $cat): int

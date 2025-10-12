@@ -5,7 +5,7 @@
 
 <article class="post-card-small">
   <div class="post-card-small__img-wrapper">
-    <img src="<?php echo $coverPath . $coverFile;?>" alt="<?php echo $post->gettTitle;?>">
+    <img src="<?php echo $coverPath . $coverFile;?>" alt="<?php echo $title;?>">
   </div>
   <div class="post-card-small__text">
     <div class="post-card-small__title">

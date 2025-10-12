@@ -13,7 +13,7 @@
               <?php if ( $viewModel['posts'] && !empty($viewModel['posts'])) : ?>
                 <?php foreach ($viewModel['posts'] as $post) : ?>
                   <li class="posts__item">
-                    <a href="<?php echo HOST . "blog/{$post->getId()}"?>" class="posts__link">
+                    <a href="<?php echo HOST . "blog/{$post->id}"?>" class="posts__link">
                       <!-- CARD -->
                       <?php include ROOT . 'views/blog/_parts/_post-card.tpl';?>
                       <!-- // CARD -->
@@ -29,7 +29,7 @@
 
           <!-- pagination -->
           <div class="page-blog__pagination">
-            <?php include ROOT . "views/_parts/pagination/_pagination.tpl";?>
+            <?php /* include ROOT . "views/_parts/pagination/_pagination.tpl" */;?>
           </div>
           <!-- pagination -->
         </section>

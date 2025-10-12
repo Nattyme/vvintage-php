@@ -8,7 +8,10 @@ use Vvintage\Services\Base\BaseService;
 /* Repository */
 use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Repositories\Post\PostTranslationRepository;
+
+/**Services */
 use Vvintage\Services\PostCategory\PostCategoryService;
+use Vvintage\Services\Shared\PaginationService;
 
 /** Model */
 use Vvintage\Models\Post\Post;
@@ -17,12 +20,14 @@ use Vvintage\Models\Post\Post;
 use Vvintage\DTO\Post\PostDTO;
 use Vvintage\DTO\Post\PostListDto;
 use Vvintage\DTO\Post\PostCardDTO;
+use Vvintage\DTO\Post\PostFilterDTO;
 
 class PostService extends BaseService
 {
     private PostRepository $repository;
     private PostTranslationRepository $translationRepo;
     private PostCategoryService $categoryService;
+    protected PaginationService $paginationService;
 
     public function __construct()
     {
@@ -30,6 +35,7 @@ class PostService extends BaseService
       $this->repository = new PostRepository ();
       $this->translationRepo = new PostTranslationRepository();
       $this->categoryService = new PostCategoryService();
+      $this->paginationService = new PaginationService();
       // $this->postCategoryRepository = new PostCategoryRepository ();
     }
 
@@ -86,24 +92,138 @@ class PostService extends BaseService
         // return Post::fromDTO($dto);
     }
 
-    public function getBlogData ( array $pagination): array
+
+    public function getFilteredPosts(PostFilterDTO $filters, ?int $perPage = null): array 
     {
-      $posts = $this->getAllPosts($pagination);
-      dd($posts);
-      $mainCategories = $this->getAllMainCategories($this->currentLang);
+      //  dd($filters);
+      $categories = !empty($filters->categories) ? $filters->categories : null;
     
-      $subCategories = $this->getAllSubCategories($this->currentLang);
-      $relatedPosts = $blogData['posts'];
+      if( $categories && count( $categories) === 1) {
+        $id = (int) $categories[0];
+        $category = $this->categoryService->getCategoryById($id) ?? null;
+        $parent_id = $category->getParentId() ?? null;
+    
+        if(!$parent_id) {
+          $subCategories = $this->categoryService->getSubCategoriesArray($id);
+          
+          // Получаем только id из массива подкатегорий
+          $subCategoryIds = array_column($subCategories, 'id');
+
+          // Теперь можно подставить эти id в фильтр
+          if (!empty($subCategoryIds)) {
+              $filters->categories = $subCategoryIds;
+          }
+        }
+      
+      }
+
+      if ($filters instanceof PostFilterDTO) {
+          $filters = [
+              'categories' => $filters->categories,
+              'sort'       => $filters->sort
+          ];
+      }
+
+      // Получаем массив продуктов по фильтру
+      $posts = $this->repository->getPosts($filters);
+
+      if( $perPage) {
+        $totalItems = count($posts);   // Считаем общее кол-во
+        // Добавляем данные по пагинации в фильтр
+        $filters = $this->addPaginationToFilter($filters, $totalItems, $perPage);
+ 
+        // Теперь получаем только продукты для этой страницы
+        $posts = $this->repository->getPosts($filters);
+        
+      }
+
+      $dtos = [];
+      foreach ($posts as $model) {
+          $modelFull = $this->setDataToPostModel($model);
+          $dtos[] = new PostListDTO($modelFull, $this->currentLang);
+      }
+
+      return ['posts' => $dtos, 'total' => $totalItems, 'filters' => $filters];
+    }
+    
+    public function getLastPosts(int $count): array
+    {
+        $models = $this->repository->getLastPosts($count);
+        if (!$models) {
+            return [];
+        }
+
+        $dtos = [];
+        foreach ($models as $model) {
+            $modelFull = $this->setDataToPostModel($model);
+            $dtos[] = new PostCardDTO($modelFull, $this->currentLang);
+        }
+
+        return $dtos;
+    }
+
+    private function addPaginationToFilter($filters, $totalItems, $perPage)
+    {
+      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+      $pagination = $this->paginationService->paginate( totalItems: $totalItems, currentPage: $currentPage, perPage: $perPage);
+
+      // Добавляем пагинацию в фильтры
+      $filters['pagination']['page_number'] = $pagination['current_page'];
+      $filters['pagination']['perPage'] = $pagination['perPage'];
+      $filters['pagination']['number_of_pages'] = $pagination['number_of_pages'];
+      $filters['pagination']['offset'] = $pagination['offset'];
+  
+      // $filters['perPage'] = $pagination['perPage'];
+      // $filters['number_of_pages'] = $pagination['number_of_pages'];
+      return $filters;
+    }
+
+    public function getBlogData(array $getData, int $postsPerPage)
+    {
+       $filterDto = new PostFilterDTO([
+          'categories'=> $getData['category'] ?? [],
+          'sort'      => $getData['sort'] ?? null,
+          'search' => $getData['q'] ?? null,
+          // 'page' =>  $page,
+          'perPage' => (int) $postsPerPage ?? 10
+      ]);
+
+
+      // Получаем статьи с учётом пагинации
+      $filteredPostsData = $this->getFilteredPosts( filters: $filterDto, perPage: 9);
+     
+      $posts =  $filteredPostsData['posts'];
+      $total = $filteredPostsData['total'];
+      $filters = $filteredPostsData['filters'];
+      $pagination = $filters['pagination'];
+
+      $mainCategories =  $this->categoryService->getMainCategories();
+      $subCategories =  $this->categoryService->getSubCategories();
+  
+      // $relatedPosts = $blogData['posts'];
       $totalPosts = $this->getTotalCount();
 
       return [
         'posts' => $posts,
         'mainCategories' => $mainCategories,
         'subCategories' => $subCategories,
-        'relatedPosts' => $relatedPosts,
-        'totalPosts' => $totalPosts
+        // 'relatedPosts' => $relatedPosts,
+        'totalPosts' => $total
       ];
     }
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -144,21 +264,7 @@ class PostService extends BaseService
       return $this->postCategoryRepository->getSubCats($this->currentLang);
     }
 
-    public function getLastPosts(int $count): array
-    {
-        $models = $this->repository->getLastPosts($count);
-        if (!$models) {
-            return [];
-        }
-
-        $dtos = [];
-        foreach ($models as $model) {
-            $modelFull = $this->setDataToPostModel($model);
-            $dtos[] = new PostCardDTO($modelFull, $this->currentLang);
-        }
-
-        return $dtos;
-    }
+  
 
   
 

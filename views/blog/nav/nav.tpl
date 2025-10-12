@@ -7,7 +7,7 @@
           class="blog-nav__link" 
           href="<?php echo HOST . "blog/"?>"
         >
-        <?php echo  h($category->getTitle()) ;?>
+        <?php echo  h($category->title) ;?>
         </a>
       </li>
     <?php endforeach; ?>

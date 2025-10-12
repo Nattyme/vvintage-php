@@ -55,6 +55,7 @@ class Product
 
     public static function fromDTO(ProductDTO $dto): self
     {
+    
       $product = new self();
 
       $product->id = $dto->id;
@@ -83,7 +84,7 @@ class Product
     public static function fromArray(array $data): self
     {
       $product = new self();
-
+ 
       $product->id = (int) ($data['id'] ?? 0);
       $product->category_id = (int) ($data['category_id'] ?? 0);
       $product->brand_id = (int) ($data['brand_id'] ?? 0);
@@ -155,7 +156,7 @@ class Product
 
     public function getDescription(): string
     {
-        return $this->descriptionn;
+        return $this->description;
     }
 
 

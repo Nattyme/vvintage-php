@@ -34,7 +34,7 @@
           <?php foreach( $viewModel['subCategories'] as $category) : ?>
             <li class="widget__item">
               <a href="#!" class="widget__link widget__link--categories">
-                <?php echo h($category->getTitle()) ;?>
+                <?php echo h($category->title) ;?>
               </a>
             </li>
           <?php endforeach; ?>
@@ -53,7 +53,7 @@
         <ul class="widget__list" aria-labelledby="other-articles-title">
           <?php foreach ($relatedPosts as $post) : ?>
             <li class="widget__item widget__item--related">
-              <a href="<?php echo HOST . "blog/{$post->getId()}"?>" class="widget__link">
+              <a href="<?php echo HOST . "blog/{$post->id}"?>" class="widget__link">
                 <?php include ROOT . 'views/blog/_parts/_sidebar/_post-card-small.tpl';?>
               </a>
             </li>

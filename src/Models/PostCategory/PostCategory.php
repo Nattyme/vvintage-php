@@ -63,13 +63,9 @@ final class PostCategory
     }
 
     // Получение названия в нужной локали, иначе fallback title
-    public function getTitle(?string $locale = null): string
+    public function getTitle(): string
     {
-        $locale = $locale ?? $this->currentLocale;
-
-        return $this->translations[$locale]['title']
-            ?? $this->translations['ru']['title']
-            ?? $this->title;
+        return $this->title;
     }
 
     public function getDescription(?string $locale = null): string

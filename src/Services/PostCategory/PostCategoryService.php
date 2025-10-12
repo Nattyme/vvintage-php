@@ -8,6 +8,7 @@ namespace Vvintage\Services\PostCategory;
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Repositories\PostCategory\PostCategoryRepository;
 use Vvintage\Repositories\PostCategory\PostCategoryTranslationRepository;
+use Vvintage\DTO\PostCategory\PostCategoryListInBlog;
 
 use Vvintage\Services\Base\BaseService;
 
@@ -53,15 +54,63 @@ class PostCategoryService extends BaseService
     }
 
 
-    
     public function getMainCategories(): array
     {
-      return $this->repository->getMainCats($this->currentLang);
+      $categories = $this->repository->getMainCats();
+
+      if (!$categories) {
+        return [];
+      }
+        
+      $categoriesWithTranslation = array_map(function ($category) {
+          $this->addCategoryTranslate($category);
+          return new PostCategoryListInBlog($category, $this->currentLang);
+      }, $categories);
+
+      return array_values($categoriesWithTranslation);
     }
+
     public function getSubCategories(): array
     {
-      return $this->repository->getSubCats($this->currentLang);
+      $categories = $this->repository->getSubCats();
+      
+      if (!$categories) {
+        return [];
+      }
+        
+      $categoriesWithTranslation = array_map(function ($category) {
+          $this->addCategoryTranslate($category);
+          return new PostCategoryListInBlog($category, $this->currentLang);
+
+      }, $categories);
+
+      return array_values($categoriesWithTranslation);
     }
+
+    
+    private function addCategoryTranslate(PostCategory $category): PostCategory
+    {
+        $id = (int) $category->getId();
+
+        $translations = $this->translationRepo->loadTranslations($id) ?? [];
+        $category->setTranslations($translations );
+
+        return $category;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function getAllCategories($pagination = null): array
     {
       return $this->repository->getAllCategories($pagination);
