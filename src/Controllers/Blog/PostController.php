@@ -40,7 +40,6 @@ final class PostController extends BaseController
 
         $post = $this->postService->getPostById ($id);
 
-        // $post = $this->postService->getPost($id);
 
         if (!$post) {
             http_response_code(404);
@@ -52,11 +51,11 @@ final class PostController extends BaseController
         $subCategories = $this->postService->getAllSubCategories();
 
         // Получаем похожие посты
-        $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);;
-        $pagination = pagination($postsPerPage, 'posts');
+        // $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);;
+        // $pagination = pagination($postsPerPage, 'posts');
         // $relatedPosts = $post;
         // $relatedPosts = $post->getRelated();
-
+dd($post);
         // Получаем seo страницы
         $seo = $this->seoService->getSeoForPage('post', $post);
 

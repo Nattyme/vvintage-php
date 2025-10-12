@@ -39,10 +39,7 @@ final class PostRepository extends AbstractRepository
 
     public function getPostById(int $id): ?Post
     {
-      $bean = array_values($this->getPosts(['id' => $id]))[0];
-      $data = $bean->export();
- 
-      return Post::fromArray($data);
+      return array_values($this->getPosts(['id' => $id]))[0];
     }
 
     public function getPosts(array $filters = []): array 

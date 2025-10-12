@@ -133,6 +133,20 @@ final class Post
           ?? $this->description;
     }
 
+    // Получение названия в нужной локали, иначе fallback description
+    public function getContent(?string $locale = null): string
+    {
+      $locale = $locale ?? null;
+
+      return $this->translations[$locale]['content'] ?? $this->translations['ru']['content']
+          ?? $this->content;
+    }
+
+    public function getSlug(): string 
+    {
+      return $this->slug;
+    }
+
 
     public function getCategoryId(): int 
     {
@@ -143,14 +157,6 @@ final class Post
     public function getCategory(): ?PostCategory
     {
       return $this->category;
-    }
-
-
-  
-     // Получение названия в нужной локали, иначе fallback description
-    public function getContent(?string $locale = null): string
-    {
-      return $this->content;
     }
 
     

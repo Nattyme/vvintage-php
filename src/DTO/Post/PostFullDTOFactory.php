@@ -3,33 +3,36 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Post;
 
-use Vvintage\DTO\Post\PostListDto;
+use Vvintage\DTO\Post\PostFullDto;
 
 /** Model */
 use Vvintage\Models\Post\Post;
 
 use Vvintage\Services\Locale\LocaleService;
 
-final class PostListDTOFactory
+final class PostFullDTOFactory
 {
     public function __construct(
-        private LocaleService $localeService
-    ) {
+      private LocaleService $localeService
+    ) 
+    {
       $this->localeService = $localeService;
     }
 
-    public function createFromPost(Post $post): PostListDTO
+    public function createFromPost(Post $post): PostFullDTO
     {
         $currentLang = $this->localeService->getCurrentLang();
         $category = $post->getCategory();
-        $coverFile = $post->getCoverSmall() && file_exists(HOST . 'usercontent/blog/' . $post->getCoverSmall())
-                    ? h($post->getCoverSmall())
+        $coverFile = $post->getCover() && file_exists(HOST . 'usercontent/blog/' . $post->getCover())
+                    ? h($post->getCover())
                     : 'no-photo@2x.jpg';
 
-        return new PostListDTO(
+        return new PostFullDTO(
             id: (int) ($post->getId() ?? null),
             title: (string) ($post->getTitle($currentLang) ?? ''),
             description: (string) ($post->getDescription($currentLang) ?? ''),
+            content: (string) ($post->getContent($currentLang) ?? ''),
+            slug: (string) ($post->getSlug() ?? ''),
 
             category_id : (int) ($category->getId() ?? null),
             category_parent_id : (int) ($category->getParentId() ?? null),
@@ -38,7 +41,7 @@ final class PostListDTOFactory
 
             formatted_date: (string) ( $this->localeService->formatDateTime($post->getDateTime()) ),
             iso_date:(string) $post->getDateTime()->format('c'),
-            cover_small: (string) $coverFile,
+            cover: (string) $coverFile,
             views: (int)  ($post->getViews() ?? 0)
         );
     }

@@ -23,6 +23,8 @@ use Vvintage\DTO\Post\PostListDto;
 use Vvintage\DTO\Post\PostCardDTO;
 use Vvintage\DTO\Post\PostFilterDTO;
 use Vvintage\DTO\Post\PostListDTOFactory;
+use Vvintage\DTO\Post\PostFullDTO;
+use Vvintage\DTO\Post\PostFullDTOFactory;
 
 class PostService extends BaseService
 {
@@ -53,7 +55,7 @@ class PostService extends BaseService
         // );
     }
 
-    private function getPostById (int $id): Post
+    public function getPostById (int $id): PostFullDTO
     {
         $post = $this->repository->getPostById($id);
 
@@ -61,40 +63,16 @@ class PostService extends BaseService
             return [];
         }
 
-        $translations = $this->translationRepo->getLocaleTranslation((int) $id, $this->currentLang) 
-        ?? 
-
-        $this->translationRepo->getLocaleTranslation((int) $id, $this->currentLang);
+        // Получаем все переводы и устанавливаем в модель
+        $translations = $this->translationRepo->loadTranslations($id);
         $post->setTranslations($translations);
 
-        $category = $this->categoryService->getLocaledCategory($id);
+        // Получаем модель категории и устанавливаем в модель поста
+        $category = $this->categoryService->getCategoryById($id);
         $post->setCategory($category);
+        $dtoFactory = new PostFullDTOFactory($this->localeService);
 
-
-        return $post;
-
-        // $postId = (int) $row['id'];
-
-        // $translations = $this->translationRepo->loadTranslations($postId);
-    
-        // $categoryDTO = $this->createCategoryOutputDTO($row);
-
-        // $dto = new PostDTO([
-        //     'id' => (int) $row['id'],
-        //     'categoryDTO' => $categoryDTO,
-        //     'title' => (string) $row['title'],
-        //     'description' => (string) $row['description'],
-        //     'content' => (string) $row['content'],
-        //     'slug' => (string) $row['slug'],
-        //     'views' => (int) $row['views'],
-        //     'cover' => (string) $row['cover'],
-        //     'cover_small' => (string) $row['cover_small'],
-        //     'datetime' => (string) $row['datetime'],
-        //     'translations' => $translations,
-        //     'locale' => $this->currentLang ?? self::DEFAULT_LANG
-        // ]);
-
-        // return Post::fromDTO($dto);
+        return $dtoFactory->createFromPost($post);
     }
 
 
@@ -218,6 +196,43 @@ class PostService extends BaseService
       ];
     }
 
+    public function getPostViewData(int $id): array
+    {
+      $post = $this->getPost($id);
+      $category = $post->getCategory();
+
+      $mainCatId = $category->getParentId();
+      $mainCategory =  $this->postCategoryRepository->getPostCatById($mainCatId);
+      $allMainCategories = $this->getAllMainCategories();
+      $allSubCategories = $this->getAllSubCategories();
+
+      return [
+        'post' => $post,
+        'category' => $category,
+        'mainCategory' =>  $mainCategory,
+        'allMainCategories' => $allMainCategories,
+        'allSubCategories' => $allSubCategories,
+      ];
+
+    }
+
+    public function getAllMainCategories(): array
+    { 
+      return $this->categoryService->getMainCategories();
+    }
+
+    public function getAllSubCategories(): array
+    { 
+      return $this->categoryService->getSubCategories();
+    }
+
+
+
+
+
+
+
+
     
 
 
@@ -260,39 +275,12 @@ class PostService extends BaseService
 
     // }
 
-    public function getAllMainCategories(): array
-    { 
-      return $this->postCategoryRepository->getMainCats($this->currentLang);
-    }
-
-    public function getAllSubCategories(): array
-    { 
-      return $this->postCategoryRepository->getSubCats($this->currentLang);
-    }
 
   
 
   
 
-    public function getPostViewData(int $id): array
-    {
-      $post = $this->getPost($id);
-      $category = $post->getCategory();
-
-      $mainCatId = $category->getParentId();
-      $mainCategory =  $this->postCategoryRepository->getPostCatById($mainCatId);
-      $allMainCategories = $this->getAllMainCategories();
-      $allSubCategories = $this->getAllSubCategories();
-
-      return [
-        'post' => $post,
-        'category' => $category,
-        'mainCategory' =>  $mainCategory,
-        'allMainCategories' => $allMainCategories,
-        'allSubCategories' => $allSubCategories,
-      ];
-
-    }
+  
 
     private function setDataToPostModel (Post $post): ?Post 
     {
