@@ -40,7 +40,8 @@ final class BlogController extends BaseController
       $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
 
       // Получаем посты и категории
-      $blogData = $this->postService->getBlogData($_GET, $postsPerPage);
+      $slug = $routeData->uriGet ?? null;
+      $blogData = $this->postService->getBlogData(array_merge($routeData->uriGetParams, ['slug' => $slug]), $postsPerPage);
       // $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
   
       // Формируем единую модель для передачи в шаблон

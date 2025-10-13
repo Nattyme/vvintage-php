@@ -7,11 +7,11 @@ use Vvintage\Models\PostCategory\PostCategory;
 
 final class PostCategoryListInBlogDto 
 {
-  
     public function __construct(
-      public $id,
-      public $parent_id,
-      public $title
+      public int $id,
+      public int $parent_id,
+      public string $slug,
+      public string $title
     )
     {
 

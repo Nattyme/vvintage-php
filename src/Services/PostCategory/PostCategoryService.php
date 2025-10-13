@@ -38,6 +38,12 @@ class PostCategoryService extends BaseService
       return $category;
     }
 
+    public function getCategoryBySlug(?string $slug): ?PostCategory
+    {
+      if(!$slug) return null;
+      return $this->repository->getCategoryBySlug($slug);
+    }
+
     public function getMainCategoriesArray(): array
     {
       return $this->repository->getMainCategoriesArray();
@@ -68,6 +74,7 @@ class PostCategoryService extends BaseService
           return new PostCategoryListInBlogDto(
             id: $category->getId(),
             parent_id: $category->getParentId(),
+            slug: $category->getSlug(),
             title: $category->getTranslation($this->currentLang)['title'],
           );
       }, $categories);
@@ -86,8 +93,9 @@ class PostCategoryService extends BaseService
       $categoriesWithTranslation = array_map(function ($category) {
           $this->addCategoryTranslate($category);
           return new PostCategoryListInBlogDto(
-               id: $category->getId(),
+            id: $category->getId(),
             parent_id: $category->getParentId(),
+            slug: $category->getSlug(),
             title: $category->getTranslation($this->currentLang)['title'],
           );
 

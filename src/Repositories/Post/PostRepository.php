@@ -56,7 +56,7 @@ final class PostRepository extends AbstractRepository
 
          // применяем сложные фильтры
         [$conditions, $params, $orderBy] = $this->applyAdvancedFilters($filters, $conditions, $params);
-
+// dd($params);
         // Вызов универсального метода
         $beans = $this->findAll(
             table: self::TABLE,

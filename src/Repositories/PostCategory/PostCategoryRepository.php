@@ -74,6 +74,18 @@ final class PostCategoryRepository extends AbstractRepository
         return PostCategory::fromBean($bean);
     }
 
+
+    public function getCategoryBySlug(string $slug): ?PostCategory
+    {
+        $bean = $this->findOneBy(self::TABLE, 'slug = ?', [$slug]);
+
+        if (!$bean || !$bean->id) {
+            return null;
+        }
+
+        return PostCategory::fromBean($bean);
+    }
+
     public function getMainCats(): array
     {
         return $this->findCatsByParentId();

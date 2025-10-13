@@ -368,7 +368,11 @@
 
         if ($routeData->uriModule === 'add-comment') {
           // require ROOT . 'modules/blog/add-comment.php';
-        } elseif (!empty($routeData->uriGet)) {
+        } 
+        elseif ($routeData->uriModule === 'blog' && isset($routeData->uriGet)) {
+          $blogController->index($routeData);
+        }
+        elseif ($routeData->uriModule === 'post' && !empty($routeData->uriGet)) {
           $postController->index($routeData);
         } 
         else {

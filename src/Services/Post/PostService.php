@@ -74,6 +74,8 @@ class PostService extends BaseService
         return $post;
     }
 
+  
+
     public function getPostDto (Post $post): ?PostFullDTO
     {
         $dtoFactory = new PostFullDTOFactory($this->localeService);
@@ -83,36 +85,18 @@ class PostService extends BaseService
 
     public function getFilteredPosts(PostFilterDTO $filters, ?int $perPage = null): array 
     {
-      //  dd($filters);
-      $categories = !empty($filters->categories) ? $filters->categories : null;
-    
-      if( $categories && count( $categories) === 1) {
-        $id = (int) $categories[0];
-        $category = $this->categoryService->getCategoryById($id) ?? null;
-        $parent_id = $category->getParentId() ?? null;
-    
-        if(!$parent_id) {
-          $subCategories = $this->categoryService->getSubCategoriesArray($id);
-          
-          // Получаем только id из массива подкатегорий
-          $subCategoryIds = array_column($subCategories, 'id');
-
-          // Теперь можно подставить эти id в фильтр
-          if (!empty($subCategoryIds)) {
-              $filters->categories = $subCategoryIds;
-          }
-        }
-      
-      }
-
+     
+      // $category = !empty($filters->category) ? $filters->category : null;
       if ($filters instanceof PostFilterDTO) {
           $filters = [
-              'categories' => $filters->categories,
-              'sort'       => $filters->sort
+              'categories' => !empty($filters->categories) 
+                              ? array_values((array)$filters->categories) // приведение к массиву
+                              : [],
+              'sort'       => $filters->sort ?? null
           ];
       }
 
-      // Получаем массив продуктов по фильтру
+      // Получаем массив постов по фильтру
       $posts = $this->repository->getPosts($filters);
 
       if( $perPage) {
@@ -167,15 +151,19 @@ class PostService extends BaseService
       return $filters;
     }
 
-    public function getBlogData(array $getData, int $postsPerPage)
+    public function getBlogData($getData, int $postsPerPage)
     {
-       $filterDto = new PostFilterDTO([
-          'categories'=> $getData['category'] ?? [],
-          'sort'      => $getData['sort'] ?? null,
-          'search' => $getData['q'] ?? null,
+    
+        $category = $this->categoryService->getCategoryBySlug($getData['slug']);
+        $category_id = $category ? $category->getId() : null;
+
+       $filterDto = new PostFilterDTO(
+          categories: $category_id ?? null,
+          sort: $getData['sort'] ?? null,
+          search: $getData['q'] ?? null,
           // 'page' =>  $page,
-          'perPage' => (int) $postsPerPage ?? 10
-      ]);
+          perPage: (int) $postsPerPage ?? 10
+        );
 
 
       // Получаем статьи с учётом пагинации
@@ -203,6 +191,7 @@ class PostService extends BaseService
 
     public function getPostViewData(int $id): array
     {
+      
       $post = $this->getPost($id);
       $category = $post->getCategory();
 

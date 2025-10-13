@@ -6,7 +6,7 @@
      
         <a 
           class="blog-nav__link" 
-          href="<?php echo HOST . 'blog?category=' . $category->id?>"
+          href="<?php echo HOST . 'blog/' . $category->slug?>"
         >
         <?php echo  h($category->title) ;?>
         </a>

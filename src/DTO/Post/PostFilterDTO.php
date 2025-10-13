@@ -5,13 +5,13 @@ namespace Vvintage\DTO\Post;
 
 
 class PostFilterDTO {
-    public array $categories = [];
-    public ?string $sort = null;
-    public ?array $pagination = [];
+   
 
-    public function __construct(array $query) {
-        $this->categories = $query['categories'] ?? [];
-        $this->sort = $query['sort'] ?? null;
-        $this->pagination = $query['pagination'] ?? [];
-    }
+    public function __construct(
+      public $categories = null,
+      public $search = null,
+      public $sort = null,
+      public $pagination = [],
+      public $perPage = []
+    ) {}
 }
