@@ -208,7 +208,5 @@ final class Post
     {
         return $this->translations[$locale] ?? $this->translations['ru'] ?? [];
     }
-
-
     
 }

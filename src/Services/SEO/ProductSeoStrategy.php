@@ -10,10 +10,12 @@ use Vvintage\DTO\Common\SeoDTO;
 class ProductSeoStrategy implements SeoStrategyInterface
 {
     private $product;
+    private $lang;
 
-    public function __construct($product)
+    public function __construct($product, $lang)
     {
         $this->product = $product;
+        $this->lang = $lang;
     }
 
    
@@ -26,7 +28,7 @@ class ProductSeoStrategy implements SeoStrategyInterface
         description: $translations['description'] ?? $translations['title'] ?? '',
         meta_title: $translations['meta_title'] ?? $translations['title'] ?? '',
         meta_description: $translations['meta_description'] ?? $translations['description'] ?? '',
-        currentLang: $this->product->getCurrentLang(),
+        currentLang: $this->lang,
         structuredData: $this->getStructuredData(),
         isIndexed: 'index,follow'
       );

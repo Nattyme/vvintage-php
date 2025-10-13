@@ -59,7 +59,7 @@ final class PostController extends BaseController
 
         // Получаем seo страницы
         $seo = $this->seoService->getSeoForPage('post', $post);
-dd($seo);
+
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $post->getTitle());
 

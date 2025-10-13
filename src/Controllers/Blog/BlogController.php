@@ -30,6 +30,7 @@ final class BlogController extends BaseController
     
     public function index(RouteData $routeData): void
     {
+   
       $this->setRouteData($routeData); // <-- передаём routeData
 
       $pageTitle = 'Блог';
@@ -52,6 +53,7 @@ final class BlogController extends BaseController
           // 'relatedPosts' => $blogData['relatedPosts']
       ];
 
+    
 
       $this->renderLayout('blog/blog', [
           // 'pagination' => $pagination,
@@ -64,4 +66,6 @@ final class BlogController extends BaseController
           'languages' => $this->postService->languages
       ]);
     }
+
+ 
 }

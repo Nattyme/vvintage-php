@@ -61,10 +61,15 @@ class PostCategoryService extends BaseService
       if (!$categories) {
         return [];
       }
-        
       $categoriesWithTranslation = array_map(function ($category) {
-          $this->addCategoryTranslate($category);
-          return new PostCategoryListInBlogDto($category, $this->currentLang);
+        
+        $this->addCategoryTranslate($category);
+      // dd($category->getTranslation($this->currentLang));
+          return new PostCategoryListInBlogDto(
+            id: $category->getId(),
+            parent_id: $category->getParentId(),
+            title: $category->getTranslation($this->currentLang)['title'],
+          );
       }, $categories);
 
       return array_values($categoriesWithTranslation);
@@ -80,7 +85,11 @@ class PostCategoryService extends BaseService
         
       $categoriesWithTranslation = array_map(function ($category) {
           $this->addCategoryTranslate($category);
-          return new PostCategoryListInBlogDto($category, $this->currentLang);
+          return new PostCategoryListInBlogDto(
+               id: $category->getId(),
+            parent_id: $category->getParentId(),
+            title: $category->getTranslation($this->currentLang)['title'],
+          );
 
       }, $categories);
 

@@ -3,7 +3,7 @@
     <div class="hero__background">
       <div class="hero__img-wrapper">
         <picture>
-          <source srcset="<?php echo HOST . 'static/img/hero/01.webp 1x,' . 'static/img/hero/01.webp 2x';?>" type="image/webp" />
+          <source srcset="<?php echo HOST . 'static/img/hero/01.jpg 1x,' . 'static/img/hero/01.jpg 2x';?>" type="image/webp" />
           <source srcset="<?php echo HOST . 'static/img/hero/01.jpg 1x,' . 'static/img/hero/01.jpg 2x';?>" type="image/jpeg" />
           <img class="hero__img" src="<?php echo HOST . 'static/img/hero/01.jpg';?>" srcset="<?php echo HOST . 'static/img/hero/01@2x.jpg';?>" alt="" />
         </picture>
@@ -15,7 +15,7 @@
     <div class="hero__content-wrapper">
       <div class="hero__text">
         <div class="hero__title">
-          <!-- <h1 class="h1"><?php /** echo h($main['hero_title']); */ ?></h1> -->
+          <h1 class="h1">ВИНТАЖНЫЕ ТОВАРЫ</h1>
         </div>
         <div class="hero__desc">
           <!-- <p><?php /** echo h($main['hero_text']); */ ?>&#8230;</p> -->

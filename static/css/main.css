@@ -7225,7 +7225,40 @@ main.product-page {
 .widget__item--related + .widget__item--related {
   margin-top: 56px;
 }
+.hero__img-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, #fff 90%);
+    pointer-events: none;
+}
 
+.header .button--l.button--primary {
+    border-radius: var(--radius-sm);
+    background-color: #f6f4f2;
+    color: #0a0a0a;
+    border: 1px solid #090908;
+}
+.hero__text {
+    letter-spacing: 1.6px;
+    color: #000;
+}
+
+.hero__text .h1 {
+  font-size: 23px;
+}
+/* .hero__img-wrapper {
+  background-color: #999;
+  height: 450px;
+  width: auto;
+  background-image: url('https://vvintage/static/img/hero/01.jpg');
+  background-position: center center; 
+  background-size: cover;
+  background-repeat: no-repeat;
+} */
 /*Media*/
 @media (max-width: 1500px) {
   .swiper.swiperHeaderImg {

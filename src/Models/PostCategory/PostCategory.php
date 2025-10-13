@@ -137,13 +137,13 @@ final class PostCategory
     
 
     
-    public function getTranslations(?string $locale = null): array
-    {
-        if ($locale) {
-            return $this->translations[$locale] ?? [];
-        }
-        return $this->translations;
-    }
+    // public function getTranslations(?string $locale = null): array
+    // {
+    //     if ($locale) {
+    //         return $this->translations[$locale] ?? [];
+    //     }
+    //     return $this->translations;
+    // }
 
 
     public function getTranslatedTitle(?string $locale = null): string 

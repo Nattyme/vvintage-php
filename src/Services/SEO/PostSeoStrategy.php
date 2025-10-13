@@ -10,23 +10,25 @@ use Vvintage\DTO\Common\SeoDTO;
 class PostSeoStrategy implements SeoStrategyInterface
 {
     private $post;
+    private $lang;
 
-    public function __construct($post)
+    public function __construct($post, $lang)
     {
         $this->post = $post;
+        $this->lang = $lang;
     }
 
 
     public function getSeo(): SeoDTO
     {
-      $translations = $this->post->getCurrentTranslations();
+      $translations = $this->post->getTranslation($this->lang);
 
       return new SeoDTO(
         title: $translations['title'] ?? $translations['title'] ?? '',
         description: $translations['description'] ?? $translations['title'] ?? '',
         meta_title: $translations['meta_title'] ?? $translations['title'] ?? '',
         meta_description: $translations['meta_description'] ?? $translations['description'] ?? '',
-        currentLang: $this->post->getCurrentLang(),
+        currentLang: $this->lang,
         structuredData: $this->getStructuredData(),
         isIndexed: 'index,follow'
       );
@@ -34,8 +36,7 @@ class PostSeoStrategy implements SeoStrategyInterface
 
     public function getStructuredData(): string
     {
-        $currentLang = $this->post->getCurrentLang();
-        $translations = $this->post->getTranslations();
+        $translations = $this->post->getTranslation($this->lang);
         $meta = $translations ?? [];
 
         $data = [
@@ -45,8 +46,8 @@ class PostSeoStrategy implements SeoStrategyInterface
             "description" => $meta['description'] ?? '',
             "category" => [
                 "@type" => "Category",
-                "name" => $this->post->getCategory()->getSeoTitle(),
-                "description" => $this->post->getCategory()->getSeoDescription() ?? ''
+                "name" => $this->post->getCategory()->getSeoTitle($this->lang),
+                "description" => $this->post->getCategory()->getSeoDescription($this->lang) ?? ''
             ],
         ];
 

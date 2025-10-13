@@ -1,8 +1,3 @@
-<?php
-  $params = ['rusDateFormat' => 'j F Y'];
-  include ROOT . 'views/blog/_parts/_post-display-details.tpl';
-;?>
-
 <div class="page-blog">
   <div class="container">
     <nav class="page-blog__nav">
@@ -14,12 +9,12 @@
         <section class="post">
           <article class="post__body" itemscope itemtype="https://schema.org/BlogPosting"?>
             <div class="post__title">
-              <h1 class="h1" itemprop="headline"><?php echo $post->getTitle();?></h1>
+              <h1 class="h1" itemprop="headline"><?php echo $post->title;?></h1>
             </div>
 
             <!-- image -->
             <div class="post__img">
-              <img src="<?php echo  $coverPath . $coverFile;?>" alt="<?php echo $post->getTitle();?>" />
+              <img src="<?php echo HOST . 'usercontent/blog/' . $post->cover;?>" alt="<?php echo $post->title;?>" />
             </div>
             <!-- // image -->
 
@@ -50,7 +45,7 @@
                     <?php echo h(__('blog.views', [], 'blog'));?>
                   </p>
                   <span class="post-meta__counter">
-                    <?php echo $post->getViews();?>
+                    <?php echo $post->views;?>
                   </span>
                 </div>
               </li>
@@ -63,7 +58,7 @@
                   <p class="post-meta__text">
                      <?php echo h(__('blog.article.published', [], 'blog'));?>
                   </p>
-                  <time datetime="<?php echo $datetime;?>"><?php echo $rusDate;?></time>
+                  <time datetime="<?php echo $post->iso_date ?>"><?php echo $post->formatted_date; ?></time>
                 </div>
                 <div class="post-meta__item" itemprop="author" itemscope itemtype="https://schema.org/Organization">
                   <meta itemprop="name" content="vvintage.ru">
@@ -74,12 +69,12 @@
             <!-- meta -->
 
             <div class="post__desc">
-              <?php echo $description;?>
+              <?php echo $post->description;?>
             </div>
           
             <div class="post__content">
               <!-- Как применить здесь Htmlspecialchair? Здесь вывод из эдитора -->
-              <?php echo $post->getContent();?>
+              <?php echo $post->content;?>
             </div>
           </article>
         </section>

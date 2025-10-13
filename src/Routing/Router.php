@@ -367,12 +367,11 @@
     
 
         if ($routeData->uriModule === 'add-comment') {
-          require ROOT . 'modules/blog/add-comment.php';
-        } elseif ($routeData->uriGet === 'cat' && !empty($routeData->uriGetParam)) {
-          require ROOT . 'modules/blog/categories.php';
+          // require ROOT . 'modules/blog/add-comment.php';
         } elseif (!empty($routeData->uriGet)) {
           $postController->index($routeData);
-        } else {
+        } 
+        else {
           $blogController->index($routeData);
         }
     }

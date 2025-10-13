@@ -37,7 +37,7 @@ class SeoService extends BaseService
               $strategy = new CatalogSeoStrategy($model, $lang);
               break;
           case 'product':
-              $strategy = new ProductSeoStrategy($model);
+              $strategy = new ProductSeoStrategy($model, $lang);
               break;
           case 'about':
               $strategy = new ProductSeoStrategy($model);
@@ -55,7 +55,7 @@ class SeoService extends BaseService
               $strategy = new ProductSeoStrategy($model);
               break;
           case 'post':
-              $strategy = new PostSeoStrategy($model);
+              $strategy = new PostSeoStrategy($model, $lang);
               break;
           default:
               throw new \Exception('Unknown SEO page type');
