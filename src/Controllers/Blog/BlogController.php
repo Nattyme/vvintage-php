@@ -43,7 +43,7 @@ final class BlogController extends BaseController
       $slug = $routeData->uriGet ?? null;
       $blogData = $this->postService->getBlogData(array_merge($routeData->uriGetParams, ['slug' => $slug]), $postsPerPage);
       // $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
-  
+ 
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'posts' =>  $blogData['posts'],

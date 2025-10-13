@@ -11,6 +11,7 @@ use Vvintage\Repositories\PostCategory\PostCategoryTranslationRepository;
 use Vvintage\DTO\PostCategory\PostCategoryListInBlogDto;
 
 use Vvintage\Services\Base\BaseService;
+use Vvintage\Services\Post\PostService;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -18,13 +19,15 @@ class PostCategoryService extends BaseService
 {
     protected PostCategoryRepository $repository;
     protected PostCategoryTranslationRepository $translationRepo;
+    protected PostService $postService;
 
-    public function __construct()
+    public function __construct(PostService $postService)
     {
         parent::__construct();
         $this->repository = new PostCategoryRepository();
         $this->translationRepo = new PostCategoryTranslationRepository();
-       
+        $this->postService = $postService;
+     
     }
 
     public function getCategoryById(int $id, ?string $currentLang = null): ?PostCategory
@@ -104,6 +107,16 @@ class PostCategoryService extends BaseService
       return array_values($categoriesWithTranslation);
     }
 
+    public function getCategoriesWithPosts(): array
+    {
+        return array_values(array_filter(
+            $this->repository->getMainCats(),
+            fn($cat) => $this->postService->getPostsCountByCategory($cat->getId()) > 0
+        ));
+    }
+
+
+
     
     private function addCategoryTranslate(PostCategory $category): PostCategory
     {
@@ -165,6 +178,8 @@ class PostCategoryService extends BaseService
     {
        return $this->repository->getAllCategoriesCount();
     }
+
+   
 
   
 }

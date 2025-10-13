@@ -39,7 +39,7 @@ class PostService extends BaseService
       parent::__construct(); // Важно!
       $this->repository = new PostRepository ();
       $this->translationRepo = new PostTranslationRepository();
-      $this->categoryService = new PostCategoryService();
+      $this->categoryService = new PostCategoryService($this);
       $this->paginationService = new PaginationService();
       $this->localeService = new LocaleService();
       // $this->postCategoryRepository = new PostCategoryRepository ();
@@ -175,6 +175,7 @@ class PostService extends BaseService
       $pagination = $filters['pagination'];
 
       $mainCategories =  $this->categoryService->getMainCategories();
+  
       $subCategories =  $this->categoryService->getSubCategories();
   
       // $relatedPosts = $blogData['posts'];
@@ -188,6 +189,19 @@ class PostService extends BaseService
         'totalPosts' => $total
       ];
     }
+
+    // public function getPostsCountByCategory(int $categoryId): int
+    // { 
+    //   $filterDto = new PostFilterDTO(
+    //       categories: $category_id ?? null,
+    //   );
+
+    //   return $this->getFilteredPosts($filterDto);
+    // }
+
+
+
+
 
     public function getPostViewData(int $id): array
     {
