@@ -1,7 +1,7 @@
 <nav class="blog-nav">
 
   <ul class="blog-nav__list">
-     <?php foreach ($viewModel['mainCategories'] as $category) : ?>
+     <?php foreach ($navigation as $category) : ?>
       <li class="blog-nav__item">
      
         <a 

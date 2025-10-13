@@ -5,6 +5,7 @@ namespace Vvintage\Controllers\Blog;
 
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Base\BaseController;
+use Vvintage\Services\Navigation\NavigationService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Post\PostService;
 use Vvintage\DTO\Post\PostFilterDTO;
@@ -16,6 +17,7 @@ final class BlogController extends BaseController
 {
   private Breadcrumbs $breadcrumbsService;
   private PostService $postService;
+  private NavigationService $navigationService;
   
 
     public function __construct(
@@ -24,9 +26,9 @@ final class BlogController extends BaseController
         parent::__construct(); // Важно!
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService();
+        $this->navigationService = new NavigationService();
         
     }
-
     
     public function index(RouteData $routeData): void
     {
@@ -43,7 +45,11 @@ final class BlogController extends BaseController
       $slug = $routeData->uriGet ?? null;
       $blogData = $this->postService->getBlogData(array_merge($routeData->uriGetParams, ['slug' => $slug]), $postsPerPage);
       // $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
- 
+
+
+      // Получаем данные навигации
+      $navigation = $this->navigationService->getMainCategoriesWithContent($blogData['mainCategories'], $blogData['subCategories'], $blogData['posts']);
+
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'posts' =>  $blogData['posts'],
@@ -58,6 +64,7 @@ final class BlogController extends BaseController
 
       $this->renderLayout('blog/blog', [
           // 'pagination' => $pagination,
+          'navigation' => $navigation,
           'pageTitle' => $pageTitle,
           'routeData' => $routeData,
           // 'breadcrumbs' => $breadcrumbs,
