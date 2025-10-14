@@ -197,10 +197,10 @@ class Product
         return $this->category->getTitle();
     }
 
-    // public function getCurrentLang(): string 
-    // {
-    //   return $this->currentLang;
-    // }
+    public function getCurrentLang(): string 
+    {
+      return $this->currentLang;
+    }
       
     public function getTranslations(): ?array
     {
@@ -282,10 +282,10 @@ class Product
       return $this->translations;
     }
 
-    // public function setCurrentLang(string $currentLang): void 
-    // {
-    //   $this->currentLang = $currentLang;
-    // }
+    public function setCurrentLang(string $currentLang): void 
+    {
+      $this->currentLang = $currentLang;
+    }
 
   
 }

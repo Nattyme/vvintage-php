@@ -118,6 +118,7 @@
           break;
         
         case 'blog':
+        case 'post':
         case 'add-comment':
           self::routeBlog($routeData);
           break;
@@ -365,16 +366,21 @@
       $blogController = new BlogController($breadcrumbs);
       $postController = new PostController($breadcrumbs);
     
-
         if ($routeData->uriModule === 'add-comment') {
           // require ROOT . 'modules/blog/add-comment.php';
         } 
         elseif ($routeData->uriModule === 'blog' && isset($routeData->uriGet)) {
           $blogController->index($routeData);
         }
-        elseif ($routeData->uriModule === 'post' && !empty($routeData->uriGet)) {
-          $postController->index($routeData);
-        } 
+        elseif ($routeData->uriModule === 'post') {
+          if (!empty($routeData->uriGet)) {
+              $postController->index($routeData); // конкретный пост
+          } else {
+              header("Location: /blog");
+              exit;
+          }
+        }
+
         else {
           $blogController->index($routeData);
         }

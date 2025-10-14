@@ -13,7 +13,7 @@
               <?php if ( $viewModel['posts'] && !empty($viewModel['posts'])) : ?>
                 <?php foreach ($viewModel['posts'] as $post) : ?>
                   <li class="posts__item">
-                    <a href="<?php echo HOST . "blog/{$post->id}"?>" class="posts__link">
+                    <a href="<?php echo HOST . "post/{$post->id}"?>" class="posts__link">
                       <!-- CARD -->
                       <?php include ROOT . 'views/blog/_parts/_post-card.tpl';?>
                       <!-- // CARD -->

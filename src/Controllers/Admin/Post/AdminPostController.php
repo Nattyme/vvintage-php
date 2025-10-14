@@ -46,7 +46,7 @@ class AdminPostController extends BaseAdminController
     $this->isAdmin();
     $this->setRouteData($routeData);
     $this->service->handleStatusAction($_POST);
-    $this->renderEditPost();
+    $this->renderEditPost($this->$routeData);
 
 
 
