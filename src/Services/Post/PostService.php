@@ -42,7 +42,6 @@ class PostService extends BaseService
       $this->categoryService = new PostCategoryService($this);
       $this->paginationService = new PaginationService();
       $this->localeService = new LocaleService();
-      // $this->postCategoryRepository = new PostCategoryRepository ();
     }
 
     public function getAllPosts(array $pagination = []): array

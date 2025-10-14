@@ -47,7 +47,6 @@ final class BlogController extends BaseController
       $blogData = $this->postService->getBlogData(array_merge($routeData->uriGetParams, ['slug' => $slug]), $postsPerPage);
       // $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
 
-      // getExistPostCatsIds
       // Получаем данные навигации
       $navigation = [
         'header' => $this->navigationService->getMainCategoriesWithContent($blogData['mainCategories'], $blogData['subCategories'],  $blogData['categoryIds']),

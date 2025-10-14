@@ -19,15 +19,12 @@ class PostCategoryService extends BaseService
 {
     protected PostCategoryRepository $repository;
     protected PostCategoryTranslationRepository $translationRepo;
-    protected PostService $postService;
 
-    public function __construct(PostService $postService)
+    public function __construct()
     {
         parent::__construct();
         $this->repository = new PostCategoryRepository();
         $this->translationRepo = new PostCategoryTranslationRepository();
-        $this->postService = $postService;
-     
     }
 
     public function getCategoryById(int $id, ?string $currentLang = null): ?PostCategory
