@@ -27,7 +27,7 @@
     <div class="admin-form__row admin-form__header">
       <select class="select" name="action">
         <option value="">— Выберите действие —</option>
-        <?php foreach ($productViewModel['actions'] as $key => $value) : ?>
+        <?php foreach ($pageViewModel['actions'] as $key => $value) : ?>
           <option value="<?php echo $key;?>"><?php echo $value;?></option>
         <?php endforeach;?>
       </select>
@@ -58,7 +58,7 @@
 
       <!-- body -->
       <tbody class="product-table__body">
-        <?php foreach ($productViewModel['products'] as $product) : ?>
+        <?php foreach ($pageViewModel['products'] as $product) : ?>
           <?php 
 
               $images = $product->images ?? null;

@@ -31,53 +31,67 @@ final class AdminProductService extends ProductService
     $this->imageService = new AdminProductImageService();
   }
 
+
+  /** CRUD */
+  public function createProductDraft(array $data, array $images): int
+  {
+    
+      $data['status'] = 'hidden'; // или draft
+      $tmpFilesToCleanup = [];
+
+      $this->repository->begin(); // начало транзакции
+
+      try {
+        $productDto = $this->createProductInputDto($data);
+        $productId = $this->repository->saveProduct($productDto);
+
+        if( !$productId) {
+          throw new RuntimeException("Не удалось создать продукт");
+          return null;
+        }
+
+     
+        if (!empty($data['translations'])) {
+            $translateDto = $this->createTranslateInputDto($data['translations'], $productId);
+            $this->translationRepo->saveProductTranslation($translateDto);
+        }
   
-  private function splitVisibleHidden(array $images): array
-  {
-      return  $this->productImageService->splitVisibleHidden($images);
-  }
+        // 3. Подготавливаем изображения (tmp + resize)
+        $imagesTMP = $this->imageService->prepareImages($images);
 
-  public function getActions(): array 
-  {
-    return $this->actions;
-  }
+        // Собираем tmp-файлы для возможного удаления при ошибке
+        foreach ($imagesTMP as $img) {
+            $tmpFilesToCleanup[] = $img['tmp_full'];
+            $tmpFilesToCleanup[] = $img['tmp_small'];
+        }
 
-  public function getProductsImages(array $products): array
-  {
-      $imagesByProductId = [];
+        // 4. Сохраняем новые изображения, если есть
+        $imagesDto = $this->imageService->buildImageDtos($productId, $imagesTMP);
 
-      foreach ($products as $product) {
-          $imagesMainAndOthers = $this->productImageService->splitImages($product->images);
-          $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
+        if (!empty($imagesDto)) {
+            $this->imageService->updateImages($imagesDto);
+        }
+
+        // 6. Подтверждаем транзакцию
+        $this->repository->commit();
+
+        // 7. Переносим файлы в финальную папку (только после успешного commit)
+        if (!empty($imagesTMP)) {
+            $finalPaths = $this->imageService->finalizeImages($imagesTMP);
+            $this->imageService->cleanup($imagesTMP);
+        }
+
+        return $productId;
+
       }
-
-      return $imagesByProductId;
-  }
-
-  public function publishProduct(int $productId): bool
-  {
-
-      return $this->repository->updateStatus($productId, 'active');
-  }
-
-  public function hideProduct(int $productId): bool
-  {
-      return $this->repository->updateStatus($productId, 'hidden');
-  }
-
-  public function archiveProduct(int $productId, bool $keepAllImages = true): bool
-  {
-      $result = $this->repository->updateStatus($productId, 'archived');
-
-      if ($result && !$keepAllImages) {
-          $this->repository->deleteExtraImagesExceptMain($productId);
+      catch (\Throwable $error) 
+      {
+        $this->repository->rollback();
+        throw $error;
       }
-
-      return $result;
+     
   }
 
-
- 
   public function updateProduct(int $id, array $data, array $existingImages, array $processedImages): bool 
   {
       $tmpFilesToCleanup = [];
@@ -163,68 +177,33 @@ final class AdminProductService extends ProductService
       }
   }
 
- 
 
-  public function createProductDraft(array $data, array $images): int
+  /** imaegs */ 
+  private function splitVisibleHidden(array $images): array
   {
-    
-      $data['status'] = 'hidden'; // или draft
-      $tmpFilesToCleanup = [];
+      return  $this->productImageService->splitVisibleHidden($images);
+  }
 
-      $this->repository->begin(); // начало транзакции
+  public function getProductsImages(array $products): array
+  {
+      $imagesByProductId = [];
 
-      try {
-        $productDto = $this->createProductInputDto($data);
-        $productId = $this->repository->saveProduct($productDto);
-
-        if( !$productId) {
-          throw new RuntimeException("Не удалось создать продукт");
-          return null;
-        }
-
-     
-        if (!empty($data['translations'])) {
-            $translateDto = $this->createTranslateInputDto($data['translations'], $productId);
-            $this->translationRepo->saveProductTranslation($translateDto);
-        }
-  
-        // 3. Подготавливаем изображения (tmp + resize)
-        $imagesTMP = $this->imageService->prepareImages($images);
-
-        // Собираем tmp-файлы для возможного удаления при ошибке
-        foreach ($imagesTMP as $img) {
-            $tmpFilesToCleanup[] = $img['tmp_full'];
-            $tmpFilesToCleanup[] = $img['tmp_small'];
-        }
-
-        // 4. Сохраняем новые изображения, если есть
-        $imagesDto = $this->imageService->buildImageDtos($productId, $imagesTMP);
-
-        if (!empty($imagesDto)) {
-            $this->imageService->updateImages($imagesDto);
-        }
-
-        // 6. Подтверждаем транзакцию
-        $this->repository->commit();
-
-        // 7. Переносим файлы в финальную папку (только после успешного commit)
-        if (!empty($imagesTMP)) {
-            $finalPaths = $this->imageService->finalizeImages($imagesTMP);
-            $this->imageService->cleanup($imagesTMP);
-        }
-
-        return $productId;
-
+      foreach ($products as $product) {
+          $imagesMainAndOthers = $this->productImageService->splitImages($product->images);
+          $imagesByProductId[$product->getId()] = $imagesMainAndOthers;
       }
-      catch (\Throwable $error) 
-      {
-        $this->repository->rollback();
-        throw $error;
-      }
-     
+
+      return $imagesByProductId;
+  }
+
+  public function addImages(int $productId, array $files): array
+  {
+    return $this->imageService->addImages($productId, $files);
   }
 
 
+
+  /** dto */
   private function createProductInputDto(array $data): ProductInputDTO
   {
       $isNew = empty($data['id']); // если id нет — новый продукт
@@ -272,6 +251,8 @@ final class AdminProductService extends ProductService
   }
 
 
+
+  // filter actions
   public function applyAction(int $productId, string $action): bool
   {
       switch ($action) {
@@ -308,9 +289,33 @@ final class AdminProductService extends ProductService
 
   }
 
-  public function addImages(int $productId, array $files): array
+  // change product status
+  public function getActions(): array 
   {
-    return $this->imageService->addImages($productId, $files);
+    return $this->actions;
+  }
+
+
+  public function publishProduct(int $productId): bool
+  {
+
+      return $this->repository->updateStatus($productId, 'active');
+  }
+
+  public function hideProduct(int $productId): bool
+  {
+      return $this->repository->updateStatus($productId, 'hidden');
+  }
+
+  public function archiveProduct(int $productId, bool $keepAllImages = true): bool
+  {
+      $result = $this->repository->updateStatus($productId, 'archived');
+
+      if ($result && !$keepAllImages) {
+          $this->repository->deleteExtraImagesExceptMain($productId);
+      }
+
+      return $result;
   }
 
 }

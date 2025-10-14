@@ -573,7 +573,6 @@
           break;
 
         case 'shop':
-           
           $adminProductController->all($routeData);
           break;
 
@@ -664,7 +663,7 @@
           break;
 
         case 'post-new':
-          // $adminPostController->new($routeData);
+          $adminPostController->new($routeData);
           break;
 
         case 'post-edit':
@@ -711,23 +710,7 @@
           break;
 
     
-        // // ::::::::::::: PAGES :::::::::::::::::::
-        // case 'main':
-        //   require ROOT . "admin/modules/pages/main.php";
-        //   break;
-
-        // case 'about':
-        // require ROOT . "admin/modules//pages/about.php";
-        //   break;
-
-        // case 'delivery':
-        // require ROOT . "admin/modules//pages/delivery.php";
-        //   break;
-
-        // case 'contacts':
-        //   require ROOT . "admin/modules//pages/contacts.php";
-        //   break;
-
+  
         // // ::::::::::::: OTHER :::::::::::::::::::
         // case 'comments':
         //   require ROOT . "admin/modules/comments/all.php";

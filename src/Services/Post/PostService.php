@@ -44,15 +44,15 @@ class PostService extends BaseService
       $this->localeService = new LocaleService();
     }
 
-    public function getAllPosts(array $pagination = []): array
-    {
-        return $this->repository->getPosts();
+    // public function getAll(array $pagination = []): array
+    // {
+    //     return $this->repository->getPosts();
 
-        // return array_map(
-        //     fn($bean) => Post::fromDTO($bean),
-        //     $beans
-        // );
-    }
+    //     // return array_map(
+    //     //     fn($bean) => Post::fromDTO($bean),
+    //     //     $beans
+    //     // );
+    // }
 
     public function getPostById (int $id): ?Post
     {
@@ -177,7 +177,7 @@ class PostService extends BaseService
     public function getBlogData($getData, int $postsPerPage)
     {
     
-      $category = $this->categoryService->getCategoryBySlug($getData['slug']);
+      $category = $this->categoryService->getCategoryBySlug($getData['slug'] ?? null);
         
       $category_id = $category ? $category->getId() : null;
 

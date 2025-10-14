@@ -47,19 +47,17 @@ class AdminProductController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = 'Все товары';
-
-
     $productsPerPage = 9;
 
     // Устанавливаем пагинацию
     $pagination = pagination($productsPerPage, 'products');
     $products = $this->service->getAll($pagination);
-   
+  
     $total = $this->service->countProducts();
     $actions = $this->service->getActions();
 
     // Формируем единую модель для передачи в шаблон
-    $productViewModel = [
+    $pageViewModel = [
         'products' => $products,
         'total' => $total,
         'actions'=> $actions
@@ -69,7 +67,7 @@ class AdminProductController extends BaseAdminController
     $this->renderLayout('shop/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,
-      'productViewModel' => $productViewModel,
+      'pageViewModel' => $pageViewModel,
       'pagination' => $pagination,
       'flash' => $this->flash
     ]);
