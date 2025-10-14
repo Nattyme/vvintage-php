@@ -37,6 +37,7 @@ class NavigationService extends BaseService
   // 1️Возвращает подкатегории, у которых есть контент
   public function getSubCategoriesWithContent(array $subCategories, array $ids): array
   {
+
       return array_values(array_filter(
           $subCategories,
           fn($cat) => in_array($cat->id, $ids)
@@ -48,6 +49,7 @@ class NavigationService extends BaseService
   {
       // Получаем id подкатегорий с контентом
       $subWithContent = $this->getSubCategoriesWithContent($subCategories, $ids);
+     
       $parentIds = array_unique(array_map(fn($sub) => $sub->parent_id, $subWithContent));
 
       return array_values(array_filter(

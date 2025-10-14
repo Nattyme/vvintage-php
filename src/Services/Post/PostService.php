@@ -174,7 +174,7 @@ class PostService extends BaseService
       return $filters;
     }
 
-    public function getBlogData($getData, int $postsPerPage)
+    public function getBlogData($getData, int $postsPerPage): array
     {
     
       $category = $this->categoryService->getCategoryBySlug($getData['slug'] ?? null);
@@ -213,6 +213,29 @@ class PostService extends BaseService
         'categoryIds' => $categoryIds,
         // 'relatedPosts' => $relatedPosts,
         'totalPosts' => $total
+      ];
+    }
+
+    public function getPostData(int $id): array
+    {
+      if(!$id) return null;
+
+      $post = $this->getPostById ($id);
+      $postDto = $this->getPostDto($post);
+  
+      $mainCategories =  $this->categoryService->getMainCategories();
+      $subCategories =  $this->categoryService->getSubCategories();
+      $categoryIds = $this->getExistPostsParamsFromColumn('category_id');
+      // $relatedPosts = $blogData['posts'];
+   
+
+      return [
+        'post' => $postDto,
+        'mainCategories' => $mainCategories,
+        'subCategories' => $subCategories,
+        'categoryIds' => $categoryIds,
+        // 'relatedPosts' => $relatedPosts,
+        // 'totalPosts' => $total
       ];
     }
 

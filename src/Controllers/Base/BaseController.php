@@ -112,7 +112,7 @@ abstract class BaseController
   {
       if (!$routePath) return false;
 
-      return $this->routeData->getUriModule() === 'blog';
+      return $this->routeData->getUriModule() === 'blog' || $this->routeData->getUriModule() === 'post';
   }
 
   protected function isProfileOwner(int $profileId): bool 

@@ -9,7 +9,11 @@
   <?php include ROOT . 'views/_parts/_parts-header/_header-top-panel.tpl';?>
 
   <!-- Основной хедер -->
-  <?php include ROOT . 'views/_parts/_parts-header/_header-main-panel.tpl';?>
+  <?php if ($isBlogPage) : ?>
+      <?php include ROOT . 'views/_parts/_parts-header/_header-blog.tpl'; ?>
+  <?php else : ?>
+      <?php include ROOT . 'views/_parts/_parts-header/_header-main-panel.tpl'; ?>
+  <?php endif; ?>
 
   <!-- Категории -->
   <?php if (!$isBlogPage) : ?>
