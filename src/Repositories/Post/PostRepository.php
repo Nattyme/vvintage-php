@@ -47,6 +47,7 @@ final class PostRepository extends AbstractRepository
         $conditions = [];
         $pagination = [];
         $params = [];
+
         if(isset($filters['pagination'])) {
            $pagination = $filters['pagination'];
         }
@@ -56,7 +57,7 @@ final class PostRepository extends AbstractRepository
 
          // применяем сложные фильтры
         [$conditions, $params, $orderBy] = $this->applyAdvancedFilters($filters, $conditions, $params);
-// dd($params);
+
         // Вызов универсального метода
         $beans = $this->findAll(
             table: self::TABLE,
@@ -119,6 +120,11 @@ final class PostRepository extends AbstractRepository
     {
       $filter['pagination']['perPage'] = $count;
       return $this->getPosts( $filter);
+    }
+
+    public function getParamsFromColumn(string $column): array 
+    {
+      return $this->getDistinctColumnValues(self:: TABLE, $column);
     }
 
 
@@ -272,12 +278,12 @@ final class PostRepository extends AbstractRepository
    
  
 
-    public function getAllPosts(array $pagination): array
-    {
-        $rows = $this->unitePostRawData();
+    // public function getAllPosts(array $pagination): array
+    // {
+    //     $rows = $this->unitePostRawData();
 
-        return array_map([$this, 'fetchPostWithJoins'], $rows);
-    }
+    //     return array_map([$this, 'fetchPostWithJoins'], $rows);
+    // }
 
     public function getPostsByIds(array $ids): array
     {

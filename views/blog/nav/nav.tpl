@@ -1,7 +1,7 @@
 <nav class="blog-nav">
 
   <ul class="blog-nav__list">
-     <?php foreach ($navigation as $category) : ?>
+     <?php foreach ($navigation['header'] as $category) : ?>
       <li class="blog-nav__item">
      
         <a 

@@ -43,13 +43,17 @@ final class BlogController extends BaseController
 
       // Получаем посты и категории
       $slug = $routeData->uriGet ?? null;
+ 
       $blogData = $this->postService->getBlogData(array_merge($routeData->uriGetParams, ['slug' => $slug]), $postsPerPage);
       // $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
 
-
+      // getExistPostCatsIds
       // Получаем данные навигации
-      $navigation = $this->navigationService->getMainCategoriesWithContent($blogData['mainCategories'], $blogData['subCategories'], $blogData['posts']);
-
+      $navigation = [
+        'header' => $this->navigationService->getMainCategoriesWithContent($blogData['mainCategories'], $blogData['subCategories'],  $blogData['categoryIds']),
+        'footer' => $this->navigationService->getSubCategoriesWithContent($blogData['subCategories'],  $blogData['categoryIds'])
+      ];
+  
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'posts' =>  $blogData['posts'],

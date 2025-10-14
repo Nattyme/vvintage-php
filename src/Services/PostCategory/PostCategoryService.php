@@ -32,6 +32,8 @@ class PostCategoryService extends BaseService
 
     public function getCategoryById(int $id, ?string $currentLang = null): ?PostCategory
     {
+      if(!$id) return null;
+      
       $category = $this->repository->getCategoryById($id);
 
       $id = $category->getId();
@@ -54,7 +56,7 @@ class PostCategoryService extends BaseService
 
     public function getSubCategoriesArray($parent_id = null): array
     {
-      return $this->repository->getSubCategoriesArray($parent_id);
+      return $this->repository->findCatsByParentId($parent_id);
     }
 
     public function getAllCategoriesArray(): array

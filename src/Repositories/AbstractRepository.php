@@ -166,6 +166,15 @@ abstract class AbstractRepository
         return $value !== null ? $value : null;
     }
 
+    protected function getDistinctColumnValues(string $table, string $column): array
+    {
+        $sql = "SELECT DISTINCT {$column} FROM {$table} WHERE {$column} IS NOT NULL";
+        $rows = R::getCol($sql);
+
+        return array_map('intval', $rows);
+    }
+
+
    
 
 

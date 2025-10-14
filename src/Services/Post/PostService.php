@@ -45,9 +45,9 @@ class PostService extends BaseService
       // $this->postCategoryRepository = new PostCategoryRepository ();
     }
 
-    public function getAllPosts(array $pagination): array
+    public function getAllPosts(array $pagination = []): array
     {
-        return $this->repository->getAllPosts($pagination);
+        return $this->repository->getPosts();
 
         // return array_map(
         //     fn($bean) => Post::fromDTO($bean),
@@ -85,6 +85,30 @@ class PostService extends BaseService
 
     public function getFilteredPosts(PostFilterDTO $filters, ?int $perPage = null): array 
     {
+      // Получаем id категорий
+      $categories = !empty($filters->categories) ? $filters->categories : null;
+
+      // Проверяем на главную
+      $id = (int) $filters->categories;
+      $category = $this->categoryService->getCategoryById($id) ?? null;
+      $parent_id = $category ? $category->getParentId() : null;
+
+      // Если у категории нет Id родител - значит это главная. Получаем ее подкатегории
+      if(!$parent_id) {
+  
+        $subCategories = $this->categoryService->getSubCategoriesArray($id);
+        
+        $subCategoryIds = [];
+        // Получаем только id из массива подкатегорий
+        $subCategoryIds = array_map(fn($subCat) => $subCat->getId(), $subCategories);
+    
+        // Теперь можно подставить эти id в фильтр
+        if (!empty($subCategoryIds)) {
+            $filters->categories = $subCategoryIds;
+        }
+      }
+      
+
      
       // $category = !empty($filters->category) ? $filters->category : null;
       if ($filters instanceof PostFilterDTO) {
@@ -154,16 +178,17 @@ class PostService extends BaseService
     public function getBlogData($getData, int $postsPerPage)
     {
     
-        $category = $this->categoryService->getCategoryBySlug($getData['slug']);
-        $category_id = $category ? $category->getId() : null;
+      $category = $this->categoryService->getCategoryBySlug($getData['slug']);
+        
+      $category_id = $category ? $category->getId() : null;
 
-       $filterDto = new PostFilterDTO(
-          categories: $category_id ?? null,
-          sort: $getData['sort'] ?? null,
-          search: $getData['q'] ?? null,
-          // 'page' =>  $page,
-          perPage: (int) $postsPerPage ?? 10
-        );
+      $filterDto = new PostFilterDTO(
+        categories: $category_id ?? null,
+        sort: $getData['sort'] ?? null,
+        search: $getData['q'] ?? null,
+        // 'page' =>  $page,
+        perPage: (int) $postsPerPage ?? 10
+      );
 
 
       // Получаем статьи с учётом пагинации
@@ -175,19 +200,26 @@ class PostService extends BaseService
       $pagination = $filters['pagination'];
 
       $mainCategories =  $this->categoryService->getMainCategories();
-  
+
       $subCategories =  $this->categoryService->getSubCategories();
-  
+
       // $relatedPosts = $blogData['posts'];
       $totalPosts = $this->getTotalCount();
+      $categoryIds = $this->getExistPostsParamsFromColumn('category_id');
 
       return [
         'posts' => $posts,
         'mainCategories' => $mainCategories,
         'subCategories' => $subCategories,
+        'categoryIds' => $categoryIds,
         // 'relatedPosts' => $relatedPosts,
         'totalPosts' => $total
       ];
+    }
+
+    public function getExistPostsParamsFromColumn(string $column): array 
+    {
+      return $this->repository->getParamsFromColumn($column);
     }
 
     // public function getPostsCountByCategory(int $categoryId): int

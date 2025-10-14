@@ -252,7 +252,7 @@ class ProductService extends BaseService
 
     public function getFilteredProducts(ProductFilterDTO $filters, ?int $perPage = null): array 
     {
-      //  dd($filters);
+      
       $categories = !empty($filters->categories) ? $filters->categories : null;
     
       if( $categories && count( $categories) === 1) {

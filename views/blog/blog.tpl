@@ -34,7 +34,7 @@
           <!-- pagination -->
         </section>
       </main>
-      <?php /* include ROOT . 'views/blog/_parts/_sidebar/_sidebar.tpl'; */?>
+      <?php  include ROOT . 'views/blog/_parts/_sidebar/_sidebar.tpl'; ?>
     </div>
 
   </div>
