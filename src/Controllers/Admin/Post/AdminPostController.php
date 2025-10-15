@@ -46,7 +46,7 @@ class AdminPostController extends BaseAdminController
     $this->isAdmin();
     $this->setRouteData($routeData);
     $this->service->handleStatusAction($_POST);
-    $this->renderEditPost($this->$routeData);
+    $this->renderEditPost($this->routeData);
 
 
 
@@ -141,10 +141,6 @@ class AdminPostController extends BaseAdminController
     //     }
     //   }
     // }
-
-   
-    $this->renderEditPost($routeData);
-
   }
 
   // public function delete(RouteData $routeData)
@@ -286,12 +282,12 @@ class AdminPostController extends BaseAdminController
     // $pageClass = "admin-page";
 
     // Получаем пост по Id 
-    $postId = $routeData->getUriGetParam();
+    $postId = $routeData->uriGet;
     // $post = $this->service->getPost((int) $postId);
-    $postViewData =  $this->service->getPostViewData((int) $postId);
+    $post =  $this->service->getPostEditData((int) $postId);
 
     $this->renderLayout('blog/edit',  [
-      'postViewData' => $postViewData,
+      'post' => $post,
       'pageTitle' => $pageTitle,
       'routeData' => $routeData,
       'flash' => $this->flash

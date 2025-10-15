@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Vvintage\Services\Admin\Post;
 
 use Vvintage\Services\Post\PostService;
+use Vvintage\DTO\Admin\Post\PostEditDTO;
+use Vvintage\DTO\Admin\Post\PostEditDTOFactory;
 
 
 final class AdminPostService extends PostService
@@ -18,6 +20,18 @@ final class AdminPostService extends PostService
     {
       parent::__construct($languages, $currentLang);
     }
+
+    public function getPostEditData(int $id): ?PostEditDTO
+    {
+      $post = $this->getPostById ($id);
+      $dtoFactory = new PostEditDTOFactory($this->localeService);
+      return $dtoFactory->createFromPost($post) ?? null;
+    }
+
+
+
+
+
 
     public function handleStatusAction(array $data): void 
     {

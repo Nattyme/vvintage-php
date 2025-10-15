@@ -1,0 +1,82 @@
+<div class="lang-group lang-group--<?php echo $code;?>" data-lang="<?php echo $code;?>">
+  <div class="admin-form__field">
+
+    <label class="admin-form__label" for="title-<?php echo $code;?>">Название статьи</label>
+    <input 
+      id="title-<?php echo $code;?>" 
+      name="translations[<?php echo $code;?>][title]" 
+      class="admin-form__input" 
+      type="text" 
+      placeholder="Введите название продукта" 
+      value="<?php 
+          echo isset($_POST['translations'][$code]['title']) 
+          ? h($_POST['translations'][$code]['title']) 
+          : (isset($post) && $post->translations[$code]['title'] 
+          ? h($post->translations[$code]['title']) : '');
+      ?>"
+    />
+  </div>
+
+  <div class="admin-form__field">
+    <label class="admin-form__label" for="description-<?php echo $code;?>">Описание статьи</label>
+    <textarea 
+      id="description-<?php echo $code;?>" 
+      name="translations[<?php echo $code;?>][description]" 
+      class="admin-form__textarea" 
+      placeholder="Введите описание бренда"
+    ><?php 
+      echo isset($_POST['translations'][$code]['description']) 
+      ? h($_POST['translations'][$code]['description']) 
+      : (isset($post) && $post->translations[$code]['description'] 
+      ? h($post->translations[$code]['description']) : '');
+    ?></textarea>
+  </div>
+
+  <div class="admin-form__field">
+    <label class="admin-form__label" for="description-<?php echo $code;?>">Основной текст статьи</label>
+    <textarea 
+      id="description-<?php echo $code;?>" 
+      name="translations[<?php echo $code;?>][content]" 
+      class="admin-form__textarea" 
+      placeholder="Введите описание бренда"
+    ><?php 
+      echo isset($_POST['translations'][$code]['content']) 
+      ? h($_POST['translations'][$code]['content']) 
+      : (isset($post) && $post->translations[$code]['content'] 
+      ? h($post->translations[$code]['content']) : '');
+    ?></textarea>
+  </div>
+
+
+  <div class="admin-form__field">
+    <label class="admin-form__label" for="meta_title-<?php echo $code;?>">SEO заголовок страницы</label>
+    <input 
+      id="meta_title-<?php echo $code;?>" 
+      name="translations[<?php echo $code;?>][meta_title]" 
+      class="admin-form__input" 
+      type="text" 
+      placeholder="Введите SEO заголовок страницы" 
+      value="<?php 
+        echo isset($_POST['translations'][$code]['meta_title']) 
+        ? h($_POST['translations'][$code]['meta_title']) 
+        : (isset($post) && $post->translations[$code]['meta_title']
+        ? h($post->translations[$code]['meta_title']) : '');
+      ?>"
+    />
+  </div>
+
+  <div class="admin-form__field">
+    <label class="admin-form__label" for="meta_description-<?php echo $code;?>">SEO описание страницы</label>
+    <textarea 
+      id="meta_description-<?php echo $code;?>" 
+      name="translations[<?php echo $code;?>][meta_description]" 
+      class="admin-form__textarea" 
+      placeholder="Введите SEO описание страницы"
+    ><?php 
+      echo isset($_POST['translations'][$code]['meta_description']) 
+      ? h($_POST['translations'][$code]['meta_description']) 
+      : (isset($post) && $post->translations[$code]['meta_description']
+      ? h($post->translations[$code]['meta_description']) : '');
+    ?></textarea>
+  </div>
+</div>

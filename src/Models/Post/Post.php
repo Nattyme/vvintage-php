@@ -204,9 +204,12 @@ final class Post
       $this->category = $category;
     }
 
-    public function getTranslation(string $locale): array
+    public function getTranslation(string $locale = null): array
     {
+      if($locale) {
         return $this->translations[$locale] ?? $this->translations['ru'] ?? [];
+      }
+        return $this->translations ?? [];
     }
     
 }

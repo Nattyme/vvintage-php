@@ -254,30 +254,6 @@ class PostService extends BaseService
     // }
 
 
-
-
-
-    public function getPostViewData(int $id): array
-    {
-      
-      $post = $this->getPost($id);
-      $category = $post->getCategory();
-
-      $mainCatId = $category->getParentId();
-      $mainCategory =  $this->postCategoryRepository->getPostCatById($mainCatId);
-      $allMainCategories = $this->getAllMainCategories();
-      $allSubCategories = $this->getAllSubCategories();
-
-      return [
-        'post' => $post,
-        'category' => $category,
-        'mainCategory' =>  $mainCategory,
-        'allMainCategories' => $allMainCategories,
-        'allSubCategories' => $allSubCategories,
-      ];
-
-    }
-
     public function getAllMainCategories(): array
     { 
       return $this->categoryService->getMainCategories();
@@ -337,12 +313,6 @@ class PostService extends BaseService
 
     // }
 
-
-  
-
-  
-
-  
 
     private function setDataToPostModel (Post $post): ?Post 
     {
