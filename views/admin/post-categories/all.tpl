@@ -67,14 +67,14 @@
             </td>
             
             <td class="admin-form-table__unit">
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit/<?php echo u($category->id);?>">
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-blog-edit/<?php echo u($category->id);?>">
                 <?php echo h($category->title);?>
               </a>
             </td>
 
             <td class="admin-form-table__unit"></td>
             <td>
-              <a href="<?php echo HOST . 'admin/category-new/' . $category->id;?>" class="button button--s button--outline link-above-others" data-btn="add">
+              <a href="<?php echo HOST . 'admin/category-blog-new/' . $category->id;?>" class="button button--s button--outline link-above-others" data-btn="add">
                 Новая категория
               </a>
              
@@ -82,7 +82,7 @@
             <td>
               <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
-                href="<?php echo HOST . 'admin/category-delete/' . u($category->id);?>"
+                href="<?php echo HOST . 'admin/category-blog-delete/' . u($category->id);?>"
                 aria-label="Удалить категорию <?php echo h($category->title);?>"
               >
 
@@ -105,7 +105,7 @@
             </td>
 
             <td class="admin-form-table__unit">
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit/<?php echo u($category->id);?>">
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-blog-edit/<?php echo u($category->id);?>">
                 <?php echo h($category->title);?>
               </a>
             </td>
@@ -113,7 +113,7 @@
             <td>
               <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
-                href="<?php echo HOST . 'admin/category-delete/' . u($category->id);?>"
+                href="<?php echo HOST . 'admin/category-blog-delete/' . u($category->id);?>"
                 aria-label="Удалить категорию <?php echo h($category->title);?>"
               >
 

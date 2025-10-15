@@ -69,10 +69,6 @@ final class AdminPostCategoryController extends BaseAdminController
     $pagination = pagination($categoryPerPage, 'postcategories');
     $categoriesDtos = $this->service->getAllCategoriesAdminList();
 
-    // $cats = $this->service->getAllCategories($pagination);
-    // $mainCats = $this->service->getMainCategories();
-    // $total = $this->service->getAllCategoriesCount();
-
     $this->renderLayout('post-categories/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,
@@ -171,12 +167,7 @@ final class AdminPostCategoryController extends BaseAdminController
       $this->redirect('admin/category-blog');
     } 
 
-    $category = $this->service->getCategoryById($id);
-  
-    if( $category->getParentId()) {    
-      $parendId = $category->getParentId();
-      $parentCategory = $this->service->getCategoryById($parendId);
-    }
+    $category = $this->service->getCategoryEditAdmin($id);
 
     // $validate = $this->validator->new($_POST);
     if(isset($_POST['submit'])) {
@@ -185,17 +176,18 @@ final class AdminPostCategoryController extends BaseAdminController
       
         if (!$validate) {
           $this->flash->pushError('Не удалось получить категорию для редактирования. Проверьте данные.');
-          $this->redirect('admin/post-category-blog');
+          $this->redirect('admin/category-blog');
         } 
 
         $translations = [];
-    
-        foreach ($_POST['title'] as $lang => $title) {
+ 
+        foreach ($_POST['translations'] as $lang => $data) {
+           
             $translations[$lang] = [
-                'title' => $_POST['title'][$lang] ?? '',
-                'description' => $_POST['description'][$lang] ?? '',
-                'meta_title' => $_POST['meta_title'][$lang] ?? '',
-                'meta_description' => $_POST['meta_description'][$lang] ?? '',
+                'title' => $data['title'] ?? '',
+                'description' => $data['description']?? '',
+                'meta_title' => $data['meta_title'] ?? '',
+                'meta_description' => $data['meta_description'] ?? '',
             ];
         }
 
@@ -211,9 +203,8 @@ final class AdminPostCategoryController extends BaseAdminController
             'translations' => $translations,
         ]);
 
-        $category = PostCategory::fromDTO($dto);
-
-        $saved = $this->service->updateCategory( $category);
+        // Сохранение категории в БД
+        $saved = $this->service->updateCategory( $dto);
 
         if ($saved) {
           $this->flash->pushSuccess('Категория блога успешно обновлена.');

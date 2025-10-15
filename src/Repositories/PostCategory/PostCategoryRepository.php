@@ -226,8 +226,8 @@ final class PostCategoryRepository extends AbstractRepository
 
     public function getParentCategory(PostCategory $childCategrory): ?PostCategory
     {
-      $mainCatId =  $childCategrory->getId();
-      return $this->getPostCatById($mainCatId);
+      $mainCatId =  $childCategrory->getParentId();
+      return $this->getCategoryById($mainCatId) ?? null;
     }
 
     

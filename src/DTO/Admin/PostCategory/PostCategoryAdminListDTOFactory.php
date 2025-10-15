@@ -8,7 +8,6 @@ use Vvintage\Config\LanguageConfig;
 /** Model */
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\DTO\Admin\PostCategory\PostCategoryAdminListDTO;
-use Vvintage\Services\Locale\LocaleService;
 
 final class PostCategoryAdminListDTOFactory
 {

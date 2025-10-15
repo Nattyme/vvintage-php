@@ -16,7 +16,8 @@
       value="<?php 
           echo isset($_POST['title'][$code]) 
           ? h($_POST['title'][$code] ) 
-          : (isset($category) && $category->getTranslatedTitle($code) ? h($category->getTranslatedTitle($code)) : '');
+          : (isset($category) && $category->translations[$code]['title'] 
+          ? h($category->translations[$code]['title']) : '');
       ?>"
     />
   </div>
@@ -37,8 +38,8 @@
     ><?php 
       echo isset($_POST['description'][$code]) 
       ? h($_POST['title'][$code] ) 
-      : (isset($category) && $category->getTranslatedDescription($code) 
-      ? h($category->getTranslatedDescription($code)) : '');
+      : (isset($category) && $category->translations[$code]['description']
+      ? h($category->translations[$code]['description']) : '');
     ?></textarea>
   </div>
 
@@ -54,7 +55,8 @@
       value="<?php 
         echo isset($_POST['meta_title'][$code]) 
         ? h($_POST['meta_title'][$code] ) 
-        : (isset($category) && $category->getSeoTitle($code) ? h($category->getSeoTitle($code)) : '');
+        : (isset($category) && $category->translations[$code]['meta_title']
+        ? h($category->translations[$code]['meta_title']) : $category->translations[$code]['title']);
       ?>"
     />
   </div>
@@ -69,8 +71,8 @@
     ><?php 
       echo isset($_POST['meta_description'][$code]) 
       ? h($_POST['meta_description'][$code] ) 
-      : (isset($category) && $category->getSeoDescription($code) 
-      ? h($category->getSeoDescription($code)) : '');
+      : (isset($category) && $category->translations[$code]['meta_description']
+      ? h($category->translations[$code]['meta_description']) : $category->translations[$code]['description']);
     ?></textarea>
   </div>
 </div>

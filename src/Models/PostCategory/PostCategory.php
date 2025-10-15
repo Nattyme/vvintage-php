@@ -47,6 +47,20 @@ final class PostCategory
         return $category;
     }
 
+    public static function fromInputDTO(PostCategoryInputDTO $dto): self
+    {
+        $category = new self();
+
+        $category->id = (int) $dto->id;
+        $category->title = $dto->title;
+        $category->parent_id = $dto->parent_id;
+        $category->slug = $dto->slug;
+        $category->image = $dto->image;
+        $category->translations = $dto->translations;
+
+        return $category;
+    }
+
     public static function fromArray(array $data): self
     {
         $category = new self();
@@ -181,9 +195,12 @@ final class PostCategory
       $this->translations = $translations;
     }
 
-    public function getTranslation(string $locale): array
+     public function getTranslation(string $locale = null): array
     {
+      if($locale) {
         return $this->translations[$locale] ?? $this->translations['ru'] ?? [];
+      }
+        return $this->translations ?? [];
     }
 
 }

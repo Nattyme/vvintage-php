@@ -8,7 +8,9 @@ use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Services\PostCategory\PostCategoryService;
 use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
 use Vvintage\DTO\Admin\PostCategory\PostCategoryAdminListDTOFactory;
+use Vvintage\DTO\Admin\PostCategory\EditDtoFactory;
 use Vvintage\DTO\Admin\PostCategory\PostCategoryAdminListDTO;
+use Vvintage\DTO\Admin\PostCategory\EditDto;
 
 
 final class AdminPostCategoryService extends PostCategoryService
@@ -29,9 +31,12 @@ final class AdminPostCategoryService extends PostCategoryService
       return $this->repository->createCategory($cat); 
     }
 
-    public function updateCategory( PostCategory $cat)
+    public function updateCategory( PostCategoryInputDTO $dto)
     {
-      return $this->repository->updateCategory($cat); 
+   
+      $category = PostCategory::fromInputDTO($dto);
+  
+      return $this->repository->updateCategory($category); 
     }
 
     public function deleteCategory(int $id): void
@@ -66,6 +71,30 @@ final class AdminPostCategoryService extends PostCategoryService
         $dtoFactory = new PostCategoryAdminListDTOFactory();
         return $dtoFactory->createFromPostCategory($category);
     }
+
+    public function getCategoryEditAdmin(int $id) : EditDto
+    {
+      $category = $this->getCategoryById($id);
+      $parentCategory = $this->repository->getParentCategory($category) ?? null;
+
+      return $this->getPostCategoryEditDto($category, $parentCategory);
+    }
+
+    public function getPostCategoryEditDto (PostCategory $category, PostCategory $parentCategory = null): EditDto
+    {
+        $dtoFactory = new EditDtoFactory();
+        return $dtoFactory->createFromPostCategory($category, $parentCategory);
+    }
+
+  public function getCategoryEditAdminFromRequest(int $id, array $postData): EditDto
+  {
+      $category = $this->getCategoryById($id);
+      $parentCategory = $this->repository->getParentCategory($category) ?? null;
+      $factory = new EditDtoFactory();
+
+      return $factory->createFromRequest($postData, $category, $parentCategory);
+  }
+
 
 
   

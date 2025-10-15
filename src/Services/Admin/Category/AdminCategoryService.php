@@ -73,10 +73,6 @@ final class AdminCategoryService extends CategoryService
           ]);
 
       return $dataDto;
-        // 'title' => $data['translations']['ru']['title'] ?? '',
-        //       'description' => $textData['translations']['ru']['description'] ?? '',
-        //       'image' => $textData['image'] ?? null,
-        //       'translations' => $textData['translations']
     }
 
     private function createTranslateInputDto(array $data, int $categoryId): array
