@@ -1,44 +1,51 @@
 <div class="admin-page__content-form">
   <div class="admin-form">
-    <?php include (ROOT . "views/components/errors.tpl"); ?>
-    <?php include (ROOT . "views/components/success.tpl"); ?>
+    <?php include ROOT . "views/components/errors.tpl"; ?>
+    <?php include ROOT . "views/components/success.tpl"; ?>
 
 
-    <header class="admin-form__header admin-form__row">
-        <a href="<?php echo HOST . 'admin/category-blog-new';?>" class="button button--m button--outline" data-btn="add">
+    <header class="admin-form__header">
+      <div class="admin-form__header-form admin-form__row">
+        <a href="<?php echo HOST . 'admin/category-new';?>" class="button button--m button--outline" data-btn="add">
           Новый раздел
         </a>
 
-      <!-- SEARCH FORM-->
-      <form method="GET" action="" class="search" role="search">
-        <label for="query" class="visually-hidden">Найти</label>
-        <input 
-          id="query"
-          type="text" 
-          name="query" 
-          placeholder="Найти" 
-          value="<?php echo h($searchQuery); ?>"
-        >
+        <!-- SEARCH FORM-->
+        <form method="GET" action="" class="search" role="search">
+          <label for="query" class="visually-hidden">Найти</label>
+          <input 
+            id="query"
+            type="text" 
+            name="query" 
+            placeholder="Найти" 
+            value="<?php echo h($searchQuery); ?>"
+          >
 
-        <button type="search-submit">
-          <svg class="icon icon--loupe">
-            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
-          </svg>
-        </button>
-      </form>
-      <!-- SEARCH FORM-->
+          <button type="search-submit">
+            <svg class="icon icon--loupe">
+              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
+            </svg>
+          </button>
+        </form>
+        <!-- SEARCH FORM-->
+      </div>
+      <div class="admin-form__header-form admin-form__row">
+        <form method="GET" action="" class="form-products-table__actions">
+          <select class="select" name="action">
+            <option value="">— Все разделы —</option>
+        
+            <?php foreach ($categories['main'] as $category) : ?>
+              <option value="<?php echo h($category->id); ?>" <?php echo ($filterSection == $category->id) ? 'selected' : '' ?>>
+                <?php echo h($category->title) ?>
+              </option>
+            <?php endforeach;?>
+          </select>
+          <button type="submit" class="button button--s button--primary">Применить</button>
+        </form>
+      </div>
+
     </header>
-    <form method="GET" action="" class="form-products-table__actions">
-      <select class="select" name="action">
-        <option value="">— Все разделы —</option>
-        <?php foreach ($mainCats as $mainCat) : ?>
-          <option value="<?php echo h($mainCat->getId()); ?>" <?php echo ($filterSection == $mainCat->getId()) ? 'selected' : '' ?>>
-            <?php echo h($mainCat->getTitle()) ?>
-          </option>
-        <?php endforeach;?>
-      </select>
-      <button type="submit" class="button button--s button--primary">Применить</button>
-    </form>
+
 
     <!-- Таблица -->
     <table class="table">
@@ -52,35 +59,62 @@
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($cats as $cat) : ?>
+        <?php foreach ($categories['main'] as $category) : ?>
 
-          <tr class="admin-form-table__row">
+          <tr class="admin-form-table__row" data-id=" <?php echo h($category->id);?>" data-parent=" <?php echo h($category->parent_id);?>">
             <td class="admin-form-table__unit">
-                <?php echo h($cat->getId());?>
+                <?php echo h($category->id);?>
             </td>
             
             <td class="admin-form-table__unit">
-              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-blog-edit/<?php echo u($cat->getId());?>">
-                <?php echo $cat->getParentId() === 0 ? h($cat->getTitle()) : '-';?>
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit/<?php echo u($category->id);?>">
+                <?php echo h($category->title);?>
               </a>
             </td>
 
-            <td class="admin-form-table__unit">
-              <?php echo $cat->getParentId() > 0 ? h($cat->getTitle()) : '';?>
-            </td>
+            <td class="admin-form-table__unit"></td>
             <td>
-              <?php 
-                if ( $cat->getParentId() === 0 ) : ?>
-                      <a href="<?php echo HOST . 'admin/category-blog-new/' . $cat->getId();?>" class="button button--s button--outline link-above-others" data-btn="add">
-                        Новая категория
-                      </a>
-                <?php endif; ?>
+              <a href="<?php echo HOST . 'admin/category-new/' . $category->id;?>" class="button button--s button--outline link-above-others" data-btn="add">
+                Новая категория
+              </a>
+             
             </td>
             <td>
               <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
-                href="<?php echo HOST . 'admin/category-blog-delete/' . u($cat->getId());?>"
-                aria-label="Удалить категорию <?php echo h($cat->getTitle());?>"
+                href="<?php echo HOST . 'admin/category-delete/' . u($category->id);?>"
+                aria-label="Удалить категорию <?php echo h($category->title);?>"
+              >
+
+                  <span class="leftright"></span><span class="rightleft"> </span>
+              </a>
+            </td>
+          </tr>
+          
+        <?php endforeach; ?> 
+
+        <?php foreach ($categories['categories'] as $category) : ?>
+
+          <tr class="admin-form-table__row" data-id=" <?php echo h($category->id);?>" data-parent=" <?php echo h($category->parent_id);?>">
+            <td class="admin-form-table__unit">
+                <?php echo h($category->id);?>
+            </td>
+            
+            <td class="admin-form-table__unit">
+             
+            </td>
+
+            <td class="admin-form-table__unit">
+              <a class="link-to-page" href="<?php echo HOST; ?>admin/category-edit/<?php echo u($category->id);?>">
+                <?php echo h($category->title);?>
+              </a>
+            </td>
+            <td></td>
+            <td>
+              <a 
+                class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
+                href="<?php echo HOST . 'admin/category-delete/' . u($category->id);?>"
+                aria-label="Удалить категорию <?php echo h($category->title);?>"
               >
 
                   <span class="leftright"></span><span class="rightleft"> </span>

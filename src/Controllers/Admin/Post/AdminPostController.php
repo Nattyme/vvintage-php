@@ -294,31 +294,31 @@ class AdminPostController extends BaseAdminController
     ]);
   }
 
-  private function renderDeletePost(RouteData $routeData): void
-  {
-    // Название страницы
-    $pageTitle = "Удалить статью";
-    // $pageClass = "admin-page";
+  // private function renderDeletePost(RouteData $routeData): void
+  // {
+  //   // Название страницы
+  //   $pageTitle = "Удалить статью";
+  //   // $pageClass = "admin-page";
 
-    // Получаем пост по Id 
-    $postId = $routeData->getUriGetParam();
-    $post = $this->service->getPost((int) $postId);
+  //   // Получаем пост по Id 
+  //   $postId = $routeData->getUriGetParam();
+  //   $post = $this->service->getPost((int) $postId);
 
-    // Получаем главные категориии, подкатегории и бренды
-    // $mainCats = $this->categoryRepository->getMainCats();
-    // $subCats = $this->categoryRepository->getSubCats();
-    // $brands = $this->brandRepository->getAllBrands();
+  //   // Получаем главные категориии, подкатегории и бренды
+  //   // $mainCats = $this->categoryRepository->getMainCats();
+  //   // $subCats = $this->categoryRepository->getSubCats();
+  //   // $brands = $this->brandRepository->getAllBrands();
 
-    // Загружаем объект категории
-    // $selectedSubCat = $product->getCategory();
+  //   // Загружаем объект категории
+  //   // $selectedSubCat = $product->getCategory();
 
-    // Главный раздел
-    // $selectedMaiCat = $this->categoryRepository->getParentCategory($selectedSubCat);
+  //   // Главный раздел
+  //   // $selectedMaiCat = $this->categoryRepository->getParentCategory($selectedSubCat);
 
-    $this->renderLayout('blog/delete',  [
-      'post' => $post,
-      'pageTitle' => $pageTitle,
-      'routeData' => $routeData,
-    ]);
-  }
+  //   $this->renderLayout('blog/delete',  [
+  //     'post' => $post,
+  //     'pageTitle' => $pageTitle,
+  //     'routeData' => $routeData,
+  //   ]);
+  // }
 }

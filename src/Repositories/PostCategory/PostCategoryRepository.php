@@ -197,7 +197,11 @@ final class PostCategoryRepository extends AbstractRepository
     public function getAllCategories(): array
     {
         $beans = $this->findAll(table: self::TABLE);
-        return array_map([$this, 'mapBeanToPostCategory'], $beans);
+        
+        if (!$beans) {
+            return [];
+        }
+        return array_map(fn($bean) => PostCategory::fromBean($bean), $beans);
     }
 
     public function getCategoriesByIds(array $ids): array

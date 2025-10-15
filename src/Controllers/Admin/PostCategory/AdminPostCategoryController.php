@@ -57,24 +57,27 @@ final class AdminPostCategoryController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = 'Категории блога';
+    $categoryPerPage = 9;
 
     // Получаем данные из GET-запроса
     $searchQuery = $_GET['query'] ?? '';
     $filterSection = $_GET['action'] ?? ''; // имя селекта - action
 
-    $categoryPerPage = 9;
+   
 
     // Устанавливаем пагинацию
-    $pagination = pagination($categoryPerPage, self::TABLE);
-    $cats = $this->service->getAllCategories($pagination);
-    $mainCats = $this->service->getMainCategories();
-    $total = $this->service->getAllCategoriesCount();
-        
+    $pagination = pagination($categoryPerPage, 'postcategories');
+    $categoriesDtos = $this->service->getAllCategoriesAdminList();
+
+    // $cats = $this->service->getAllCategories($pagination);
+    // $mainCats = $this->service->getMainCategories();
+    // $total = $this->service->getAllCategoriesCount();
+
     $this->renderLayout('post-categories/all',  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,
-      'cats' => $cats,
-      'mainCats' => $mainCats,
+      'categories' => $categoriesDtos,
+      // 'mainCats' => $mainCats,
       'searchQuery' => $searchQuery,
       'filterSection' => $filterSection,
       'pagination' => $pagination,

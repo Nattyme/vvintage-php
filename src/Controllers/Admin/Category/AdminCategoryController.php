@@ -54,7 +54,7 @@ final class AdminCategoryController extends BaseAdminController
   private function renderAll(): void
   {
     // Название страницы
-    $pageTitle = 'Категории';
+    $pageTitle = 'Категории товаров';
     $categoryPerPage = 9;
 
     // Получаем данные из GET-запроса
