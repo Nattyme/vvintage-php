@@ -6,6 +6,7 @@ namespace Vvintage\Services\Product;
 use Vvintage\DTO\Product\ProductImageDTO;
 use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\Repositories\Product\ProductImageRepository;
+use Vvintage\DTO\Product\ImageForProductCardDTO;
 
 class ProductImageService
 {
@@ -108,10 +109,10 @@ class ProductImageService
       return $imagesDto;
   }
 
-  public function createImageDTO (array $row): array
+  public function createImageDTO (int $productId): array
   {
 
-    $imagesRows = $this->repository->fetchImageDTOs($row); 
+    $imagesRows = $this->repository->fetchImageDTOs($productId); 
   
      
     return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
@@ -122,11 +123,23 @@ class ProductImageService
     return array_map(fn($image) => new ProductImageDTO($image), $images);
   }
 
-  public function getProductImages (int $productId): array
+  public function getMainImage($productId)
   {
-    $imagesRows = $this->repository->getImagesByProductId($productId); 
+    $image = $this->repository->getMainImage((int) $productId);
+  }
 
-    return $imagesRows ;
+  public function getMainImageDTO (int $productId): ?ImageForProductCardDTO
+  {
+    $image = $this->repository->getMainImage($productId); 
+
+    if (!$image) {
+        return null;
+    }
+
+    return new ImageForProductCardDTO(
+        filename: $image->filename ?? '',
+        alt: $image->alt ?? ''
+    );
   }
 
    public function getFlatImages(array $data): array 

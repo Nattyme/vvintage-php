@@ -52,6 +52,15 @@ final class ProductImageRepository extends AbstractRepository
         return $this->mapBeanToImageOutputDto($bean);
     }
 
+    public function getMainImage(int $productId): array
+    {
+      $bean = $this->findOneBy(self::TABLE, 'WHERE product_id = ? AND image_order = ?', [$productId, 0]);
+      return [
+        'filename' => $bean->filename,
+        'alt' => $bean->alt
+      ];
+    }
+
     /**
      * Добавить новое изображение продукта
      */
@@ -184,7 +193,7 @@ final class ProductImageRepository extends AbstractRepository
         return $imagesDto;
     }
 
-    public function fetchImageDTOs(array $row): array
+    public function fetchImageDTOs(int $productId): array
     {
      
       $sql = 'SELECT * 
@@ -192,8 +201,7 @@ final class ProductImageRepository extends AbstractRepository
              WHERE product_id = ? 
              ORDER BY image_order';
 
-      return $this->getAll($sql, [$row['id']]);
-      // return array_map(fn($imageRow) => new ProductImageDTO($imageRow), $imagesRows);
+      return $this->getAll($sql, [$productId]);
     }
 
     public function getImagesByProductId (int $productId): array

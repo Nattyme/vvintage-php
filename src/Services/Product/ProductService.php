@@ -17,6 +17,8 @@ use Vvintage\Services\Brand\BrandService;
 
 use Vvintage\DTO\Product\ProductFilterDTO;
 use Vvintage\DTO\Product\ProductOutputDTO;
+use Vvintage\DTO\Product\ProductCardDTO;
+use Vvintage\DTO\Product\ProductCardDTOFactory;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -47,9 +49,9 @@ class ProductService extends BaseService
     }
 
     
-    private function createProductDTOFromArray(array $row, ?string $currentLang = null): ProductOutputDTO
+    private function createProductDTOFromArray(?Product $product, ?string $currentLang = null): ProductOutputDTO
     {
-        $productId = (int) $row['id'];
+        $productId = $product->getId();
 
         $tranlations = [];
 
@@ -60,39 +62,25 @@ class ProductService extends BaseService
         }
 
         // Создаем dto для категории и бренда продукта
-        $categoryDTO = $this->categoryService->createCategoryProductDTO((int) $row['category_id']);
-        $brandDTO = $this->brandService->createBrandProductDTO((int) $row['brand_id']);
+        $categoryDTO = $this->categoryService->createCategoryProductDTO((int) $product->getCategoryId());
+        $brandDTO = $this->brandService->createBrandProductDTO((int) $product->getBrandId());
+
+        // Создаем dto изображений продукта и подготавливаем к отображению 
+        $images = $this->productImageService->getMainImageDTO($productId);
+        // $imagesDTO = $this->productImageService->createImageDTO($productId);
+        // $imagesDTO = $this->productImageService->createImageDTO($productId);
+        // $images = $this->productImageService->getImageViewData($imagesDTO);
     
-        // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
-        $imagesDTO = $this->productImageService->createImageDTO($row);
+        $dtoFactory = new ProductCardDTOFactory();
+        $dto = $dtoFactory->createFromProduct(
+          product: $product,
+          category: $categoryDTO,
+          brand: $brandDTO,
+          images: $images,
+          currentLang: $this->currentLang
+        );
 
-        $images = $this->productImageService->getImageViewData($imagesDTO);
-        
-        // $datetime = isset($row['datetime']) ? new \DateTime($row['datetime']) : null;
-        $dto = new ProductOutputDTO([
-          'id' => $row['id'],
-          'category_id' => $categoryDTO->id,
-          'category_title' => $categoryDTO->title,
-          'category_parent_id' => $categoryDTO->parent_id,
-          'brand_id' => $brandDTO->id,
-          'brand_title' => $brandDTO->title,
-          'slug' => $row['slug'],
-          'title' => $translations[$this->currentLang]['title'] ?? $translations['title'],
-          'description' => $translations[$this->currentLang]['description'] ?? $translations['description'],
-          'price' => $row['price'],
-          'url' => $row['url'],
-          'sku' => $row['sku'],
-          'stock' => $row['stock'],
-          'datetime' => $row['datetime'],
-
-          'status' => $row['status'],
-          'edit_time' => $row['edit_time'],
-          'images' => $images,
-          'translations' => $translations
-        ]);
-  dd($dto);
-        return $dto;
-     
+        return $dto; 
     }
 
     public function getStatusList(): array {
@@ -136,8 +124,6 @@ class ProductService extends BaseService
         $translations = $this->translationRepo->getLocaleTranslation($id, $this->currentLang);
       }
 
-
-      // $translations = $this->translationRepo->getTranslationsArray($productId, $this->currentLang);
       $productModel->setTranslations($translations);
 
 
@@ -221,9 +207,15 @@ class ProductService extends BaseService
 
     public function getLastProducts(int $count): ?array
     {
-      $rows = $this->repository->getLastProducts($count);
+      $products = $this->repository->getLastProducts($count);
 
-      return $rows ? array_map([$this, 'createProductDTOFromArray'], $rows) : null;
+      foreach( $products as $product) {
+        $id = $product->getId();
+        $translations = $this->translationRepo->getLocaleTranslation($id, $this->currentLang);
+        $product->setTranslations($translations);
+      }
+
+      return $products ? array_map([$this, 'createProductDTOFromArray'], $products) : null;
     }
 
     public function countProducts(): int

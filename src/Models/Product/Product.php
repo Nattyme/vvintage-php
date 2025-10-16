@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Vvintage\Models\Product;
+use RedBeanPHP\OODBBean;
 
 /** DTO */
 use Vvintage\DTO\Product\ProductDTO;
@@ -20,9 +21,9 @@ class Product
 {
     private int $id;
 
-    private Category $category;  
+    private ?Category $category;  
     private int $category_id;  
-    private Brand $brand; 
+    private ?Brand $brand; 
     private int $brand_id;
     
     private string $slug;
@@ -35,8 +36,8 @@ class Product
     private int $stock;
     private \Datetime $datetime;
     private string $edit_time;
-    private array $translations;
-    private string $currentLang = 'ru';
+    private ?array $translations;
+    // private string $currentLang = 'ru';
     private ?array $images;      // массив изображений
 
     const PRODUCT_CONDITIONS = [
@@ -111,6 +112,35 @@ class Product
 
       // $product->images = $data['images'] ?? [];
       $product->currentLang = (string) ($data['locale'] ?? 'ru');
+
+      return $product;
+    }
+
+    public static function fromBean(OODBBean $data): self
+    {
+      $product = new self();
+ 
+      $product->id = (int) $data->id ?? 0;
+      $product->category_id = (int) $data->category_id ?? 0;
+      $product->brand_id = (int) $data->brand_id ?? 0;
+      $product->slug = (string) $data->slug ?? '';
+
+      $product->title = (string) $data->title ?? '';
+      $product->description = (string) $data->description ?? '';
+
+      $product->price = (string) $data->price ?? 0;
+      $product->url = (string) $data->url ?? '';
+      $product->status = (string) $data->status ?? '';
+      $product->sku =  (string) $data->sku ?? '';
+      $product->stock =  (int) $data->stock ?? 0;
+
+      $product->datetime = !empty($data->datetime)
+            ? (is_numeric($data->datetime)
+                ? (new \DateTime())->setTimestamp((int)$data->datetime)
+                : new \DateTime($data->datetime))
+            : new \DateTime();
+
+      $product->edit_time = (string) $data->edit_time ?? '';
 
       return $product;
     }

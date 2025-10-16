@@ -57,10 +57,11 @@ final class ProductRepository extends AbstractRepository
 
     public function getModelProductById(int $id): ?Product
     {
+     
       $bean = array_values($this->getProductsModels(['id' => $id]))[0];
-      $data = $bean->export();
- 
-      return Product::fromArray($data);
+
+
+      return Product::fromBean($data);
     
     }
 
@@ -69,6 +70,7 @@ final class ProductRepository extends AbstractRepository
         $conditions = [];
         $pagination = [];
         $params = [];
+
         if(isset($filters['pagination'])) {
            $pagination = $filters['pagination'];
         }
@@ -90,9 +92,8 @@ final class ProductRepository extends AbstractRepository
             offset: $pagination['offset'] ?? null
         );
 
-        // нормализация дат
-        return $beans;
-        // return array_map([$this, 'normalizeRow'], $beans);
+   
+        return array_map(fn($bean) => Product::fromBean($bean), $beans);
     }
 
 
@@ -145,12 +146,17 @@ final class ProductRepository extends AbstractRepository
     public function getLastProducts(int $count): array
     { 
         $filter['pagination']['perPage'] = $count;
-        return $this->getProducts( $filter);
-        // return $this->uniteProductRawData(['limit' => $count]);
-        // return array_map([$this, 'fetchProductWithJoins'], $rows);
+    
+        return $this->getProductsModels( $filter);
     }
 
     
+
+
+
+
+
+
 
     /**
       ********** ::: // GET ::: **********
