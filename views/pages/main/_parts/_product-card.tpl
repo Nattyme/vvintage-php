@@ -7,17 +7,17 @@
 
     <picture>
       <source
-        srcset="<?php echo HOST . 'usercontent/products/' . h($product->images['main']->filename);?>"
+        srcset="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>"
         type="image/webp"
       />
       <source
-        srcset="<?php echo HOST . 'usercontent/products/' . h($product->images['main']->filename);?>"
+        srcset="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>"
         type="image/jpeg"
     
         />
         <img 
-          src="<?php echo HOST . 'usercontent/products/' . h($product->images['main']->filename);?>" 
-          srcset="<?php echo HOST . 'usercontent/products/' . h($product->images['main']->filename);?>" alt="" loading="lazy"
+          src="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" 
+          srcset="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" alt="<?php echo $product->image_alt;?>" loading="lazy"
         >
    
     </picture>

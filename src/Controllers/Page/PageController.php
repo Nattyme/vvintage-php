@@ -78,7 +78,6 @@ class PageController extends BaseController
       // Получим категории, продукты и посты
       $categories = $categoryService->getMainCategories();
       $products = $productService->getLastProducts(4);
-dd( 'hey controler');
       $posts = $postService->getLastPosts(4);
 
       $page = $this->pageService->getPageBySlug($slug);
@@ -86,11 +85,11 @@ dd( 'hey controler');
 
       // Название страницы
       $pageTitle = $page['title'];
-dd($pageModel);
+
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
       $seo = $this->seoService->getSeoForPage('home', $pageModel);
-dd($seo);
+
 
       // Показываем страницу
       $this->renderLayout("pages/{$slug}/index", [
