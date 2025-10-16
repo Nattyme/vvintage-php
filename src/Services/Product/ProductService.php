@@ -58,7 +58,8 @@ class ProductService extends BaseService
         } else {
           $translations = $this->translationRepo->loadTranslations($productId);
         }
-        $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO((int) $row['category_id']);
+        $categoryDTO = $this->categoryService->createCategoryCardDTO((int) $row['category_id']);
+       
         $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
 
         // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
@@ -67,12 +68,11 @@ class ProductService extends BaseService
         $images = $this->productImageService->getImageViewData($imagesDTO);
         
         // $datetime = isset($row['datetime']) ? new \DateTime($row['datetime']) : null;
-
         $dto = new ProductOutputDTO([
           'id' => $row['id'],
-          'category_id' => $row['category_id'],
-          'category_title' => $categoryOutputDTO->title,
-          'categoryDTO' => $categoryOutputDTO,
+          'category_id' => $categoryDTO->id,
+          'category_title' => $categoryDTO->title,
+          'categoryDTO' => $categoryDTO,
           'brand_id' => $row['brand_id'],
           'brand_title' => $brandOutputDTO->title,
           'brandDTO' => $brandOutputDTO,
@@ -90,7 +90,7 @@ class ProductService extends BaseService
           'images' => $images,
           'translations' => $translations
         ]);
- 
+  dd($dto);
         return $dto;
      
     }

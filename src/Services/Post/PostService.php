@@ -319,6 +319,7 @@ class PostService extends BaseService
       // Добавим модель категории в пост
       $categoryId = $post->getCategoryId();
       $category = $this->categoryService->getCategoryById($categoryId);
+  
       $post->setCategory($category);
 
       $id = $post->getId();

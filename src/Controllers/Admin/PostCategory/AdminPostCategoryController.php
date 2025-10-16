@@ -159,7 +159,6 @@ final class AdminPostCategoryController extends BaseAdminController
     $pageTitle = 'Категория блога - редактирование';
 
     $id = (int) $this->routeData->uriGet ?? null;
-
     $pageClass = 'admin-page';
 
     if (!$id) {

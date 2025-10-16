@@ -208,15 +208,13 @@ final class CategoryRepository extends AbstractRepository
 
 
 
-    public function getParentCategory(Category $category): ?Category
+    public function getParentCategory(int $id): ?Category
     {
-      $parentId = $category->getParentId();
-
-      if(!$parentId) {
+      if(!$id) {
         return null;
       }
 
-      return $this->getCategoryById($parentId);
+      return $this->getCategoryById($id);
     }
 
     public function getCategoryWithChildren(int $id): array

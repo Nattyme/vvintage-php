@@ -154,7 +154,9 @@ final class AdminCategoryController extends BaseAdminController
       $this->redirect('admin/category');
     } 
 
-    $categoryModel = $this->service->getCategoryById($id);
+    // $categoryModel = $this->service->getCategoryById($id);
+    $category = $this->service->getCategoryEditAdmin($id);
+    dd($categoryModel);
     $categoryModel->setTranslations();
 
     $parentId = $categoryModel->getParentId() ?? null;

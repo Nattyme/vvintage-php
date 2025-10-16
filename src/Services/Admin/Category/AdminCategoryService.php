@@ -123,6 +123,14 @@ final class AdminCategoryService extends CategoryService
       $this->repository->deleteCategory($id);
     }
 
+    public function getCategoryEditAdmin(int $id) : EditDto
+    {
+      $category = $this->getCategoryById($id);
+      $parentCategory = $this->repository->getParentCategory($category->getId()) ?? null;
+
+      return $this->getPostCategoryEditDto($category, $parentCategory);
+    }
+
 
   
 

@@ -11,7 +11,8 @@ use Vvintage\Repositories\Category\CategoryTranslationRepository;
 use Vvintage\Services\Base\BaseService;
 
 use Vvintage\DTO\Category\CategoryDTO;
-use Vvintage\DTO\Category\CategoryOutputDTO;
+use Vvintage\DTO\Category\CategoryCardDTO;
+use Vvintage\DTO\Category\CategoryCardDTOFactory;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -34,13 +35,36 @@ class CategoryService extends BaseService
             return [];
         }
 
-        $translations = $this->translationRepo->getLocaleTranslation((int) $id, $this->currentLang) 
-        ?? 
-        $this->translationRepo->getLocaleTranslation((int) $id, $this->defaultLocale);
-       
+        $translations = $this->translationRepo->loadTranslations($id);
+  
         $category->setTranslations($translations);
 
         return $category;
+    }
+
+    public function getMainCategories(): array
+    {
+      $categories = $this->repository->getMainCats();
+      if (empty($categories)) {
+        return [];
+      }
+
+      $this->setCategoriesWithTranslations($categories);
+
+      return $categories;
+    }
+
+    public function getSubCategories(): array
+    {
+      $categories =  $this->repository->getSubCats();
+
+      if (empty($categories)) {
+        return [];
+      }
+
+      $this->setCategoriesWithTranslations($categories);
+
+      return $categories;
     }
 
 
@@ -68,6 +92,18 @@ class CategoryService extends BaseService
         }, $categories);
 
         return array_values($categoriesWithTranslation);
+    }
+
+    private function setCategoriesWithTranslations(array $categories): array
+    {
+        foreach ($categories as $category) {
+            $id = (int) $category->getId();
+          
+            // $translations = $this->translationRepo->getLocaleTranslation( $id, $this->currentLang);
+            $translations = $this->translationRepo->loadTranslations($id);
+            $category->setTranslations($translations);
+        }
+        return $categories;
     }
 
     
@@ -129,30 +165,8 @@ class CategoryService extends BaseService
     }
 
 
-    
-    public function getMainCategories(): array
-    {
-      $categories = $this->repository->getMainCats();
-      if (empty($categories)) {
-        return [];
-      }
+  
 
-      $this->setCategoriesWithTranslations($categories);
-
-      return $categories;
-    }
-    public function getSubCategories(): array
-    {
-      $categories =  $this->repository->getSubCats();
-
-      if (empty($categories)) {
-        return [];
-      }
-
-      $this->setCategoriesWithTranslations($categories);
-
-      return $categories;
-    }
 
     public function getAllCategories($pagination = null): array
     {
@@ -208,37 +222,17 @@ class CategoryService extends BaseService
     }
 
 
-    public function createCategoryOutputDTO (int $id): CategoryOutputDTO
+    public function createCategoryCardDTO (int $id): CategoryCardDTO
     {
       $category = $this->getCategoryById($id);
-   
-      return new CategoryOutputDTO([
-          'id' => (int) $category->getId(),
-          'title' => (string) ($category->getTranslatedTitle() ?: $category->getTitle()),
-          'parent_id' => (int) ($category->getParentId() ?? 0),
-          'image' => (string) ($category->getImage() ?? ''),
-          'translations' => [
-              $this->currentLang => [
-                  'title' => $category->getTranslatedTitle($this->currentLang) ?? '',
-                  'description' => $category->getTranslatedDescription($this->currentLang) ?? '',
-                  'seo_title' => $category->getSeoTitle($this->currentLang) ?? '',
-                  'seo_description' => $category->getSeoDescription($this->currentLang) ?? '',
-              ]
-          ],
-          'locale' => $this->currentLang,
-      ]);
+      $dtoFactory = new CategoryCardDTOFactory();
+
+      $dto = $dtoFactory->createFromCategory($category, currentLang: $this->currentLang);
+
+      return $dto; 
     }
 
-    private function setCategoriesWithTranslations(array $categories): array
-    {
-        foreach ($categories as $category) {
-            $id = (int) $category->getId();
-          
-            $translations = $this->translationRepo->getLocaleTranslation( $id, $this->currentLang);
-            $category->setTranslations($translations);
-        }
-        return $categories;
-    }
+
 
   
 
