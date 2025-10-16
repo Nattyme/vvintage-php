@@ -7,6 +7,8 @@ use Vvintage\Models\Product\Product;
 use Vvintage\DTO\Product\ProductCardDTO;
 use Vvintage\DTO\Brand\BrandForProductDTO;
 use Vvintage\DTO\Category\CategoryForProductDTO;
+use Vvintage\DTO\Product\ImageForProductCardDTO;
+
 
 final class ProductCardDTOFactory
 {
@@ -15,11 +17,16 @@ final class ProductCardDTOFactory
       Product $product, 
       CategoryForProductDTO $category, 
       BrandForProductDTO $brand, 
-      array $images, 
+      ImageForProductCardDTO $image, 
       string $currentLang
     ): ProductCardDTO
     {
-      $translations = (array) $product->getTranslations($currentLang) ?? [];
+
+      $translations = (array) $product->getTranslations($currentLang);
+
+      // Подставляем дефолтное изображение, если $image = null
+      $imageFilename = $image?->filename ?? 'no-photo.jpg';
+      $imageAlt = $image?->alt ?? ($product->getTitle() ?? '');
 
       return new ProductCardDTO(
           id: (int) $product->getId(),
@@ -34,27 +41,10 @@ final class ProductCardDTOFactory
           slug: (string) $product->getSlug() ?? '',
           title: (string) ($translations['title'] ?? ''),
           price: (string) ($product->getPrice() ?? ''),
-          images: (string) ($product->getImages() ?? ''),
+          image_filename: $imageFilename,
+          image_alt: $imageAlt
       );
     }
 
 }
- // 'id' => $row['id'],
-  //         'category_id' => $categoryDTO->id,
-  //         'category_title' => $categoryDTO->title,
-  //         'category_parent_id' => $categoryDTO->parent_id,
-  //         'brand_id' => $brandDTO->id,
-  //         'brand_title' => $brandDTO->title,
-  //         'slug' => $row['slug'],
-  //         'title' => $translations[$this->currentLang]['title'] ?? $translations['title'],
-  //         'description' => $translations[$this->currentLang]['description'] ?? $translations['description'],
-  //         'price' => $row['price'],
-  //         'url' => $row['url'],
-  //         'sku' => $row['sku'],
-  //         'stock' => $row['stock'],
-  //         'datetime' => $row['datetime'],
-
-  //         'status' => $row['status'],
-  //         'edit_time' => $row['edit_time'],
-  //         'images' => $images,
-  //         'translations' => $translations
+ 

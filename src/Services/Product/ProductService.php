@@ -19,6 +19,7 @@ use Vvintage\DTO\Product\ProductFilterDTO;
 use Vvintage\DTO\Product\ProductOutputDTO;
 use Vvintage\DTO\Product\ProductCardDTO;
 use Vvintage\DTO\Product\ProductCardDTOFactory;
+use Vvintage\DTO\Product\ImageForProductCardDTO;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -65,18 +66,15 @@ class ProductService extends BaseService
         $categoryDTO = $this->categoryService->createCategoryProductDTO((int) $product->getCategoryId());
         $brandDTO = $this->brandService->createBrandProductDTO((int) $product->getBrandId());
 
-        // Создаем dto изображений продукта и подготавливаем к отображению 
-        $images = $this->productImageService->getMainImageDTO($productId);
-        // $imagesDTO = $this->productImageService->createImageDTO($productId);
-        // $imagesDTO = $this->productImageService->createImageDTO($productId);
-        // $images = $this->productImageService->getImageViewData($imagesDTO);
+        // Создаем dto изображения продукта и подготавливаем к отображению 
+        $imageDto = $this->productImageService->getMainImageDTO($productId);
     
         $dtoFactory = new ProductCardDTOFactory();
         $dto = $dtoFactory->createFromProduct(
           product: $product,
           category: $categoryDTO,
           brand: $brandDTO,
-          images: $images,
+          image:  $imageDto,
           currentLang: $this->currentLang
         );
 
