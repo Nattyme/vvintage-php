@@ -22,7 +22,7 @@ final class ProductCardDTOFactory
     ): ProductCardDTO
     {
 
-      $translations = (array) $product->getTranslations($currentLang);
+      $translations = (array) $product->getTranslation('fr');
 
       // Подставляем дефолтное изображение, если $image = null
       $imageFilename = !empty($image?->filename) ? $image->filename : 'no-photo.jpg';

@@ -1,41 +1,22 @@
 <div class="card">
 
   <div class="card__img">
-    <?php if ( isset($product->images['main']) && (file_exists(ROOT . 'usercontent/products/' . $product->images['main']->filename) )) : ?>
       <picture>
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . $product->images['main']->filename;?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . $product->image_filename;?>"
           type="image/webp"
         />
         <source
-          srcset="<?php echo HOST . 'usercontent/products/' . $product->images['main']->filename;?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . $product->image_filename;?>"
           type="image/jpeg"
         />
         <img 
-          src="<?php echo HOST . 'usercontent/products/' . $product->images['main']->filename;?>"
-          srcset="<?php echo HOST . 'usercontent/products/' . $product->images['main']->filename;?>"
-          alt=""
+          src="<?php echo HOST . 'usercontent/products/' . $product->image_filename;?>"
+          srcset="<?php echo HOST . 'usercontent/products/' . $product->image_filename;?>"
+          alt="<?php echo $product->image_alt;?>"
           loading="lazy"
         >
       </picture>
-    <?php else : ?>
-      <picture>
-        <source
-          srcset="<?php echo HOST . 'usercontent/products/no-photo.jpg';?>"
-          type="image/webp"
-        />
-        <source
-          srcset="<?php echo HOST . 'usercontent/products/no-photo.jpg';?>"
-          type="image/jpeg"
-        />
-        <img 
-          src="<?php echo HOST . 'usercontent/products/no-photo.jpg';?>"
-          srcset="<?php echo HOST . 'usercontent/products/no-photo.jpg';?>"
-          alt=""
-          loading="lazy"
-        >
-      </picture>
-    <?php endif; ?>
   </div>
 
   <?php if (isProductInFav($product->id)) : ?>
@@ -66,7 +47,7 @@
     </a>
     
     <div class="card__price">
-      <span><?php echo $product->price !== null ? h($product->price) : '5000';?>&nbsp;&euro;</span>
+      <span><?php echo h($product->price);?>&nbsp;&euro;</span>
     </div>
   
   </div>

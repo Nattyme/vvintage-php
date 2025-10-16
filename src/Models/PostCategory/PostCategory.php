@@ -195,7 +195,7 @@ final class PostCategory
       $this->translations = $translations;
     }
 
-     public function getTranslation(string $locale = null): array
+    public function getTranslation(string $locale = null): array
     {
       if($locale) {
         return $this->translations[$locale] ?? $this->translations['ru'] ?? [];

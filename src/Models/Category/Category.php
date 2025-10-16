@@ -18,7 +18,7 @@ final class Category
     private string $image;
 
     private array $translations = [];
-    private string $currentLocale = 'ru';
+
 
     private function __construct() {}
 
@@ -63,7 +63,7 @@ final class Category
         $category->slug = (string) ($data['slug'] ?? '');
         $category->image = (string) ($data['image'] ?? '');
         $category->translations = $data['translations'] ?? [];
-        $category->currentLocale = (string) ($data['locale'] ?? 'ru');
+
 
         return $category;
     }
@@ -73,7 +73,7 @@ final class Category
     // Получение названия в нужной локали, иначе fallback title
     public function getTitle(?string $locale = null): string
     {
-        $locale = $locale ?? $this->currentLocale;
+        $locale = $locale ?? null;
 
         return $this->translations[$locale]['title']
             ?? $this->translations['ru']['title']

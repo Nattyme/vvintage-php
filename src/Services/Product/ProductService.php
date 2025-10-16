@@ -53,15 +53,17 @@ class ProductService extends BaseService
     private function createProductDTOFromArray(?Product $product, ?string $currentLang = null): ProductCardDTO
     {
         $productId = $product->getId();
+        $translations = $this->translationRepo->loadTranslations($productId);
+        // $tranlations = [];
 
-        $tranlations = [];
+        // if($currentLang) {
+        //   $translations = $this->translationRepo->getTranslationsArray($productId, $currentLang);
+        // } else {
+        //   $translations = $this->translationRepo->loadTranslations($productId);
+        // }
 
-        if($currentLang) {
-          $translations = $this->translationRepo->getTranslationsArray($productId, $currentLang);
-        } else {
-          $translations = $this->translationRepo->loadTranslations($productId);
-        }
-
+        $product->setTranslations($translations);
+   
         // Создаем dto для категории и бренда продукта
         $categoryDTO = $this->categoryService->createCategoryProductDTO((int) $product->getCategoryId());
         $brandDTO = $this->brandService->createBrandProductDTO((int) $product->getBrandId());
@@ -77,7 +79,7 @@ class ProductService extends BaseService
           image:  $imageDto,
           currentLang: $this->currentLang
         );
-// dd($dto);
+
         return $dto; 
     }
 
@@ -209,7 +211,7 @@ class ProductService extends BaseService
 
       foreach( $products as $product) {
         $id = $product->getId();
-        $translations = $this->translationRepo->getLocaleTranslation($id, $this->currentLang);
+        $translations = $this->translationRepo->loadTranslations($id);
         $product->setTranslations($translations);
       }
 
@@ -243,7 +245,7 @@ class ProductService extends BaseService
     {
       
       $categories = !empty($filters->categories) ? $filters->categories : null;
-    
+   
       if( $categories && count( $categories) === 1) {
         $id = (int) $categories[0];
         $category = $this->categoryService->getCategoryById($id) ?? null;
@@ -274,7 +276,7 @@ class ProductService extends BaseService
       }
 
       // Получаем массив продуктов по фильтру
-      $products = $this->repository->getProducts($filters);
+      $products = $this->repository->getProductsModels($filters);
 
       if( $perPage) {
         $totalItems = count($products);   // Считаем общее кол-во
@@ -282,10 +284,15 @@ class ProductService extends BaseService
         $filters = $this->addPaginationToFilter($filters, $totalItems, $perPage);
  
         // Теперь получаем только продукты для этой страницы
-        $products = $this->repository->getProducts($filters);
-        
+        $products = $this->repository->getProductsModels($filters);
       }
 
+      // foreach( $products as $product) {
+      //   $id = $product->getId();
+      //   $translations = $this->translationRepo->loadTranslations($id);
+      //   $product->setTranslations($translations);
+      // }
+  
       $products = array_map([$this, 'createProductDTOFromArray'], $products);
 
       return ['products' => $products, 'total' => $totalItems, 'filters' => $filters];

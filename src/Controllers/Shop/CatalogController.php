@@ -69,19 +69,20 @@ final class CatalogController extends BaseController
           'page' =>  $page,
           'perPage' => (int) $productsPerPage ?? 10
       ]);
-
-      // $products = $this->productService->getFilteredProducts($filterDto);
-      $categories = $this->categoryService->getCategoryTree();
+  
+      $categories = $this->categoryService->getCategoryTreeDTO();
+  
       $brands = $this->brandService->getAllBrandsDto();
-
+ 
       // Получаем продукты с учётом пагинации
       $filteredProductsData = $this->productService->getFilteredProducts( filters: $filterDto, perPage: 15);
+  
       $products =  $filteredProductsData['products'];
       $total = $filteredProductsData['total'];
       $filters = $filteredProductsData['filters'];
       $pagination = $filters['pagination'];
       // $total = $this->productService->countProducts();
-      // dd($products);
+     
       $mainCategories = $this->categoryService->getMainCategories();
 
       // $seo = [];
@@ -108,7 +109,7 @@ final class CatalogController extends BaseController
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       $seo = $this->seoService->getSeoForPage('catalog', $pageModel);
-// dd($seo);
+
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
           'products' => $products,

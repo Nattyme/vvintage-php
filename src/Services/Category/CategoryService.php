@@ -11,6 +11,7 @@ use Vvintage\Repositories\Category\CategoryTranslationRepository;
 use Vvintage\Services\Base\BaseService;
 
 use Vvintage\DTO\Category\CategoryDTO;
+use Vvintage\DTO\Category\CategoryTreeDto;
 use Vvintage\DTO\Category\CategoryForProductDTO;
 use Vvintage\DTO\Category\CategoryForProductDTOFactory;
 
@@ -165,7 +166,6 @@ class CategoryService extends BaseService
     {
       $categories = $this->repository->getAllCategoriesArray();
 
-
       if (empty($categories)) {
         return [];
       }
@@ -192,7 +192,8 @@ class CategoryService extends BaseService
       return $categories;
     }
 
-    public function getCategoryTree() {
+    public function getCategoryTree(): array
+    {
         // Получим все категории
         $categories = $this->repository->getAllCategories();
 
@@ -209,22 +210,30 @@ class CategoryService extends BaseService
         foreach ($categories as $category) {
             $categoriesById[$category->getId()] = [
                 'id' => $category->getId(),
-                'title' => $category->getTranslatedTitle($this->currentLang),
-                'parentId' => $category->getParentId(),
+                'title' => $category->getTitle(),
+                // 'title' => $category->getTranslatedTitle($this->currentLang),
+                'parent_id' => $category->getParentId(),
+                'translations' => $category->getTranslations(),
                 'children' => []
             ];
         }
-
+    
         // связываем детей с родителями
         foreach ($categoriesById as $id => &$cat) {
-            if ($cat['parentId']) {
-                $categoriesById[$cat['parentId']]['children'][] = &$cat;
+            if ($cat['parent_id']) {
+                $categoriesById[$cat['parent_id']]['children'][] = &$cat;
             } else {
                 $tree[] = &$cat; // главная категория
             }
         }
 
         return $tree;
+    }
+
+    public function getCategoryTreeDTO(): array
+    {
+      $categories = $this->getCategoryTree();
+      return array_map(fn($cat) => new  CategoryTreeDto($cat, $this->currentLang), $categories);
     }
 
     public function getAllCategoriesCount(): int

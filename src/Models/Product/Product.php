@@ -307,9 +307,12 @@ class Product
       $this->images = $images;
     }
 
-    public function getCurrentTranslations(): array
+    public function getTranslation(string $locale = null): array
     {
-      return $this->translations;
+      if($locale) {
+        return $this->translations[$locale] ?? $this->translations['ru'] ?? [];
+      }
+        return $this->translations ?? [];
     }
 
     public function setCurrentLang(string $currentLang): void 
