@@ -67,6 +67,17 @@ class CategoryService extends BaseService
       return $categories;
     }
 
+    public function createCategoryProductDTO (int $id): CategoryForProductDTO
+    {
+      $category = $this->getCategoryById($id);
+      $dtoFactory = new CategoryForProductDTOFactory();
+
+      $dto = $dtoFactory->createFromCategory($category, currentLang: $this->currentLang);
+
+      return $dto; 
+    }
+
+
 
     // Методы возвращают массив для api
     public function getMainCategoriesArray(): array
@@ -222,15 +233,6 @@ class CategoryService extends BaseService
     }
 
 
-    public function createCategoryProductDTO (int $id): CategoryForProductDTO
-    {
-      $category = $this->getCategoryById($id);
-      $dtoFactory = new CategoryForProductDTOFactory();
-
-      $dto = $dtoFactory->createFromCategory($category, currentLang: $this->currentLang);
-
-      return $dto; 
-    }
 
 
 

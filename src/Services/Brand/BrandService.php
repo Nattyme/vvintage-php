@@ -12,7 +12,8 @@ use Vvintage\Repositories\Brand\BrandRepository;
 use Vvintage\Repositories\Brand\BrandTranslationRepository;
 
 use Vvintage\DTO\Brand\BrandInputDTO;
-use Vvintage\DTO\Brand\BrandOutputDTO;
+use Vvintage\DTO\Brand\BrandForProductDTO;
+use Vvintage\DTO\Brand\BrandForProductDTOFactory;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -36,7 +37,7 @@ class BrandService extends BaseService
           return null;
       }
 
-      $translation = $this->getBrandTranslations($id);
+      $translation = $this->translationRepo->loadTranslations($id);
       $brand->setTranslations($translation);
 
       return $brand;
@@ -50,7 +51,7 @@ class BrandService extends BaseService
     public function getAllBrandsDto(): array
     {
       $rows =  $this->repository->getAllBrands();
-      return array_map([$this, 'createBrandOutputDTO'], array_column($rows, 'id'));
+      return array_map([$this, 'createBrandProductDTO'], array_column($rows, 'id'));
     }
 
 
@@ -108,75 +109,76 @@ class BrandService extends BaseService
         return $translations;
     }
 
-    public function getBrandDTO(int $brandId): ?BrandDTO
-    {
-        $brand = $this->repository->getBrandById($brandId);
-        if (!$brand) return null;
-        
-        // получаем переводы из репозитория переводов
-        $translations = $this->translationRepo->getLocaleTranslation(
-            $brandId,
-            $this->currentLang
-        ) ?? $this->translationRepo->getLocaleTranslation($brandId, $this->localeService->getDefaultLocale());
-
-        return new BrandOutputDTO([
-            'id' => $brand->getId(),
-            'title' => $translations['title'] ?? $brand->getTitle(),
-            'image' => $brand->getImage(),
-            'translations' => [$this->currentLang => $translations ?? []],
-        ]);
-    }
 
 
-    public function getBrandWithTranslations(int $brandId): array
-    {
-        // 1. Берём основной бренд
-        $brand = $this->repository->getBrandById($brandId);
-        if (!$brand) {
-            return [];
-        }
-
-        // 2. Берём переводы из отдельного репозитория
-        $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->currentLang);
-
-        if (!$translations) {
-            // fallback на дефолтный язык
-            $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->localeService->getDefaultLocale());
-        }
-
-        // 3. Объединяем данные в сервисе
-        return [
-            'id' => $brand->getId(),
-            'title' => $translations['title'] ?? $brand->getTitle(),
-            'description' => $translations['description'] ?? '',
-            'seo_title' => $translations['meta_title'] ?? '',
-            'seo_description' => $translations['meta_description'] ?? '',
-            'image' => $brand->getImage(),
-        ];
-    }
-
-    public function createBrandOutputDTO(int $id): ?BrandOutputDTO
+    public function createBrandProductDTO(int $id): ?BrandForProductDTO
     {
         $brand = $this->getBrandById($id);
-
         if(!$brand) return null;
 
-        $translations = $this->translationRepo->loadTranslations($id);
-      
-        return new BrandOutputDTO([
-            'id' => (int) $id,
-            'title' => (string) ($translations[$this->currentLang]['title'] ?? ''),
-            'image' => (string) ($row['brand_image'] ?? ''),
-            'translations' => [
-                $this->currentLang => [
-                    'title' => $brand->getTranslatedTitle($this->currentLang) ?? '',
-                    'description' => $brand->getTranslatedDescription($this->currentLang) ?? '',
-                    'meta_title' => $brand-> getSeoTitle($this->currentLang) ?? '',
-                    'meta_description' => $brand->getSeoDescription($this->currentLang) ?? '',
-                ]
-            ],
-            // 'locale' => $this->locale,
-        ]);
+        $dtoFactory = new BrandForProductDTOFactory();
+        $dto = $dtoFactory->createFromBrand($brand, $this->currentLang);
+
+        return $dto; 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //     public function getBrandDTO(int $brandId): ?BrandDTO
+    // {
+    //     $brand = $this->repository->getBrandById($brandId);
+    //     if (!$brand) return null;
+        
+    //     // получаем переводы из репозитория переводов
+    //     $translations = $this->translationRepo->getLocaleTranslation(
+    //         $brandId,
+    //         $this->currentLang
+    //     ) ?? $this->translationRepo->getLocaleTranslation($brandId, $this->localeService->getDefaultLocale());
+
+    //     return new BrandOutputDTO([
+    //         'id' => $brand->getId(),
+    //         'title' => $translations['title'] ?? $brand->getTitle(),
+    //         'image' => $brand->getImage(),
+    //         'translations' => [$this->currentLang => $translations ?? []],
+    //     ]);
+    // }
+
+
+    // public function getBrandWithTranslations(int $brandId): array
+    // {
+    //     // 1. Берём основной бренд
+    //     $brand = $this->repository->getBrandById($brandId);
+    //     if (!$brand) {
+    //         return [];
+    //     }
+
+    //     // 2. Берём переводы из отдельного репозитория
+    //     $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->currentLang);
+
+    //     if (!$translations) {
+    //         // fallback на дефолтный язык
+    //         $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->localeService->getDefaultLocale());
+    //     }
+
+    //     // 3. Объединяем данные в сервисе
+    //     return [
+    //         'id' => $brand->getId(),
+    //         'title' => $translations['title'] ?? $brand->getTitle(),
+    //         'description' => $translations['description'] ?? '',
+    //         'seo_title' => $translations['meta_title'] ?? '',
+    //         'seo_description' => $translations['meta_description'] ?? '',
+    //         'image' => $brand->getImage(),
+    //     ];
+    // }
 
 }

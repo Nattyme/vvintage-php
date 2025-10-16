@@ -61,8 +61,8 @@ class ProductService extends BaseService
 
         // Создаем dto для категории и бренда продукта
         $categoryDTO = $this->categoryService->createCategoryProductDTO((int) $row['category_id']);
-        dd($categoryDTO);
-        $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
+        $brandDTO = $this->brandService->createBrandProductDTO((int) $row['brand_id']);
+    
         // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
         $imagesDTO = $this->productImageService->createImageDTO($row);
 
@@ -73,10 +73,9 @@ class ProductService extends BaseService
           'id' => $row['id'],
           'category_id' => $categoryDTO->id,
           'category_title' => $categoryDTO->title,
-          'categoryDTO' => $categoryDTO,
-          'brand_id' => $row['brand_id'],
-          'brand_title' => $brandOutputDTO->title,
-          'brandDTO' => $brandOutputDTO,
+          'category_parent_id' => $categoryDTO->parent_id,
+          'brand_id' => $brandDTO->id,
+          'brand_title' => $brandDTO->title,
           'slug' => $row['slug'],
           'title' => $translations[$this->currentLang]['title'] ?? $translations['title'],
           'description' => $translations[$this->currentLang]['description'] ?? $translations['description'],
