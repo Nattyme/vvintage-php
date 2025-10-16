@@ -137,8 +137,8 @@ class ProductImageService
     }
 
     return new ImageForProductCardDTO(
-        filename: $image->filename ?? '',
-        alt: $image->alt ?? ''
+        filename: $image['filename'] ?? null,
+        alt: $image['alt'] ?? null
     );
   }
 

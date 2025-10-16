@@ -25,8 +25,9 @@ final class ProductCardDTOFactory
       $translations = (array) $product->getTranslations($currentLang);
 
       // Подставляем дефолтное изображение, если $image = null
-      $imageFilename = $image?->filename ?? 'no-photo.jpg';
-      $imageAlt = $image?->alt ?? ($product->getTitle() ?? '');
+      $imageFilename = !empty($image?->filename) ? $image->filename : 'no-photo.jpg';
+      $imageAlt = !empty($image?->alt) ? $image->alt : ($product->getTitle() ?? '');
+
 
       return new ProductCardDTO(
           id: (int) $product->getId(),
@@ -40,7 +41,7 @@ final class ProductCardDTOFactory
 
           slug: (string) $product->getSlug() ?? '',
           title: (string) ($translations['title'] ?? ''),
-          price: (string) ($product->getPrice() ?? ''),
+          price: (int) ($product->getPrice() ?? null),
           image_filename: $imageFilename,
           image_alt: $imageAlt
       );

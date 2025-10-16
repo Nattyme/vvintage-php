@@ -18,9 +18,9 @@ final class ProductCardDTO
 
         public ?string $slug,
         public string $title,
-        public int $price,
+        public ?int $price,
 
-        public string $image_filename,
+        public ?string $image_filename,
         public ?string $image_alt
     )
     {}

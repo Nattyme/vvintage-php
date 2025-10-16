@@ -68,7 +68,7 @@ class ProductService extends BaseService
 
         // Создаем dto изображения продукта и подготавливаем к отображению 
         $imageDto = $this->productImageService->getMainImageDTO($productId);
-    
+    // dd($imageDto);
         $dtoFactory = new ProductCardDTOFactory();
         $dto = $dtoFactory->createFromProduct(
           product: $product,
@@ -77,7 +77,7 @@ class ProductService extends BaseService
           image:  $imageDto,
           currentLang: $this->currentLang
         );
-
+dd($dto);
         return $dto; 
     }
 
