@@ -68,10 +68,7 @@ final class Category
         return $category;
     }
 
-    public function setTranslations(array $translations): void 
-    {
-      $this->translations = $translations;
-    }
+ 
 
     // Получение названия в нужной локали, иначе fallback title
     public function getTitle(?string $locale = null): string
@@ -122,12 +119,6 @@ final class Category
         return $this->currentLocale;
     }
 
-    // Позволяет задать локаль один раз, чтобы не передавать её в каждый геттер.
-    public function setCurrentLocale(string $locale): void
-    {
-        $this->currentLocale = $locale;
-    }
-    
     public function getTranslations(?string $locale = null): array
     {
         if ($locale) {
@@ -167,6 +158,17 @@ final class Category
         }
        
         return $this->description;
+    }
+
+    // Позволяет задать локаль один раз, чтобы не передавать её в каждый геттер.
+    public function setCurrentLocale(string $locale): void
+    {
+        $this->currentLocale = $locale;
+    }
+
+    public function setTranslations(array $translations): void 
+    {
+      $this->translations = $translations;
     }
 
     

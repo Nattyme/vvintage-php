@@ -11,8 +11,8 @@ use Vvintage\Repositories\Category\CategoryTranslationRepository;
 use Vvintage\Services\Base\BaseService;
 
 use Vvintage\DTO\Category\CategoryDTO;
-use Vvintage\DTO\Category\CategoryCardDTO;
-use Vvintage\DTO\Category\CategoryCardDTOFactory;
+use Vvintage\DTO\Category\CategoryForProductDTO;
+use Vvintage\DTO\Category\CategoryForProductDTOFactory;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -222,10 +222,10 @@ class CategoryService extends BaseService
     }
 
 
-    public function createCategoryCardDTO (int $id): CategoryCardDTO
+    public function createCategoryProductDTO (int $id): CategoryForProductDTO
     {
       $category = $this->getCategoryById($id);
-      $dtoFactory = new CategoryCardDTOFactory();
+      $dtoFactory = new CategoryForProductDTOFactory();
 
       $dto = $dtoFactory->createFromCategory($category, currentLang: $this->currentLang);
 

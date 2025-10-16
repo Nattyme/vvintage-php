@@ -58,10 +58,11 @@ class ProductService extends BaseService
         } else {
           $translations = $this->translationRepo->loadTranslations($productId);
         }
-        $categoryDTO = $this->categoryService->createCategoryCardDTO((int) $row['category_id']);
-       
-        $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
 
+        // Создаем dto для категории и бренда продукта
+        $categoryDTO = $this->categoryService->createCategoryProductDTO((int) $row['category_id']);
+        dd($categoryDTO);
+        $brandOutputDTO = $this->brandService->createBrandOutputDTO((int) $row['brand_id']);
         // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
         $imagesDTO = $this->productImageService->createImageDTO($row);
 
