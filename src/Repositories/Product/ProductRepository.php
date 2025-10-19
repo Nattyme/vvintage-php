@@ -57,12 +57,7 @@ final class ProductRepository extends AbstractRepository
 
     public function getModelProductById(int $id): ?Product
     {
-     
-      $bean = array_values($this->getProductsModels(['id' => $id]))[0];
-
-
-      return Product::fromBean($data);
-    
+      return array_values($this->getProductsModels(['id' => $id]))[0];
     }
 
     public function getProductsModels(array $filters = []): array

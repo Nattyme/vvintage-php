@@ -37,7 +37,16 @@ final class ProductImageRepository extends AbstractRepository
             orderBy: 'image_order ASC'       // сортировка
         );
 
-        return array_map([$this, 'mapBeanToImageOutputDto'], $beans);
+        // return array_map([$this, 'mapBeanToImageOutputDto'], $beans);
+        return array_map(function($bean) {
+          return [
+            'id' => (int) $bean->id,
+            'product_id' => (int) $bean->product_id,
+            'filename' => (string) $bean->filename,
+            'image_order' => (int) $bean->image_order,
+            'alt' => (string) $bean->alt
+          ];
+        }, $beans);
     }
 
     /**

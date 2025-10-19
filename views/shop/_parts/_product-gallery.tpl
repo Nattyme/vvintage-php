@@ -2,15 +2,17 @@
 
   <figure class="gallery__item gallery__item--1">
     <a 
-      href="<?php echo HOST . 'usercontent/products/' . u($viewModel['main']->getFilename());?>" 
-      data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' . h($viewModel['main']->getFilename());?>"
+      href="<?php echo HOST . 'usercontent/products/' . u($viewModel['main']->filename);?>" 
+      data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' . h($viewModel['main']->filename);?>"
       data-fancybox="gallery">
 
       <picture>
         <img 
           class="product__img product__img--main"
-          src="<?php echo HOST . 'usercontent/products/' . '350-' . u($viewModel['main']->getFilename());?>" 
-          srcset="<?php echo HOST . 'usercontent/products/' . '350-' . u($viewModel['main']->getFilename());?>" alt="" loading="lazy"
+          src="<?php echo HOST . 'usercontent/products/' . '350-' . u($viewModel['main']->filename);?>" 
+          srcset="<?php echo HOST . 'usercontent/products/' . '350-' . u($viewModel['main']->filename);?>" 
+          alt="<?php echo h($viewModel['main']->alt) ?? h($product->title);?>" 
+          loading="lazy"
         >
       </picture>
     </a>
@@ -19,13 +21,15 @@
   <?php foreach ($viewModel['gallery']['visible'] as $i => $image) : ?>
     <?php $isLast = $i === count($viewModel['gallery']['visible']) - 1; ?>
     <figure class="gallery__item gallery__item--<?php echo $i + 2; ?>">
-      <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
-          data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' .  h($image->getFilename());?>">
+      <a data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->filename);?>" 
+          data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' .  h($image->filename);?>">
         <picture>
           <img 
             class="product__img"
-            src="<?php echo HOST . 'usercontent/products/' . '350-' . u($image->getFilename());?>" 
-            srcset="<?php echo HOST . 'usercontent/products/' . '350-' . u($image->getFilename());?>" alt="" loading="lazy"
+            src="<?php echo HOST . 'usercontent/products/' . '350-' . u($image->filename);?>" 
+            srcset="<?php echo HOST . 'usercontent/products/' . '350-' . u($image->filename);?>" 
+            alt="<?php echo h($image->alt) ?? h($product->title);?>" 
+            loading="lazy"
           >
         </picture>
 
@@ -48,8 +52,8 @@
 
   <?php foreach($viewModel['gallery']['hidden'] as $image) : ?>
     <a 
-      data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->getFilename());?>" 
-      data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' . h($image->getFilename());?>">
+      data-fancybox="gallery" href="<?php echo HOST . 'usercontent/products/' . u($image->filename);?>" 
+      data-thumb="<?php echo HOST . 'usercontent/products/' . '350-' . h($image->filename);?>">
     </a>
   <?php endforeach; ?>
 

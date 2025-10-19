@@ -17,6 +17,8 @@ use Vvintage\Services\Brand\BrandService;
 
 use Vvintage\DTO\Product\ProductFilterDTO;
 use Vvintage\DTO\Product\ProductOutputDTO;
+use Vvintage\DTO\Product\ProductPageDTO;
+use Vvintage\DTO\Product\ProductPageDTOFactory;
 use Vvintage\DTO\Product\ProductCardDTO;
 use Vvintage\DTO\Product\ProductCardDTOFactory;
 use Vvintage\DTO\Product\ImageForProductCardDTO;
@@ -50,17 +52,11 @@ class ProductService extends BaseService
     }
 
     
-    private function createProductDTOFromArray(?Product $product, ?string $currentLang = null): ProductCardDTO
+    private function createProductCardDTO(?Product $product, ?string $currentLang = null): ProductCardDTO
     {
         $productId = $product->getId();
         $translations = $this->translationRepo->loadTranslations($productId);
-        // $tranlations = [];
 
-        // if($currentLang) {
-        //   $translations = $this->translationRepo->getTranslationsArray($productId, $currentLang);
-        // } else {
-        //   $translations = $this->translationRepo->loadTranslations($productId);
-        // }
 
         $product->setTranslations($translations);
    
@@ -83,23 +79,39 @@ class ProductService extends BaseService
         return $dto; 
     }
 
-    public function getStatusList(): array {
-      return $this->status;
+    private function createProductPageDTO(?Product $product, ?string $currentLang = null): ProductPageDTO
+    {
+     
+        $productId = $product->getId();
+        $translations = $this->translationRepo->loadTranslations($productId);
+
+
+        $product->setTranslations($translations);
+    
+        // Создаем dto для категории и бренда продукта
+        $categoryDTO = $this->categoryService->createCategoryProductDTO((int) $product->getCategoryId());
+        $brandDTO = $this->brandService->createBrandProductDTO((int) $product->getBrandId());
+
+        // Создаем dto изображения продукта и подготавливаем к отображению 
+        // $imagesAll = $this->productImageService->getProductImagesAll($productId);
+        $imageDto = $this->productImageService->getProductPageImagesDtos($productId);
+
+        $dtoFactory = new ProductPageDTOFactory();
+        $dto = $dtoFactory->createFromProduct(
+          product: $product,
+          category: $categoryDTO,
+          brand: $brandDTO,
+          images:  $imageDto,
+          currentLang: $this->currentLang
+        );
+
+        return $dto; 
     }
 
-
-    public function getProductById(int $id): ?ProductOutputDTO
+    public function getProductPageData(int $id) 
     {
-        $rows = $this->repository->getProductById($id);
-
-        return $rows ? $this->createProductDTOFromArray($rows) : null;
-    }
-
-    public function getLocaledProductById(int $id): ?ProductOutputDTO
-    {
-        $rows = $this->repository->getProductById($id);
-
-        return $rows ? $this->createProductDTOFromArray($rows, $this->currentLang) : null;
+      $product = $this->getProductModelById($id);
+      return $this->createProductPageDTO($product);
     }
 
     public function getProductModelById(int $id): ?Product
@@ -107,48 +119,69 @@ class ProductService extends BaseService
       $productModel = $this->repository->getModelProductById($id);
       $productId  = $productModel->getId();
 
-      $translations = $this->translationRepo->loadTranslations($productId);
+      // $translations = $this->translationRepo->loadTranslations($productId);
       
-      $productModel->setTranslations($translations);
+      // $productModel->setTranslations($translations);
 
       return $productModel;
     }
 
-    public function getProductLocaledModelById(int $id, bool $withAllTranslations = false): ?Product
+    public function getStatusList(): array {
+      return $this->status;
+    }
+
+
+    public function getProductById(int $id): ?ProductOutputDTO
     {
-      $productModel = $this->repository->getModelProductById($id);
+        $rows = $this->repository->getModelProductById($id);
 
-      if ($withAllTranslations) {
-        $translations = $this->translationRepo->loadTranslations($id);
-      } else {
-        $translations = $this->translationRepo->getLocaleTranslation($id, $this->currentLang);
-      }
+        return $rows ? $this->createProductDTOFromArray($rows) : null;
+    }
 
-      $productModel->setTranslations($translations);
+    public function getLocaledProductById(int $id): ?ProductOutputDTO
+    {
+        $rows = $this->repository->getModelProductById($id);
+
+        return $rows ? $this->createProductPageDTO($rows, $this->currentLang) : null;
+    }
+
+   
+
+    // public function getProductLocaledModelById(int $id, bool $withAllTranslations = false): ?Product
+    // {
+    //   $productModel = $this->repository->getModelProductById($id);
+
+    //   if ($withAllTranslations) {
+    //     $translations = $this->translationRepo->loadTranslations($id);
+    //   } else {
+    //     $translations = $this->translationRepo->getLocaleTranslation($id, $this->currentLang);
+    //   }
+
+    //   $productModel->setTranslations($translations);
 
 
-      $category = $this->categoryService->getCategoryById($productModel->getCategoryId());
-      // $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO($productModel->getCategoryId());
-      $productModel->setCategory($category);
-      $productModel->setCurrentLang($this->currentLang);
+    //   $category = $this->categoryService->getCategoryById($productModel->getCategoryId());
+    //   // $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO($productModel->getCategoryId());
+    //   $productModel->setCategory($category);
+    //   $productModel->setCurrentLang($this->currentLang);
 
-      $brand = $this->brandService->getBrandById($productModel->getBrandId());
-      $productModel->setBrand($brand);
+    //   $brand = $this->brandService->getBrandById($productModel->getBrandId());
+    //   $productModel->setBrand($brand);
 
-      // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
+    //   // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
   
 
-      // $images = $this->productImageService->getImageViewData($imagesDTO);
-      // $productModel->setImages($images);
+    //   // $images = $this->productImageService->getImageViewData($imagesDTO);
+    //   // $productModel->setImages($images);
 
-      return $productModel;
-    }
+    //   return $productModel;
+    // }
 
-    public function setImages(Product $productModel): void 
-    {
-      $images = $this->productImageService->getProductImages( $productModel->getId());
-      $productModel->setImages($images);
-    }
+    // public function setImages(Product $productModel): void 
+    // {
+    //   $images = $this->productImageService->getProductImages( $productModel->getId());
+    //   $productModel->setImages($images);
+    // }
 
     public function getImagesDTO(array $images): array
     {
@@ -215,7 +248,7 @@ class ProductService extends BaseService
         $product->setTranslations($translations);
       }
 
-      return $products ? array_map([$this, 'createProductDTOFromArray'], $products) : null;
+      return $products ? array_map([$this, 'createProductCardDTO'], $products) : null;
     }
 
     public function countProducts(): int
@@ -293,7 +326,7 @@ class ProductService extends BaseService
       //   $product->setTranslations($translations);
       // }
   
-      $products = array_map([$this, 'createProductDTOFromArray'], $products);
+      $products = array_map([$this, 'createProductCardDTO'], $products);
 
       return ['products' => $products, 'total' => $totalItems, 'filters' => $filters];
     }

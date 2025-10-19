@@ -45,12 +45,13 @@ final class ProductController extends BaseController
     public function index(RouteData $routeData): void
     {   
         $this->setRouteData($routeData);
-     
+  
         $id = (int) $routeData->uriGet; // получаем id товара из URL  
-        $productModel = $this->productService->getProductLocaledModelById($id);
-        $this->productService->setImages($productModel);
+        $productDto = $this->productService->getProductPageData($id);
+   
+        // $this->productService->setImages($productModel);
 
-        if (!$productModel) {
+        if (!$productDto) {
             http_response_code(404);
             echo 'Товар не найден';
             return;
@@ -58,18 +59,16 @@ final class ProductController extends BaseController
    
         // $related = $product->getRelated();
         $statusList = $this->productService->getStatusList();
-        $imagesDtos = $this->productService->getImagesDTO($productModel->getImages());
-        $images = $this->productService->getProductImagesData( $imagesDtos);
-        $productModel->setImages($images);
-
-        $productDto = new ProductPageDTO($productModel);
+        // $imagesDtos = $this->productService->getImagesDTO($productModel->getImages());
+        // $images = $this->productService->getProductImagesData( $imagesDtos);
+        // $productModel->setImages($images);
 
         // Формируем единую модель для передачи в шаблон
         $viewModel = [
             'product' => $productDto,
-            'imagesTotal' => $productModel->getImages()['total'],
-            'main' => $productModel->getImages()['main'],
-            'gallery' => $productModel->getImages()['gallery'], 
+            'imagesTotal' => $productDto->images['total'],
+            'main' => $productDto->images['main'],
+            'gallery' => $productDto->images['gallery'], 
             // 'related' => $related,
             'statusList'=> $statusList,
         ];
@@ -77,13 +76,13 @@ final class ProductController extends BaseController
         // Название страницы и хлебные крошки
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $productDto->title);
 
-        $seo = $this->seoService->getSeoForPage('product', $productModel);
+        // $seo = $this->seoService->getSeoForPage('product', $productModel);
         $pageTitle = $productDto->title;
  
         // Подключение шаблонов страницы
         $this->renderLayout('shop/product', [
               'pageTitle' => $pageTitle,
-              'seo' => $seo,
+              // 'seo' => $seo,
               'currentLang' => $this->productService->currentLang,
               'routeData' => $routeData,
               'navigation' => $this->pageService->getLocalePagesNavTitles(),

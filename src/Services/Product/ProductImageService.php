@@ -7,6 +7,7 @@ use Vvintage\DTO\Product\ProductImageDTO;
 use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\Repositories\Product\ProductImageRepository;
 use Vvintage\DTO\Product\ImageForProductCardDTO;
+use Vvintage\DTO\Product\ProductPageImageDTO;
 
 class ProductImageService
 {
@@ -17,7 +18,72 @@ class ProductImageService
   {
     $this->repository = new ProductImageRepository();
   }
+
+      /**
+     * Преобразовать RedBean OODBBean в ProductImageOutputDTO
+     */
+    private function createProductPageImageDTO(array $image): ProductPageImageDTO
+    {
+        // Подставляем дефолтное изображение, если $image = null
+        // $imageFilename = !empty($image?->filename) ? $image->filename : 'no-photo.jpg';
+        // $imageAlt = !empty($image?->alt) ? $image->alt : ($product->getTitle() ?? '');
+        
+        return new ProductPageImageDTO(
+            id: (int) $image['id'],
+            product_id: (int) $image['product_id'],
+            filename: (string) $image['filename'],
+            image_order: (int) $image['image_order'],
+            alt: (string) $image['alt']
+        );
+    }
+
   
+ 
+
+  public function getProductPageImagesDtos(int $poductId): array
+  {
+    $images = $this->getProductImagesAll($poductId);
+
+    $imagesDtos = array_map([$this, 'createProductPageImageDTO'], $images);
+  
+    // Делим массив изображений на два массива - главное и другие
+    $mainAndOthers = $this->splitImages($imagesDtos);
+    $gallery = $this->splitVisibleHidden($mainAndOthers['others']);
+    $total = $this->countAll($images);
+
+    return [
+      'main' =>  $mainAndOthers['main'],
+      'others' => $mainAndOthers['others'],
+      'gallery' => $gallery,
+      'total' => $total
+    ];
+  }
+
+
+  public function getMainImage($productId)
+  {
+    $image = $this->repository->getMainImage((int) $productId);
+  }
+
+  public function getMainImageDTO (int $productId): ?ImageForProductCardDTO
+  {
+    $image = $this->repository->getMainImage($productId); 
+
+    if (!$image) {
+        return null;
+    }
+
+    return new ImageForProductCardDTO(
+        filename: $image['filename'] ?? null,
+        alt: $image['alt'] ?? null
+    );
+  }
+
+  public function getProductImagesAll(int $productId): array 
+  {
+    return $this->repository->getAllImages($productId);
+  }
+
   /**
    * Разбивает массив DTO изображений на main и другие, с fallback
    * @param ProductImageDTO[] $images
@@ -48,6 +114,19 @@ class ProductImageService
       ];
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
    * Делит остальные изображения на видимые и скрытые (если понадобится)
    * @param ProductImageDTO[] $otherImages
@@ -69,21 +148,6 @@ class ProductImageService
     return count($images);
   }
 
-  public function getImageViewData(array $images): array
-  {
-    
-    // Делим массив изображений на два массива - главное и другие
-    $mainAndOthers = $this->splitImages($images);
-    $gallery = $this->splitVisibleHidden($mainAndOthers['others']);
-    $total = $this->countAll($images);
-
-    return [
-      'main' =>  $mainAndOthers['main'],
-      'others' => $mainAndOthers['others'],
-      'gallery' => $gallery,
-      'total' => $total
-    ];
-  }
 
   public function buildImageDtos(int $productId, array $processedImages): array
   {
@@ -123,25 +187,6 @@ class ProductImageService
     return array_map(fn($image) => new ProductImageDTO($image), $images);
   }
 
-  public function getMainImage($productId)
-  {
-    $image = $this->repository->getMainImage((int) $productId);
-  }
-
-  public function getMainImageDTO (int $productId): ?ImageForProductCardDTO
-  {
-    $image = $this->repository->getMainImage($productId); 
-
-    if (!$image) {
-        return null;
-    }
-
-    return new ImageForProductCardDTO(
-        filename: $image['filename'] ?? null,
-        alt: $image['alt'] ?? null
-    );
-  }
-
    public function getFlatImages(array $data): array 
   {
     $images = [];
@@ -158,10 +203,7 @@ class ProductImageService
 
   }
 
-  public function getProductImagesAll(int $productId): array 
-  {
-    return $this->repository->getAllImages($productId);
-  }
+  
 
 
 }
