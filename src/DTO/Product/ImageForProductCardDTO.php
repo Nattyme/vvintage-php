@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\ProductForList\Product;
+namespace Vvintage\DTO\Product;
 
 final class ImageForProductCardDTO
 {

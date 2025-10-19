@@ -3,33 +3,36 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Cart;
 use Vvintage\Models\Product\Product;
+use Vvintage\Services\Product\ProductImageService;
+use Vvintage\DTO\Product\ImageForProductCardDTO;
+use Vvintage\DTO\Cart\CartItemDto;
 
 
-final class CartItemDtoFactory
+final class CartItemDTOFactory
 {
-
     public function createFromProduct(
       Product $product,
-      array $images,
       string $currentLang
-    ): ProductPageDTO
+    ): CartItemDto
     {
+      $productId = (int) $product->getId();
+
+      $service = new ProductImageService();
+      $image = $service->getMainImageDTO($productId);
 
       $translations = (array) $product->getTranslation($currentLang);
 
-
       return new CartItemDto (
-          id: (int) $product->getId(),
-
-    
+          id: $productId,
           slug: (string) $product->getSlug() ?? '',
           title: (string) ($translations['title'] ?? ''),
-          description: (string) ($translations['description'] ?? ''),
           price: (int) ($product->getPrice() ?? null),
-          edit_time: (string) ($product->getEditTime() ?? null),
-          images: $images
+     
+          image_filename: $image->filename,
+          image_alt: $image->alt
       );
     }
+
 
 }
  

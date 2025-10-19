@@ -10,12 +10,14 @@ use Vvintage\Models\User\User;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
 
-use Vvintage\DTO\Cart\ProductForCartDTO;
-use Vvintage\DTO\Cart\ProductForCartDTOFactory;
+use Vvintage\DTO\Cart\CartItemDTO;
+use Vvintage\DTO\Cart\CartItemDTOFactory;
 
 
 class CartService extends AbstractUserItemsListService
 {
+
+  // Получаем массив  dto продуктов дял корзины 
     public function getListItems(): array 
     {
       $products = parent::getListItems(); // вызовет метод родителя
@@ -27,11 +29,16 @@ class CartService extends AbstractUserItemsListService
       return !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
 
-    private function createProductForCartDTO(?Product $product, ?string $currentLang = null): ProductForCartDTO
+    // Метод создает dto продукта для корзины 
+    private function createProductForCartDTO(?Product $product, ?string $currentLang = null): CartItemDTO
     {
-     dd('cart service dto');
-        return $dto; 
+      $dtoFactory = new CartItemDTOFactory();
+      $dto = $dtoFactory->createFromProduct(
+        product: $product,
+        currentLang: $this->currentLang
+      );
+         
+      return $dto; 
     }
-  
 
 }
