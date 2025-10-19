@@ -100,6 +100,4 @@ abstract class AbstractUserItemsListService extends BaseService
       }
     }
 
-
-    // abstract public function getSessionKey(): string; // обязательно для наследников
 }

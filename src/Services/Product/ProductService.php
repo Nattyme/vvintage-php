@@ -19,8 +19,9 @@ use Vvintage\DTO\Product\ProductFilterDTO;
 use Vvintage\DTO\Product\ProductOutputDTO;
 use Vvintage\DTO\Product\ProductPageDTO;
 use Vvintage\DTO\Product\ProductPageDTOFactory;
-use Vvintage\DTO\Product\ProductCardDTO;
-use Vvintage\DTO\Product\ProductCardDTOFactory;
+use Vvintage\DTO\Product\ProductForList\ProductForListDTO;
+use Vvintage\DTO\Product\ProductForList\ProductForListDTOFactory;
+
 use Vvintage\DTO\Product\ImageForProductCardDTO;
 
 require_once ROOT . "./libs/functions.php";
@@ -108,6 +109,17 @@ class ProductService extends BaseService
         return $dto; 
     }
 
+
+
+    public function getProductCartDTO()
+    {
+      $products = $this->getProductsByIds();
+        // Преобразуем в DTO
+        return array_map([$this, 'createProductForListDTO'], $products);
+    }
+
+   
+
     public function getProductPageData(int $id) 
     {
       $product = $this->getProductModelById($id);
@@ -144,6 +156,28 @@ class ProductService extends BaseService
 
         return $rows ? $this->createProductPageDTO($rows, $this->currentLang) : null;
     }
+
+    public function getProductsByIds(array $ids): array
+    {
+        if (empty($ids)) return [];
+
+        // Изменяем ассоциативный массив - берем только значения
+        $ids = array_keys($ids);
+
+        // Получаем все продукты за один запрос
+        $products = $this->repository->getProductsByIds($ids);
+
+        if (empty($products)) return [];
+        return $products;
+
+    }
+
+
+
+
+
+
+
 
    
 
@@ -188,21 +222,7 @@ class ProductService extends BaseService
       return $this->productImageService->getImagesDTOs($images);
     }
    
-    public function getProductsByIds(array $ids): array
-    {
-        if (empty($ids)) return [];
-
-        // Изменяем ассоциативный массив - берем только значения
-        $ids = array_keys($ids);
-
-        // Получаем все продукты за один запрос
-        $rows = $this->repository->getProductsByIds($ids);
-
-        if (empty($rows)) return [];
-
-        // Преобразуем в DTO
-        return array_map([$this, 'createProductDTOFromArray'], $rows);
-    }
+  
 
 
     public function getActiveProducts(): array 

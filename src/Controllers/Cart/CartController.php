@@ -71,7 +71,7 @@ final class CartController extends BaseController
     {
       // Получаем продукты
       $products = $this->cartService->getListItems();
-     
+     dd( $products);
       $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
       $this->setRouteData($routeData); // <-- передаём routeData
 
