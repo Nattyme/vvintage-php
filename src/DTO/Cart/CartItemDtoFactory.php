@@ -17,10 +17,15 @@ final class CartItemDTOFactory
     {
       $productId = (int) $product->getId();
 
+      $translations = (array) $product->getTranslation($currentLang);
+
       $service = new ProductImageService();
       $image = $service->getMainImageDTO($productId);
+      
+      // Подставляем дефолтное изображение, если $image = null
+      $imageFilename = !empty($image?->filename) ? $image->filename : 'no-photo.jpg';
+      $imageAlt = !empty($image?->alt) ? $image->alt : ($translations['title'] ?? $product->getTitle() ?? '');
 
-      $translations = (array) $product->getTranslation($currentLang);
 
       return new CartItemDto (
           id: $productId,
@@ -28,8 +33,8 @@ final class CartItemDTOFactory
           title: (string) ($translations['title'] ?? ''),
           price: (int) ($product->getPrice() ?? null),
      
-          image_filename: $image->filename,
-          image_alt: $image->alt
+          image_filename: $imageFilename,
+          image_alt: $imageAlt
       );
     }
 

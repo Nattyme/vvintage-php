@@ -1,4 +1,5 @@
 <div class="cart__grid cart__grid--relative">
+  
   <div class="cart__row">
     <a 
       href="<?php echo HOST . 'removefromcart?id=' . u($product->id);?>" 
@@ -10,10 +11,9 @@
   
     <div class="cart__img">
       <img 
-        src="<?php echo HOST;?>usercontent/products/<?php echo empty($mainImage->filename) 
-        ? "no-photo.jpg" : h($mainImage->filename);?>" 
-        srcset="<?php echo HOST . 'usercontent/products/' . h($mainImage->filename);?>" 
-        alt="<?php echo h($product->title);?>">
+        src="<?php echo HOST;?>usercontent/products/<?php echo h($product->image_filename);?>" 
+        srcset="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" 
+        alt="<?php echo h($product->image_alt);?>">
     </div>
 
     <div class="cart__title">

@@ -168,6 +168,11 @@ class ProductService extends BaseService
         $products = $this->repository->getProductsByIds($ids);
 
         if (empty($products)) return [];
+
+        foreach ($products as $product) {
+          $translations = $this->translationRepo->loadTranslations($product->getId());
+          $product->setTranslations($translations);
+        }
         return $products;
 
     }
@@ -190,7 +195,6 @@ class ProductService extends BaseService
     //   } else {
     //     $translations = $this->translationRepo->getLocaleTranslation($id, $this->currentLang);
     //   }
-
     //   $productModel->setTranslations($translations);
 
 
