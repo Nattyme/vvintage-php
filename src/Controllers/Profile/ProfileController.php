@@ -78,7 +78,8 @@ final class ProfileController extends BaseController
           $this->redirect('profile');
         }
      
-        $order = $orders = $this->userService->getOrdersByUserId($id);
+        // $order = $orders = $this->userService->getOrdersByUserId($id);
+        $orders = $this->orderService->getProfileOrdersList($id);
 
         $this->renderProfileFull($this->routeData, $userModel, $orders);
       } else {
@@ -92,9 +93,8 @@ final class ProfileController extends BaseController
           $this->redirect('login');
         }
 
-        // $orders = $this->userService->getOrdersByUserId($id);
         $orders = $this->orderService->getProfileOrdersList($id);
-        // dd($orders);
+  
         $this->renderProfileFull($this->routeData, $userModel, $orders);
     }
 
@@ -177,7 +177,7 @@ final class ProfileController extends BaseController
           $this->redirect('profile');
       }
 
-      $order = $this->userService->getOrderById((int) $orderId);
+      $orders = $this->orderService->getProfileDetailedOrder((int) $orderId);
    
       // Проверка, что заказ принадлежит текущему пользователю
       if (!$order || $order->getUserId() !== $userId) {

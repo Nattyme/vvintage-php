@@ -102,7 +102,15 @@ class OrderService extends BaseService
     {
       $orders = $this->orderRepository->getOrdersByUserId($id);
       $dtoFactory = new OrderProfileDTOFactory($this->localeService);
-      return array_map(fn($order) => $dtoFactory->createOrderForSummary($order), $orders);
+      return array_map(fn($order) => $dtoFactory->createSummary($order), $orders);
+    }
+    
+    public function getProfileDetailedOrder (int $id): array
+    {
+      $order = $this->getOrderById($id);
+      $dtoFactory = new OrderProfileDTOFactory($this->localeService);
+dd($dtoFactory->createDetailed($order));
+      return $dtoFactory->createDetailed($order);
     }
 
 }

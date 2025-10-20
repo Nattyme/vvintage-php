@@ -21,7 +21,7 @@ final class OrderProfileDTOFactory
     }
 
 
-    public function createOrderForSummary(
+    public function createSummary(
       Order $order
     ): OrderProfileSummaryDTO
     {
@@ -32,6 +32,33 @@ final class OrderProfileDTOFactory
           status: (string) $order->getStatus() ?? null,
           paid: (bool) $order->getPaid() ?? false,
           price: (int) $order->getPrice() ?? null
+      );
+    }
+
+
+    public function createDetailed(
+      Order $order
+    ): OrderProfileDetailsDTO
+
+    {
+
+      return new OrderProfileDetailsDTO (
+          id: (int) $order->getId() ?? null,
+
+          name: (string) $order->getName() ?? '',
+          surname: (string) $order->getSurname() ?? '',
+          email: (string) $order->getEmail() ?? '',
+          phone: (string) $order->getPhone() ?? '',
+          address: (string) $order->getAddress() ?? '',
+          formatted_date: (string) ( $this->localeService->formatDateTime($order->getDateTime()) ),
+          status: (string) $order->getStatus() ?? null,
+          paid: (bool) $order->getPaid() ?? false,
+
+          // cart: $cart, 
+          price: (int) $order->getPrice() ?? null,
+          tracking_number: (string) $order->getTrackingNumber() ?? null,
+          canceled_reason: (string) $order->getCanceledReason() ?? null,
+          comment: (string) $order->getComment() ?? '',
       );
     }
 }
