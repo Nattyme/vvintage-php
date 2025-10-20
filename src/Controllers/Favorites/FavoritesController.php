@@ -75,7 +75,7 @@ final class FavoritesController extends BaseController
 
       // Получаем продукты
       $productService = new ProductService();
-      $products = !empty($this->fav_list) ?  $productService->getProductsByIds($this->fav_list) : [];
+      $products = !empty($this->fav_list) ? $this->favService->getListItems($this->fav_list) : [];
 
       // Показываем страницу
       $this->renderPage($routeData, $products, $this->favModel);

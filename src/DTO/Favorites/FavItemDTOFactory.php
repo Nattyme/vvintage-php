@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Cart;
+namespace Vvintage\DTO\Favorites;
 use Vvintage\Models\Product\Product;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\DTO\Product\ImageForProductCardDTO;
-use Vvintage\DTO\Cart\CartItemDTO;
+use Vvintage\DTO\Favorites\FavItemDTO;
 
 
-final class CartItemDTOFactory
+final class FavItemDTOFactory
 {
     public function createFromProduct(
       Product $product,
       string $currentLang
-    ): CartItemDTO
+    ): FavItemDTO
     {
       $productId = (int) $product->getId();
 
@@ -27,7 +27,7 @@ final class CartItemDTOFactory
       $imageAlt = !empty($image?->alt) ? $image->alt : ($translations['title'] ?? $product->getTitle() ?? '');
 
 
-      return new CartItemDTO (
+      return new FavItemDTO (
           id: $productId,
           slug: (string) $product->getSlug() ?? '',
           title: (string) ($translations['title'] ?? ''),

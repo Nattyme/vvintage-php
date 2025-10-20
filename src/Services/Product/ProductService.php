@@ -19,8 +19,8 @@ use Vvintage\DTO\Product\ProductFilterDTO;
 use Vvintage\DTO\Product\ProductOutputDTO;
 use Vvintage\DTO\Product\ProductPageDTO;
 use Vvintage\DTO\Product\ProductPageDTOFactory;
-use Vvintage\DTO\Product\ProductForList\ProductForListDTO;
-use Vvintage\DTO\Product\ProductForList\ProductForListDTOFactory;
+use Vvintage\DTO\Product\ProductCardDTO;
+use Vvintage\DTO\Product\ProductCardDTOFactory;
 
 use Vvintage\DTO\Product\ImageForProductCardDTO;
 

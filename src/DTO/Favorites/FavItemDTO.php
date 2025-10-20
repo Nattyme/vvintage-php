@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Cart;
+namespace Vvintage\DTO\Favorites;
 use Vvintage\Models\Product\Product;
 
-final class CartItemDTO 
+final class FavItemDTO 
 {
     public function __construct(
         public int $id,

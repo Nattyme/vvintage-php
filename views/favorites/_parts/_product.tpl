@@ -9,9 +9,9 @@
  
     <div class="cart__img">
       <img 
-        src="<?php echo HOST;?>usercontent/products/<?php echo empty($mainImage->filename) 
-        ? "no-photo.jpg" : h($mainImage->filename);?>" 
-        srcset="<?php echo HOST . 'usercontent/products/' . h($mainImage->filename);?>" 
+        src="<?php echo HOST;?>usercontent/products/<?php echo empty($product->image_filename) 
+        ? "no-photo.jpg" : h($product->image_filename);?>" 
+        srcset="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" 
         alt="<?php echo h($product->title);?>">
     </div>
 

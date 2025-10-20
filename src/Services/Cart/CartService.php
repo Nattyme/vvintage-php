@@ -17,7 +17,7 @@ use Vvintage\DTO\Cart\CartItemDTOFactory;
 class CartService extends AbstractUserItemsListService
 {
 
-  // Получаем массив  dto продуктов дял корзины 
+    // Получаем массив  dto продуктов для корзины корзины 
     public function getListItems(): array 
     {
       $products = parent::getListItems(); // вызовет метод родителя
