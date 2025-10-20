@@ -27,16 +27,7 @@ use Vvintage\DTO\Order\OrderDTO;
 final class OrderRepository extends AbstractRepository implements OrderRepositoryInterface
 {
     private const TABLE = 'orders';
-    private const TABLE_USERS = 'users';
-    private const ROLE_ADMIN = 'admin';
-
-    private const STATUS_NEW = 'new';
-    private const STATUS_PAID = 'paid';
-    private const STATUS_CANCELED = 'canceled';
-
     private AddressRepository $addressRepository;
-
-
 
     public function __construct()
     {
@@ -155,8 +146,7 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
         $this->fillOrderBean($bean, $order);
 
         // Привязываем заказ к пользователю
-        $userBean = $this->loadBean(self::TABLE_USERS, $user->getId());
-        $bean->user = $userBean;
+        $bean->user = $user->getId();
 
         // Сохраняем в БД
         $id = $this->saveBean($bean);

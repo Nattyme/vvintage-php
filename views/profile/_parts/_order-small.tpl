@@ -1,24 +1,24 @@
 <tr>
+ 
   <td>
-    <a class="link-to-page" href="<?php echo HOST . 'profile/order/' . $order->getId();?>">
-     
-        <?php if ( $order->getDateTime() ) echo h( $this->localeService->formatDateTime($order->getDateTime()) );  ?>
+    <a class="link-to-page" href="<?php echo HOST . 'profile/order/' . u($order->id);?>">
+        <?php echo h($order->formatted_date);  ?>
     </a>
   </td>
   <td>
-    <?php echo $order->getStatus();?>
+    <?php echo $order->status;?>
   </td>
   <td>
     <?php
-      if ($order->getPaid()) {
+      if ($order->paid) {
         echo "Оплачен";
       } else {
         echo "Не оплачен<br>";
-        echo "<a class='secondary-button link-above-others' href=' " . HOST . 'orderselectpayment?id=' .  $order->getId() . " '>Оплатить</a>";
+        echo "<a class='secondary-button link-above-others' href=' " . HOST . 'orderselectpayment?id=' .  u($order->id) . " '>Оплатить</a>";
       }
     ?>
   </td>
   <td>
-    <?php echo format_price($order->getPrice());?> &euro;.
+    <?php echo format_price($order->price);?> &euro;.
   </td>
 </tr>

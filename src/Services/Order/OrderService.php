@@ -15,6 +15,8 @@ use Vvintage\Models\User\UserInterface;
 
 /** DTO */
 use Vvintage\DTO\Order\OrderDTO;
+use Vvintage\DTO\Order\OrderProfileSummaryDTO;
+use Vvintage\DTO\Order\OrderProfileDTOFactory;
 
 
 // extends AbstractUserItemsListService
@@ -91,9 +93,16 @@ class OrderService extends BaseService
         return $result;
     }
 
-    public function getOrderById(int $id): ?Order
+    public function getOrderById (int $id): ?Order
     {
       return $this->orderRepository->getOrderById($id);
+    }
+
+    public function getProfileOrdersList (int $id): array
+    {
+      $orders = $this->orderRepository->getOrdersByUserId($id);
+      $dtoFactory = new OrderProfileDTOFactory($this->localeService);
+      return array_map(fn($order) => $dtoFactory->createOrderForSummary($order), $orders);
     }
 
 }

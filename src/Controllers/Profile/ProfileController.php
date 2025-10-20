@@ -19,6 +19,7 @@ use Vvintage\Services\User\UserService;
 use Vvintage\Services\Validation\ProfileValidator;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Order\OrderService;
 
 // use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\Product\ProductRepository;
@@ -34,6 +35,7 @@ final class ProfileController extends BaseController
   private ProfileValidator $validator;
   private PageService $pageService;
   protected LocaleService $localeService;
+  protected OrderService $orderService;
 
   public function __construct(Breadcrumbs $breadcrumbs)
   {
@@ -43,6 +45,7 @@ final class ProfileController extends BaseController
     $this->validator = new ProfileValidator();
     $this->pageService = new PageService();
     $this->localeService = new LocaleService();
+    $this->orderService = new OrderService();
   }
 
 
@@ -89,7 +92,9 @@ final class ProfileController extends BaseController
           $this->redirect('login');
         }
 
-        $orders = $this->userService->getOrdersByUserId($id);
+        // $orders = $this->userService->getOrdersByUserId($id);
+        $orders = $this->orderService->getProfileOrdersList($id);
+        // dd($orders);
         $this->renderProfileFull($this->routeData, $userModel, $orders);
     }
 
@@ -181,7 +186,7 @@ final class ProfileController extends BaseController
 
       // Получаем массив товаров из JSON формата
       $products = $order->getCart();
-      
+   
       // Обходим массив с товарами и создаем ассоциативный массив с id => 1
       $ids = array_fill_keys(array_column($products, 'id'), 1);
 
@@ -192,7 +197,8 @@ final class ProfileController extends BaseController
       $amountMap = array_column($products, 'amount', 'id');
 
       foreach ($productsData as &$product) {
-          $amount = $amountMap[$product->id] ?? 0;
+       
+        $amount = $amountMap[$product->id] ?? 0;
           $product->setAmount($amount);
       }
       unset($product);
