@@ -25,6 +25,8 @@ use Vvintage\Services\Order\OrderService;
 use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Models\Order\Order;
 
+use Vvintage\DTO\Order\OrderProfileDetailsDTO;
+
 require_once ROOT . './libs/functions.php';
 
 
@@ -164,46 +166,47 @@ final class ProfileController extends BaseController
        
       // Если ID нет - выходим
       $userModel = $this->getLoggedInUser();
-
       // если гость — редиректим
       if (!$userModel || $userModel instanceof GuestUser) {
           $this->redirect('login');
       }
+ 
 
       $userId = $userModel->getId();
       $orderId = $routeData->uriGetParams[0] ?? null;
+
       
       if (!$orderId || !$userId) {
           $this->redirect('profile');
       }
-
-      $orders = $this->orderService->getProfileDetailedOrder((int) $orderId);
+ 
+      $order = $this->orderService->getProfileDetailedOrder((int) $orderId);
    
       // Проверка, что заказ принадлежит текущему пользователю
-      if (!$order || $order->getUserId() !== $userId) {
+      if (!$order || $order->user_id !== $userId) {
           $this->redirect('profile');
       }
 
       // Получаем массив товаров из JSON формата
-      $products = $order->getCart();
-   
+      // $products = $order->getCart();
+  
       // Обходим массив с товарами и создаем ассоциативный массив с id => 1
-      $ids = array_fill_keys(array_column($products, 'id'), 1);
+      // $ids = array_fill_keys(array_column($products, 'id'), 1);
 
       // Пересобирем в новый массив $productsData с ключами - Id товара
-      $productsData = $this->userService->getProductsByIds($ids);
+      // $productsData = $this->userService->getProductsByIds($ids);
 
       // Создаём ассоциативный массив из cart: [id => amount]
-      $amountMap = array_column($products, 'amount', 'id');
+      // $amountMap = array_column($products, 'amount', 'id');
 
-      foreach ($productsData as &$product) {
+      // foreach ($productsData as &$product) {
        
-        $amount = $amountMap[$product->id] ?? 0;
-          $product->setAmount($amount);
-      }
-      unset($product);
+      //   $amount = $amountMap[$product->id] ?? 0;
+      //     $product->setAmount($amount);
+      // }
+      // unset($product);
 
-      $this->renderOrder($routeData, $order, $productsData);
+      $this->renderOrder($order);
   }
 
 
@@ -262,24 +265,23 @@ final class ProfileController extends BaseController
       ]);
   }
 
-  private function renderOrder (RouteData $routeData, ?Order $order, array $products): void 
+  private function renderOrder (?OrderProfileDetailsDTO $order): void 
   {  
       // Название страницы
-      $pageTitle = "Заказ &#8470;" . $order->getId() . "&#160; от &#160;" . rus_date('j F Y', $order->getDateTime()->getTimestamp());
+      $pageTitle = "Заказ &#8470;" . h($order->id) . "&#160; от &#160;" . $order->formatted_date;
       $pageClass = "profile-page";
 
       // Хлебные крошки
-      $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+      $breadcrumbs = $this->breadcrumbsService->generate($this->routeData, $pageTitle);
 
       // Подключение шаблонов страницы
       $this->renderLayout('profile/profile-order', [
             'pageTitle' => $pageTitle,
-            'routeData' => $routeData,
+            'routeData' => $this->routeData,
             'breadcrumbs' => $breadcrumbs,
             'pageClass' => $pageClass,
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'order' => $order,
-            'products' => $products,
             'currentLang' =>  $this->pageService->currentLang,
             'languages' => $this->pageService->languages
       ]);

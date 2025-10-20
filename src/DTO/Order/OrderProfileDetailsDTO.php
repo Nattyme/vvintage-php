@@ -7,20 +7,21 @@ final class OrderProfileDetailsDTO
 {
 
     public function __construct(
-        public ?int $id,
-        public string $name,
-        public string $surname,
-        public string $email,
-        public string $phone,
-        public string $address,
-        public string $formatted_date,
-        public string $status,
-        public bool $paid,
-        // public array $cart,
-        public int $price,
-        public ?string $tracking_number,
-        public ?string $canceled_reason,
-        public ?string $comment,
+        public readonly ?int $id,
+        public readonly string $name,
+        public readonly string $surname,
+        public readonly string $email,
+        public readonly string $phone,
+        public readonly string $address,
+        public readonly string $formatted_date,
+        public readonly string $status,
+        public readonly bool $paid,
+        public array $cart,
+        public readonly int $price,
+        public readonly ?string $tracking_number,
+        public readonly ?string $canceled_reason,
+        public readonly ?string $comment,
+        public readonly ?int $user_id,
     ){}
 
 }

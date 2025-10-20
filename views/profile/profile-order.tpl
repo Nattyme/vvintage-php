@@ -2,7 +2,7 @@
   <section class="section">
     <div class="section__title">
       <div class="container">
-        <h2 class="h2">Заказ &#8470;<?php echo $order->getId();?></h2>
+        <h2 class="h2">Заказ &#8470;<?php echo $order->id;?></h2>
       </div>
     </div>
 
@@ -12,25 +12,25 @@
           <tr>
               <th>Дата создания</th>
               <td>
-                <?php echo h(rus_date('j F Y в G:i', $order->getDateTime()->getTimestamp()));?>
+                <?php echo h($order->formatted_date);?>
               </td>
 
           </tr>  
           <tr>
               <th>Статус</th>
               <td>
-                <?php echo $order->getStatus();?>
+                <?php echo h($order->status);?>
               </td>
           </tr>  
           <tr>
             <th>Оплата</th>
             <td>
               <?php 
-                if ($order->getPaid()) {
+                if ($order->paid) {
                   // echo 'Оплачен' . rus_date('j F Y в G:i', $payment['timestamp']);
                 } else {
                   echo 'Не оплачен<br>';
-                  echo '<a href="' . HOST . 'orderselectpayment?id=' . $order->getId() .'" class="secondary-button">Оплатить</a>';
+                  echo '<a href="' . HOST . 'orderselectpayment?id=' . u($order->id) .'" class="secondary-button">Оплатить</a>';
                 }
                 
               ?>
@@ -39,19 +39,19 @@
           <tr>
             <th>Общая стоимость</th>
             <td>
-              <?php echo format_price($order->getPrice());?> руб.
+              <?php echo h($order->price);?> &euro;.
             </td>
           </tr>   
           <tr>
             <th>Имя и Фамилия</th>
             <td>
-              <?php echo $order->getName() . ' ' . $order->getSurname();?>
+              <?php echo h($order->name) . ' ' . h($order->surname);?>
             </td>
           </tr>   
           <tr>
             <th>Email</th>
             <td>
-              <?php echo $order->getEmail();?>
+              <?php echo h($order->email);?>
             </td>
           </tr>   
         </table>
@@ -63,11 +63,11 @@
             <th>Стоимость за единицу</th>
             <th>Количество</th>
           </tr>
-          <?php foreach($products as $product) : ?>
+          <?php foreach($order->cart as $product) : ?>
 
             <tr>
               <td>
-                <img src="<?php echo HOST . 'usercontent/products/' . 'small-' . $product->images['main']->filename;?>" alt="<?php echo $product->title;?>">
+                <img src="<?php echo HOST . 'usercontent/products/' . 'small-' . $product->image;?>" alt="<?php echo $product->title;?>">
               </td>
               <td><?php echo $product->title;?></td>
 

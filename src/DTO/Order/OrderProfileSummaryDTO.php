@@ -6,11 +6,11 @@ namespace Vvintage\DTO\Order;
 final class OrderProfileSummaryDTO
 {
     public function __construct(
-      public ?int $id,
-      public string $formatted_date,
-      public string $status,
-      public bool $paid,
-      public int $price
+      public readonly ?int $id,
+      public readonly string $formatted_date,
+      public readonly string $status,
+      public readonly bool $paid,
+      public readonly int $price
     ){}
 
 }
