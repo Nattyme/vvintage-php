@@ -2,7 +2,7 @@
   <section class="section">
     <div class="section__title">
       <div class="container">
-        <h2 class="h2">Заказ &#8470;<?php echo $order->id;?></h2>
+        <h2 class="h2"><?php echo h(__('order.title', [], 'order'));?> &#8470;<?php echo $order->id;?></h2>
       </div>
     </div>
 
@@ -10,20 +10,20 @@
       <div class="container">
         <table class="order-table">
           <tr>
-              <th>Дата создания</th>
+              <th><?php echo h(__('order.date_created', [], 'order'));?></th>
               <td>
                 <?php echo h($order->formatted_date);?>
               </td>
 
           </tr>  
           <tr>
-              <th>Статус</th>
+              <th><?php echo h(__('order.status', [], 'order'));?></th>
               <td>
                 <?php echo h($order->status);?>
               </td>
           </tr>  
           <tr>
-            <th>Оплата</th>
+            <th><?php echo h(__('order.payment', [], 'order'));?></th>
             <td>
               <?php 
                 if ($order->paid) {
@@ -37,19 +37,19 @@
             </td>
           </tr>   
           <tr>
-            <th>Общая стоимость</th>
+            <th><?php echo h(__('order.total_cost', [], 'order'));?></th>
             <td>
               <?php echo h($order->price);?> &euro;.
             </td>
           </tr>   
           <tr>
-            <th>Имя и Фамилия</th>
+            <th><?php echo h(__('order.full_name', [], 'order'));?></th>
             <td>
               <?php echo h($order->name) . ' ' . h($order->surname);?>
             </td>
           </tr>   
           <tr>
-            <th>Email</th>
+            <th><?php echo h(__('order.full_name', [], 'order'));?></th>
             <td>
               <?php echo h($order->email);?>
             </td>
@@ -58,10 +58,10 @@
 
         <table class="order-table">
           <tr>
-            <th>Фотография</th>
-            <th>Наименование</th>
-            <th>Стоимость за единицу</th>
-            <th>Количество</th>
+            <th><?php echo h(__('order.photo', [], 'order'));?></th>
+            <th><?php echo h(__('order.name', [], 'order'));?></th>
+            <th><?php echo h(__('order.unit_price', [], 'order'));?></th>
+            <th><?php echo h(__('order.quantity', [], 'order'));?></th>
           </tr>
           <?php foreach($order->cart as $product) : ?>
 

@@ -4,11 +4,20 @@ declare(strict_types=1);
 return [
   'order.title' => 'Ваш заказ',
   'order.product' => 'Товар',
-  'order.price' => 'Цена',
+  'order.photo' => 'Фотография',
+  'order.name' => 'Наименование',
+  'order.unit_price' => 'Стоимость за единицу',
   'order.quantity' => 'Количество',
+  'order.price' => 'Цена',
   'order.total' => 'Итого',
 
+  'order.date_created' => 'Дата создания',
+  'order.status' => 'Статус',
+  'order.payment' => 'Оплата',
+  'order.total_cost' => 'Общая стоимость',
+
   'order.customer_data' => 'Данные покупателя',
+  'order.full_name' => 'Имя и Фамилия',
   'order.first_name' => 'Имя',
   'order.first_name.placeholder' => 'Введите имя',
   'order.last_name' => 'Фамилия',
@@ -27,6 +36,5 @@ return [
   'order.return_to_cart' => 'Вернуться в корзину',
   'order.place_order' => 'Разместить заказ',
   'order.success' => 'Заказ успешно оформлен',
-  'order.contact_soon' => 'Мы свяжемся с вами в ближайшее время!'
+  'order.contact_soon' => 'Мы свяжемся с вами в ближайшее время!',
 ];
-

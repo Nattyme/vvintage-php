@@ -18,5 +18,6 @@ return [
     'profile.orders.payment' => 'Pago',
     'profile.orders.total' => 'Total',
     'profile.example.email' => '1@mail.ru',
-    'profile.example.phone' => '79253458675'
+    'profile.example.phone' => '79253458675',
+    'profile.back' => 'Volver al perfil'
 ];

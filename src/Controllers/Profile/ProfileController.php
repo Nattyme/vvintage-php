@@ -166,11 +166,12 @@ final class ProfileController extends BaseController
        
       // Если ID нет - выходим
       $userModel = $this->getLoggedInUser();
+      
       // если гость — редиректим
       if (!$userModel || $userModel instanceof GuestUser) {
           $this->redirect('login');
       }
- 
+
 
       $userId = $userModel->getId();
       $orderId = $routeData->uriGetParams[0] ?? null;
@@ -186,25 +187,6 @@ final class ProfileController extends BaseController
       if (!$order || $order->user_id !== $userId) {
           $this->redirect('profile');
       }
-
-      // Получаем массив товаров из JSON формата
-      // $products = $order->getCart();
-  
-      // Обходим массив с товарами и создаем ассоциативный массив с id => 1
-      // $ids = array_fill_keys(array_column($products, 'id'), 1);
-
-      // Пересобирем в новый массив $productsData с ключами - Id товара
-      // $productsData = $this->userService->getProductsByIds($ids);
-
-      // Создаём ассоциативный массив из cart: [id => amount]
-      // $amountMap = array_column($products, 'amount', 'id');
-
-      // foreach ($productsData as &$product) {
-       
-      //   $amount = $amountMap[$product->id] ?? 0;
-      //     $product->setAmount($amount);
-      // }
-      // unset($product);
 
       $this->renderOrder($order);
   }

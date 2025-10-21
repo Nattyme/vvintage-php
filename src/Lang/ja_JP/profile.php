@@ -18,5 +18,6 @@ return [
     'profile.orders.payment' => '支払い',
     'profile.orders.total' => '合計',
     'profile.example.email' => '1@mail.ru',
-    'profile.example.phone' => '79253458675'
+    'profile.example.phone' => '79253458675',
+    'profile.back' => 'プロフィールに戻る'
 ];

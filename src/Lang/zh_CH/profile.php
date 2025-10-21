@@ -18,5 +18,6 @@ return [
     'profile.orders.payment' => '付款',
     'profile.orders.total' => '总额',
     'profile.example.email' => '1@mail.ru',
-    'profile.example.phone' => '79253458675'
+    'profile.example.phone' => '79253458675',
+    'profile.back' => '返回个人资料'
 ];
