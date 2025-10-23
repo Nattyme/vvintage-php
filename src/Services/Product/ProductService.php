@@ -109,13 +109,26 @@ class ProductService extends BaseService
         return $dto; 
     }
 
-
-
     public function getProductCartDTO()
     {
       $products = $this->getProductsByIds();
         // Преобразуем в DTO
         return array_map([$this, 'createProductForListDTO'], $products);
+    }
+
+    public function getProductsForCatalog(ProductFilterDTO $filters, ?int $perPage = null)
+    {
+      // Получим отфильтрованные модели продуктов
+      $productsData = $this->getFilteredProductsData($filters, $perPage);
+
+      $models = $productsData['products'];
+      $total = $productsData['total'];
+      $filters = $productsData['filters'];
+
+      // Формируем массив DTO
+      $products = array_map([$this, 'createProductCardDTO'], $models);
+     
+      return ['products' => $products, 'total' => $total, 'filters' => $filters];
     }
 
    
@@ -178,6 +191,82 @@ class ProductService extends BaseService
     }
 
 
+    public function getActiveProducts(): array 
+    {
+      $rows =  $this->repository->getProductsByParam('status = ?', ['active']);
+      
+      // Применяем fetchProductWithJoins к каждому объекту OODBBean
+      return array_map([$this, 'createProductDTOFromArray'], $rows);
+    }
+
+    public function getArchivedProducts(): array 
+    {
+      $rows = $this->repository->getProductsByParam('status = ?', ['archived']);
+      // Применяем fetchProductWithJoins к каждому объекту OODBBean
+      return array_map([$this, 'createProductDTOFromArray'], $rows);
+    }
+
+    public function getHiddenProducts(): array 
+    {
+      $rows =  $this->repository->getProductsByParam('status = ?', ['hidden']);
+      return array_map([$this, 'createProductDTOFromArray'], $rows);
+    }
+
+    public function getFilteredProductsData(ProductFilterDTO $filters, ?int $perPage = null): array 
+    {
+     
+      $categories = !empty($filters->categories) ? $filters->categories : null;
+   
+      if( $categories && count( $categories) === 1) {
+        $id = (int) $categories[0];
+        $category = $this->categoryService->getCategoryById($id) ?? null;
+        $parent_id = $category->getParentId() ?? null;
+    
+        if(!$parent_id) {
+          $subCategories = $this->categoryService->getSubCategoriesArray($id);
+          
+          // Получаем только id из массива подкатегорий
+          $subCategoryIds = array_column($subCategories, 'id');
+
+          // Теперь можно подставить эти id в фильтр
+          if (!empty($subCategoryIds)) {
+              $filters->categories = $subCategoryIds;
+          }
+        }
+      
+      }
+
+      if ($filters instanceof ProductFilterDTO) {
+          $filters = [
+              'categories' => $filters->categories,
+              'brands'     => $filters->brands,
+              'priceMin'   => $filters->priceMin,
+              'priceMax'   => $filters->priceMax,
+              'sort'       => $filters->sort
+          ];
+      }
+
+      // Получаем массив продуктов по фильтру
+      $products = $this->repository->getProductsModels($filters);
+  dd('hey');
+      if( $perPage) {
+        $totalItems = count($products);   // Считаем общее кол-во
+
+        // Добавляем данные по пагинации в фильтр
+        $filters = $this->addPaginationToFilter($filters, $totalItems, $perPage);
+
+        // Теперь получаем только продукты для этой страницы
+        $products = $this->repository->getProductsModels($filters);
+      }
+
+      return [
+        'products' => $products,
+        'filters' => $filters,
+        'total' => $totalItems
+      ];
+    }
+
+
 
 
 
@@ -229,26 +318,7 @@ class ProductService extends BaseService
   
 
 
-    public function getActiveProducts(): array 
-    {
-      $rows =  $this->repository->getProductsByParam('status = ?', ['active']);
-      
-      // Применяем fetchProductWithJoins к каждому объекту OODBBean
-      return array_map([$this, 'createProductDTOFromArray'], $rows);
-    }
 
-    public function getArchivedProducts(): array 
-    {
-      $rows = $this->repository->getProductsByParam('status = ?', ['archived']);
-      // Применяем fetchProductWithJoins к каждому объекту OODBBean
-      return array_map([$this, 'createProductDTOFromArray'], $rows);
-    }
-
-    public function getHiddenProducts(): array 
-    {
-      $rows =  $this->repository->getProductsByParam('status = ?', ['hidden']);
-      return array_map([$this, 'createProductDTOFromArray'], $rows);
-    }
 
     //    $result['number_of_pages'] = $number_of_pages;
     // $result['page_number'] = $page_number;
@@ -298,68 +368,13 @@ class ProductService extends BaseService
         return $this->productImageService->countAll($images);
     }
 
-    public function getFilteredProducts(ProductFilterDTO $filters, ?int $perPage = null): array 
-    {
-      
-      $categories = !empty($filters->categories) ? $filters->categories : null;
-   
-      if( $categories && count( $categories) === 1) {
-        $id = (int) $categories[0];
-        $category = $this->categoryService->getCategoryById($id) ?? null;
-        $parent_id = $category->getParentId() ?? null;
-    
-        if(!$parent_id) {
-          $subCategories = $this->categoryService->getSubCategoriesArray($id);
-          
-          // Получаем только id из массива подкатегорий
-          $subCategoryIds = array_column($subCategories, 'id');
-
-          // Теперь можно подставить эти id в фильтр
-          if (!empty($subCategoryIds)) {
-              $filters->categories = $subCategoryIds;
-          }
-        }
-      
-      }
-
-      if ($filters instanceof ProductFilterDTO) {
-          $filters = [
-              'categories' => $filters->categories,
-              'brands'     => $filters->brands,
-              'priceMin'   => $filters->priceMin,
-              'priceMax'   => $filters->priceMax,
-              'sort'       => $filters->sort
-          ];
-      }
-
-      // Получаем массив продуктов по фильтру
-      $products = $this->repository->getProductsModels($filters);
-
-      if( $perPage) {
-        $totalItems = count($products);   // Считаем общее кол-во
-        // Добавляем данные по пагинации в фильтр
-        $filters = $this->addPaginationToFilter($filters, $totalItems, $perPage);
- 
-        // Теперь получаем только продукты для этой страницы
-        $products = $this->repository->getProductsModels($filters);
-      }
-
-      // foreach( $products as $product) {
-      //   $id = $product->getId();
-      //   $translations = $this->translationRepo->loadTranslations($id);
-      //   $product->setTranslations($translations);
-      // }
   
-      $products = array_map([$this, 'createProductCardDTO'], $products);
 
-      return ['products' => $products, 'total' => $totalItems, 'filters' => $filters];
-    }
-
-    public function addPaginationToFilter($filters, $totalItems, $perPage)
+    public function addPaginationToFilter(ProductFilterDTO $filters, int $totalItems, int $perPage)
     {
       $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
       $pagination = $this->paginationService->paginate( totalItems: $totalItems, currentPage: $currentPage, perPage: $perPage);
-
+dd($filters);
       // Добавляем пагинацию в фильтры
       $filters['pagination']['page_number'] = $pagination['current_page'];
       $filters['pagination']['perPage'] = $pagination['perPage'];

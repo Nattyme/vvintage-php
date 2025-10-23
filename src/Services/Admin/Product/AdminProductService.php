@@ -177,6 +177,11 @@ final class AdminProductService extends ProductService
       }
   }
 
+  public function getAllProducts (): array 
+  {
+    
+  }
+
 
   /** imaegs */ 
   private function splitVisibleHidden(array $images): array

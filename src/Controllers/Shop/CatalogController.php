@@ -75,14 +75,13 @@ final class CatalogController extends BaseController
       $brands = $this->brandService->getAllBrandsDto();
  
       // Получаем продукты с учётом пагинации
-      $filteredProductsData = $this->productService->getFilteredProducts( filters: $filterDto, perPage: 15);
-  
+      $filteredProductsData = $this->productService->getProductsForCatalog( filters: $filterDto, perPage: 15);
+
       $products =  $filteredProductsData['products'];
       $total = $filteredProductsData['total'];
       $filters = $filteredProductsData['filters'];
       $pagination = $filters['pagination'];
-      // $total = $this->productService->countProducts();
-     
+  
       $mainCategories = $this->categoryService->getMainCategories();
 
       // $seo = [];
