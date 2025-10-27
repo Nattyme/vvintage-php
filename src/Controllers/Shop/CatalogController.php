@@ -52,10 +52,7 @@ final class CatalogController extends BaseController
 
     public function index(RouteData $routeData): void
     {
-      $this->setRouteData($routeData); // <-- передаём routeData
-
       // Название страницы
-      // $pageTitle = 'Каталог товаров';
       $productsPerPage = 12;
       $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
@@ -84,13 +81,6 @@ final class CatalogController extends BaseController
   
       $mainCategories = $this->categoryService->getMainCategories();
 
-      // $seo = [];
-      // получаем SEO DTO
-  
-      // foreach($products as $product) {
-      //   $seo[$product->getId()] = $this->seoService->getSeoForPage('product', $product);
-      // }
-
       $page = $this->pageService->getPageBySlug($routeData->uriModule);
       $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule);
 
@@ -103,7 +93,6 @@ final class CatalogController extends BaseController
 
 
       // Это кол-во товаров, показанных на этой странице
-   
       $shown = (($pagination['page_number'] - 1) * 9) + count($products);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 

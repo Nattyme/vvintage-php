@@ -42,7 +42,7 @@ map.addChild(new YMapDefaultFeaturesLayer())
 const myPlacemark = new YMapDefaultMarker({
   "coordinates": [2.406281, 48.866638],
   "color": "red",
-  "title": "Womazing",
+  "title": "Vvintage",
   "subtitle": "интернет-магазин"
 });
 

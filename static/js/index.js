@@ -1,7 +1,3 @@
-// Мобильная навигация
-// import mobileNav from './modules/mobile-nav.js';
-// import router from './modules/admin/router.js';
-// import addSidebarControlPanel from "./modules/admin/model/sidebar/addSidebar.js";
 import addBackTopBtn from "./modules/utils/backtop.js";
 import addPhotoBtn from "./modules/utils/add-photo.js";
 import initShowMore from "./modules/utils/show-more.js";
@@ -13,11 +9,8 @@ import initPreviewController from "./modules/preview-images/index.js";
 import initDragDropController from "./modules/drag-and-drop/index.js";
 import initCategoriesController from "./modules/categories/index.js";
 import initBrandsController from "./modules/brands/index.js";
-// import initNewProductForm from "./modules/shop/new/index.js";
 import initNewProductForm from "./modules/admin/product/index.js";
 import addCustomSelect from "./modules/custom-select/custom-select.js";
-// import handlingNewProductForm from "./modules/handlingNewProductForm.js";
-// import addSubNavCats from "./modules/addSubNavCats.js";
 import addTab from "./modules/tab.js";
 // import handleLangForm from "./modules/translation/handleLangForm.js";
 // import yMap from './modules/ymap.js';
@@ -26,14 +19,6 @@ import addTab from "./modules/tab.js";
 const initEverything = async () => {
   
    await initCatalogEvents(); // запускаем каталог в навигации
-  // addSidebarControlPanel();
-  // router();
-  // if (window.location.pathname !== pageAdmin) {
-  //   mobileNav();
-  //
-  // }
-  // addSubNavCats();
-
 
   // Слушаем клик по селекту перевода 
   // handleLangForm();

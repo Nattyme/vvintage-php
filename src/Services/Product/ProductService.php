@@ -9,12 +9,14 @@ use Vvintage\Models\Product\Product;
 use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Repositories\Product\ProductTranslationRepository;
 
+/* Service */
 use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Shared\PaginationService;
 use Vvintage\Services\Brand\BrandService;
 
+/* DTO */
 use Vvintage\DTO\Product\ProductFilterDTO;
 use Vvintage\DTO\Product\ProductOutputDTO;
 use Vvintage\DTO\Product\ProductPageDTO;
