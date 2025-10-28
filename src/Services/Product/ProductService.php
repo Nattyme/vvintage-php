@@ -214,11 +214,20 @@ class ProductService extends BaseService
       return array_map([$this, 'createProductDTOFromArray'], $rows);
     }
 
+    /**
+     * Returns an array of products based on the given filter.
+     * 
+     * @param ProductFilterDTO $filters The filter to apply to the products.
+     * @param int|null $perPage The number of products to return per page. If null, returns all products.
+     * 
+     * @return array An array containing the products, filters and total items.
+     */
     public function getFilteredProductsData(ProductFilterDTO $filters, ?int $perPage = null): array 
     {
-     
+      // Переданы ли категории
       $categories = !empty($filters->categories) ? $filters->categories : null;
-   
+  
+      // Если да - проверим, одна главная или несколько подкатегорий
       if( $categories && count( $categories) === 1) {
         $id = (int) $categories[0];
         $category = $this->categoryService->getCategoryById($id) ?? null;
@@ -238,19 +247,10 @@ class ProductService extends BaseService
       
       }
 
-      if ($filters instanceof ProductFilterDTO) {
-          $filters = [
-              'categories' => $filters->categories,
-              'brands'     => $filters->brands,
-              'priceMin'   => $filters->priceMin,
-              'priceMax'   => $filters->priceMax,
-              'sort'       => $filters->sort
-          ];
-      }
-
       // Получаем массив продуктов по фильтру
-      $products = $this->repository->getProductsModels($filters);
-  dd('hey');
+      $products = $this->repository->getProductsModels(  $filters->toArray() );
+ 
+      // Пагинация
       if( $perPage) {
         $totalItems = count($products);   // Считаем общее кол-во
 
@@ -258,7 +258,7 @@ class ProductService extends BaseService
         $filters = $this->addPaginationToFilter($filters, $totalItems, $perPage);
 
         // Теперь получаем только продукты для этой страницы
-        $products = $this->repository->getProductsModels($filters);
+        $products = $this->repository->getProductsModels(  $filters->toArray() );
       }
 
       return [
@@ -267,6 +267,21 @@ class ProductService extends BaseService
         'total' => $totalItems
       ];
     }
+
+    public function addPaginationToFilter(ProductFilterDTO $filters, int $totalItems, int $perPage)
+    {
+      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+      $pagination = $this->paginationService->paginate( totalItems: $totalItems, currentPage: $currentPage, perPage: $perPage);
+ 
+      // Добавляем пагинацию в фильтры
+      $filters->pagination['page_number'] = $pagination['current_page'];
+      $filters->pagination['perPage'] = $pagination['perPage'];
+      $filters->pagination['number_of_pages'] = $pagination['number_of_pages'];
+      $filters->pagination['offset'] = $pagination['offset'];
+
+      return $filters;
+    }
+
 
 
 
@@ -372,21 +387,6 @@ class ProductService extends BaseService
 
   
 
-    public function addPaginationToFilter(ProductFilterDTO $filters, int $totalItems, int $perPage)
-    {
-      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-      $pagination = $this->paginationService->paginate( totalItems: $totalItems, currentPage: $currentPage, perPage: $perPage);
-dd($filters);
-      // Добавляем пагинацию в фильтры
-      $filters['pagination']['page_number'] = $pagination['current_page'];
-      $filters['pagination']['perPage'] = $pagination['perPage'];
-      $filters['pagination']['number_of_pages'] = $pagination['number_of_pages'];
-      $filters['pagination']['offset'] = $pagination['offset'];
-  
-      // $filters['perPage'] = $pagination['perPage'];
-      // $filters['number_of_pages'] = $pagination['number_of_pages'];
-      return $filters;
-    }
 
 
 

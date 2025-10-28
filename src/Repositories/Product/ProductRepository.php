@@ -52,7 +52,6 @@ final class ProductRepository extends AbstractRepository
       $data = array_values($this->getProducts(['id' => $id]));
 
       return $data[0];
-        // return $rows ? $this->fetchProductWithJoins($rows[0]) : null;
     }
 
     public function getModelProductById(int $id): ?Product
@@ -95,19 +94,6 @@ final class ProductRepository extends AbstractRepository
     {
         $beans = $this->findByIds(self::TABLE, $ids);
         return array_map(fn($bean) => Product::fromBean($bean), $beans);
-
-        // нормализуем datetime
-        // return array_map(function(array $row) {
-        //     if (!empty($row['datetime'])) {
-        //         $row['datetime'] = is_numeric($row['datetime'])
-        //             ? (new \DateTime())->setTimestamp((int)$row['datetime'])
-        //             : new \DateTime($row['datetime']);
-        //     } else {
-        //         $row['datetime'] = new \DateTime(); // fallback
-        //     }
-
-        //     return $row;
-        // }, $rows);
     }
 
 

@@ -20,8 +20,6 @@ class Config
 
     public static function getRoot(): string
     {
-          return rtrim(dirname(__DIR__, 2), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-        // return dirname(__DIR__, 2) . '/'; // выходит из src/Config/ вверх к корню
+      return rtrim(dirname(__DIR__, 2), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
     }
 }

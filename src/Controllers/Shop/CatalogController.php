@@ -77,7 +77,7 @@ final class CatalogController extends BaseController
       $products =  $filteredProductsData['products'];
       $total = $filteredProductsData['total'];
       $filters = $filteredProductsData['filters'];
-      $pagination = $filters['pagination'];
+      $pagination = $filters->pagination;
   
       $mainCategories = $this->categoryService->getMainCategories();
 

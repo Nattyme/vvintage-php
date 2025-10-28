@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Post;
 
-use Vvintage\DTO\Post\PostListDto;
+use Vvintage\DTO\Post\PostListDTO;
 
 /** Model */
 use Vvintage\Models\Post\Post;

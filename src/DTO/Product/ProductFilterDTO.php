@@ -20,4 +20,16 @@ class ProductFilterDTO {
         $this->sort = $query['sort'] ?? null;
         $this->pagination = $query['pagination'] ?? [];
     }
+
+    public function toArray(): array 
+    {
+      return [
+          'categories' => $this->categories,
+          'brands'     => $this->brands,
+          'priceMin'   => $this->priceMin,
+          'priceMax'   => $this->priceMax,
+          'sort'       => $this->sort,
+          'pagination' => $this->pagination
+      ];
+    }
 }

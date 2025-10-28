@@ -22,31 +22,10 @@ class LanguageConfig
       'zh' => 'zh_CN',
     ];
 
-    // public static function getCurrentLang(): string
+    // public static function isSupported(string $lang): bool
     // {
-    //     $lang = $_SESSION['locale'] ?? self::DEFAULT_LANG;
-    //     return self::isSupported($lang) ? $lang : self::DEFAULT_LANG;
+    //     return array_key_exists($lang, self::LANGUAGES);
     // }
-
-    // // 🔹 Получить локаль (для Intl и форматирования)
-    // public static function getCurrentLocale(): string
-    // {
-    //     $lang = self::getCurrentLang();
-
-    //     if (isset(self::SPECIAL_LOCALES[$lang])) {
-    //         return self::SPECIAL_LOCALES[$lang];
-    //     }
-
-    //     return Locale::composeLocale([
-    //         'language' => $lang,
-    //         'region' => strtoupper($lang)
-    //     ]);
-    // }
-
-    public static function isSupported(string $lang): bool
-    {
-        return array_key_exists($lang, self::LANGUAGES);
-    }
 
 
     public static function getAvailableLanguages(): array
