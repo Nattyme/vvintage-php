@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Womazing&#160;&#8212; контакты</title>
+		<link rel="stylesheet" href="./css/main.css" />
+
+		<link rel="icon" type="image/x-icon" href="./img/favicons/favicon.svg" />
+		<link rel="apple-touch-icon" sizes="180x180" href="./img/favicons/apple-touch-icon.png" />
+		<script src="https://api-maps.yandex.ru/v3/?apikey=144f79d1-953e-448c-9341-fb93fa71b6c2&lang=ru_RU"></script>
+	</head>
+
+	<body>
+		<header class="header-top">
+			<div class="container">
+				<div class="header-top__row">
+					<a href="index.html" class="logo">
+						<svg class="icon icon--logo">
+							<use href="./img/svgsprite/sprite.symbol.svg#logo"></use>
+						</svg>
+						Womazing
+					</a>
+					<nav class="header-top__nav nav">
+						<ul class="nav">
+							<li class="nav__item">
+								<a href="#!">Главная</a>
+							</li>
+							<li class="nav__item">
+								<a href="./../shop-all.html">Магазин</a>
+							</li>
+							<li class="nav__item">
+								<a href="#!">О&#160;бренде</a>
+							</li>
+							<li class="nav__item">
+								<a href="#!">Контакты</a>
+							</li>
+						</ul>
+					</nav>
+					<div class="header-top__cta flex-block">
+						<a href="tel:74958235412" class="header__phone flex-block">
+							<svg class="icon icon--phone">
+								<use href="./img/svgsprite/sprite.symbol.svg#phone"></use>
+							</svg>
+							<span>+7&#160;495&#160;823-54-12</span>
+						</a>
+						<div class="header-top__user flex-block">
+							<a href="good.html" class="cart">
+								<svg class="icon icon--shopping-bag">
+									<use href="./img/svgsprite/sprite.symbol.svg#shopping-bag"></use>
+								</svg>
+								<span class="counter">3</span>
+							</a>
+						</div>
+					</div>
+					<button class="mobile-nav-btn none">
+						<div class="nav-icon"></div>
+					</button>
+				</div>
+			</div>
+		</header>
+		<div class="mobile-nav">
+			<ul class="mobile-nav__list">
+				<li><a href="index.html">Главная</a></li>
+				<li><a href="docs.html">Документация</a></li>
+			</ul>
+		</div>
+
+		<main class="inner-page">
+			<section class="section-order">
+				<div class="container">
+					<div class="section-order__header">
+						<div class="section-title">
+							<h1 class="h1">Оформление заказа</h1>
+						</div>
+						<div class="breadcrumbs">
+							<p>Главная <span>&#8212;</span> Оформление заказа</p>
+						</div>
+					</div>
+					<div class="section-order__form">
+						<form class="form-order" method="POST">
+							<div class="form-order__user">
+								<div class="form-order__block">
+									<div class="form-order__title">
+										<h3>Данные покупателя</h3>
+									</div>
+									<div class="form-input-wrapper">
+										<input type="text" class="form-input" placeholder="Имя" name="name" />
+										<input type="text" class="form-input" placeholder="E-mail" name="email" />
+										<input type="text" class="form-input" placeholder="Телефон" name="phone" />
+									</div>
+								</div>
+								<div class="form-order__block">
+									<div class="form-order__title">
+										<h3>Адрес получателя</h3>
+									</div>
+									<div class="form-input-wrapper">
+										<input type="text" class="form-input" placeholder="Имя" name="name" />
+										<input type="text" class="form-input" placeholder="E-mail" name="email" />
+										<input type="text" class="form-input" placeholder="Телефон" name="phone" />
+										<input type="text" class="form-input" placeholder="Телефон" name="phone" />
+										<input type="text" class="form-input" placeholder="Телефон" name="phone" />
+									</div>
+								</div>
+								<div class="form-order__block">
+									<div class="form-order__title">
+										<h3>Комментарии</h3>
+										<div class="form-input-wrapper">
+											<textarea type="text" class="form-textarea" name="message">Сообщение</textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-order__details">
+								<div class="form-order__block">
+									<div class="form-order__title">
+										<h3>Ваш заказ</h3>
+									</div>
+
+									<table class="form-order__total">
+										<thead>
+											<tr>
+												<th>Товар</th>
+												<th>Всего</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>Футболка USA</th>
+												<th>$129</th>
+											</tr>
+											<tr>
+												<th>Подытог</th>
+												<th>$129</th>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<th>Итого</th>
+												<th>$129</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<div class="form-order__block">
+									<div class="form-order__title">
+										<h3>Способы оплаты</h3>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</section>
+		</main>
+		<footer class="footer">
+			<div class="container">
+				<div class="footer__content">
+					<div class="footer__column">
+						<div class="footer__logo">
+							<a href="index.html" class="logo">
+								<svg class="icon icon--logo">
+									<use href="./img/svgsprite/sprite.symbol.svg#logo"></use>
+								</svg>
+								Womazing
+							</a>
+						</div>
+						<div class="footer__copyright">
+							<p>&#169; Все права защищены</p>
+							<p>Политика конфиденциальности</p>
+							<p>Публичная оферта</p>
+						</div>
+					</div>
+
+					<div class="footer__nav">
+						<ul class="nav-list">
+							<li class="nav-list__item">
+								<a class="nav-list__link" href="#!">Главная</a>
+							</li>
+							<li class="nav-list__item">
+								<a class="nav-list__link nav-list__inner-nav" href="#!">Магазин</a>
+								<div class="inner-nav-wrapper">
+									<ul class="inner-nav__list">
+										<li class="inner-nav__item">
+											<a href="#!" class="inner-nav__link">Пальто</a>
+										</li>
+										<li class="inner-nav__item">
+											<a href="#!" class="inner-nav__link">Свитшоты</a>
+										</li>
+										<li class="inner-nav__item">
+											<a href="#!" class="inner-nav__link">Кардиганы</a>
+										</li>
+										<li class="inner-nav__item">
+											<a href="#!" class="inner-nav__link">Толстовки</a>
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li class="nav-list__item">
+								<a class="nav-list__link" href="#!">О&#160;бренде</a>
+							</li>
+							<li class="nav-list__item">
+								<a class="nav-list__link" href="#!">Контакты</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="footer__column">
+						<div class="footer__contact">
+							<a href="tel:74958235412">+7&#160;495&#160;823-54-12</a>
+							<a href="mailto:hello@womazing.com">hello@womazing.com</a>
+						</div>
+						<ul class="social-list">
+							<li>
+								<a href="#">
+									<svg class="icon icon--instagram">
+										<use href="./img/svgsprite/sprite.symbol.svg#instagram"></use>
+									</svg>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg class="icon icon--facebook">
+										<use href="./img/svgsprite/sprite.symbol.svg#facebook"></use>
+									</svg>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg class="icon icon--twitter">
+										<use href="./img/svgsprite/sprite.symbol.svg#twitter"></use>
+									</svg>
+								</a>
+							</li>
+						</ul>
+						<ul class="payment-list">
+							<li>
+								<picture>
+									<source srcset="./img/payment/visa-mastercard.webp 1x, ./img/payment/visa-mastercard@2x.webp 2x" type="image/webp" />
+									<source srcset="./img/payment/visa-mastercard.png 1x, ./img/payment/visa-mastercard@2x.png 2x" type="image/png" />
+									<img src="./img/payment/visa-mastercard.png" srcset="./img/payment/visa-mastercard@2x.png" alt="" />
+								</picture>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<script src="./js/index.bundle.js"></script>
+	</body>
+</html>

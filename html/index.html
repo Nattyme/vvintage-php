@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Womazing</title>
+		<link rel="stylesheet" href="./css/main.css" />
+
+		<link rel="icon" type="image/x-icon" href="./img/favicons/favicon.svg" />
+		<link rel="apple-touch-icon" sizes="180x180" href="./img/favicons/apple-touch-icon.png" />
+	</head>
+
+	<body class="main-page">
+		<header class="header-top">
+			<div class="container">
+				<div class="header-top__row">
+					<a href="index.html" class="logo">
+						<svg class="icon icon--logo">
+							<use href="./img/svgsprite/sprite.symbol.svg#logo"></use>
+						</svg>
+						Womazing
+					</a>
+					<nav class="header-top__nav nav">
+						<ul class="nav">
+							<li class="nav__item">
+								<a href="#!">Главная</a>
+							</li>
+							<li class="nav__item">
+								<a href="./../shop-all.html">Магазин</a>
+							</li>
+							<li class="nav__item">
+								<a href="#!">О&#160;бренде</a>
+							</li>
+							<li class="nav__item">
+								<a href="#!">Контакты</a>
+							</li>
+						</ul>
+					</nav>
+					<div class="header-top__cta flex-block">
+						<a href="tel:74958235412" class="header__phone flex-block">
+							<svg class="icon icon--phone">
+								<use href="./img/svgsprite/sprite.symbol.svg#phone"></use>
+							</svg>
+							<span>+7&#160;495&#160;823-54-12</span>
+						</a>
+						<div class="header-top__user flex-block">
+							<a href="good.html" class="cart">
+								<svg class="icon icon--shopping-bag">
+									<use href="./img/svgsprite/sprite.symbol.svg#shopping-bag"></use>
+								</svg>
+								<span class="counter">3</span>
+							</a>
+						</div>
+					</div>
+					<button class="mobile-nav-btn none">
+						<div class="nav-icon"></div>
+					</button>
+				</div>
+			</div>
+		</header>
+		<div class="mobile-nav">
+			<ul class="mobile-nav__list">
+				<li><a href="index.html">Главная</a></li>
+				<li><a href="docs.html">Документация</a></li>
+			</ul>
+		</div>
+
+		<main class="maintext">
+			<section class="header">
+				<div class="container">
+					<div class="header__content">
+						<div class="header__block">
+							<!-- text -->
+							<div class="swiper swiperHeaderText">
+								<div class="swiper-wrapper">
+									<!-- slide 01 -->
+									<div class="swiper-slide">
+										<div class="header__text">
+											<div class="header__title">
+												<h1 class="h1">Новые поступления в&#160;этом сезоне</h1>
+											</div>
+											<div class="header__desc">
+												<p>Утонченные сочетания и&#160;бархатные оттенки&#160;&#8212; вот то, что вы&#160;искали в&#160;этом сезоне. Время исследовать.</p>
+											</div>
+										</div>
+									</div>
+									<!--// slide 01 -->
+
+									<!-- slide 02 -->
+									<div class="swiper-slide">
+										<div class="header__text">
+											<div class="header__title" data-swiper-parallax="-200">
+												<h1 class="h1">Что-то новенькое. Мы&#160;заждались тебя.</h1>
+											</div>
+											<div class="header__desc" data-swiper-parallax="-300" data-swiper-parallax-duration="600">
+												<p>Надоело искать себя в&#160;сером городе? Настало время новых идей, свежих красок и&#160;вдохновения с&#160;Womazing!</p>
+											</div>
+										</div>
+									</div>
+									<!--// slide 02 -->
+
+									<!-- slide 03 -->
+									<div class="swiper-slide">
+										<div class="header__text">
+											<div class="header__title">
+												<h1 class="h1">Включай новый сезон с&#160;WOMAZING</h1>
+											</div>
+											<div class="header__desc">
+												<p>Мы&#160;обновили ассортимент&#160;&#8212; легендарные коллекции и&#160;новинки от&#160;отечественных дизайнеров</p>
+											</div>
+										</div>
+									</div>
+									<!--// slide 03 -->
+								</div>
+							</div>
+							<!--// text -->
+							<a href="#arrival" class="header__button">
+								<div class="button-icon-wrapper">
+									<svg class="icon icon--arrow-bottom">
+										<use href="./img/svgsprite/sprite.symbol.svg#arrow-bottom"></use>
+									</svg>
+								</div>
+								<span class="button-solid">Открыть магазин</span>
+							</a>
+							<div class="swiper-pagination" id="swiperHeaderText-buttons">
+								<button class="swiperHeaderText-button" type="button"></button>
+								<button class="swiperHeaderText-button active" type="button"></button>
+								<button class="swiperHeaderText-button" type="button"></button>
+							</div>
+						</div>
+
+						<!-- image -->
+						<div class="header__hero">
+							<div class="header__image-less">
+								<picture>
+									<source srcset="./img/hero/01.webp 1x, ./img/hero/01@2x.webp 2x" type="image/webp" />
+									<source srcset="./img/hero/01.jpg 1x, ./img/hero/01@2x.jpg 2x" type="image/jpeg" />
+									<img src="./img/hero/01.jpg" srcset="./img/hero/01@2x.jpg" />
+								</picture>
+							</div>
+
+							<div class="swiper swiperHeaderImg">
+								<div class="swiper-wrapper">
+									<div class="swiper-slide">
+										<div class="header__image-main">
+											<picture>
+												<source srcset="./img/hero/main.webp 1x, ./img/hero/main@2x.webp 2x" type="image/webp" />
+												<source srcset="./img/hero/main.jpg 1x, ./img/hero/main@2x.jpg 2x" type="image/jpeg" />
+												<img src="./img/hero/main.jpg" srcset="./img/hero/main@2x.jpg" />
+											</picture>
+										</div>
+									</div>
+									<div class="swiper-slide">
+										<div class="header__image-main">
+											<picture>
+												<source srcset="./img/hero/main.webp 1x, ./img/hero/main@2x.webp 2x" type="image/webp" />
+												<source srcset="./img/hero/main.jpg 1x, ./img/hero/main@2x.jpg 2x" type="image/jpeg" />
+												<img src="./img/hero/main.jpg" srcset="./img/hero/main@2x.jpg" />
+											</picture>
+										</div>
+									</div>
+									<div class="swiper-slide">
+										<div class="header__image-main">
+											<picture>
+												<source srcset="./img/hero/main.webp 1x, ./img/hero/main@2x.webp 2x" type="image/webp" />
+												<source srcset="./img/hero/main.jpg 1x, ./img/hero/main@2x.jpg 2x" type="image/jpeg" />
+												<img src="./img/hero/main.jpg" srcset="./img/hero/main@2x.jpg" />
+											</picture>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="header__image-less">
+								<picture>
+									<source srcset="./img/hero/02.webp 1x, ./img/hero/02@2x.webp 2x" type="image/webp" />
+									<source srcset="./img/hero/02.jpg 1x, ./img/hero/02@2x.jpg 2x" type="image/jpeg" />
+									<img src="./img/hero/02.jpg" srcset="./img/hero/02@2x.jpg" />
+								</picture>
+							</div>
+						</div>
+						<!--// image -->
+					</div>
+				</div>
+			</section>
+
+			<section class="arrival" id="arrival">
+				<div class="container">
+					<div class="section-title">
+						<h2 class="h2">Новая коллекция</h2>
+					</div>
+
+					<div class="arrival__cards-wrapper">
+						<div class="cards-row">
+							<a href="product.html" class="card">
+								<div class="card__img">
+									<svg class="icon icon--arrow-right">
+										<use href="./img/svgsprite/sprite.symbol.svg#arrow-right"></use>
+									</svg>
+
+									<picture>
+										<source srcset="./img/arrival/01.webp 1x, ./img/arrival/01@2x.webp 2x" type="image/webp" />
+										<source srcset="./img/arrival/01.jpg 1x, ./img/arrival/01@2x.jpg 2x" type="image/jpeg" />
+										<img src="./img/arrival/01.jpg" srcset="./img/arrival/01@2x.jpg" alt="" />
+									</picture>
+								</div>
+								<div class="card__desc">
+									<div class="card__title">
+										<p>Футболка USA</p>
+									</div>
+									<div class="card__price">
+										<span>$229</span>
+										<span>$129</span>
+									</div>
+								</div>
+							</a>
+							<a href="product.html" class="card">
+								<div class="card__img">
+									<svg class="icon icon--arrow-right">
+										<use href="./img/svgsprite/sprite.symbol.svg#arrow-right"></use>
+									</svg>
+
+									<picture>
+										<source srcset="./img/arrival/01.webp 1x, ./img/arrival/01@2x.webp 2x" type="image/webp" />
+										<source srcset="./img/arrival/01.jpg 1x, ./img/arrival/01@2x.jpg 2x" type="image/jpeg" />
+										<img src="./img/arrival/01.jpg" srcset="./img/arrival/01@2x.jpg" alt="" />
+									</picture>
+								</div>
+								<div class="card__desc">
+									<div class="card__title">
+										<p>Футболка USA</p>
+									</div>
+									<div class="card__price">
+										<span>$229</span>
+										<span>$129</span>
+									</div>
+								</div>
+							</a>
+							<a href="product.html" class="card">
+								<div class="card__img">
+									<svg class="icon icon--arrow-right">
+										<use href="./img/svgsprite/sprite.symbol.svg#arrow-right"></use>
+									</svg>
+
+									<picture>
+										<source srcset="./img/arrival/01.webp 1x, ./img/arrival/01@2x.webp 2x" type="image/webp" />
+										<source srcset="./img/arrival/01.jpg 1x, ./img/arrival/01@2x.jpg 2x" type="image/jpeg" />
+										<img src="./img/arrival/01.jpg" srcset="./img/arrival/01@2x.jpg" alt="" />
+									</picture>
+								</div>
+								<div class="card__desc">
+									<div class="card__title">
+										<p>Футболка USA</p>
+									</div>
+									<div class="card__price">
+										<span>$229</span>
+										<span>$129</span>
+									</div>
+								</div>
+							</a>
+							<a href="product.html" class="card">
+								<div class="card__img">
+									<svg class="icon icon--arrow-right">
+										<use href="./img/svgsprite/sprite.symbol.svg#arrow-right"></use>
+									</svg>
+
+									<picture>
+										<source srcset="./img/arrival/01.webp 1x, ./img/arrival/01@2x.webp 2x" type="image/webp" />
+										<source srcset="./img/arrival/01.jpg 1x, ./img/arrival/01@2x.jpg 2x" type="image/jpeg" />
+										<img src="./img/arrival/01.jpg" srcset="./img/arrival/01@2x.jpg" alt="" />
+									</picture>
+								</div>
+								<div class="card__desc">
+									<div class="card__title">
+										<p>Футболка USA</p>
+									</div>
+									<div class="card__price">
+										<span>$229</span>
+										<span>$129</span>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+					<div class="arrival__button">
+						<a href="#" class="button-outline">Открыть магазин</a>
+					</div>
+				</div>
+			</section>
+			<section class="feature">
+				<div class="container">
+					<div class="section-title">
+						<h2 class="h2">Что для нас важно</h2>
+					</div>
+
+					<div class="feature__content">
+						<ul class="feature__list">
+							<li class="feature__item">
+								<div class="feature__img">
+									<svg class="icon icon--approved">
+										<use href="./img/svgsprite/sprite.symbol.svg#approved"></use>
+									</svg>
+								</div>
+								<p class="feature__name">Качество</p>
+								<div class="feature__text">
+									<p>Наши профессионалы работают на&#160;лучшем оборудовании для пошива одежды беспрецедентного качества</p>
+								</div>
+							</li>
+							<li class="feature__item">
+								<div class="feature__img">
+									<svg class="icon icon--settings">
+										<use href="./img/svgsprite/sprite.symbol.svg#settings"></use>
+									</svg>
+								</div>
+								<p class="feature__name">Скорость</p>
+								<div class="feature__text">
+									<p>Благодаря отлаженной системе в&#160;Womazing мы&#160;можем отшивать до&#160;20-ти единиц продукции в&#160;наших собственных цехах</p>
+								</div>
+							</li>
+							<li class="feature__item">
+								<div class="feature__img">
+									<svg class="icon icon--hand">
+										<use href="./img/svgsprite/sprite.symbol.svg#hand"></use>
+									</svg>
+								</div>
+								<p class="feature__name">Ответственность</p>
+								<div class="feature__text">
+									<p>Мы&#160;заботимся о&#160;людях и&#160;планете. Безотходное производство и&#160;комфортные условия труда&#160;&#8212; все это Womazing</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+
+					<div class="feature__button">
+						<a href="#" class="link">Подробнее</a>
+					</div>
+				</div>
+			</section>
+			<section class="about">
+				<div class="container">
+					<div class="section-title">
+						<h2 class="h2">Команда мечты Womazing</h2>
+					</div>
+
+					<div class="about__content">
+						<div class="about__img">
+							<picture>
+								<source srcset="./img/about/01.webp 1x, ./img/about/01@2x.webp 2x" type="image/webp" />
+								<source srcset="./img/about/01.jpg 1x, ./img/about/01@2x.jpg 2x" type="image/jpeg" />
+								<img src="./img/about/01.jpg" srcset="./img/about/01@2x.jpg" alt="" />
+							</picture>
+						</div>
+						<div class="about__desc">
+							<div class="about__header">
+								Для каждой
+							</div>
+							<div class="about__text">
+								<p>Каждая девушка уникальна. Однако, мы&#160;схожи в&#160;миллионе мелочей.</p>
+								<p>Womazing ищет эти мелочи и&#160;создает прекрасные вещи, которые выгодно подчеркивают достоинства каждой девушки. Подробнее о&#160;бренде</p>
+							</div>
+							<a href="#" class="about__link link">Подробнее о&#160;бренде</a>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<footer class="footer">
+			<div class="container">
+				<div class="footer__content">
+					<div class="footer__column">
+						<div class="footer__logo">
+							<a href="index.html" class="logo">
+								<svg class="icon icon--logo">
+									<use href="./img/svgsprite/sprite.symbol.svg#logo"></use>
+								</svg>
+								Womazing
+							</a>
+						</div>
+						<div class="footer__copyright">
+							<p>&#169; Все права защищены</p>
+							<p>Политика конфиденциальности</p>
+							<p>Публичная оферта</p>
+						</div>
+					</div>
+
+					<div class="footer__nav">
+						<ul class="nav-list">
+							<li class="nav-list__item">
+								<a class="nav-list__link" href="#!">Главная</a>
+							</li>
+							<li class="nav-list__item">
+								<a class="nav-list__link nav-list__inner-nav" href="#!">Магазин</a>
+								<div class="inner-nav-wrapper">
+									<ul class="inner-nav__list">
+										<li class="inner-nav__item">
+											<a href="#!" class="inner-nav__link">Пальто</a>
+										</li>
+										<li class="inner-nav__item">
+											<a href="#!" class="inner-nav__link">Свитшоты</a>
+										</li>
+										<li class="inner-nav__item">
+											<a href="#!" class="inner-nav__link">Кардиганы</a>
+										</li>
+										<li class="inner-nav__item">
+											<a href="#!" class="inner-nav__link">Толстовки</a>
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li class="nav-list__item">
+								<a class="nav-list__link" href="#!">О&#160;бренде</a>
+							</li>
+							<li class="nav-list__item">
+								<a class="nav-list__link" href="#!">Контакты</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="footer__column">
+						<div class="footer__contact">
+							<a href="tel:74958235412">+7&#160;495&#160;823-54-12</a>
+							<a href="mailto:hello@womazing.com">hello@womazing.com</a>
+						</div>
+						<ul class="social-list">
+							<li>
+								<a href="#">
+									<svg class="icon icon--instagram">
+										<use href="./img/svgsprite/sprite.symbol.svg#instagram"></use>
+									</svg>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg class="icon icon--facebook">
+										<use href="./img/svgsprite/sprite.symbol.svg#facebook"></use>
+									</svg>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg class="icon icon--twitter">
+										<use href="./img/svgsprite/sprite.symbol.svg#twitter"></use>
+									</svg>
+								</a>
+							</li>
+						</ul>
+						<ul class="payment-list">
+							<li>
+								<picture>
+									<source srcset="./img/payment/visa-mastercard.webp 1x, ./img/payment/visa-mastercard@2x.webp 2x" type="image/webp" />
+									<source srcset="./img/payment/visa-mastercard.png 1x, ./img/payment/visa-mastercard@2x.png 2x" type="image/png" />
+									<img src="./img/payment/visa-mastercard.png" srcset="./img/payment/visa-mastercard@2x.png" alt="" />
+								</picture>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<script src="./js/index.bundle.js"></script>
+	</body>
+</html>
