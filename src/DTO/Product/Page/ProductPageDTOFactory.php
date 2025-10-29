@@ -3,13 +3,24 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Product\Page;
 
+use Vvintage\Models\Product\Product;
+
+use Vvintage\Services\Locale\LocaleService;
+
+/* DTO */
 use Vvintage\DTO\Category\CategoryForProductDTO;
 use Vvintage\DTO\Brand\BrandForProductDTO;
-use Vvintage\Models\Product\Product;
+
 
 
 final class ProductPageDTOFactory
 {
+    public function __construct(
+      private LocaleService $localeService
+    ) 
+    {
+      $this->localeService = $localeService;
+    }
 
     public function createFromProduct(
       Product $product,
@@ -37,7 +48,7 @@ final class ProductPageDTOFactory
           title: (string) ($translations['title'] ?? ''),
           description: (string) ($translations['description'] ?? ''),
           price: (int) ($product->getPrice() ?? null),
-          edit_time: (string) ($product->getEditTime() ?? null),
+          edit_time: (string) ( $this->localeService->formatDateTime($product->getEditTime()) ),
           images: $images
       );
     }

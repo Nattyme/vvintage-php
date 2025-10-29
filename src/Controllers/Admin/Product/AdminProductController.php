@@ -7,8 +7,8 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Product\AdminProductService;
-use Vvintage\DTO\Admin\Product\ProductDTO;
-use Vvintage\DTO\Product\ProductFilterDTO;
+// use Vvintage\DTO\Admin\Product\ProductDTO;
+use Vvintage\DTO\Product\Filter\ProductFilterDTO;
 
 class AdminProductController extends BaseAdminController
 {
@@ -51,9 +51,6 @@ class AdminProductController extends BaseAdminController
     $productsPerPage = 12;
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
-    // Устанавливаем пагинацию
-    // $pagination = pagination($productsPerPage, 'products');
-
     $filterDto = new ProductFilterDTO([
       'brands'    => $_GET['brand'] ?? [],
       'categories'=> $_GET['category'] ?? [],
@@ -65,17 +62,16 @@ class AdminProductController extends BaseAdminController
     ]);
 
     // Получаем продукты с учётом пагинации
-    $filteredProductsData = $this->service->getFilteredProducts( filters: $filterDto, perPage: 15);
-    dd( $filteredProductsData);
-    
-    // $products = $this->service->getAll($pagination);
-    // $total = $this->service->countProducts();
-    // $actions = $this->service->getActions();
+    $filteredProductsData = $this->service->getAdminProductsList( filters: $filterDto, perPage: 15);
+
+    $filters = $filteredProductsData['filters'];
+    $pagination = $filters->pagination;
+    $actions = $this->service->getActions();
 
     // Формируем единую модель для передачи в шаблон
     $pageViewModel = [
-        'products' => $products,
-        'total' => $total,
+        'products' => $filteredProductsData['products'],
+        'total' => $filteredProductsData['total'],
         'actions'=> $actions
     ];
         

@@ -3,21 +3,31 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Admin\Product;
 
+use Vvintage\Config\LanguageConfig;
+
+/** Модель */
+use Vvintage\Models\Product\Product;
+
 use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Brand\BrandService;
+use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Admin\Product\AdminProductImageService;
 
 /** DTO */
+use Vvintage\DTO\Product\Filter\ProductFilterDTO;
+use Vvintage\DTO\Admin\Product\ProductAdminListDTOFactory;
+use Vvintage\DTO\Admin\Product\ProductAdminListDTO;
 use Vvintage\DTO\Product\ProductInputDTO;
 use Vvintage\DTO\Product\ProductImageInputDTO;
 
-use Vvintage\DTO\Product\ProductTranslationInputDTO;
+use Vvintage\DTO\Product\Lang\ProductTranslationInputDTO;
 
 
 
 final class AdminProductService extends ProductService
 {
-
   private AdminProductImageService $imageService;
+  private string $defaultLang;
 
   private array $actions = [
     'hide'     => 'Скрыть',
@@ -25,10 +35,13 @@ final class AdminProductService extends ProductService
     'archived' => 'В архив'
   ];
 
+  
+
   public function __construct()
   {
     parent::__construct();
     $this->imageService = new AdminProductImageService();
+    $this->defaultLang = LanguageConfig::DEFAULT_LANG;
   }
 
 
@@ -177,13 +190,23 @@ final class AdminProductService extends ProductService
       }
   }
 
-  public function getAllProducts (): array 
+  public function getAdminProductsList(ProductFilterDTO $filters, ?int $perPage = null): array 
   {
-    
+    // Получим отфильтрованные модели продуктов 
+    $productsData = $this->getFilteredProductsData($filters, $perPage);
+
+    $models = $productsData['products'];
+    $total = $productsData['total'];
+    $filters = $productsData['filters'];
+
+    // Формируем массив DTO
+    $products = array_map([$this, 'createProductAdminListDTO'], $models);
+  
+    return ['products' => $products, 'total' => $total, 'filters' => $filters]; 
   }
 
 
-  /** imaegs */ 
+  /** images */ 
   private function splitVisibleHidden(array $images): array
   {
       return  $this->productImageService->splitVisibleHidden($images);
@@ -253,6 +276,35 @@ final class AdminProductService extends ProductService
         
     return  $productTranslationsDto;
 
+  }
+
+  /**
+   * Создает dto для админки продукта
+   *
+   * @param Product $product
+   * @return ProductAdminListDTO
+ */
+  private function createProductAdminListDTO(Product $product): ProductAdminListDTO
+  {
+      // Получим и установим перевод
+      $productId = $product->getId();
+      $translations = $this->translationRepo->getLocaleTranslation($productId, $this->defaultLang);
+      $product->setTranslations($translations);
+
+      // Создаем dto 
+      $brandDTO = $this->brandService->createBrandProductDTO((int) $product->getBrandId());
+      $categoryDTO = $this->categoryService->createCategoryProductDTO((int) $product->getCategoryId());
+      $imageDto = $this->productImageService->getMainImageDTO($productId);
+      
+      $dtoFactory = new ProductAdminListDTOFactory($this->localeService);
+      $dto = $dtoFactory->createFromProduct(
+        product: $product,
+        category: $categoryDTO,
+        brand: $brandDTO,
+        image:  $imageDto
+      );
+
+      return $dto; 
   }
 
 

@@ -48,8 +48,6 @@ final class ProductController extends BaseController
   
         $id = (int) $routeData->uriGet; // получаем id товара из URL  
         $productDto = $this->productService->getProductPageData($id);
-   
-        // $this->productService->setImages($productModel);
 
         if (!$productDto) {
             http_response_code(404);
@@ -59,9 +57,7 @@ final class ProductController extends BaseController
    
         // $related = $product->getRelated();
         $statusList = $this->productService->getStatusList();
-        // $imagesDtos = $this->productService->getImagesDTO($productModel->getImages());
-        // $images = $this->productService->getProductImagesData( $imagesDtos);
-        // $productModel->setImages($images);
+    
 
         // Формируем единую модель для передачи в шаблон
         $viewModel = [

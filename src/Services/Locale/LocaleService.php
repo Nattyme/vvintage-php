@@ -73,9 +73,17 @@ final class LocaleService
         ]);
     }
 
-    // 🔹 Форматирование даты с учетом локали
-    public function formatDateTime(\DateTimeInterface $dateTime): string
+    // Форматирование даты с учетом локали
+    public function formatDateTime(string|\DateTimeInterface $dateTime): string
     {
+        if(is_string($dateTime)) {
+          // Проверяем: это timestamp или форматированная дата типа 2025-10-29
+          if (ctype_digit($dateTime)) {
+            $dateTime = ( new \Datetime() )->setTimestamp((int)$dateTime);
+          } else {
+            $dateTime = new \DateTime($dateTime);
+          }
+        }
         $langCode = substr($this->currentLocale, 0, 2);
         $pattern = self::DATE_PATTERNS[$langCode] ?? "d MMMM y HH:mm";
 

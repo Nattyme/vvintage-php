@@ -59,31 +59,19 @@
       <!-- body -->
       <tbody class="product-table__body">
         <?php foreach ($pageViewModel['products'] as $product) : ?>
-          <?php 
-
-              $images = $product->images ?? null;
-              $mainImage = $images['main'] ?? null;
-          ?>
-
-          <tr data-status="<?php echo $product->status;?>">
+    
+          <tr data-status="<?php echo h($product->statu);?>">
             <td class="product-table__img">
-            <?php if ($mainImage && file_exists(ROOT . 'usercontent/products/' . $mainImage->filename)) : ?>
               <img 
-                src="<?php echo HOST . 'usercontent/products/' . h($mainImage->filename);?>" 
-                srcset="<?php echo HOST . 'usercontent/products/' . h($mainImage->filename);?>" 
+                src="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" 
+                srcset="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" 
                 alt="<?php echo h($product->title);?>" loading="lazy"
               >
-            <?php else : ?>
-              <img 
-                src="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" 
-                srcset="  <?php echo HOST . 'usercontent/products/' . '290-no-photo.jpg';?>" alt="<?php echo h($product->title);?>"
-              >
-            <?php endif; ?>
             </td>
             <td class="product-table__item product-table__item--title">
               <!-- link-to-page -->
               <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>shop-edit/<?php echo u($product->id); ?>">
-                <?php echo htmlspecialchars($product->title ? h($product->title) : ''); ?>
+                <?php echo h($product->title); ?>
               </a>
             </td>
             <td>
@@ -96,10 +84,10 @@
               <?php echo h($product->price ?? ''); ?>  &euro;
             </td>
             <td>
-              <a class="link link-above-others" href="<?php echo !empty($product->url) ? $product->url : '';?>">vinted.fr</a>
+              <a class="link link-above-others" href="<?php echo h($product->url);?>">vinted.fr</a>
             </td>
             <td>
-              <?php echo h(rus_date('j. m. Y. H:i', $product->datetime->getTimestamp()));?>
+              <?php echo h($product->edit_time); ?>
             </td>
             <td class="product-table__item product-table__item--checkbox link-above-others">
               <label>
@@ -123,12 +111,10 @@
     </table>
     <!-- table -->
   </form>
-  
 
-<?php /* dd($_POST['products']); */?>
 
   <div class="section-pagination">
-    <?php  if ( $productViewModel['total'] > 0 ) : 
+    <?php  if ( $pageViewModel['total'] > 0 ) : 
       include ROOT . 'views/_parts/pagination/_pagination.tpl'; 
      endif;  ?>
   </div>

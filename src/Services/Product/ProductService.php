@@ -15,6 +15,7 @@ use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Shared\PaginationService;
 use Vvintage\Services\Brand\BrandService;
+use Vvintage\Services\Locale\LocaleService;
 
 /* DTO */
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
@@ -52,6 +53,7 @@ class ProductService extends BaseService
         $this->brandService = new BrandService();
         $this->productImageService = new ProductImageService();
         $this->paginationService = new PaginationService();
+        $this->localeService = new LocaleService();
     }
 
     
@@ -59,8 +61,6 @@ class ProductService extends BaseService
     {
         $productId = $product->getId();
         $translations = $this->translationRepo->loadTranslations($productId);
-
-
         $product->setTranslations($translations);
    
         // Создаем dto для категории и бренда продукта
@@ -70,7 +70,7 @@ class ProductService extends BaseService
         // Создаем dto изображения продукта и подготавливаем к отображению 
         $imageDto = $this->productImageService->getMainImageDTO($productId);
   
-        $dtoFactory = new ProductCardDTOFactory();
+        $dtoFactory = new ProductCardDTOFactory($this->localeService);
         $dto = $dtoFactory->createFromProduct(
           product: $product,
           category: $categoryDTO,
@@ -99,7 +99,7 @@ class ProductService extends BaseService
         // $imagesAll = $this->productImageService->getProductImagesAll($productId);
         $imageDto = $this->productImageService->getProductPageImagesDtos($productId);
 
-        $dtoFactory = new ProductPageDTOFactory();
+        $dtoFactory = new ProductPageDTOFactory($this->localeService);
         $dto = $dtoFactory->createFromProduct(
           product: $product,
           category: $categoryDTO,
@@ -114,8 +114,9 @@ class ProductService extends BaseService
     public function getProductCartDTO()
     {
       $products = $this->getProductsByIds();
-        // Преобразуем в DTO
-        return array_map([$this, 'createProductForListDTO'], $products);
+
+      // Преобразуем в DTO
+      return array_map([$this, 'createProductForListDTO'], $products);
     }
 
     public function getProductsForCatalog(ProductFilterDTO $filters, ?int $perPage = null)
