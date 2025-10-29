@@ -118,7 +118,7 @@ const renderMenuTree = (cats, level = 1) => {
       <ul class="${ulClassMap[1]}">
         ${cats.map(cat => `
           <li class="${liClass}" id="${cat.id}">
-            <a href="shop?${encodeURIComponent('category[]')}=${cat.id}" class="${linkClass}" data-cat="${cat.id}">
+            <a href="/shop?${encodeURIComponent('category[]')}=${cat.id}" class="${linkClass}" data-cat="${cat.id}">
               ${cat.title}
             </a>
           </li>
@@ -130,10 +130,10 @@ const renderMenuTree = (cats, level = 1) => {
   // 2-й и 3-й уровень: только LI
   return cats.map(cat => `
     <li class="${liClass}" id="${cat.id}" data-cat="${cat.id}">
-      <a href="shop?${encodeURIComponent('category[]')}=${cat.id}" class="${linkClass}" data-cat="${cat.id}">
+      <a href="/shop?${encodeURIComponent('category[]')}=${cat.id}" class="${linkClass}" data-cat="${cat.id}">
         ${level === 2 && cat.image ? `
           <svg class="icon icon--${cat.image}">
-            <use href="static/img/svgsprite/sprite.symbol.svg#${cat.image}"></use>
+            <use href="/static/img/svgsprite/sprite.symbol.svg#${cat.image}"></use>
           </svg>
         ` : ''}
       

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Product;
+namespace Vvintage\DTO\Product\Card;
 
 use Vvintage\Models\Product\Product;
-use Vvintage\DTO\Product\ProductCardDTO;
+use Vvintage\DTO\Product\Card\ProductCardDTO;
 use Vvintage\DTO\Brand\BrandForProductDTO;
 use Vvintage\DTO\Category\CategoryForProductDTO;
-use Vvintage\DTO\Product\ImageForProductCardDTO;
+use Vvintage\DTO\Product\Card\ImageForProductCardDTO;
 
 
 final class ProductCardDTOFactory

@@ -21,7 +21,7 @@ use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Page\PageService;
 
-use Vvintage\DTO\Product\ProductFilterDTO;
+use Vvintage\DTO\Product\Filter\ProductFilterDTO;
 
 
 require_once ROOT . "./libs/functions.php";

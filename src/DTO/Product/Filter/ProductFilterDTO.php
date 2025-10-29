@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Product;
+namespace Vvintage\DTO\Product\Filter;
 
 
 class ProductFilterDTO {
@@ -28,8 +28,8 @@ class ProductFilterDTO {
         $this->brands = $query['brands'] ?? [];
         $this->priceMin = isset($query['priceMin']) ? (int) $query['priceMin'] : null;
         $this->priceMax = isset($query['priceMax']) ? (int) $query['priceMax'] : null;
-        $this->sort = $sort;
-        $this->sortKey = $sortData;
+        $this->sort = $sort ?? null;
+        $this->sortKey = $sortData ?? null;
         $this->pagination = $query['pagination'] ?? [];
     }
 

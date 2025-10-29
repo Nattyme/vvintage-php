@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Product;
-use Vvintage\Models\Product\Product;
+namespace Vvintage\DTO\Product\Card;
 
 final class ProductCardDTO
 {

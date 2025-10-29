@@ -53,7 +53,7 @@
       </span>
     </div>
 
-    <button class="gsi-material-button">
+    <button class="gsi-material-button" disabled>
       <div class="gsi-material-button-state"></div>
       <div class="gsi-material-button-content-wrapper">
         <div class="gsi-material-button-icon">

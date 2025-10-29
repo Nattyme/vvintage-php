@@ -17,14 +17,14 @@ use Vvintage\Services\Shared\PaginationService;
 use Vvintage\Services\Brand\BrandService;
 
 /* DTO */
-use Vvintage\DTO\Product\ProductFilterDTO;
-use Vvintage\DTO\Product\ProductOutputDTO;
-use Vvintage\DTO\Product\ProductPageDTO;
-use Vvintage\DTO\Product\ProductPageDTOFactory;
-use Vvintage\DTO\Product\ProductCardDTO;
-use Vvintage\DTO\Product\ProductCardDTOFactory;
+use Vvintage\DTO\Product\Filter\ProductFilterDTO;
+// use Vvintage\DTO\Product\ProductOutputDTO;
+use Vvintage\DTO\Product\Page\ProductPageDTO;
+use Vvintage\DTO\Product\Page\ProductPageDTOFactory;
 
-use Vvintage\DTO\Product\ImageForProductCardDTO;
+use Vvintage\DTO\Product\Card\ProductCardDTO;
+use Vvintage\DTO\Product\Card\ProductCardDTOFactory;
+use Vvintage\DTO\Product\Card\ImageForProductCardDTO;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -146,10 +146,6 @@ class ProductService extends BaseService
       $productModel = $this->repository->getModelProductById($id);
       $productId  = $productModel->getId();
 
-      // $translations = $this->translationRepo->loadTranslations($productId);
-      
-      // $productModel->setTranslations($translations);
-
       return $productModel;
     }
 
@@ -158,19 +154,19 @@ class ProductService extends BaseService
     }
 
 
-    public function getProductById(int $id): ?ProductOutputDTO
-    {
-        $rows = $this->repository->getModelProductById($id);
+    // public function getProductById(int $id): ?ProductOutputDTO
+    // {
+    //     $rows = $this->repository->getModelProductById($id);
 
-        return $rows ? $this->createProductDTOFromArray($rows) : null;
-    }
+    //     return $rows ? $this->createProductDTOFromArray($rows) : null;
+    // }
 
-    public function getLocaledProductById(int $id): ?ProductOutputDTO
-    {
-        $rows = $this->repository->getModelProductById($id);
+    // public function getLocaledProductById(int $id): ?ProductOutputDTO
+    // {
+    //     $rows = $this->repository->getModelProductById($id);
 
-        return $rows ? $this->createProductPageDTO($rows, $this->currentLang) : null;
-    }
+    //     return $rows ? $this->createProductPageDTO($rows, $this->currentLang) : null;
+    // }
 
     public function getProductsByIds(array $ids): array
     {
@@ -282,45 +278,6 @@ class ProductService extends BaseService
       return $filters;
     }
 
-
-
-
-
-
-
-
-
-   
-
-    // public function getProductLocaledModelById(int $id, bool $withAllTranslations = false): ?Product
-    // {
-    //   $productModel = $this->repository->getModelProductById($id);
-
-    //   if ($withAllTranslations) {
-    //     $translations = $this->translationRepo->loadTranslations($id);
-    //   } else {
-    //     $translations = $this->translationRepo->getLocaleTranslation($id, $this->currentLang);
-    //   }
-    //   $productModel->setTranslations($translations);
-
-
-    //   $category = $this->categoryService->getCategoryById($productModel->getCategoryId());
-    //   // $categoryOutputDTO = $this->categoryService->createCategoryOutputDTO($productModel->getCategoryId());
-    //   $productModel->setCategory($category);
-    //   $productModel->setCurrentLang($this->currentLang);
-
-    //   $brand = $this->brandService->getBrandById($productModel->getBrandId());
-    //   $productModel->setBrand($brand);
-
-    //   // $brandDTO = $this->brandService->createBrandDTOFromArray($row);
-  
-
-    //   // $images = $this->productImageService->getImageViewData($imagesDTO);
-    //   // $productModel->setImages($images);
-
-    //   return $productModel;
-    // }
-
     // public function setImages(Product $productModel): void 
     // {
     //   $images = $this->productImageService->getProductImages( $productModel->getId());
@@ -333,13 +290,6 @@ class ProductService extends BaseService
     }
    
   
-
-
-
-
-    //    $result['number_of_pages'] = $number_of_pages;
-    // $result['page_number'] = $page_number;
-    // $result['sql_page_limit'] =  $sql_page_limit;
     public function getAll($pagination = []): array
     {
         $rows = $this->repository->getAllProducts(['limit' => $pagination['sql_page_limit'] ?? '']);
@@ -384,10 +334,6 @@ class ProductService extends BaseService
     {
         return $this->productImageService->countAll($images);
     }
-
-  
-
-
 
 
     protected function uniteProductData(array $data) 

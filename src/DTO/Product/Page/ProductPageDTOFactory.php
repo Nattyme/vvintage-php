@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Product;
+namespace Vvintage\DTO\Product\Page;
 
 use Vvintage\DTO\Category\CategoryForProductDTO;
 use Vvintage\DTO\Brand\BrandForProductDTO;

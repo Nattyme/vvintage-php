@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Product;
 
-use Vvintage\DTO\Product\ProductImageDTO;
+use Vvintage\DTO\Product\Image\ProductImageDTO;
 use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\Repositories\Product\ProductImageRepository;
-use Vvintage\DTO\Product\ImageForProductCardDTO;
-use Vvintage\DTO\Product\ProductPageImageDTO;
+use Vvintage\DTO\Product\Card\ImageForProductCardDTO;
+use Vvintage\DTO\Product\Page\ProductPageImageDTO;
 
 class ProductImageService
 {
