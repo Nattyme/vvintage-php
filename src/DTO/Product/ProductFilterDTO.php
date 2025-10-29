@@ -10,14 +10,26 @@ class ProductFilterDTO {
     public ?int $priceMin = null;
     public ?int $priceMax = null;
     public ?string $sort = null;
+    public ?string $sortKey = null;
     public ?array $pagination = [];
 
     public function __construct(array $query) {
+        $sortData = !empty($query['sort']) ? $query['sort'] : null;
+
+        if(  $sortData === 'price_asc') {
+          $sort = 'price ASC';
+        }
+       
+        if(  $sortData === 'price_desc') {
+          $sort = 'price DESC';
+        }
+
         $this->categories = $query['categories'] ?? [];
         $this->brands = $query['brands'] ?? [];
         $this->priceMin = isset($query['priceMin']) ? (int) $query['priceMin'] : null;
         $this->priceMax = isset($query['priceMax']) ? (int) $query['priceMax'] : null;
-        $this->sort = $query['sort'] ?? null;
+        $this->sort = $sort;
+        $this->sortKey = $sortData;
         $this->pagination = $query['pagination'] ?? [];
     }
 

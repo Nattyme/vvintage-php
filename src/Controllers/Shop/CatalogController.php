@@ -66,18 +66,14 @@ final class CatalogController extends BaseController
           'page' =>  $page,
           'perPage' => (int) $productsPerPage ?? 10
       ]);
-  
+
+
+      // Получаем категории и бренды
       $categories = $this->categoryService->getCategoryTreeDTO();
-  
       $brands = $this->brandService->getAllBrandsDto();
  
       // Получаем продукты с учётом пагинации
       $filteredProductsData = $this->productService->getProductsForCatalog( filters: $filterDto, perPage: 15);
-
-      $products =  $filteredProductsData['products'];
-      $total = $filteredProductsData['total'];
-      $filters = $filteredProductsData['filters'];
-      $pagination = $filters->pagination;
   
       $mainCategories = $this->categoryService->getMainCategories();
 
@@ -86,25 +82,24 @@ final class CatalogController extends BaseController
 
       // получаем общие данные страницы 
       $this->setRouteData($routeData); // <-- передаём routeData
-      // $page = $pageModel->export();
-
-      // Название страницы
       $pageTitle = $page['title'];
 
-
+      $filters = $filteredProductsData['filters'];
+      $pagination = $filters->pagination;
+      
       // Это кол-во товаров, показанных на этой странице
-      $shown = (($pagination['page_number'] - 1) * 9) + count($products);
+      $shown = (($pagination['page_number'] - 1) * 9) + count($filteredProductsData['products']);
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
       $seo = $this->seoService->getSeoForPage('catalog', $pageModel);
 
       // Формируем единую модель для передачи в шаблон
       $viewModel = [
-          'products' => $products,
+          'products' => $filteredProductsData['products'],
           'filterDto' => $filterDto,
           'brands' => $brands,
           'categories' => $categories,
-          'total' => $total,
+          'total' => $filteredProductsData['total'],
           'shown' => $shown
       ];
 

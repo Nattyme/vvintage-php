@@ -5,6 +5,13 @@
   <option value="">
     <?php echo h(__('shop.default', [], 'shop'));?> 
   </option>
-  <option value="price_asc"><?php echo h(__('shop.price', [], 'shop'));?> ↑</option>
-  <option value="price_desc"><?php echo h(__('shop.price', [], 'shop'));?> ↓</option>
+  <option value="price_asc" <?php echo $viewModel['filterDto']->sortKey === 'price_asc' ? 'selected' : '';?>>
+    <?php echo h(__('shop.price', [], 'shop'));?>
+    ↑
+  </option>
+
+  <option value="price_desc" <?php echo $viewModel['filterDto']->sortKey === 'price_desc' ? 'selected' : '';?>>
+    <?php echo h(__('shop.price', [], 'shop'));?>
+    ↓
+  </option>
 </select>
