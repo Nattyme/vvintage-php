@@ -48,7 +48,7 @@
           <th>Обновлён</th>
           <th class="product-table__item product-table__item--checkbox">
             <label>
-              <input class="table__checkbox-hidden real-checkbox" type="checkbox" name="products[]" data-check="all">
+              <input class="table__checkbox-hidden real-checkbox" type="checkbox" name="products[]" data-check-all>
               <span class="table__checkbox-fake custom-checkbox"></span>
             </label>
           </th>
@@ -60,7 +60,7 @@
       <tbody class="product-table__body">
         <?php foreach ($pageViewModel['products'] as $product) : ?>
     
-          <tr data-status="<?php echo h($product->statu);?>">
+          <tr data-status="<?php echo h($product->status);?>">
             <td class="product-table__img">
               <img 
                 src="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" 

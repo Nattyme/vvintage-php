@@ -47,8 +47,33 @@
   <?php echo $seo->structuredData ?? ''; ?>
 </head>
 
+<!-- Определяем странцы и записываем в data для JS -->
+<?php 
+  if($routeData->isAdmin) {
+    $zone = 'admin';
+    $page = $routeData->uriModule ?: 'main';
+    $itemId = $routeData->uriGet ?: null;
+  } else 
+  {
+    $zone = 'front';
+    $page = $routeData->uriModule ?: 'main';
+    $itemId = $routeData->uriGet ?: null;
+    
+    if(!empty ($routeData->uriGetParams)) {
+      $page = $page . '/' .$routeData->uriGet;
+      $itemId = $routeData->uriGetParams[0] ?: null;
+    }
+    
+  }
+
+?>
 <?php if (isset($pageClass) && $pageClass === 'authorization-page'): ?> 
-<body class="authorization-page animated-bg-lines">
+  <body class="authorization-page animated-bg-lines" data-page="<?php echo h($page); ?>">
 <?php else: ?>
-<body class="sticky-footer main-page body-with-panel <?php echo isset($pageClass) ? h($pageClass) : ''; ?>">
+  <body class="sticky-footer main-page body-with-panel <?php echo isset($pageClass) ? h($pageClass) : ''; ?>" 
+        data-page="<?php echo h($page); ?>" data-zone="<?php echo h($zone); ?>"
+      <?php if(!empty($itemId)) : ?>
+        data-id="<?php echo h($itemId); ?>"
+      <?php endif; ?>
+  >
 <?php endif; ?>

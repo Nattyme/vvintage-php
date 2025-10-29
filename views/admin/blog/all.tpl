@@ -53,7 +53,7 @@
                   class="table__checkbox-hidden real-checkbox" 
                   type="checkbox" 
                   name="posts[]" 
-                  data-check="all"
+                  data-check-all
                 >
                 <span class="table__checkbox-fake custom-checkbox"></span>
               </label>
