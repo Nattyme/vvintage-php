@@ -64,8 +64,8 @@
         <div class="contacts__widget">
           <h3 class="contacts__widget__title h3"><?php echo h(__('contacts.form.title', [], 'contacts'));?></h3>
 
-          <?php include ROOT . "templates/components/errors.tpl"; ?>
-          <?php include ROOT . "templates/components/success.tpl"; ?>
+          <?php include ROOT . "views/components/errors.tpl"; ?>
+          <?php include ROOT . "views/components/success.tpl"; ?>
 
           <div class="contacts__form">
             <form action="<?php echo HOST . 'contacts'; ?>" class="form-contact" method="POST">

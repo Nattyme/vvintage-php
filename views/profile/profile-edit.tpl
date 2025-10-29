@@ -1,4 +1,4 @@
-<main class="page-profile">
+<main class="page-profile inner-page">
   <?php if ( $userModel->getId() === 0) : ?>
   <section class="profile">
     <div class="container">
@@ -28,7 +28,7 @@
       <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
 
 
-      <div class="profile__body profile__form-wrapper">
+      <div class="profile__body">
         
 
         <?php if ($uriGet) : ?>
@@ -44,8 +44,8 @@
                 <?php include ROOT . "views/components/success.tpl"; ?>
                 <div class="profile-card__content">
               
-                    <div class="profile-column profile-column--img">
-                          <div class="profile__user-avatar">
+                    <div class="profile-card__column profile-card__column--img">
+                          <div class="profile-card__avatar">
                             <div class="avatar-big">
                                 <?php if ( !empty($userModel->getAvatar())) : ?>
                                   <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="<?php echo h(__('profile.avatar', [], 'profile'));?>" />
@@ -63,53 +63,54 @@
                             </div>
     
                           </div>
-          
+       
 
                           <?php  if ( !empty($userModel->getAvatar())) :  ?>
-                            <label class="checkbox__item mt-15">
-                              <input class="checkbox__btn" type="checkbox" name="delete-avatar">
+                            <label>
+                              <input class="real-checkbox" type="checkbox" name="delete-avatar">
+                              <span class="custom-checkbox"></span>
                               <span class="checkbox__label">
                                 <?php echo h(__('profile.delete_photo', [], 'profile'));?>
                               </span>
                             </label>
                           <?php  endif;  ?>
                     </div>
-                    <div class="profile-column">
-                      <div class="form-group">
-                        <label class="input__label">
-                          <?php echo h(__('profile.name', [], 'profile'));?>
-                          <input 
-                            class="input input--width-label" 
-                            type="text" 
-                            placeholder="<?php echo h(__('profile.enter.surname', [], 'profile'));?>"
-                            name="name"
-                            value="<?php echo isset($_POST['name']) ? $_POST['name'] : h($userModel->getName()); ?>" 
-                          />
-                        </label>
-                      </div>
-                      <div class="form-group">
-                        <label class="input__label">
-                          <?php echo h(__('profile.surname', [], 'profile'));?> 
-                          <input 
-                            class="input input--width-label" 
-                            type="text" 
-                            placeholder="<?php echo h(__('profile.enter.surname', [], 'profile'));?>"
-                            name="surname"
-                            value="<?php echo isset($_POST['surname']) ? $_POST['surname'] : h($userModel->getSurname()); ?>"
-                          />
-                        </label>
-                      </div>
-                      <div class="form-group">
-                        <label class="input__label">
-                          <?php echo h(__('profile.email', [], 'profile'));?>
-                          <input 
-                            class="input input--width-label" 
-                            type="text" placeholder="<?php echo h(__('profile.enter.email', [], 'profile'));?>"
-                            name="email"
-                            value="<?php echo isset($_POST['email']) ? $_POST['email'] : h($userModel->getEmail()); ?>"
-                          />
-                        </label>
-                      </div>
+                    <div class="profile-card__column">
+                     
+                      <label class="profile-card__label">
+                        <p><?php echo h(__('profile.name', [], 'profile'));?></p>
+                        <input 
+                          class="input input--width-label" 
+                          type="text" 
+                          placeholder="<?php echo h(__('profile.enter.surname', [], 'profile'));?>"
+                          name="name"
+                          value="<?php echo isset($_POST['name']) ? $_POST['name'] : h($userModel->getName()); ?>" 
+                        />
+                      </label>
+                   
+                      
+                      <label class="profile-card__label">
+                        <p><?php echo h(__('profile.surname', [], 'profile'));?> </p>
+                        <input 
+                          class="input input--width-label" 
+                          type="text" 
+                          placeholder="<?php echo h(__('profile.enter.surname', [], 'profile'));?>"
+                          name="surname"
+                          value="<?php echo isset($_POST['surname']) ? $_POST['surname'] : h($userModel->getSurname()); ?>"
+                        />
+                      </label>
+                   
+                     
+                      <label class="profile-card__label">
+                        <p><?php echo h(__('profile.email', [], 'profile'));?></p>
+                        <input 
+                          class="input input--width-label" 
+                          type="text" placeholder="<?php echo h(__('profile.enter.email', [], 'profile'));?>"
+                          name="email"
+                          value="<?php echo isset($_POST['email']) ? $_POST['email'] : h($userModel->getEmail()); ?>"
+                        />
+                      </label>
+                     
                     </div>
 
                     <!-- CSRF-токен -->
@@ -119,37 +120,37 @@
                   
                 </div>
 
-                <div class="form-group">
-                  <label class="input__label">
-                      <?php echo h(__('profile.phone', [], 'profile'));?>
-                    <input 
-                      class="input input--width-label" 
-                      type="text" placeholder="<?php echo h(__('profile.enter.phone', [], 'profile'));?>"
-                      name="phone"
-                      value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : h($userModel->getPhone()); ?>"
-                    />
-                  </label>
-                  <label class="input__label">
-                    <?php echo h(__('profile.country', [], 'profile'));?>
-                    <input 
-                      class="input input--width-label" 
-                      type="text" placeholder="<?php echo h(__('profile.enter.country', [], 'profile'));?>"
-                      name="country"
-                      value="<?php echo isset($_POST['country']) ? $_POST['country'] : h($userModel->getCountry()); ?>"
-                    />
-                  </label>
-                  <label class="input__label">
-                    <?php echo h(__('profile.city', [], 'profile'));?>
-                    <input 
-                      class="input input--width-label" 
-                      type="text" placeholder="<?php echo h(__('profile.enter.city', [], 'profile'));?>"
-                      name="city"
-                      value="<?php echo isset($_POST['city']) ? $_POST['city'] : h($userModel->getCity()); ?>"
-                    />
-                  </label>
-                </div>
+              
+                <label class="profile-card__label">
+                  <p><?php echo h(__('profile.phone', [], 'profile'));?></p>
+                  <input 
+                    class="input input--width-label" 
+                    type="text" placeholder="<?php echo h(__('profile.enter.phone', [], 'profile'));?>"
+                    name="phone"
+                    value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : h($userModel->getPhone()); ?>"
+                  />
+                </label>
+                <label class="profile-card__label">
+                  <p><?php echo h(__('profile.country', [], 'profile'));?></p>
+                  <input 
+                    class="input input--width-label" 
+                    type="text" placeholder="<?php echo h(__('profile.enter.country', [], 'profile'));?>"
+                    name="country"
+                    value="<?php echo isset($_POST['country']) ? $_POST['country'] : h($userModel->getCountry()); ?>"
+                  />
+                </label>
+                <label class="profile-card__label">
+                  <p><?php echo h(__('profile.city', [], 'profile'));?></p>
+                  <input 
+                    class="input input--width-label" 
+                    type="text" placeholder="<?php echo h(__('profile.enter.city', [], 'profile'));?>"
+                    name="city"
+                    value="<?php echo isset($_POST['city']) ? $_POST['city'] : h($userModel->getCity()); ?>"
+                  />
+                </label>
+           
           
-                <div class="profile-form__row">
+                <div class="profile-card__buttons">
                   <button name="updateProfile" class="button button--primary button--s" type="submit" title="<?php echo h(__('button.save', [], 'buttons'));?>">
                     <?php echo h(__('button.save', [], 'buttons'));?>
                   </button>

@@ -10,7 +10,7 @@
 
               <?php foreach( $navigation['footer'] as $category) : ?>
                 <li class="topics-list__item">
-                  <a class="topics-list__link" href="">
+                  <a class="topics-list__link" href="#">
                     <?php echo h($category->title); ?>
                   </a>
                 </li>
@@ -36,9 +36,9 @@
         </div>
         <div class="footer__copyright">
           <p>&copy; Все права защищены</p>
-          <p><a href="">Политика конфиденциальности</a></p>
-          <p><a href="">Публичная оферта</a></p>
-          <p><a href="<?php HOST;?>">О предоставлении услуг</a></p>
+          <p><a href="#">Политика конфиденциальности</a></p>
+          <p><a href="#">Публичная оферта</a></p>
+          <p><a href="#">О предоставлении услуг</a></p>
         </div>
       </div>
     
@@ -84,7 +84,7 @@
       </div>
     </div>
     <!-- backtop button -->
-    <a href="#top" class="backtop-btn" id="backtop" title="Наверх">
+    <a href="#top" class="button button--backtop" id="backtop" title="Наверх">
       <svg class="icon icon--arrow">
         <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#arrow';?>"></use>
       </svg>

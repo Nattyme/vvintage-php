@@ -5,9 +5,9 @@ function backtop () {
   document.addEventListener('scroll', function() {
  
     if(window.scrollY > 500) {
-      backtop.classList.add('active');
+      backtop.classList.add('button--backtop-active');
     } else {
-      backtop.classList.remove('active');
+      backtop.classList.remove('button--backtop-active');
     }
   });
 }

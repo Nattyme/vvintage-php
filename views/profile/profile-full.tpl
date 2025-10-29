@@ -1,4 +1,4 @@
-<main class="page-profile">
+<main class="page-profile  inner-page">
   <div class="page-profile__content">
     <div class="container">
       <!-- Заголовок и хлебные крошки -->
@@ -10,11 +10,13 @@
 
         <section class="profile-card__header">
             <div class="profile-card__avatar">
-              <?php if (!empty($userModel->getAvatar())) : ?>
-                <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="<?php echo h(__('profile.avatar', [], 'profile'));?>">
-              <?php else : ?>
-                <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="<?php echo h(__('profile.avatar', [], 'profile'));?>">
-              <?php endif; ?>
+              <div class="avatar-big">
+                <?php if (!empty($userModel->getAvatar())) : ?>
+                  <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="<?php echo h(__('profile.avatar', [], 'profile'));?>">
+                <?php else : ?>
+                  <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="<?php echo h(__('profile.avatar', [], 'profile'));?>">
+                <?php endif; ?>
+              </div>
             </div>
             <div class="profile-card__user">
               <div class="profile-card__name">
@@ -24,13 +26,17 @@
             </div>
 
             <?php if ($this->isAdmin()) :?>
+              <div class="profile-card__button-wrapper">
                 <a class="button button--s button--primary" href="<?php echo HOST . 'profile/edit/'. u($userModel->getId());?>">
                   <?php echo h(__('profile.edit', [], 'profile'));?>
                 </a>
+              </div>
             <?php else  : ?>
+              <div class="profile-card__button-wrapper">
                 <a class="button button--s button--primary" href="<?php echo HOST . 'profile/edit';?>">
                   <?php echo h(__('profile.edit', [], 'profile'));?>
                 </a>
+              </div>
             <?php endif; ?>
 
         </section>

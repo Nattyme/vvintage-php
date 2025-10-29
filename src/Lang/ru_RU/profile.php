@@ -4,7 +4,7 @@ declare(strict_types=1);
 return [
     // Профиль
     'profile.role' => 'Роль: admin',
-    'profile.user_role' => 'Роль пользователя', 
+    'profile.user_role' => 'Роль: пользователь', 
     'profile.login_or_register' => "Чтобы посмотреть свой профиль {login} или {register}.",      
     'profile.back' => "Вернуться в профиль",      
     'profile.edit' => 'Редактировать',

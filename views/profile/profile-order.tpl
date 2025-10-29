@@ -1,4 +1,4 @@
-<main class="page-profile">
+<main class="page-profile  inner-page">
   <section class="section">
     <div class="section__title">
       <div class="container">
