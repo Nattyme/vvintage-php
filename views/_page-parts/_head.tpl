@@ -65,10 +65,9 @@
     }
     
   }
-
 ?>
 <?php if (isset($pageClass) && $pageClass === 'authorization-page'): ?> 
-  <body class="authorization-page animated-bg-lines" data-page="<?php echo h($page); ?>">
+  <body class="authorization-page animated-bg-lines" data-page="<?php echo h($page); ?>" data-zone="<?php echo h($zone); ?>">
 <?php else: ?>
   <body class="sticky-footer main-page body-with-panel <?php echo isset($pageClass) ? h($pageClass) : ''; ?>" 
         data-page="<?php echo h($page); ?>" data-zone="<?php echo h($zone); ?>"

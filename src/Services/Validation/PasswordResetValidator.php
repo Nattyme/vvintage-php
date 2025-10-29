@@ -8,13 +8,8 @@ use Vvintage\Services\Base\BaseService;
 
 final class PasswordResetValidator extends BaseService
 {
-  private PasswordResetService $resetPassService;
+  private PasswordResetService $service;
 
-  public function __construct(PasswordResetService $resetPassService)
-  {
-    parent::__construct(); // Важно!
-    $this->resetPassService = $resetPassService;
-  }
 
   public function validate(array $data): bool
   {

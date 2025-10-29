@@ -26,7 +26,7 @@ final class PasswordResetService extends BaseService
   // Метод проверяет, существует ли пользователь с таким email
   public function userExists(string $email): bool
   {
-    $user = $this->userRepository->findUserByEmail($email);
+    $user = $this->userRepository->getUserByEmail($email);
 
     return $user !== null;
   }
@@ -34,7 +34,7 @@ final class PasswordResetService extends BaseService
   // Создает и сохраняет код восстановления для пользователя
   public function createRecoveryCode(string $email): ?string
   {
-    $user = $this->userRepository->findUserByEmail($email);
+    $user = $this->userRepository->getUserByEmail($email);
 
     if (!$user) {
       return null;
@@ -70,15 +70,12 @@ final class PasswordResetService extends BaseService
   public function processPasswordResetRequest(string $email): array
   {
       if (trim($email) === '') {
-        $this->notes->pushError('Введите email', 'Email - обязательное поле');
+        $this->flash->pushError('Введите email', 'Email - обязательное поле');
       } elseif (!filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
-        $this->notes->pushError('Введите корректный Email');
+        $this->flash->pushError('Введите корректный Email');
       } elseif (!$this->userExists($email)) {
-        $this->notes->pushError('Пользователя с таким email не существует');
-      }
-
-      if ($$_SESSION['errors']) {
-          return ['success' => false, 'errors' => $errors];
+        $this->flash->pushError('Пользователя с таким email не существует');
+        return ['success' => false];
       }
 
       $code = $this->createRecoveryCode($email);

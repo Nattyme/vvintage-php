@@ -17,7 +17,7 @@
         id="email"
         name="email" 
         class="input" 
-        value="info2@mail.ru" 
+        value="<?php echo isset($_POST['email']) ? trim($_POST['email']) : ''; ?>" 
         type="email" 
         placeholder="<?php echo h(__('auth.placeholder.email', [], 'auth'));?>" 
         required 
@@ -33,7 +33,7 @@
         id="password" 
         name="password" 
         class="input" 
-        value="111111" 
+        value="" 
         type="password" 
         placeholder="<?php echo h(__('auth.placeholder.password', [], 'auth'));?>" 
         required 

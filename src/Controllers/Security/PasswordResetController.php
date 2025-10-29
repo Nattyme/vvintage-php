@@ -24,7 +24,7 @@ final class PasswordResetController extends BaseController
   public function index ($routeData) 
   {
     if (isset($_POST['lost-password'])) {
-      $validator = new PasswordResetValidator($this->service, $this->flash);
+      $validator = new PasswordResetValidator();
       $resultEmail = false;
 
       if ($validator->validate($_POST)) {
@@ -34,13 +34,9 @@ final class PasswordResetController extends BaseController
           $resultEmail = true;
           $this->flash->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
    
-        } else {
-          foreach ($result['errors'] as $error) {
-            $this->flash->pushError($error['title']);
-          }
-        }
+        } 
 
-      }
+      } 
     }
     
     // Показываем форму

@@ -13,8 +13,6 @@ import initNewProductForm from "./modules/admin/product/index.js";
 import addCustomSelect from "./modules/custom-select/custom-select.js";
 import initCheckboxAll from "./modules/utils/initCheckboxAll.js";
 import addTab from "./modules/tab.js";
-// import handleLangForm from "./modules/translation/handleLangForm.js";
-// import yMap from './modules/ymap.js';
 
 
 const initEverything = async () => {
@@ -46,23 +44,27 @@ const initEverything = async () => {
   }
 
   // Фронт
+  const authPages = ['login', 'lost-password', 'registration', 'set-new-password'];
   if (zone === 'front') {
+    addCustomSelect();
+  }
+
+  if (zone === 'front' && page !== 'blog' && !authPages.includes(page)) {
     await initCatalogEvents(); // каталог
 
-    if (page === 'main') {
+    if (page === 'main' || page === 'about') {
       AOS.init();
     } else if (page === 'shop' && !id) {
       // список товаров
       addAccordion("many", "#filter-category");
       addAccordion("many", "#prices");
       initShowMore();
-      addCustomSelect();
     } else if (page === 'shop' && id) {
       // детальная страница товара
       fancyBox();
     } else if (page === 'profile/edit') {
       addPhotoBtn();
-    }
+    } 
   }
 };
 
