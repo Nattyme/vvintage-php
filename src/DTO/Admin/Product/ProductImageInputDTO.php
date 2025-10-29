@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Product;
+namespace Vvintage\DTO\Admin\Product;
 
-use Vvintage\DTO\Product\ProductImageDTO;
-
-final class ProductImageInputDTO extends ProductImageDTO
+final class ProductImageInputDTO 
 {
     public int $product_id;
     public string $filename;
@@ -13,7 +11,7 @@ final class ProductImageInputDTO extends ProductImageDTO
     public ?string $alt;
 
     public function __construct(array $data)
-    {    error_log(print_r($data, true));
+    {    
     
         $this->product_id = (int) ($data['product_id'] ?? 0);
         $this->filename = (string) ($data['filename'] ?? '');
@@ -23,5 +21,15 @@ final class ProductImageInputDTO extends ProductImageDTO
         if ($this->filename === '') {
             throw new \InvalidArgumentException("Filename для изображения не может быть пустым");
         }
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'product_id' => $this->product_id,
+            'filename' => $this->filename,
+            'image_order' => $this->image_order,
+            'alt' => $this->alt
+        ];
     }
 }

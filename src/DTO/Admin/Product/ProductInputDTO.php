@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Product;
+namespace Vvintage\DTO\Admin\Product;
 
-final class ProductInputDTO extends ProductDTO
+final class ProductInputDTO
 {
     public ?int $id = null;
     public int $category_id;
@@ -44,7 +44,24 @@ final class ProductInputDTO extends ProductDTO
         }
 
         $this->edit_time =  (string) $data['edit_time'] ?? (new \DateTime())->format('Y-m-d H:i:s');;
+    }
 
-        // $this->locale = (string) ($data['locale'] ?? 'ru');
+    public function toArray(): array 
+    {
+      return [
+          'id' => $this->id,
+          'category_id' => $this->category_id,
+          'brand_id' => $this->brand_id,
+          'slug' => $this->slug,
+          'title' => $this->title,
+          'description' => $this->description,
+          'price' => $this->price,
+          'sku' => $this->sku,
+          'url' => $this->url,
+          'stock' => $this->stock,
+          'status' => $this->status,
+          'datetime' => $this->datetime,
+          'edit_time' => $this->edit_time
+      ];
     }
 }

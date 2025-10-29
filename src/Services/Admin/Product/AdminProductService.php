@@ -15,10 +15,12 @@ use Vvintage\Services\Admin\Product\AdminProductImageService;
 
 /** DTO */
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
+use Vvintage\DTO\Admin\Product\EditProductDTOFactory;
 use Vvintage\DTO\Admin\Product\ProductAdminListDTOFactory;
 use Vvintage\DTO\Admin\Product\ProductAdminListDTO;
-use Vvintage\DTO\Product\ProductInputDTO;
-use Vvintage\DTO\Product\ProductImageInputDTO;
+use Vvintage\DTO\Admin\Product\EditProductDTO;
+use Vvintage\DTO\Admin\Product\ProductInputDTO;
+use Vvintage\DTO\Admin\Product\ProductImageInputDTO;
 
 use Vvintage\DTO\Product\Lang\ProductTranslationInputDTO;
 
@@ -79,7 +81,7 @@ final class AdminProductService extends ProductService
         }
 
         // 4. Сохраняем новые изображения, если есть
-        $imagesDto = $this->imageService->buildImageDtos($productId, $imagesTMP);
+        $imagesDto = $this->imageService->createProductImageInputDTO($productId, $imagesTMP);
 
         if (!empty($imagesDto)) {
             $this->imageService->updateImages($imagesDto);
@@ -114,7 +116,8 @@ final class AdminProductService extends ProductService
       try {
           // 1. Обновляем продукт
           $productDto = $this->createProductInputDto($data);
-          $this->repository->updateProductData($id, $productDto);
+          $this->repository->updateProductData($id, $productDto->toArray());
+          // $this->repository->updateProductData($id, $productDto);
 
           // 2. Обновляем перевод продукта
           if (!empty($data['translations'])) {
@@ -135,9 +138,10 @@ final class AdminProductService extends ProductService
 
           // 5. Удаляем старые изображения, которых больше нет в форме
           $keepIds = array_column($existingImages, 'id');
-          $imagesInDb = $this->imageService->getProductImagesAll($id); // получаем мапссив DTO всех изображений из БД
+          $imagesInDb = $this->imageService->getProductImagesAll($id); // получаем мапссив всех изображений из БД
 
-          $idsDb = array_map(fn($img) => $img->id, $imagesInDb);
+          $idsDb = array_map(fn($img) => $img['id'], $imagesInDb);
+          // $idsDb = array_map(fn($img) => $img->id, $imagesInDb);
           $idsToDelete = array_diff($idsDb, $keepIds); //  массив id изображений для удаления в БД
 
     
@@ -157,7 +161,7 @@ final class AdminProductService extends ProductService
           }
 
            // 4. Сохраняем новые изображения, если есть
-          $newImagesDto = $this->imageService->buildImageDtos($id, $imagesTMP);
+          $newImagesDto = $this->imageService->createProductImageInputDTO($id, $imagesTMP);
          
           if (!empty($newImagesDto)) {
               $this->imageService->updateImages($newImagesDto);
@@ -203,6 +207,12 @@ final class AdminProductService extends ProductService
     $products = array_map([$this, 'createProductAdminListDTO'], $models);
   
     return ['products' => $products, 'total' => $total, 'filters' => $filters]; 
+  }
+
+  public function getAdminEditProduct(int $id): EditProductDTO 
+  {
+    $product = $this->getProductModelById($id);
+    return $this->createEditProductDTO($product);
   }
 
 
@@ -307,6 +317,32 @@ final class AdminProductService extends ProductService
       return $dto; 
   }
 
+  private function createEditProductDTO(Product $product): EditProductDTO
+  {
+      // Получим и установим перевод
+      $productId = $product->getId();
+      $translations = $this->translationRepo->loadTranslations($productId);
+      $product->setTranslations($translations);
+
+   
+      // Создаем dto для категории и бренда продукта
+      $categoryDTO = $this->categoryService->createCategoryProductDTO((int) $product->getCategoryId());
+      $brandDTO = $this->brandService->createBrandProductDTO((int) $product->getBrandId());
+
+      // Создаем dto изображения продукта и подготавливаем к отображению 
+      $images = $this->productImageService->getProductImagesAll($productId);
+      
+      $dtoFactory = new EditProductDTOFactory($this->localeService);
+      $dto = $dtoFactory->createFromProduct(
+        product: $product,
+        category: $categoryDTO,
+        brand: $brandDTO,
+        images:  $images
+      );
+
+      return $dto; 
+  }
+
 
 
   // filter actions
@@ -353,6 +389,7 @@ final class AdminProductService extends ProductService
   }
 
 
+  /* CHANGE STATUS */
   public function publishProduct(int $productId): bool
   {
 

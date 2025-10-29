@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Vvintage\Services\Product;
 
 use Vvintage\DTO\Product\Image\ProductImageDTO;
-use Vvintage\DTO\Product\ProductImageInputDTO;
 use Vvintage\Repositories\Product\ProductImageRepository;
 use Vvintage\DTO\Product\Card\ImageForProductCardDTO;
 use Vvintage\DTO\Product\Page\ProductPageImageDTO;
@@ -23,11 +22,7 @@ class ProductImageService
      * Преобразовать RedBean OODBBean в ProductImageOutputDTO
      */
     private function createProductPageImageDTO(array $image): ProductPageImageDTO
-    {
-        // Подставляем дефолтное изображение, если $image = null
-        // $imageFilename = !empty($image?->filename) ? $image->filename : 'no-photo.jpg';
-        // $imageAlt = !empty($image?->alt) ? $image->alt : ($product->getTitle() ?? '');
-        
+    {        
         return new ProductPageImageDTO(
             id: (int) $image['id'],
             product_id: (int) $image['product_id'],
@@ -149,29 +144,6 @@ class ProductImageService
   }
 
 
-  public function buildImageDtos(int $productId, array $processedImages): array
-  {
-      $imagesDto = [];
-
-      foreach ($processedImages as $img) {
-          if (!empty($img['id'])) {
-              continue; // уже существующие изображения
-          }
-
-          if (empty($img['final_full'])) {
-              continue; // пустые файлы игнорируем
-          }
-
-          $imagesDto[] = new ProductImageInputDTO([
-              'product_id' => $productId,
-              'filename' => $img['final_full'],
-              'image_order' => $img['image_order'] ?? 0,
-              'alt' => $img['alt'] ?? '',
-          ]);
-      }
-
-      return $imagesDto;
-  }
 
   public function createImageDTO (int $productId): array
   {

@@ -98,7 +98,7 @@
       <div class="admin-form__field">
           <label class="admin-form__label" for="mainCat">Раздел</label>
           <div class="admin-form__row">
-            <select class="select" name="mainCat" id="category" data-current-parent="<?php echo h($product->categoryDTO->parent_id) ?>"></select>
+            <select class="select" name="mainCat" id="category" data-current-parent="<?php echo h($product->category_parent_id) ?>"></select>
       
             <a 
               class="button button--s button--primary" 
@@ -111,7 +111,7 @@
       <div class="admin-form__field">
           <label class="admin-form__label" for="subCat">Категория</label>
           <div class="admin-form__row">
-              <select class="select" name="category_id" id="subCategory" data-current-cat="<?php echo h($product->categoryDTO->id) ?>"></select>
+              <select class="select" name="category_id" id="subCategory" data-current-cat="<?php echo h($product->category_id) ?>"></select>
   
               <a 
                 class="button button--s button--primary" 
@@ -124,7 +124,7 @@
       <div class="admin-form__field">
         <label class="admin-form__label" for="brands">Выберите бренд</label>
         <div class="admin-form__row">
-          <select class="select" name="brand_id" id="brands" data-brand="<?php echo h($product->brandDTO->id);?>"></select>
+          <select class="select" name="brand_id" id="brands" data-brand="<?php echo h($product->brand_id);?>"></select>
   
           <a 
             class="button button--s button--primary" 

@@ -73,40 +73,36 @@ final class ProductImageRepository extends AbstractRepository
     /**
      * Добавить новое изображение продукта
      */
-    public function addImage(ProductImageInputDTO $input): ProductImageOutputDTO
+    public function addImage(array $image): void
     {
         $bean = $this->createBean(self::TABLE);
-        $bean->product_id = $input->product_id;
-        $bean->filename = $input->filename;
-        $bean->image_order = $input->image_order;
-        $bean->alt = $input->alt;
+        $bean->product_id = $image['product_id'];
+        $bean->filename = $image['filename'];
+        $bean->image_order = $image['image_order'];
+        $bean->alt = $image['alt'];
 
         $result = $this->saveBean($bean);
 
         if (!$result) {
-          throw new \RuntimeException("Не удалось сохранить название изображения {$input->filename}");
+          throw new \RuntimeException("Не удалось сохранить название изображения {$image['filename']}");
         }
-
-        return $this->mapBeanToImageOutputDto($bean);
     }
 
     /**
      * Обновить существующее изображение
      */
-    public function updateImage(int $id, ProductImageInputDTO $input): ProductImageOutputDTO
+    public function updateImage(int $id, array $image): void
     {
         $bean = $this->loadBean(self::TABLE, $id);
-        $bean->filename = $input->filename;
-        $bean->image_order = $input->image_order;
-        $bean->alt = $input->alt;
+        $bean->filename = $image['filename'];
+        $bean->image_order = $image['image_order'];
+        $bean->alt = $image['alt'];
 
         $result = $this->saveBean($bean);
 
         if (!$result) {
           throw new \RuntimeException("Не удалось обновить список изображений");
         }
-
-        return $this->mapBeanToImageOutputDto($bean);
     }
 
     /**

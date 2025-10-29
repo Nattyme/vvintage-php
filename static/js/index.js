@@ -40,6 +40,8 @@ const initEverything = async () => {
       initCategoriesController();
       initBrandsController();
       initNewProductForm();
+      addPhotoBtn();
+      addTab();
     }
   }
 
@@ -63,7 +65,6 @@ const initEverything = async () => {
       // детальная страница товара
       fancyBox();
     } else if (page === 'profile/edit') {
-
       addPhotoBtn();
     } 
   }

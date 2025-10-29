@@ -7,7 +7,6 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Product\AdminProductService;
-// use Vvintage\DTO\Admin\Product\ProductDTO;
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
 
 class AdminProductController extends BaseAdminController
@@ -114,23 +113,21 @@ class AdminProductController extends BaseAdminController
     if (!$id) $this->redirect('admin/shop');
 
     // Получаем модель продукта со всеми переводами и добавляем изображения
-    $productModel = $this->service->getProductLocaledModelById($id, true);
-
-    if (!$productModel) {
+    $productDTO = $this->service->getAdminEditProduct($id);
+  
+    if (!$productDTO) {
         http_response_code(404);
         echo 'Товар не найден';
         $this->redirect('admin/shop');
         return;
     }
-   
-    $this->service->setImages($productModel);
+ 
     $statusList = $this->service->getStatusList();
 
-    // Формируем dto
-    $productDto = new ProductDTO($productModel);
+// dd($productDTO);
 
     $this->renderLayout('shop/edit',  [
-      'product' => $productDto,
+      'product' => $productDTO,
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,
       'statusList' => $statusList,

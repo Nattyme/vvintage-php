@@ -177,7 +177,7 @@ final class ProductRepository extends AbstractRepository
     }
 
     /** Обновляет существующий продукт через DTO */
-    public function updateProductData(int $productId, ProductInputDTO $dto): bool
+    public function updateProductData(int $productId, array $product): bool
     {
         $bean = $this->loadBean(self::TABLE, $productId);
 
@@ -185,17 +185,17 @@ final class ProductRepository extends AbstractRepository
             throw new RuntimeException("Продукт {$productId} не найден");
         }
 
-        $bean->category_id = $dto->category_id;
-        $bean->brand_id = $dto->brand_id;
-        $bean->slug = $dto->slug;
-        $bean->title = $dto->title;
-        $bean->description = $dto->description;
-        $bean->price = $dto->price;
-        $bean->url = $dto->url;
-        $bean->sku = $dto->sku;
-        $bean->stock = $dto->stock;
-        $bean->status = $dto->status;
-        $bean->edit_time = $dto->edit_time;
+        $bean->category_id = $product['category_id'];
+        $bean->brand_id = $product['brand_id'];
+        $bean->slug = $product['slug'];
+        $bean->title = $product['title'];
+        $bean->description = $product['description'];
+        $bean->price = $product['price'];
+        $bean->url = $product['url'];
+        $bean->sku = $product['sku'];
+        $bean->stock = $product['stock'];
+        $bean->status = $product['status'];
+        $bean->edit_time = $product['edit_time'];
 
         $result = $this->saveBean($bean);
 

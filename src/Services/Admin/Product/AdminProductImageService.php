@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Admin\Product;
 
-use Vvintage\DTO\Product\ProductImageDTO;
+use Vvintage\DTO\Admin\Product\ProductImageInputDTO;
 use Vvintage\Services\Product\ProductImageService;
 
 require_once ROOT . "./libs/functions.php";
@@ -161,13 +161,40 @@ final class AdminProductImageService extends ProductImageService
 
     public function updateImages(array $imagesDto): void 
     {
-        foreach ($imagesDto as $image) {
-            if (!isset($image->id)) {
-           
-                $this->repository->addImage($image);
-            } else {
-                $this->repository->updateImage($image->id, $image);
-            }
-        }
+      // Приведем к массиву перед передаче в БД
+      $images = array_map(fn($image) => $image->toArray(), $imagesDto); 
+
+      foreach ($images as $image) {
+          if (!isset($image['id'])) {
+              $this->repository->addImage($image);
+          } else {
+              $this->repository->updateImage($image['id'], $image);
+          }
+      }
     }
+
+    public function createProductImageInputDTO(int $productId, array $processedImages): array
+    {
+        $imagesDto = [];
+
+        foreach ($processedImages as $img) {
+            if (!empty($img['id'])) {
+                continue; // уже существующие изображения
+            }
+
+            if (empty($img['final_full'])) {
+                continue; // пустые файлы игнорируем
+            }
+
+            $imagesDto[] = new ProductImageInputDTO([
+                'product_id' => $productId,
+                'filename' => $img['final_full'],
+                'image_order' => $img['image_order'] ?? 0,
+                'alt' => $img['alt'] ?? '',
+            ]);
+        }
+
+        return $imagesDto;
+    }
+
 }

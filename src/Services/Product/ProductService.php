@@ -84,11 +84,8 @@ class ProductService extends BaseService
 
     private function createProductPageDTO(?Product $product, ?string $currentLang = null): ProductPageDTO
     {
-     
         $productId = $product->getId();
         $translations = $this->translationRepo->loadTranslations($productId);
-
-
         $product->setTranslations($translations);
     
         // Создаем dto для категории и бренда продукта
@@ -96,7 +93,6 @@ class ProductService extends BaseService
         $brandDTO = $this->brandService->createBrandProductDTO((int) $product->getBrandId());
 
         // Создаем dto изображения продукта и подготавливаем к отображению 
-        // $imagesAll = $this->productImageService->getProductImagesAll($productId);
         $imageDto = $this->productImageService->getProductPageImagesDtos($productId);
 
         $dtoFactory = new ProductPageDTOFactory($this->localeService);
