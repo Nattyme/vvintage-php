@@ -10,8 +10,6 @@ use Vvintage\Services\Locale\LocaleService;
 use Vvintage\DTO\Admin\Product\EditProductDTO;
 use Vvintage\DTO\Brand\BrandForProductDTO;
 use Vvintage\DTO\Category\CategoryForProductDTO;
-// use Vvintage\DTO\Product\Card\ImageForProductCardDTO;
-
 
 final class EditProductDTOFactory
 {

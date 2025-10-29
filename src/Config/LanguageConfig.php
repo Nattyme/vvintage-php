@@ -19,7 +19,7 @@ class LanguageConfig
 
     public const SPECIAL_LOCALES = [
       'ja' => 'ja_JP',
-      'zh' => 'zh_CN',
+      'zh' => 'zh_CH',
     ];
 
     // public static function isSupported(string $lang): bool

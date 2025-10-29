@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 namespace Vvintage\Models\Brand;
+
+
 use Vvintage\DTO\Brand\BrandDTO;
 // use Vvintage\Traits\HasTranslations;
 ;
@@ -34,6 +36,7 @@ final class Brand
         return $brand;
     }
 
+
     public static function fromArray(array $data): self
     {
         $brand = new self();
@@ -63,6 +66,11 @@ final class Brand
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
     public function getImage(): string

@@ -46,8 +46,8 @@ class BrandService extends BaseService
     public function getAllBrands(): array
     {
       return  $this->repository->getAllBrands();
-    
     }
+
     public function getAllBrandsDto(): array
     {
       $rows =  $this->repository->getAllBrands();
@@ -110,7 +110,6 @@ class BrandService extends BaseService
     }
 
 
-
     public function createBrandProductDTO(int $id): ?BrandForProductDTO
     {
         $brand = $this->getBrandById($id);
@@ -121,64 +120,5 @@ class BrandService extends BaseService
 
         return $dto; 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //     public function getBrandDTO(int $brandId): ?BrandDTO
-    // {
-    //     $brand = $this->repository->getBrandById($brandId);
-    //     if (!$brand) return null;
-        
-    //     // получаем переводы из репозитория переводов
-    //     $translations = $this->translationRepo->getLocaleTranslation(
-    //         $brandId,
-    //         $this->currentLang
-    //     ) ?? $this->translationRepo->getLocaleTranslation($brandId, $this->localeService->getDefaultLocale());
-
-    //     return new BrandOutputDTO([
-    //         'id' => $brand->getId(),
-    //         'title' => $translations['title'] ?? $brand->getTitle(),
-    //         'image' => $brand->getImage(),
-    //         'translations' => [$this->currentLang => $translations ?? []],
-    //     ]);
-    // }
-
-
-    // public function getBrandWithTranslations(int $brandId): array
-    // {
-    //     // 1. Берём основной бренд
-    //     $brand = $this->repository->getBrandById($brandId);
-    //     if (!$brand) {
-    //         return [];
-    //     }
-
-    //     // 2. Берём переводы из отдельного репозитория
-    //     $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->currentLang);
-
-    //     if (!$translations) {
-    //         // fallback на дефолтный язык
-    //         $translations = $this->translationRepo->getLocaleTranslation($brandId, $this->localeService->getDefaultLocale());
-    //     }
-
-    //     // 3. Объединяем данные в сервисе
-    //     return [
-    //         'id' => $brand->getId(),
-    //         'title' => $translations['title'] ?? $brand->getTitle(),
-    //         'description' => $translations['description'] ?? '',
-    //         'seo_title' => $translations['meta_title'] ?? '',
-    //         'seo_description' => $translations['meta_description'] ?? '',
-    //         'image' => $brand->getImage(),
-    //     ];
-    // }
 
 }

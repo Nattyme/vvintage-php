@@ -61,7 +61,8 @@ class AdminBrandController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($brandsPerPage, 'brands');
-    $brands =  $this->service->getAllBrandsDto();
+    $brands =  $this->service->getBrandsAdminListDTO();
+    // $brands =  $this->service->getAllBrandsDto();
     $total = $this->service->getAllBrandsCount();
         
     $this->renderLayout('brands/all',  [

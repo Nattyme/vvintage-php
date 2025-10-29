@@ -42,6 +42,10 @@ const initEverything = async () => {
       initNewProductForm();
       addPhotoBtn();
       addTab();
+    } else if ((page === 'brand-edit' && id) || (page === 'brand-edit' && id)) {  
+      addTab();
+    }  else if ((page === 'category-edit' && id) || (page === 'category-new' && id)) {
+      addTab();
     }
   }
 

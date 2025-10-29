@@ -7,6 +7,8 @@ use Vvintage\Services\Brand\BrandService;
 use Vvintage\DTO\Brand\BrandOutputDTO;
 use Vvintage\DTO\Brand\BrandInputDTO;
 use Vvintage\DTO\Brand\BrandTranslationInputDTO;
+use Vvintage\DTO\Admin\Brand\BrandForAdminListDTO;
+use Vvintage\DTO\Admin\Brand\BrandsForAdminListDTOFactory;
 
 
 final class AdminBrandService extends BrandService
@@ -176,6 +178,14 @@ final class AdminBrandService extends BrandService
     public function getTranslations(int $brandId): array 
     {
       return $this->translationRepo->loadTranslations($brandId);
+    }
+
+    public function getBrandsAdminListDTO(): array
+    {
+      $brands = $this->getAllBrands();
+      $dtoFactory = new BrandsForAdminListDTOFactory();
+
+      return array_map(fn($brand) => $dtoFactory->createFromBrand($brand), $brands);
     }
 
 

@@ -34,7 +34,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         if (!$bean || !$bean->id) {
             return null;
         }
-        $brandArray = $this->mapBeanToBrand($bean);
+        $brandArray = $this->mapBeanToArray($bean);
 
         return Brand::fromArray($brandArray);
     }
@@ -48,7 +48,10 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
             return [];
       }
 
-      return array_map([$this, 'mapBeanToBrand'], $beans);
+      $brandArray = array_map(fn($bean) => $this->mapBeanToArray($bean), $beans);
+
+
+      return array_map(fn($brand) => Brand::fromArray($brand), $brandArray);
     }
 
     /** Возвращает массив объеков Brands по определенным id */
@@ -64,7 +67,9 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
             return [];
         }
 
-        return array_map([$this, 'mapBeanToBrand'], $beans);
+        $brandArray = array_map(fn($bean) => $this->mapBeanToArray($bean), $beans);
+
+        return array_map(fn($brand) => Brand::fromArray($brand), $brandArray);
     }
     
     public function getAllBrandsCount(?string $sql = null, array $params = []): int
@@ -79,7 +84,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         $beans = $this->findAll(table: self::TABLE, orderBy: 'title ASC');
 
         // Сбрасываем ключи и преобразуем в массивы
-        return array_values(array_map([$this, 'mapBeanToBrand'], $beans));
+        return array_values(array_map([$this, 'mapBeanToArray'], $beans));
     }
 
 
@@ -145,13 +150,14 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
       return $this->countAll(self::TABLE, 'LOWER(title) = ?', [mb_strtolower($cleaned)]);
     }
 
-    private function mapBeanToBrand(OODBBean $bean): array
+    private function mapBeanToArray(OODBBean $bean): array
     {
         return [
             'id' => (int) $bean->id,
             'image' => (string) $bean->image
         ];
     }
+
 
     public function deleteBrand(int $id): void
     {
