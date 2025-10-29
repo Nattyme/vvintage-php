@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Base;
 
-// use Vvintage\Routing\Router;
 /** Интерфейсы */
 use Vvintage\Routing\RouteData;
 use Vvintage\Models\Settings\Settings;
@@ -12,34 +11,19 @@ use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
 use Vvintage\Controllers\AdminPanel\AdminPanelController;
 use Vvintage\Services\Messages\FlashMessage;
-// use Vvintage\Services\Page\PageService;
-
-// Пеервод на другие языки
-// use Vvintage\Config\LanguageConfig;
-// use Vvintage\Services\Locale\LocaleService;
-// use Vvintage\Services\Translator\Translator;
 
 
 abstract class BaseController
 {    
   protected array $settings;
-  // protected array $languages;
-  // protected string $currentLang;
   protected RouteData $routeData; 
   protected Translator $translator;
   protected FlashMessage $flash;
   protected SessionService $sessionService;
-  // protected LocaleService $localeService;
-  // protected PageService $pageService;
 
   public function __construct()
   {
       $this->settings = Settings::all(); 
-      // $this->localeService = new LocaleService();
-      // $this->translator = setTranslator(); // берём уже установленный переводчик
-      // $this->languages = LanguageConfig::getAvailableLanguages();
-      // $this->currentLang = $this->localeService->getCurrentLang();
-      // $this->pageService = new PageService($this->currentLang);
       $this->flash = new FlashMessage();
       $this->sessionService = new SessionService();
       
@@ -73,8 +57,6 @@ abstract class BaseController
     extract( array_merge($vars, [
       'settings' => $this->settings, 
       'adminData' => $adminData,
-      // 'languages' => $this->languages,
-      // 'currentLang' => $this->currentLang,
       'flash' => $this->flash,
       'isBlogPage' => $isBlogPage
     ]) );
@@ -82,7 +64,6 @@ abstract class BaseController
     ob_start();
     include ROOT . "views/{$viewPath}.tpl"; // views/cart/cart.tpl
     $content = ob_get_clean();
-    // extract( array_merge($vars, ['settings' => $this->settings]) );
     include ROOT . 'views/layout.php';
 
   }
@@ -118,6 +99,14 @@ abstract class BaseController
   protected function isProfileOwner(int $profileId): bool 
   {
     return  $this->sessionService->isProfileOwner($profileId);
+  }
+
+  protected function redirect(string $pageName, string $param = ''): void 
+  {
+    $path = $param !== '' ? $pageName . '/' . $param : $pageName;
+
+    header("Location: " . HOST . $path);
+    exit;
   }
 
   

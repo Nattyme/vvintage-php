@@ -49,6 +49,7 @@
 
 <!-- Определяем странцы и записываем в data для JS -->
 <?php 
+
   if($routeData->isAdmin) {
     $zone = 'admin';
     $page = $routeData->uriModule ?: 'main';
@@ -59,8 +60,10 @@
     $page = $routeData->uriModule ?: 'main';
     $itemId = $routeData->uriGet ?: null;
     
-    if(!empty ($routeData->uriGetParams)) {
-      $page = $page . '/' .$routeData->uriGet;
+    if(is_string($routeData->uriGet)) {
+      $page = $page . '/' . $routeData->uriGet;
+    } else if ($routeData->uriGetParams) {
+      $page = $page . '/' . $routeData->uriGet;
       $itemId = $routeData->uriGetParams[0] ?: null;
     }
     

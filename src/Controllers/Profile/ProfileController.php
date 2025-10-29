@@ -53,7 +53,7 @@ final class ProfileController extends BaseController
 
   public function index(RouteData $routeData)
   {
-  
+ 
     $orders = null;
     $this->setRouteData($routeData);
     $uriGet = $this->routeData->uriGet ?? null;
@@ -105,7 +105,7 @@ final class ProfileController extends BaseController
   }
 
   public function edit(RouteData $routeData)
-  {
+  { 
       $this->setRouteData($routeData);
       $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule);
    
@@ -131,7 +131,7 @@ final class ProfileController extends BaseController
         $userModel = $this->getLoggedInUser();
       }
 
-    
+   
       // если гость — редиректим
       if ($userModel instanceof GuestUser || !$userModel) {
           $this->redirect('login');
@@ -147,15 +147,7 @@ final class ProfileController extends BaseController
       $orders = $this->userService->getOrdersByUserId($userModel->getId());
       $address = null; // здесь можно добавить $userModel->getAddress()
 
-
-      if (isset($_POST['updateProfile'])) {
-        
-        $this->updateUserAndGoToProfile($userModel);
-      }
-
-
       $this->renderProfileEdit(routeData: $routeData, userModel: $userModel, uriGet: $uriGet, address: $address);
-
   }
 
 
@@ -231,6 +223,11 @@ final class ProfileController extends BaseController
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+
+      if (isset($_POST['updateProfile'])) {
+  
+        $this->updateUserAndGoToProfile($userModel);
+      }
  
       // Подключение шаблонов страницы
       $this->renderLayout('profile/profile-edit', [
@@ -298,11 +295,5 @@ final class ProfileController extends BaseController
     }
   }
 
-  private function redirect(string $pageName, string $param = ''): void 
-  {
-    $path = $param !== '' ? $pageName . '/' . $param : $pageName;
 
-    header("Location: " . HOST . $path);
-    exit;
-  }
 }

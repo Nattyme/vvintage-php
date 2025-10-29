@@ -57,7 +57,7 @@ final class RegistrationService extends BaseService
     ];
 
     // Перенаправляем
-    header('Location: ' . HOST . 'profile-edit');
+    header('Location: ' . HOST . 'profile/edit');
     exit();
   }
 

@@ -33,10 +33,10 @@
 
         <?php if ($uriGet) : ?>
      
-          <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile-edit/<?php echo $uriGet; ?>" method="POST">
+          <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile/edit/<?php echo $uriGet; ?>" method="POST">
          
         <?php else : ?>
-          <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile-edit" method="POST">
+          <form class="profile-form" enctype="multipart/form-data" action="<?php echo HOST; ?>profile/edit" method="POST">
         <?php endif; ?>
 
             <div class="profile-card">

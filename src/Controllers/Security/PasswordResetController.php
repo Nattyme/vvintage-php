@@ -24,7 +24,7 @@ final class PasswordResetController extends BaseController
   public function index ($routeData) 
   {
     if (isset($_POST['lost-password'])) {
-      $validator = new PasswordResetValidator();
+      $validator = new PasswordResetValidator($this->service);
       $resultEmail = false;
 
       if ($validator->validate($_POST)) {

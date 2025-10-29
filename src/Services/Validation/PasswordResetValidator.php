@@ -10,6 +10,12 @@ final class PasswordResetValidator extends BaseService
 {
   private PasswordResetService $service;
 
+  public function __construct(PasswordResetService $service)
+  {
+    parent::__construct();
+    $this->service = $service;
+  }
+
 
   public function validate(array $data): bool
   {
@@ -23,10 +29,13 @@ final class PasswordResetValidator extends BaseService
 
     $email = trim($data['email'] ?? '');
     if ($email === '') {
-      $this->flash->pushError('Введите email');
+      $this->flash->pushError('Введите email', 'Email - обязательное поле');
       $valid = false;
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $this->flash->pushError('Некорректный формат email');
+      $valid = false;
+    } elseif (!$this->service->userExists($email)) {
+      $this->flash->pushError('Пользователя с таким email не существует');
       $valid = false;
     }
 

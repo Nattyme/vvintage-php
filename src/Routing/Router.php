@@ -94,8 +94,6 @@
         case '':
         case 'main':
           self::routePages($routeData);
-          // self::routeHome($routeData);
-          // require ROOT . 'modules/main/index.php';
           break;
 
         // ::::::::::::: USERS :::::::::::::::::::
@@ -150,12 +148,7 @@
 
         case 'about':
           self::routePages($routeData);
-          // require ROOT . 'modules/about/index.php';
           break;
-
-        // case 'admin':
-        //   self::routeAdminPages($routeData);
-        //   break;
 
         case 'api' : 
           self::routeApi($routeData);
@@ -163,7 +156,7 @@
 
         default:
           http_response_code(404);
-          require ROOT . 'modules/404/404.php';
+          require ROOT . 'views/pages/404.tpl';
           break;
       }
   
@@ -295,25 +288,7 @@
       }
     }
 
-    // private static function routeProfile(RouteData $routeData) {
-    //   dd($routeData);
-    //   $breadcrumbs = new Breadcrumbs();
-    //   $profileController = new ProfileController($breadcrumbs);
 
-    //   switch ($routeData->uriModule) {
-    //     case 'profile':
-    //       $profileController->index($routeData);
-    //       break;
-
-    //     case 'profile-edit':
-    //       $profileController->edit($routeData);
-    //       break;
-
-    //     case 'profile-order':
-    //       $profileController->order($routeData);
-    //       break;
-    //   }
-    // }
 
     public static function routeProfile(RouteData $routeData)
     {
