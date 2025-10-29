@@ -150,7 +150,7 @@ final class AdminProductService extends ProductService
               // достаём имена файлов по этим id
               $imagesToDelete = array_filter(
                   $imagesInDb,
-                  fn($img) => in_array($img->id, $idsToDelete)
+                  fn($img) => in_array($img['id'], $idsToDelete)
               );
 
               // удаляем из БД

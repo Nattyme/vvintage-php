@@ -59,10 +59,8 @@
     $zone = 'front';
     $page = $routeData->uriModule ?: 'main';
     $itemId = $routeData->uriGet ?: null;
-    
-    if(is_string($routeData->uriGet)) {
-      $page = $page . '/' . $routeData->uriGet;
-    } else if ($routeData->uriGetParams) {
+
+    if ($routeData->uriGetParams) {
       $page = $page . '/' . $routeData->uriGet;
       $itemId = $routeData->uriGetParams[0] ?: null;
     }
