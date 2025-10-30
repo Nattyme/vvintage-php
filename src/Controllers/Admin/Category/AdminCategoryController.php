@@ -183,7 +183,7 @@ final class AdminCategoryController extends BaseAdminController
 
 
     // Получаем DTO категории для отображения
-    $category = $this->service->getCategoryEditDTO($id);
+    $category = $this->service->createCategoryEditDTO($id);
   
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,

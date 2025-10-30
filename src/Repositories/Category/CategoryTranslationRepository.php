@@ -65,9 +65,7 @@ final class CategoryTranslationRepository extends AbstractRepository
 
             $result = $this->saveBean($bean);
 
-            if (!$result) {
-              throw new \RuntimeException("Не удалось сохранить переводы категории");
-            }
+            if (!$result) throw new \RuntimeException("Не удалось сохранить переводы категории");
 
             $ids[] = (int) $bean->id;
         }

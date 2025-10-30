@@ -98,11 +98,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     /** Сохраняет бренд с DTO */
     public function saveBrand(BrandInputDTO $dto): ?int
     {
-
-        if (!$dto) {
-          throw new RuntimeException("Не удалось сохранить бренд");
-          return null;
-        }
+        if (!$dto) throw new RuntimeException("Не удалось сохранить бренд");
 
         // Создаем или загружаем бренд
         $brandBean = $dto->id 
@@ -116,10 +112,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
         $brandId = (int)$brandBean->id;
 
-        if (!$brandId) {
-          throw new RuntimeException("Не удалось сохранить бренд");
-          return null;
-        }
+        if (!$brandId) throw new RuntimeException("Не удалось сохранить бренд");
 
         return $brandId;
     }

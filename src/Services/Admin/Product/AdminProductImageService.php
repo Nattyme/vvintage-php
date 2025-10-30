@@ -39,9 +39,8 @@ final class AdminProductImageService extends ProductImageService
             $baseName = rand(100000000000, 999999999999) . "." . $ext;
             $tmpFile  = $this->tmpFolder . $baseName;
 
-            if (!move_uploaded_file($tmpName, $tmpFile)) {
-                throw new \RuntimeException("Не удалось загрузить файл {$tmpName} во временную папку");
-            }
+            if (!move_uploaded_file($tmpName, $tmpFile))  throw new \RuntimeException("Не удалось загрузить файл {$tmpName} во временную папку");
+            
 
             // full — просто оставляем оригинал
             $fullTmp   = $tmpFile;
@@ -72,27 +71,25 @@ final class AdminProductImageService extends ProductImageService
 
     public function finalizeImages(array $images): array
     {
-        $finalPaths = [];
- 
-        foreach ($images as $img) {
-            $finalFull   = $this->finalFolder . $img['final_full'];
-            $finalMedium = $this->finalFolder . $img['final_medium'];
-            $finalSmall  = $this->finalFolder . $img['final_small'];
+      $finalPaths = [];
 
-            foreach (['tmp_full' => $finalFull, 'tmp_medium' => $finalMedium, 'tmp_small' => $finalSmall] as $tmp => $final) {
-                if (!rename($img[$tmp], $final)) {
-                    throw new \RuntimeException("Не удалось переместить {$tmp} для {$img['original_name']}");
-                }
-            }
+      foreach ($images as $img) {
+          $finalFull   = $this->finalFolder . $img['final_full'];
+          $finalMedium = $this->finalFolder . $img['final_medium'];
+          $finalSmall  = $this->finalFolder . $img['final_small'];
 
-            $finalPaths[] = [
-                'filename_full'   => basename($finalFull),
-                'filename_medium' => basename($finalMedium),
-                'filename_small'  => basename($finalSmall),
-            ];
-        }
+          foreach (['tmp_full' => $finalFull, 'tmp_medium' => $finalMedium, 'tmp_small' => $finalSmall] as $tmp => $final) {
+              if (!rename($img[$tmp], $final)) throw new \RuntimeException("Не удалось переместить {$tmp} для {$img['original_name']}");
+          }
 
-        return $finalPaths;
+          $finalPaths[] = [
+              'filename_full'   => basename($finalFull),
+              'filename_medium' => basename($finalMedium),
+              'filename_small'  => basename($finalSmall),
+          ];
+      }
+
+      return $finalPaths;
     }
 
     public function cleanup(array $images): void

@@ -60,11 +60,8 @@ final class AdminProductService extends ProductService
         $productDto = $this->createProductInputDto($data);
         $productId = $this->repository->saveProduct($productDto);
 
-        if( !$productId) {
-          throw new RuntimeException("Не удалось создать продукт");
-          return null;
-        }
-
+        if( !$productId) throw new RuntimeException("Не удалось создать продукт");
+       
      
         if (!empty($data['translations'])) {
             $translateDto = $this->createTranslateInputDto($data['translations'], $productId);
@@ -117,9 +114,7 @@ final class AdminProductService extends ProductService
           // 1. Обновляем продукт
           $productDto = $this->createProductInputDto($data);
 
-          if(!$productDto) {
-              throw new \RuntimeException("Не удалось обновить продукт");
-          }
+          if(!$productDto) throw new \RuntimeException("Не удалось обновить продукт");
           $this->repository->updateProductData($id, $productDto->toArray());
 
           // 2. Обновляем перевод продукта

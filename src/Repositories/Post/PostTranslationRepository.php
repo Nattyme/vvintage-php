@@ -86,13 +86,7 @@ final class PostTranslationRepository extends AbstractRepository
         $ids = [];
 
         foreach ($translateDto as $dto) {
-            // if (!$dto) {
-            //     return null;
-            // }
-            if (!$dto) {
-              throw new \RuntimeException("Не удалось обновить переводы статьи");
-            }
-
+            if (!$dto) throw new \RuntimeException("Не удалось обновить переводы статьи");
 
             // ищем существующий перевод
             $bean = $this->findOneBy(self::TABLE, ' post_id = ? AND locale = ? ', [$dto->post_id, $dto->locale]);
@@ -113,10 +107,7 @@ final class PostTranslationRepository extends AbstractRepository
 
             $result = $this->saveBean($bean);
 
-            if (!$result) {
-              throw new \RuntimeException("Не удалось обновить переводы статьи");
-            }
-
+            if (!$result) throw new \RuntimeException("Не удалось обновить переводы статьи");
             $ids[] = (int) $bean->id;
         }
 

@@ -97,13 +97,7 @@ final class PostCategoryTranslationRepository extends AbstractRepository
         $ids = [];
 
         foreach ($translateDto as $dto) {
-            // if (!$dto) {
-            //     return null;
-            // }
-            if (!$dto) {
-              throw new \RuntimeException("Не удалось обновить переводы категории статьи");
-            }
-
+            if (!$dto) throw new \RuntimeException("Не удалось обновить переводы категории статьи");
 
             // ищем существующий перевод
             $bean = $this->findOneBy(self::TABLE, ' category_id = ? AND locale = ? ', [$dto->category_id, $dto->locale]);

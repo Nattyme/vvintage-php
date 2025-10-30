@@ -44,9 +44,7 @@ final class BrandTranslationRepository extends AbstractRepository
 
         $result = $this->saveBean($translationBean);
 
-        if (!$result) {
-          throw new RuntimeException("Не удалось сохранить перевод бренда");
-        }
+        if (!$result) throw new RuntimeException("Не удалось сохранить перевод бренда");
     }
 
     public function loadTranslations(int $id): array

@@ -127,9 +127,7 @@ final class CategoryRepository extends AbstractRepository
 
         $id = (int) $bean->id;
 
-        if (!$id) {
-            throw new RuntimeException("Не удалось сохранить категорию");
-        }
+        if (!$id) throw new RuntimeException("Не удалось сохранить категорию");
 
         return $id;
     }

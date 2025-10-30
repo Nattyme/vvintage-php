@@ -129,9 +129,8 @@ final class ProductRepository extends AbstractRepository
       
         $productBean = $this->loadBean(self::TABLE, $id);
      
-        if (!$productBean->id) {
-            throw new RuntimeException("Product with ID {$id} not found");
-        }
+        if (!$productBean->id) throw new RuntimeException("Product with ID {$id} not found");
+        
         foreach ($data as $field => $value) {
             $productBean->{$field} = $value;
         }
@@ -146,9 +145,7 @@ final class ProductRepository extends AbstractRepository
     {
         $bean = $this->loadBean(self::TABLE, $productId);
 
-        if (!$bean->id) {
-            throw new RuntimeException("Продукт {$productId} не найден");
-        }
+        if (!$bean->id) throw new RuntimeException("Продукт {$productId} не найден");
 
         $bean->category_id = $product['category_id'];
         $bean->brand_id = $product['brand_id'];
@@ -165,10 +162,7 @@ final class ProductRepository extends AbstractRepository
         $result = $this->saveBean($bean);
 
         
-        if (!$result) {
-          throw new \RuntimeException("Не удалось обновить данные продукта");
-        }
-
+        if (!$result) throw new \RuntimeException("Не удалось обновить данные продукта");
         return true;
     }
 
@@ -288,12 +282,8 @@ final class ProductRepository extends AbstractRepository
     /** Создаёт новый продукт через DTO */
     public function saveProduct(ProductInputDTO $dto): ?int
     {
-      if (!$dto) {
-        throw new RuntimeException("Не получены данные для создания продукта");
-        return null;
-      }
-
-     
+      if (!$dto) throw new RuntimeException("Не получены данные для создания продукта");
+ 
       // Создаем или загружаем продукт
       $bean = $dto->id 
           ? $this->findById(self::TABLE, $dto->id)
@@ -317,9 +307,7 @@ final class ProductRepository extends AbstractRepository
       // ID продукта
       $productId = (int)$bean->id;
 
-      if (!$productId) {
-        throw new RuntimeException("Не удалось сохранить продукт");
-      }
+      if (!$productId) throw new RuntimeException("Не удалось сохранить продукт");
 
       return $productId;
     }

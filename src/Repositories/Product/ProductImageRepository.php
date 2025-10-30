@@ -83,9 +83,7 @@ final class ProductImageRepository extends AbstractRepository
 
         $result = $this->saveBean($bean);
 
-        if (!$result) {
-          throw new \RuntimeException("Не удалось сохранить название изображения {$image['filename']}");
-        }
+        if (!$result) throw new \RuntimeException("Не удалось сохранить название изображения {$image['filename']}");
     }
 
     /**
@@ -100,9 +98,7 @@ final class ProductImageRepository extends AbstractRepository
 
         $result = $this->saveBean($bean);
 
-        if (!$result) {
-          throw new \RuntimeException("Не удалось обновить список изображений");
-        }
+        if (!$result) throw new \RuntimeException("Не удалось обновить список изображений");
     }
 
     /**
@@ -181,9 +177,8 @@ final class ProductImageRepository extends AbstractRepository
         // перебираем finalImages — это итог с filename
         foreach ($finalImages as $index => $finalImage) {
             $filename = $finalImage['filename'] ?? '';
-            if (!$filename) {
-                throw new RuntimeException("Пустое имя файла для изображения на позиции {$index}");
-            }
+
+            if (!$filename) throw new RuntimeException("Пустое имя файла для изображения на позиции {$index}");
 
             // ищем соответствующий $images[$index] или берём дефолт
             $image = $images[$index] ?? [];
@@ -229,9 +224,8 @@ final class ProductImageRepository extends AbstractRepository
             if (!$dto) return null;
 
             // ПРОВЕРКА: существует ли файл
-            if (!file_exists(ROOT . 'usercontent/products/' . $dto->filename)) {
-                throw new RuntimeException("Файл {$dto->filename} не найден. Сохранение изображения отменено.");
-            }
+            if (!file_exists(ROOT . 'usercontent/products/' . $dto->filename)) throw new RuntimeException("Файл {$dto->filename} не найден. Сохранение изображения отменено.");
+            
 
             $bean = $this->createProductImageBean();
             $bean->product_id = $dto->product_id;

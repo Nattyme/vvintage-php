@@ -24,6 +24,13 @@ final class AdminCategoryService extends CategoryService
       parent::__construct();
     }
 
+    /**
+     * Создает категорию в черновом состоянии
+     * 
+     * @param array $data
+     * @return int|null
+     * @throws \RuntimeException
+    */
     public function createCategoryDraft(array $data): ?int
     {
       if (!$data ) return null;
@@ -35,20 +42,17 @@ final class AdminCategoryService extends CategoryService
         // Создаем дто категории
         $dto = $this->createCategoryInputDTO($data);
 
-        if(!$dto) {
-          throw new \RuntimeException("Не удалось создать категорию");
-        }
+        if(!$dto) throw new \RuntimeException("Не удалось создать категорию");
+        
 
         // Сохраняем в БД
         $categoryId = $this->repository->saveCategory($categoryDto->toArray());
       
-        if(!$categoryId) {
-          throw new \RuntimeException("Не удалось сохранить категорию");
-        }
+        if(!$categoryId) throw new \RuntimeException("Не удалось сохранить категорию");
+        
 
-        if (empty($data['translations']) ) {
-          throw new \RuntimeException("Не получены переводы. Не удалось сохранить новую категорию");
-        }
+        if (empty($data['translations']) ) throw new \RuntimeException("Не получены переводы. Не удалось сохранить новую категорию");
+        
   
         // Сохраняем перевод категории
         $translateDto = $this->createTranslateInputDto($data['translations'], $categoryId);
@@ -71,6 +75,15 @@ final class AdminCategoryService extends CategoryService
       
     }
 
+    /**
+     * Обновляет существующую категорию
+     * 
+     * @param int $id - ID категории для обновления
+     * @param array $data - новые данные категории, включая переводы
+     * 
+     * @return bool - true, если успешно, false - если категория не найдена
+     * @throws \RuntimeException - если не удалось обновить категорию
+    */
     public function updateCategoryDraft(int $id, array $data): bool 
     {
         $this->repository->begin(); // начало транзакции
@@ -79,17 +92,15 @@ final class AdminCategoryService extends CategoryService
             // Обновляем категорию
             $categoryDto = $this->createCategoryInputDTO($data, $id);
 
-            if(!$categoryDto) {
-              throw new \RuntimeException("Не удалось обновить категорию");
-            }
+            if(!$categoryDto) throw new \RuntimeException("Не удалось обновить категорию");
+            
 
             $this->repository->saveCategory($categoryDto->toArray());
   
 
             // Обновляем перевод категории
-            if (empty($data['translations']) ) {
-              throw new \RuntimeException("Не получены переводы. Не удалось обновить категорию");
-            }
+            if (empty($data['translations']) ) throw new \RuntimeException("Не получены переводы. Не удалось обновить категорию");
+            
 
             $translateDto = $this->createTranslateInputDto($data['translations'], $id);
 
@@ -108,7 +119,7 @@ final class AdminCategoryService extends CategoryService
         }
     }
 
-
+    // *** DTO *** //
     public function createCategoryInputDTO(array $data, ?int $id=null): ?CategoryInputDTO
     {
       $dataDto = new CategoryInputDTO([
@@ -148,18 +159,7 @@ final class AdminCategoryService extends CategoryService
 
     }
 
-    private function createCategoryEditDTO(Category $category, ?Category $parentCategory): array
-    {
-      $translations = $this->translationRepo->loadTranslations($category->getId());
-      $category->setTranslations($translations);
-      
-      $dtoFactory = new EditDtoFactory();
-
-      return $dtoFactory->createFromCategory($category, $parentCategory);
-    }
-
-
-    public function getCategoryEditDTO (int $id): EditDto
+    public function createCategoryEditDTO (int $id): EditDto
     {
         $category = $this->getCategoryById($id);
         $parentCategoryId = $category->getParentId() ?? null;
