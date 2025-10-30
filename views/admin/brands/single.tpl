@@ -3,8 +3,8 @@
   <form 
     class="admin-form" 
     method="POST" 
-    <?php if ($brand && $brand->getId()) : ?>
-      action="<?php echo HOST;?>admin/brand-edit/<?php echo u($brand->getId()); ?>"
+    <?php if ($brand && $brand->id) : ?>
+      action="<?php echo HOST;?>admin/brand-edit/<?php echo u($brand->id); ?>"
     <?php endif;?>
   >
 
@@ -31,7 +31,7 @@
         <!-- Блоки с контентом -->
         <div class="admin-form__item">
           <div class="tab__content" data-control="tab-content">
-            <?php $translations = isset($brand) ? $brand->getTranslations() : null; ?>
+            <?php $translations = isset($brand) ? $brand->translations : null; ?>
             <?php foreach ($languages as $code => $value ) : ?>
                 <div class="tab__block <?php echo $code === $firstKey ? 'active' : ''; ?>" data-control="tab-block">
                   <?php include ROOT . "views/admin/brands/translations/_fields.tpl";?>
@@ -48,9 +48,12 @@
     <!-- Логотип бренда -->
     <div class="admin-form__field">
       <label class="admin-form__label" for="image">Логотип бренда</label>
-      <?php if (isset($brand) && $brand->getImage()): ?>
+      <?php if (isset($brand) && $brand->image): ?>
         <div class="admin-form__image-preview">
-          <img src="<?php echo HOST . 'uploads/brands/' . h($brand->getImage()); ?>" alt="Логотип <?php echo h($brand->getTitle()); ?>" width="100">
+          <img 
+            src="<?php echo HOST . 'uploads/brands/' . h($brand->image); ?>" 
+            alt="Логотип <?php echo h($brand->title); ?>" width="100"
+          >
         </div>
       <?php endif; ?>
       <input 

@@ -12,8 +12,7 @@ use Vvintage\Repositories\AbstractRepository;
 use Vvintage\Contracts\Category\CategoryTranslationRepositoryInterface;
 
 
-// final class CategoryTranslationRepository extends AbstractRepository implements CategoryTranslationRepositoryInterface
-final class CategoryTranslationRepository extends AbstractRepository 
+final class CategoryTranslationRepository extends AbstractRepository implements CategoryTranslationRepositoryInterface
 {
     private const TABLE = 'categoriestranslation';
   

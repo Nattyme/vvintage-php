@@ -56,7 +56,6 @@ class AdminBrandController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = 'Бренды';
-
     $brandsPerPage = 9;
 
     // Устанавливаем пагинацию
@@ -89,21 +88,21 @@ class AdminBrandController extends BaseAdminController
 
   private function handleBrandForm(?int $brandId = null): void
   {
-      $brand = $brandId ? $this->service->getBrandById($brandId) : null;
-      if($brand) {
-        $translations = $this->service->getTranslations($brandId);
-        $brand->setTranslations($translations);
-      }
+      $id = $brandId ? (int) $brandId : null;
 
-      if ($brandId && !$brand) {
+      // Если редактируем, то получаем DTO
+      if ($id) $brand = $this->service->createBrandEditDTO($id);
+
+      // Если передан id, но не нашли бренд
+      if ($id && !$brand) {
           $this->flash->pushError('Бренд не найден.');
           return;
       }
 
-
+      // Если отправлена форма
       if (isset($_POST['submit'])) $this->processBrandFormSubmission($_POST, $brandId); 
 
-      // Всегда рендерим форму (новая или с ошибками)
+      // Рендерим форму 
       $this->renderLayout('brands/single', [
           'pageTitle' => $brandId ? 'Бренды - редактирование' : 'Бренды - создание',
           'routeData' => $this->routeData,

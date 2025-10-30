@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace Vvintage\Services\Admin\Brand;
 
 use Vvintage\Services\Brand\BrandService;
-use Vvintage\DTO\Brand\BrandOutputDTO;
 use Vvintage\DTO\Brand\BrandInputDTO;
+use Vvintage\DTO\Admin\Brand\EditDTO;
 use Vvintage\DTO\Brand\BrandTranslationInputDTO;
 use Vvintage\DTO\Admin\Brand\BrandForAdminListDTO;
 use Vvintage\DTO\Admin\Brand\BrandsForAdminListDTOFactory;
-use Vvintage\DTO\Brand\BrandInputDTOFactory;
 use Vvintage\DTO\Admin\Brand\BrandTranslationInputDTOFactory;
+use Vvintage\DTO\Brand\BrandInputDTOFactory;
+use Vvintage\DTO\Admin\Brand\EditDTOFactory;
 
 
 final class AdminBrandService extends BrandService
@@ -127,22 +128,15 @@ final class AdminBrandService extends BrandService
       return $translations;
     }
 
-    public function createBrandDTOFromArray(array $row): BrandOutputDTO
+    public function createBrandEditDTO(int $id): EditDTO
     {
-      return new BrandOutputDTO([
-          'id' => (int) $row['brand_id'],
-          'title' => (string) ($row['brand_title_translation'] ?: $row['brand_title']),
-          'image' => (string) ($row['brand_image'] ?? ''),
-          'translations' => [
-              $this->locale => [
-                  'title' => $row['brand_title_translation'] ?? '',
-                  'description' => $row['brand_description'] ?? '',
-                  'seo_title' => $row['brand_meta_title'] ?? '',
-                  'seo_description' => $row['brand_meta_description'] ?? '',
-              ]
-          ],
-          'locale' => $this->locale,
-      ]);
+        $brand = $this->getBrandById($id);
+        $translations = $this->getTranslations($id);
+        $brand->setTranslations($translations);
+
+        $dtoFactory = new EditDtoFactory();
+  
+        return $dtoFactory->createFromBrand($brand);
     }
 
     public function getBrandsAdminListDTO(): array

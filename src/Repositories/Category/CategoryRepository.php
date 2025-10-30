@@ -17,6 +17,46 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 {
     private const TABLE = 'categories';
 
+    public function saveCategory(array $data): int
+    {
+        // сохраняем или обновляем категорию
+        $bean = $data['id']
+            ? $this->loadBean(self::TABLE, $data['id'])
+            : $this->createBean(self::TABLE);
+
+        $bean->parent_id = !empty($data['parent_id']) ? (int) $data['parent_id'] : null;
+        $bean->title = $data['title']; // по умолчанию ru
+        $bean->description = $data['description'];
+        $bean->slug = $data['slug'];
+        $bean->image = $data['image'];
+
+        $this->saveBean($bean);
+
+        $id = (int) $bean->id;
+
+        if (!$id) throw new RuntimeException("Не удалось сохранить категорию");
+
+        return $id;
+    }
+
+    public function updateCategory(Category $cat): int
+    {
+
+      if (!$cat->getId()) {
+          return null; // нельзя обновить без ID
+      }
+
+      return $this->saveCategory($cat);
+    }
+
+    public function deleteCategory(int $id): void
+    {
+      $bean = $this->loadBean(self::TABLE, $id);
+      $this->deleteBean($bean);
+    }
+
+
+    
     private function mapBeanToCategory(OODBBean $bean): Category
     {
       return Category::fromArray([
@@ -80,6 +120,8 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
+
+
     public function findCatsByParentId(?int $parentId = null): array
     {
         if ($parentId === null) {
@@ -93,44 +135,9 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
-    public function saveCategory(array $data): int
-    {
-        // сохраняем или обновляем категорию
-        $bean = $data['id']
-            ? $this->loadBean(self::TABLE, $data['id'])
-            : $this->createBean(self::TABLE);
 
-        $bean->parent_id = !empty($data['parent_id']) ? (int) $data['parent_id'] : null;
-        $bean->title = $data['title']; // по умолчанию ru
-        $bean->description = $data['description'];
-        $bean->slug = $data['slug'];
-        $bean->image = $data['image'];
 
-        $this->saveBean($bean);
 
-        $id = (int) $bean->id;
-
-        if (!$id) throw new RuntimeException("Не удалось сохранить категорию");
-
-        return $id;
-    }
-
-    public function updateCategory(Category $cat): int
-    {
-
-      if (!$cat->getId()) {
-          return null; // нельзя обновить без ID
-      }
-
-      return $this->saveCategory($cat);
-    }
-
-    public function createCategory(Category $cat): int 
-    {
-      return $this->saveCategory($cat);
-    }
-
-    
     // Для api
     public function createMainCategoriesArray(): array
     {
@@ -146,7 +153,6 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         }, $beans);
       
     }
-
 
     public function createSubCategoriesArray(?int $parent_id = null): array
     {
@@ -167,7 +173,6 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
         }, $beans);
 
     }
-
 
     public function getAllCategoriesArray(): array
     {
@@ -226,14 +231,5 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     {
       return $this->countAll(self::TABLE, $sql, $params);
     }
-
-    public function deleteCategory(int $id): void
-    {
-      $bean = $this->loadBean(self::TABLE, $id);
-      $this->deleteBean($bean);
-    }
-
-  
-
 
 }
