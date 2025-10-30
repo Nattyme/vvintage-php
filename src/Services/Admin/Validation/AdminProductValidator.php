@@ -9,6 +9,13 @@ final class AdminProductValidator extends AdminBaseValidator
   public array $errors = [];
 
   
+    /**
+     * Валидирует продукт и возвращает массив ошибок и данных
+     * 
+     * @param array $data - данные для валидации
+     * 
+     * @return array - массив ошибок и данных
+     */
     public function validate(array $data): array
     {
 
@@ -34,138 +41,55 @@ final class AdminProductValidator extends AdminBaseValidator
         ];
     }
 
-    // private function validateTranslation(array $translations): void
-    // {
-    //     foreach (['ru', 'en'] as $lang) {
-    //         if (!isset($translations[$lang])) {
-    //             $this->errors['translations'][$lang][] = "Перевод для $lang обязателен";
-    //             continue;
-    //         }
 
-    //         $this->validateTitle($translations[$lang]['title'] ?? '', $lang);
-    //         $this->validateDescription($translations[$lang]['description'] ?? '', $lang);
-    //     }
-    // }
-
-    // private function validateTitle(?string $title, ?string $lang): void
-    // {
-    //     $title = trim($title ?? '');
-
-    //     if ($title === '') {
-    //         $this->errors['title'][$lang][] = 'Поле названия не может быть пустым';
-    //     } elseif (!is_string($title)) {
-    //         $this->errors['title'][$lang][] = 'Поле названия должно быть строкой';
-    //     } elseif (ctype_digit($title)) {
-    //         $this->errors['title'][$lang][] = 'Название не может состоять только из цифр';
-    //     } 
-    //     // elseif (!preg_match('/^[\p{L}\d\s]+$/u', $title)) {
-    //     //     $this->errors['title'][$lang][] = 'Название может содержать только буквы, цифры и пробелы';
-    //     // }
-
-    //     if (empty($this->errors['title'][$lang])) {
-    //         unset($this->errors['title'][$lang]);
-    //     }
-    // }
-
-    // private function validateDescription(?string $description, ?string $lang): void
-    // {
-    //     $description = trim($description ?? '');
-
-    //     if ($description === '') {
-    //         $this->errors['description'][$lang][] = 'Поле описания не может быть пустым';
-    //     } elseif (!is_string($description)) {
-    //         $this->errors['description'][$lang][] = 'Поле описания должно быть строкой';
-    //     } 
-    //     // elseif (preg_match('/^[\s.,!?()-]+$/u', $description)) {
-    //     //     $this->errors['description'][$lang][] = 'Описание должно содержать буквы или цифры';
-    //     // } 
-    //     elseif (ctype_digit($description)) {
-    //         $this->errors['description'][$lang][] = 'Описание не может состоять только из цифр';
-    //     } 
-    //     // elseif (mb_strlen($description) < 20) {
-    //     //     $this->errors['description'][$lang][] = 'Описание должно быть не менее 20 символов';
-    //     // } 
-    //     elseif (mb_strlen($description) > 1000) {
-    //         $this->errors['description'][$lang][] = 'Описание слишком длинное (максимум 1000 символов)';
-    //     }
-
-    //     if (empty($this->errors['description'][$lang])) {
-    //         unset($this->errors['description'][$lang]);
-    //     }
-    // }
-
-    
-    // private function synchronize(array $translations, array $data): array
-    // {
-    //     // Основные поля берем с русского
-    //     $data['title'] = $translations['ru']['title'] ?? '';
-    //     $data['description'] = $translations['ru']['description'] ?? '';
-
-    //     // Убедимся, что английский существует
-    //     $translations['en']['title'] = $translations['en']['title'] ?? '';
-    //     $translations['en']['description'] = $translations['en']['description'] ?? '';
-
-    //     foreach ($translations as $lang => &$trans) {
-    //         if (in_array($lang, ['ru', 'en'], true)) continue;
-
-    //         $titleEmpty = !isset($trans['title']) || trim($trans['title']) === '';
-    //         $descEmpty  = !isset($trans['description']) || trim($trans['description']) === '';
-
-    //         if ($titleEmpty && $descEmpty) {
-    //             // если оба поля пустые — подставляем английские значения
-    //             $trans['title'] = $translations['en']['title'];
-    //             $trans['description'] = $translations['en']['description'];
-    //         }
-    //     }
-
-    //     $data['translations'] = $translations;
-    //     return $data;
-    // }
-
-
+    /**
+     * Проверка полей title и description для каждого языка
+     *
+     * @param array $data - данные для валидации
+     *
+     * @return array - массив ошибок и данных
+     */
     private function textValidation (array $data): array
-    {
-        //  $errors = [];
-
+    {   
         // Проверка переводов
         $this->validateTranslation($data['translations']);
         foreach ($data['translations'] as $lang => $trans) {
             // title
             $title = trim($trans['title'] ?? '');
-            $errors['title'][$lang] = [];
+            $errors = [];
             if ($title === '') {
-                // $errors['title'][$lang] = 'Поле названия не может быть пустым';
+                $errors[] = "Поле названия для языка `{$lang}` не может быть пустым";
             } elseif (!is_string($title)) {
-                $errors['title'][$lang]  = 'Поле названия должно быть строкой';
+                $errors[]  = "Поле названия для языка `{$lang}`должно быть строкой";
             } elseif (ctype_digit($title)) {
-                $errors['title'][$lang]  = 'Название не может состоять только из цифр';
+                $errors[]  = "Название для языка `{$lang}` не может состоять только из цифр";
             } elseif (!preg_match('/^[\p{L}\d\s]+$/u', $title)) {
-               $errors['title'][$lang]  = 'Название может содержать только буквы, цифры и пробелы';
+               $errors[]  = "Название для языка `{$lang}` может содержать только буквы, цифры и пробелы";
             }
-            if (empty($errors['title'][$lang])) {
-                unset($errors['title'][$lang] );
+            if (empty($errors)) {
+                unset($errors);
             }
 
             // description
             $description = trim($trans['description'] ?? '');
-            $errors['description'][$lang] = [];
+            $errors = [];
             if ($description === '') {
               // $errors['description'][$lang] = 'Поле описания не может быть пустым';
             } elseif (!is_string($description)) {
-                $errors['description'][$lang] = 'Поле описания должно быть строкой';
+                $errors[] = "Поле описания для языка `{$lang}` должно быть строкой";
             } elseif (preg_match('/^[\s.,!?()-]+$/u', $description)) {
-                $errors['description'][$lang] = 'Описание должно содержать буквы или цифры';
+                $errors[] = "Описание для языка `{$lang}` должно содержать буквы или цифры";
             } elseif (ctype_digit($description)) {
-               $errors['description'][$lang] = 'Описание не может состоять только из цифр';
+               $errors[] = "Описание для языка `{$lang}` не может состоять только из цифр";
             } elseif (mb_strlen($description) < 20) {
-                $errors['description'][$lang] = 'Описание должно быть не менее 20 символов';
+                $errors[] = "Описание для языка `{$lang}` должно быть не менее 20 символов";
             } elseif (mb_strlen($description) > 1000) {
-               $errors['description'][$lang] = 'Описание слишком длинное (максимум 1000 символов)';
+               $errors[] = "Описание слишком для языка `{$lang}` длинное (максимум 1000 символов)";
             } elseif (!preg_match('/^[\p{L}\d\s.,!?()-]+$/u', $description)) {
-               $errors['description'][$lang] = 'Описание содержит недопустимые символы';
+               $errors[] = "Описание для языка `{$lang}` содержит недопустимые символы";
             }
-            if (empty( $errors['description'][$lang])) {
-                unset( $errors['description'][$lang]);
+            if (empty( $errors)) {
+                unset( $errors);
             }
         }
 
@@ -199,28 +123,12 @@ final class AdminProductValidator extends AdminBaseValidator
         return $dataAdded;
     }
 
-    // private function validateSlug(?string $slugData):void
-    // {
-    //     $slug = trim($slugData ?? '');
-    //     $this->errors['slug'] = [];
-
-    //     if ($slug === '') {
-    //         $this->errors['slug'][] = 'Поле slug не может быть пустым';
-    //     } elseif (!is_string($slug)) {
-    //         $this->errors['slug'][] = 'Поле slug должно быть строкой';
-    //     } elseif (ctype_digit($slug)) {
-    //         $this->errors['slug'][] = 'Поле slug не может состоять только из цифр';
-    //     } 
-    //     if (empty($this->errors['slug'])) {
-    //         unset($this->errors['slug']);
-    //     }
-    // }
-
+   
     private function validatePrice(?string $priceData): void
     {
         $this->errors['price'] = [];
         if (!isset($priceData) || !is_numeric($priceData)) {
-          $this->errors['price'][] = 'Поле цены должно быть числом';
+          $this->errors[] = 'Поле цены должно быть числом';
         }
         if (empty($this->errors['price'])) {
             unset($this->errors['price']);
@@ -233,9 +141,9 @@ final class AdminProductValidator extends AdminBaseValidator
 
         $this->errors['sku'] = [];
         if ($sku === '') {
-            $this->errors['sku'][] = 'Поле SKU обязательно для заполнения';
+            $this->errors[] = 'Поле SKU обязательно для заполнения';
         } elseif (!is_string($sku)) {
-            $this->errors['sku'][] = 'SKU должно быть строкой';
+            $this->errors[] = 'SKU должно быть строкой';
         }
         if (empty($this->errors['sku'])) {
             unset($this->errors['sku']);
@@ -247,7 +155,7 @@ final class AdminProductValidator extends AdminBaseValidator
     {
       $this->errors['stock'] = [];
       if (!isset($stockData) || !is_numeric($stockData)) {
-          $this->errors['stock'][] = 'Поле stock должно быть числом';
+          $this->errors[] = 'Поле stock должно быть числом';
       }
       if (empty($this->errors['stock'])) {
           unset($this->errors['stock']);
@@ -258,7 +166,7 @@ final class AdminProductValidator extends AdminBaseValidator
     {
       $this->errors['category_id'] = [];
       if (!isset($categoryData) || !is_numeric($categoryData)) {
-          $this->errors['category_id'][] = 'Выберите категорию товара';
+          $this->errors[] = 'Выберите категорию товара';
       }
       if (empty($this->errors['category_id'])) {
           unset($this->errors['category_id']);
@@ -271,7 +179,7 @@ final class AdminProductValidator extends AdminBaseValidator
     {
         $this->errors['brand_id'] = [];
         if (!isset($brandData) || !is_numeric($brandData)) {
-            $this->errors['brand_id'][] = 'Выберите бренд товара';
+            $this->errors[] = 'Выберите бренд товара';
         }
         if (empty($this->errors['brand_id'])) {
             unset($this->errors['brand_id']);
@@ -283,7 +191,7 @@ final class AdminProductValidator extends AdminBaseValidator
         $url = trim($urlData ?? '');
         $this->errors['url'] = [];
         if ($url !== '' && !filter_var($url, FILTER_VALIDATE_URL)) {
-            $this->errors['url'][] = 'Поле URL невалидно';
+            $this->errors[] = 'Поле URL невалидно';
         }
         if (empty($this->errors['url'])) {
             unset($this->errors['url']);
@@ -295,7 +203,7 @@ final class AdminProductValidator extends AdminBaseValidator
     {
         $this->errors['status'] = [];
         if (!isset($statusData) || !in_array($statusData, ['active','hidden', 'archived'], true)) {
-            $this->errors['status'][] = 'Поле статус должно быть "Активный", "Невидимый" или "В архиве';
+            $this->errors[] = 'Поле статус должно быть "Активный", "Невидимый" или "В архиве';
         }
         if (empty($this->errors['status'])) {
             unset($this->errors['status']);

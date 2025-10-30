@@ -124,7 +124,7 @@ class AdminProductController extends BaseAdminController
  
     $statusList = $this->service->getStatusList();
 
-// dd($productDTO);
+
 
     $this->renderLayout('shop/edit',  [
       'product' => $productDTO,

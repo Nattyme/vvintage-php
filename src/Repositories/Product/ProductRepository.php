@@ -20,7 +20,7 @@ use Vvintage\Models\Brand\Brand;
 /** DTO */
 use Vvintage\DTO\Product\ProductDTO;
 use Vvintage\DTO\Product\ProductOutputDTO;
-use Vvintage\DTO\Product\ProductInputDTO;
+use Vvintage\DTO\Admin\Product\ProductInputDTO;
 use Vvintage\DTO\Product\ProductFilterDTO;
 
 
@@ -29,12 +29,6 @@ final class ProductRepository extends AbstractRepository
 {
     private const TABLE = 'products';
 
-
-    /**
-      ********** ::: CREATE ::: **********
-    */
-
-    /************ CRETE BEAN ********/
     /** Создаёт новый OODBBean для продукта */
     private function createProductBean(): OODBBean 
     {
@@ -42,11 +36,6 @@ final class ProductRepository extends AbstractRepository
     }
 
   
-
-    /**
-      ********** ::: GET ::: **********
-    */
-      
     public function getProductById(int $id): array
     {
       $data = array_values($this->getProducts(['id' => $id]));
@@ -97,22 +86,12 @@ final class ProductRepository extends AbstractRepository
     }
 
 
-
-
-
-
-
-
-
-
-
     public function getProductsByParam(string $sql ='', array $params = []): array
     {
         // напрямую получаем продукты через getAll
         return $this->getAll("{$sql}", $params);
     }
 
- 
 
     
     public function getAllProducts(array $filters = []): array
@@ -136,20 +115,6 @@ final class ProductRepository extends AbstractRepository
     }
 
     
-
-
-
-
-
-
-
-    /**
-      ********** ::: // GET ::: **********
-    */
-
-
-
-
     /**
       ********** ::: UPDATE ::: **********
     */
@@ -303,6 +268,7 @@ final class ProductRepository extends AbstractRepository
         return [$conditions, $params, $orderBy];
     }
 
+    /** Вынести в фабрику или сервис */
     private function normalizeRow(\RedBeanPHP\OODBBean $bean): array
     {
         $row = $bean->export();
@@ -315,10 +281,6 @@ final class ProductRepository extends AbstractRepository
   
         return $row;
     }
-
-    /**
-      ********** ::: // UPDATE ::: **********
-    */
     
     /**
       ********** ::: SAVE ::: **********

@@ -40,8 +40,6 @@ const initNewProductFormEvents = () => {
         res = await formModel.updateProduct(id); // вместо sendFormDataFetch
       }
 
-      console.log('Ответ сервера:', res);
-
       if (res.success) {
         formView.resetForm();
         previewModel.reset();
@@ -67,6 +65,29 @@ const initNewProductFormEvents = () => {
         formView.addNotificationText(errorMessages);
         formView.scrollToElement('note');
       }
+
+      if (res.errors && Object.keys(res.errors).length > 0) {
+        const errorMessages = [];
+
+        const extractMessages = (obj, prefix = '') => {
+          for (const [key, value] of Object.entries(obj)) {
+            if (Array.isArray(value)) {
+              value.forEach(msg => errorMessages.push(`${prefix}${key ? key + ': ' : ''}${msg}`));
+            } else if (typeof value === 'object' && value !== null) {
+              extractMessages(value, prefix + key + '.');
+            } else {
+              errorMessages.push(`${prefix}${key}: ${value}`);
+            }
+          }
+        };
+
+        extractMessages(res.errors);
+
+        formView.displayNotification({ type: 'error', title: 'Ошибка при отправке формы' });
+        formView.addNotificationText(errorMessages);
+        formView.scrollToElement('note');
+      }
+
 
     } catch (err) {
       console.error("Ошибка сети или сервера:", err);

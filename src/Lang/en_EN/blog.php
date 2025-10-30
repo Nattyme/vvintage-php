@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 return [
+  'blog.title' => 'Blog about Vintage France',
   'blog.cats.main' => 'Categories',
   'blog.cats.sub' => 'Sections',
   'blog.cats.sub.view.all' => 'View all blog sections',

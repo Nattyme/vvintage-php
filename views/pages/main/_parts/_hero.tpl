@@ -15,14 +15,14 @@
     <div class="hero__content-wrapper">
       <div class="hero__text">
         <div class="hero__title">
-          <h1 class="h1">ВИНТАЖНЫЕ ТОВАРЫ</h1>
+          <h1 class="h1"> <?php echo h($fields['site_header']['value']);?></h1>
         </div>
         <div class="hero__desc">
           <!-- <p><?php /** echo h($main['hero_text']); */ ?>&#8230;</p> -->
         </div>
       </div>
       <a href="<?php echo HOST;?>shop" class="hero__button">
-        <span class="button button--l button--primary">
+        <span class="button button--m button--primary">
             <?php echo h(__('button.goto.shop', [], 'buttons'));?>
         </span>
       </a>

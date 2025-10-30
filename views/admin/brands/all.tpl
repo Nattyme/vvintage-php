@@ -78,9 +78,9 @@
     <!--// Таблица -->
   </div>
   <!-- Пагинация -->
-  <div class="section-pagination">
+  <!-- <div class="section-pagination">
       <?php include ROOT . "views/_parts/pagination/_pagination.tpl"; ?>
-  </div>
+  </div> -->
   <!--// Пагинация -->
 
   <?php else : ?>

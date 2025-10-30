@@ -43,7 +43,7 @@
 
     </div>
 
-    <div class="sidebar__widget sidebar__widget--related">
+    <!-- <div class="sidebar__widget sidebar__widget--related">
       <div class="widget widget--related">
         <div class="widget__title">
           <h4 class="h4 text-bold" id="other-articles-title">
@@ -61,7 +61,7 @@
         </ul>
 
       
-    </div>
+    </div> -->
   
   </div>
 </aside>

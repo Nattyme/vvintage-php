@@ -6,7 +6,7 @@
       <div class="blog-logo">
         <div class="blog-logo__title"><?php echo h($settings['site_title']); ?></div>
         <span class="blog-logo__separator"></span>
-        <div class="blog-logo__text">Блог о винтажной Франции</div>
+        <div class="blog-logo__text"> <?php echo h(__('blog.title', [], 'blog'));?></div>
       </div>
   
 

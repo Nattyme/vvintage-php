@@ -18,6 +18,7 @@ class ProductApiController extends BaseApiController
 {
     private AdminProductService $service;
     private ProductApiSerializer $serializer;
+   
 
     public function __construct()
     {
@@ -28,7 +29,7 @@ class ProductApiController extends BaseApiController
 
     public function create(): void
     {
-        // $this->isAdmin(); // проверка прав
+        $this->isAdmin(); // проверка прав
         $productData = $this->getRequestData();
         $text = $productData['_text'];
         $files = $productData['_files']['cover'] ?? [];
@@ -72,7 +73,7 @@ class ProductApiController extends BaseApiController
 
     public function edit(int $id): void 
     {
-        // $this->isAdmin(); // проверка прав
+        $this->isAdmin(); // проверка прав
         $productData = $this->getRequestData();
         
         $text = $productData['_text'];
@@ -120,7 +121,6 @@ class ProductApiController extends BaseApiController
 
     private function getStructuredImages(array $files): array 
     {
-        //  error_log(print_r($files, true));
         $images = [];
 
         if (!isset($files['name']) || !is_array($files['name'])) {
@@ -140,14 +140,7 @@ class ProductApiController extends BaseApiController
             ];
         }
 
-        // 2. Добавляем существующие изображения из формы
-        // foreach ($existing as $i => $existingId) {
-        //     // Если нужно, можно добавить реальные имена файлов или url
-        //     $images[] = [
-        //         'existing_id' => $existingId,
-        //         'image_order' => count($images) // порядок после новых
-        //     ];
-        // }
+        
 
         return $images;
     }
@@ -156,7 +149,7 @@ class ProductApiController extends BaseApiController
     // Список всех активных продуктов
     public function getAll(): array 
     {
-      // $this->isAdmin(); // проверка прав
+      $this->isAdmin(); // проверка прав
 
       // Получаем продукты из сервиса
       $productsData = $this->service->getActiveProducts(); // <-- метод, который вернёт массив объектов/DTO
@@ -177,7 +170,7 @@ class ProductApiController extends BaseApiController
     // Получение одного продукта по ID
     public function getOne(int $id): void
     {
-      // $this->isAdmin(); // проверка прав
+      $this->isAdmin(); // проверка прав
       $product = $this->service->getProductById($id);
  
       if (!$product) {
@@ -189,7 +182,7 @@ class ProductApiController extends BaseApiController
     // Получение продукта по slug
     public function getBySlug(string $slug): void
     {
-         // $this->isAdmin(); // проверка прав
+         $this->isAdmin(); // проверка прав
         $product = $this->service->getProductBySlug($slug);
         if (!$product) {
             $this->error(['Продукт не найден'], 404);

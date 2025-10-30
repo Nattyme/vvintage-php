@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 return [
+  'blog.title' => '关于复古法国的博客',
   'blog.cats.main' => '分类',
   'blog.cats.sub' => '栏目',
   'blog.cats.sub.view.all' => '查看博客所有栏目',

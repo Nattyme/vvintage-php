@@ -14,6 +14,7 @@ export async function getProduct(id) {
 
 export async function createProduct(formData) {
   const res = await fetch(`${API_BASE}/products`, {
+
     method: 'POST',
     credentials: 'include',
     body: formData
@@ -23,10 +24,14 @@ export async function createProduct(formData) {
   try {
     responseData = await res.json();
   } catch (e) {
-    throw new Error('Сервер вернул не-JSON (возможно HTML-ошибка или редирект)');
-  }
+    // сервер не вернул JSON — создаём объект с ошибкой
+    return {
+      success: false,
+      errors: {global: 'Сервер вернул некорректный ответ'}
+    }
 
-  if (!res.ok) throw responseData;
+  }
+  // Возвращаем ответ даже при ошибке статуса (например, 422)
   return responseData;
 }
 

@@ -1,24 +1,7 @@
 <footer class="footer">
 	<div class="container">
     <?php if($isBlogPage) : ?>
-      <div class="footer__top">
-        <div class="footer__topics">
-          <div class="footer__topics-header">
-              <?php echo h(__('blog.cats.sub.view.all', [], 'blog'));?>
-          </div>
-            <ul class="topics-list">
-
-              <?php foreach( $navigation['footer'] as $category) : ?>
-                <li class="topics-list__item">
-                  <a class="topics-list__link" href="#">
-                    <?php echo h($category->title); ?>
-                  </a>
-                </li>
-              <?php endforeach; ?>
-             
-            </ul>
-          </div> 
-        </div>
+      <?php include ROOT . 'views/_parts/_parts-footer/_footer-top-blog.tpl';?>
     <?php endif; ?>
     <div class="footer__content">
       <div class="footer__column">
@@ -35,10 +18,10 @@
           </a>
         </div>
         <div class="footer__copyright">
-          <p>&copy; Все права защищены</p>
-          <p><a href="#">Политика конфиденциальности</a></p>
-          <p><a href="#">Публичная оферта</a></p>
-          <p><a href="#">О предоставлении услуг</a></p>
+          <p>&copy;  <?php echo h(__('footer.copyright', [], 'footer'));?></p>
+          <p><a href="#"><?php echo h(__('footer.privacy_policy', [], 'footer'));?></a></p>
+          <p><a href="#"><?php echo h(__('footer.public_offer', [], 'footer'));?></a></p>
+          <p><a href="#"><?php echo h(__('footer.service_provision', [], 'footer'));?></a></p>
         </div>
       </div>
     
@@ -78,9 +61,6 @@
             </svg>
           </a></li>
         </ul>
-        <!-- <ul class="payment-list">
-          <li><img src="<?php echo HOST . 'static/img/payment/visa-mastercard.png';?>" srcset="<?php echo HOST . 'static/img/payment/visa-mastercard@2x.png';?>" alt=""></li>
-        </ul> -->
       </div>
     </div>
     <!-- backtop button -->

@@ -19,7 +19,7 @@
 
       <div class="posts__button">
         <a href="<?php echo HOST . 'blog';?>" class="button button--l button--outline">
-            <?php echo h(__('button.goto.blog', [], 'buttons'));?>: 
+            <?php echo h(__('button.goto.blog', [], 'buttons'));?>
         </a>
       </div>
     </div>

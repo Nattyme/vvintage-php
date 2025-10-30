@@ -102,7 +102,7 @@
 
   <!-- Пагинация -->
   <div class="section-pagination">
-    <?php include ROOT . "views/_parts/pagination/_pagination.tpl"; ?>
+    <?php /* include ROOT . "views/_parts/pagination/_pagination.tpl"; */ ?>
   </div>
   <!--// Пагинация -->
 </div>

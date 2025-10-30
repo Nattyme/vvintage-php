@@ -33,7 +33,7 @@ final class AdminProductImageValidator
             return true; // файлы есть, ошибок нет
         }
 
-        $this->errors['cover'][] = 'Добавьте изображения товара';
+        $this->errors[]= 'Добавьте изображения товара';
         return false;
     }
 
@@ -41,14 +41,14 @@ final class AdminProductImageValidator
     private function isFileName(array $data): void
     {
       if (isset($data['file_name']) && is_string($data['file_name']) && !empty($data['file_name'])) {return;}
-      $this->errors['file_name'] = 'Имя файла обязательно';
+      $this->errors[] = 'Имя файла обязательно';
     }
 
     private function isFileSize(array $data): void
     {
       if (isset($data['size']) && $data['size'] <= 12 * 1024 * 1024) { return;}
 
-      $this->errors['size'] = 'Размер изображения превышает 12МБ';
+      $this->errors[] = 'Размер изображения превышает 12МБ';
     }
 
     private function isFileType(array $data): void

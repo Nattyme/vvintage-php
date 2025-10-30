@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 return [
+  'blog.title' => 'ヴィンテージフランスのブログ',
   'blog.cats.main' => 'カテゴリー',
   'blog.cats.sub' => 'セクション',
   'blog.cats.sub.view.all' => 'ブログのすべてのセクションを見る',

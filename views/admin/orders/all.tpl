@@ -69,10 +69,10 @@
   </div>
 
   <!-- Пагинация -->
-  <div class="admin-form__item">
+  <!-- <div class="admin-form__item">
       <div class="section-pagination">
           <?php include ROOT . "views/_parts/pagination/_pagination.tpl"; ?>
       </div>
-  </div>
+  </div> -->
   <!--// Пагинация -->
 </div>

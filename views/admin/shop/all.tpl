@@ -113,11 +113,11 @@
   </form>
 
 
-  <div class="section-pagination">
+  <!-- <div class="section-pagination">
     <?php  if ( $pageViewModel['total'] > 0 ) : 
       include ROOT . 'views/_parts/pagination/_pagination.tpl'; 
      endif;  ?>
-  </div>
+  </div> -->
   
 </div>
 

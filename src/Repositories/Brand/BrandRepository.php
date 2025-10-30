@@ -14,8 +14,6 @@ use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 
 /** Абстрактный репозиторий */
 use Vvintage\Repositories\AbstractRepository;
-// use Vvintage\Repositories\Brand\BrandTranslationRepository;
-
 use Vvintage\Models\Brand\Brand;
 use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\DTO\Brand\BrandInputDTO;
