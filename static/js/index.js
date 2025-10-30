@@ -34,7 +34,7 @@ const initEverything = async () => {
     if ((page === 'shop' || page === 'blog' || page === 'orders') ) {
      initCheckboxAll();
     }
-    if ((page === 'shop-edit' && id) || (page === 'shop-new' && id)) {
+    if ((page === 'shop-edit' && id) || (page === 'shop-new')) {
       initDragDropController();
       initPreviewController();
       initCategoriesController();
@@ -42,9 +42,9 @@ const initEverything = async () => {
       initNewProductForm();
       addPhotoBtn();
       addTab();
-    } else if ((page === 'brand-edit' && id) || (page === 'brand-edit' && id)) {  
+    } else if ((page === 'brand-edit' && id) || (page === 'brand-new')) {  
       addTab();
-    }  else if ((page === 'category-edit' && id) || (page === 'category-new' && id)) {
+    }  else if ((page === 'category-edit' && id) || (page === 'category-new')) {
       addTab();
     }
   }

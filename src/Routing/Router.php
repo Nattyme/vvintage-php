@@ -292,12 +292,12 @@
 
     public static function routeProfile(RouteData $routeData)
     {
-        $action = $routeData->uriGet ?? '';
+        $action = $routeData->uriGet ? $routeData->uriGet : $routeData->uriModule;
         $breadcrumbs = new Breadcrumbs();
         $profileController = new ProfileController($breadcrumbs);
 
         switch ($action) {
-            case '':
+            case 'profile':
                 $profileController->index($routeData); // Профиль
                 break;
 
