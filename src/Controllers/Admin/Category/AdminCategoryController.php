@@ -92,6 +92,7 @@ final class AdminCategoryController extends BaseAdminController
     $mainCats = $this->service->getMainCategories();
     $parentCategory = null;
     
+    // Если это главная категория 
     if($parentId) {    
       $parentId = (int) $parentId;
       $parentCategory = $this->service->getCategoryById($parentId);
@@ -103,6 +104,7 @@ final class AdminCategoryController extends BaseAdminController
         $this->redirect('admin/category');
     }
 
+    // Если отправлена форма
     if (isset($_POST['submit'])) {
      
       if (!check_csrf($_POST['csrf'] ?? '')) {
@@ -203,15 +205,14 @@ final class AdminCategoryController extends BaseAdminController
   {
     // Название страницы
     $pageTitle = 'Удалить категорию';
-
     $id = $this->routeData->uriGet ? (int) $this->routeData->uriGet : null;
 
-    if (!$id) $this->redirect('admin/category');
+    if (!$id) $this->redirect('admin/category'); // если не нашли
 
     $category = $this->service->getCategoryById($id);
 
 
-    // Если нет ошибок
+    // Если отправлена форма
     if (isset($_POST['submit'])) {
       $csrfToken = $_POST['csrf'] ?? '';
 
@@ -220,6 +221,7 @@ final class AdminCategoryController extends BaseAdminController
         $this->redirect('admin/category');
       }
 
+      // Удаляем категорию
       $this->service->deleteCategory($id);
 
       $this->flash->pushSuccess('Категория успешно удалена.');

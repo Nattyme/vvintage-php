@@ -8,31 +8,14 @@ namespace Vvintage\Repositories\Category;
 use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
-/** Контракты */
-use Vvintage\Contracts\Category\CategoryRepositoryInterface;
-
-/** Абстрактный репозиторий */
-use Vvintage\Repositories\AbstractRepository;
-use Vvintage\Repositories\Category\CategoryTranslationRepository;
-
-use Vvintage\Models\Category\Category;
-use Vvintage\DTO\Category\CategoryDTO;
-use Vvintage\DTO\Category\CategoryOutputDTO;
-use Vvintage\DTO\Admin\Category\CategoryInputDTO;
+use Vvintage\Contracts\Category\CategoryRepositoryInterface; // Контракт
+use Vvintage\Repositories\AbstractRepository; // Абстрактный репозиторий 
+use Vvintage\Models\Category\Category; // Модель
 
 
-// final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
-final class CategoryRepository extends AbstractRepository
+final class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
 {
     private const TABLE = 'categories';
-    private CategoryTranslationRepository $translationRepo;
-
-    public function __construct()
-    {
-      //  $this->currentLang = $currentLang;
-       $this->translationRepo = new CategoryTranslationRepository();
-    }
-
 
     private function mapBeanToCategory(OODBBean $bean): Category
     {
