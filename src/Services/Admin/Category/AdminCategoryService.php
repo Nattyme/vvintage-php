@@ -8,6 +8,8 @@ use Vvintage\Models\Category\Category;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\DTO\Admin\Category\CategoryInputDTO;
 use Vvintage\DTO\Admin\Category\CategoryTranslationInputDTO;
+use Vvintage\DTO\Admin\Category\EditDTO;
+use Vvintage\DTO\Admin\Category\EditDTOFactory;
 
 
 final class AdminCategoryService extends CategoryService
@@ -95,6 +97,28 @@ final class AdminCategoryService extends CategoryService
 
     }
 
+    private function createCategoryEditDTO(Category $category, ?Category $parentCategory): array
+    {
+      $translations = $this->translationRepo->loadTranslations($category->getId());
+      $category->setTranslations($translations);
+      dd( $category);
+      $dtoFactory = new EditDtoFactory();
+
+      return $dtoFactory->createFromCategory($category, $parentCategory);
+    }
+
+
+    public function getCategoryEditDTO (int $id): EditDto
+    {
+        $category = $this->getCategoryById($id);
+        $parentCategoryId = $category->getParentId() ?? null;
+        $parentCategory = $this->getCategoryById($parentCategoryId) ?? null;
+
+        $dtoFactory = new EditDtoFactory();
+        
+        return $dtoFactory->createFromCategory($category, $parentCategory);
+    }
+    
 
 
 
@@ -122,16 +146,4 @@ final class AdminCategoryService extends CategoryService
     {
       $this->repository->deleteCategory($id);
     }
-
-    public function getCategoryEditAdmin(int $id) : EditDto
-    {
-      $category = $this->getCategoryById($id);
-      $parentCategory = $this->repository->getParentCategory($category->getId()) ?? null;
-
-      return $this->getPostCategoryEditDto($category, $parentCategory);
-    }
-
-
-  
-
 }

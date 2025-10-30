@@ -6,21 +6,21 @@
   <form 
       id="form-edit-category" 
       method="POST" 
-      action="<?php echo HOST;?>admin/category-edit/<?php echo u($category->getId());?>"
+      action="<?php echo HOST;?>admin/category-edit/<?php echo u($category->id);?>"
       class="admin-form"
   >
 
-  <?php if ($parentCategory) : ?> 
+  <?php if ($category->parent_id) : ?> 
     <div class="admin-form__field">
       <label class="admin-form__label" for="title">
-        <?php echo 'Обвновление в разделе: ' . h($parentCategory->getTitle());?>
+        <?php echo 'Обвновление в разделе: ' . h($category->parent_title);?>
       </label>
       <input 
         id="parent" 
         name="parent_id" 
         class="admin-form__input admin-form__input--width-label" 
         type="text" 
-        value="<?php echo h($parentCategory->getId());?>"
+        value="<?php echo h($category->parent_id);?>"
         hidden
       />
       
@@ -36,7 +36,7 @@
           class="admin-form__input admin-form__input--width-label" 
           type="text" 
           placeholder="Введите заголовок категории" 
-          value="<?php echo h(trim($category->getTitle()));?>"
+          value="<?php echo h(trim($category->title));?>"
           required
         />
       </div>

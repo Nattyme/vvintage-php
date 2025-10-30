@@ -33,7 +33,7 @@ class CategoryService extends BaseService
         $category = $this->repository->getCategoryById($id);
 
         if (!$category) {
-            return [];
+            return null;
         }
 
         $translations = $this->translationRepo->loadTranslations($id);

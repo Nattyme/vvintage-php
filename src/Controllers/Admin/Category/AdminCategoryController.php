@@ -155,16 +155,7 @@ final class AdminCategoryController extends BaseAdminController
     } 
 
     // $categoryModel = $this->service->getCategoryById($id);
-    $category = $this->service->getCategoryEditAdmin($id);
-    dd($categoryModel);
-    $categoryModel->setTranslations();
-
-    $parentId = $categoryModel->getParentId() ?? null;
-    if(  $parentId) {    
-      // $parentId = $categoryModel->getParentId();
-      $parentCategory = $this->service->getCategoryById($parentId);
-    }
-
+    $category = $this->service->getCategoryEditDTO($id);
 
 
     // $validate = $this->validator->new($_POST);
@@ -215,7 +206,7 @@ final class AdminCategoryController extends BaseAdminController
 
 
     }
-    dd($category);
+//  dd($category);
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,

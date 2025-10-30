@@ -1,30 +1,29 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\PostCategory;
-
-use Vvintage\Config\LanguageConfig; 
+namespace Vvintage\DTO\Admin\Category;
 
 /** Model */
-use Vvintage\Models\PostCategory\PostCategory;
-use Vvintage\DTO\Admin\PostCategory\EditDto;
+use Vvintage\Models\Category\Category;
+use Vvintage\DTO\Admin\Category\EditDTO;
+use Vvintage\Config\LanguageConfig;
 
-final class EditDtoFactory
+final class EditDTOFactory
 {
-    public function createFromPostCategory(PostCategory $category, PostCategory $parentCategory = null): EditDto
+    public function createFromCategory(Category $category, Category $parentCategory = null): EditDTO
     {
         $isMain = $parentCategory === null;
-        
+        $defaultLang = LanguageConfig::getDefault();
 
-        return new EditDto(
+        return new EditDTO(
             isMain : $isMain,
             id: (int) $category->getId(),
-            title: (string) ($category->getTitle() ?? ''),
-            description : (string) ($category->getDescription() ?? ''),
+            title: (string) ($category->getTitle($defaultLang) ?? ''),
+            description : (string) ($category->getDescription($defaultLang) ?? ''),
             slug: (string) ($category->getSlug() ?? ''),
             parent_id: $parentCategory ? (int) $parentCategory->getId() : null,
-            parent_title: $parentCategory ? (string) $parentCategory->getTitle() : null,
-            translations: (array) ($category->getTranslation() ?? []),
+            parent_title: $parentCategory ? (string) $parentCategory->getTitle($defaultLang) : null,
+            translations: (array) ($category->getTranslations() ?? []),
         );
     }
 }
