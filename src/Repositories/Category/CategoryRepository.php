@@ -73,7 +73,7 @@ final class CategoryRepository extends AbstractRepository
 
     public function getAllCategories(): array
     {
-        $beans = $this->findAll(table: self::TABLE);
+        $beans = $this->findAll(table: self::TABLE, orderBy: 'parent_id ASC');
     
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }

@@ -109,6 +109,11 @@ final class AdminCategoryService extends CategoryService
       $this->translationRepo->saveCategoryTranslation($translateArray);
     }
 
+    public function deleteCategory(int $id): void 
+    {
+      $this->repository->deleteCategory($id);
+    }
+
 
 
     // *** DTO *** //

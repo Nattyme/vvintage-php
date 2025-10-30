@@ -201,7 +201,6 @@ final class AdminCategoryController extends BaseAdminController
 
   private function renderDelete(): void
   {
-    
     // Название страницы
     $pageTitle = 'Удалить категорию';
 
