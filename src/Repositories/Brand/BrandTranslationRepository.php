@@ -35,7 +35,7 @@ final class BrandTranslationRepository extends AbstractRepository
           if (!$bean) {
               // если нет → создаём новый
               $bean = $this->createTranslationsBean();
-              $bean->brand_id = $translate['category_id'];
+              $bean->brand_id = $translate['brand_id'];
               $bean->locale = $translate['locale'];
           }
 

@@ -11,6 +11,7 @@ final class EditDTOFactory
 {
     public function createFromBrand(Brand $brand): EditDTO
     {
+  
         return new EditDTO(
             id: (int) $brand->getId(),
             title: (string) ($brand->getTitle() ?? ''),

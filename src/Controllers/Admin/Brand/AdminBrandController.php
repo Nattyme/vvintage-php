@@ -90,8 +90,11 @@ class AdminBrandController extends BaseAdminController
   {
       $id = $brandId ? (int) $brandId : null;
 
-      // Если редактируем, то получаем DTO
+      $brand = null; // по умолчанию бренда нет
+      
+      // Если редактируем, то получаем его DTO
       if ($id) $brand = $this->service->createBrandEditDTO($id);
+      
 
       // Если передан id, но не нашли бренд
       if ($id && !$brand) {
@@ -100,13 +103,13 @@ class AdminBrandController extends BaseAdminController
       }
 
       // Если отправлена форма
-      if (isset($_POST['submit'])) $this->processBrandFormSubmission($_POST, $brandId); 
+      if (isset($_POST['submit'])) $this->processBrandFormSubmission($_POST, $id); 
 
       // Рендерим форму 
       $this->renderLayout('brands/single', [
-          'pageTitle' => $brandId ? 'Бренды - редактирование' : 'Бренды - создание',
+          'pageTitle' => $id ? 'Бренды - редактирование' : 'Бренды - создание',
           'routeData' => $this->routeData,
-          'brand' => $brand,
+          'brand' => $brand ? $brand : null,
           'languages' => $this->languages,
           'currentLang' => $this->currentLang,
           'flash' => $this->flash
@@ -173,14 +176,15 @@ class AdminBrandController extends BaseAdminController
     // Название страницы
     $pageTitle = 'Удалить бренд';
 
+    // Поулчаем id
     $id = $this->routeData->uriGet ? (int) $this->routeData->uriGet : null;
-
     if (!$id) $this->redirect('admin/brand');
 
-    $brand = $this->service->getBrandById($id);
+    // Получвем dto
+    $brand = $this->service->createBrandEditDTO($id);
 
+    // Если отправлена форма
     if (isset($_POST['submit'])) {
-
       $csrfToken = $_POST['csrf'] ?? '';
 
       if (!$csrfToken) {

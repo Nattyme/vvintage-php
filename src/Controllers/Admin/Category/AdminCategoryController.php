@@ -209,8 +209,8 @@ final class AdminCategoryController extends BaseAdminController
 
     if (!$id) $this->redirect('admin/category'); // если не нашли
 
-    $category = $this->service->getCategoryById($id);
-
+    // Получаем DTO категории для отображения
+    $category = $this->service->createCategoryEditDTO($id);
 
     // Если отправлена форма
     if (isset($_POST['submit'])) {

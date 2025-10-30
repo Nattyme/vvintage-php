@@ -32,6 +32,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         if (!$bean || !$bean->id) {
             return null;
         }
+    
         $brandArray = $this->mapBeanToArray($bean);
 
         return Brand::fromArray($brandArray);
@@ -116,17 +117,10 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         return $id;
     }
    
-
-    /** Создаёт новый бренд через DTO */
-    public function createBrand(BrandInputDTO $dto): ?int
-    {
-        return $this->saveBrand($dto);
-    }
-
     /** Обновляет существующий бренд через DTO */
     public function updateBrand(BrandInputDTO $dto): ?int
     {
-      dd($dto);
+
         if (!$dto->id) {
             return null; // нельзя обновить без ID
         }
@@ -144,6 +138,7 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     {
         return [
             'id' => (int) $bean->id,
+            'title' => (string) $bean->title,
             'image' => (string) $bean->image
         ];
     }

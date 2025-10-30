@@ -3,9 +3,9 @@
   <?php include ROOT . "views/components/errors.tpl"; ?>
   <?php include ROOT . "views/components/success.tpl"; ?>
 
-  <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/brand-delete/<?php echo u($brand->getId()); ?>">
+  <form class="admin-form" method="POST" action="<?php echo HOST;?>admin/brand-delete/<?php echo u($brand->id); ?>">
     <div class="admin-form__title">
-      <p class="h2">Вы действительно хотите удалить бренд: <span class="text-bold">"<?php echo h($brand->getTranslatedTitle('ru'));?>"?</span></p>  
+      <p class="h2">Вы действительно хотите удалить бренд: <span class="text-bold">"<?php echo h($brand->title);?>"?</span></p>  
     </div>
 
     <!-- CSRF-токен -->

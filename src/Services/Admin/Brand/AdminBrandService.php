@@ -21,30 +21,30 @@ final class AdminBrandService extends BrandService
       parent::__construct();
     }
 
-    public function createBrandDraft(array $translations): ?int
+    public function createBrandDraft(array $data): ?int
     {
-      if (!$translations ) return null;
+      if (!$data ) return null;
        $this->repository->begin(); 
 
       try {
-        $dto = $this->createBrandInputDTO($translations );
-     
-        if(!$brandDto) throw new \RuntimeException("Не удалось создать бренд");
+        $dto = $this->createBrandInputDTO($data);
 
+        if(!$dto) throw new \RuntimeException("Не удалось создать бренд");
 
-        $brandId = $this->repository->createBrand($brandDto);
-        if(!$brandId || empty($translations) ) throw new \RuntimeException("Не удалось создать бренд");
+        $brandId = $this->repository->saveBrand($dto->toArray());
+        if(!$brandId) throw new \RuntimeException("Не удалось создать бренд");
     
         
-        if (!empty($translations)) {
+        if (!empty($data['translations'])) {
+          $translations = $data['translations'];
           
           $translateDto = $this->createTranslateInputDto($translations, $brandId);
           if (empty($translateDto)) throw new \RuntimeException("Не удалось сохранить бренд");
-         
-    
-          foreach($translateDto as $dto) {
-            $result = $this->translationRepo->saveTranslations($brandId, $dto->locale, $dto);
-          }
+
+          // Приведем к массиву и передадим в БД
+          $array = array_map(function($item) { return $item->toArray(); }, $translateDto);
+          $result = $this->translationRepo->saveBrandTranslation($array);
+          
         }
 
       
@@ -138,6 +138,7 @@ final class AdminBrandService extends BrandService
   
         return $dtoFactory->createFromBrand($brand);
     }
+
 
     public function getBrandsAdminListDTO(): array
     {

@@ -39,6 +39,7 @@ final class Brand
 
     public static function fromArray(array $data): self
     {
+  
         $brand = new self();
         $brand->id = (int) ($data['id'] ?? 0);
         $brand->title = (string) ($data['title'] ?? '');
