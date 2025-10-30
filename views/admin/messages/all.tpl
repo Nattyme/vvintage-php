@@ -4,9 +4,12 @@
     <?php include ROOT . "views/components/success.tpl"; ?>
 
     <header class="admin-form__header admin-form__row">
-      <a href="<?php HOST . 'brand-new';?>" class="button button--m button--primary" data-btn="new">
+      <!-- <a href="#" class="button button--m button--primary" data-btn="new">
         <span>Написать</span>
-      </a>
+      </a> -->
+      <button class="button button--m button--primary" disabled>
+        Написать
+      </button>
       <form method="GET" action="" class="shop__search search" role="search">
         <input type="text" name="query" placeholder="Найти">
         <button type="search-submit">
@@ -76,7 +79,7 @@
     <!--// Таблица -->
     
     <!-- Пагинация -->
-    <?php include ROOT . "views/_parts/pagination/_pagination.tpl"; ?>
+    <?php /* include ROOT . "views/_parts/pagination/_pagination.tpl"; */ ?>
     <!--// Пагинация -->
   </div>
 </div>

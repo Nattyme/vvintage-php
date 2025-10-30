@@ -3,7 +3,7 @@
   <!-- <div class="container"> -->
 
     <div class="section__title">
-      <h2 class="heading">
+      <h2 class="heading h2">
          <?php echo h(__('profile.my_orders', [], 'profile'));?>
       </h2>
     </div>

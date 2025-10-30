@@ -44,7 +44,10 @@ const initEverything = async () => {
       addTab();
     } else if ((page === 'brand-edit' && id) || (page === 'brand-new')) {  
       addTab();
-    }  else if ((page === 'category-edit' && id) || (page === 'category-new')) {
+    }  else if ((page === 'category-edit' && id) 
+                || (page === 'category-new')
+                || (page === 'category-blog-edit' && id) 
+                || (page === 'category-blog-new')) {
       addTab();
     }
   }

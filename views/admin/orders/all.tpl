@@ -28,7 +28,7 @@
             <option value="<?php echo $key;?>"><?php echo $value;?></option>
           <?php endforeach;?>
         </select>
-        <button name="action-submit" type="submit" class="button button--s button--primary">Применить</button>
+        <button name="action-submit" type="submit" class="button button--s button--primary" disabled>Применить</button>
       </div>
       <!-- SELECT -->
 

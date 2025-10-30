@@ -120,6 +120,6 @@
     <?php else : ?>
       <a class="button button--m button--outline" href="<?php echo HOST . 'admin/shop';?>" title="Отмена">Отмена</a>
     <?php endif; ?>
-    <button class="button button--m button--primary" type="submit" name="submit" value="submit">Сохранить</button>
+    <button disabled class="button button--m button--primary" type="submit" name="submit" value="submit">Сохранить</button>
   </div>
 </form>

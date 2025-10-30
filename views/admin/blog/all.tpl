@@ -5,7 +5,8 @@
 
     <header class="admin-form__header">
       <div class="admin-form__field admin-form__row">
-        <a class="button button--s button--primary" href="<?php echo HOST . 'admin/post-new';?>">Добавить пост</a>
+        <!-- <a class="button button--s button--primary" href="<?php echo HOST . 'admin/post-new';?>">Добавить пост</a> -->
+        <button class="button button--s button--primary" disabled>Добавить пост</button>
       
         <!-- SEARCH FORM-->
         <form method="GET" action="" class="search" role="search">
@@ -36,7 +37,7 @@
             <option value="<?php echo $key;?>"><?php echo $value;?></option>
           <?php endforeach;?>
         </select>
-        <button name="action-submit" type="submit" class="button button--s button--primary">Применить</button>
+        <button name="action-submit" type="submit" class="button button--s button--primary" disabled>Применить</button>
       </div>
       <table class="table">
         <thead>

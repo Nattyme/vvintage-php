@@ -69,17 +69,19 @@
             </div>
           </dl>
         </section>
+             <!-- // Выводим заказы пользователя (если есть) -->
+    <section class="profile-orders">
+      <div class="container">
+        <?php if ( $orders) : ?>
+            <?php include (ROOT . 'views/profile/_parts/user-orders.tpl'); ?>
+        <?php endif;?>
+      </div>
+    </section>
       </div>
     </div>
 
-  </div>
 
-  <!-- // Выводим заказы пользователя (если есть) -->
-  <section class="profile-orders">
-    <div class="container">
-      <?php if ( $orders) : ?>
-          <?php include (ROOT . 'views/profile/_parts/user-orders.tpl'); ?>
-      <?php endif;?>
-    </div>
-  </section>
+ 
+
+  </div>
 </main>
