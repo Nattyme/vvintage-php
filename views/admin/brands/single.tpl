@@ -1,8 +1,5 @@
 <div class="admin-page__content-form">
 
-  <?php include ROOT . "views/components/errors.tpl"; ?>
-  <?php include ROOT . "views/components/success.tpl"; ?>
-
   <form 
     class="admin-form" 
     method="POST" 
@@ -10,6 +7,9 @@
       action="<?php echo HOST;?>admin/brand-edit/<?php echo u($brand->getId()); ?>"
     <?php endif;?>
   >
+
+  <?php include ROOT . "views/components/errors.tpl"; ?>
+  <?php include ROOT . "views/components/success.tpl"; ?>
 
     <!-- CSRF-токен -->
     <input type="hidden" name="csrf" value="<?php echo h(csrf_token()); ?>">
@@ -43,8 +43,6 @@
       </div>
 
     </div>
-
-
 
     
     <!-- Логотип бренда -->

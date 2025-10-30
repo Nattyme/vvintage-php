@@ -62,7 +62,7 @@ class AdminBrandController extends BaseAdminController
     // Устанавливаем пагинацию
     $pagination = pagination($brandsPerPage, 'brands');
     $brands =  $this->service->getBrandsAdminListDTO();
-    // $brands =  $this->service->getAllBrandsDto();
+  
     $total = $this->service->getAllBrandsCount();
         
     $this->renderLayout('brands/all',  [
@@ -77,6 +77,16 @@ class AdminBrandController extends BaseAdminController
 
   }
 
+  private function renderNew(): void
+  {
+      $this->handleBrandForm();
+  }
+
+  private function renderEdit(): void
+  {
+      $this->handleBrandForm((int) $this->routeData->uriGet);
+  }
+
   private function handleBrandForm(?int $brandId = null): void
   {
       $brand = $brandId ? $this->service->getBrandById($brandId) : null;
@@ -87,50 +97,11 @@ class AdminBrandController extends BaseAdminController
 
       if ($brandId && !$brand) {
           $this->flash->pushError('Бренд не найден.');
-          // форма не существует редирект или показать пустую страницу
-          // $this->renderLayout('brands/single', [
-          //     'pageTitle' => 'Бренды - редактирование',
-          //     'routeData' => $routeData,
-          //     'brand' => null,
-          //     'languages' => $this->languages,
-          //     'currentLang' => $this->currentLang,
-          //     'flash' => $this->flash
-          // ]);
           return;
       }
 
 
-      if (isset($_POST['submit'])) {
-          // Проверка CSRF
-          if (!check_csrf($_POST['csrf'] ?? '')) {
-              $this->flash->pushError('Неверный токен безопасности.');
-          } else {
-              // Валидация
-              $validate = $this->validator->validate($_POST);
-              $textData = $validate['data'];
-              $errors = $validate['errors'];
-              // $validate = $brandId ? $this->validator->edit($_POST) : $this->validator->new($_POST);
-
-              if (!$errors) {
-                  $this->flash->pushError($brandId 
-                      ? 'Не удалось обновить бренд. Проверьте данные.' 
-                      : 'Не удалось сохранить новый бренд. Проверьте данные.');
-              } else {
-                  $translations = $textData['translations'];
-                  $saved = $brandId
-                      ? $this->service->updateBrand($brandId, $translations)
-                      : $this->service->createBrandDraft($translations);
-
-                  if ($saved) {
-                      $this->flash->pushSuccess($brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.');
-                      header('Location: ' . HOST . 'admin/brand');
-                      exit; // здесь return нужен, чтобы не рендерить форму
-                  } else {
-                      $this->flash->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
-                  }
-              }
-          }
-      }
+      if (isset($_POST['submit'])) $this->processBrandFormSubmission($_POST, $brandId); 
 
       // Всегда рендерим форму (новая или с ошибками)
       $this->renderLayout('brands/single', [
@@ -143,16 +114,59 @@ class AdminBrandController extends BaseAdminController
       ]);
   }
 
-
-  private function renderNew(): void
+  private function processBrandFormSubmission(array $data, ?int $brandId): void
   {
-      $this->handleBrandForm();
+      // Проверка CSRF
+      if (!check_csrf($data['csrf'] ?? '')) {
+        $this->flash->pushError('Неверный токен безопасности.');
+        $this->redirect('admin/brand');
+      } 
+
+      // Валидация
+      $result = $this->validator->validate($data);
+
+      // Если есть ошибки - пройдём по массиву и покажем.
+      if(!empty($result['errors'])) {
+        $this->renderErrors($result['errors']);
+   
+        if($brandId) $this->redirect("admin/brand-edit/{$brandId}"); // редирект
+        $this->redirect('admin/brand-new');
+      }
+
+      
+      // Сохраняем
+      $data = $result['data'];
+      $id =  $brandId
+                ? $this->service->updateBrandDraft($brandId, $data )
+                : $this->service->createBrandDraft($data);
+  
+
+      if (!$id) {
+        $this->flash->pushError('Не удалось сохранить бренд. Попробуйте ещё раз.');
+        if($brandId) $this->redirect("admin/brand-edit/{$brandId}"); // редирект
+        $this->redirect('admin/brand-new');
+      } 
+
+      // Сообщение об успехе
+      $message = $brandId ? 'Бренд успешно обновлен.' : 'Бренд успешно создан.';
+      $this->flash->pushSuccess($message);
+
+      $this->redirect("admin/brand-edit/{$id}"); // редирект
   }
 
-  private function renderEdit(): void
+  private function renderErrors(array $errors): void
   {
-      $this->handleBrandForm((int) $this->routeData->uriGet);
+      foreach ($errors as $fields) {
+        foreach ($fields as $lang => $messages) {
+            array_walk_recursive($messages, function($message) use ($lang){
+              $this->flash->pushError("Ошибка в поле языка {$lang}: ", $message );
+            });
+        }
+      }
+  
+      return;
   }
+
 
 
   private function renderDelete(): void

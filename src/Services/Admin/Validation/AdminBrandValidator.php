@@ -3,65 +3,28 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Admin\Validation;
 
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Repositories\Brand\BrandRepository;
+use Vvintage\Services\Admin\Validation\AdminBaseValidator;
 
-final class AdminBrandValidator
+final class AdminBrandValidator extends AdminBaseValidator
 {
-    private FlashMessage $flash;
-
-    public function __construct()
+    public function validate(array $data): array
     {
-        $this->flash = new FlashMessage();
-    }
+         // Сначала синхронизация — подставим английские переводы в пустые языки
+        $data = $this->synchronize($data['translations'] ?? [], $data);
 
-    public function validate(array &$data): bool
-    {
-        $valid = true;
+        // Проверка переводов (обязательные ru и en)
+        $this->validateTranslation($data['translations']);
 
-        // Обязательные поля
-        $valid = $this->validateRequired($data, 'title', 'Заполните название бренда') && $valid;
-        $valid = $this->validateRequired($data, 'description', 'Заполните описание бренда') && $valid;
-        $valid = $this->validateRequired($data, 'meta_title', 'Заполните SEO заголовок страницы бренда') && $valid;
-        $valid = $this->validateRequired($data, 'meta_description', 'Заполните SEO описание страницы бренда') && $valid;
-
-        // Длина
-        $valid = $this->validateLength($data['title'] ?? [], 2, 255, 'Название бренда') && $valid;
-        $valid = $this->validateLength($data['meta_title'] ?? [], 5, 70, 'SEO заголовок') && $valid;
-        $valid = $this->validateLength($data['meta_description'] ?? [], 10, 160, 'SEO описание') && $valid;
-
-        // Проверка допустимых символов + автоочистка
-        $valid = $this->validateAllowedChars($data, 'title', 'Название бренда') && $valid;
-        $valid = $this->validateUniqueBrand($data, 'title') && $valid;
-
-        // Логотип
-        if (!empty($_FILES['image']['name'])) {
-            $valid = $this->validateImage($_FILES['image']) && $valid;
-        }
-
-        return $valid;
-    }
-
-
-    /**
-     * Проверка обязательных полей
-     */
-    private function validateRequired(array $data, string $fieldName, string $message): bool
-    {
-        $valid = true;
-        foreach ($data[$fieldName] ?? [] as $lang => $value) {
-            if (trim((string)$value) === '') {
-                $flagPath = HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$lang";
-                $this->flash->pushError('Пустое поле', $message, $flagPath);
-                $valid = false;
-            }
-        }
-        return $valid;
+        return [
+          'errors' => $this->errors,
+          'data' => $data
+        ];
     }
 
     /**
      * Проверка длины строки
-     */
+    */
     private function validateLength(array $fields, int $min, int $max, string $fieldLabel): bool
     {
         $valid = true;
@@ -150,7 +113,7 @@ final class AdminBrandValidator
         return $valid;
     }
 
-    private function validateUniqueBrand(array &$data, string $fieldName): bool
+    private function validateUniqueBrand(array $data, string $fieldName): bool
     {
         $brandRepo = new BrandRepository();
 

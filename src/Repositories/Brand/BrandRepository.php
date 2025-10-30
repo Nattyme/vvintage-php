@@ -95,26 +95,25 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     }
 
 
-    /** Сохраняет бренд с DTO */
-    public function saveBrand(BrandInputDTO $dto): ?int
+    /** Сохраняет бренд */
+    public function saveBrand(array $data): ?int
     {
-        if (!$dto) throw new RuntimeException("Не удалось сохранить бренд");
-
-        // Создаем или загружаем бренд
-        $brandBean = $dto->id 
-            ? $this->findById(self::TABLE, $dto->id)
+        // Создаем или обновляем бренд
+        $bean = $data['id'] 
+            ? $this->findById(self::TABLE, $data['id'])
             : $this->createBrandBean();
 
-        $brandBean->title = $dto->title;
-        $brandBean->image = $dto->image;
+        $bean->title = $data['title'];
+        $bean->description = $data['description'];
+        $bean->image = $data['image'];
 
-        $this->saveBean($brandBean);
+        $this->saveBean($bean);
 
-        $brandId = (int)$brandBean->id;
+        $id = (int) $bean->id;
 
-        if (!$brandId) throw new RuntimeException("Не удалось сохранить бренд");
+        if (!$id) throw new RuntimeException("Не удалось сохранить бренд");
 
-        return $brandId;
+        return $id;
     }
    
 

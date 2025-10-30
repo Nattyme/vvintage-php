@@ -158,7 +158,7 @@ final class AdminCategoryController extends BaseAdminController
      
       if (!check_csrf($_POST['csrf'] ?? '')) {
         $this->flash->pushError('Неверный токен безопасности.');
-        $this->redirect('admin/category-edit');
+        $this->redirect("admin/category-edit/{$id}");
       } 
 
       $result = $this->validator->validate($_POST);
@@ -166,7 +166,8 @@ final class AdminCategoryController extends BaseAdminController
       // Если есть ошибки - пройдём по массиву и покажем.
       if(!empty($result['errors'])) {
         $this->renderErrors($result['errors']);
-        $this->redirect('admin/category-edit');
+        $this->redirect("admin/category-edit/{$id}");
+
       }
 
       // Сохраняем
@@ -174,11 +175,12 @@ final class AdminCategoryController extends BaseAdminController
 
       if ($saved) {
           $this->flash->pushSuccess('Категория успешно обновлена.');
-          $this->redirect('admin/category');
+          $this->redirect("admin/category-edit/{$id}");
       } 
 
       $this->flash->pushError('Не удалось обновить категорию. Проверьте данные и попробуйте ещё раз.');
-      $this->redirect('admin/category');
+      $this->redirect("admin/category-edit/{$id}");
+  
     }
 
 

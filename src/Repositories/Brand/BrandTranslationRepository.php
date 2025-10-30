@@ -24,27 +24,35 @@ final class BrandTranslationRepository extends AbstractRepository
       return $this->createBean(self::TABLE);
     }
 
-    public function saveTranslations($brandId, $locale, $fields): void
+    public function saveBrandTranslation(array $translations): array
     {
-     
-        $translationBean = $this->findOneBy(self::TABLE, 'brand_id = ? AND locale = ?', [$brandId, $locale]) 
-                      ?? $this->createTranslationsBean();
+        $ids = [];
 
-        // если новый bean — задаём brand_id и locale
-        if (!$translationBean->id) {
-            $translationBean->brand_id = $brandId;
-            $translationBean->locale = $locale;
+        foreach ($translations as $translate) {
+          // ищем существующий перевод
+          $bean = $this->findOneBy(self::TABLE, ' brand_id = ? AND locale = ? ', [ $translate['brand_id'], $translate['locale'] ]);
+
+          if (!$bean) {
+              // если нет → создаём новый
+              $bean = $this->createTranslationsBean();
+              $bean->brand_id = $translate['category_id'];
+              $bean->locale = $translate['locale'];
+          }
+
+          // обновляем данные
+          $bean->title = $translate['title'];
+          $bean->description = $translate['description'];
+          $bean->meta_title = $translate['meta_title'];
+          $bean->meta_description = $translate['meta_description'];
+
+          $result = $this->saveBean($bean);
+
+          if (!$result) throw new \RuntimeException("Не удалось сохранить перевод бренда");
+
+          $ids[] = (int) $bean->id;
         }
 
-
-        $translationBean->title = $fields->title ?? null;
-        $translationBean->description = $fields->description ?? null;
-        $translationBean->meta_title = $fields->meta_title ?? null;
-        $translationBean->meta_description = $fields->meta_description ?? null;
-
-        $result = $this->saveBean($translationBean);
-
-        if (!$result) throw new RuntimeException("Не удалось сохранить перевод бренда");
+        return $ids;
     }
 
     public function loadTranslations(int $id): array

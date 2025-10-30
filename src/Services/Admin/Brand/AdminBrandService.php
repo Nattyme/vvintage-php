@@ -9,6 +9,8 @@ use Vvintage\DTO\Brand\BrandInputDTO;
 use Vvintage\DTO\Brand\BrandTranslationInputDTO;
 use Vvintage\DTO\Admin\Brand\BrandForAdminListDTO;
 use Vvintage\DTO\Admin\Brand\BrandsForAdminListDTOFactory;
+use Vvintage\DTO\Brand\BrandInputDTOFactory;
+use Vvintage\DTO\Admin\Brand\BrandTranslationInputDTOFactory;
 
 
 final class AdminBrandService extends BrandService
@@ -21,12 +23,11 @@ final class AdminBrandService extends BrandService
     public function createBrandDraft(array $translations): ?int
     {
       if (!$translations ) return null;
-
-      // начало транзакции
-      $this->repository->begin(); 
+       $this->repository->begin(); 
 
       try {
-        $brandDto = $this->createBrandInputDTO($translations );
+        $dto = $this->createBrandInputDTO($translations );
+     
         if(!$brandDto) throw new \RuntimeException("Не удалось создать бренд");
 
 
@@ -62,80 +63,68 @@ final class AdminBrandService extends BrandService
       
     }
 
-    public function createBrandInputDTO(array $data): ?BrandInputDTO
-    {
-
-        return new BrandInputDTO([
-            // 'title' => $translations[$mainLang]['title'] ?? '',
-            // 'description' => $translations[$mainLang]['description'] ?? '',
-            'image' => $data['image'] ?? '',
-            // 'translations' => $translations,
-        ]);
-  
-    }
-
-    public function createTranslateInputDto(array $data, $brandId): array 
-    {
-      
-      $brandTranslationsDto = [];
-
-      foreach($data as $locale => $translate) {
-          $brandTranslationsDto[] = new BrandTranslationInputDTO([
-              'brand_id' => (int) $brandId,
-              'locale' => (string) $locale, 
-              'title' => (string) ($translate['title'] ?? ''),
-              'description' => (string) ($translate['description'] ?? ''),
-              'meta_title' => (string) ($translate['meta_title'] ?? $translate['title'] ?? ''),
-              'meta_description' => (string) ($translate['meta_description'] ?? $translate['description'] ?? '')
-          ]);
-      }
-       
-      return $brandTranslationsDto;
-
-    }
-
-    public function updateBrand (int $brandId, array $translations) 
+    public function updateBrandDraft (int $id, array $data): ?int
     { 
-      $this->translationRepo->begin();
+      $this->repository->begin(); // начало транзакции
 
 
       try {
-        if (!empty($translations)) {
+        // Обновляем бренд
+        $dto = $this->createBrandInputDTO($data, $id);
           
-          $translateDto = $this->createTranslateInputDto($translations, $brandId);
+        if(!$dto) throw new \RuntimeException("Не удалось обновить бренд");
 
-          foreach($translateDto as $dto) {
-            $result = $this->translationRepo->saveTranslations($dto->brand_id, $dto->locale, $dto);
-          }
+        // Сохраняем бренд в БД
+        $this->repository->saveBrand($dto->toArray());
 
-          return true;
-      
-        }
+        // Обновляем переводы бренда
+        $this->updateBrandTranslationsDraft($id, $data);
+
+        // Подтверждаем транзакцию
+        $this->repository->commit();
+
+        return $id;
       } catch (\Throwable $e) {
         $this->translationRepo->rollback();
         throw $e;
       }
     } 
-    
-        
-    public function saveBrand(BrandInputDTO $dto, array $translations): int
+
+    private function updateBrandTranslationsDraft(int $id, array $data): void 
     {
-        $this->brandRepo->begin();
+      $dto = $this->createTranslateInputDto($data['translations'], $id);
 
-        try {
-            $brandId = $this->brandRepo->saveBrand($dto);
-            $this->translationRepo->saveTranslations($brandId, $translations);
-            $defaultTranslation = $this->translationRepo->getTranslationsArray($brandId, $this->defaultLocale);
-            dd($this->translationRepo->getTranslationsArray($brandId, $this->defaultLocale));
-            $defaultTranslationDto = new BrandInputDTO($defaultTranslation);
-            $this->brandRepo->updateBrand($defaultTranslationDto);
+      // Приведем к массиву и передадим в БД
+      $array = array_map(function($item) { return $item->toArray(); }, $dto);
+      $this->translationRepo->saveBrandTranslation($array);
+    }
+    
+    public function deleteBrand(int $id): void
+    {
+      $this->repository->deleteBrand($id);
+    }
+    
 
-            $this->brandRepo->commit();
-            return $brandId;
-        } catch (\Throwable $e) {
-            $this->brandRepo->rollback();
-            throw $e;
-        }
+
+
+    /*** DTO */
+    public function createBrandInputDTO(array $data, ?int $id=null): ?BrandInputDTO
+    {
+      $factory = new BrandInputDTOFactory();
+      return $factory->createFromArray($data, $id);
+    }
+
+    public function createTranslateInputDto(array $data, $brandId): array 
+    {
+      $factory = new BrandTranslationInputDTOFactory();
+
+      $translations = [];
+
+      foreach($data as $locale => $translate) {
+          $translations[] = $factory->createFromArray($translate, $locale, $brandId);
+      }
+       
+      return $translations;
     }
 
     public function createBrandDTOFromArray(array $row): BrandOutputDTO
@@ -156,16 +145,6 @@ final class AdminBrandService extends BrandService
       ]);
     }
 
-    public function deleteBrand(int $id): void
-    {
-      $this->repository->deleteBrand($id);
-    }
-
-    public function getTranslations(int $brandId): array 
-    {
-      return $this->translationRepo->loadTranslations($brandId);
-    }
-
     public function getBrandsAdminListDTO(): array
     {
       $brands = $this->getAllBrands();
@@ -175,5 +154,11 @@ final class AdminBrandService extends BrandService
     }
 
 
-    
+    // Скорее всего нужно удалить этот метод
+    public function getTranslations(int $brandId): array 
+    {
+      return $this->translationRepo->loadTranslations($brandId);
+    }
+
+
 }

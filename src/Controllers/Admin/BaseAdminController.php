@@ -57,10 +57,11 @@ abstract class BaseAdminController
 
     // Превращаем элементы массива в переменные
     extract( array_merge($vars, [
-      'flash' => $this->flash,
       'settings' => $this->settings,
-      'languages' => $this->languages
+      'languages' => $this->languages,
+      'flash' => $this->flash
     ]) );
+
 
     ob_start();
     include ROOT . "views/admin/{$viewPath}.tpl"; // views/cart/cart.tpl

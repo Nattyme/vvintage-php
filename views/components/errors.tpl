@@ -1,5 +1,4 @@
 <?php
-// $notes должен быть передан в layout, например из контроллера
 $errors = $flash->get('errors');
 
 if (!empty($errors)) :

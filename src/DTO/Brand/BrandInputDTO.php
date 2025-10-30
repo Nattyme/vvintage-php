@@ -3,13 +3,18 @@ declare(strict_types=1);
 
 namespace Vvintage\DTO\Brand;
 
-final class BrandInputDTO extends BrandDTO
+final class BrandInputDTO 
 {
-    public ?int $id;
-    public function __construct(array $data)
-    {
-      parent::__construct($data);
-      $this->id = (int)($data['id'] ?? 0);
-    }
+    public function __construct(
+      public ?int $id,   
+      public string $title,
+      public string $description,
+      public ?string $image
+    )
+    {}
 
+    public function toArray(): array
+    {
+      return get_object_vars($this);
+    }
 }

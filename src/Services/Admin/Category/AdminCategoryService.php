@@ -7,7 +7,6 @@ namespace Vvintage\Services\Admin\Category;
 use Vvintage\Models\Category\Category;
 
 /* Сервисы */
-use Vvintage\Services\Admin\Validation\AdminCategoryValidator;
 use Vvintage\Services\Category\CategoryService;
 
 /* DTO */
@@ -23,6 +22,7 @@ final class AdminCategoryService extends CategoryService
     {
       parent::__construct();
     }
+
 
     /**
      * Создает категорию в черновом состоянии
@@ -110,6 +110,7 @@ final class AdminCategoryService extends CategoryService
     }
 
 
+
     // *** DTO *** //
     public function createCategoryInputDTO(array $data, ?int $id=null): ?CategoryInputDTO
     {
@@ -128,10 +129,7 @@ final class AdminCategoryService extends CategoryService
     private function createTranslateInputDto(array $data, int $categoryId): array
     {
       $categoryTranslationsDto = [];
-      if(empty($data['ru']) || empty($data['en'])) throw new \RuntimeException("Не получены обязательные переводы ru и en. Не удалось обновить категорию.");
-     
-      
-
+  
       foreach($data as $locale => $translate) {
           $categoryTranslationsDto[] = new CategoryTranslationInputDTO([
               'category_id' => (int) ($categoryId ?? 0),
@@ -158,6 +156,8 @@ final class AdminCategoryService extends CategoryService
         
         return $dtoFactory->createFromCategory($category, $parentCategory);
     }
+
+
 
     
     public function getAllCategoriesCount(): int 
