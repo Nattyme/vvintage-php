@@ -9,13 +9,6 @@ use Vvintage\Services\Admin\Validation\AdminBaseValidator;
 
 final class AdminCategoryValidator extends AdminBaseValidator
 {
-    private FlashMessage $flash;
-
-    public function __construct()
-    {
-        $this->flash = new FlashMessage();
-    }
-
     public function validate(array $data): array
     {
         // Сначала синхронизация — подставим английские переводы в пустые языки

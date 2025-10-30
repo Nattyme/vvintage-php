@@ -137,7 +137,7 @@ final class ProductRepository extends AbstractRepository
         }
   
 
-        return !!$this->saveBean($productBean);
+        return $this->saveBean($productBean);
     
     }
 

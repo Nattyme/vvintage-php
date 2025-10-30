@@ -15,7 +15,6 @@ final class CategoryTranslationInputDTO
 
     public function __construct(array $data)
     {
-
         $this->category_id = (int) ($data['category_id'] ?? 0);
         $this->slug = (string) ($data['slug'] ?? '');
         $this->locale = (string) ($data['locale'] ?? 'ru');
@@ -23,5 +22,10 @@ final class CategoryTranslationInputDTO
         $this->description = (string) ($data['description'] ?? '');
         $this->meta_title = (string) ($data['meta_title'] ?? $data['title'] ?? '');
         $this->meta_description = (string) ($data['meta_description'] ?? $data['description'] ?? '');
+    }
+
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 }

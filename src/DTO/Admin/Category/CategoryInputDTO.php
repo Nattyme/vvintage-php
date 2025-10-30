@@ -25,5 +25,17 @@ final class CategoryInputDTO
         // $this->translations = is_array($data['translations'] ?? null) ? $data['translations'] : [];
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'parent_id' => $this->parent_id,
+            'slug' => $this->slug,
+            'image' => $this->image,
+        ];
+    }
+
 }
 

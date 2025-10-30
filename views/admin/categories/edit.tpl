@@ -1,7 +1,5 @@
 <div class="admin-page__content-form">
-  
-  <?php include (ROOT . "views/components/errors.tpl"); ?>
-  <?php include (ROOT . "views/components/success.tpl"); ?>
+
 
   <form 
       id="form-edit-category" 
@@ -10,36 +8,26 @@
       class="admin-form"
   >
 
-  <?php if ($category->parent_id) : ?> 
-    <div class="admin-form__field">
-      <label class="admin-form__label" for="title">
-        <?php echo 'Обвновление в разделе: ' . h($category->parent_title);?>
-      </label>
-      <input 
-        id="parent" 
-        name="parent_id" 
-        class="admin-form__input admin-form__input--width-label" 
-        type="text" 
-        value="<?php echo h($category->parent_id);?>"
-        hidden
-      />
-      
+  <?php include (ROOT . "views/components/errors.tpl"); ?>
+  <?php include (ROOT . "views/components/success.tpl"); ?>
 
-    </div>
-  <?php endif; ?> 
+      <?php if ($category->parent_id) : ?> 
+        <div class="admin-form__field">
+          <label class="admin-form__label" for="title">
+            <?php echo 'Обвновление в разделе: ' . h($category->parent_title);?>
+          </label>
+          <input 
+            id="parent" 
+            name="parent_id" 
+            class="admin-form__input admin-form__input--width-label" 
+            type="text" 
+            value="<?php echo h($category->parent_id);?>"
+            hidden
+          />
+          
 
-      <div class="admin-form__field">
-        <label class="admin-form__label" for="title">Название категории</label>
-        <input 
-          id="title"
-          name="title" 
-          class="admin-form__input admin-form__input--width-label" 
-          type="text" 
-          placeholder="Введите заголовок категории" 
-          value="<?php echo h(trim($category->title));?>"
-          required
-        />
-      </div>
+        </div>
+      <?php endif; ?> 
 
       <div class="admin-form__field">
         <div class="admin-form__item" data-control="tab">

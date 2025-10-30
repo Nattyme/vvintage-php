@@ -103,33 +103,32 @@ final class AdminCategoryController extends BaseAdminController
         $this->redirect('admin/category');
     }
 
-    if(isset($_POST['submit'])) {
+    if (isset($_POST['submit'])) {
      
       if (!check_csrf($_POST['csrf'] ?? '')) {
         $this->flash->pushError('Неверный токен безопасности.');
-      } else {
-          // Валидация
-          $validate = $this->validator->validate($_POST);
-          $textData = $validate['data'];
-          $errors = $validate['errors'];
+        $this->redirect('admin/category-new');
+      } 
 
+      $result = $this->validator->validate($_POST);
 
-        if (!empty( $errors)) {
-          $this->flash->pushError('Не удалось сохранить новую категорию. Проверьте данные.');
-        } else {
-          // $category = Category::fromInputDTO($dto);
-          // dd(  $category );
-          $saved = $this->service->createCategoryDraft( $textData);
-
-          if ($saved) {
-              $this->flash->pushSuccess('Категория успешно создана.');
-              $this->redirect('admin/category');
-          } else {
-              $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
-              $this->redirect('admin/category');
-          }
-        }
+      // Если есть ошибки - пройдём по массиву и покажем.
+      if(!empty($result['errors'])) {
+        $this->renderErrors($result['errors']);
+        $this->redirect('admin/category-new');
       }
+      
+      // Сохраняем
+      $saved = $this->service->createCategoryDraft( $result['data']);
+
+      if ($saved) {
+          $this->flash->pushSuccess('Категория успешно создана.');
+          $this->redirect('admin/category');
+      } else {
+          $this->flash->pushError('Не удалось сохранить новую категорию. Проверьте данные и попробуйте ещё раз.');
+          $this->redirect('admin/category');
+      }
+      
     }
 
     $this->renderLayout($viewPath,  [
@@ -154,59 +153,38 @@ final class AdminCategoryController extends BaseAdminController
       $this->redirect('admin/category');
     } 
 
-    // $categoryModel = $this->service->getCategoryById($id);
-    $category = $this->service->getCategoryEditDTO($id);
-
-
-    // $validate = $this->validator->new($_POST);
+    // Если отправлена форма
     if(isset($_POST['submit'])) {
-        $validate = true;
+     
+      if (!check_csrf($_POST['csrf'] ?? '')) {
+        $this->flash->pushError('Неверный токен безопасности.');
+        $this->redirect('admin/category-edit');
+      } 
 
-      
-        if (!$validate) {
-          $this->flash->pushError('Не удалось получить категорию для редактирования. Проверьте данные.');
+      $result = $this->validator->validate($_POST);
+
+      // Если есть ошибки - пройдём по массиву и покажем.
+      if(!empty($result['errors'])) {
+        $this->renderErrors($result['errors']);
+        $this->redirect('admin/category-edit');
+      }
+
+      // Сохраняем
+      $saved = $this->service->updateCategoryDraft( $id, $result['data']);
+
+      if ($saved) {
+          $this->flash->pushSuccess('Категория успешно обновлена.');
           $this->redirect('admin/category');
-        } 
+      } 
 
-        $translations = [];
-    
-        foreach ($_POST['title'] as $lang => $title) {
-            $translations[$lang] = [
-                'title' => $_POST['title'][$lang] ?? '',
-                'description' => $_POST['description'][$lang] ?? '',
-                'meta_title' => $_POST['meta_title'][$lang] ?? '',
-                'meta_description' => $_POST['meta_description'][$lang] ?? '',
-            ];
-        }
-
-        $mainLang = 'ru';
-
-        $dto = new CategoryInputDTO([
-            'id' => $id,
-            'parent_id' => $_POST['parent_id'] ?? 0,
-            'slug' => $_POST['slug'] ?? '',
-            'title' => $_POST['title'][$mainLang] ?? '',
-            'description' => $_POST['description'][$mainLang] ?? '',
-            'image' => $_POST['image'] ?? '',
-            'translations' => $translations,
-        ]);
-
-        $category = Category::fromDTO($dto);
-
-        $saved = $this->service->updateCategory( $category);
-
-        if ($saved) {
-          $this->flash->pushSuccess('Категория успешно создана.');
-           $this->redirect('admin/category-edit', $this->routeData->uriGet);
-        } else {
-            $this->flash->pushError('Не удалось сохранить категорию. Попробуйте ещё раз.');
-            $this->redirect('admin/category');
-        }
-        
-
-
+      $this->flash->pushError('Не удалось обновить категорию. Проверьте данные и попробуйте ещё раз.');
+      $this->redirect('admin/category');
     }
-//  dd($category);
+
+
+    // Получаем DTO категории для отображения
+    $category = $this->service->getCategoryEditDTO($id);
+  
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,
@@ -254,6 +232,24 @@ final class AdminCategoryController extends BaseAdminController
       'flash' => $this->flash
     ]);
 
+  }
+
+  /**
+   * Outputs error messages for the given fields and languages
+   * @param array $errors - associative array with fields as keys and
+   *   associative arrays with language codes as keys and error messages as values
+   */
+  private function renderErrors(array $errors): void
+  {
+      foreach ($errors as $fields) {
+        foreach ($fields as $lang => $messages) {
+            array_walk_recursive($messages, function($message) use ($lang){
+              $this->flash->pushError("Ошибка в поле языка {$lang}: ", $message );
+            });
+        }
+      }
+  
+      return;
   }
 
 

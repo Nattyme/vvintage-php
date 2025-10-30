@@ -41,43 +41,39 @@ final class CategoryTranslationRepository extends AbstractRepository
         return $translations;
     }
 
-    public function saveCategoryTranslation(array $translateDto): ?array
+    public function saveCategoryTranslation(array $translations): ?array
     {
         $ids = [];
 
-        foreach ($translateDto as $dto) {
-            if (!$dto) {
-                return null;
-            }
-
+        foreach ($translations as $translate) {
             // ищем существующий перевод
-            $bean = $this->findOneBy(self::TABLE, ' category_id = ? AND locale = ? ', [$dto->category_id, $dto->locale]);
+            $bean = $this->findOneBy(self::TABLE, ' category_id = ? AND locale = ? ', [ $translate['category_id'], $translate['locale'] ]);
 
             if (!$bean) {
                 // если нет → создаём новый
                 $bean = $this->createCategoryTranslateBean();
-                $bean->category_id = $dto->category_id;
-                $bean->locale = $dto->locale;
+                $bean->category_id = $translate['category_id'];
+                $bean->locale = $translate['locale'];
             }
 
             // обновляем данные
-            $bean->slug = $dto->slug;
-            $bean->title = $dto->title;
-            $bean->description = $dto->description;
-            $bean->meta_title = $dto->meta_title;
-            $bean->meta_description = $dto->meta_description;
+            $bean->slug = $translate['slug'];
+            $bean->title = $translate['title'];
+            $bean->description = $translate['description'];
+            $bean->meta_title = $translate['meta_title'];
+            $bean->meta_description = $translate['meta_description'];
 
-            $this->saveBean($bean);
+            $result = $this->saveBean($bean);
+
+            if (!$result) {
+              throw new \RuntimeException("Не удалось сохранить переводы категории");
+            }
 
             $ids[] = (int) $bean->id;
         }
 
         return $ids;
     }
-
-
-
-
     
     // Для api
     public function getLocaleTranslation(int $id, string $locale): array 
@@ -94,9 +90,6 @@ final class CategoryTranslationRepository extends AbstractRepository
 
     }
     // Для api
-
-
-
 
 
     public function findTranslations(int $id, string $locale) 
@@ -134,10 +127,5 @@ final class CategoryTranslationRepository extends AbstractRepository
       $this->saveBean($transBean);
 
     }
-    
-
- 
-
-
     
 }

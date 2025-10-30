@@ -116,8 +116,11 @@ final class AdminProductService extends ProductService
       try {
           // 1. Обновляем продукт
           $productDto = $this->createProductInputDto($data);
+
+          if(!$productDto) {
+              throw new \RuntimeException("Не удалось обновить продукт");
+          }
           $this->repository->updateProductData($id, $productDto->toArray());
-          // $this->repository->updateProductData($id, $productDto);
 
           // 2. Обновляем перевод продукта
           if (!empty($data['translations'])) {

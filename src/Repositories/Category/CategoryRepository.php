@@ -110,34 +110,26 @@ final class CategoryRepository extends AbstractRepository
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
-    public function saveCategory(CategoryInputDTO $dto): int
+    public function saveCategory(array $data): int
     {
-     
-        // сохраняем основную категорию
-        $bean = $dto->id
-            ? $this->loadBean(self::TABLE, $dto->id)
+        // сохраняем или обновляем категорию
+        $bean = $data['id']
+            ? $this->loadBean(self::TABLE, $data['id'])
             : $this->createBean(self::TABLE);
 
-        $bean->parent_id = !empty($dto->parent_id) ? (int)$dto->parent_id : null;
-        $bean->title = $dto->title; // по умолчанию ru
-        $bean->description = $dto->description;
-        $bean->slug = $dto->slug;
-        $bean->image = $dto->image;
+        $bean->parent_id = !empty($data['parent_id']) ? (int) $data['parent_id'] : null;
+        $bean->title = $data['title']; // по умолчанию ru
+        $bean->description = $data['description'];
+        $bean->slug = $data['slug'];
+        $bean->image = $data['image'];
 
-        $id = (int) $this->saveBean($bean);
+        $this->saveBean($bean);
 
-        // НЕ удаляем все переводы
-        // foreach ($cat->getAllTranslations() as $locale => $translation) {
-        //   // ищем перевод для этой локали
-        //   $transBean =  $this->translationRepo->findTranslations($id, $locale);
+        $id = (int) $bean->id;
 
-        //   if (!$transBean) {
-        //     // если нет — создаём новый
-        //     $this->translationRepo->createTranslation($id, $locale);
-        //   }
-
-        //   $this->translationRepo->updateTranslations( $transBean, $translation);
-        // }
+        if (!$id) {
+            throw new RuntimeException("Не удалось сохранить категорию");
+        }
 
         return $id;
     }

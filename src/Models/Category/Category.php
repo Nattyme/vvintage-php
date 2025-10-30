@@ -17,7 +17,7 @@ final class Category
     private string $slug;
     private string $image;
 
-    private array $translations = [];
+    private ?array $translations = [];
 
 
     private function __construct() {}
