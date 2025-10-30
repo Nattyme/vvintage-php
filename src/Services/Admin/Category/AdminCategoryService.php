@@ -46,26 +46,17 @@ final class AdminCategoryService extends CategoryService
         
 
         // Сохраняем в БД
-        $categoryId = $this->repository->saveCategory($categoryDto->toArray());
+        $id = $this->repository->saveCategory($dto->toArray());
       
-        if(!$categoryId) throw new \RuntimeException("Не удалось сохранить категорию");
+        if(!$id) throw new \RuntimeException("Не удалось сохранить категорию");
         
-
-        if (empty($data['translations']) ) throw new \RuntimeException("Не получены переводы. Не удалось сохранить новую категорию");
-        
+        // Сохраняем переводы категории
+        $this->updateCategoryTranslationsDraft($id, $data);
   
-        // Сохраняем перевод категории
-        $translateDto = $this->createTranslateInputDto($data['translations'], $categoryId);
-
-        // Приведем к массиву и передадим в БД
-        $translateArray = array_map(function($item) { return $item->toArray(); }, $translateDto);
-        $this->translationRepo->saveCategoryTranslation($translateArray);
-        
-
         // Подтверждаем транзакцию
         $this->repository->commit();
         
-        return $categoryId;
+        return $id;
       }
       catch (\Throwable $error) 
       {
@@ -91,22 +82,12 @@ final class AdminCategoryService extends CategoryService
         try {
             // Обновляем категорию
             $categoryDto = $this->createCategoryInputDTO($data, $id);
-
             if(!$categoryDto) throw new \RuntimeException("Не удалось обновить категорию");
             
-
             $this->repository->saveCategory($categoryDto->toArray());
-  
 
-            // Обновляем перевод категории
-            if (empty($data['translations']) ) throw new \RuntimeException("Не получены переводы. Не удалось обновить категорию");
-            
-
-            $translateDto = $this->createTranslateInputDto($data['translations'], $id);
-
-            // Приведем к массиву и передадим в БД
-            $translateArray = array_map(function($item) { return $item->toArray(); }, $translateDto);
-            $this->translationRepo->saveCategoryTranslation($translateArray);
+            // Обновляем переводы категории
+            $this->updateCategoryTranslationsDraft($id, $data);
 
             // Подтверждаем транзакцию
             $this->repository->commit();
@@ -118,6 +99,16 @@ final class AdminCategoryService extends CategoryService
             throw $error;
         }
     }
+
+    private function updateCategoryTranslationsDraft(int $id, array $data): void 
+    {
+      $translateDto = $this->createTranslateInputDto($data['translations'], $id);
+
+      // Приведем к массиву и передадим в БД
+      $translateArray = array_map(function($item) { return $item->toArray(); }, $translateDto);
+      $this->translationRepo->saveCategoryTranslation($translateArray);
+    }
+
 
     // *** DTO *** //
     public function createCategoryInputDTO(array $data, ?int $id=null): ?CategoryInputDTO
@@ -137,10 +128,8 @@ final class AdminCategoryService extends CategoryService
     private function createTranslateInputDto(array $data, int $categoryId): array
     {
       $categoryTranslationsDto = [];
-      if(empty($data['ru']) || empty($data['en'])) {
-          throw new \RuntimeException("Не получены обязательные переводы ru и en. Не удалось обновить категорию.");
-          return null;
-      }
+      if(empty($data['ru']) || empty($data['en'])) throw new \RuntimeException("Не получены обязательные переводы ru и en. Не удалось обновить категорию.");
+     
       
 
       foreach($data as $locale => $translate) {
