@@ -1,49 +1,39 @@
-**vvintage** PHP Project
+**Описание**:
+Проект реализует функционал интернет-магазина с поддержкой блога и простой админ-панелью. Архитектура построена по принципам MVC с выделением слоёв контроллеров, сервисов, репозиториев, моделей и DTO.
 
-**Overview**
+**Работа с БД**:
+Используется ReadBean ORM
 
-vvintage is a work-in-progress e-commerce project built using PHP, OOP, and template-based architecture. 
-The project is designed with a layered architecture approach, including Controllers, Services, Models, Repositories, DTOs, and Routers, to maintain clean and organized code.
+**Основная структура**:
 
-This project is currently under development and serves as a platform for practicing real-world PHP development and architecture patterns.
+View: шаблоны страниц, включая отдельные шаблоны для админ-панели.
 
+Controllers: обрабатывают запросы и вызывают соответствующие сервисы.
 
-**Features (Implemented So Far)**
+Services: содержат бизнес-логику, обращаются к репозиториям и другим сервисам. Каждый сервис наследуется от базового, который предоставляет общий функционал (локализация, текущий язык, SEO и т.п.).
 
-- Layered architecture (MVC-like): clear separation between controllers, services, repositories, models, and DTOs.
+Repositories: взаимодействуют с БД, возвращая данные в виде моделей или массивов.
 
-- User authentication: login and registration forms with basic validation.
+Models: описывают сущности (пользователь, заказ, категория и др.), их свойства и базовые методы.
 
-- Multi-language support: translations available in 7 languages.
+DTO: используются для отображения данных в шаблонах. Для разных контекстов предусмотрены отдельные фабрики (например, продукт в каталоге и продукт на странице).
 
-- Database integration: each main entity (e.g., products, users) has its own model and repository.
+Admin: отдельная структура контроллеров и сервисов, наследующих общие классы для повторного использования логики.
 
-- OOP principles: classes, interfaces, and structured methods used throughout the project.
+Store: отвечает за хранение корзины и избранного как для авторизованных, так и для гостей.
 
-- Template-based PHP pages: separation of logic and views for maintainability.
+Lang: файлы переводов для поддержки многоязычности.
 
+Contracts: интерфейсы для репозиториев, контролирующие наличие обязательных методов.
 
-**Technologies**
+Config: содержит общие настройки проекта.
 
-- PHP 8
+**Ключевые особенности**:
 
-- MySQL / RedBean ORM
+Многоязычная поддержка (через Symfony Translator).
 
-- HTML, CSS, SCSS, JavaScript (basic)
+Разделение бизнес-логики, отображения и доступа к данным.
 
-- Template-based rendering
+Использование DTO и фабрик для гибкости представления.
 
-
-Project Status
-
-Project is actively under development.
-
-Some features are not yet implemented, including advanced filtering, full admin panel, and payment integration.
-
-Architecture is being refined to reduce code duplication and improve maintainability.
-
-
-
-Notes
-
-This project is primarily a learning and practice project, focusing on understanding PHP layered architecture, OOP concepts, and working with multiple languages and user authentication.
+Расширяемая архитектура с базовыми классами для контроллеров и сервисов.
