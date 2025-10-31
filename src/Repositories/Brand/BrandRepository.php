@@ -24,6 +24,49 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 {
     private const TABLE = 'brands';
 
+    /** Создаёт новый OODBBean для бренда */
+    private function createBrandBean(): OODBBean 
+    {
+        return $this->createBean(self::TABLE);
+    }
+
+    /** CRUD */
+    public function saveBrand(array $data): ?int
+    {
+        // Создаем или обновляем бренд
+        $bean = $data['id'] 
+            ? $this->findById(self::TABLE, $data['id'])
+            : $this->createBrandBean();
+
+        $bean->title = $data['title'];
+        $bean->description = $data['description'];
+        $bean->image = $data['image'];
+
+        $this->saveBean($bean);
+
+        $id = (int) $bean->id;
+
+        if (!$id) throw new RuntimeException("Не удалось сохранить бренд");
+
+        return $id;
+    }
+   
+    public function updateBrand(BrandInputDTO $dto): ?int
+    {
+
+        if (!$dto->id) {
+            return null; // нельзя обновить без ID
+        }
+
+        return $this->saveBrand($dto);
+    }
+
+    public function deleteBrand(int $id): void
+    {
+      $bean = $this->loadBean(self::TABLE, $id);
+      $this->deleteBean($bean);
+    }
+
     // Находит бренд по id и возвращает объект
     public function getBrandById(int $id): ?Brand
     {
@@ -71,6 +114,8 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
         return array_map(fn($brand) => Brand::fromArray($brand), $brandArray);
     }
     
+
+    
     public function getAllBrandsCount(?string $sql = null, array $params = []): int
     {
       return $this->countAll(self::TABLE, $sql, $params);
@@ -87,48 +132,6 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
     }
 
 
-    
-
-     /** Создаёт новый OODBBean для бренда */
-    private function createBrandBean(): OODBBean 
-    {
-        return $this->createBean(self::TABLE);
-    }
-
-
-    /** Сохраняет бренд */
-    public function saveBrand(array $data): ?int
-    {
-        // Создаем или обновляем бренд
-        $bean = $data['id'] 
-            ? $this->findById(self::TABLE, $data['id'])
-            : $this->createBrandBean();
-
-        $bean->title = $data['title'];
-        $bean->description = $data['description'];
-        $bean->image = $data['image'];
-
-        $this->saveBean($bean);
-
-        $id = (int) $bean->id;
-
-        if (!$id) throw new RuntimeException("Не удалось сохранить бренд");
-
-        return $id;
-    }
-   
-    /** Обновляет существующий бренд через DTO */
-    public function updateBrand(BrandInputDTO $dto): ?int
-    {
-
-        if (!$dto->id) {
-            return null; // нельзя обновить без ID
-        }
-
-        return $this->saveBrand($dto);
-    }
-
-
     public function existsByTitle(string $cleaned): ?int
     {
       return $this->countAll(self::TABLE, 'LOWER(title) = ?', [mb_strtolower($cleaned)]);
@@ -142,13 +145,4 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
             'image' => (string) $bean->image
         ];
     }
-
-
-    public function deleteBrand(int $id): void
-    {
-      $bean = $this->loadBean(self::TABLE, $id);
-      $this->deleteBean($bean);
-    }
-
-
 }

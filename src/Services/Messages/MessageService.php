@@ -9,16 +9,21 @@ use Vvintage\DTO\Message\MessageDTO;
 
 class MessageService
 {
-    protected MessageRepository $messageRepository;
+    protected MessageRepository $repository;
 
     public function __construct()
     {
-      $this->messageRepository = new MessageRepository ();
+      $this->repository = new MessageRepository ();
     }
 
     public function getAllMessagesCount(): int
     {
-      return $this->messageRepository->getAllMessagesCount();
+      return $this->repository->getAllMessagesCount();
+    }
+
+    public function createMessage(array $data): ?int
+    {
+      return $this->repository->createMessage($data);
     }
 
 }

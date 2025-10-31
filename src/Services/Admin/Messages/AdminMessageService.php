@@ -19,13 +19,13 @@ final class AdminMessageService extends MessageService
     public function getAllMessages(array $pagination): array
     {
       
-      return $this->messageRepository->getAllMessages($pagination);
+      return $this->repository->getAllMessages($pagination);
     }
 
 
     public function getMessage(int $id)
     {
-      return $this->messageRepository->getMessageById($id);
+      return $this->repository->getMessageById($id);
     }
 
 }

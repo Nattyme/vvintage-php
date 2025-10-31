@@ -19,6 +19,6 @@
     ?>
   </td>
   <td>
-    <?php echo format_price($order->price);?> &euro;.
+    <?php echo format_price($order->price);?> &euro;
   </td>
 </tr>

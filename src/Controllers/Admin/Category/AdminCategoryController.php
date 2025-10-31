@@ -217,7 +217,7 @@ final class AdminCategoryController extends BaseAdminController
       $csrfToken = $_POST['csrf'] ?? '';
 
       if (!$csrfToken) {
-        $this->flash->pushSuccess('Неверный токен безопасности');
+        $this->flash->pushError('Неверный токен безопасности');
         $this->redirect('admin/category');
       }
 

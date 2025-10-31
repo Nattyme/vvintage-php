@@ -82,7 +82,7 @@
               <!-- // CSRF-токен -->
 
               <div class="form-contact__button">
-                <button class="button button--primary button--l" name="submit" type="submit" value="submit">
+                <button class="button button--primary button--l" name="contact_submit" type="submit" value="submit">
                  <?php echo h(__('button.submit', [], 'buttons'));?>
                 </button>
               </div>

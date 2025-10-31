@@ -21,6 +21,30 @@ final class MessageRepository extends AbstractRepository implements MessageRepos
 {
     private const TABLE = 'messages';
 
+    private function createMessageBean(): OODBBean 
+    {
+        return $this->createBean(self::TABLE);
+    }
+
+    public function createMessage(array $data): ?int
+    {
+        $bean = $this->createMessageBean();
+
+        $bean->name =  $data['name'];
+        $bean->phone = $data['phone'];
+        $bean->email = $data['email'];
+        $bean->message = $data['message'];
+
+        $this->saveBean($bean);
+
+        $id = (int) $bean->id;
+
+        if (!$id) throw new RuntimeException("Не удалось сохранить сообщение");
+
+        return $id;
+
+    }
+
 
     private function mapBeanToMessage(OODBBean $bean): Message
     {
@@ -56,7 +80,7 @@ final class MessageRepository extends AbstractRepository implements MessageRepos
     /** Находим все бренды и возвращаем в виде массива объектов */
     public function getAllMessages(): array
     {
-      $beans = $this->findAll( table: self::TABLE );
+      $beans = $this->findAll( table: self::TABLE, orderBy: 'id DESC');
 
       if (empty($beans)) {
             return [];

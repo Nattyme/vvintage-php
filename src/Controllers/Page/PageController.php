@@ -4,19 +4,21 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Page;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Routing\RouteData;
+use Vvintage\Controllers\Base\BaseController;
 
 use Vvintage\Models\Page\Page;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\SEO\SeoService;
-// use Vvintage\Repositories\Page\PageRepository;
-use Vvintage\Services\Page\Breadcrumbs;
 
-/** Репозитории */
-use Vvintage\Services\Category\CategoryService;
-use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Validation\ContactFormValidation;
+
+/** Сервисы */
+use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Post\PostService;
+use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Messages\MessageService;
+use Vvintage\Services\Category\CategoryService;
 
 
 class PageController extends BaseController
@@ -50,6 +52,37 @@ class PageController extends BaseController
 
     // Хлебные крошки
     $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
+      $csrfToken = $_POST['csrf'] ?? '';
+
+      if (!$csrfToken) {
+        $this->flash->pushSuccess('Неверный токен безопасности');
+        $this->redirect('contacts');
+      }
+
+    
+      $result = ContactFormValidation::validate($_POST);
+
+      // Если есть ошибки - пройдём по массиву и покажем.
+      if(!empty($result['errors'])) {
+        $this->renderErrors($result['errors']);
+        $this->redirect('contacts');
+      }
+
+      $service = new MessageService();
+      $saved = $service->createMessage($result['data']);
+
+      if ($saved) {
+          $this->flash->pushSuccess('Сообщение успешно отправлено. Мы свяжемся с вами в ближайшее время');
+          $this->redirect('contacts');
+      } else {
+          $this->flash->pushError('Не отправить сообщение. Проверьте данные и попробуйте ещё раз.');
+          $this->redirect('contacts');
+      }
+    }
+
+
    
     // Общий рендер
     $this->renderLayout("pages/{$slug}/index", [
@@ -122,6 +155,18 @@ class PageController extends BaseController
           'pageTitle' => $pageTitle,
           'routeData' => $routeData
     ]);
+  }
+
+
+  private function renderErrors(array $errors): void
+  {
+      foreach ($errors as $fields) {
+        foreach ($fields as $index => $value) {
+              $this->flash->pushError("Ошибка: ", $value );
+        }
+      }
+  
+      return;
   }
 
 }
