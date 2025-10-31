@@ -34,6 +34,8 @@ final class FlashMessage
         }
 
         $_SESSION[$type][] = $message;
+        // $this->messages['success'] = $_SESSION['success'] ?? [];
+        // $this->messages['errors'] = $_SESSION['errors'] ?? [];
     }
 
     public function get(string $type): array {

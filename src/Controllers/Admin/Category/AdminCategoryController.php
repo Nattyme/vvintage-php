@@ -169,7 +169,6 @@ final class AdminCategoryController extends BaseAdminController
       if(!empty($result['errors'])) {
         $this->renderErrors($result['errors']);
         $this->redirect("admin/category-edit/{$id}");
-
       }
 
       // Сохраняем
@@ -177,6 +176,7 @@ final class AdminCategoryController extends BaseAdminController
 
       if ($saved) {
           $this->flash->pushSuccess('Категория успешно обновлена.');
+          // dd( $this->flash);
           $this->redirect("admin/category-edit/{$id}");
       } 
 
@@ -188,7 +188,7 @@ final class AdminCategoryController extends BaseAdminController
 
     // Получаем DTO категории для отображения
     $category = $this->service->createCategoryEditDTO($id);
-  
+  // dd($this->flash);
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,

@@ -66,13 +66,14 @@ const initEverything = async () => {
     } else if (page === 'shop' && !id) {
       // список товаров
       addAccordion("many", "#filter-category");
-      addAccordion("many", "#prices");
       initShowMore();
     } else if (page === 'shop' && id) {
       // детальная страница товара
       fancyBox();
     } else if (page === 'profile/edit') {
       addPhotoBtn();
+    } else if (page === 'delivery') {
+      addAccordion("many", "#prices");
     } 
   }
 };
