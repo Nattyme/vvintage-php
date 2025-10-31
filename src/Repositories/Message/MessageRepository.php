@@ -45,6 +45,12 @@ final class MessageRepository extends AbstractRepository implements MessageRepos
 
     }
 
+    public function deleteMessage(int $id): void
+    {
+      $bean = $this->loadBean(self::TABLE, $id);
+      $this->deleteBean($bean);
+    }
+
 
     private function mapBeanToMessage(OODBBean $bean): Message
     {

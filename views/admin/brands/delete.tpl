@@ -12,7 +12,7 @@
     <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
 
     <div class="admin-form__buttons buttons">
-      <a class="button button--outine button--s" href="<?php echo HOST . 'admin/brand';?>">Отмена</a>
+      <a class="button button--outline button--s" href="<?php echo HOST . 'admin/brand';?>">Отмена</a>
       <button name="submit" value="submit" class="button button--primary button--s" type="submit">Удалить</button>
     </div>
   </form>

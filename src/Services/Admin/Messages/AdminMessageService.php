@@ -28,4 +28,9 @@ final class AdminMessageService extends MessageService
       return $this->repository->getMessageById($id);
     }
 
+    public function deleteMessage(int $id): void 
+    {
+      $this->repository->deleteMessage($id);
+    }
+
 }

@@ -37,27 +37,28 @@
       </p>
     </div>
 
-    <div class="admin-form__item">
+    <!-- <div class="admin-form__item">
       <label class="admin-form__label">
         Прикреплённый файл
       </label>
       <p>
     
       </p>
-    </div>
+    </div> -->
 
     <div class="buttons">
       <a class="button button--m button--outline" href="<?php echo HOST;?>admin/messages">Отмена</a>
       <a class="button button--m button--primary button--warning" href="<?php echo HOST . 'admin/message-delete/' . u($message->getId());?>" class="icon-delete">
         Удалить
       </a>
-      <a href="<?php 
+      <!-- <a href="<?php /*
         $linkId = HOST . 'admin/user-block/' . $message->getUserId();
         $linkEmail = HOST . 'admin/user-block?email=' . $message->getEmail();
-        echo !empty( $message->getUserId()) ? u($link) : u($linkEmail);
-      ?>" name="block-user" class="button button--m button--primary button--warning" class="icon-delete">
+        echo !empty( $message->getUserId()) ? u($link) : u($linkEmail); */
+      ?>" name="block-user" class="button button--m button--primary button--warning">
         Заблокировать
-      </a>
+      </a> -->
+      <button class="button button--m button--primary button--warning" disabled>Заблокировать</button>
     </div>
     </div>
    

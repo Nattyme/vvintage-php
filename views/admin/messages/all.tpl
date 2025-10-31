@@ -30,7 +30,8 @@
           <th>Email</th>
           <th>Текст</th>
           <th>Время</th>
-          <th>Файл</th>
+          <th></th>
+          <!-- <th>Файл</th> -->
           <th></th>
         </tr>
       </thead>

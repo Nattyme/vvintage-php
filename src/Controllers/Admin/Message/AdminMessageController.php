@@ -14,13 +14,13 @@ use Vvintage\Services\Admin\Messages\AdminMessageService;
 
 class AdminMessageController extends BaseAdminController 
 {
-  private AdminMessageService $adminMessageService;
+  private AdminMessageService $service;
 
 
   public function __construct()
   {
     parent::__construct();
-    $this->adminMessageService = new AdminMessageService();
+    $this->service = new AdminMessageService();
   }
 
   public function all(RouteData $routeData)
@@ -51,10 +51,9 @@ class AdminMessageController extends BaseAdminController
 
     // Устанавливаем пагинацию
     $pagination = pagination($messagePerPage, 'messages');
-    $messages = $this->adminMessageService->getAllMessages($pagination);
-    // $messages = $this->messageRepository->getAllMessages($pagination);
-    $total = $this->adminMessageService->getAllMessagesCount();
-    // $total = $this->messageRepository->getAllMessagesCount();
+    $messages = $this->service->getAllMessages($pagination);
+    $total = $this->service->getAllMessagesCount();
+
         
     $this->renderLayout('messages/all',  [
       'pageTitle' => $pageTitle,
@@ -71,8 +70,8 @@ class AdminMessageController extends BaseAdminController
      // Название страницы
     $pageTitle = 'Сообщениe';
 
-    $messageId = (int) $routeData->uriGetParam;
-    $message = $this->adminMessageService->getMessage( $messageId);
+    $messageId = (int) $routeData->uriGet;
+    $message = $this->service->getMessage( $messageId);
   
         
     $this->renderLayout('messages/single',  [
@@ -89,16 +88,27 @@ class AdminMessageController extends BaseAdminController
 
     // Название страницы
     $pageTitle = 'Удаление сообщения';
-    $messageId = (int) $routeData->uriGetParam;
-    $message = $this->adminMessageService->getMessage( $messageId);
+    $id = (int) $routeData->uriGet;
+    $message = $this->service->getMessage( $id);
 
 
-     if (!check_csrf($_POST['csrf'] ?? '')) {
-      $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
+    // Если отправлена форма
+    if (isset($_POST['submit'])) {
+      $csrfToken = $_POST['csrf'] ?? '';
+
+      if (!$csrfToken) {
+        $this->flash->pushError('Неверный токен безопасности');
+        $this->redirect('admin/messages');
+      }
+
+      // Удаляем сообщение
+      $this->service->deleteMessage($id);
+
+      $this->flash->pushSuccess('Сообщение успешно удалено.');
+      $this->redirect('admin/messages');
     }
 
     // Если нет ошибок
-    if ( empty($_SESSION['errors'])) {
 
       // Удаление файла
       // if ( !empty($message['file_name_src']) ) {
@@ -111,9 +121,8 @@ class AdminMessageController extends BaseAdminController
       // R::trash($message);
       // $_SESSION['success'][] = ['title' => 'Сообщение было успешно удалено.'];
      
-      header('Location: ' . HOST . 'admin/messages');
-      exit();
-    }
+      // header('Location: ' . HOST . 'admin/messages');
+      // exit();
 
         
     $this->renderLayout('messages/delete',  [
