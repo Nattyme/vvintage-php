@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Vvintage\Repositories\Brand;
@@ -13,8 +12,7 @@ use Vvintage\Repositories\AbstractRepository;
 use Vvintage\Contracts\Brand\BrandTranslationRepositoryInterface;
 
 
-// final class BrandTranslationRepository extends AbstractRepository implements BrandTranslationRepositoryInterface
-final class BrandTranslationRepository extends AbstractRepository 
+final class BrandTranslationRepository extends AbstractRepository implements BrandTranslationRepositoryInterface 
 {
     private const TABLE = 'brandstranslation';
   
@@ -86,13 +84,4 @@ final class BrandTranslationRepository extends AbstractRepository
         ];
 
     }
-
-   
-   
-
-  
-
-  
-
-     
 }

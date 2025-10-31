@@ -10,10 +10,7 @@ use RedBeanPHP\OODBBean;
 interface BrandTranslationRepositoryInterface
 {
   public function createTranslationsBean(): OODBBean;
-  public function getTranslationsArray(int $id, string $locale): array;
   public function loadTranslations(int $id): array;
-
-  // public function findTranslations(int $id, string $locale);
-
-  public function saveTranslations($brandId, $locale, $fields): void;
+  public function saveBrandTranslation(array $translations): array;
+  public function getLocaleTranslation(int $id, string $locale): array;
 }
