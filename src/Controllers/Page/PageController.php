@@ -20,6 +20,8 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Messages\MessageService;
 use Vvintage\Services\Category\CategoryService;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 
 class PageController extends BaseController
@@ -30,12 +32,19 @@ class PageController extends BaseController
   private Breadcrumbs $breadcrumbsService;
   private FlashMessage $flash;
 
-  public function __construct (FlashMessage $flash, SeoService $seoService)
+  public function __construct (
+    SessionService $sessionService, 
+    AdminPanelService $adminPanelService,
+    PageService $pageService, 
+    Breadcrumbs $breadcrumbsService, 
+    FlashMessage $flash, 
+    SeoService $seoService
+  )
   {
-    parent::__construct(); // Важно!
+    parent::__construct($sessionService, $adminPanelService); // Важно!
     $this->flash = $flash;
-    $this->pageService = new PageService();
-    $this->breadcrumbsService = new Breadcrumbs();
+    $this->pageService = $pageService;
+    $this->breadcrumbsService = $breadcrumbsService;
     $this->seoService = $seoService;
   }
 

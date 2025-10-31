@@ -10,6 +10,8 @@ use Vvintage\Services\Page\PageService;
 use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Security\RegistrationService;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 use Vvintage\Services\Validation\RegistrationValidator;
 
@@ -20,9 +22,16 @@ final class RegistrationController extends BaseController
   private FlashMessage $flash;
   private RegistrationService $service;
 
-  public function __construct(RegistrationService $service, PageService $pageService, FlashMessage $flash, SeoService $seoService)
+  public function __construct(
+    SessionService $sessionService, 
+    AdminPanelService $adminPanelService,
+    RegistrationService $service, 
+    PageService $pageService, 
+    FlashMessage $flash, 
+    SeoService $seoService
+  )
   {
-      parent::__construct(); // Важно!
+      parent::__construct($sessionService, $adminPanelService); // Важно!
       $this->seoService = $seoService;
       $this->flash = $flash;
       $this->pageService = $pageService;

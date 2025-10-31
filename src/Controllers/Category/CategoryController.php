@@ -15,12 +15,6 @@ class CategoryController extends BaseController
         $this->categoryService = new CategoryService();
     }
 
-    /**
-     * Получить список категорий с переводами в нужной локали
-     *
-     * @param string $locale
-     * @return array
-     */
     public function index(string $locale = 'ru'): array
     {
         $rawCategories = $this->categoryService->getAllCategories(); // массив из БД

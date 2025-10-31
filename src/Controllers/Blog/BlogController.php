@@ -8,6 +8,8 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Navigation\NavigationService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Post\PostService;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 use Vvintage\DTO\Post\PostFilterDTO;
 
 
@@ -22,12 +24,16 @@ final class BlogController extends BaseController
   
 
     public function __construct(
+        SessionService $sessionService, 
+        AdminPanelService $adminPanelService,
+        PostService $postService, 
+        NavigationService $navigationService,
         Breadcrumbs $breadcrumbs
     ) {
-        parent::__construct(); // Важно!
+        parent::__construct($sessionService, $adminPanelService); // Важно!
         $this->breadcrumbsService = $breadcrumbs;
-        $this->postService = new PostService();
-        $this->navigationService = new NavigationService();
+        $this->postService = $postService;
+        $this->navigationService = $navigationService;
         
     }
     

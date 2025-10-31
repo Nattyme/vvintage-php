@@ -20,6 +20,8 @@ use Vvintage\Services\Security\LoginService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\User\UserItemsMergeService;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 /** Хранилища */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
@@ -43,9 +45,16 @@ final class LoginController extends BaseController
   private FlashMessage $flash;
   private ProductService $productService;
 
-  public function __construct( ProductService $productService, PageService $pageService, FlashMessage $flash, SeoService $seoService, UserRepository $userRepository) 
+  public function __construct( 
+    SessionService $sessionService, 
+    AdminPanelService $adminPanelService,
+    ProductService $productService, 
+    PageService $pageService, 
+    FlashMessage $flash, 
+    SeoService $seoService, 
+    UserRepository $userRepository) 
   {
-    parent::__construct(); // Важно!
+    parent::__construct($sessionService, $adminPanelService); // Важно!
     $this->flash = $flash;
     $this->seoService = $seoService;
     $this->userRepository = $userRepository;

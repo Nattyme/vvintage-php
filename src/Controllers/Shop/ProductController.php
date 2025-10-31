@@ -6,14 +6,9 @@ namespace Vvintage\Controllers\Shop;
 
 use Vvintage\Routing\RouteData;
 
-/** Контракты */
-use Vvintage\Contracts\Bramd\BrandRepositoryInterface;
-
-/** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
-
-/** Модель */
-use Vvintage\Models\Product\Product;
+use Vvintage\Models\Product\Product; /** Модель */
+use Vvintage\Controllers\Base\BaseController; /** Базовый контроллер страниц*/
+use Vvintage\Contracts\Bramd\BrandRepositoryInterface; /** Контракт */
 
 /** Сервисы */
 use Vvintage\Services\Product\ProductService;
@@ -22,6 +17,8 @@ use Vvintage\Services\Seo\SeoService;
 use Vvintage\DTO\Product\ProductPageDTO;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 
 
@@ -33,13 +30,21 @@ final class ProductController extends BaseController
     private PageService $pageService;
     private FlashMessage $flash;
 
-    public function __construct(FlashMessage $flash, SeoService $seoService, Breadcrumbs $breadcrumbs)
+    public function __construct(
+      SessionService $sessionService, 
+      AdminPanelService $adminPanelService,
+      PageService $pageService, 
+      ProductService $productService, 
+      FlashMessage $flash, 
+      SeoService $seoService, 
+      Breadcrumbs $breadcrumbs
+    )
     {
-        parent::__construct(); // Важно!
-        $this->productService = new ProductService();
+        parent::__construct($sessionService, $adminPanelService); // Важно!
+        $this->productService = $productService;
         $this->seoService = $seoService;
         $this->breadcrumbsService = $breadcrumbs;
-        $this->pageService = new PageService();
+        $this->pageService = $pageService;
         $this->flash = $flash;
     }
 

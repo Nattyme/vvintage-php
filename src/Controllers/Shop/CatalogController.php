@@ -21,6 +21,8 @@ use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
 
@@ -40,15 +42,25 @@ final class CatalogController extends BaseController
     private FlashMessage $flash;
 
 
-    public function __construct(FlashMessage $flash, SeoService $seoService, Breadcrumbs $breadcrumbs)
+    public function __construct(  
+      SessionService $sessionService, 
+      AdminPanelService $adminPanelService,
+      PageService $pageService, 
+      BrandService $brandService, 
+      CategoryService $categoryService, 
+      ProductService $productService, 
+      FlashMessage $flash, 
+      SeoService $seoService, 
+      Breadcrumbs $breadcrumbs
+    )
     {
-      parent::__construct(); // Важно!
-      $this->productService = new ProductService();
-      $this->categoryService = new CategoryService();
-      $this->brandService = new BrandService();
+      parent::__construct($sessionService, $adminPanelService); // Важно!
+      $this->productService = $productService;
+      $this->categoryService = $categoryService;
+      $this->brandService = $brandService;
       $this->seoService = $seoService;
       $this->breadcrumbsService = $breadcrumbs;
-      $this->pageService = new PageService();
+      $this->pageService = $pageService;
       $this->flash = $flash;
     }
 

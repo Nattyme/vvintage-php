@@ -7,26 +7,26 @@ namespace Vvintage\Controllers\Base;
 use Vvintage\Routing\RouteData;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
 // use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\AdminPanel\AdminPanelService;
+
 
 
 abstract class BaseController
 {    
   protected array $settings;
   protected RouteData $routeData; 
-  protected Translator $translator;
-  // protected FlashMessage $flash;
+  // protected Translator $translator;
+  protected AdminPanelService $adminPanelService;
   protected SessionService $sessionService;
 
-  public function __construct()
+  public function __construct(SessionService $sessionService, AdminPanelService $adminPanelService)
   {
-      $this->settings = Settings::all(); 
-      // $this->flash = new FlashMessage();
-      $this->sessionService = new SessionService();
-      
+      $this->settings = Settings::all(); // зачем??
+      $this->sessionService = $sessionService;
+      $this->adminPanelService = $adminPanelService;
   }
 
 
@@ -35,10 +35,10 @@ abstract class BaseController
       $this->routeData = $routeData;
   }
 
-  public function getTranslator(): Translator
-  {
-      return $this->translator;
-  }
+  // public function getTranslator(): Translator
+  // {
+  //     return $this->translator;
+  // }
 
   protected function renderLayout(string $viewPath, array $vars = []): void
   {
@@ -48,10 +48,7 @@ abstract class BaseController
     $isBlogPage = $this->isBlogPage($routePath);
     $adminData = [];
 
-    if($isAdminLoggedIn) {
-      $service = new AdminPanelService();
-      $adminData = $service->getCounters();
-    }
+    if($isAdminLoggedIn) $adminData = $this->adminPanelService->getCounters();
 
     // Превращаем элементы массива в переменные
     extract( array_merge($vars, [
@@ -71,9 +68,7 @@ abstract class BaseController
   {
     $userModel = $this->sessionService->getLoggedInUser();
     
-    if( $userModel instanceof User) {
-      return $userModel && $userModel->getRole() === 'admin';
-    }
+    if( $userModel instanceof User) return $userModel && $userModel->getRole() === 'admin';
 
     return false;
   }

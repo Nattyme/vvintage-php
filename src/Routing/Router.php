@@ -43,7 +43,14 @@
   use Vvintage\Services\Validation\NewOrderValidator;
   use Vvintage\Services\Security\PasswordSetNewService;
   use Vvintage\Services\Security\RegistrationService;
-
+  use Vvintage\Services\User\UserService;
+  use Vvintage\Services\Locale\LocaleService;
+  use Vvintage\Services\Validation\ProfileValidator;
+  use Vvintage\Services\Category\CategoryService;
+  use Vvintage\Services\Brand\BrandService;
+  use Vvintage\Services\Post\PostService;
+  use Vvintage\Services\Navigation\NavigationService;
+  use Vvintage\Services\AdminPanel\AdminPanelService;
 
   /** Модели */
   use Vvintage\Models\User\User;
@@ -263,11 +270,41 @@
       $pageService = new PageService();
       $productService = new ProductService();
       $registrationService = new RegistrationService();
+      $sessionService = new SessionService();
+      $adminPanelService = new AdminPanelService();
 
-      $loginController = new LoginController( $productService, $pageService, $flash, $seoService, $userRepository);
-      $regController = new RegistrationController($registrationService, $pageService, $flash, $seoService);
-      $resetController = new PasswordResetController($pageService,  $flash, $seoService);
-      $setNewPassController = new PasswordSetNewController($pageService, $flash, $seoService, $setNewPassService);
+      $loginController = new LoginController(
+        $sessionService, 
+        $adminPanelService, 
+        $productService, 
+        $pageService, 
+        $flash, 
+        $seoService, 
+        $userRepository
+      );
+      $regController = new RegistrationController(
+        $sessionService, 
+        $adminPanelService, 
+        $registrationService, 
+        $pageService, 
+        $flash, 
+        $seoService
+      );
+      $resetController = new PasswordResetController(
+        $sessionService, 
+        $adminPanelService, 
+        $pageService,  
+        $flash, 
+        $seoService
+      );
+      $setNewPassController = new PasswordSetNewController(
+        $sessionService, 
+        $adminPanelService, 
+        $pageService, 
+        $flash, 
+        $seoService, 
+        $setNewPassService
+      );
 
    
       switch ($routeData->uriModule) {
@@ -297,9 +334,29 @@
 
     public static function routeProfile(RouteData $routeData)
     {
+        $flash = new FlashMessage();
+        $pageService = new PageService();
+        $userService = new UserService();
+        $orderService = new OrderService();
         $breadcrumbs = new Breadcrumbs();
         $seoService = new SeoService();
-        $profileController = new ProfileController($seoService, $breadcrumbs);
+        $localeService = new LocaleService();
+        $sessionService = new SessionService();
+        $adminPanelService = new AdminPanelService();
+
+        $profileValidator = new ProfileValidator();
+        $profileController = new ProfileController(
+          $sessionService,
+          $adminPanelService,
+          $orderService,
+          $localeService, 
+          $pageService, 
+          $profileValidator, 
+          $userService, 
+          $flash, 
+          $seoService, 
+          $breadcrumbs
+        );
 
         // Свой профиль
         if (isset($routeData->uriGet) && $routeData->uriGet === 'edit') {
@@ -319,11 +376,34 @@
     private static function routeShop(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
       $flash = new FlashMessage();
-
-      // Инициализируем SEO-сервис
+      $productService = new ProductService();
+      $categoryService = new CategoryService();
+      $brandService = new BrandService();
+      $pageService = new PageService();
+      $sessionService = new SessionService();
+      $adminPanelService = new AdminPanelService();
       $seoService = new SeoService();
-      $productController = new ProductController($flash, $seoService, $breadcrumbs );
-      $catalogController  = new CatalogController($flash, $seoService, $breadcrumbs );
+
+      $productController = new ProductController( 
+        $sessionService, 
+        $adminPanelService,  
+        $pageService, 
+        $productService, 
+        $flash, 
+        $seoService, 
+        $breadcrumbs 
+      );
+      $catalogController  = new CatalogController(
+        $sessionService, 
+        $adminPanelService,  
+        $pageService, 
+        $brandService, 
+        $categoryService, 
+        $productService, 
+        $flash, 
+        $seoService, 
+        $breadcrumbs 
+      );
 
       if ( isset($routeData->uriGet) ) {
         $productController->index($routeData);
@@ -336,14 +416,18 @@
       
     private static function routeBlog(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
+      $postService = new PostService();
+      $navigationService = new NavigationService();
+      $seoService = new SeoService();
+      $sessionService = new SessionService();
+      $adminPanelService = new AdminPanelService();
+      
   
-      $blogController = new BlogController($breadcrumbs);
-      $postController = new PostController($breadcrumbs);
+      $blogController = new BlogController($sessionService, $adminPanelService, $postService, $navigationService, $breadcrumbs);
+      $postController = new PostController($sessionService, $adminPanelService, $postService, $navigationService, $seoService, $breadcrumbs);
     
-        if ($routeData->uriModule === 'add-comment') {
-          // require ROOT . 'modules/blog/add-comment.php';
-        } 
-        elseif ($routeData->uriModule === 'blog' && isset($routeData->uriGet)) {
+    
+        if ($routeData->uriModule === 'blog' && isset($routeData->uriGet)) {
           $blogController->index($routeData);
         }
         elseif ($routeData->uriModule === 'post') {
@@ -362,12 +446,11 @@
 
     private static function routeCart(RouteData $routeData) {
       $sessionService = new SessionService();
+      $adminPanelService = new AdminPanelService();
       $seoService = new SeoService();
       $flashMessage = new FlashMessage();
-      /**
-       * Получаем модель пользователя - гость или залогиненный
-       * @var UserInreface $userModel
-      */
+      $pageService = new PageService();
+     
       $userModel = $sessionService->getLoggedInUser();
       $breadcrumbs = new Breadcrumbs();
 
@@ -376,16 +459,24 @@
       $cart = $userModel->getCart();;
       $productService = new ProductService();
 
-      /**
-       * Получаем хранилище
-       * @var CartStoreInterface $cartStore;
-       */
       $cartStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
 
-      $controller  = new CartController( $flashMessage, $cartService, $userModel, $cartModel, $cart, $cartStore, $breadcrumbs, $seoService );
+      $controller  = new CartController(
+        $sessionService, 
+        $adminPanelService,
+        $pageService, 
+        $flashMessage, 
+        $cartService, 
+        $userModel, 
+        $cartModel, 
+        $cart, 
+        $cartStore, 
+        $breadcrumbs, 
+        $seoService 
+      );
 
       switch ($routeData->uriModule) {
         case 'cart':
@@ -402,9 +493,12 @@
 
     private static function routeFav(RouteData $routeData) {
       $sessionService = new SessionService();
+      $adminPanelService = new AdminPanelService();
       $seoService = new SeoService();
       $flashMessage = new FlashMessage();
-      
+      $pageService = new PageService();
+     
+       
       $userModel = $sessionService->getLoggedInUser();
       $breadcrumbs = new Breadcrumbs();
 
@@ -413,17 +507,12 @@
       $fav = $userModel->getFavList();
       $productService = new ProductService();
 
-
-      /**
-       * Получаем хранилище
-       * @var FavoritesStoreInterface $cartStore;
-      */
       $favStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
                     
       $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
-      $controller  = new FavoritesController(  $flashMessage, $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs, $seoService );
+      $controller  = new FavoritesController($sessionService, $adminPanelService, $pageService, $flashMessage, $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs, $seoService );
 
       switch ($routeData->uriModule) {
         case 'favorites':
@@ -440,11 +529,11 @@
 
     private static function routeOrders(RouteData $routeData) {
       $sessionService = new SessionService();
-      /**
-       * Получаем модель пользователя - гость или залогиненный
-       * @var UserInreface $userModel
-      */
       $userModel = $sessionService->getLoggedInUser();
+      $pageService = new PageService();
+      $flashMessage = new FlashMessage();
+      $adminPanelService = new AdminPanelService();
+   
 
       // Если гость - перенаправляем на страницу входа
       if($userModel instanceof GuestUser) {
@@ -471,6 +560,10 @@
 
       $orderService = new OrderService();
       $controller = new OrderController(
+        $sessionService,
+        $adminPanelService,
+        $flashMessage,
+        $pageService,
         $orderService, 
         $cartService, 
         $userModel, 
@@ -498,13 +591,20 @@
       $pageService = new PageService();
       $breadcrumbs = new Breadcrumbs();
       $flash = new FlashMessage();
+      $sessionService = new SessionService();
+      $adminPanelService = new AdminPanelService();
 
       // Инициализируем SEO-сервис
       $seoService = new SeoService();
-      // $pageModel = $pageService->getPageBySlug($routeData->uriModule);
-
-      // $controller = new PageController($pageModel, $breadcrumbs);
-      $controller = new PageController($flash, $seoService);
+   
+      $controller = new PageController( 
+        $sessionService,
+        $adminPanelService,
+        $pageService, 
+        $breadcrumbs, 
+        $flash, 
+        $seoService
+      );
 
       switch ($routeData->uriModule) {
         case '':

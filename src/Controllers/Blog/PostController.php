@@ -15,6 +15,8 @@ use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Post\PostService;
 use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Navigation\NavigationService;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 
 final class PostController extends BaseController
@@ -24,13 +26,20 @@ final class PostController extends BaseController
     private PostService $postService;
     private NavigationService $navigationService;
 
-    public function __construct(Breadcrumbs $breadcrumbs)
+    public function __construct(
+      SessionService $sessionService, 
+      AdminPanelService $adminPanelService,
+      PostService $postService, 
+      NavigationService $navigationService, 
+      SeoService $seoService,
+      Breadcrumbs $breadcrumbs
+    )
     {
-        parent::__construct(); // Важно!
-        $this->seoService = new SeoService();
+        parent::__construct($sessionService, $adminPanelService); // Важно!
+        $this->seoService = $seoService;
         $this->breadcrumbsService = $breadcrumbs;
-        $this->postService = new PostService();
-        $this->navigationService = new NavigationService();
+        $this->postService = $postService;
+        $this->navigationService = $navigationService;
     }
 
 

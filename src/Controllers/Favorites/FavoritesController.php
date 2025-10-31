@@ -33,6 +33,8 @@ use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 
 /** Абстракции */
@@ -54,6 +56,9 @@ final class FavoritesController extends BaseController
     private FlashMessage $flash;
 
     public function __construct(
+      SessionService $sessionService,
+      AdminPanelService $adminPanelService,
+      PageService $pageService,
       FlashMessage $flash,
       FavoritesService $favService, 
       UserInterface $userModel, 
@@ -64,16 +69,17 @@ final class FavoritesController extends BaseController
       SeoService $seoService
     )
     {
-      parent::__construct(); // Важно!
+      parent::__construct($sessionService, $adminPanelService); // Важно!
       $this->favService = $favService;
       $this->userModel = $userModel;
       $this->favModel = $favModel;
       $this->fav_list = $fav_list;
       $this->favStore = $favStore;
       $this->breadcrumbsService = $breadcrumbs;
-      $this->pageService = new PageService();
+      $this->pageService = $pageService;
       $this->seoService = $seoService;
       $this->flash = $flash;
+      $this->sessionService = $sessionService;
     }
 
     public function index(RouteData $routeData): void

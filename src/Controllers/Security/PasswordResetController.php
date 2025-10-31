@@ -11,6 +11,8 @@ use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Security\PasswordResetService;
 use Vvintage\Services\Validation\PasswordResetValidator;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Routing\RouteData;
@@ -22,9 +24,15 @@ final class PasswordResetController extends BaseController
   private PasswordResetService $service;
   private FlashMessage $flash;
 
-  public function __construct(PageService $pageService, FlashMessage $flash, SeoService $seoService)
+  public function __construct(
+    SessionService $sessionService, 
+    AdminPanelService $adminPanelService,
+    PageService $pageService, 
+    FlashMessage $flash, 
+    SeoService $seoService
+    )
   {
-      parent::__construct(); // Важно!
+      parent::__construct($sessionService, $adminPanelService); // Важно!
       $this->flash = $flash;
       $this->seoService = $seoService;
       $this->pageService = $pageService;

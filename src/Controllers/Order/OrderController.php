@@ -22,6 +22,8 @@ use Vvintage\Services\Validation\NewOrderValidator;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -40,6 +42,7 @@ require_once ROOT . './libs/functions.php';
 
 final class OrderController extends BaseController
 {
+    private FlashMessage $flash;
     private OrderService $orderService;
     private CartService $cartService;
     private UserInterface $userModel;
@@ -52,6 +55,10 @@ final class OrderController extends BaseController
   
 
     public function __construct(
+      SessionService $sessionService, 
+      AdminPanelService $adminPanelService,
+      FlashMessage $flash,
+      PageService $pageService,
       OrderService $orderService, 
       CartService $cartService, 
       UserInterface $userModel,
@@ -62,7 +69,7 @@ final class OrderController extends BaseController
       Breadcrumbs $breadcrumbs
     )
     {
-      parent::__construct(); // Важно!
+      parent::__construct($sessionService, $adminPanelService); // Важно!
       $this->orderService = $orderService;
       $this->cartService = $cartService;
       $this->userModel = $userModel;
@@ -71,7 +78,8 @@ final class OrderController extends BaseController
       $this->cartStore = $cartStore;
       $this->validator = $validator;
       $this->breadcrumbsService = $breadcrumbs;
-      $this->pageService = new PageService();
+      $this->pageService = $pageService;
+      $this->flash = $flash;
     }
 
     public function index(RouteData $routeData): void

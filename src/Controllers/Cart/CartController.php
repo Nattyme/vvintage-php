@@ -31,6 +31,8 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
@@ -52,6 +54,9 @@ final class CartController extends BaseController
     private SeoService $seoService;
 
     public function __construct(
+      SessionService $sessionService, 
+      AdminPanelService $adminPanelService,
+      PageService $pageService,
       FlashMessage $flash,
       CartService $cartService, 
       UserInterface $userModel, 
@@ -62,14 +67,14 @@ final class CartController extends BaseController
       SeoService $seoService
     )
     {
-      parent::__construct(); // Важно!
+      parent::__construct($sessionService, $adminPanelService); // Важно!
       $this->cartService = $cartService;
       $this->userModel = $userModel;
       $this->cartModel = $cartModel;
       $this->cart = $cart;
       $this->cartStore = $cartStore;
       $this->breadcrumbsService = $breadcrumbs;
-      $this->pageService = new PageService();
+      $this->pageService = $pageService;
       $this->seoService = $seoService;
       $this->flash = $flash;
     }

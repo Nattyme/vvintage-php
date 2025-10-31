@@ -11,6 +11,8 @@ use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Security\PasswordSetNewService;
 use Vvintage\Services\Validation\PasswordSetNewValidator;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 final class PasswordSetNewController extends BaseController 
 {
@@ -19,9 +21,16 @@ final class PasswordSetNewController extends BaseController
   private FlashMessage $flash;
   private PasswordSetNewService $setNewPassService;
 
-  public function __construct(PageService $pageService, FlashMessage $flash, SeoService $seoService, PasswordSetNewService $setNewPassService)
+  public function __construct(
+    SessionService $sessionService, 
+    AdminPanelService $adminPanelService,
+    PageService $pageService, 
+    FlashMessage $flash, 
+    SeoService $seoService, 
+    PasswordSetNewService $setNewPassService
+  )
   {
-    parent::__construct(); // Важно!
+    parent::__construct($sessionService, $adminPanelService); // Важно!
     $this->seoService = $seoService;
     $this->pageService = $pageService;
     $this->flash = $flash;

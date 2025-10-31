@@ -5,13 +5,13 @@ namespace Vvintage\Controllers\Profile;
 
 use Vvintage\Routing\RouteData;
 
-
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\Address\Address;
+use Vvintage\Models\Order\Order;
 
 /** Сервисы */
 use Vvintage\Services\Page\Breadcrumbs;
@@ -21,10 +21,9 @@ use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Services\Order\OrderService;
 use Vvintage\Services\SEO\SeoService;
-
-// use Vvintage\Repositories\Order\OrderRepository;
-use Vvintage\Repositories\Product\ProductRepository;
-use Vvintage\Models\Order\Order;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 use Vvintage\DTO\Order\OrderProfileDetailsDTO;
 
@@ -36,23 +35,35 @@ final class ProfileController extends BaseController
   private UserService $userService;
   private Breadcrumbs $breadcrumbsService;
   private SeoService $seoService;
+  private FlashMessage $flash;
   private ProfileValidator $validator;
   private PageService $pageService;
-  protected LocaleService $localeService;
-  protected OrderService $orderService;
+  private LocaleService $localeService;
+  private OrderService $orderService;
   
 
-  public function __construct( SeoService $seoService, Breadcrumbs $breadcrumbs)
+  public function __construct( 
+    SessionService $sessionService, 
+    AdminPanelService $adminPanelService,
+    OrderService $orderService,
+    LocaleService $localeService,
+    PageService $pageService,
+    ProfileValidator $profileValidator,
+    UserService $userService,
+    FlashMessage $flash, 
+    SeoService $seoService, 
+    Breadcrumbs $breadcrumbs
+  )
   {
-    parent::__construct(); // Важно!
-    $this->userService = new UserService();
+    parent::__construct($sessionService, $adminPanelService); // Важно!
+    $this->userService = $userService;
     $this->breadcrumbsService = $breadcrumbs;
     $this->seoService = $seoService;
-    $this->validator = new ProfileValidator();
-    $this->pageService = new PageService();
-    $this->localeService = new LocaleService();
-    $this->orderService = new OrderService();
-
+    $this->validator = $profileValidator;
+    $this->pageService = $pageService;
+    $this->localeService = $localeService;
+    $this->orderService = $orderService;
+    $this->flash = $flash;
   }
 
 
