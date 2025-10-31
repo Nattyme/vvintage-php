@@ -11,8 +11,8 @@
   
     <div class="cart__img">
       <img 
-        src="<?php echo HOST;?>usercontent/products/<?php echo h($product->image_filename);?>" 
-        srcset="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" 
+        src="<?php echo HOST;?>usercontent/products/small-<?php echo h($product->image_filename);?>" 
+        srcset="<?php echo HOST . 'usercontent/products/small-' . h($product->image_filename);?>" 
         alt="<?php echo h($product->image_alt);?>">
     </div>
 

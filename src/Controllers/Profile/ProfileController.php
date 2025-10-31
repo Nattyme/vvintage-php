@@ -40,8 +40,9 @@ final class ProfileController extends BaseController
   private PageService $pageService;
   protected LocaleService $localeService;
   protected OrderService $orderService;
+  
 
-  public function __construct(SeoService $seoService, Breadcrumbs $breadcrumbs)
+  public function __construct( SeoService $seoService, Breadcrumbs $breadcrumbs)
   {
     parent::__construct(); // Важно!
     $this->userService = new UserService();
@@ -51,70 +52,66 @@ final class ProfileController extends BaseController
     $this->pageService = new PageService();
     $this->localeService = new LocaleService();
     $this->orderService = new OrderService();
+
   }
 
 
   public function index(RouteData $routeData)
   {
- 
     $orders = null;
     $this->setRouteData($routeData);
-    $uriGet = $this->routeData->uriGet ?? null;
+    $uriGet = (int) $this->routeData->uriGet ?? null;
 
     $userModel = $this->getLoggedInUser();
-  
+    $userId = $userModel->getId();
+
     // если гость — редиректим
     if ($userModel instanceof GuestUser || !$userModel) {
         $this->redirect('login');
     }
 
+    // Если зашли в свой профиль
+    if (!$uriGet && $this->isProfileOwner($userId)) {
+      $userModel = $this->userService->getUserByID($userId);
 
-    if( $uriGet ) {
-      $id = (int) $uriGet ?? null;
-      
-      if(!is_numeric($uriGet) || !$id) {
-        $this->redirect('profile');
-      }
+      if(!$userModel) $this->redirect('login'); // если не нашли пользователя
+    
+      $orders = $this->orderService->getProfileOrdersList($userId);
 
-      if ($this->isProfileOwner($id) || $this->isAdmin()) {
-        $userModel = $this->userService->getUserByID($id);
-
-        if(!$userModel) {
-          $this->redirect('profile');
-        }
-     
-        // $order = $orders = $this->userService->getOrdersByUserId($id);
-        $orders = $this->orderService->getProfileOrdersList($id);
-
-        $this->renderProfileFull($this->routeData, $userModel, $orders);
-      } else {
-        $this->redirect('profile');
-      }
-
-    } else {
-        $id = $userModel->getId() ?? null;
-  
-        if (!$id) {
-          $this->redirect('login');
-        }
-
-        $orders = $this->orderService->getProfileOrdersList($id);
-  
-        $this->renderProfileFull($this->routeData, $userModel, $orders);
+      $this->renderProfileFull($this->routeData, $userModel, $orders);
     }
 
+    //  Если зашли на страницу чужого профиля
+    if ( $uriGet && !$this->isProfileOwner($uriGet)) {
+      if($this->isLoggedIn() && !$this->isAdmin()) $this->redirect('profile'); // если залогинен - редирект в свой профиль
+      if(!$this->isAdmin()) $this->redirect('login');  // Если не залогинен - на страницу логина
 
-     
+      // Значит админ
+      $userModel = $this->userService->getUserByID($uriGet); // получаем пользователя
+      if(!$userModel) $this->redirect('profile'); // если не нашли 
+
+      $orders = $this->orderService->getProfileOrdersList($uriGet);  // получаем заказы пользователя
+      $this->renderProfileFull($this->routeData, $userModel, $orders);
+    } 
   }
+
+
 
   public function edit(RouteData $routeData)
   { 
       $this->setRouteData($routeData);
-      $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule);
+      $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule); // страница
    
       $userModel = null;
-      $uriGet = $this->routeData->uriGet ?? null;
+      $uriGet = (int) $this->routeData->uriGetParams[0] ?? null; // id пользователя
 
+      // Если uriGet нет
+      if(!$uriGet && $this->isLoggedIn()) $uriGet = $this->getLoggedInUser()->getId(); // если не id но залогинен
+  
+      $userModel = $this->getLoggedInUser();
+      $userId = $userModel->getId();
+
+      // Если админ
       if ( $this->isAdmin() ) {
         // проверка на доп параметр 
         if (!empty( $uriGet ) ) {
@@ -122,35 +119,37 @@ final class ProfileController extends BaseController
           $idFromUri = (int) $uriGet;
            
           if (is_numeric($idFromUri) && $idFromUri > 0) {
-            
-              $userModel = $this->userService->getUserByID($idFromUri);
+            $userModel = $this->userService->getUserByID($idFromUri);
           }
         } else {
           $userModel = $this->getLoggedInUser();
         }
       }
 
-      if (!$userModel) {
-        $userModel = $this->getLoggedInUser();
+      if ($userModel instanceof GuestUser || !$userModel) $this->redirect('login');  // если гость — редиректим
+      if (!($this->isProfileOwner($userId) || $this->isAdmin())) $this->redirect('profile'); // не владелец, не админ
+  
+
+      // Если зашли в свой профиль
+      if ($this->isProfileOwner($userId)) {
+         // потом доработать
+        $this->renderProfileEdit(routeData: $routeData, userModel: $userModel, uriGet: $uriGet, address: $address =null);
       }
 
-   
-      // если гость — редиректим
-      if ($userModel instanceof GuestUser || !$userModel) {
-          $this->redirect('login');
-      }
+      //  Если зашли на страницу чужого профиля
+      if ( !$this->isProfileOwner($uriGet)) {
+        if($this->isLoggedIn() && !$this->isAdmin()) $this->redirect('profile'); // если залогинен - редирект в свой профиль
+        if(!$this->isAdmin()) $this->redirect('login');  // Если не залогинен - на страницу логина
 
-      
+        // Значит админ
+        $userModel = $this->userService->getUserByID($uriGet); // получаем пользователя
+        if(!$userModel) $this->redirect('profile'); // если не нашли 
 
-      // Проверяем права: владелец профиля или админ
-      if (!($this->isProfileOwner($userModel->getId()) || $this->isAdmin())) {
-           $this->redirect('profile');
-      }
+        $address = null; // потом доработать
+        $this->renderProfileEdit(routeData: $routeData, userModel: $userModel, uriGet: $uriGet, address: $address);
+      } 
 
-      $orders = $this->userService->getOrdersByUserId($userModel->getId());
-      $address = null; // здесь можно добавить $userModel->getAddress()
-
-      $this->renderProfileEdit(routeData: $routeData, userModel: $userModel, uriGet: $uriGet, address: $address);
+     
   }
 
 
@@ -219,7 +218,7 @@ final class ProfileController extends BaseController
   private function renderProfileEdit (RouteData $routeData, ?User $userModel, $address, int|string|null $uriGet = null): void 
   {  
       // Название страницы
-      $slug = $uriGet ? $routeData->uriModule . '/' . $uriGet : $routeData->uriModule;
+      $slug = $routeData->uriModule . '/' . $routeData->uriGet;
 
       // Название страницы
       $page = $this->pageService->getPageBySlug($slug);

@@ -92,11 +92,10 @@ final class BrandRepository extends AbstractRepository implements BrandRepositor
 
       $brandArray = array_map(fn($bean) => $this->mapBeanToArray($bean), $beans);
 
-
       return array_map(fn($brand) => Brand::fromArray($brand), $brandArray);
     }
 
-    /** Возвращает массив объеков Brands по определенным id */
+    /** Возвращает массив  Brands по определенным id */
     public function getBrandsByIds(array $ids): array
     {
         if (empty($ids)) {

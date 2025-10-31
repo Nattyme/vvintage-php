@@ -72,7 +72,7 @@ final class CatalogController extends BaseController
       // Получаем категории и бренды
       $categories = $this->categoryService->getCategoryTreeDTO();
       $brands = $this->brandService->getAllBrandsDto();
- 
+
       // Получаем продукты с учётом пагинации
       $filteredProductsData = $this->productService->getProductsForCatalog( filters: $filterDto, perPage: 15);
   

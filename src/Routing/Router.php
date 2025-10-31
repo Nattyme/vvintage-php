@@ -16,32 +16,32 @@
   use Vvintage\Controllers\Auth\AuthController;
   use Vvintage\Controllers\Page\PageController;
   use Vvintage\Controllers\Cart\CartController;
+  use Vvintage\Controllers\Blog\PostController;
+  use Vvintage\Controllers\Blog\BlogController;
   use Vvintage\Controllers\Order\OrderController;
   use Vvintage\Controllers\Shop\CatalogController;
   use Vvintage\Controllers\Shop\ProductController;
-  use Vvintage\Controllers\Blog\PostController;
-  use Vvintage\Controllers\Blog\BlogController;
+  use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Profile\ProfileController;
   use Vvintage\Controllers\Favorites\FavoritesController;
-  use Vvintage\Controllers\Security\LoginController;
   use Vvintage\Controllers\Security\RegistrationController;
   use Vvintage\Controllers\Security\PasswordResetController;
   use Vvintage\Controllers\Security\PasswordSetNewController;
 
   /** Сервисы */
-  use Vvintage\Services\Security\PasswordSetNewService;
-  use Vvintage\Services\Cart\CartService;
-  use Vvintage\Services\Favorites\FavoritesService;
-  use Vvintage\Services\Order\OrderService;
-  use Vvintage\Services\Blog\BlogService;
-  use Vvintage\Services\Session\SessionService;
-  use Vvintage\Services\Page\PageService;
-  use Vvintage\Services\Validation\LoginValidator;
-  use Vvintage\Services\Validation\NewOrderValidator;
-  use Vvintage\Services\Page\Breadcrumbs;
-  use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\SEO\SeoService;
+  use Vvintage\Services\Page\PageService;
+  use Vvintage\Services\Cart\CartService;
+  use Vvintage\Services\Blog\BlogService;
+  use Vvintage\Services\Page\Breadcrumbs;
+  use Vvintage\Services\Order\OrderService;
+  use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\Product\ProductService;
+  use Vvintage\Services\Session\SessionService;
+  use Vvintage\Services\Validation\LoginValidator;
+  use Vvintage\Services\Favorites\FavoritesService;
+  use Vvintage\Services\Validation\NewOrderValidator;
+  use Vvintage\Services\Security\PasswordSetNewService;
 
 
   /** Модели */
@@ -293,29 +293,21 @@
 
     public static function routeProfile(RouteData $routeData)
     {
-        $action = $routeData->uriGet ? $routeData->uriGet : $routeData->uriModule;
         $breadcrumbs = new Breadcrumbs();
         $seoService = new SeoService();
         $profileController = new ProfileController($seoService, $breadcrumbs);
 
-        switch ($action) {
-            case 'profile':
-                $profileController->index($routeData); // Профиль
-                break;
-
-            case 'edit':
-                $profileController->edit($routeData); // Редактирование профиля
-                break;
-
-            case 'order':
-                $profileController->order($routeData);
-                break;
-
-            default:
-              // Редирект на главную
-              header("Location: /");
-              exit; // завершить скрипт
-        }
+        // Свой профиль
+        if (isset($routeData->uriGet) && $routeData->uriGet === 'edit') {
+            $profileController->edit($routeData); 
+        } else if ($routeData->uriModule === 'order' && isset($routeData->uriGet)) {
+            $profileController->order($routeData); // Профиль
+        } elseif ($routeData->uriModule === 'profile' && isset($routeData->uriGet) && !empty($routeData->uriGet)) {
+           $profileController->index($routeData);
+        } else {
+           $profileController->index($routeData); // Профиль
+        } 
+        
     }
 
 

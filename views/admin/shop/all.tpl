@@ -63,8 +63,8 @@
           <tr data-status="<?php echo h($product->status);?>">
             <td class="product-table__img">
               <img 
-                src="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" 
-                srcset="<?php echo HOST . 'usercontent/products/' . h($product->image_filename);?>" 
+                src="<?php echo HOST . 'usercontent/products/' . 'small-' . h($product->image_filename);?>" 
+                srcset="<?php echo HOST . 'usercontent/products/' . 'small-' . h($product->image_filename);?>" 
                 alt="<?php echo h($product->title);?>" loading="lazy"
               >
             </td>

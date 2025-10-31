@@ -50,8 +50,9 @@ class BrandService extends BaseService
 
     public function getAllBrandsDto(): array
     {
-      $rows =  $this->repository->getAllBrands();
-      return array_map([$this, 'createBrandProductDTO'], array_column($rows, 'id'));
+      $brandsArray =  $this->repository->getBrandsArray();
+
+      return array_map([$this, 'createBrandProductDTO'], array_column($brandsArray, 'id'));
     }
 
 
@@ -113,6 +114,7 @@ class BrandService extends BaseService
     public function createBrandProductDTO(int $id): ?BrandForProductDTO
     {
         $brand = $this->getBrandById($id);
+  
         if(!$brand) return null;
 
         $dtoFactory = new BrandForProductDTOFactory();
