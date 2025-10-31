@@ -119,14 +119,14 @@ final class ProductRepository extends AbstractRepository
       ********** ::: UPDATE ::: **********
     */
     
-    public function updateStatus(int $productId, string $status): bool
+    public function updateStatus(int $productId, string $status): int
     {
       return $this->updatePartial($productId, ['status' => $status], ['id' => $productId]);
     }
 
-    private function updatePartial(int $id, array $data): bool
+    private function updatePartial(int $id, array $data): int
     {     
-      
+   
         $productBean = $this->loadBean(self::TABLE, $id);
      
         if (!$productBean->id) throw new RuntimeException("Product with ID {$id} not found");

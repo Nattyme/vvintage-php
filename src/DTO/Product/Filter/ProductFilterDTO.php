@@ -12,6 +12,7 @@ class ProductFilterDTO {
     public ?string $sort = null;
     public ?string $sortKey = null;
     public ?array $pagination = [];
+    public ?string $status = null;
 
     public function __construct(array $query) {
         $sortData = !empty($query['sort']) ? $query['sort'] : null;
@@ -31,6 +32,7 @@ class ProductFilterDTO {
         $this->sort = $sort ?? null;
         $this->sortKey = $sortData ?? null;
         $this->pagination = $query['pagination'] ?? [];
+        $this->status = $query['status'] ?? null;
     }
 
     public function toArray(): array 
@@ -41,7 +43,8 @@ class ProductFilterDTO {
           'priceMin'   => $this->priceMin,
           'priceMax'   => $this->priceMax,
           'sort'       => $this->sort,
-          'pagination' => $this->pagination
+          'pagination' => $this->pagination,
+          'status' => $this->status
       ];
     }
 }

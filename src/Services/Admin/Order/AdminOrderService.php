@@ -86,17 +86,17 @@ final class AdminOrderService extends OrderService
 
   public function getAllOrdersActions($pagination)
   {
-    return $this->orderRepository->getAllOrders($pagination);
+    return $this->repository->getAllOrders($pagination);
   }
 
   public function getAllOrdersCount()
   {
-    return $this->orderRepository->getAllOrdersCount();
+    return $this->repository->getAllOrdersCount();
   }
 
   public function getAllOrders($pagination): array
   {
-    return $this->orderRepository->getAllOrders($pagination);
+    return $this->repository->getAllOrders($pagination);
   }
 
     // public function edit(Order $order, array $postData)

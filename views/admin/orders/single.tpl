@@ -16,7 +16,7 @@
               </option>
             <?php endforeach;?>
           </select>
-        <button name="action-submit" type="submit" class="button button--s button--primary">Применить</button>
+        <button disabled name="action-submit" type="submit" class="button button--s button--primary">Применить</button>
       </form>
       <!-- // SELECT -->
 
@@ -104,7 +104,7 @@
         <a class="button button--s button--outline" href="<?php echo HOST . 'admin/orders';?>">
           К списку заказов
         </a>
-        <a href="<?php echo HOST . 'admin/order-delete?id=' . h($order->getId());?>" 
+        <a href="<?php /* echo HOST . 'admin/order-delete?id=' . h($order->getId()); */?>" 
            class="button button--s button--primary button--warning">
           Удалить
         </a>

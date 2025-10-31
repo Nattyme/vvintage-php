@@ -64,7 +64,8 @@ final class CatalogController extends BaseController
           'priceMax'  => $_GET['priceMax'] ?? null,
           'sort'      => $_GET['sort'] ?? null,
           'page' =>  $page,
-          'perPage' => (int) $productsPerPage ?? 10
+          'perPage' => (int) $productsPerPage ?? 10,
+          'status' => 'active'
       ]);
 
 

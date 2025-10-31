@@ -18,7 +18,7 @@
             value="<?php /* echo h($searchQuery) */;?>"
           >
 
-          <button type="search-submit">
+          <button type="search-submit" >
             <svg class="icon icon--loupe">
               <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#loupe';?>"></use>
             </svg>
@@ -37,7 +37,7 @@
             <option value="<?php echo $key;?>"><?php echo $value;?></option>
           <?php endforeach;?>
         </select>
-        <button name="action-submit" type="submit" class="button button--s button--primary" disabled>Применить</button>
+        <button disabled name="action-submit" type="submit" class="button button--s button--primary" disabled>Применить</button>
       </div>
       <table class="table">
         <thead>
@@ -67,7 +67,7 @@
             <tr>
               <td><?php echo h( $post->id ); ?></td>
               <td>
-                <a class="link-to-page" href="<?php echo HOST . "admin/"; ?>post-edit/<?php echo h( $post->id ); ?>">
+                <a class="link-to-page" href="<?php /* echo HOST . "admin/"; ?>post-edit/<?php echo h( $post->id ); */?> #">
                   <?php echo h(shortText($post->title, $limit = 50));?>"
                 </a>
               </td>

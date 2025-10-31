@@ -13,18 +13,11 @@ interface ProductRepositoryInterface
  {
     /** GET */
     public function getProductById(int $id): array;
-
     public function getProductsByParam(string $sql = '', array $params = []): array;
-
     public function getAllProducts(array $data = []): array;
-
-    // public function getProductsByIds(array $ids): array;
-
     public function getAllProductsCount(?string $sql = null, array $params = []): int;
-
     public function getLastProducts(int $count): array;
 
-    // public function getFilteredProducts(ProductFilterDTO $filterDto): array;
 
     /** UPDATE */
     public function updateStatus(int $productId, string $status): bool;
@@ -33,9 +26,5 @@ interface ProductRepositoryInterface
 
     /** SAVE */
     public function saveProduct(ProductInputDTO $dto): ?int;
-
-    // public function saveProductTranslation(array $translateDto): ?array;
-
-    // public function saveProductImages(array $imagesDto): ?array;
 
 }

@@ -48,7 +48,7 @@
           <th>Обновлён</th>
           <th class="product-table__item product-table__item--checkbox">
             <label>
-              <input class="table__checkbox-hidden real-checkbox" type="checkbox" name="products[]" data-check-all>
+              <input class="table__checkbox-hidden real-checkbox" type="checkbox" data-check-all>
               <span class="table__checkbox-fake custom-checkbox"></span>
             </label>
           </th>

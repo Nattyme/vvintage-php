@@ -344,7 +344,7 @@ final class AdminProductService extends ProductService
 
 
   // filter actions
-  public function applyAction(int $productId, string $action): bool
+  public function applyAction(int $productId, string $action): int
   {
       switch ($action) {
           case 'hide':
@@ -388,18 +388,18 @@ final class AdminProductService extends ProductService
 
 
   /* CHANGE STATUS */
-  public function publishProduct(int $productId): bool
+  public function publishProduct(int $productId): int
   {
 
       return $this->repository->updateStatus($productId, 'active');
   }
 
-  public function hideProduct(int $productId): bool
+  public function hideProduct(int $productId): int
   {
       return $this->repository->updateStatus($productId, 'hidden');
   }
 
-  public function archiveProduct(int $productId, bool $keepAllImages = true): bool
+  public function archiveProduct(int $productId, bool $keepAllImages = true): int
   {
       $result = $this->repository->updateStatus($productId, 'archived');
 

@@ -13,7 +13,7 @@
     <!-- Добавить пост -->
     <li class="sidebar__list-item">
       <a class="sidebar__list-button sidebar__inner-link" 
-          href="<?php echo HOST . 'admin/post-new';?>" title="" data-section="blog-add">
+          href="<?php /* echo HOST . 'admin/post-new'; */?> #" title="" data-section="blog-add">
         <div class="sidebar__list-img-wrapper">
           <svg class="icon icon--corner">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#corner';?>"></use>
@@ -27,7 +27,7 @@
     <!-- Все записи -->
     <li class="sidebar__list-item">
       <a class="sidebar__list-button sidebar__inner-link" 
-          href="<?php echo HOST . 'admin/blog';?>" title="" data-section="blog-all">
+          href="<?php  echo HOST . 'admin/blog'; ?> " title="" data-section="blog-all">
         <div class="sidebar__list-img-wrapper">
           <svg class="icon icon--corner">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#corner';?>"></use>
@@ -41,7 +41,7 @@
     <!-- Все категории -->
     <li class="sidebar__list-item">
       <a class="sidebar__list-button sidebar__inner-link" 
-          href="<?php echo HOST . 'admin/category-blog';?>" title="Перейти на страницу редактирования категорий публикаций" data-section="blog-category">
+          href="<?php /* echo HOST . 'admin/category-blog'; */?>#" title="Перейти на страницу редактирования категорий публикаций" data-section="blog-category">
         <div class="sidebar__list-img-wrapper">
           <svg class="icon icon--corner">
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#corner';?>"></use>

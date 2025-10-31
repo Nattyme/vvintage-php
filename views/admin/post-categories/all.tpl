@@ -6,7 +6,7 @@
 
     <header class="admin-form__header">
       <div class="admin-form__header-form admin-form__row">
-        <a href="<?php echo HOST . 'admin/category-new';?>" class="button button--m button--outline" data-btn="add">
+        <a href="<?php /* echo HOST . 'admin/category-new'; */?> #" class="button button--m button--outline" data-btn="add">
           Новый раздел
         </a>
 
@@ -40,7 +40,7 @@
               </option>
             <?php endforeach;?>
           </select>
-          <button type="submit" class="button button--s button--primary">Применить</button>
+          <button disabled type="submit" class="button button--s button--primary">Применить</button>
         </form>
       </div>
 
