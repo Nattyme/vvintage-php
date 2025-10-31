@@ -16,11 +16,12 @@ class MessageService
       $this->repository = new MessageRepository ();
     }
 
-    public function getAllMessagesCount(): int
+    public function getAllMessagesCount(?string $sql = null, array $params = []): int
     {
       return $this->repository->getAllMessagesCount();
     }
 
+    
     public function createMessage(array $data): ?int
     {
       return $this->repository->createMessage($data);

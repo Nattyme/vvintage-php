@@ -17,13 +17,13 @@
             <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#mail';?>"></use>
           </svg>
 
-          <!-- <?php 
-          if ($messagesNewCounter > 0 ) : ?>
+          <?php 
+          if ($adminData['newMessages'] > 0 ) : ?>
             <div class="counter__widget">
               <span class="text-ellipsis">
                   <?php 
-                    if ($messagesNewCounter <= $messagesDisplayLimit) {
-                      echo h($messagesNewCounter);
+                    if ($adminData['newMessages'] <= 10) {
+                      echo h( $adminData['newMessages'] );
                     } else {
                       echo '&hellip;';
                     }
@@ -31,7 +31,7 @@
               </span>
             </div>
           <?php endif; 
-          ?> -->
+          ?>
       
         </div>
         <span>Сообщение</span>
@@ -64,29 +64,7 @@
       </a>
       <!--// Заказы -->
 
-      <!-- Комментарии -->
-      <!-- <a class="admin-panel__link" href="<?php echo HOST . 'admin/comments';?>" title="Перейти к списку комментариев">
-        <div class="admin-panel__icon-wrapper counter">
-          <svg class="icon icon--message-square">
-            <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#message-square';?>"></use>
-          </svg>
-            <?php if ($commentsNewCounter > 0 ) : ?>
-            <div class="counter__widget">
-              <span class="text-ellipsis">
-                  <?php 
-                    if ($commentsNewCounter <= $commentsDisplayLimit) {
-                      echo h($commentsNewCounter);
-                    } else {
-                      echo '&hellip;';
-                    }
-                  ?> 
-              </span>
-            </div>
-          <?php endif;?>
-        </div>
-        <span>Комментарии</span>
-      </a> -->
-      <!--// Комментарии -->
+    
 
       <!-- Редактирование текущей страницы -->
       <!-- <?php if ( $uriModule === 'blog' && isset($uriGet) && $uriGet !== 'cat') : ?>

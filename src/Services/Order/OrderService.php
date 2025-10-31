@@ -22,7 +22,7 @@ use Vvintage\DTO\Order\OrderProfileDTOFactory;
 // extends AbstractUserItemsListService
 class OrderService extends BaseService
 {
-    protected OrderRepository $orderRepository;
+    protected OrderRepository $repository;
     private ProductService $productService;
 
     
@@ -41,7 +41,7 @@ class OrderService extends BaseService
     public function __construct()
     {
       parent::__construct();
-      $this->orderRepository = new OrderRepository();
+      $this->repository = new OrderRepository();
       $this->productService = new ProductService();
     }
 
@@ -64,7 +64,7 @@ class OrderService extends BaseService
       $order->setCart( $this->prepareCartData($order->getCart()));
    
       // Сохраняем заказ в БД
-      return $this->orderRepository->createOrder($order, $userModel);
+      return $this->repository->createOrder($order, $userModel);
     }
 
     private function prepareCartData(array $cart): array
@@ -95,12 +95,12 @@ class OrderService extends BaseService
 
     public function getOrderById (int $id): ?Order
     {
-      return $this->orderRepository->getOrderById($id);
+      return $this->repository->getOrderById($id);
     }
 
     public function getProfileOrdersList (int $id): array
     {
-      $orders = $this->orderRepository->getOrdersByUserId($id);
+      $orders = $this->repository->getOrdersByUserId($id);
       $dtoFactory = new OrderProfileDTOFactory($this->localeService);
       return array_map(fn($order) => $dtoFactory->createSummary($order), $orders);
     }
@@ -112,6 +112,11 @@ class OrderService extends BaseService
       $dtoFactory = new OrderProfileDTOFactory($this->localeService);
 
       return $dtoFactory->createDetailed($order);
+    }
+
+    public function getAllOrderaCount(?string $sql = null, array $params = []): int
+    {
+      return $this->repository->getAllOrdersCount($sql, $params);
     }
 
 }

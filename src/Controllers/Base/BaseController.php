@@ -9,8 +9,8 @@ use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
-use Vvintage\Controllers\AdminPanel\AdminPanelController;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\AdminPanel\AdminPanelService;
 
 
 abstract class BaseController
@@ -49,8 +49,8 @@ abstract class BaseController
     $adminData = [];
 
     if($isAdminLoggedIn) {
-      $panel = new AdminPanelController();
-      $adminData = $panel->index();
+      $service = new AdminPanelService();
+      $adminData = $service->getCounters();
     }
 
     // Превращаем элементы массива в переменные

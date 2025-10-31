@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\AdminPanel;
 
+use Vvintage\Services\Messages\MessageService;
+use Vvintage\Services\Order\OrderService;
+
 class AdminPanelService
 {
     private MessageService $messageService;
@@ -17,8 +20,8 @@ class AdminPanelService
     public function getCounters(): array
     {
         return [
-            'newMessages' => $this->messageService->countUnread(),
-            'newOrders' => $this->orderService->countNew(),
+            'newMessages' => $this->messageService->getAllMessagesCount('status = ?', ['new']),
+            'newOrders' => $this->orderService->getAllOrderaCount('status = ?', ['new']),
         ];
     }
 }
