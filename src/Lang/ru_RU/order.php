@@ -37,4 +37,19 @@ return [
   'order.place_order' => 'Разместить заказ',
   'order.success' => 'Заказ успешно оформлен',
   'order.contact_soon' => 'Мы свяжемся с вами в ближайшее время!',
+
+  // Статусы заказов
+  'order.status.new' => 'Не оплачен',
+  'order.status.confirmed' => 'Подтверждён',
+  'order.status.pending' => 'В ожидании',
+  'order.status.paid' => 'Оплачен',
+  'order.status.in_progress' => 'В процессе',
+  'order.status.shipped' => 'Отправлен',
+  'order.status.delivered' => 'Доставлен',
+  'order.status.completed' => 'Завершён',
+  'order.status.canceled' => 'Отменён',
+
+  // Кнопки
+  'order.button.pay' => 'Оплатить',
+  'order.button.unpaid' => 'Не оплачен'
 ];

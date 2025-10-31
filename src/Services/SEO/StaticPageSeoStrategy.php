@@ -7,7 +7,7 @@ use Vvintage\Contracts\SeoStrategyInterface;
 use Vvintage\DTO\Common\SeoDTO;
 
 
-class HomePageSeoStrategy implements SeoStrategyInterface
+class StaticPageSeoStrategy implements SeoStrategyInterface
 {
     private $model;
     private $lang;
@@ -51,5 +51,6 @@ class HomePageSeoStrategy implements SeoStrategyInterface
 
         return '<script type="application/ld+json">' . json_encode($data, JSON_UNESCAPED_UNICODE) . '</script>';
     }
+
 
 }

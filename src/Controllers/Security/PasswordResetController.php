@@ -6,18 +6,25 @@ namespace Vvintage\Controllers\Security;
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
+use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Security\PasswordResetService;
-use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Validation\PasswordResetValidator;
+
+use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Routing\RouteData;
 
 final class PasswordResetController extends BaseController
 {
+  private SeoService $seoService;
+  private PageService $pageService;
   private PasswordResetService $service;
 
-  public function __construct()
+  public function __construct(SeoService $seoService)
   {
       parent::__construct(); // Важно!
+      $this->seoService = $seoService;
+      $this->pageService = new PageService();
       $this->service = new PasswordResetService( new UserRepository(), $this->flash);
   }
 
@@ -44,6 +51,11 @@ final class PasswordResetController extends BaseController
   }
 
   private function renderForm (RouteData $routeData, ?bool $resultEmail = false) {
+    // Название страницы
+    $page = $this->pageService->getPageBySlug($routeData->uriModule);
+    $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
+    $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
+    
     $pageTitle = "Восстановить пароль";
     $pageClass = "authorization-page";
     $flash = $this->flash;

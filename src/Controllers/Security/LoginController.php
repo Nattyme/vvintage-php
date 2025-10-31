@@ -12,9 +12,12 @@ use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
 
 /** Сервисы */
+use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Cart\CartService;
-use Vvintage\Services\Favorites\FavoritesService;
+use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Security\LoginService;
+use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\User\UserItemsMergeService;
 
 /** Хранилища */
@@ -23,7 +26,6 @@ use Vvintage\Store\UserItemsList\UserItemsListStore;
 
 /** Репозитории */
 use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Product\ProductService;
 
 /** Роутинг */
 use Vvintage\Routing\RouteData;
@@ -34,12 +36,16 @@ use Vvintage\Services\Translator\Translator;
 
 final class LoginController extends BaseController
 {
+  private SeoService $seoService;
+  private PageService $pageService;
   private UserRepository $userRepository;
   private ProductService $productService;
 
-  public function __construct(UserRepository $userRepository) 
+  public function __construct(SeoService $seoService, UserRepository $userRepository) 
   {
     parent::__construct(); // Важно!
+    $this->seoService = $seoService;
+    $this->pageService = new PageService();
     $this->userRepository = $userRepository;
     $this->productService = new ProductService();
   }
@@ -138,8 +144,14 @@ final class LoginController extends BaseController
 
   private function renderForm(RouteData $routeData): void
   {
+    // Название страницы
+    $page = $this->pageService->getPageBySlug($routeData->uriModule);
+    $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
+    $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
+
     $pageTitle = "Вход на сайт";
     $pageClass = "authorization-page";
+    
     $flash = $this->flash;
     $currentLang =  $this->productService->currentLang;
     $languages = $this->productService->languages;

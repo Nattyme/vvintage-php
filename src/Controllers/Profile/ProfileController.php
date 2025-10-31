@@ -20,6 +20,7 @@ use Vvintage\Services\Validation\ProfileValidator;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Services\Order\OrderService;
+use Vvintage\Services\SEO\SeoService;
 
 // use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\Product\ProductRepository;
@@ -34,16 +35,18 @@ final class ProfileController extends BaseController
 { 
   private UserService $userService;
   private Breadcrumbs $breadcrumbsService;
+  private SeoService $seoService;
   private ProfileValidator $validator;
   private PageService $pageService;
   protected LocaleService $localeService;
   protected OrderService $orderService;
 
-  public function __construct(Breadcrumbs $breadcrumbs)
+  public function __construct(SeoService $seoService, Breadcrumbs $breadcrumbs)
   {
     parent::__construct(); // Важно!
     $this->userService = new UserService();
     $this->breadcrumbsService = $breadcrumbs;
+    $this->seoService = $seoService;
     $this->validator = new ProfileValidator();
     $this->pageService = new PageService();
     $this->localeService = new LocaleService();
@@ -187,16 +190,19 @@ final class ProfileController extends BaseController
   private function renderProfileFull(RouteData $routeData, ?User $userModel, ?array $orders): void
   {
       // Название страницы
+      $page = $this->pageService->getPageBySlug($routeData->uriModule);
       $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule);
-
+      $seo = $this->seoService->getSeoForPage('profile', $pageModel);
+  
       $pageClass = "profile-page";
-      $pageTitle =  $pageModel->getTitle();
+      $pageTitle = $seo->title;
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
           // Подключение шаблонов страницы
       $this->renderLayout('profile/profile-full', [
+            'seo' => $seo,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
@@ -214,23 +220,24 @@ final class ProfileController extends BaseController
   {  
       // Название страницы
       $slug = $uriGet ? $routeData->uriModule . '/' . $uriGet : $routeData->uriModule;
-      $pageModel = $this->pageService->getPageModelBySlug($slug);
-      $pageTitle = $pageModel->getTitle();
 
+      // Название страницы
+      $page = $this->pageService->getPageBySlug($slug);
+      $pageModel = $this->pageService->getPageModelBySlug( $slug );
+      $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
 
       $pageClass = "profile-page";
-      $pageTitle =  $pageModel->getTitle();
+      $pageTitle = $seo->title;
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-      if (isset($_POST['updateProfile'])) {
-  
-        $this->updateUserAndGoToProfile($userModel);
-      }
+      if (isset($_POST['updateProfile']))  $this->updateUserAndGoToProfile($userModel);
+
  
       // Подключение шаблонов страницы
       $this->renderLayout('profile/profile-edit', [
+            'seo' => $seo,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
@@ -269,7 +276,7 @@ final class ProfileController extends BaseController
 
 
   private  function updateUserAndGoToProfile (User $userModel) {
-    // dd($userModel);
+    
     if ( isset($_POST['updateProfile'])) {
       // Принимаем данные
       $data = $_POST;

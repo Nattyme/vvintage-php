@@ -39,16 +39,17 @@ class PageController extends BaseController
   public function index(RouteData $routeData): void
   { 
     $slug = $routeData->uriModule ?: 'main';  
- 
-    $page = $this->pageService->getPageBySlug($slug);
 
     // получаем общие данные страницы 
     $this->setRouteData($routeData); // <-- передаём routeData
-    // $page = $pageModel->export();
-    // $fields = $pageModel->getFieldsAssoc();
 
     // Название страницы
-    $pageTitle = $page['title'];
+    $page = $this->pageService->getPageBySlug($slug);
+    $pageModel = $this->pageService->getPageModelBySlug( $slug );
+    $seo = $this->seoService->getSeoForPage('about', $pageModel);
+
+    // Название страницы
+    $pageTitle = $seo->title;
 
     // Хлебные крошки
     $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -86,6 +87,7 @@ class PageController extends BaseController
    
     // Общий рендер
     $this->renderLayout("pages/{$slug}/index", [
+        'seo' => $seo,
         'page' => $page,
         'routeData' => $routeData,
         'fields' => $page['fields'],

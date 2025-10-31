@@ -6,16 +6,22 @@ namespace Vvintage\Controllers\Security;
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
+use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Security\PasswordSetNewService;
 use Vvintage\Services\Validation\PasswordSetNewValidator;
 
 final class PasswordSetNewController extends BaseController 
 {
+  private SeoService $seoService;
+  private PageService $pageService;
   private PasswordSetNewService $setNewPassService;
 
-  public function __construct(PasswordSetNewService $setNewPassService)
+  public function __construct(SeoService $seoService, PasswordSetNewService $setNewPassService)
   {
     parent::__construct(); // Важно!
+    $this->seoService = $seoService;
+    $this->pageService = new PageService();
     $this->setNewPassService = $setNewPassService;
   }
 
@@ -83,6 +89,11 @@ final class PasswordSetNewController extends BaseController
 
   private  function renderForm($routeData, bool $newPasswordReady = false)
   {
+    // Название страницы
+    $page = $this->pageService->getPageBySlug($routeData->uriModule);
+    $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
+    $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
+    
     $pageTitle = "Установить новый пароль";
     $pageClass = "authorization-page";
 

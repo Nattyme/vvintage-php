@@ -30,6 +30,7 @@ use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\SEO\SeoService;
 
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
@@ -47,6 +48,7 @@ final class CartController extends BaseController
     private UserItemsListStoreInterface $cartStore;
     private Breadcrumbs $breadcrumbsService;
     private PageService $pageService;
+    private SeoService $seoService;
 
     public function __construct(
       CartService $cartService, 
@@ -54,7 +56,8 @@ final class CartController extends BaseController
       Cart $cartModel, 
       array $cart, 
       UserItemsListStoreInterface $cartStore, 
-      Breadcrumbs $breadcrumbs
+      Breadcrumbs $breadcrumbs,
+      SeoService $seoService
     )
     {
       parent::__construct(); // Важно!
@@ -65,6 +68,7 @@ final class CartController extends BaseController
       $this->cartStore = $cartStore;
       $this->breadcrumbsService = $breadcrumbs;
       $this->pageService = new PageService();
+      $this->seoService = $seoService;
     }
 
     public function index(RouteData $routeData): void
@@ -81,10 +85,14 @@ final class CartController extends BaseController
 
     private function renderPage (RouteData $routeData, array $products, Cart $cartModel, int $totalPrice): void 
     {  
-      $page = $this->pageService->getPageBySlug($routeData->uriModule);
-      
       // Название страницы
-      $pageTitle = $page['title'];
+      $page = $this->pageService->getPageBySlug($routeData->uriModule);
+      $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
+      $seo = $this->seoService->getSeoForPage('cart', $pageModel);
+
+      // Название страницы
+      $pageTitle = $seo->title;
+    
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
@@ -97,6 +105,7 @@ final class CartController extends BaseController
 
       // Подключение шаблонов страницы
       $this->renderLayout('cart/cart', [
+            'seo' => $seo,
             'cartModel' => $this->cartModel,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,

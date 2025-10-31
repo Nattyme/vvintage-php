@@ -30,7 +30,8 @@
                   // echo 'Оплачен' . rus_date('j F Y в G:i', $payment['timestamp']);
                 } else {
                   echo 'Не оплачен<br>';
-                  echo '<a href="' . HOST . 'orderselectpayment?id=' . u($order->id) .'" class="secondary-button">Оплатить</a>';
+                  // echo '<a href="<?php '  . HOST . 'orderselectpayment?id=' . u($order->id) .' 
+                  echo '<a href="#" class="secondary-button">Оплатить</a>';
                 }
                 
               ?>

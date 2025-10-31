@@ -6,6 +6,7 @@ namespace Vvintage\Services\SEO;
 use Vvintage\DTO\Common\SeoDTO;
 use Vvintage\Services\SEO\ProductSeoStrategy;
 use Vvintage\Services\SEO\PostSeoStrategy;
+use Vvintage\Services\SEO\StaticPageSeoStrategy;
 use Vvintage\Services\Base\BaseService;
 // use Vvintage\Services\SEO\ProductSeoStrategy;
 
@@ -25,7 +26,7 @@ class SeoService extends BaseService
     parent::__construct();
   }
 
-  public function getSeoForPage(string $pageType, $dto = null): SeoDTO
+  public function getSeoForPage(string $pageType, $model = null): SeoDTO
   {
       $lang = $this->currentLang;
 
@@ -37,26 +38,33 @@ class SeoService extends BaseService
               $strategy = new CatalogSeoStrategy($model, $lang);
               break;
           case 'product':
-              $strategy = new ProductSeoStrategy($dto, $lang);
+              $strategy = new ProductSeoStrategy($model, $lang);
               break;
-          case 'about':
-              $strategy = new ProductSeoStrategy($model);
-              break;
-          case 'delivery':
-              $strategy = new ProductSeoStrategy($model);
-              break;
+          // case 'about':
+          //     $strategy = new ProductSeoStrategy($model);
+          //     break;
+          // case 'delivery':
+          //     $strategy = new ProductSeoStrategy($model);
+          //     break;
           case 'profile':
-              $strategy = new ProductSeoStrategy($model);
-              break;
+          case 'profile-edit':
+          case 'about':
           case 'cart':
-              $strategy = new ProductSeoStrategy($model);
+          case 'login':
+          case 'registration':
+          case 'resetpass':
+          case 'setnewpass':
+              $strategy = new StaticPageSeoStrategy($model, $lang);
               break;
-          case 'favorites':
-              $strategy = new ProductSeoStrategy($model);
-              break;
-          case 'post':
-              $strategy = new PostSeoStrategy($model, $lang);
-              break;
+          // case 'cart':
+          //     $strategy = new ProductSeoStrategy($model);
+          //     break;
+          // case 'favorites':
+          //     $strategy = new ProductSeoStrategy($model);
+          //     break;
+          // case 'post':
+          //     $strategy = new PostSeoStrategy($model, $lang);
+          //     break;
           default:
               throw new \Exception('Unknown SEO page type');
       }

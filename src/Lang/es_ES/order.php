@@ -6,7 +6,7 @@ return [
   'order.product' => 'Producto',
   'order.photo' => 'Foto',
   'order.name' => 'Nombre',
-  'order.unit_price' => 'Precio por unidad',
+  'order.unit_price' => 'Precio unitario',
   'order.quantity' => 'Cantidad',
   'order.price' => 'Precio',
   'order.total' => 'Total',
@@ -17,7 +17,7 @@ return [
   'order.total_cost' => 'Costo total',
 
   'order.customer_data' => 'Datos del cliente',
-  'order.full_name' => 'Nombre y apellido',
+  'order.full_name' => 'Nombre y Apellido',
   'order.first_name' => 'Nombre',
   'order.first_name.placeholder' => 'Ingrese el nombre',
   'order.last_name' => 'Apellido',
@@ -36,5 +36,20 @@ return [
   'order.return_to_cart' => 'Volver al carrito',
   'order.place_order' => 'Realizar pedido',
   'order.success' => 'Pedido realizado con éxito',
-  'order.contact_soon' => '¡Nos pondremos en contacto contigo pronto!'
+  'order.contact_soon' => '¡Nos pondremos en contacto con usted pronto!',
+
+  // Order statuses
+  'order.status.new' => 'No pagado',
+  'order.status.confirmed' => 'Confirmado',
+  'order.status.pending' => 'Pendiente',
+  'order.status.paid' => 'Pagado',
+  'order.status.in_progress' => 'En proceso',
+  'order.status.shipped' => 'Enviado',
+  'order.status.delivered' => 'Entregado',
+  'order.status.completed' => 'Completado',
+  'order.status.canceled' => 'Cancelado',
+
+  // Buttons
+  'order.button.pay' => 'Pagar',
+  'order.button.unpaid' => 'No pagado'
 ];

@@ -16,7 +16,7 @@ return [
   'order.payment' => 'Payment',
   'order.total_cost' => 'Total Cost',
 
-  'order.customer_data' => 'Customer Details',
+  'order.customer_data' => 'Customer Data',
   'order.full_name' => 'Full Name',
   'order.first_name' => 'First Name',
   'order.first_name.placeholder' => 'Enter first name',
@@ -27,7 +27,7 @@ return [
   'order.phone' => 'Phone',
   'order.phone.placeholder' => 'Enter phone',
 
-  'order.shipping_data' => 'Shipping Information',
+  'order.shipping_data' => 'Shipping Data',
   'order.address' => 'Shipping Address',
   'order.address.placeholder' => 'Enter shipping address',
   'order.comment' => 'Comments',
@@ -35,6 +35,21 @@ return [
 
   'order.return_to_cart' => 'Return to cart',
   'order.place_order' => 'Place Order',
-  'order.success' => 'Order placed successfully',
-  'order.contact_soon' => 'We will contact you soon!'
+  'order.success' => 'Order successfully placed',
+  'order.contact_soon' => 'We will contact you shortly!',
+
+  // Order statuses
+  'order.status.new' => 'Unpaid',
+  'order.status.confirmed' => 'Confirmed',
+  'order.status.pending' => 'Pending',
+  'order.status.paid' => 'Paid',
+  'order.status.in_progress' => 'In Progress',
+  'order.status.shipped' => 'Shipped',
+  'order.status.delivered' => 'Delivered',
+  'order.status.completed' => 'Completed',
+  'order.status.canceled' => 'Canceled',
+
+  // Buttons
+  'order.button.pay' => 'Pay',
+  'order.button.unpaid' => 'Unpaid'
 ];

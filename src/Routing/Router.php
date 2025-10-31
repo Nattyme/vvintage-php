@@ -253,15 +253,16 @@
 
 
     private static function routeAuth(RouteData $routeData) {
+      $seoService = new SeoService();
       $userRepository = new UserRepository();
       $setNewPassService = new PasswordSetNewService($userRepository);
 
       $validator = new LoginValidator($userRepository);
 
-      $loginController = new LoginController($userRepository);
-      $regController = new RegistrationController();
-      $resetController = new PasswordResetController();
-      $setNewPassController = new PasswordSetNewController( $setNewPassService);
+      $loginController = new LoginController( $seoService, $userRepository);
+      $regController = new RegistrationController( $seoService);
+      $resetController = new PasswordResetController( $seoService);
+      $setNewPassController = new PasswordSetNewController( $seoService, $setNewPassService);
       $sessionService = new SessionService();
 
    
@@ -294,7 +295,8 @@
     {
         $action = $routeData->uriGet ? $routeData->uriGet : $routeData->uriModule;
         $breadcrumbs = new Breadcrumbs();
-        $profileController = new ProfileController($breadcrumbs);
+        $seoService = new SeoService();
+        $profileController = new ProfileController($seoService, $breadcrumbs);
 
         switch ($action) {
             case 'profile':
@@ -363,6 +365,7 @@
 
     private static function routeCart(RouteData $routeData) {
       $sessionService = new SessionService();
+      $seoService = new SeoService();
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
@@ -384,7 +387,7 @@
                     : new GuestItemsListStore();
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
 
-      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $breadcrumbs );
+      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $breadcrumbs, $seoService );
 
       switch ($routeData->uriModule) {
         case 'cart':
@@ -401,6 +404,7 @@
 
     private static function routeFav(RouteData $routeData) {
       $sessionService = new SessionService();
+      $seoService = new SeoService();
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
@@ -423,7 +427,7 @@
                     : new GuestItemsListStore();
                     
       $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
-      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs );
+      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs, $seoService );
 
       switch ($routeData->uriModule) {
         case 'favorites':

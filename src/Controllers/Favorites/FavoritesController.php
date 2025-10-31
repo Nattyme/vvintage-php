@@ -32,6 +32,7 @@ use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\SEO\SeoService;
 
 
 /** Абстракции */
@@ -49,6 +50,7 @@ final class FavoritesController extends BaseController
     private UserItemsListStoreInterface $favStore;
     private Breadcrumbs $breadcrumbsService;
     private PageService $pageService;
+    private SeoService $seoService;
 
     public function __construct(
       FavoritesService $favService, 
@@ -56,8 +58,9 @@ final class FavoritesController extends BaseController
       Favorites $favModel, 
       array $fav_list, 
       UserItemsListStoreInterface $favStore, 
-      Breadcrumbs $breadcrumbs
-      )
+      Breadcrumbs $breadcrumbs,
+      SeoService $seoService
+    )
     {
       parent::__construct(); // Важно!
       $this->favService = $favService;
@@ -67,6 +70,7 @@ final class FavoritesController extends BaseController
       $this->favStore = $favStore;
       $this->breadcrumbsService = $breadcrumbs;
       $this->pageService = new PageService();
+      $this->seoService = $seoService;
     }
 
     public function index(RouteData $routeData): void
@@ -83,23 +87,27 @@ final class FavoritesController extends BaseController
 
     private function renderPage (RouteData $routeData, array $products, Favorites $favModel): void 
     {  
+      // Название страницы
       $page = $this->pageService->getPageBySlug($routeData->uriModule);
+      $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
+      $seo = $this->seoService->getSeoForPage('cart', $pageModel);
 
       // Название страницы
-      $pageTitle = $page['title'];
+      $pageTitle = $seo->title;
 
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
  
       // Формируем единую модель для передачи в шаблон
- 
+
       $viewModel = [
         'products' => $products
       ];
 
       // Подключение шаблонов страницы
       $this->renderLayout('favorites/favorites', [
+            'seo' => $seo,
             'pageTitle' => $pageTitle,
             'favModel' => $this->favModel,
             'pageTitle' => $pageTitle,
