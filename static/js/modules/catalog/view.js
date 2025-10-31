@@ -149,22 +149,6 @@ const renderMenuTree = (cats, level = 1) => {
   const fillNav = (block, data) => {
     if (!block || !Array.isArray(data)) return;
     block.innerHTML = renderMenuTree(data, 1, window.BASE_URL || '');
-    // block.innerHTML = data.map(cat => getFirstLvlMenuTemplate(cat)).join('');
-  }
-
-  const noScroll =  (element) => {
-    const target = document.querySelector(element);
-    if(!target) return;
-
-    if(target.classList.contains('no-scroll')) return;
-    target.classList.add('no-scroll');
-  }
-
-  const enableScroll =  (element) => {
-    const target = document.querySelector(element);
-    if(!target) return;
-    if(!target.classList.contains('no-scroll')) return;
-    target.classList.remove('no-scroll');
   }
 
 
@@ -185,9 +169,7 @@ const renderMenuTree = (cats, level = 1) => {
     addAdminActiveClass,
     removeActiveClassForElems,
     addActiveClassToClosestBlock,
-    renderMenuTree,
-    enableScroll,
-    noScroll
+    renderMenuTree
   }
 }
 

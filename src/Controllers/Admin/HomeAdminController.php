@@ -8,14 +8,15 @@ use Vvintage\Controllers\Admin\BaseAdminController;
 
 /** Сервисы */
 use Vvintage\Services\Admin\AdminStatsService;
+use Vvintage\Services\Messages\FlashMessage;
 
 class HomeAdminController extends BaseAdminController 
 {
   public AdminStatsService $adminStatsService;
 
-  public function __construct()
+  public function __construct(FlashMessage $flash)
   {
-    parent::__construct();
+    parent::__construct($flash);
     $this->adminStatsService = new AdminStatsService();
   }
 

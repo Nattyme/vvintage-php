@@ -8,14 +8,15 @@ use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Product\AdminProductService;
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
+use Vvintage\Services\Messages\FlashMessage;
 
 class AdminProductController extends BaseAdminController
 {
   private AdminProductService $service;
 
-  public function __construct()
+  public function __construct(FlashMessage $flash)
   {
-    parent::__construct();
+    parent::__construct($flash);
     $this->service = new AdminProductService();
   }
 

@@ -10,16 +10,16 @@ use Vvintage\Models\Brand\Brand;
 use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\Services\Admin\Brand\AdminBrandService;
 use Vvintage\Services\Admin\Validation\AdminBrandValidator;
-
+use Vvintage\Services\Messages\FlashMessage;
 
 class AdminBrandController extends BaseAdminController 
 {
   private AdminBrandService $service;
   private AdminBrandValidator $validator;
 
-  public function __construct()
+  public function __construct(FlashMessage $flash)
   {
-    parent::__construct();
+    parent::__construct($flash);
     $this->service = new AdminBrandService();
     $this->validator = new AdminBrandValidator();
   }

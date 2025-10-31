@@ -9,7 +9,7 @@ use Vvintage\Services\Admin\PostCategory\AdminPostCategoryService;
 use Vvintage\Services\Admin\Validation\AdminPostCategoryValidator;
 use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
 use Vvintage\Models\PostCategory\PostCategory;
-
+use Vvintage\Services\Messages\FlashMessage;
 
 final class AdminPostCategoryController extends BaseAdminController 
 {
@@ -18,9 +18,9 @@ final class AdminPostCategoryController extends BaseAdminController
 
   private const TABLE = 'postcategories';
 
-  public function __construct()
+  public function __construct(FlashMessage $flash)
   {
-    parent::__construct();
+    parent::__construct($flash);
     $this->service = new AdminPostCategoryService();
     $this->validator = new AdminPostCategoryValidator();
   }

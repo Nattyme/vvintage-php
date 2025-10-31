@@ -629,17 +629,18 @@
       $breadcrumbs = new Breadcrumbs();
       $postRepository = new  PostRepository();
       $postCategoryRepository = new PostCategoryRepository(); 
+      $flash = new FlashMessage();
 
 
-      $homeAdminController = new HomeAdminController();
-      $adminProductController = new AdminProductController();
-      $adminBrandController = new AdminBrandController();
-      $adminCategoryController = new AdminCategoryController();
-      $adminUserController = new AdminUserController();
-      $adminOrderController = new AdminOrderController();
-      $adminPostController = new AdminPostController($breadcrumbs);
-      $adminMessageController = new AdminMessageController();
-      $adminPostCatController = new AdminPostCategoryController($postCategoryRepository);
+      $homeAdminController = new HomeAdminController($flash);
+      $adminProductController = new AdminProductController($flash);
+      $adminBrandController = new AdminBrandController($flash);
+      $adminCategoryController = new AdminCategoryController($flash);
+      $adminUserController = new AdminUserController($flash);
+      $adminOrderController = new AdminOrderController($flash);
+      $adminPostController = new AdminPostController($flash, $breadcrumbs);
+      $adminMessageController = new AdminMessageController($flash);
+      $adminPostCatController = new AdminPostCategoryController($flash, $postCategoryRepository);
   
       switch ($routeData->uriModule) {
          // ::::::::::::: SHOP :::::::::::::::::::

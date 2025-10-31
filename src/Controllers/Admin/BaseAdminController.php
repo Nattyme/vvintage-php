@@ -9,6 +9,7 @@ use Vvintage\Services\Session\SessionService;
 use Vvintage\Models\User\User;
 use Vvintage\Services\Messages\FlashMessage;
 
+
 // Пеервод на другие языки
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
@@ -24,7 +25,7 @@ abstract class BaseAdminController
   protected string $currentLang;
   protected FlashMessage $flash;
 
-  public function __construct($flash)
+  public function __construct(FlashMessage $flash)
   {
       $this->settings = Settings::all(); // Получаем 1 раз массив всех настроек 
       $this->localeService = new LocaleService();

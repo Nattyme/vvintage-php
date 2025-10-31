@@ -9,7 +9,7 @@ use Vvintage\Repositories\Message\MessageRepository;
 
 /** Сервисы */
 use Vvintage\Services\Admin\Messages\AdminMessageService;
-
+use Vvintage\Services\Messages\FlashMessage;
 
 
 class AdminMessageController extends BaseAdminController 
@@ -17,9 +17,9 @@ class AdminMessageController extends BaseAdminController
   private AdminMessageService $service;
 
 
-  public function __construct()
+  public function __construct(FlashMessage $flash)
   {
-    parent::__construct();
+    parent::__construct($flash);
     $this->service = new AdminMessageService();
   }
 
