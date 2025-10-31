@@ -1,0 +1,26 @@
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0; /* расстояние сверху и снизу */
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ccc; /* цвет линии */
+}
+
+.divider::before {
+  margin-right: 10px; /* расстояние между линией и текстом */
+}
+
+.divider::after {
+  margin-left: 10px;
+}
+
+.divider span {
+  white-space: nowrap; /* чтобы текст не переносился */
+  color: #555; /* цвет текста "или" */
+}

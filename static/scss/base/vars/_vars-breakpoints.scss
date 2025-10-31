@@ -1,0 +1,9 @@
+:root {
+  /*не забыть сделать под 320*/
+  --breakpoint-sm: 480px;   /* маленькие телефоны */
+  --breakpoint-md: 768px;   /* планшеты */
+  --breakpoint-md-large: 960px;   /* планшеты */
+  --breakpoint-lg: 1024px;  /* ноутбуки */
+  --breakpoint-xl: 1280px;  /* десктоп */
+  --breakpoint-2xl: 1536px; /* широкие экраны */
+}

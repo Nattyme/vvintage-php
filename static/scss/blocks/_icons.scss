@@ -1,6 +1,7 @@
 .icons-wrapper {
 	padding: 30px 0;
 	display: flex;
+  justify-content: center;
 	column-gap: 30px;
 }
 
@@ -32,29 +33,21 @@
   fill: #000;
 }
 
-.icon--phone {
-  padding: 3px 4px 7px 6px;
-  width: 27px;
-  height: 27px;
-  fill: #6E9C9F;
-	transition: all 0.5s ease;
-}
-
-:is(a:hover) .icon--phone {
-  background-color: var(--accent);
-  fill: #fff;
-}
-
 .icon--instagram, .icon--facebook, .icon--twitter {
   width: 23px;
   height: 23px;
-  fill: #000;
+  fill: #fff;
+  transition: fill 0.2s ease-in;
+
+  &:hover {
+    fill: var(--color-accent);
+  }
 }
 
 .icon--file-check {
   width: 96px;
   height: 96px;
-  fill: #6E9C9F;
+  fill: var(--color-black);
 }
 
 .icon--control-up, .icon--control-down {
@@ -66,17 +59,17 @@
 .icon--delete {
   width: 12px;
   height: 12px;
-  stroke: #000;
+  stroke: var(--color-black);
 }
 
 .icon--success {
   width: 96px;
   height: 96px;
-  fill: #6E9C9F;
+  fill: var(--color-black);
 }
 
 .icon--slider-arrow {
-  stroke: #000;
+  stroke: var(--color-black);
 }
 
 .icon--slider-arrow-prev {
@@ -86,8 +79,132 @@
 .icon--profile {
   stroke: #000;
 }
+  
+.icon--favorite {
+  width: 24px;
+  stroke: #000;
+  transition: all 0.2s ease-in;
+  
+  &:hover {
+    stroke: var(--color-red-300);
+    fill: var(--color-red-300);
+  }
+}
 
-.icon--logout {
+.icon--cart {
+  width: 30px;
+  height: 30px;
+}
+
+.icon--plane, .icon--note, .icon--check, .icon--payment {
+  width: 20px;
+  height: 20px;
+  stroke: #000;
+}
+
+.icon--payment {
   fill: #000;
+}
+
+.icon--box {
+  width: 40px;
+  height: 40px;
+  fill: #fff;
+  stroke: #fff;
+}
+
+.icon--parfume, .icon--parfume-kids, .icon--parfume-men, .icon--bag, .icon--glasses, .icon--category_all, .icon--cosmetics, .icon--watch,
+.icon--earrings, .icon--suitcase, .icon--glasses_men, .icon--belt, .icon--necktie, .icon--watch_man, .icon--toy
+ {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-black);
+  stroke: var(--color-black);
+}
+
+// admin panel 
+.icon--target, .icon--folder, .icon--message-square, .icon--user {
+  stroke: var(--color-white);
+}
+
+.category-block__link {
+  .icon--remove, .icon--edit {
+    display: flex;
+    width: 16px;
+    height: 16px;
+
+    stroke: rgb(0, 0, 0, 0.3);
+    fill: rgb(0, 0, 0, 0.3);
+
+    transition: all 0.2s ease-in;
+  }
+
+  &:hover .icon {
+    stroke: rgb(0, 0, 0, 1);
+    fill: rgb(0, 0, 0, 1);
+  }
+
+
+}
+
+.admin-card .icon--close, .admin-card .icon--menu {
+  width: 15px;
+  height: 15px;
+  stroke: #fff;
+  fill: #fff;
+}
+
+
+.icon--zen, .icon--login, .icon--logout, .icon--cart, .icon--teg {
+  fill: var(--color-black);
+}
+
+
+.contacts__item {
+  .icon--mail, .icon--phone, .icon--location {
+    fill: var(--color-accent);
+  } 
+}
+
+.icon--calendar, .icon--eye, .icon--timer {
+  fill: var(--color-black-300);
+}
+
+.sidebar__list-img-wrapper {
+  .icon--mail {
+    fill: var(--color-white);
+  }
+}
+
+.admin-panel {
+  .icon--user, .icon--users, .icon--book, .icon--message, 
+  .icon--logout, .icon--mail, .icon--inventory, .icon--files,
+  .icon--settings, .icon--corner, .icon--shop, .icon--statistic, .icon--add_photo {
+    width: 32px;
+    height: 32px;
+    fill: var(--color-white-rgba-07);
+    transition: fill 0.2s ease-in;
+  }
+}
+
+
+.icon--arrow {
+  stroke: var(--color-black);
+  transform: rotate(180deg);
+}
+
+.icon--delivery_speed, .icon--shopping_bag_speed, .icon--order_approve, .icon--credit_card_clock {
+  fill: #818181;
+}
+
+.icon--logo-la-poste-post,
+.icon--logo-japan-post,
+.icon--logo-china-post,
+.icon--logo-russian-post,
+.icon--logo-correos-post,
+.icon--logo-deutsche-post,
+.icon--logo-royal-post {
+  height: 50px;  /* чтобы все были одного уровня */
+  width: 150px;
 }
 

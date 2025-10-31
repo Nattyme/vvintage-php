@@ -1,12 +1,12 @@
-.posts {
-}
-
-.posts__item {
-}
-
 .posts__item + .posts__item {
   margin-top: var(--space-5xl);
 }
 
-.posts__link {
+.posts__wrapper {
+  margin-bottom: var(--space-5xl);
 }
+
+.posts__button {
+  text-align: center;
+}
+

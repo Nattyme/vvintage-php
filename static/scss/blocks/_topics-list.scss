@@ -1,0 +1,36 @@
+.topics-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 20px;
+  column-gap: 30px;
+}
+
+.topics-list__item {
+  position: relative;
+}
+
+.topics-list__item:not(:last-child)::before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  right: -15px;
+  transform: translate(50%, -50%);
+
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+
+  background-color: var(--color-white);
+}
+
+.topics-list__link {
+  font-size: var(--font-size-lg);
+  color: var(--color-white);
+  transition: color 0.2s ease-in;
+}
+
+.topics-list__link:hover {
+  color: var(--color-accent);
+}

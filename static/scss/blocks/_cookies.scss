@@ -1,0 +1,62 @@
+.cookies-popup {
+	box-sizing: border-box;
+	font-family: Montserrat, sans-serif;
+	max-width: 415px;
+	padding: 14px;
+	border-radius: 10px;
+	background-color: #242424;
+	color: #fff;
+	transition: bottom 0.8s;
+}
+
+.cookies-popup__wrapper {
+	box-sizing: inherit;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	line-height: 1.6;
+	gap: 16px;
+}
+.cookies-popup__content {
+	margin: 0;
+	box-sizing: inherit;
+	font-weight: 600;
+	font-size: 12px;
+}
+.cookies-popup__content a {
+	color: inherit;
+	text-decoration: underline;
+}
+.cookies-popup__content a:hover {
+	text-decoration: none;
+}
+.cookies-popup__btn {
+	width: 100%;
+	box-sizing: inherit;
+	padding: 10px 30px;
+	border-radius: 10px;
+	background-color: #383837;
+	color: #fff;
+	font-weight: 700;
+	font-size: 14px;
+	transition: background-color 0.3s;
+	border: 0;
+	cursor: pointer;
+}
+.cookies-popup__btn:hover {
+	background-color: #525250;
+}
+
+@media (max-width: 500px) {
+	.cookies-popup {
+		width: 100%;
+		left: 0;
+		max-width: none;
+		border-radius: 0;
+		padding: 6px 14px;
+	}
+	.cookies-popup.cookies-popup_show {
+		bottom: 0;
+	}
+}

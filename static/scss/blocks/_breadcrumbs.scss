@@ -1,0 +1,17 @@
+.breadcrumbs {
+  font-size: 14px;
+  color: #777;
+}
+
+.breadcrumb {
+  text-decoration: none;
+  color: #777;
+  transition: color 0.2s ease;
+}
+.breadcrumb:hover {
+  color: #000;
+}
+.breadcrumb--active {
+  font-weight: 500;
+  color: #000;
+}

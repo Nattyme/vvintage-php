@@ -19,7 +19,8 @@
 	height: calc(var(--line-height) * 3 + var(--spacing) * 2);
 	width: var(--width);
 
-	display: flex;
+	// display: flex;
+	display: none;
 	justify-content: center;
 	align-items: center;
 }
@@ -82,7 +83,6 @@
 
 .mobile-nav-btn {
 	z-index: 999;
-	// display: none;
 }
 
 // @media (max-width: 1000px) {

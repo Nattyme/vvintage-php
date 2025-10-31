@@ -1,6 +1,6 @@
 .cart__grid {
   display: grid;
-  grid-template-columns: 5fr 3fr auto;
+  grid-template-columns: 4fr 2fr 3fr;
   align-items: center;
 
   &--relative {
@@ -9,35 +9,43 @@
 
 }
 
+.cart__grid + .cart__grid  {
+  margin-top:var(--space-lg);
+}
+
 .cart__head {
   margin-bottom: 50px;
   height: 50px;
-  line-height: 50px;
   background-color: var(--cart-total-bg-color);
   border-radius: 5px;
+
+  font-weight: 600;
+  line-height: 50px;
 }
 
 .cart__body {
   margin-bottom: 50px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: var(--space-lg);
 }
 
 .cart__grid-block {
-  padding-left: 25px;
-  padding-right: 25px;
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
 }
 
 .cart__heading {
   font-family: var(--font-main);
-  font-weight: 500;
-  font-size: 20px;
+  font-size: var(--font-size-md);
   letter-spacing: 0.02em;
 }
 
 .cart__row {
   display: flex;
   align-items: center;
+
+  &:not(:first-child) {
+    justify-content: center;
+  }
 }
 
 .cart__row--end {
@@ -45,40 +53,31 @@
 }
 
 .cart__text {
-  font-size: 17px;
+  text-align: left;
+  font-size: var(--font-size-lg);
   line-height: 1.4;
 }
 
-
-
 .cart__delete {
-  padding: 20px 20px;
-  margin: -20px -20px;
-  margin-right: 45px;
-
-  svg {
-    transition: all 0.2s ease-in;
-  }
-
-  &:hover svg {
-    stroke: red;
-  }
+  padding: var(--space-lg);
+  margin: -(var(--space-lg));
+  margin-right: var(--space-xl);
 }
 
 .cart__img {
-  margin-right: 36px;
+  margin-right: var(--space-xl);
+  flex-shrink: 0;
   overflow: hidden;
 
   img {
     width: 125px;
-    height: 179px;
-    object-fit: cover;
+    height: 125px;
+    object-fit: contain;
   }
 }
 
 .cart__amount {
-  font-weight: 400;
-  font-size: 20px;
+  font-size: var(--font-size-lg);
 
   span {
     display: inline-block;
@@ -94,21 +93,23 @@
 }
 
 .cart__check {
-  margin-bottom: 28px;
+  margin-bottom: var(--space-xl);
 }
 
 .cart__summary-wrapper {
-  margin-bottom: 50px;
+  margin-bottom: var(--space-3xl);
 }
 
 .cart__summary {
-  height: 50px;
-  line-height: 50px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
 
-  background-color: var(--cart-total-bg-color);
-  border-radius: 5px;
+  background-color: var( --cart-total-bg-color);
+  border-radius: var(--radius-sm);
+
+  font-size: var(--font-size-lg);
 }
 
 .cart__total-amount {
@@ -118,3 +119,4 @@
 .cart__total {
   grid-column: 3/4;
 }
+

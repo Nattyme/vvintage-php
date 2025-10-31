@@ -1,57 +1,63 @@
 .section-pagination {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: 14px;
-}
-
-.section-pagination__item {
-  padding: 8px 15px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 41px;
-  height: 41px;
-  border: 1px solid #000;
-
-  font-size: 17px;
-  line-height: 1.41;
-
-  transition: background-color 0.2s ease-in, opacity 0.2s ease-in;
-}
-
-.section-pagination__item.arrow {
-  padding: 10px 10px;
-}
-
-.section-pagination__item.active {
-  background-color: #000;
-  color: #fff;
-}
-
-.section-pagination__item:hover,
-.section-pagination__item.arrow:hover {
-  background-color: #eee;
-}
-
-.section-pagination__item.active:hover {
-  background-color: #000;
-  opacity: 0.8;
+  column-gap: var(--space-md);
 }
 
 .pagination-button {
-  display: inline-block;
-  color: inherit
-}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 41px;
+  height: 41px;
+  border: 1px solid #000;
+  background-color: var(--color-white);
 
-.arrow {
-  width: 20px;
-  svg {
-    vertical-align: sub;
+  line-height: 1.4;
+
+  transition: color 0.2s ease-in, background-color 0.2s ease-in, border-color 0.2s ease-in;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  &.active {
+    background-color: var(--color-black);
+    color: var(--color-white);
+
+    &:hover {
+      background-color: var(--color-accent);
+    }
+  }
+
+  &--icon {
+    background-color: unset;
+    border: unset;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      transition: stroke 0.2s ease-in;
+      stroke: var(--color-black);
+    }
+
+    &:hover {
+      background-color: var(--color-transparent);
+      border-color: var(--color-transparent);
+
+      svg {
+        stroke: var(--color-accent);
+      }
+    }
   }
 }
+
 
 .arrow-prev {
   transform: rotate(180deg);

@@ -1,15 +1,36 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
-
 html {
 	scroll-behavior: smooth;
+	background-color: rgb(39, 39, 39);
+  scrollbar-gutter: stable; // место для скроллбара 
 }
 body {
-	background-color: var(--page-bg);
-	color: var(--text-color);
+	background-color: var(--color-page-bg);
+	color: var(--color-text-color);
 	font-family: var(--font-main);
+  font-size: var(--font-size-md);
 	text-wrap: balance;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-weight: var(--font-weight-regular);
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+  overflow-x: hidden;
+}
+
+body.animated-bg-lines {
+  .authorization-page__link {
+    color: #fff;
+  }
+  header, .authorization {
+    position: relative;
+    z-index: 9;
+  }
+}
+
+html, body {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 img {
@@ -17,16 +38,28 @@ img {
 }
 
 a {
-  display: inline-block;
-	color: #000;
+  display: block;
+	color: var(--color-black);
+}
+
+.main-content {
+  padding-bottom: 100px;
+}
+
+main.inner-page {
+  // flex :1; // занимает всё свободное место между header и footer
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .inner-page {
-  padding-top: 190px;
-  padding-bottom: 130px;
-
-  &--products {
-    padding-bottom: 72px;
-  }
+  padding-top: 100px;
+  padding-bottom: 100px;
 }
+
+.authorization-page .inner-page {
+  padding-top: unset;
+}
+
 

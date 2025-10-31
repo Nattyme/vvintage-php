@@ -1,0 +1,144 @@
+.product__gallery-container{
+  width: 738px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.gallery {
+  position: relative;
+  
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: var(--space-xxs);
+}
+
+/*Базовый вид 5 ячеек*/
+.gallery {
+  grid-template-areas:
+  "main main thumb1 thumb2" 
+  "main main thumb3 thumb4";
+  /* grid-auto-rows: 1fr; */
+}
+
+.gallery__item--1 { /*Главное изображение*/
+  grid-area: main;
+}
+
+.gallery__item--2 { grid-area: thumb1;}
+.gallery__item--3 { grid-area: thumb2;}
+.gallery__item--4 { grid-area: thumb3;}
+.gallery__item--5 { grid-area: thumb4;}
+
+.gallery__item figure {
+  width: var(--product-gallery-small-img-width);
+}
+
+.product__img {
+  height: 222px; 
+  width: 184px; 
+  object-fit: cover;
+}
+
+.product__img--main {
+  height: 445px;
+  width: 368px;
+  object-fit: cover;
+}
+
+
+/*Вариант для 4-х фото*/
+.gallery--4 {
+  grid-template-areas:
+  "main main thumb1 thumb2" 
+  "main main thumb3 thumb3";
+  /* grid-auto-rows: 1fr; */
+}
+
+.gallery--4 .gallery__item--4 {
+  grid-area: thumb3;
+}
+
+.gallery--4 .gallery__item--4 .product__img {
+  width: 100%;
+}
+
+
+/*Вариант для 3-х фото*/
+.gallery--3 {
+  grid-template-areas:
+  "main main thumb1 thumb1" 
+  "main main thumb2 thumb2";
+  /* grid-auto-rows: 1fr; */
+}
+
+.gallery--3 .gallery__item--3 {
+  grid-area: thumb2;
+}
+
+.gallery--3 .gallery__item--2 .product__img, 
+.gallery--3 .gallery__item--3 .product__img {
+  width: 100%;
+}
+
+/*Вариант для 2-х фото*/
+.gallery--2 {
+  grid-template-areas:
+  "main main thumb1 thumb1" 
+  "main main thumb1 thumb1";
+  /* grid-auto-rows: 1fr; */
+}
+
+.gallery--2 .gallery__item--2 {
+  grid-area: thumb1;
+}
+
+.gallery--2 .gallery__item--2 .product__img {
+  width: 100%;
+  height: 445px;
+}
+
+/*Вариант для 1-го фото*/
+.gallery--1 {
+  grid-template-areas:
+  "main main main main" 
+  "main main main main";
+  /* grid-auto-rows: 1fr; */
+}
+
+.gallery--1 .gallery__item--1 {
+  grid-area: main;
+}
+
+.gallery--1 .gallery__item--1 .product__img {
+  width: 100%;
+}
+
+
+.gallery__counter {
+  z-index: 9;
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: inline-block;
+  font-size: 18px;
+  color: var(--color-white);
+}
+
+.gallery__item:nth-child(5):has(.gallery__counter) a {
+ position: relative;
+ z-index: 99;
+} 
+
+.gallery__item:nth-child(5):has(.gallery__counter) a::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}

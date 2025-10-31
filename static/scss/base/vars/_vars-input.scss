@@ -1,0 +1,25 @@
+/**
+ * Variables Inputs
+ * ----------------------------------------
+ * Стили для полей ввода и их состояний: default, focus, hover, disabled.
+ * Подходит для форм, фильтров и административной части.
+ *
+ * Пример:
+ *   --input-border: #1b262c;
+ *   --input-border-focus: #c75614;
+ *
+ * Правила:
+ * - Имена переменных начинаются с --input-[свойство/состояние]
+ * - Цвета фона для disabled-элементов — светлые
+ */
+
+
+:root {
+    /* inputs */
+  --input-border: var(--color-border-main);
+  --input-border-focus: var(--color-border-third);
+  --input-border-hover: var(--color-border-accent);
+  --input-border-active: var(--color-border-accent);
+  --input-border-disabled: var(--color-border-forth);
+  --input-bg-disabled: var(--color-bg-light);
+}

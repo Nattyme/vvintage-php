@@ -1,0 +1,17 @@
+@media (max-width: 1500px) {
+  .swiper.swiperHeaderImg {
+    margin-right: auto;
+  }
+  
+  .header__image-main {
+    padding-left: 0;
+  }
+
+  .header__image-less:first-child {
+    width: 150px;
+  }
+
+  .header__image-less:last-child {
+    right: 100px;
+  }
+}

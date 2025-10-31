@@ -1,0 +1,58 @@
+.real-checkbox {
+  width: 0;
+  height: 0;
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+.real-checkbox:focus + .custom-checkbox {
+  box-shadow: 
+  0px 0px 0px 1px var(--color-accent),
+  0px 0px 6px rgb(251, 165, 5);
+}
+
+.custom-checkbox {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-accent);
+  background-color: var(--color-white);
+  border-radius: var(--radius-sm);
+  vertical-align: sub;
+  margin-right: var(--space-xs);
+  }
+
+.custom-checkbox::before {
+  content: "";
+
+  /* Рисуем галочку*/
+  display: inline-block;
+  width: 6px;
+  height: 9px;
+  border: 2px solid var(--color-white);
+  border-top-color: transparent;
+  border-right-color: transparent;
+
+
+  /* Выравниваем по центру */
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%) rotate(-45deg) scale(0);
+  margin-top: var(--space-xxs);
+
+  transition: transform 0.2s ease-in;
+}
+
+/*
+Активируем фейковый(декоративный) чекбокс
+*/
+
+.real-checkbox:checked + .custom-checkbox {
+  background-color: var(--color-accent);
+  &::before {
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+  }
+}

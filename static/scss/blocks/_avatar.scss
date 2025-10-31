@@ -8,12 +8,12 @@
 .avatar-small img {
   width: 100%;
   height: 100%;
- object-fit: cover;
+  object-fit: cover;
 }
 
 .avatar-big {
-  overflow: hidden;
-  width: 160px;
+  position: relative;
+  max-width: 160px;
   height: 160px;
   border-radius: 50%;
 }

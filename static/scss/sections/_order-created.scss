@@ -13,29 +13,15 @@
   align-items: center;
   justify-content: space-between;
 }
-
 .order__img {
-  margin-right: 32px;
-  overflow: hidden;
-
-  img {
-    width: 96px;
-    height: 96px;
-  }
+ margin-right: var(--space-xl);
 }
 
 .order__text {
-  font-size: 17px;
   line-height: 1.4;
 }
 
 .order__title {
-  margin-bottom: 17px;
-  font-size: 25px;
-}
-.order__message {
-}
-.order__button {
-}
-.button-outline {
+  margin-bottom: var( --space-md);
+  font-size: var(--font-size-xl);
 }

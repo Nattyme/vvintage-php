@@ -1,0 +1,166 @@
+.admin-form {
+  padding: var(--space-4xl) var(--space-lg);
+
+  border: 1px solid var(--color-white);
+  box-shadow: 1px 1px 4px var(--color-white);
+  border-radius: var(--space-xs);
+  background-color: var(--color-white-rgba-06);
+}
+
+.admin-form__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-form__header {
+    margin-bottom: var(--space-2xl);
+}
+
+.admin-form__row {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 70px;
+
+  & > * {
+    flex-grow: 1;
+  }
+}
+
+.admin-form__field {
+  padding: 10px 15px;
+  border-radius: var(--space-xs);
+  background-color: rgba(185, 149, 117, 0.1);
+}
+
+.admin-form__field + .admin-form__field {
+  margin-top: 40px;
+}
+
+.admin-form__field--inputs-wrapper {
+  display: flex;
+  column-gap: 20px;
+
+  & > * {
+    flex-grow: 1;
+  }
+}
+
+.admin-form__label {
+  margin-bottom: 10px;
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.admin-form__label--with-checkbox {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.admin-form__textarea {
+  padding: 10px 15px;
+  width: 100%;
+  min-height: 150px;
+  border: 1px solid var(--color-black);
+  border-radius: 5px;
+  
+  background-color: #fff;
+}
+
+.admin-form__input {
+  padding: 10px 15px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #8e8e8e;
+  background-color: var(--color-white);
+}
+
+.admin-form__button-wrapper {
+  margin-top: 40px;
+}
+
+.admin-form__button-row {
+  display: flex;
+  column-gap: 15px;
+  align-items: center;
+}
+
+.admin-form__column--imgs {
+  max-width: 40%;
+}
+
+.admin-form__field--input-with-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+
+  .admin-form__item:first-child {
+    width: 50%;
+  }
+}
+
+.admin-form__img-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+}
+
+.admin-form__img-wrapper .button-close svg {
+  stroke-width: 2px;
+}
+
+.admin-form__img-wrapper::before {
+  z-index: 9;
+  display: inline-block;
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  transition: background-color 0.2s ease-in;
+
+}
+
+.admin-form__img-wrapper:hover::before {
+  background-color:rgba(86, 86, 86, 0.5);
+}
+
+
+.admin-form__buttons {
+  margin-top: 60px;
+}
+
+.admin-form__header-form + .admin-form__header-form  {
+  margin-top: 40px;
+}
+
+.admin-form__date {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+
+    img {
+      width: 32px;
+      height: 32px;
+    }
+}
+
+.admin-form__item + .admin-form__item {
+  margin-top: 30px;
+}
+
+.admin-form__item:last-child {
+  margin-bottom: 40px;
+}

@@ -15,3 +15,13 @@
 		@content;
 	}
 }
+
+/*BUTTINS*/
+@mixin button-size($height, $padding-x, $min-width, $font-size: var(--font-size-sm)) {
+  padding: var(--spacing-zero) $padding-x;
+  height: $height;
+  line-height: $height;
+  min-width: $min-width;
+  min-inline-size: $min-width;
+  font-size: $font-size;
+}

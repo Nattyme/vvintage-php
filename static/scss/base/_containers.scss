@@ -1,17 +1,32 @@
-/* Демо контент */
-.content-demo {
-	margin-bottom: 5rem;
-	padding: 1rem;
-	background-color: #dadada;
-}
-
 /* Контейнеры */
 .container {
 	margin: 0 auto;
 	padding: 0 var(--container-padding);
+	width: var(--container-width);
 
-	max-width: var(--container-width);
-	width: 100%;
+    /* Desctop - wide*/
+  @media (max-width: 1600px) {
+    width: 1280px;
+  }
+
+   /* Desctop */
+  @media (max-width: 1279px) {
+    width: 960px;
+  }
+
+  /* Tablet */
+  @media (max-width: 959px) {
+    width: 768px;
+  }
+
+  /* Mobile */
+  @media (max-width: 767px) {
+    width: 480px;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%; /* Контейнер растягивается на всю ширину экрана */ 
+  }
 }
 
 .container-full {
@@ -90,4 +105,6 @@
 	@include mobile {
 		padding: 0 var(--container-padding);
 	}
+
+  
 }

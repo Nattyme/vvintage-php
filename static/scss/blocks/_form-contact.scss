@@ -1,22 +1,17 @@
 .form-contact {
   width: 443px;
   * + * {
-    margin-top: 35px;
+    margin-top: var(--space-xl);
   }
 }
 
 .form-contact__title {
-  margin-bottom: 62px;
+  margin-bottom: var(--space-4xl);
 
-  font-size: 25px;
+  font-size: var(--font-size-xl);
   line-height: 1.4;
 }
 
 .form-contact__button:not(:last-child) {
-  margin-bottom: 62px;
-}
-
-.form-contact__notification {
-}
-.message-success {
+  margin-bottom: var(--space-4xl);
 }
