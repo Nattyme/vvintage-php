@@ -33,3 +33,9 @@ Lang — переводы для Symfony Translator.
 
 Config — общие настройки проекта.
 
+<hr>
+
+![readme-cover](https://github.com/user-attachments/assets/28598b08-75bc-40f0-a800-75cc1f4ae52c)
+
+![readme-cover](https://github.com/user-attachments/assets/2c265dfb-c41c-480b-9256-6f673164eb85)
+
