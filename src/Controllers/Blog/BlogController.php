@@ -11,6 +11,7 @@ use Vvintage\Services\Post\PostService;
 use Vvintage\DTO\Post\PostFilterDTO;
 
 
+
 require_once ROOT . './libs/functions.php';
 
 final class BlogController extends BaseController
@@ -72,7 +73,6 @@ final class BlogController extends BaseController
           'routeData' => $routeData,
           // 'breadcrumbs' => $breadcrumbs,
           'viewModel' => $viewModel,
-          'flash' => $this->flash,
           'currentLang' =>  $this->postService->currentLang,
           'languages' => $this->postService->languages
       ]);

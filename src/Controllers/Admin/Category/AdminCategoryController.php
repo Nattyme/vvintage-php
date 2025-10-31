@@ -176,7 +176,6 @@ final class AdminCategoryController extends BaseAdminController
 
       if ($saved) {
           $this->flash->pushSuccess('Категория успешно обновлена.');
-          // dd( $this->flash);
           $this->redirect("admin/category-edit/{$id}");
       } 
 
@@ -188,7 +187,10 @@ final class AdminCategoryController extends BaseAdminController
 
     // Получаем DTO категории для отображения
     $category = $this->service->createCategoryEditDTO($id);
-  // dd($this->flash);
+
+    $errors = $this->flash->get('errors');
+    $success = $this->flash->get('success');
+    dd($_SESSION);
     $this->renderLayout($viewPath,  [
       'pageTitle' => $pageTitle,
       'routeData' => $this->routeData,
@@ -196,7 +198,9 @@ final class AdminCategoryController extends BaseAdminController
       'languages' => $this->languages,
       'currentLang' => $this->currentLang,
       'flash' => $this->flash,
-      'parentCategory' => $parentCategory ?? null
+      'parentCategory' => $parentCategory ?? null,
+      'errors' => $this->flash->get('errors'),
+      'success' => $this->flash->get('success')
     ]);
 
   }

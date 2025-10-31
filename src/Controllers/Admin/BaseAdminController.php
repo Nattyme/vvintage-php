@@ -24,13 +24,13 @@ abstract class BaseAdminController
   protected string $currentLang;
   protected FlashMessage $flash;
 
-  public function __construct()
+  public function __construct($flash)
   {
       $this->settings = Settings::all(); // Получаем 1 раз массив всех настроек 
       $this->localeService = new LocaleService();
       $this->currentLang = $this->localeService->getCurrentLang();
       $this->languages = LanguageConfig::getAvailableLanguages();
-      $this->flash = new FlashMessage();
+      $this->flash = $flash;
   }
 
   protected function isAdmin(): bool

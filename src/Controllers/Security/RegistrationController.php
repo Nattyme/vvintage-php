@@ -8,6 +8,7 @@ use Vvintage\Controllers\Base\BaseController;
 
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Security\RegistrationService;
 
 use Vvintage\Services\Validation\RegistrationValidator;
@@ -16,14 +17,16 @@ final class RegistrationController extends BaseController
 {
   private SeoService $seoService;
   private PageService $pageService;
+  private FlashMessage $flash;
   private RegistrationService $service;
 
-  public function __construct(SeoService $seoService)
+  public function __construct(RegistrationService $service, PageService $pageService, FlashMessage $flash, SeoService $seoService)
   {
       parent::__construct(); // Важно!
       $this->seoService = $seoService;
-      $this->pageService = new PageService();
-      $this->service = new RegistrationService();
+      $this->flash = $flash;
+      $this->pageService = $pageService;
+      $this->service = $service;
   }
 
   public function index ($routeData) {

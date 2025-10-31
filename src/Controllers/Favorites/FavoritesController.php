@@ -51,8 +51,10 @@ final class FavoritesController extends BaseController
     private Breadcrumbs $breadcrumbsService;
     private PageService $pageService;
     private SeoService $seoService;
+    private FlashMessage $flash;
 
     public function __construct(
+      FlashMessage $flash,
       FavoritesService $favService, 
       UserInterface $userModel, 
       Favorites $favModel, 
@@ -71,6 +73,7 @@ final class FavoritesController extends BaseController
       $this->breadcrumbsService = $breadcrumbs;
       $this->pageService = new PageService();
       $this->seoService = $seoService;
+      $this->flash = $flash;
     }
 
     public function index(RouteData $routeData): void

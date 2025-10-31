@@ -15,6 +15,7 @@ use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Security\LoginService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Favorites\FavoritesService;
@@ -36,18 +37,20 @@ use Vvintage\Services\Translator\Translator;
 
 final class LoginController extends BaseController
 {
-  private SeoService $seoService;
   private PageService $pageService;
   private UserRepository $userRepository;
+  private SeoService $seoService;
+  private FlashMessage $flash;
   private ProductService $productService;
 
-  public function __construct(SeoService $seoService, UserRepository $userRepository) 
+  public function __construct( ProductService $productService, PageService $pageService, FlashMessage $flash, SeoService $seoService, UserRepository $userRepository) 
   {
     parent::__construct(); // Важно!
+    $this->flash = $flash;
     $this->seoService = $seoService;
-    $this->pageService = new PageService();
     $this->userRepository = $userRepository;
-    $this->productService = new ProductService();
+    $this->pageService = $pageService;
+    $this->productService = $productService;
   }
 
   public function index(RouteData $routeData): void
@@ -59,7 +62,6 @@ final class LoginController extends BaseController
 
     $loginService = new LoginService($this->userRepository, $this->flash);
     $userModel = $loginService->login($_POST);
-
 
 
     if (!$userModel) {
@@ -152,10 +154,12 @@ final class LoginController extends BaseController
     $pageTitle = "Вход на сайт";
     $pageClass = "authorization-page";
     
-    $flash = $this->flash;
+
     $currentLang =  $this->productService->currentLang;
     $languages = $this->productService->languages;
-    
+   
+    $errors = $this->flash->get('errors');
+    $success = $this->flash->get('success');
     ob_start();
     include ROOT . 'views/login/form-login.tpl';
     $content = ob_get_clean();

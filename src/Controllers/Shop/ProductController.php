@@ -21,6 +21,7 @@ use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Seo\SeoService;
 use Vvintage\DTO\Product\ProductPageDTO;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Messages\FlashMessage;
 
 
 
@@ -30,14 +31,16 @@ final class ProductController extends BaseController
     private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
     private PageService $pageService;
+    private FlashMessage $flash;
 
-    public function __construct(SeoService $seoService, Breadcrumbs $breadcrumbs)
+    public function __construct(FlashMessage $flash, SeoService $seoService, Breadcrumbs $breadcrumbs)
     {
         parent::__construct(); // Важно!
         $this->productService = new ProductService();
         $this->seoService = $seoService;
         $this->breadcrumbsService = $breadcrumbs;
         $this->pageService = new PageService();
+        $this->flash = $flash;
     }
 
 

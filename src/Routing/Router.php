@@ -42,6 +42,7 @@
   use Vvintage\Services\Favorites\FavoritesService;
   use Vvintage\Services\Validation\NewOrderValidator;
   use Vvintage\Services\Security\PasswordSetNewService;
+  use Vvintage\Services\Security\RegistrationService;
 
 
   /** Модели */
@@ -254,16 +255,19 @@
 
     private static function routeAuth(RouteData $routeData) {
       $seoService = new SeoService();
+      $flash = new FlashMessage();
       $userRepository = new UserRepository();
       $setNewPassService = new PasswordSetNewService($userRepository);
-
-      $validator = new LoginValidator($userRepository);
-
-      $loginController = new LoginController( $seoService, $userRepository);
-      $regController = new RegistrationController( $seoService);
-      $resetController = new PasswordResetController( $seoService);
-      $setNewPassController = new PasswordSetNewController( $seoService, $setNewPassService);
       $sessionService = new SessionService();
+      $validator = new LoginValidator($userRepository);
+      $pageService = new PageService();
+      $productService = new ProductService();
+      $registrationService = new RegistrationService();
+
+      $loginController = new LoginController( $productService, $pageService, $flash, $seoService, $userRepository);
+      $regController = new RegistrationController($registrationService, $pageService, $flash, $seoService);
+      $resetController = new PasswordResetController($pageService,  $flash, $seoService);
+      $setNewPassController = new PasswordSetNewController($pageService, $flash, $seoService, $setNewPassService);
 
    
       switch ($routeData->uriModule) {
@@ -314,11 +318,12 @@
     // ::::::::::::: SHOP :::::::::::::::::::
     private static function routeShop(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
+      $flash = new FlashMessage();
 
       // Инициализируем SEO-сервис
       $seoService = new SeoService();
-      $productController = new ProductController($seoService, $breadcrumbs );
-      $catalogController  = new CatalogController($seoService, $breadcrumbs );
+      $productController = new ProductController($flash, $seoService, $breadcrumbs );
+      $catalogController  = new CatalogController($flash, $seoService, $breadcrumbs );
 
       if ( isset($routeData->uriGet) ) {
         $productController->index($routeData);
@@ -358,6 +363,7 @@
     private static function routeCart(RouteData $routeData) {
       $sessionService = new SessionService();
       $seoService = new SeoService();
+      $flashMessage = new FlashMessage();
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
@@ -379,7 +385,7 @@
                     : new GuestItemsListStore();
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
 
-      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $breadcrumbs, $seoService );
+      $controller  = new CartController( $flashMessage, $cartService, $userModel, $cartModel, $cart, $cartStore, $breadcrumbs, $seoService );
 
       switch ($routeData->uriModule) {
         case 'cart':
@@ -397,10 +403,8 @@
     private static function routeFav(RouteData $routeData) {
       $sessionService = new SessionService();
       $seoService = new SeoService();
-      /**
-       * Получаем модель пользователя - гость или залогиненный
-       * @var UserInreface $userModel
-      */
+      $flashMessage = new FlashMessage();
+      
       $userModel = $sessionService->getLoggedInUser();
       $breadcrumbs = new Breadcrumbs();
 
@@ -419,7 +423,7 @@
                     : new GuestItemsListStore();
                     
       $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
-      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs, $seoService );
+      $controller  = new FavoritesController(  $flashMessage, $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs, $seoService );
 
       switch ($routeData->uriModule) {
         case 'favorites':
@@ -493,13 +497,14 @@
     {
       $pageService = new PageService();
       $breadcrumbs = new Breadcrumbs();
+      $flash = new FlashMessage();
 
       // Инициализируем SEO-сервис
       $seoService = new SeoService();
       // $pageModel = $pageService->getPageBySlug($routeData->uriModule);
 
       // $controller = new PageController($pageModel, $breadcrumbs);
-      $controller = new PageController( $seoService);
+      $controller = new PageController($flash, $seoService);
 
       switch ($routeData->uriModule) {
         case '':
@@ -513,13 +518,6 @@
           break;
       }
     }
-
-    // private static function routeHome(RouteData $routeData)
-    // {
-    //   $controller = new HomeController();
-    //   $controller->index($routeData);
-    // }
-
 
 
     
@@ -583,39 +581,37 @@
 
         case 'brand-new':
           $adminBrandController->new($routeData);
-          // require ROOT . "admin/modules/brands/new.php";
+  
           break;
 
         case 'brand-edit':
           $adminBrandController->edit($routeData);
-          // require ROOT . "admin/modules/brands/edit.php";
+  
           break;
 
         case 'brand-delete':
           $adminBrandController->delete($routeData);
-          // require ROOT . "admin/modules/brands/delete.php";
+        
           break;
 
 
         // ::::::::::::: CATEGORIES SHOP :::::::::::::::::::
         case 'category':
           $adminCategoryController->all($routeData);
-          // require ROOT . "admin/modules/categories/all.php";
+        
           break;
 
         case 'category-new':
           $adminCategoryController->new($routeData);
-          // require ROOT . "admin/modules/categories/new.php";
+  
           break;
 
         case 'category-edit':
           $adminCategoryController->edit($routeData);
-          // require ROOT . "admin/modules/categories/edit.php";
           break;
 
         case 'category-delete':
           $adminCategoryController->delete($routeData);
-          // require ROOT . "admin/modules/categories/delete.php";
           break;
 
 
@@ -654,22 +650,18 @@
         // ::::::::::::: CATEGORIES BLOG :::::::::::::::::::
         case 'category-blog':
           $adminPostCatController->all($routeData);
-          // require ROOT . "admin/modules/categories-blog/all.php";
           break;
 
         case 'category-blog-new':
           $adminPostCatController->new($routeData);
-          // require ROOT . "admin/modules/categories-blog/new.php";
           break;
 
         case 'category-blog-edit':
           $adminPostCatController->edit($routeData);
-          // require ROOT . "admin/modules/categories-blog/edit.php";
           break;
 
         case 'category-blog-delete':
           $adminPostCatController->delete($routeData);
-          // require ROOT . "admin/modules/categories-blog/delete.php";
           break;
 
         // ::::::::::::: MESSAGES :::::::::::::::::::
@@ -686,39 +678,6 @@
           $adminMessageController->delete($routeData);
           break;
 
-    
-  
-        // // ::::::::::::: OTHER :::::::::::::::::::
-        // case 'comments':
-        //   require ROOT . "admin/modules/comments/all.php";
-        //   break;
-
-        // case 'comment':
-        //   require ROOT . "admin/modules/comments/single.php";
-        //   break;
-
-        // // ::::::::::::: SETTINGS :::::::::::::::::::
-        // case 'settings':
-        //   require ROOT . "admin/modules/settings/settings.php";
-        //   break;
-
-        // case 'settings-main':
-        //   require ROOT . "admin/modules/settings/settings-main.php";
-        //   break;
-
-        // case 'settings-social':
-        //   require ROOT . "admin/modules/settings/settings-social.php";
-        //   break;
-
-        // case 'settings-cookies':
-        //   require ROOT . "admin/modules/settings/settings-cookies.php";
-        //   break;
-
-        // case 'settings-cards':
-        //   require ROOT . "admin/modules/settings/settings-cards.php";
-        //   break;
-        // // ::::::::::::: SETTINGS :::::::::::::::::::
-
         default: 
           $homeAdminController->index($routeData);
           break;
@@ -729,3 +688,7 @@
 
 
   }
+
+
+
+

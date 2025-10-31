@@ -20,6 +20,7 @@ use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Messages\FlashMessage;
 
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
 
@@ -36,9 +37,10 @@ final class CatalogController extends BaseController
     private SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
     private PageService $pageService;
+    private FlashMessage $flash;
 
 
-    public function __construct(SeoService $seoService, Breadcrumbs $breadcrumbs)
+    public function __construct(FlashMessage $flash, SeoService $seoService, Breadcrumbs $breadcrumbs)
     {
       parent::__construct(); // Важно!
       $this->productService = new ProductService();
@@ -47,6 +49,7 @@ final class CatalogController extends BaseController
       $this->seoService = $seoService;
       $this->breadcrumbsService = $breadcrumbs;
       $this->pageService = new PageService();
+      $this->flash = $flash;
     }
 
 

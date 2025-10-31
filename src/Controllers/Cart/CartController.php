@@ -41,6 +41,7 @@ require_once ROOT . './libs/functions.php';
 
 final class CartController extends BaseController
 {
+    private FlashMessage $flash;
     private CartService $cartService;
     private UserInterface $userModel;
     private Cart $cartModel;
@@ -51,6 +52,7 @@ final class CartController extends BaseController
     private SeoService $seoService;
 
     public function __construct(
+      FlashMessage $flash,
       CartService $cartService, 
       UserInterface $userModel, 
       Cart $cartModel, 
@@ -69,6 +71,7 @@ final class CartController extends BaseController
       $this->breadcrumbsService = $breadcrumbs;
       $this->pageService = new PageService();
       $this->seoService = $seoService;
+      $this->flash = $flash;
     }
 
     public function index(RouteData $routeData): void

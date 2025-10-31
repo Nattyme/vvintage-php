@@ -34,14 +34,11 @@ final class FlashMessage
         }
 
         $_SESSION[$type][] = $message;
-        // $this->messages['success'] = $_SESSION['success'] ?? [];
-        // $this->messages['errors'] = $_SESSION['errors'] ?? [];
+        $this->messages[$type] = $_SESSION[$type]; 
     }
 
     public function get(string $type): array {
-      $messages = $_SESSION[$type] ?? [];
-      // unset($_SESSION[$type]); // очищаем, чтобы показывались только один раз
-      return $messages;
+      return $_SESSION[$type] ?? [];
     }
 
 }

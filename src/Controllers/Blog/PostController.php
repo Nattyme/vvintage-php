@@ -87,7 +87,6 @@ final class PostController extends BaseController
               // 'seo' => $seo,
               'routeData' => $routeData,
               'viewModel' => $viewModel,
-              'flash' => $this->flash,
               'currentLang' =>  $this->postService->currentLang,
               'languages' => $this->postService->languages
         ]);

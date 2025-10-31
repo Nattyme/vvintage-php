@@ -8,6 +8,7 @@ use Vvintage\Controllers\Base\BaseController;
 
 use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Security\PasswordSetNewService;
 use Vvintage\Services\Validation\PasswordSetNewValidator;
 
@@ -15,13 +16,15 @@ final class PasswordSetNewController extends BaseController
 {
   private SeoService $seoService;
   private PageService $pageService;
+  private FlashMessage $flash;
   private PasswordSetNewService $setNewPassService;
 
-  public function __construct(SeoService $seoService, PasswordSetNewService $setNewPassService)
+  public function __construct(PageService $pageService, FlashMessage $flash, SeoService $seoService, PasswordSetNewService $setNewPassService)
   {
     parent::__construct(); // Важно!
     $this->seoService = $seoService;
-    $this->pageService = new PageService();
+    $this->pageService = $pageService;
+    $this->flash = $flash;
     $this->setNewPassService = $setNewPassService;
   }
 

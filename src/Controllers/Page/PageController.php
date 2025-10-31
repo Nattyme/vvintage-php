@@ -16,6 +16,7 @@ use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Post\PostService;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Messages\MessageService;
 use Vvintage\Services\Category\CategoryService;
@@ -27,10 +28,12 @@ class PageController extends BaseController
   protected PageService $pageService;
   private SeoService $seoService;
   private Breadcrumbs $breadcrumbsService;
+  private FlashMessage $flash;
 
-  public function __construct (SeoService $seoService)
+  public function __construct (FlashMessage $flash, SeoService $seoService)
   {
     parent::__construct(); // Важно!
+    $this->flash = $flash;
     $this->pageService = new PageService();
     $this->breadcrumbsService = new Breadcrumbs();
     $this->seoService = $seoService;

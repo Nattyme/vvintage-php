@@ -9,7 +9,7 @@ use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
-use Vvintage\Services\Messages\FlashMessage;
+// use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\AdminPanel\AdminPanelService;
 
 
@@ -18,13 +18,13 @@ abstract class BaseController
   protected array $settings;
   protected RouteData $routeData; 
   protected Translator $translator;
-  protected FlashMessage $flash;
+  // protected FlashMessage $flash;
   protected SessionService $sessionService;
 
   public function __construct()
   {
       $this->settings = Settings::all(); 
-      $this->flash = new FlashMessage();
+      // $this->flash = new FlashMessage();
       $this->sessionService = new SessionService();
       
   }
@@ -57,7 +57,6 @@ abstract class BaseController
     extract( array_merge($vars, [
       'settings' => $this->settings, 
       'adminData' => $adminData,
-      'flash' => $this->flash,
       'isBlogPage' => $isBlogPage
     ]) );
 
