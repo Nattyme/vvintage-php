@@ -84,28 +84,6 @@ final class User implements UserInterface
            
         return $user;
     }
-
-    // public function __construct(OODBBean $bean)
-    // {
-    //   $this->id = (int) $bean->id;
-    //   $this->email = $bean->email;
-    //   $this->password = $bean->password;
-    //   $this->name = $bean->name ?? 'Пользователь';
-    //   $this->role = $bean->role ?? 'user';
-
-    //   // $cartData = isset($bean->cart) ? json_decode($bean->cart, true) : [];
-    //   $this->cart = is_string($bean->cart) ? json_decode($bean->cart ?? '[]', true) : [];
-    //   $this->fav_list = is_string($bean->fav_list) ? json_decode($bean->fav_list ?? '[]', true) : [];
-    //   $this->addressId = (int) $bean->address->id ?? 0;
-        
-    //   $this->country= $bean->country ?? '';
-    //   $this->city= $bean->city ?? '';
-    //   $this->phone= $bean->phone ?? '';
-    //   $this->avatar= $bean->avatar ?? '';
-    //   $this->avatar_small = $bean->avatar_small ?? '';
-
-    //   $this->addressRepository = new AddressRepository();
-    // }
   
 
     public function getRepository(): UserRepository {
@@ -232,15 +210,4 @@ final class User implements UserInterface
     {      
       return new Favorites ($this->fav_list);
     }
-
-    // public function getAddress(): ?Address
-    // {
-    //   if (!$this->address) {
-    //     return null; // или пустой объект / исключение
-    //   }
-
-    //   return $this->address;
-    // }
-
-
 }

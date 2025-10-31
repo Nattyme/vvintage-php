@@ -33,7 +33,6 @@ final class ProductPageDTOFactory
 
       $translations = (array) $product->getTranslation($currentLang);
 
-
       return new ProductPageDTO(
           id: (int) $product->getId(),
 

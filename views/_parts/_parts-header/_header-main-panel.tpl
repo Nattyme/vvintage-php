@@ -59,6 +59,10 @@
               <div class="counter__widget counter__widget--cart">
                 <span class="text-ellipsis"><?php echo h(count($_SESSION['cart'])); ?></span>
               </div>
+            <?php elseif (!empty($_COOKIE['cart']) && h(count(json_decode($_COOKIE['cart'] ?? '[]', true))) > 0) : ?>
+              <div class="counter__widget counter__widget--cart">
+                <span class="text-ellipsis"><?php echo h(count(json_decode($_COOKIE['cart'] ?? '[]', true))); ?></span>
+              </div>
             <?php endif; ?>
           </a>
         </div>

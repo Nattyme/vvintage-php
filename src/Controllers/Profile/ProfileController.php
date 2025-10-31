@@ -71,7 +71,7 @@ final class ProfileController extends BaseController
     }
 
     // Если зашли в свой профиль
-    if (!$uriGet && $this->isProfileOwner($userId)) {
+    if (!$uriGet && $this->isProfileOwner($userId) || $uriGet && $uriGet === $userId) {
       $userModel = $this->userService->getUserByID($userId);
 
       if(!$userModel) $this->redirect('login'); // если не нашли пользователя
@@ -103,7 +103,7 @@ final class ProfileController extends BaseController
       $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule); // страница
    
       $userModel = null;
-      $uriGet = (int) $this->routeData->uriGetParams[0] ?? null; // id пользователя
+      $uriGet = (int) (!empty($this->routeData->uriGetParams) && $this->routeData->uriGetParams[0]) ?? null; // id пользователя
 
       // Если uriGet нет
       if(!$uriGet && $this->isLoggedIn()) $uriGet = $this->getLoggedInUser()->getId(); // если не id но залогинен
@@ -111,33 +111,19 @@ final class ProfileController extends BaseController
       $userModel = $this->getLoggedInUser();
       $userId = $userModel->getId();
 
-      // Если админ
-      if ( $this->isAdmin() ) {
-        // проверка на доп параметр 
-        if (!empty( $uriGet ) ) {
-           
-          $idFromUri = (int) $uriGet;
-           
-          if (is_numeric($idFromUri) && $idFromUri > 0) {
-            $userModel = $this->userService->getUserByID($idFromUri);
-          }
-        } else {
-          $userModel = $this->getLoggedInUser();
-        }
-      }
-
       if ($userModel instanceof GuestUser || !$userModel) $this->redirect('login');  // если гость — редиректим
       if (!($this->isProfileOwner($userId) || $this->isAdmin())) $this->redirect('profile'); // не владелец, не админ
   
 
       // Если зашли в свой профиль
-      if ($this->isProfileOwner($userId)) {
+      if ($this->isProfileOwner($uriGet)) {
          // потом доработать
         $this->renderProfileEdit(routeData: $routeData, userModel: $userModel, uriGet: $uriGet, address: $address =null);
       }
 
       //  Если зашли на страницу чужого профиля
       if ( !$this->isProfileOwner($uriGet)) {
+  
         if($this->isLoggedIn() && !$this->isAdmin()) $this->redirect('profile'); // если залогинен - редирект в свой профиль
         if(!$this->isAdmin()) $this->redirect('login');  // Если не залогинен - на страницу логина
 

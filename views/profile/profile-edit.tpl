@@ -47,7 +47,7 @@
                     <div class="profile-card__column profile-card__column--img">
                           <div class="profile-card__avatar">
                             <div class="avatar-big">
-                                <?php if ( !empty($userModel->getAvatar())) : ?>
+                                <?php if ( !empty($userModel->getAvatar()) && file_exists(ROOT . 'usercontent/avatars/' . $userModel->getAvatar())) : ?>
                                   <img src="<?php echo HOST; ?>usercontent/avatars/<?php echo $userModel->getAvatar(); ?>" alt="<?php echo h(__('profile.avatar', [], 'profile'));?>" />
                                 <?php else : ?>
                                   <img src="<?php echo HOST; ?>usercontent/avatars/no-avatar.svg" alt="<?php echo h(__('profile.avatar', [], 'profile'));?>" />

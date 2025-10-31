@@ -99,6 +99,7 @@ class UserService extends BaseService
      return $this->userRepository->editUser($data, $userModel->getId());
   }
 
+  // ПЕРЕПИСАТЬ С ТРАНЗАКЦИЕЙ . Если где то ошибка - не удалять предыдущее изображение 
   public function handleAvatar(User $userModel, array $files): array
   {
       $fileTmpLoc = $files['tmp_name'] ?? null;
@@ -130,25 +131,21 @@ class UserService extends BaseService
         return false;
       }
 
-      return ['avatar' => $db_file_name, 'avatar_small' => self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name,];
-      // $avatarFileName = saveUploadedImg('avatar', [160, 160], 12, 'avatars', [160, 160], [48, 48]);
-        
       // Если новое изображение успешно загружено - удаляем старое
-      // if ($avatarFileName) {
-      //   $avatarFolderLocation = ROOT . 'usercontent/avatars/';
-      //   // Если есть старое изображение - удаляем 
-      //   if (file_exists($avatarFolderLocation . $user->avatar) && !empty($user->avatar)) {
-      //     unlink($avatarFolderLocation . $user->avatar);
-      //   }
+      if ($resultFullSize && $resultSmallSize) {
+      
+          // Если есть старое изображение - удаляем 
+          if (file_exists($imgFolderLocation . $userModel->getAvatar()) && !empty($userModel->getAvatar())) {
+            unlink($imgFolderLocation . $userModel->getAvatar());
+          }
 
-      //   if (file_exists($avatarFolderLocation . $user->avatarSmall) && !empty($user->avatarSmall)) {
-      //     unlink($avatarFolderLocation . $user->avatarSmall);
-      //   }
+          if (file_exists($imgFolderLocation . $userModel->getAvatarSmall()) && !empty($userModel->getAvatarSmall())) {
+            unlink($imgFolderLocation . $userModel->getAvatarSmall());
+          }
+      }
 
-      //   // Записываем имя файлов в БД
-      //   $user->avatar = $avatarFileName[0];
-      //   $user->avatarSmall = $avatarFileName[1];
-      // }
+
+      return ['avatar' => $db_file_name, 'avatar_small' => self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name,];
   }
 
   public function getUserUpdateDto(array $data): UserUpdateDTO 

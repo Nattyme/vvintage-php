@@ -23,9 +23,11 @@ final class ProductCardDTOFactory
     {
 
       $translations = (array) $product->getTranslation('fr');
-
+   
       // Подставляем дефолтное изображение, если $image = null
-      $imageFilename = !empty($image?->filename) ? $image->filename : 'no-photo.jpg';
+      $imageFilename = !empty($image?->filename) && file_exists(ROOT . 'usercontent/products/' . $image->filename)  
+                      ? $image->filename 
+                      : 'products-no-foto.jpg';
       $imageAlt = !empty($image?->alt) ? $image->alt : ($product->getTitle() ?? '');
 
 
