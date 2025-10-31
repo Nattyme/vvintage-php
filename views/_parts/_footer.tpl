@@ -1,7 +1,7 @@
 <footer class="footer">
 	<div class="container">
     <?php if($isBlogPage) : ?>
-      <?php include ROOT . 'views/_parts/_parts-footer/_footer-top-blog.tpl';?>
+      <?php include ROOT . 'views/_parts/_parts-footer/footer-top-blog.tpl';?>
     <?php endif; ?>
     <div class="footer__content">
       <div class="footer__column">

@@ -25,7 +25,7 @@ class SeoService extends BaseService
     parent::__construct();
   }
 
-  public function getSeoForPage(string $pageType, $model = null): SeoDTO
+  public function getSeoForPage(string $pageType, $dto = null): SeoDTO
   {
       $lang = $this->currentLang;
 
@@ -37,7 +37,7 @@ class SeoService extends BaseService
               $strategy = new CatalogSeoStrategy($model, $lang);
               break;
           case 'product':
-              $strategy = new ProductSeoStrategy($model, $lang);
+              $strategy = new ProductSeoStrategy($dto, $lang);
               break;
           case 'about':
               $strategy = new ProductSeoStrategy($model);

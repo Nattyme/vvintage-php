@@ -16,6 +16,7 @@ use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Shared\PaginationService;
 use Vvintage\Services\Brand\BrandService;
 use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Seo\SeoService;
 
 /* DTO */
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
@@ -132,15 +133,25 @@ class ProductService extends BaseService
 
    
 
-    public function getProductPageData(int $id) 
+    public function getProductPageData(int $id) : array
     {
       $product = $this->getProductModelById($id);
-      return $this->createProductPageDTO($product);
+      $dto = $this->createProductPageDTO($product);
+      
+      return [
+        'product' => $product ?? null,  
+        'dto' => $dto ?? null
+      ];
     }
 
     public function getProductModelById(int $id): ?Product
     {
       $productModel = $this->repository->getModelProductById($id);
+      $categoryId = $productModel->getCategoryId();
+      $brandId = $productModel->getBrandId();
+
+      $productModel->setCategory( $this->categoryService->getCategoryById($categoryId) );
+      $productModel->setBrand( $this->brandService->getBrandById($brandId) );
       $productId  = $productModel->getId();
 
       return $productModel;
@@ -150,20 +161,6 @@ class ProductService extends BaseService
       return $this->status;
     }
 
-
-    // public function getProductById(int $id): ?ProductOutputDTO
-    // {
-    //     $rows = $this->repository->getModelProductById($id);
-
-    //     return $rows ? $this->createProductDTOFromArray($rows) : null;
-    // }
-
-    // public function getLocaledProductById(int $id): ?ProductOutputDTO
-    // {
-    //     $rows = $this->repository->getModelProductById($id);
-
-    //     return $rows ? $this->createProductPageDTO($rows, $this->currentLang) : null;
-    // }
 
     public function getProductsByIds(array $ids): array
     {

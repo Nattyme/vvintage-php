@@ -148,16 +148,12 @@ final class Category
 
 
     public function getSeoTitle(?string $locale = null): string {
-        return  $this->translations['meta_title'] ?: $this->title ?? '';
+        return $this->translations[$locale]['meta_title'] ?? $this->title;
     }
 
     public function getSeoDescription(?string $locale = null): ?string 
     {
-        if ($locale) {
-          return $this->translations['meta_description'] ?? '';
-        }
-       
-        return $this->description;
+        return $this->translations[$locale]['meta_description'] ?? $this->title;
     }
 
     // Позволяет задать локаль один раз, чтобы не передавать её в каждый геттер.

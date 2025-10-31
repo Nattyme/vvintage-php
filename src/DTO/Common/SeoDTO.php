@@ -33,7 +33,7 @@ class SeoDTO
         $this->meta_title = $meta_title ?: 'Страница продукта';
         $this->meta_description = $meta_description ?? 'Винтажный товар, редкий экземпляр, больше не выпускается';
         $this->currentLang = $currentLang ?: 'ru';
-        $this->structuredData = $structuredData ?: '';
+        $this->structuredData = $structuredData ?? '';
         $this->isIndexed = $isIndexed ?? 'noindex,follow';
     }
 

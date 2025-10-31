@@ -107,12 +107,12 @@ final class Brand
     }
 
 
-    public function getSeoTitle(): string {
-      return $this->translations['meta_title'] ?: $this->translations['description'] ?? '';
+    public function getSeoTitle(?string $locale = null): string {
+      return $this->translations[$locale]['meta_title'] ?? $this->title;
     }
 
-    public function getSeoDescription(): string {
-        return $this->translations['meta_description'] ?: $this->translations['description'] ?? '';
+    public function getSeoDescription(?string $locale = null): string {
+        return $this->translations[$locale]['meta_description'] ?? $this->title;
     }
 
 

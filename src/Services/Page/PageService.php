@@ -4,8 +4,14 @@ declare(strict_types=1);
 namespace Vvintage\Services\Page;
 
 use Vvintage\Models\Page\Page;
+use Vvintage\Models\Product\Product;
+
+use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Base\BaseService;
+use Vvintage\Services\Page\Breadcrumbs;
+
 use Vvintage\DTO\Page\PageOutputDTO;
+
 use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Repositories\Page\PageTranslationRepository;
 use Vvintage\Repositories\Page\PageFieldRepository;
@@ -17,14 +23,34 @@ class PageService extends BaseService
   protected PageFieldRepository $fieldsRepository;
   protected PageTranslationRepository $translationRepo;
   protected PageFieldTranslationRepository $fieldsTranslationRepo;
+  protected SeoService $seoService;
 
   public function __construct()
   {
       parent::__construct();
       $this->repository = new PageRepository();
+      $this->seoService = new SeoService();
       $this->translationRepo = new PageTranslationRepository();
       $this->fieldsRepository = new PageFieldRepository();
       $this->fieldsTranslationRepo = new PageFieldTranslationRepository();
+  }
+
+  public function buildPageData(string $type, mixed $model=null): array 
+  {
+
+    //SEO
+    // $seo = $this->seoService->getSeoForPage('product', $productModel);
+
+    // Название страницы и хлебные крошки
+    // $breadcrumbs = $this->breadcrumbsService->generate($routeData, $productDto->title);
+    // $pageTitle = $model->getTitle() ?? '';
+
+    return [
+          'seo' => $seo,
+          'breadcrumbs' => $breadcrumbs,
+          'pageTitle' => $pageTitle,
+          'entity' => $entity,
+      ];
   }
 
   public function getPageBySlug(string $slug): array

@@ -29,8 +29,9 @@
   <link rel="canonical" href="<?php echo h(HOST . ltrim($_SERVER['REQUEST_URI'], '/')); ?>">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="<?php echo (isset($seo) && !empty($seo->title)) ? h($seo->title) : ''; ?>">
-  <meta property="og:description" content="<?php echo (isset($seo) && !empty($seo->description)) ? h($seo->description) : ''; ?>">
+
+  <meta property="og:title" content="<?php echo (isset($seo) && !empty($seo->meta_title)) ? h($seo->meta_title) : ''; ?>">
+  <meta property="og:description" content="<?php echo (isset($seo) && !empty($seo->meta_description)) ? h($seo->meta_description) : ''; ?>">
   <meta property="og:type" content="website">
   <meta property="og:image" content="<?php echo (isset($seo) && !empty($seo->ogImg)) ? h($seo->ogImg) : HOST . 'static/img/default-og.png'; ?>">
 

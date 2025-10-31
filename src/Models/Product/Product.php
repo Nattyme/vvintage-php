@@ -76,8 +76,7 @@ class Product
       $product->edit_time = $dto->edit_time;
       $product->translations = $dto->translations;
       $product->currentLang = $dto->locale ?? 'ru';
-      // $product->images = $dto->images;
-      
+
 
       return $product;
     }
@@ -226,11 +225,6 @@ class Product
     public function getCategoryTitle(): string {
         return $this->category->getTitle();
     }
-
-    public function getCurrentLang(): string 
-    {
-      return $this->currentLang;
-    }
       
     public function getTranslations(): ?array
     {
@@ -262,28 +256,23 @@ class Product
       return $this->status;
     }
 
-    public function getTranslatedTitle(?string $currentLang = null): string 
+    public function getTranslatedTitle(?string $locale = null): string 
     {
-        $this->currentLang = $currentLang ?? $this->currentLang;
-
-        return $this->translations['title'];
+        return $this->translations[$locale]['title'] ?? '';
     }
 
     public function getTranslatedDescription(?string $locale = null): string 
     {
-        $this->currentLang = $currentLang ?? $this->currentLang;
-
-        return $this->translations['description'];
+        return $this->translations[$locale]['description'] ?? $this->title;
     }
 
 
     public function getSeoTitle(?string $locale = null): string {
-        $locale = $locale ?? $this->currentLocale;
+   
         return $this->translations[$locale]['meta_title'] ?? $this->title;
     }
 
     public function getSeoDescription(?string $locale = null): string {
-        $locale = $locale ?? $this->currentLocale;
         return $this->translations[$locale]['meta_description'] ?? $this->title;
     }
 

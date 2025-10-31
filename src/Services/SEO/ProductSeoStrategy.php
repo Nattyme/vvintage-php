@@ -21,13 +21,16 @@ class ProductSeoStrategy implements SeoStrategyInterface
    
     public function getSeo(): SeoDTO
     {
-      $translations = $this->product->getCurrentTranslations();
+       $title = $this->product->getTitle();
+       $desc = $this->product->getDescription();
+       $metaTitle = $this->product->getSeoTitle($this->lang);
+       $metaDesc = $this->product->getSeoDescription($this->lang);
 
       return new SeoDTO(
-        title: $translations['title'] ?? $translations['title'] ?? '',
-        description: $translations['description'] ?? $translations['title'] ?? '',
-        meta_title: $translations['meta_title'] ?? $translations['title'] ?? '',
-        meta_description: $translations['meta_description'] ?? $translations['description'] ?? '',
+        title: $title  ?? '',
+        description: $desc ?? '',
+        meta_title: $metaTitle ?? '',
+        meta_description: $metaDesc ?? '',
         currentLang: $this->lang,
         structuredData: $this->getStructuredData(),
         isIndexed: 'index,follow'
@@ -36,21 +39,24 @@ class ProductSeoStrategy implements SeoStrategyInterface
 
     public function getStructuredData(): string
     {
-        $currentLang = $this->product->getCurrentLang();
-        $translations = $this->product->getTranslations();
-        $meta = $translations ?? [];
+     
+        $metaTitle = $this->product->getSeoTitle($this->lang);
+        $metaDesc = $this->product->getSeoDescription($this->lang);
+        $brandTitle = $this->product->getBrand()->getSeoTitle($this->lang);
+        $brandDesc = $this->product->getBrand()->getSeoDescription($this->lang);
+        $categoryTitle = $this->product->getBrand()->getSeoDescription($this->lang);
 
         $data = [
             "@context" => "https://schema.org",
             "@type" => "Product",
-            "name" => $meta['title'] ?? '',
-            "description" => $meta['description'] ?? '',
+            "name" => $metaTitle ?? '',
+            "description" => $metaDesc ?? '',
             "brand" => [
                 "@type" => "Brand",
-                "name" => $this->product->getBrand()->getSeoTitle(),
-                "description" => $this->product->getBrand()->getSeoDescription() ?? ''
+                "name" =>  $brandTitle  ?? '',
+                "description" => $this->product->getBrand()->getSeoDescription($this->lang) ?? ''
             ],
-            "category" => $this->product->getCategory()->getSeoTitle() ?? ''
+            "category" => $categoryTitle  ?? ''
         ];
 
         return '<script type="application/ld+json">' . json_encode($data, JSON_UNESCAPED_UNICODE) . '</script>';

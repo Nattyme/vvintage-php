@@ -19,9 +19,8 @@ use Vvintage\Models\Product\Product;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Seo\SeoService;
-use Vvintage\Services\Page\PageService;
-
 use Vvintage\DTO\Product\ProductPageDTO;
+use Vvintage\Services\Page\PageService;
 
 
 
@@ -47,9 +46,9 @@ final class ProductController extends BaseController
         $this->setRouteData($routeData);
   
         $id = (int) $routeData->uriGet; // получаем id товара из URL  
-        $productDto = $this->productService->getProductPageData($id);
+        $productPageData = $this->productService->getProductPageData($id);
 
-        if (!$productDto) {
+        if (empty($productPageData) ||!$productPageData['dto']) {
             http_response_code(404);
             echo 'Товар не найден';
             return;
@@ -57,11 +56,12 @@ final class ProductController extends BaseController
    
         // $related = $product->getRelated();
         $statusList = $this->productService->getStatusList();
-    
+
+        $productDto = $productPageData['dto'];
 
         // Формируем единую модель для передачи в шаблон
         $viewModel = [
-            'product' => $productDto,
+            'product' => $productPageData['dto'],
             'imagesTotal' => $productDto->images['total'],
             'main' => $productDto->images['main'],
             'gallery' => $productDto->images['gallery'], 
@@ -72,13 +72,14 @@ final class ProductController extends BaseController
         // Название страницы и хлебные крошки
         $breadcrumbs = $this->breadcrumbsService->generate($routeData, $productDto->title);
 
-        // $seo = $this->seoService->getSeoForPage('product', $productModel);
+  
+        $seo = $this->seoService->getSeoForPage('product', $productPageData['product']);
         $pageTitle = $productDto->title;
- 
+
         // Подключение шаблонов страницы
         $this->renderLayout('shop/product', [
               'pageTitle' => $pageTitle,
-              // 'seo' => $seo,
+              'seo' => $seo,
               'currentLang' => $this->productService->currentLang,
               'routeData' => $routeData,
               'navigation' => $this->pageService->getLocalePagesNavTitles(),
