@@ -17,33 +17,25 @@ use Vvintage\Services\Validation\RegistrationValidator;
 
 final class RegistrationController extends BaseController
 {
-  private SeoService $seoService;
-  private PageService $pageService;
-  private FlashMessage $flash;
-  private RegistrationService $service;
 
   public function __construct(
-    SessionService $sessionService, 
-    AdminPanelService $adminPanelService,
-    RegistrationService $service, 
-    PageService $pageService, 
-    FlashMessage $flash, 
-    SeoService $seoService
+    protected SessionService $sessionService, 
+    protected AdminPanelService $adminPanelService,
+    private RegistrationValidator $validator,
+    private RegistrationService $service, 
+    private PageService $pageService, 
+    private FlashMessage $flash, 
+    private SeoService $seoService
   )
   {
       parent::__construct($sessionService, $adminPanelService); // Важно!
-      $this->seoService = $seoService;
-      $this->flash = $flash;
-      $this->pageService = $pageService;
-      $this->service = $service;
   }
 
   public function index ($routeData) {
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
-      $validator = new RegistrationValidator();
-
-      if ( $validator->validate( $_POST )) {
+    
+      if ( $this->validator->validate( $_POST )) {
         $newUser = $this->service->registrateUser( $_POST );
 
         if (!$newUser) {

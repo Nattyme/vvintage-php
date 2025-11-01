@@ -19,33 +19,25 @@ use Vvintage\Routing\RouteData;
 
 final class PasswordResetController extends BaseController
 {
-  private SeoService $seoService;
-  private PageService $pageService;
-  private PasswordResetService $service;
-  private FlashMessage $flash;
-
   public function __construct(
-    SessionService $sessionService, 
-    AdminPanelService $adminPanelService,
-    PageService $pageService, 
-    FlashMessage $flash, 
-    SeoService $seoService
-    )
+      protected SessionService $sessionService, 
+      protected AdminPanelService $adminPanelService,
+      private PasswordResetValidator $validator,
+      private PasswordResetService $service,
+      private PageService $pageService, 
+      private FlashMessage $flash, 
+      private SeoService $seoService
+  )
   {
       parent::__construct($sessionService, $adminPanelService); // Важно!
-      $this->flash = $flash;
-      $this->seoService = $seoService;
-      $this->pageService = $pageService;
-      $this->service = new PasswordResetService( new UserRepository(), $this->flash);
   }
 
   public function index ($routeData) 
   {
     if (isset($_POST['lost-password'])) {
-      $validator = new PasswordResetValidator($this->service);
       $resultEmail = false;
 
-      if ($validator->validate($_POST)) {
+      if ($this->validator->validate($_POST)) {
         $result = $this->service->processPasswordResetRequest($_POST['email']);
 
         if ($result['success']) {

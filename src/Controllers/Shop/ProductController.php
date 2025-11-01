@@ -24,28 +24,17 @@ use Vvintage\Services\AdminPanel\AdminPanelService;
 
 final class ProductController extends BaseController
 {
-    private ProductService $productService;
-    private SeoService $seoService;
-    private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
-    private FlashMessage $flash;
-
     public function __construct(
-      SessionService $sessionService, 
-      AdminPanelService $adminPanelService,
-      PageService $pageService, 
-      ProductService $productService, 
-      FlashMessage $flash, 
-      SeoService $seoService, 
-      Breadcrumbs $breadcrumbs
+      protected SessionService $sessionService, 
+      protected AdminPanelService $adminPanelService,
+      private PageService $pageService, 
+      private ProductService $productService, 
+      private FlashMessage $flash, 
+      private SeoService $seoService, 
+      private Breadcrumbs $breadcrumbsService
     )
     {
         parent::__construct($sessionService, $adminPanelService); // Важно!
-        $this->productService = $productService;
-        $this->seoService = $seoService;
-        $this->breadcrumbsService = $breadcrumbs;
-        $this->pageService = $pageService;
-        $this->flash = $flash;
     }
 
 

@@ -43,40 +43,23 @@ require_once ROOT . './libs/functions.php';
 
 final class CartController extends BaseController
 {
-    private FlashMessage $flash;
-    private CartService $cartService;
-    private UserInterface $userModel;
-    private Cart $cartModel;
-    private array $cart;
-    private UserItemsListStoreInterface $cartStore;
-    private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
-    private SeoService $seoService;
-
+ 
     public function __construct(
-      SessionService $sessionService, 
-      AdminPanelService $adminPanelService,
-      PageService $pageService,
-      FlashMessage $flash,
-      CartService $cartService, 
-      UserInterface $userModel, 
-      Cart $cartModel, 
-      array $cart, 
-      UserItemsListStoreInterface $cartStore, 
-      Breadcrumbs $breadcrumbs,
-      SeoService $seoService
+      protected SessionService $sessionService, 
+      protected AdminPanelService $adminPanelService,
+      private PageService $pageService,
+      private FlashMessage $flash,
+      private CartService $cartService, 
+      private UserInterface $userModel, 
+      private Cart $cartModel, 
+      private array $cart, 
+      private UserItemsListStoreInterface $cartStore, 
+      private Breadcrumbs $breadcrumbsService,
+      private SeoService $seoService
     )
     {
       parent::__construct($sessionService, $adminPanelService); // Важно!
-      $this->cartService = $cartService;
-      $this->userModel = $userModel;
-      $this->cartModel = $cartModel;
-      $this->cart = $cart;
-      $this->cartStore = $cartStore;
-      $this->breadcrumbsService = $breadcrumbs;
-      $this->pageService = $pageService;
-      $this->seoService = $seoService;
-      $this->flash = $flash;
+    
     }
 
     public function index(RouteData $routeData): void

@@ -21,19 +21,14 @@ class AdminOrderController extends BaseAdminController
   private const PAGE_ORDERS_SINGLE = 'Заказ №';
   private const PAGE_ORDERS_DELETE = 'Удаление заказа №';
 
-  // private OrderRepository $orderRepository;
-  private AdminOrderService $adminOrderService;
-
   public function __construct(
-    AdminOrderService $adminOrderService,
-    LocaleService $localeService,
-    SessionService $sessionService,
-    FlashMessage $flash
+    private AdminOrderService $adminOrderService,
+    protected LocaleService $localeService,
+    protected SessionService $sessionService,
+    protected FlashMessage $flash
   )
   {
     parent::__construct( $localeService, $sessionService, $flash);
-    $this->adminOrderService = $adminOrderService;
-
   }
 
   public function all(RouteData $routeData)

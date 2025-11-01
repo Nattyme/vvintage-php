@@ -18,22 +18,15 @@ require_once ROOT . './libs/functions.php';
 
 final class BlogController extends BaseController
 {
-  private Breadcrumbs $breadcrumbsService;
-  private PostService $postService;
-  private NavigationService $navigationService;
-  
 
     public function __construct(
-        SessionService $sessionService, 
-        AdminPanelService $adminPanelService,
-        PostService $postService, 
-        NavigationService $navigationService,
-        Breadcrumbs $breadcrumbs
+        protected SessionService $sessionService, 
+        protected AdminPanelService $adminPanelService,
+        private PostService $postService, 
+        private NavigationService $navigationService,
+        private Breadcrumbs $breadcrumbsService
     ) {
         parent::__construct($sessionService, $adminPanelService); // Важно!
-        $this->breadcrumbsService = $breadcrumbs;
-        $this->postService = $postService;
-        $this->navigationService = $navigationService;
         
     }
     

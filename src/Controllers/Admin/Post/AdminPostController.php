@@ -19,19 +19,17 @@ use Vvintage\Controllers\Admin\BaseAdminController;
 
 class AdminPostController extends BaseAdminController
 {
-  private AdminPostService $service;
-  private Breadcrumbs $breadcrumbs;
-
   public function __construct(
-    AdminPostService $service,
-    LocaleService $localeService,
-    SessionService $sessionService,
-    FlashMessage $flash, 
-    Breadcrumbs $breadcrumbs)
+    private AdminPostService $service,
+    private Breadcrumbs $breadcrumbsService,
+    protected LocaleService $localeService,
+    protected SessionService $sessionService,
+    protected FlashMessage $flash
+  )
+  
   {
     parent::__construct($localeService, $sessionService, $flash);
-    $this->service = $service;
-    $this->breadcrumbs = $breadcrumbs;
+ 
   }
 
   public function all (RouteData $routeData)

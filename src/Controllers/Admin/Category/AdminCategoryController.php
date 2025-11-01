@@ -15,20 +15,16 @@ use Vvintage\Services\Session\SessionService;
 
 final class AdminCategoryController extends BaseAdminController 
 {
-  private AdminCategoryService $service;
-  private AdminCategoryValidator $validator;
 
   public function __construct(
-    AdminCategoryService $service,
-    AdminCategoryValidator $validator,
-    LocaleService $localeService,
-    SessionService $sessionService,
-    FlashMessage $flash
-    )
+    private AdminCategoryService $service,
+    private AdminCategoryValidator $validator,
+    protected LocaleService $localeService,
+    protected SessionService $sessionService,
+    protected FlashMessage $flash
+  )
   {
     parent::__construct($localeService, $sessionService, $flash);
-    $this->service = $service;
-    $this->validator = $validator;
   }
 
   public function all(RouteData $routeData)

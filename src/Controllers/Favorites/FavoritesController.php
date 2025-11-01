@@ -45,41 +45,22 @@ require_once ROOT . './libs/functions.php';
 
 final class FavoritesController extends BaseController
 {
-    private FavoritesService $favService;
-    private UserInterface $userModel;
-    private Favorites $favModel;
-    private array $fav_list;
-    private UserItemsListStoreInterface $favStore;
-    private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
-    private SeoService $seoService;
-    private FlashMessage $flash;
 
     public function __construct(
-      SessionService $sessionService,
-      AdminPanelService $adminPanelService,
-      PageService $pageService,
-      FlashMessage $flash,
-      FavoritesService $favService, 
-      UserInterface $userModel, 
-      Favorites $favModel, 
-      array $fav_list, 
-      UserItemsListStoreInterface $favStore, 
-      Breadcrumbs $breadcrumbs,
-      SeoService $seoService
+      protected SessionService $sessionService,
+      protected AdminPanelService $adminPanelService,
+      private PageService $pageService,
+      private FlashMessage $flash,
+      private FavoritesService $favService, 
+      private UserInterface $userModel, 
+      private Favorites $favModel, 
+      private array $fav_list, 
+      private UserItemsListStoreInterface $favStore, 
+      private Breadcrumbs $breadcrumbsService,
+      private SeoService $seoService
     )
     {
       parent::__construct($sessionService, $adminPanelService); // Важно!
-      $this->favService = $favService;
-      $this->userModel = $userModel;
-      $this->favModel = $favModel;
-      $this->fav_list = $fav_list;
-      $this->favStore = $favStore;
-      $this->breadcrumbsService = $breadcrumbs;
-      $this->pageService = $pageService;
-      $this->seoService = $seoService;
-      $this->flash = $flash;
-      $this->sessionService = $sessionService;
     }
 
     public function index(RouteData $routeData): void

@@ -21,25 +21,16 @@ use Vvintage\Services\AdminPanel\AdminPanelService;
 
 final class PostController extends BaseController
 {
-    private SeoService $seoService;
-    private Breadcrumbs $breadcrumbsService;
-    private PostService $postService;
-    private NavigationService $navigationService;
-
     public function __construct(
-      SessionService $sessionService, 
-      AdminPanelService $adminPanelService,
-      PostService $postService, 
-      NavigationService $navigationService, 
-      SeoService $seoService,
-      Breadcrumbs $breadcrumbs
+      protected SessionService $sessionService, 
+      protected AdminPanelService $adminPanelService,
+      private PostService $postService, 
+      private NavigationService $navigationService, 
+      private SeoService $seoService,
+      private Breadcrumbs $breadcrumbsService
     )
     {
         parent::__construct($sessionService, $adminPanelService); // Важно!
-        $this->seoService = $seoService;
-        $this->breadcrumbsService = $breadcrumbs;
-        $this->postService = $postService;
-        $this->navigationService = $navigationService;
     }
 
 

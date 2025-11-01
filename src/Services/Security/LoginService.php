@@ -11,20 +11,19 @@ use Vvintage\Services\Base\BaseService;
 
 final class LoginService extends BaseService 
 {
-  private UserRepository $userRepository;
 
-  public function __construct(UserRepository $userRepository)
+  public function __construct(
+    private UserRepository $userRepository,
+    private LoginValidator $validator,
+    private SessionService $sessionService
+  )
   {
     parent::__construct(); // Важно!
-    $this->userRepository = $userRepository;
   }
 
   public function login(array $data): ?User
   {
-    $sessionService = new SessionService();
-    $validator = new LoginValidator($this->userRepository, $this->flash);
-
-    if (!$validator->validate($data)) {
+    if (!$this->validator->validate($data)) {
       return null;
     }
 
@@ -35,7 +34,7 @@ final class LoginService extends BaseService
       return null;
     }
 
-    $sessionService->setUserSession($user);
+    $this->sessionService->setUserSession($user);
     return $user;
   }
 }

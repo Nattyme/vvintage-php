@@ -33,35 +33,20 @@ require_once ROOT . "./libs/functions.php";
 
 final class CatalogController extends BaseController
 {
-    private ProductService $productService;
-    private CategoryService $categoryService;
-    private BrandService $brandService;
-    private SeoService $seoService;
-    private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
-    private FlashMessage $flash;
-
 
     public function __construct(  
-      SessionService $sessionService, 
-      AdminPanelService $adminPanelService,
-      PageService $pageService, 
-      BrandService $brandService, 
-      CategoryService $categoryService, 
-      ProductService $productService, 
-      FlashMessage $flash, 
-      SeoService $seoService, 
-      Breadcrumbs $breadcrumbs
+        protected SessionService $sessionService, 
+        protected AdminPanelService $adminPanelService,
+        private PageService $pageService, 
+        private BrandService $brandService, 
+        private CategoryService $categoryService, 
+        private ProductService $productService, 
+        private FlashMessage $flash, 
+        private SeoService $seoService, 
+        private Breadcrumbs $breadcrumbsService
     )
     {
       parent::__construct($sessionService, $adminPanelService); // Важно!
-      $this->productService = $productService;
-      $this->categoryService = $categoryService;
-      $this->brandService = $brandService;
-      $this->seoService = $seoService;
-      $this->breadcrumbsService = $breadcrumbs;
-      $this->pageService = $pageService;
-      $this->flash = $flash;
     }
 
 

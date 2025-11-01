@@ -15,18 +15,14 @@ use Vvintage\Services\Session\SessionService;
 
 class AdminMessageController extends BaseAdminController 
 {
-  private AdminMessageService $service;
-
-
   public function __construct(
-    AdminMessageService $service,
-    LocaleService $localeService,
-    SessionService $sessionService,
-    FlashMessage $flash
+    private AdminMessageService $service,
+    protected LocaleService $localeService,
+    protected SessionService $sessionService,
+    protected FlashMessage $flash
   )
   {
     parent::__construct($localeService, $sessionService, $flash);
-    $this->service = $service;
   }
 
   public function all(RouteData $routeData)

@@ -10,11 +10,9 @@ use Vvintage\Services\Base\BaseService;
 
 final class PasswordResetService extends BaseService
 {
-  private UserRepository $userRepository;
 
-  public function __construct (UserRepository $userRepository) {
+  public function __construct (private UserRepository $userRepository) {
     parent::__construct(); // Важно!
-    $this->userRepository = $userRepository;
   }
 
   // Генерируем случайную строку заданной длины 

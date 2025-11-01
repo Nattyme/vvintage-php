@@ -16,25 +16,16 @@ use Vvintage\Services\AdminPanel\AdminPanelService;
 
 final class PasswordSetNewController extends BaseController 
 {
-  private SeoService $seoService;
-  private PageService $pageService;
-  private FlashMessage $flash;
-  private PasswordSetNewService $setNewPassService;
-
   public function __construct(
-    SessionService $sessionService, 
-    AdminPanelService $adminPanelService,
-    PageService $pageService, 
-    FlashMessage $flash, 
-    SeoService $seoService, 
-    PasswordSetNewService $setNewPassService
+    protected SessionService $sessionService, 
+    protected AdminPanelService $adminPanelService,
+    private PageService $pageService, 
+    private FlashMessage $flash, 
+    private SeoService $seoService, 
+    private PasswordSetNewService $setNewPassService
   )
   {
     parent::__construct($sessionService, $adminPanelService); // Важно!
-    $this->seoService = $seoService;
-    $this->pageService = $pageService;
-    $this->flash = $flash;
-    $this->setNewPassService = $setNewPassService;
   }
 
   

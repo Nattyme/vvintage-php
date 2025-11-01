@@ -32,38 +32,21 @@ require_once ROOT . './libs/functions.php';
 
 final class ProfileController extends BaseController
 { 
-  private UserService $userService;
-  private Breadcrumbs $breadcrumbsService;
-  private SeoService $seoService;
-  private FlashMessage $flash;
-  private ProfileValidator $validator;
-  private PageService $pageService;
-  private LocaleService $localeService;
-  private OrderService $orderService;
-  
 
   public function __construct( 
     SessionService $sessionService, 
     AdminPanelService $adminPanelService,
-    OrderService $orderService,
-    LocaleService $localeService,
-    PageService $pageService,
-    ProfileValidator $profileValidator,
-    UserService $userService,
-    FlashMessage $flash, 
-    SeoService $seoService, 
-    Breadcrumbs $breadcrumbs
+    private OrderService $orderService,
+    private LocaleService $localeService,
+    private PageService $pageService,
+    private ProfileValidator $profileValidator,
+    private UserService $userService,
+    private FlashMessage $flash, 
+    private SeoService $seoService, 
+    private Breadcrumbs $breadcrumbsService
   )
   {
     parent::__construct($sessionService, $adminPanelService); // Важно!
-    $this->userService = $userService;
-    $this->breadcrumbsService = $breadcrumbs;
-    $this->seoService = $seoService;
-    $this->validator = $profileValidator;
-    $this->pageService = $pageService;
-    $this->localeService = $localeService;
-    $this->orderService = $orderService;
-    $this->flash = $flash;
   }
 
 

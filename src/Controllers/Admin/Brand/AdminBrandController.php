@@ -16,20 +16,16 @@ use Vvintage\Services\Session\SessionService;
 
 class AdminBrandController extends BaseAdminController 
 {
-  private AdminBrandService $service;
-  private AdminBrandValidator $validator;
 
   public function __construct(
-    AdminBrandService $service,
-    AdminBrandValidator $validator,
-    LocaleService $localeService,
-    SessionService $sessionService,
-    FlashMessage $flash
+    private AdminBrandService $service,
+    private AdminBrandValidator $validator,
+    protected LocaleService $localeService,
+    protected SessionService $sessionService,
+    protected FlashMessage $flash
   )
   {
     parent::__construct($localeService, $sessionService, $flash);
-    $this->service = $service;
-    $this->validator = $validator;
   }
 
   public function all(RouteData $routeData)

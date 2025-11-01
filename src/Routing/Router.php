@@ -63,6 +63,10 @@
   use Vvintage\Services\Admin\Product\AdminProductService;
   use Vvintage\Services\Admin\User\AdminUserService;
   use Vvintage\Services\Admin\AdminStatsService;
+  use Vvintage\Services\Security\PasswordResetService;
+  use Vvintage\Services\Validation\RegistrationValidator;
+  use Vvintage\Services\Security\LoginService;
+  use Vvintage\Services\Validation\PasswordResetValidator;
   
   /** Модели */
   use Vvintage\Models\User\User;
@@ -282,12 +286,19 @@
       $pageService = new PageService();
       $productService = new ProductService();
       $registrationService = new RegistrationService();
+      $registrationValidator = new RegistrationValidator(); 
       $sessionService = new SessionService();
       $adminPanelService = new AdminPanelService();
+      $passResetService = new PasswordResetService( $userRepository );
+      $passResetValidator = new PasswordResetValidator($passResetService);
+      $loginValidator = new LoginValidator($userRepository);
+      $loginService = new LoginService($userRepository, $loginValidator, $sessionService);
+    
 
       $loginController = new LoginController(
         $sessionService, 
         $adminPanelService, 
+        $loginService,
         $productService, 
         $pageService, 
         $flash, 
@@ -297,6 +308,7 @@
       $regController = new RegistrationController(
         $sessionService, 
         $adminPanelService, 
+        $registrationValidator,
         $registrationService, 
         $pageService, 
         $flash, 
@@ -305,6 +317,8 @@
       $resetController = new PasswordResetController(
         $sessionService, 
         $adminPanelService, 
+        $passResetValidator,
+        $passResetService,
         $pageService,  
         $flash, 
         $seoService

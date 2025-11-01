@@ -26,26 +26,16 @@ use Vvintage\Services\AdminPanel\AdminPanelService;
 
 class PageController extends BaseController
 {
-  private Page $pageModel;
-  protected PageService $pageService;
-  private SeoService $seoService;
-  private Breadcrumbs $breadcrumbsService;
-  private FlashMessage $flash;
-
   public function __construct (
-    SessionService $sessionService, 
-    AdminPanelService $adminPanelService,
-    PageService $pageService, 
-    Breadcrumbs $breadcrumbsService, 
-    FlashMessage $flash, 
-    SeoService $seoService
+    protected SessionService $sessionService, 
+    protected AdminPanelService $adminPanelService,
+    private PageService $pageService, 
+    private Breadcrumbs $breadcrumbsService, 
+    private FlashMessage $flash, 
+    private SeoService $seoService
   )
   {
     parent::__construct($sessionService, $adminPanelService); // Важно!
-    $this->flash = $flash;
-    $this->pageService = $pageService;
-    $this->breadcrumbsService = $breadcrumbsService;
-    $this->seoService = $seoService;
   }
 
   public function index(RouteData $routeData): void

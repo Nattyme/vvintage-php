@@ -44,15 +44,6 @@ class PostService extends BaseService
       $this->localeService = new LocaleService();
     }
 
-    // public function getAll(array $pagination = []): array
-    // {
-    //     return $this->repository->getPosts();
-
-    //     // return array_map(
-    //     //     fn($bean) => Post::fromDTO($bean),
-    //     //     $beans
-    //     // );
-    // }
 
     public function getPostById (int $id): ?Post
     {

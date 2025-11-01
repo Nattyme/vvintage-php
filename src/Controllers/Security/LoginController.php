@@ -39,27 +39,17 @@ use Vvintage\Services\Translator\Translator;
 
 final class LoginController extends BaseController
 {
-  private PageService $pageService;
-  private UserRepository $userRepository;
-  private SeoService $seoService;
-  private FlashMessage $flash;
-  private ProductService $productService;
-
   public function __construct( 
-    SessionService $sessionService, 
-    AdminPanelService $adminPanelService,
-    ProductService $productService, 
-    PageService $pageService, 
-    FlashMessage $flash, 
-    SeoService $seoService, 
-    UserRepository $userRepository) 
+    protected SessionService $sessionService, 
+    protected AdminPanelService $adminPanelService,
+    private LoginService $service,
+    private ProductService $productService, 
+    private PageService $pageService, 
+    private FlashMessage $flash, 
+    private SeoService $seoService, 
+    private UserRepository $userRepository) 
   {
     parent::__construct($sessionService, $adminPanelService); // Важно!
-    $this->flash = $flash;
-    $this->seoService = $seoService;
-    $this->userRepository = $userRepository;
-    $this->pageService = $pageService;
-    $this->productService = $productService;
   }
 
   public function index(RouteData $routeData): void
@@ -69,8 +59,7 @@ final class LoginController extends BaseController
       return;
     }
 
-    $loginService = new LoginService($this->userRepository, $this->flash);
-    $userModel = $loginService->login($_POST);
+    $userModel = $this->service->login($_POST);
 
 
     if (!$userModel) {

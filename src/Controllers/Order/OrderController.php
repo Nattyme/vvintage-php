@@ -42,44 +42,23 @@ require_once ROOT . './libs/functions.php';
 
 final class OrderController extends BaseController
 {
-    private FlashMessage $flash;
-    private OrderService $orderService;
-    private CartService $cartService;
-    private UserInterface $userModel;
-    private Cart $cartModel;
-    private array $cart;
-    private UserItemsListStoreInterface $cartStore;
-    private NewOrderValidator $validator;
-    private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
-  
-
     public function __construct(
-      SessionService $sessionService, 
-      AdminPanelService $adminPanelService,
-      FlashMessage $flash,
-      PageService $pageService,
-      OrderService $orderService, 
-      CartService $cartService, 
-      UserInterface $userModel,
-      Cart $cartModel,
-      array $cart,
-      UserItemsListStoreInterface $cartStore,
-      NewOrderValidator $validator,
-      Breadcrumbs $breadcrumbs
+      private SessionService $sessionService, 
+      private AdminPanelService $adminPanelService,
+      private FlashMessage $flash,
+      private PageService $pageService,
+      private OrderService $orderService, 
+      private CartService $cartService, 
+      private UserInterface $userModel,
+      private Cart $cartModel,
+      private array $cart,
+      private UserItemsListStoreInterface $cartStore,
+      private NewOrderValidator $validator,
+      private Breadcrumbs $breadcrumbsService
     )
     {
       parent::__construct($sessionService, $adminPanelService); // Важно!
-      $this->orderService = $orderService;
-      $this->cartService = $cartService;
-      $this->userModel = $userModel;
-      $this->cartModel = $cartModel;
-      $this->cart = $cart;
-      $this->cartStore = $cartStore;
-      $this->validator = $validator;
-      $this->breadcrumbsService = $breadcrumbs;
-      $this->pageService = $pageService;
-      $this->flash = $flash;
+
     }
 
     public function index(RouteData $routeData): void
