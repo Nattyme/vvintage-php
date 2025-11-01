@@ -7,7 +7,6 @@ use RedBeanPHP\R;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Product\Product;
 use Vvintage\Models\User\User;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
 
 use Vvintage\DTO\Cart\CartItemDTO;
@@ -34,6 +33,7 @@ class CartService extends AbstractUserItemsListService
     {
       $dtoFactory = new CartItemDTOFactory();
       $dto = $dtoFactory->createFromProduct(
+        service: $this->productImageService,
         product: $product,
         currentLang: $this->currentLang
       );

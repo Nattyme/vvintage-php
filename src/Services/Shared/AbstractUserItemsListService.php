@@ -8,10 +8,10 @@ use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
 /** Сервисы */
-// use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Session\SessionService;
 
 /** Модели */
 use Vvintage\Models\Shared\AbstractUserItemsList;
@@ -28,6 +28,7 @@ abstract class AbstractUserItemsListService
       protected ProductService $productService, 
       protected ProductImageService $productImageService, 
       protected LocaleService $localeService, 
+      protected SessionService $sessionService, 
       ) {
         $this->currentLang = $localeService->getCurrentLang();
       }
@@ -75,11 +76,8 @@ abstract class AbstractUserItemsListService
       $this->itemsStore->save( $sessionKey, $userItemsModel, $this->userModel);
 
       // Обновляем сессию
-      $_SESSION['logged_user'][ $sessionKey] = $userItemsModel->getItems();
-      $_SESSION[  $sessionKey] =  $userItemsModel->getItems();
-
-      // Очищаем cookies
-      $this->clearGuestCookies();
+      $this->sessionService->updateUserSessionData($sessionKey, $userItemsModel->getItems());
+      $this->clearGuestCookies(); // Очищаем cookies
     }
 
     
@@ -87,10 +85,7 @@ abstract class AbstractUserItemsListService
     private function clearGuestCookies()
     {
       $sessionKey = $this->itemsModel->getSessionKey();
-
-      if (isset($_COOKIE[$sessionKey])) {
-        setcookie($sessionKey, '', time() - 3600, '/');
-      }
+      $this->sessionService->clearCookies($sessionKey);
     }
 
 }

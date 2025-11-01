@@ -88,5 +88,19 @@ class SessionService
         return $user->getId() === $profileId;
     }
 
+    public function clearCookies(string $sessionKey): void
+    {
+      if (!isset($_COOKIE[$sessionKey])) return;
+      
+      setcookie($sessionKey, '', time() - 3600, '/');
+    }
+
+    public function updateUserSessionData(string $sessionKey, array $data): void
+    {
+      if (!isset($_SESSION['logged_user'])) return;
+
+      $_SESSION['logged_user'][$sessionKey] = $data;
+      $_SESSION[$sessionKey] = $data;
+    }
 
 }

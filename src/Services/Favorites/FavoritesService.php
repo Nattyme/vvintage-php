@@ -7,7 +7,6 @@ use RedBeanPHP\R;
 use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Models\Product\Product;
 use Vvintage\Models\User\User;
-use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
 
 use Vvintage\DTO\Favorites\FavItemDTO;
