@@ -11,7 +11,8 @@ use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Services\Admin\Order\AdminOrderService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Base\BaseService;
-
+use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Session\SessionService;
 
 class AdminOrderController extends BaseAdminController 
 {   
@@ -23,10 +24,15 @@ class AdminOrderController extends BaseAdminController
   // private OrderRepository $orderRepository;
   private AdminOrderService $adminOrderService;
 
-  public function __construct(FlashMessage $flash)
+  public function __construct(
+    AdminOrderService $adminOrderService,
+    LocaleService $localeService,
+    SessionService $sessionService,
+    FlashMessage $flash
+  )
   {
-    parent::__construct( $flash);
-    $this->adminOrderService = new AdminOrderService();
+    parent::__construct( $localeService, $sessionService, $flash);
+    $this->adminOrderService = $adminOrderService;
 
   }
 

@@ -6,7 +6,8 @@ namespace Vvintage\Services\Admin\Post;
 use Vvintage\Services\Post\PostService;
 use Vvintage\DTO\Admin\Post\PostEditDTO;
 use Vvintage\DTO\Admin\Post\PostEditDTOFactory;
-
+use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Config\LanguageConfig; // Пеервод на другие языки
 
 final class AdminPostService extends PostService
 {
@@ -16,9 +17,9 @@ final class AdminPostService extends PostService
       'archived' => 'В архив'
     ];
 
-    public function __construct(array $languages, string $currentLang)
+    public function __construct(  protected LocaleService $localeService )
     {
-      parent::__construct($languages, $currentLang);
+      parent::__construct(LanguageConfig::getAvailableLanguages(), $this->localeService->getCurrentLang());
     }
 
     public function getPostEditData(int $id): ?PostEditDTO

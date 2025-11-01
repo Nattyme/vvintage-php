@@ -9,15 +9,20 @@ use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Product\AdminProductService;
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Session\SessionService;
 
 class AdminProductController extends BaseAdminController
 {
-  private AdminProductService $service;
 
-  public function __construct(FlashMessage $flash)
+  public function __construct(
+    protected AdminProductService $service,
+    protected LocaleService $localeService,
+    protected SessionService $sessionService,
+    protected FlashMessage $flash
+  )
   {
-    parent::__construct($flash);
-    $this->service = new AdminProductService();
+    parent::__construct($localeService, $sessionService, $flash);
   }
 
   public function all (RouteData $routeData)

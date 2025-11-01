@@ -11,6 +11,8 @@ use Vvintage\Services\Messages\FlashMessage;
 /** Контракты */
 use Vvintage\Contracts\Post\PostRepositoryInterface;
 use Vvintage\Contracts\PostCategory\PostCategoryRepositoryInterface;
+use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Session\SessionService;
 
 /** Контроллеры */
 use Vvintage\Controllers\Admin\BaseAdminController;
@@ -20,10 +22,15 @@ class AdminPostController extends BaseAdminController
   private AdminPostService $service;
   private Breadcrumbs $breadcrumbs;
 
-  public function __construct(FlashMessage $flash, Breadcrumbs $breadcrumbs)
+  public function __construct(
+    AdminPostService $service,
+    LocaleService $localeService,
+    SessionService $sessionService,
+    FlashMessage $flash, 
+    Breadcrumbs $breadcrumbs)
   {
-    parent::__construct($flash);
-    $this->service = new AdminPostService($this->languages, $this->currentLang);
+    parent::__construct($localeService, $sessionService, $flash);
+    $this->service = $service;
     $this->breadcrumbs = $breadcrumbs;
   }
 

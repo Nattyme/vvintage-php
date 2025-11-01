@@ -11,17 +11,25 @@ use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\Services\Admin\Brand\AdminBrandService;
 use Vvintage\Services\Admin\Validation\AdminBrandValidator;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Session\SessionService;
 
 class AdminBrandController extends BaseAdminController 
 {
   private AdminBrandService $service;
   private AdminBrandValidator $validator;
 
-  public function __construct(FlashMessage $flash)
+  public function __construct(
+    AdminBrandService $service,
+    AdminBrandValidator $validator,
+    LocaleService $localeService,
+    SessionService $sessionService,
+    FlashMessage $flash
+  )
   {
-    parent::__construct($flash);
-    $this->service = new AdminBrandService();
-    $this->validator = new AdminBrandValidator();
+    parent::__construct($localeService, $sessionService, $flash);
+    $this->service = $service;
+    $this->validator = $validator;
   }
 
   public function all(RouteData $routeData)

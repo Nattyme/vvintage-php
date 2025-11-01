@@ -4,40 +4,46 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Admin;
 
 use Vvintage\Routing\RouteData;
-use Vvintage\Models\Settings\Settings;
-use Vvintage\Services\Session\SessionService;
 use Vvintage\Models\User\User;
+use Vvintage\Models\Settings\Settings;
+
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Session\SessionService;
 
-
-// Пеервод на другие языки
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
-use Vvintage\Services\Locale\LocaleService;
+
 
 
 abstract class BaseAdminController
 {
-  protected RouteData $routeData; 
   protected array $settings;
-  protected LocaleService $localeService;
   protected array $languages;
   protected string $currentLang;
   protected FlashMessage $flash;
+  protected RouteData $routeData; 
+  protected LocaleService $localeService;
+  protected SessionService $sessionService;
 
-  public function __construct(FlashMessage $flash)
+  public function __construct(
+    LocaleService $localeService, 
+    SessionService $sessionService, 
+    FlashMessage $flash
+  )
   {
       $this->settings = Settings::all(); // Получаем 1 раз массив всех настроек 
-      $this->localeService = new LocaleService();
+      $this->localeService = $localeService;
       $this->currentLang = $this->localeService->getCurrentLang();
       $this->languages = LanguageConfig::getAvailableLanguages();
+      $this->localeService = $localeService;
+      $this->sessionService = $sessionService;
       $this->flash = $flash;
   }
 
   protected function isAdmin(): bool
   {
-    $sessionService = new SessionService();
-    $userModel = $sessionService->getLoggedInUser();
+    $userModel = $this->sessionService->getLoggedInUser();
 
     if (!($userModel instanceof User) || $userModel->getRole() !== 'admin') {
       header("Location: " . HOST . 'login');
@@ -52,9 +58,7 @@ abstract class BaseAdminController
   {
     $isAdminLoggedIn = $this->isAdmin();
 
-    if(!$isAdminLoggedIn) {
-      header('Location: ' . HOST);
-    }
+    if(!$isAdminLoggedIn) header('Location: ' . HOST);
 
     // Превращаем элементы массива в переменные
     extract( array_merge($vars, [

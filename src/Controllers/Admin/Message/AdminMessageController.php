@@ -10,17 +10,23 @@ use Vvintage\Repositories\Message\MessageRepository;
 /** Сервисы */
 use Vvintage\Services\Admin\Messages\AdminMessageService;
 use Vvintage\Services\Messages\FlashMessage;
-
+use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Session\SessionService;
 
 class AdminMessageController extends BaseAdminController 
 {
   private AdminMessageService $service;
 
 
-  public function __construct(FlashMessage $flash)
+  public function __construct(
+    AdminMessageService $service,
+    LocaleService $localeService,
+    SessionService $sessionService,
+    FlashMessage $flash
+  )
   {
-    parent::__construct($flash);
-    $this->service = new AdminMessageService();
+    parent::__construct($localeService, $sessionService, $flash);
+    $this->service = $service;
   }
 
   public function all(RouteData $routeData)

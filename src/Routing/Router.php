@@ -51,7 +51,19 @@
   use Vvintage\Services\Post\PostService;
   use Vvintage\Services\Navigation\NavigationService;
   use Vvintage\Services\AdminPanel\AdminPanelService;
-
+  use Vvintage\Services\Admin\Brand\AdminBrandService;
+  use Vvintage\Services\Admin\Validation\AdminBrandValidator;
+  use Vvintage\Services\Admin\Category\AdminCategoryService;
+  use Vvintage\Services\Admin\Validation\AdminCategoryValidator;
+  use Vvintage\Services\Admin\Messages\AdminMessageService;
+  use Vvintage\Services\Admin\Order\AdminOrderService;
+  use Vvintage\Services\Admin\Post\AdminPostService;
+  use Vvintage\Services\Admin\PostCategory\AdminPostCategoryService;
+  use Vvintage\Services\Admin\Validation\AdminPostCategoryValidator;
+  use Vvintage\Services\Admin\Product\AdminProductService;
+  use Vvintage\Services\Admin\User\AdminUserService;
+  use Vvintage\Services\Admin\AdminStatsService;
+  
   /** Модели */
   use Vvintage\Models\User\User;
   use Vvintage\Models\User\GuestUser;
@@ -626,21 +638,77 @@
     /**********************/
     public static function routeAdminPages(RouteData $routeData)
     {
+      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
+      $localeService = new LocaleService();
+      $sessionService = new SessionService();
       $postRepository = new  PostRepository();
       $postCategoryRepository = new PostCategoryRepository(); 
-      $flash = new FlashMessage();
+      $adminBrandService = new AdminBrandService();
+      $adminBrandValidator = new AdminBrandValidator();
+      $adminCategoryService = new AdminCategoryService();
+      $adminCategoryValidator = new AdminCategoryValidator();
+      $adminMessageService = new AdminMessageService();
+      $adminOrderService =  new AdminOrderService();
+      $adminPostService = new AdminPostService($localeService);
+      $adminPostCategoryService = new AdminPostCategoryService();
+      $adminPostCategoryValidator = new AdminPostCategoryValidator();
+      $adminProductService = new AdminProductService();
+      $adminUserService = new AdminUserService();
+      $adminStatsService = new AdminStatsService;
 
+      $homeAdminController = new HomeAdminController( $adminStatsService, $localeService,  $sessionService,$flash);
+      $adminProductController = new AdminProductController(
+        $adminProductService, 
+        $localeService,  
+        $sessionService, 
+        $flash
+      );
 
-      $homeAdminController = new HomeAdminController($flash);
-      $adminProductController = new AdminProductController($flash);
-      $adminBrandController = new AdminBrandController($flash);
-      $adminCategoryController = new AdminCategoryController($flash);
-      $adminUserController = new AdminUserController($flash);
-      $adminOrderController = new AdminOrderController($flash);
-      $adminPostController = new AdminPostController($flash, $breadcrumbs);
-      $adminMessageController = new AdminMessageController($flash);
-      $adminPostCatController = new AdminPostCategoryController($flash, $postCategoryRepository);
+      $adminBrandController = new AdminBrandController( 
+        $adminBrandService, 
+        $adminBrandValidator, 
+        $localeService,  
+        $sessionService, 
+        $flash
+      );
+
+      $adminCategoryController = new AdminCategoryController(
+        $adminCategoryService,
+        $adminCategoryValidator,
+        $localeService,  
+        $sessionService, 
+        $flash
+      );
+      $adminUserController = new AdminUserController( $adminUserService, $localeService,  $sessionService, $flash);
+      $adminOrderController = new AdminOrderController( 
+        $adminOrderService, 
+        $localeService,  
+        $sessionService, 
+        $flash
+      );
+      $adminPostController = new AdminPostController(
+        $adminPostService,
+        $localeService,  
+        $sessionService, 
+        $flash, 
+        $breadcrumbs
+      );
+      
+      $adminMessageController = new AdminMessageController(
+        $adminMessageService,
+        $localeService,  
+        $sessionService, 
+        $flash
+      );
+      $adminPostCatController = new AdminPostCategoryController( 
+        $adminPostCategoryService, 
+        $adminPostCategoryValidator,
+        $localeService,  
+        $sessionService, 
+        $flash, 
+        $postCategoryRepository
+      );
   
       switch ($routeData->uriModule) {
          // ::::::::::::: SHOP :::::::::::::::::::

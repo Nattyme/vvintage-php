@@ -1,6 +1,3 @@
-<?php
- $stats = $this->adminStatsService->getSummary(); ?>
-
 <section class="stats">
   <div class="stats__item">
     <div class="stats__item-row">

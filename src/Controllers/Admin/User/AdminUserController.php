@@ -8,15 +8,20 @@ use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\User\AdminUserService;
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Session\SessionService;
 
 final class AdminUserController extends BaseAdminController 
 {
-  private AdminUserService $adminUserService;
 
-  public function __construct(FlashMessage $flash)
+  public function __construct(
+    protected AdminUserService $service,
+    protected LocaleService $localeService,
+    protected SessionService $sessionService,
+    protected FlashMessage $flash
+  )
   {
-    parent::__construct($flash);
-    $this->adminUserService = new AdminUserService();
+    parent::__construct($localeService, $sessionService, $flash);
   }
 
   public function all(RouteData $routeData)
@@ -57,9 +62,9 @@ final class AdminUserController extends BaseAdminController
     // Устанавливаем пагинацию
     $pagination = pagination($usersPerPage, 'users');
 
-    $users = $this->adminUserService->getAllUsers($pagination);
+    $users = $this->service->getAllUsers($pagination);
     // $users = $this->userRepository->getAllUsers($pagination);
-    $total = $this->adminUserService->getAllUsersCount();
+    $total = $this->service->getAllUsersCount();
     // $total = $this->userRepository->getAllUsersCount();
         
     $this->renderLayout('users/all',  [

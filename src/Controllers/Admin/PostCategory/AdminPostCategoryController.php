@@ -10,19 +10,22 @@ use Vvintage\Services\Admin\Validation\AdminPostCategoryValidator;
 use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Services\Session\SessionService;
 
 final class AdminPostCategoryController extends BaseAdminController 
 {
-  private AdminPostCategoryValidator $validator;
-  private AdminPostCategoryService $service;
-
   private const TABLE = 'postcategories';
 
-  public function __construct(FlashMessage $flash)
+  public function __construct(
+    protected AdminPostCategoryService $service,
+    protected AdminPostCategoryValidator $validator,
+    protected LocaleService $localeService,
+    protected SessionService $sessionService,
+    protected FlashMessage $flash
+  )
   {
-    parent::__construct($flash);
-    $this->service = new AdminPostCategoryService();
-    $this->validator = new AdminPostCategoryValidator();
+    parent::__construct($localeService, $sessionService, $flash);
   }
 
   public function all(RouteData $routeData)
