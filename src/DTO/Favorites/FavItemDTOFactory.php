@@ -11,15 +11,13 @@ use Vvintage\DTO\Favorites\FavItemDTO;
 final class FavItemDTOFactory
 {
     public function createFromProduct(
+      ProductImageService $service,
       Product $product,
       string $currentLang
     ): FavItemDTO
     {
       $productId = (int) $product->getId();
-
       $translations = (array) $product->getTranslation($currentLang);
-
-      $service = new ProductImageService();
       $image = $service->getMainImageDTO($productId);
       
       // Подставляем дефолтное изображение, если $image = null

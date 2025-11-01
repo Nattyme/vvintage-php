@@ -7,19 +7,18 @@ namespace Vvintage\Services\Shared;
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
-/** Репозитории */
-use Vvintage\Services\Base\BaseService;
-use Vvintage\Repositories\Product\ProductRepository;
+/** Сервисы */
+// use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Product\ProductImageService;
+use Vvintage\Services\Locale\LocaleService;
 
 /** Модели */
 use Vvintage\Models\Shared\AbstractUserItemsList;
 
-/** Сервисы */
-use Vvintage\Services\Messages\FlashMessage;
-
-abstract class AbstractUserItemsListService extends BaseService
+abstract class AbstractUserItemsListService 
 {
+    protected string $currentLang;
 
     public function __construct( 
       protected UserInterface $userModel, 
@@ -27,14 +26,14 @@ abstract class AbstractUserItemsListService extends BaseService
       protected array $items, 
       protected UserItemsListStoreInterface $itemsStore, 
       protected ProductService $productService, 
-      )
-    {
-      parent::__construct();
-    }
+      protected ProductImageService $productImageService, 
+      protected LocaleService $localeService, 
+      ) {
+        $this->currentLang = $localeService->getCurrentLang();
+      }
 
     public function getListItems ()
     {
-   
       return !empty($this->items) ? $this->productService->getProductsByIds($this->items) : [];
     }
 

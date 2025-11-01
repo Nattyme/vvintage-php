@@ -331,7 +331,7 @@
       $cartStore = ($userModel instanceof User) 
                     ? $userItemsListStore
                     : $guestItemsListStore;
-      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService, $productImageService, $localeService);
 
       // Получаем избранное и ее модель
       $favModel = $userModel->getFavModel();
@@ -341,7 +341,7 @@
                   ? $userItemsListStore  
                   : $guestItemsListStore;
                     
-      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
+      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService, $productImageService, $localeService);
 
       $userItemsMergeService = new UserItemsMergeService( $favService, $cartService );
       $orderRepository = new OrderRepository();
@@ -668,7 +668,7 @@
       $cartStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( $sessionService, $userRepository ) 
                     : new GuestItemsListStore();
-      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService, $productImageService, $localeService);
 
       $controller  = new CartController(
         $sessionService, 
@@ -758,7 +758,7 @@
                     ? new UserItemsListStore( $sessionService,  $userRepository ) 
                     : new GuestItemsListStore();
                     
-      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
+      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService, $productImageService, $localeService);
       $controller  = new FavoritesController(
         $sessionService, 
         $adminPanelService, 
@@ -855,7 +855,7 @@
                     ? new UserItemsListStore( $sessionService, $userRepository ) 
                     : new GuestItemsListStore();
 
-      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService, $productImageService, $localeService);
 
 
       $orderRepository = new OrderRepository();

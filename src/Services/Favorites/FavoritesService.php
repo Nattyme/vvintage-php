@@ -29,6 +29,7 @@ class FavoritesService extends AbstractUserItemsListService
   {
     $dtoFactory = new FavItemDTOFactory();
     $dto = $dtoFactory->createFromProduct(
+      service: $this->productImageService,
       product: $product,
       currentLang: $this->currentLang
     );
