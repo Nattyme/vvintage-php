@@ -149,8 +149,6 @@ class ProductApiController extends BaseApiController
       // Получаем продукты из сервиса
       $productsData = $this->service->getActiveProducts(); // <-- метод, который вернёт массив объектов/DTO
       $products = $this->serializer->toList($productsData);
-      // Если есть изображения, категории, можно их добавить через сервис/репозиторий
-      // $categories = $this->service->getCategories(); // пример
 
       // Формируем структуру для фронта
       $data = [

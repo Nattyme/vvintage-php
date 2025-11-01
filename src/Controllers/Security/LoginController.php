@@ -50,12 +50,12 @@ final class LoginController extends BaseController
     private UserItemsMergeService $userItemsMergeService,
     private LoginService $service,
     private ProductService $productService, 
-    private PageService $pageService, 
-    private FlashMessage $flash, 
+    protected PageService $pageService, 
+    protected FlashMessage $flash, 
     private SeoService $seoService, 
     private UserRepository $userRepository) 
   {
-    parent::__construct($sessionService, $adminPanelService); // Важно!
+    parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
   }
 
   public function index(RouteData $routeData): void
@@ -155,8 +155,8 @@ final class LoginController extends BaseController
     $pageClass = "authorization-page";
     
 
-    $currentLang =  $this->productService->currentLang;
-    $languages = $this->productService->languages;
+    $currentLang =  $this->pageService->currentLang;
+    $languages = $this->pageService->languages;
    
     $errors = $this->flash->get('errors');
     $success = $this->flash->get('success');

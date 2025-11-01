@@ -48,7 +48,7 @@ final class CartController extends BaseController
       protected SessionService $sessionService, 
       protected AdminPanelService $adminPanelService,
       protected PageService $pageService,
-      private FlashMessage $flash,
+      protected FlashMessage $flash,
       private CartService $cartService, 
       private UserInterface $userModel, 
       private Cart $cartModel, 
@@ -58,7 +58,7 @@ final class CartController extends BaseController
       private SeoService $seoService
     )
     {
-      parent::__construct($sessionService, $adminPanelService, $pageService); // Важно!
+      parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
     
     }
 

@@ -19,13 +19,13 @@ final class PasswordSetNewController extends BaseController
   public function __construct(
     protected SessionService $sessionService, 
     protected AdminPanelService $adminPanelService,
-    private PageService $pageService, 
-    private FlashMessage $flash, 
+    protected PageService $pageService, 
+    protected FlashMessage $flash, 
     private SeoService $seoService, 
     private PasswordSetNewService $setNewPassService
   )
   {
-    parent::__construct($sessionService, $adminPanelService); // Важно!
+    parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
   }
 
   
@@ -74,23 +74,23 @@ final class PasswordSetNewController extends BaseController
 
           if (!$this->setNewPassService->isValidRecoveryCode($email, $resetCode)) {
               $this->flash->pushError('Неверный или просроченный код восстановления');
-              header("Location: " . HOST . "lost-password");
+              $this->redirect-('lost-password');
               exit;
           }
       }
 
       // Иначе — редирект на форму восстановления
       else {
-          header("Location: " . HOST . "lost-password");
-          exit;
+        $this->redirect-('lost-password');
+        exit;
       }
 
       // Отображение формы
-      self::renderForm($routeData ?? [], $newPasswordReady, $email, $resetCode);
+      $this->renderForm($routeData ?? [], $newPasswordReady, $email, $resetCode);
   }
 
 
-  private  function renderForm($routeData, bool $newPasswordReady = false)
+  private function renderForm($routeData, bool $newPasswordReady = false)
   {
     // Название страницы
     $page = $this->pageService->getPageBySlug($routeData->uriModule);
@@ -99,6 +99,9 @@ final class PasswordSetNewController extends BaseController
     
     $pageTitle = "Установить новый пароль";
     $pageClass = "authorization-page";
+
+    $currentLang =  $this->pageService->currentLang;
+    $languages = $this->pageService->languages;
 
     ob_start();
     include ROOT . 'views/login/set-new-password.tpl';

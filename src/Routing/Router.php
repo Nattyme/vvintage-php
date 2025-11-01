@@ -35,6 +35,7 @@
   use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\Admin\Product\AdminProductImageService;
   use Vvintage\Services\User\UserItemsMergeService;
+  use Vvintage\Repositories\Category\CategoryRepository;
 
   use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Cart\CartService;
@@ -102,6 +103,7 @@
   use Vvintage\Repositories\Brand\BrandRepository;
   use Vvintage\Repositories\Brand\BrandTranslationRepository;
   use Vvintage\Repositories\Product\ProductTranslationRepository;
+  use Vvintage\Repositories\Category\CategoryTranslationRepository;
 
   /** Админ контроллеры */
   use Vvintage\Controllers\Admin\HomeAdminController;
@@ -119,7 +121,8 @@
   use Vvintage\Controllers\Api\Brand\BrandApiController;
   use Vvintage\Controllers\Api\Product\ProductApiController;
   use Vvintage\Serializers\ProductApiSerializer;
-  
+  use Vvintage\Serializers\CategoryApiSerializer;
+
   use Vvintage\Services\Admin\Validation\AdminProductValidator;
   use Vvintage\Services\Admin\Validation\AdminProductImageValidator;
 
@@ -215,7 +218,11 @@
 
         $productRepository = new ProductRepository();
         $productTranslationRepo = new ProductTranslationRepository();
-        $categoryService = new CategoryService();
+
+        $categoryRepository = new CategoryRepository();
+        $categoryTranslationRepo = new CategoryTranslationRepository();
+          
+        $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
         $productImageService = new ProductImageService();
         $paginationService = new PaginationService();
         $localeService = new LocaleService();
@@ -249,7 +256,10 @@
         $adminProductValidator = new AdminProductValidator();
         $adminProductImageValidator = new AdminProductImageValidator();
 
-        $categoryApiController = new CategoryApiController();
+
+        $categoryApiSerializer = new CategoryApiSerializer();
+        $categoryApiController = new CategoryApiController($categoryApiSerializer, $categoryService);
+
         $brandApiController = new BrandApiController($brandService);
         $productApiController = new ProductApiController(
           $adminProductService,
@@ -362,7 +372,12 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
+
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
 
@@ -512,7 +527,11 @@
 
         $productRepository = new ProductRepository();
         $productTranslationRepository = new ProductTranslationRepository();
-        $categoryService = new CategoryService();
+        $categoryRepository = new CategoryRepository();
+        $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+        $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
+
         $productImageService = new ProductImageService();
         $paginationService = new PaginationService();
       
@@ -566,7 +585,6 @@
     private static function routeShop(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
       $flash = new FlashMessage();
-      $categoryService = new CategoryService();
       $localeService = new LocaleService();
 
       $brandRepository = new BrandRepository();
@@ -577,7 +595,12 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+      
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
+
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
     
@@ -630,10 +653,10 @@
       
     private static function routeBlog(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
-      $repository = new PostRepository();
-      $categoryRepository = new PostCategoryRepository();
-      $categoryTranslationRepo = new PostCategoryTranslationRepository();
-      $translationRepo = new PostTranslationRepository();
+      $postRepository = new PostRepository();
+      $postCategoryRepository = new PostCategoryRepository();
+      $postCategoryTranslationRepo = new PostCategoryTranslationRepository();
+      $postTranslationRepo = new PostTranslationRepository();
       $flash = new FlashMessage();
      
       $paginationService = new PaginationService();
@@ -642,7 +665,7 @@
       $localeService = new LocaleService();
       $sessionService = new SessionService();
 
-       $brandRepository = new BrandRepository();
+      $brandRepository = new BrandRepository();
       $brandTranslationRepo = new BrandTranslationRepository();
       $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
       $pageService = new PageService();
@@ -650,7 +673,12 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+      
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
+
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
     
@@ -670,10 +698,10 @@
       $adminPanelService = new AdminPanelService($messageService, $orderService);
 
 
-      $postCategoryService = new PostCategoryService($categoryRepository, $categoryTranslationRepo, $localeService);
+      $postCategoryService = new PostCategoryService($postCategoryRepository, $postCategoryTranslationRepo, $localeService);
       $postService = new PostService( 
-        $repository, 
-        $translationRepo, 
+        $postRepository, 
+        $postTranslationRepo, 
         $postCategoryService, 
         $paginationService, 
         $localeService, 
@@ -728,9 +756,14 @@
         
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+  
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
+
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
       
       $productService = new ProductService(
         $productRepository,
@@ -763,7 +796,12 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+      
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
+
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
     
@@ -829,9 +867,14 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
+
+       $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
     
       $productService = new ProductService(
         $productRepository,
@@ -863,7 +906,12 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+      
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
+
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
     
@@ -932,7 +980,7 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
     
@@ -970,7 +1018,7 @@
    
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+      
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
     
@@ -1010,7 +1058,12 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
+      
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
     
@@ -1054,15 +1107,14 @@
     /**********************/
     private static function routePages(RouteData $routeData)
     {
-      $categoryService = new CategoryService();
-      $categoryRepository = new PostCategoryRepository();
-      $categoryTranslationRepo = new PostCategoryTranslationRepository();
+      $postCategoryRepository = new PostCategoryRepository();
+      $postCategoryTranslationRepo = new PostCategoryTranslationRepository();
       $localeService = new LocaleService();
       $paginationService = new PaginationService();
       $postTranslationRepo = new PostTranslationRepository();
       $postRepository = new PostRepository();
       
-      $postCategoryService = new PostCategoryService($categoryRepository, $categoryTranslationRepo, $localeService);
+      $postCategoryService = new PostCategoryService($postCategoryRepository, $postCategoryTranslationRepo, $localeService);
       $postService = new PostService( 
         $postRepository, 
         $postTranslationRepo, 
@@ -1082,7 +1134,12 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+      
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
+
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
     
@@ -1157,7 +1214,12 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+      
+
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
     
@@ -1182,7 +1244,12 @@
 
       $productRepository = new ProductRepository();
       $productTranslationRepo = new ProductTranslationRepository();
-      $categoryService = new CategoryService();
+
+      $categoryRepository = new CategoryRepository();
+      $categoryTranslationRepo = new CategoryTranslationRepository();
+        
+      $categoryService = new CategoryService($localeService, $categoryRepository,  $categoryTranslationRepo);
+     
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
       $localeService = new LocaleService();

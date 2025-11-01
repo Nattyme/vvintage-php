@@ -10,14 +10,12 @@ use Vvintage\Serializers\CategoryApiSerializer;
 
 class CategoryApiController extends BaseApiController
 {
-    private CategoryService $service;
-    private CategoryApiSerializer $serializer;
-
-    public function __construct()
+    public function __construct(
+      private CategoryApiSerializer $serializer,
+      private CategoryService $service
+    )
     {
       parent::__construct(); // Важно!
-      $this->service = new CategoryService($this->languages, $this->currentLang); 
-      $this->serializer = new CategoryApiSerializer();
     } 
 
 

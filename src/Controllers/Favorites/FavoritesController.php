@@ -49,8 +49,8 @@ final class FavoritesController extends BaseController
     public function __construct(
       protected SessionService $sessionService,
       protected AdminPanelService $adminPanelService,
-      private PageService $pageService,
-      private FlashMessage $flash,
+      protected PageService $pageService,
+      protected FlashMessage $flash,
       private FavoritesService $favService, 
       private UserInterface $userModel, 
       private Favorites $favModel, 
@@ -60,7 +60,7 @@ final class FavoritesController extends BaseController
       private SeoService $seoService
     )
     {
-      parent::__construct($sessionService, $adminPanelService); // Важно!
+      parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
     }
 
     public function index(RouteData $routeData): void
@@ -103,10 +103,7 @@ final class FavoritesController extends BaseController
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
-            'viewModel' => $viewModel,
-            'flash' => $this->flash,
-            'currentLang' =>  $this->pageService->currentLang,
-            'languages' => $this->pageService->languages
+            'viewModel' => $viewModel
       ]);
      
     }

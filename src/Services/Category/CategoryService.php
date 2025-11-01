@@ -6,6 +6,7 @@ namespace Vvintage\Services\Category;
 
 /** Модель */
 use Vvintage\Models\Category\Category;
+use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Repositories\Category\CategoryTranslationRepository;
 use Vvintage\Services\Base\BaseService;
@@ -17,15 +18,15 @@ use Vvintage\DTO\Category\CategoryForProductDTOFactory;
 
 require_once ROOT . "./libs/functions.php";
 
-class CategoryService extends BaseService
+class CategoryService
 {
-    protected CategoryRepository $repository;
-    protected CategoryTranslationRepository $translationRepo;
-
-    public function __construct() {
-        parent::__construct();
-        $this->repository = new CategoryRepository();
-        $this->translationRepo = new CategoryTranslationRepository();
+    private $currentLang;
+    public function __construct(
+      private LocaleService $localeService,
+      protected CategoryRepository $repository,
+      protected CategoryTranslationRepository $translationRepo
+    ) {
+      $this->currentLang = $this->localeService->getCurrentLang();
     }
 
     public function getCategoryById(int $id): ?Category
@@ -151,16 +152,7 @@ class CategoryService extends BaseService
         ]);
     }
 
-
-
-
-
-
-
-
-
-
-
+    // TODO: Проверить актулаьность методов ниже 
 
     public function getAllCategoriesArray(): array
     {

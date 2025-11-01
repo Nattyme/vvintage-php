@@ -24,12 +24,12 @@ final class PasswordResetController extends BaseController
       protected AdminPanelService $adminPanelService,
       private PasswordResetValidator $validator,
       private PasswordResetService $service,
-      private PageService $pageService, 
-      private FlashMessage $flash, 
+      protected PageService $pageService, 
+      protected FlashMessage $flash, 
       private SeoService $seoService
   )
   {
-      parent::__construct($sessionService, $adminPanelService); // Важно!
+      parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
   }
 
   public function index ($routeData) 
@@ -62,8 +62,9 @@ final class PasswordResetController extends BaseController
     $pageTitle = "Восстановить пароль";
     $pageClass = "authorization-page";
     $flash = $this->flash;
-    $currentLang =  $this->service->currentLang;
-    $languages = $this->service->languages;
+    
+    $currentLang =  $this->pageService->currentLang;
+    $languages = $this->pageService->languages;
  
     //Сохраняем код ниже в буфер
     ob_start();

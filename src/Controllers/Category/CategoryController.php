@@ -119,17 +119,3 @@ class CategoryController extends BaseController
     }
 }
 
-// $controller = new CategoryController(new CategoryRepository());
-
-// $cat = $controller->show(2, 'en');
-// print_r($cat);
-
-
-
-// $repo = new CategoryRepository($db); // $db — соединение с базой
-// $controller = new CategoryController($repo);
-
-// $categoriesEn = $controller->index('en');
-// $categoriesRu = $controller->index('ru');
-
-// print_r($categoriesEn); // выведет категории на английском
