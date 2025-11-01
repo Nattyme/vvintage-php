@@ -7,8 +7,8 @@ use Vvintage\Models\Page\Page;
 use Vvintage\Models\Product\Product;
 
 use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Locale\LocaleService;
 
 use Vvintage\DTO\Page\PageOutputDTO;
 
@@ -17,33 +17,27 @@ use Vvintage\Repositories\Page\PageTranslationRepository;
 use Vvintage\Repositories\Page\PageFieldRepository;
 use Vvintage\Repositories\Page\PageFieldTranslationRepository;
 
-class PageService extends BaseService
-{
-  protected PageRepository $repository;
-  protected PageFieldRepository $fieldsRepository;
-  protected PageTranslationRepository $translationRepo;
-  protected PageFieldTranslationRepository $fieldsTranslationRepo;
-  protected SeoService $seoService;
+use Vvintage\Config\LanguageConfig;
 
-  public function __construct()
-  {
-      parent::__construct();
-      $this->repository = new PageRepository();
-      $this->seoService = new SeoService();
-      $this->translationRepo = new PageTranslationRepository();
-      $this->fieldsRepository = new PageFieldRepository();
-      $this->fieldsTranslationRepo = new PageFieldTranslationRepository();
+class PageService 
+{
+  public string $currentLang;
+  public array $languages;
+
+  public function __construct(
+    private PageRepository $repository,
+    private PageFieldRepository $fieldsRepository,
+    private PageTranslationRepository $translationRepo,
+    private PageFieldTranslationRepository $fieldsTranslationRepo,
+    private SeoService $seoService,
+    private LocaleService $localeService
+  ) {
+    $this->currentLang = $this->localeService->getCurrentLang();
+    $this->languages = LanguageConfig::getAvailableLanguages();;
   }
 
   public function buildPageData(string $type, mixed $model=null): array 
   {
-
-    //SEO
-    // $seo = $this->seoService->getSeoForPage('product', $productModel);
-
-    // Название страницы и хлебные крошки
-    // $breadcrumbs = $this->breadcrumbsService->generate($routeData, $productDto->title);
-    // $pageTitle = $model->getTitle() ?? '';
 
     return [
           'seo' => $seo,

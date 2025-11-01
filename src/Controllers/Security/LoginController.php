@@ -73,10 +73,10 @@ final class LoginController extends BaseController
       return;
     }
 
-    $this->handleItemsMerge($userModel);
+    $this->userItemsMergeService->handleItemsMerge($userModel);
 
     // Сообщение об успехе
-    $userName = $_SESSION['logged_user']['name'] ?? '';
+    $userName = $userModel->getName() ?? '';
     
     if (trim($userName) !== '') {
       $this->flash->pushSuccess(h(__('login.success.username', ['%name%' => $userName], 'messages')));
@@ -84,30 +84,16 @@ final class LoginController extends BaseController
       $this->flash->pushSuccess(h(__('login.success', [], 'messages')));
     }
 
-    // Редирект
-    header('Location: ' . HOST . 'profile');
-    exit();
+    $this->redirect('profile');   // Редирект
   }
 
 
   private function handleItemsMerge(User $userModel): void
   {
+    // Получаем модели гостя и пользователя
     $guest = $this->createGuestModels();
-   
     $user = $this->createUserModels();
  
-    // Здесь возвращается guest Store
-    // $cartService = new CartService(
-    //   $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productService
-    // );
-
-    // $favService = new FavoritesService(
-    //   $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productService
-    // );
-    // $userItemsMergeService = new UserItemsMergeService($favService, $cartService);
-  //  private CartService $cartService,
-  //   private FavoritesService $favService,
-  //   private UserItemsMergeService $userItemsMergeService,
     $this->userItemsMergeService->mergeAllAfterLogin(
       $user['cart'],
       $guest['cart'],
@@ -155,7 +141,7 @@ final class LoginController extends BaseController
     $pageClass = "authorization-page";
     
 
-    $currentLang =  $this->pageService->currentLang;
+    $currentLang = $this->pageService->currentLang;
     $languages = $this->pageService->languages;
    
     $errors = $this->flash->get('errors');

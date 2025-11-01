@@ -8,7 +8,6 @@ use Vvintage\Models\Order\Order;
 use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
 use Vvintage\Services\Locale\LocaleService;
-use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\User\User;
@@ -21,8 +20,10 @@ use Vvintage\DTO\Order\OrderProfileDTOFactory;
 
 
 // extends AbstractUserItemsListService
-class OrderService extends BaseService
-{
+class OrderService 
+{   
+    private string $currentLang;
+
     private array $status = [
       'new'   => 'Создан',
       'confirmed'   => 'Подтверждён',
@@ -39,8 +40,9 @@ class OrderService extends BaseService
       protected LocaleService $localeService,
       protected OrderRepository $repository,
       protected ProductService $productService
-    )
-    {}
+    ) {
+      $this->currentLang = $this->localeService->getCurrentLang();
+    }
 
     public function getStatusData(): array 
     {

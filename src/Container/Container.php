@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Vvintage\Container;
 
+require_once ROOT . 'Container/services.php';
+
 // Класс контейнера - фабрика для создания других зависимостей 
 class Container {
   private array $definition = [];

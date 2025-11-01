@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Post;
 
-use Vvintage\Services\Base\BaseService;
-
 /* Repository */
 use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Repositories\Post\PostTranslationRepository;

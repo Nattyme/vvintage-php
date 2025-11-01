@@ -20,7 +20,7 @@ use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Store\Cart\GuestCartStore;
 use Vvintage\Store\Favorites\GuestFavoritesStore;
 
-class SessionService
+final class SessionService
 {
     public function setUserSession(User $user): bool
     {

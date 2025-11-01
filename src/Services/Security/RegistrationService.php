@@ -2,13 +2,13 @@
 declare(strict_types=1);
 
 namespace Vvintage\Services\Security;
+
 use Vvintage\Models\User\User;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Services\User\UserService;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Base\BaseService;
 
-use RedBeanPHP\R;
 
 final class RegistrationService extends BaseService
 {

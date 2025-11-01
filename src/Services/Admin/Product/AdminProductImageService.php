@@ -5,6 +5,7 @@ namespace Vvintage\Services\Admin\Product;
 
 use Vvintage\DTO\Admin\Product\ProductImageInputDTO;
 use Vvintage\Services\Product\ProductImageService;
+use Vvintage\Repositories\Product\ProductImageRepository;
 
 require_once ROOT . "./libs/functions.php";
 
@@ -18,9 +19,11 @@ final class AdminProductImageService extends ProductImageService
         'small'  => [350, 478]
     ];
 
-    public function __construct()
+    public function __construct(
+      protected ProductImageRepository $productImageRepository
+    )
     {
-        parent::__construct();
+        parent::__construct($productImageRepository);
         $this->tmpFolder   = ROOT . 'usercontent/tmp/product_images/';
         $this->finalFolder = ROOT . 'usercontent/products/';
 

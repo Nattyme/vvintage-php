@@ -9,11 +9,12 @@ use Vvintage\DTO\Message\MessageDTO;
 
 class MessageService
 {
-    protected MessageRepository $repository;
 
-    public function __construct()
+    public function __construct(
+      private MessageRepository $repository
+    )
     {
-      $this->repository = new MessageRepository ();
+      $this->repository = $repository;
     }
 
     public function getAllMessagesCount(?string $sql = null, array $params = []): int

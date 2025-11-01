@@ -2,9 +2,8 @@
 declare(strict_types=1);
 
 namespace Vvintage\Services\Security;
-use Vvintage\Repositories\User\UserRepository;
 
-use RedBeanPHP\R;
+use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Config\Config;
 use Vvintage\Services\Base\BaseService;
 

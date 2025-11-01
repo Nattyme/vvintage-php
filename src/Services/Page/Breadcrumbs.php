@@ -6,8 +6,11 @@ namespace Vvintage\Services\Page;
 use Vvintage\Routing\RouteData;
 use Vvintage\Services\Page\PageService;
 
-class Breadcrumbs
+final class Breadcrumbs
 {
+    public function __construct(
+      private PageService $pageService
+    ) {}
     // Сопоставление сегментов пути и названий для хлебных крошек
     private array $titlesMap = [
         'catalog' => 'Каталог',
@@ -20,8 +23,8 @@ class Breadcrumbs
     public function generate(RouteData $routeData, string $currentPageTitle = ''): array
     {
         $breadcrumbs = [];
-        $pageService = new PageService();
-        $mainPageModel = $pageService->getPageModelBySlug( 'main' );
+       
+        $mainPageModel = $this->pageService->getPageModelBySlug( 'main' );
         $mainPageTranslations = $mainPageModel->getCurrentTranslations();
 
         // Главная всегда первая
@@ -42,7 +45,7 @@ class Breadcrumbs
                 // Для последней страницы хлебная крошка обычно не является ссылкой
                 $breadcrumbs[] = ['title' => $title, 'url' => ''];
             } else {
-                $pageModel = $pageService->getPageModelBySlug( $part );
+                $pageModel = $this->pageService->getPageModelBySlug( $part );
 
                 if( $pageModel) {
                   $pageTranslations = $pageModel->getCurrentTranslations();

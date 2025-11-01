@@ -12,7 +12,6 @@ use Vvintage\Repositories\PostCategory\PostCategoryTranslationRepository;
 
 use Vvintage\DTO\PostCategory\PostCategoryListInBlogDto;
 
-use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Post\PostService;
 use Vvintage\Services\Locale\LocaleService;
 

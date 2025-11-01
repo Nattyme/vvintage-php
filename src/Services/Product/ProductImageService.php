@@ -10,13 +10,9 @@ use Vvintage\DTO\Product\Page\ProductPageImageDTO;
 
 class ProductImageService
 {
-
-  protected ProductImageRepository $repository;
-
-  public function __construct() 
-  {
-    $this->repository = new ProductImageRepository();
-  }
+  public function __construct(
+    protected ProductImageRepository $repository
+  ) {}
 
       /**
      * Преобразовать RedBean OODBBean в ProductImageOutputDTO

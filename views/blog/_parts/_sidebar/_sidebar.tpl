@@ -43,25 +43,6 @@
 
     </div>
 
-    <!-- <div class="sidebar__widget sidebar__widget--related">
-      <div class="widget widget--related">
-        <div class="widget__title">
-          <h4 class="h4 text-bold" id="other-articles-title">
-             <?php echo h( __('blog.posts.other', [], 'blog'));?>
-          </h4>
-        </div>
-        <ul class="widget__list" aria-labelledby="other-articles-title">
-          <?php foreach ($relatedPosts as $post) : ?>
-            <li class="widget__item widget__item--related">
-              <a href="<?php echo HOST . "blog/{$post->id}"?>" class="widget__link">
-                <?php include ROOT . 'views/blog/_parts/_sidebar/_post-card-small.tpl';?>
-              </a>
-            </li>
-          <?php endforeach; ?>
-        </ul>
-
-      
-    </div> -->
   
   </div>
 </aside>

@@ -20,7 +20,7 @@ use Vvintage\DTO\User\UserUpdateDTO;
 
 require_once ROOT . './libs/functions.php';
 
-class UserService 
+final class UserService 
 {
   private const FOLDER_NAME = 'avatars';
   private const AVATAR_FULL_SIZE = [160, 160];

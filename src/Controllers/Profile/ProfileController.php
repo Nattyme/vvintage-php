@@ -34,19 +34,19 @@ final class ProfileController extends BaseController
 { 
 
   public function __construct( 
-    SessionService $sessionService, 
-    AdminPanelService $adminPanelService,
-    private OrderService $orderService,
-    private LocaleService $localeService,
-    private PageService $pageService,
+    protected SessionService $sessionService, 
+    protected AdminPanelService $adminPanelService,
+    protected OrderService $orderService,
+    protected LocaleService $localeService,
+    protected PageService $pageService,
     private ProfileValidator $profileValidator,
     private UserService $userService,
-    private FlashMessage $flash, 
+    protected FlashMessage $flash, 
     private SeoService $seoService, 
     private Breadcrumbs $breadcrumbsService
   )
   {
-    parent::__construct($sessionService, $adminPanelService); // Важно!
+    parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
   }
 
 
