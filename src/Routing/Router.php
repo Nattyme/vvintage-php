@@ -301,7 +301,6 @@
      
   
       $registrationValidator = new RegistrationValidator(); 
-      $sessionService = new SessionService();
       $messageService = new MessageService();
    
   
@@ -325,7 +324,7 @@
       );
 
       $guestItemsListStore = new GuestItemsListStore();
-      $userItemsListStore = new UserItemsListStore( $userRepository ) ;
+      $userItemsListStore = new UserItemsListStore( $sessionService, $userRepository ) ;
 
       $userModel = $sessionService->getLoggedInUser();
       $cartModel = $userModel->getCartModel();
@@ -346,7 +345,7 @@
 
       $userItemsMergeService = new UserItemsMergeService( $favService, $cartService );
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $productService );
+      $orderService = new OrderService( $localeService, $orderRepository, $productService );
       $adminPanelService = new AdminPanelService($messageService, $orderService);
       $passResetService = new PasswordResetService( $userRepository );
       $passResetValidator = new PasswordResetValidator($passResetService);
@@ -354,9 +353,13 @@
       $loginService = new LoginService($userRepository, $loginValidator, $sessionService);
       $userService = new UserService($userRepository, $addressService, $orderRepository, $productService);
       $registrationService = new RegistrationService($userService, $sessionService);
+
       $loginController = new LoginController(
         $sessionService, 
-        $adminPanelService, 
+        $adminPanelService,
+        $userItemsListStore, 
+        $cartModel,
+        $favModel,
         $cartService,
         $favService,
         $userItemsMergeService,
@@ -424,6 +427,7 @@
     {
         $flash = new FlashMessage();
         $pageService = new PageService();
+        $messageService = new MessageService();
 
         $userRepository = new UserRepository ();
         $addressService = new AddressService();
@@ -451,12 +455,12 @@
         );
         $userService = new UserService($userRepository, $addressService, $orderRepository, $productService);
      
-        $orderService = new OrderService( $orderRepository, $productService);
+        $orderService = new OrderService(  $localeService, $orderRepository, $productService);
         $breadcrumbs = new Breadcrumbs();
         $seoService = new SeoService();
         $localeService = new LocaleService();
         $sessionService = new SessionService();
-        $adminPanelService = new AdminPanelService();
+        $adminPanelService = new AdminPanelService($messageService, $orderService);
 
         $profileValidator = new ProfileValidator();
         $profileController = new ProfileController(
@@ -516,7 +520,7 @@
      
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $productService );
+      $orderService = new OrderService( $localeService, $orderRepository, $productService );
       $adminPanelService = new AdminPanelService($messageService, $orderService);
       $seoService = new SeoService();
 
@@ -579,7 +583,7 @@
       
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $productService );
+      $orderService = new OrderService( $localeService, $orderRepository, $productService );
       $adminPanelService = new AdminPanelService($messageService, $orderService);
       
   
@@ -607,6 +611,7 @@
     private static function routeCart(RouteData $routeData) {
       $localeService = new LocaleService();
       $sessionService = new SessionService();
+      $userRepository = new UserRepository();
       $brandRepository = new BrandRepository();
       $brandTranslationRepo = new BrandTranslationRepository();
       $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
@@ -627,7 +632,7 @@
       );
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $productService );
+      $orderService = new OrderService( $localeService, $orderRepository, $productService );
       $adminPanelService = new AdminPanelService($messageService, $orderService);
       $seoService = new SeoService();
       $flashMessage = new FlashMessage();
@@ -661,7 +666,7 @@
       );
 
       $cartStore = ($userModel instanceof User) 
-                    ? new UserItemsListStore( new UserRepository() ) 
+                    ? new UserItemsListStore( $sessionService, $userRepository ) 
                     : new GuestItemsListStore();
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
 
@@ -695,6 +700,7 @@
     private static function routeFav(RouteData $routeData) {
       $localeService = new LocaleService();
       $sessionService = new SessionService();
+      $userRepository = new UserRepository();
       $brandRepository = new BrandRepository();
       $brandTranslationRepo = new BrandTranslationRepository();
       $brandService = new BrandService( $localeService, $brandRepository,  $brandTranslationRepo);
@@ -716,7 +722,7 @@
       );
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $productService );
+      $orderService = new OrderService( $localeService, $orderRepository, $productService );
       $adminPanelService = new AdminPanelService($messageService, $orderService);
       $seoService = new SeoService();
       $flashMessage = new FlashMessage();
@@ -749,7 +755,7 @@
       );
 
       $favStore = ($userModel instanceof User) 
-                    ? new UserItemsListStore( new UserRepository() ) 
+                    ? new UserItemsListStore( $sessionService,  $userRepository ) 
                     : new GuestItemsListStore();
                     
       $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
@@ -808,7 +814,7 @@
       );
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $productService );
+      $orderService = new OrderService( $localeService, $orderRepository, $productService );
       $adminPanelService = new AdminPanelService($messageService, $orderService);
 
       // Если гость - перенаправляем на страницу входа
@@ -846,7 +852,7 @@
 
 
       $cartStore = ($userModel instanceof User) 
-                    ? new UserItemsListStore( $userRepository ) 
+                    ? new UserItemsListStore( $sessionService, $userRepository ) 
                     : new GuestItemsListStore();
 
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
@@ -874,7 +880,7 @@
         $paginationService
       );
 
-      $orderService = new OrderService( $orderRepository, $productService);
+      $orderService = new OrderService( $localeService, $orderRepository, $productService);
       $controller = new OrderController(
         $sessionService,
         $adminPanelService,
@@ -932,7 +938,7 @@
       );
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $productService );
+      $orderService = new OrderService( $localeService, $orderRepository, $productService );
       $adminPanelService = new AdminPanelService($messageService, $orderService);
 
       // Инициализируем SEO-сервис
@@ -1005,7 +1011,7 @@
         $paginationService
       );
       $orderRepository = new OrderRepository();
-      $orderService = new OrderService($orderRepository, $productService );
+      $orderService = new OrderService( $localeService, $orderRepository, $productService );
       $adminOrderService =  new AdminOrderService($orderRepository, $productService);
 
       $adminPostService = new AdminPostService($localeService);

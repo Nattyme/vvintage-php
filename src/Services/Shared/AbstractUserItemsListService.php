@@ -20,26 +20,16 @@ use Vvintage\Services\Messages\FlashMessage;
 
 abstract class AbstractUserItemsListService extends BaseService
 {
-    private $userModel;
-    private $itemsModel;
-    private $items;
-    private $itemsStore;
-    private ProductService $productService;
 
     public function __construct( 
-      UserInterface $userModel, 
-      AbstractUserItemsList $itemsModel, 
-      array $items, 
-      UserItemsListStoreInterface $itemsStore, 
-      ProductService $productService, 
+      protected UserInterface $userModel, 
+      protected AbstractUserItemsList $itemsModel, 
+      protected array $items, 
+      protected UserItemsListStoreInterface $itemsStore, 
+      protected ProductService $productService, 
       )
     {
       parent::__construct();
-      $this->userModel = $userModel;
-      $this->itemsModel = $itemsModel;
-      $this->items = $items;
-      $this->itemsStore = $itemsStore;
-      $this->productService = $productService;
     }
 
     public function getListItems ()
@@ -64,20 +54,24 @@ abstract class AbstractUserItemsListService extends BaseService
       $this->itemsStore->save($sessionKey, $this->itemsModel, $this->userModel);
     }
 
-    public function mergeItemsListAfterLogin(AbstractUserItemsList $userItemsModel, AbstractUserItemsList $guestItemsModel): void
+    public function mergeItemsListAfterLogin(
+      AbstractUserItemsList $userItemsModel, 
+      AbstractUserItemsList $guestItemsModel
+    ): void
     {
-   
+
+      // Получаем список продуктов
       $userItems = $userItemsModel->getItems();
       $guestItems = $guestItemsModel->getItems();
-
+ 
       foreach ($guestItems as $itemId => $quantity) {
           if (!isset( $userItems[$itemId]) ) {
             $userItemsModel->addItem($itemId);
           }
       }
-      
-      $sessionKey = $this->itemsModel->getSessionKey();
 
+      $sessionKey = $this->itemsModel->getSessionKey();
+    
       // Обновляем даннные пользователя 
       $this->itemsStore->save( $sessionKey, $userItemsModel, $this->userModel);
 

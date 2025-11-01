@@ -36,12 +36,15 @@ use Vvintage\Routing\RouteData;
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
 use Vvintage\Services\Translator\Translator;
-
+ 
 final class LoginController extends BaseController
 {
   public function __construct( 
     protected SessionService $sessionService, 
     protected AdminPanelService $adminPanelService,
+    private UserItemsListStore $store,
+    private Cart $cart,
+    private Favorites $fav,
     private CartService $cartService,
     private FavoritesService $favService,
     private UserItemsMergeService $userItemsMergeService,
@@ -87,26 +90,25 @@ final class LoginController extends BaseController
   }
 
 
-  /**
-   * Метод совмещает списки пользователя
-   * @return void
-  */
   private function handleItemsMerge(User $userModel): void
   {
     $guest = $this->createGuestModels();
    
     $user = $this->createUserModels();
+ 
     // Здесь возвращается guest Store
-    $cartService = new CartService(
-      $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productService
-    );
+    // $cartService = new CartService(
+    //   $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productService
+    // );
 
-    $favService = new FavoritesService(
-      $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productService
-    );
-    $userItemsMergeService = new UserItemsMergeService($favService, $cartService);
-
-    $userItemsMergeService->mergeAllAfterLogin(
+    // $favService = new FavoritesService(
+    //   $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productService
+    // );
+    // $userItemsMergeService = new UserItemsMergeService($favService, $cartService);
+  //  private CartService $cartService,
+  //   private FavoritesService $favService,
+  //   private UserItemsMergeService $userItemsMergeService,
+    $this->userItemsMergeService->mergeAllAfterLogin(
       $user['cart'],
       $guest['cart'],
       $user['fav'],
@@ -136,12 +138,8 @@ final class LoginController extends BaseController
    * @return array{UserItemsListStore, Cart, Favorites}
  */
   private function createUserModels(): array
-  {
-    $store = new UserItemsListStore($this->userRepository);
-    $cart = new Cart($store->load('cart'));
-    $fav = new Favorites($store->load('fav_list'));
-    
-    return ['store' => $store, 'cart' => $cart, 'fav' => $fav];
+  {  
+    return ['store' => $this->store, 'cart' => $this->cart, 'fav' => $this->fav];
   }
 
 

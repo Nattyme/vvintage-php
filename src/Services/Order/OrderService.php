@@ -7,6 +7,7 @@ namespace Vvintage\Services\Order;
 use Vvintage\Models\Order\Order;
 use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Services\Shared\AbstractUserItemsListService;
+use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Models\User\UserInterface;
@@ -35,12 +36,11 @@ class OrderService extends BaseService
     ];
 
     public function __construct(
+      protected LocaleService $localeService,
       protected OrderRepository $repository,
-      private ProductService $productService
+      protected ProductService $productService
     )
-    {
-       parent::__construct();
-    }
+    {}
 
     public function getStatusData(): array 
     {

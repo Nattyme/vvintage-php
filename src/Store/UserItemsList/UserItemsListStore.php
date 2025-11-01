@@ -19,12 +19,10 @@ use Vvintage\Services\Session\SessionService;
 
 class UserItemsListStore implements UserItemsListStoreInterface
 {
-  private UserRepository $userRepository;
-
-  public function __construct(UserRepository $userRepository)
-  {
-    $this->userRepository = $userRepository;
-  }
+  public function __construct(
+     private SessionService $sessionService,
+     private UserRepository $userRepository
+  ) {}
 
   public function load($itemKey): array
   {
@@ -35,7 +33,6 @@ class UserItemsListStore implements UserItemsListStoreInterface
 
   public function save ($itemKey, $itemModel, ?UserInterface $userModel = null): void 
   {
-    $sessionService = new SessionService();
     $items = $itemModel->getItems();
 
     // Записываем в БД
@@ -45,7 +42,7 @@ class UserItemsListStore implements UserItemsListStoreInterface
     $userModel->set( $itemKey, $itemModel->getItems() );
 
     //  Обновляем данные пользователя в сессии
-    $sessionService->setUserSession($userModel);  // обновляем logged_user
+    $this->sessionService->setUserSession($userModel);  // обновляем logged_user
   }
 
 } 
