@@ -12,13 +12,18 @@ use Vvintage\DTO\Admin\Brand\BrandsForAdminListDTOFactory;
 use Vvintage\DTO\Admin\Brand\BrandTranslationInputDTOFactory;
 use Vvintage\DTO\Brand\BrandInputDTOFactory;
 use Vvintage\DTO\Admin\Brand\EditDTOFactory;
+use Vvintage\Repositories\Brand\BrandRepository;
+use Vvintage\Repositories\Brand\BrandTranslationRepository;
 
 
 final class AdminBrandService extends BrandService
 {
-    public function __construct()
+    public function __construct(
+      $brandRepository,  
+      $brandTranslationRepo
+    )
     {
-      parent::__construct();
+      parent::__construct($brandRepository,  $brandTranslationRepo);
     }
 
     public function createBrandDraft(array $data): ?int

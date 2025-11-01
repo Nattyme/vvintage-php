@@ -30,26 +30,33 @@
 
   /** Сервисы */
   use Vvintage\Services\SEO\SeoService;
+  use Vvintage\Services\Session\SessionService;
+  use Vvintage\Services\Navigation\NavigationService;
+  use Vvintage\Services\Messages\FlashMessage;
+  use Vvintage\Services\Admin\Product\AdminProductImageService;
+
   use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Cart\CartService;
   use Vvintage\Services\Blog\BlogService;
   use Vvintage\Services\Page\Breadcrumbs;
   use Vvintage\Services\Order\OrderService;
-  use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\Product\ProductService;
-  use Vvintage\Services\Session\SessionService;
-  use Vvintage\Services\Validation\LoginValidator;
-  use Vvintage\Services\Favorites\FavoritesService;
-  use Vvintage\Services\Validation\NewOrderValidator;
-  use Vvintage\Services\Security\PasswordSetNewService;
-  use Vvintage\Services\Security\RegistrationService;
   use Vvintage\Services\User\UserService;
   use Vvintage\Services\Locale\LocaleService;
-  use Vvintage\Services\Validation\ProfileValidator;
   use Vvintage\Services\Category\CategoryService;
   use Vvintage\Services\Brand\BrandService;
   use Vvintage\Services\Post\PostService;
-  use Vvintage\Services\Navigation\NavigationService;
+  use Vvintage\Services\Favorites\FavoritesService;
+  use Vvintage\Services\Validation\NewOrderValidator;
+  use Vvintage\Services\Validation\ProfileValidator;
+
+  use Vvintage\Services\Validation\LoginValidator;
+  use Vvintage\Services\Security\PasswordSetNewService;
+  use Vvintage\Services\Security\RegistrationService;
+  use Vvintage\Services\Security\PasswordResetService;
+  use Vvintage\Services\Validation\RegistrationValidator;
+  use Vvintage\Services\Security\LoginService;
+  use Vvintage\Services\Validation\PasswordResetValidator;
   use Vvintage\Services\AdminPanel\AdminPanelService;
   use Vvintage\Services\Admin\Brand\AdminBrandService;
   use Vvintage\Services\Admin\Validation\AdminBrandValidator;
@@ -63,10 +70,9 @@
   use Vvintage\Services\Admin\Product\AdminProductService;
   use Vvintage\Services\Admin\User\AdminUserService;
   use Vvintage\Services\Admin\AdminStatsService;
-  use Vvintage\Services\Security\PasswordResetService;
-  use Vvintage\Services\Validation\RegistrationValidator;
-  use Vvintage\Services\Security\LoginService;
-  use Vvintage\Services\Validation\PasswordResetValidator;
+  use Vvintage\Services\Messages\MessageService;
+  use Vvintage\Services\Product\ProductImageService;
+  use Vvintage\Services\Shared\PaginationService;
   
   /** Модели */
   use Vvintage\Models\User\User;
@@ -88,6 +94,9 @@
   use Vvintage\Repositories\Post\PostRepository;
   use Vvintage\Repositories\PostCategory\PostCategoryRepository;
   use Vvintage\Repositories\Message\MessageRepository;
+  use Vvintage\Repositories\Brand\BrandRepository;
+  use Vvintage\Repositories\Brand\BrandTranslationRepository;
+  use Vvintage\Repositories\Product\ProductTranslationRepository;
 
   /** Админ контроллеры */
   use Vvintage\Controllers\Admin\HomeAdminController;
@@ -278,17 +287,39 @@
 
     private static function routeAuth(RouteData $routeData) {
       $seoService = new SeoService();
+      $localeService = new LocaleService();
       $flash = new FlashMessage();
       $userRepository = new UserRepository();
       $setNewPassService = new PasswordSetNewService($userRepository);
       $sessionService = new SessionService();
       $validator = new LoginValidator($userRepository);
       $pageService = new PageService();
-      $productService = new ProductService();
       $registrationService = new RegistrationService();
       $registrationValidator = new RegistrationValidator(); 
       $sessionService = new SessionService();
-      $adminPanelService = new AdminPanelService();
+      $messageService = new MessageService();
+
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+
+      $productService = new ProductService(
+         $productRepository,
+         $productTranslationRepository,
+         $categoryService,
+         $brandService,
+         $productImageService,
+         $paginationService
+      );
+      $orderRepository = new OrderRepository();
+      $orderService = new OrderService($orderRepository, $productService );
+      $adminPanelService = new AdminPanelService($messageService, $orderService);
       $passResetService = new PasswordResetService( $userRepository );
       $passResetValidator = new PasswordResetValidator($passResetService);
       $loginValidator = new LoginValidator($userRepository);
@@ -363,7 +394,29 @@
         $flash = new FlashMessage();
         $pageService = new PageService();
         $userService = new UserService();
-        $orderService = new OrderService();
+        $orderRepository = new OrderRepository();
+        $localeService = new LocaleService();
+
+        $brandRepository = new BrandRepository();
+        $brandTranslationRepo = new BrandTranslationRepository();
+        $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+
+        $productRepository = new ProductRepository();
+        $productTranslationRepository = new ProductTranslationRepository();
+        $categoryService = new CategoryService();
+        $productImageService = new ProductImageService();
+        $paginationService = new PaginationService();
+      
+        $productService = new ProductService(
+          $productRepository,
+          $productTranslationRepository,
+          $categoryService,
+          $brandService,
+          $productImageService,
+          $paginationService
+        );
+     
+        $orderService = new OrderService( $orderRepository, $productService);
         $breadcrumbs = new Breadcrumbs();
         $seoService = new SeoService();
         $localeService = new LocaleService();
@@ -402,13 +455,36 @@
     private static function routeShop(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
       $flash = new FlashMessage();
-      $productService = new ProductService();
       $categoryService = new CategoryService();
-      $brandService = new BrandService();
+      $localeService = new LocaleService();
+
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
       $pageService = new PageService();
       $sessionService = new SessionService();
-      $adminPanelService = new AdminPanelService();
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+    
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
+     
+      $messageService = new MessageService();
+      $orderRepository = new OrderRepository();
+      $orderService = new OrderService($orderRepository, $productService );
+      $adminPanelService = new AdminPanelService($messageService, $orderService);
       $seoService = new SeoService();
+
 
       $productController = new ProductController( 
         $sessionService, 
@@ -445,8 +521,31 @@
       $postService = new PostService();
       $navigationService = new NavigationService();
       $seoService = new SeoService();
+      $localeService = new LocaleService();
       $sessionService = new SessionService();
-      $adminPanelService = new AdminPanelService();
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+      
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
+      
+      $messageService = new MessageService();
+      $orderRepository = new OrderRepository();
+      $orderService = new OrderService($orderRepository, $productService );
+      $adminPanelService = new AdminPanelService($messageService, $orderService);
       
   
       $blogController = new BlogController($sessionService, $adminPanelService, $postService, $navigationService, $breadcrumbs);
@@ -471,11 +570,34 @@
     }
 
     private static function routeCart(RouteData $routeData) {
+      $localeService = new LocaleService();
       $sessionService = new SessionService();
-      $adminPanelService = new AdminPanelService();
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+        
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+      
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
+      $messageService = new MessageService();
+      $orderRepository = new OrderRepository();
+      $orderService = new OrderService($orderRepository, $productService );
+      $adminPanelService = new AdminPanelService($messageService, $orderService);
       $seoService = new SeoService();
       $flashMessage = new FlashMessage();
       $pageService = new PageService();
+     
      
       $userModel = $sessionService->getLoggedInUser();
       $breadcrumbs = new Breadcrumbs();
@@ -483,7 +605,25 @@
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
       $cart = $userModel->getCart();;
-      $productService = new ProductService();
+     
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService( $localeService, $brandRepository,  $brandTranslationRepo);
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+    
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
 
       $cartStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( new UserRepository() ) 
@@ -518,27 +658,79 @@
     }
 
     private static function routeFav(RouteData $routeData) {
+      $localeService = new LocaleService();
       $sessionService = new SessionService();
-      $adminPanelService = new AdminPanelService();
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService( $localeService, $brandRepository,  $brandTranslationRepo);
+    
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+    
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
+      $messageService = new MessageService();
+      $orderRepository = new OrderRepository();
+      $orderService = new OrderService($orderRepository, $productService );
+      $adminPanelService = new AdminPanelService($messageService, $orderService);
       $seoService = new SeoService();
       $flashMessage = new FlashMessage();
       $pageService = new PageService();
-     
-       
+ 
       $userModel = $sessionService->getLoggedInUser();
       $breadcrumbs = new Breadcrumbs();
 
       // Получаем избранное и ее модель
       $favModel = $userModel->getFavModel();
       $fav = $userModel->getFavList();
-      $productService = new ProductService();
+     
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+    
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
 
       $favStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
                     
       $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
-      $controller  = new FavoritesController($sessionService, $adminPanelService, $pageService, $flashMessage, $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs, $seoService );
+      $controller  = new FavoritesController(
+        $sessionService, 
+        $adminPanelService, 
+        $pageService, 
+        $flashMessage, 
+        $favService, 
+        $userModel, 
+        $favModel, 
+        $fav, 
+        $favStore, 
+        $breadcrumbs, 
+        $seoService 
+      );
 
       switch ($routeData->uriModule) {
         case 'favorites':
@@ -558,8 +750,31 @@
       $userModel = $sessionService->getLoggedInUser();
       $pageService = new PageService();
       $flashMessage = new FlashMessage();
-      $adminPanelService = new AdminPanelService();
-   
+      $localeService = new LocaleService();
+
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+    
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
+      $messageService = new MessageService();
+      $orderRepository = new OrderRepository();
+      $orderService = new OrderService($orderRepository, $productService );
+      $adminPanelService = new AdminPanelService($messageService, $orderService);
 
       // Если гость - перенаправляем на страницу входа
       if($userModel instanceof GuestUser) {
@@ -575,7 +790,24 @@
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
       $cart = $userModel->getCart();
-      $productService = new ProductService();
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+   
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+    
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
 
 
       $cartStore = ($userModel instanceof User) 
@@ -584,7 +816,30 @@
 
       $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
 
-      $orderService = new OrderService();
+
+      $orderRepository = new OrderRepository();
+
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+    
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
+
+      $orderService = new OrderService( $orderRepository, $productService);
       $controller = new OrderController(
         $sessionService,
         $adminPanelService,
@@ -614,16 +869,44 @@
     /**********************/
     private static function routePages(RouteData $routeData)
     {
+      $categoryService = new CategoryService();
+      $postService = new PostService();
       $pageService = new PageService();
       $breadcrumbs = new Breadcrumbs();
+      $localeService = new LocaleService();
       $flash = new FlashMessage();
       $sessionService = new SessionService();
-      $adminPanelService = new AdminPanelService();
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+    
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
+      $messageService = new MessageService();
+      $orderRepository = new OrderRepository();
+      $orderService = new OrderService($orderRepository, $productService );
+      $adminPanelService = new AdminPanelService($messageService, $orderService);
 
       // Инициализируем SEO-сервис
       $seoService = new SeoService();
-   
+     
       $controller = new PageController( 
+        $categoryService,
+        $productService,    
+        $postService,
         $sessionService,
         $adminPanelService,
         $pageService, 
@@ -658,16 +941,62 @@
       $sessionService = new SessionService();
       $postRepository = new  PostRepository();
       $postCategoryRepository = new PostCategoryRepository(); 
-      $adminBrandService = new AdminBrandService();
+
+      $adminBrandService = new AdminBrandService( $brandRepository,  $brandTranslationRepo);
       $adminBrandValidator = new AdminBrandValidator();
       $adminCategoryService = new AdminCategoryService();
+
       $adminCategoryValidator = new AdminCategoryValidator();
       $adminMessageService = new AdminMessageService();
-      $adminOrderService =  new AdminOrderService();
+
+      $brandRepository = new BrandRepository();
+      $brandTranslationRepo = new BrandTranslationRepository();
+      $brandService = new BrandService( $localeService, $brandRepository,  $brandTranslationRepo);
+
+    
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepository = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+    
+      $productService = new ProductService(
+        $productRepository,
+        $productTranslationRepository,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService
+      );
+      $orderRepository = new OrderRepository();
+      $orderService = new OrderService($orderRepository, $productService );
+      $adminOrderService =  new AdminOrderService($orderRepository, $productService);
+
       $adminPostService = new AdminPostService($localeService);
       $adminPostCategoryService = new AdminPostCategoryService();
       $adminPostCategoryValidator = new AdminPostCategoryValidator();
-      $adminProductService = new AdminProductService();
+
+      $adminProductImageService = new AdminProductImageService();
+
+      $productRepository = new ProductRepository();
+      $productTranslationRepo = new ProductTranslationRepository();
+      $categoryService = new CategoryService();
+      $productImageService = new ProductImageService();
+      $paginationService = new PaginationService();
+      $localeService = new LocaleService();
+
+      $productService = new ProductService(
+        $productRepository, 
+        $productTranslationRepo,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService,
+        $localeService
+      );
+   
+      $adminProductService = new AdminProductService( $adminProductImageService,  $brandService);
       $adminUserService = new AdminUserService();
       $adminStatsService = new AdminStatsService;
 

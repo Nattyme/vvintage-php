@@ -27,6 +27,9 @@ use Vvintage\Services\AdminPanel\AdminPanelService;
 class PageController extends BaseController
 {
   public function __construct (
+    protected CategoryService $categoryService,
+    protected ProductService $productService,
+    protected PostService $postService,
     protected SessionService $sessionService, 
     protected AdminPanelService $adminPanelService,
     private PageService $pageService, 
@@ -107,16 +110,12 @@ class PageController extends BaseController
   {
       $slug = $routeData->uriModule ?: 'main';  
       $this->setRouteData($routeData); // <-- передаём routeData
-
-      $categoryService = new CategoryService();
-      $productService = new ProductService();
-      $postService = new PostService();
   
       // Получим категории, продукты и посты
-      $categories = $categoryService->getMainCategories();
+      $categories = $this->categoryService->getMainCategories();
 
-      $products = $productService->getLastProducts(4);
-      $posts = $postService->getLastPosts(4);
+      $products = $this->productService->getLastProducts(4);
+      $posts = $this->postService->getLastPosts(4);
 
       $page = $this->pageService->getPageBySlug($slug);
       $pageModel = $this->pageService->getPageModelBySlug( $slug );

@@ -28,7 +28,7 @@ use Vvintage\DTO\Product\Lang\ProductTranslationInputDTO;
 
 final class AdminProductService extends ProductService
 {
-  private AdminProductImageService $imageService;
+
   private string $defaultLang;
 
   private array $actions = [
@@ -39,10 +39,13 @@ final class AdminProductService extends ProductService
 
   
 
-  public function __construct()
+  public function __construct(
+    private AdminProductImageService $imageService,  
+    protected BrandService $service,  
+  )
   {
-    parent::__construct();
-    $this->imageService = new AdminProductImageService();
+    parent::__construct( );
+
     $this->defaultLang = LanguageConfig::DEFAULT_LANG;
   }
 

@@ -24,13 +24,6 @@ final class AdminCategoryService extends CategoryService
     }
 
 
-    /**
-     * Создает категорию в черновом состоянии
-     * 
-     * @param array $data
-     * @return int|null
-     * @throws \RuntimeException
-    */
     public function createCategoryDraft(array $data): ?int
     {
       if (!$data ) return null;

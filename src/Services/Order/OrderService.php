@@ -10,8 +10,8 @@ use Vvintage\Services\Shared\AbstractUserItemsListService;
 use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Models\User\UserInterface;
- use Vvintage\Models\User\User;
-  use Vvintage\Models\User\GuestUser;
+use Vvintage\Models\User\User;
+use Vvintage\Models\User\GuestUser;
 
 /** DTO */
 use Vvintage\DTO\Order\OrderDTO;
@@ -22,10 +22,6 @@ use Vvintage\DTO\Order\OrderProfileDTOFactory;
 // extends AbstractUserItemsListService
 class OrderService extends BaseService
 {
-    protected OrderRepository $repository;
-    private ProductService $productService;
-
-    
     private array $status = [
       'new'   => 'Создан',
       'confirmed'   => 'Подтверждён',
@@ -38,11 +34,12 @@ class OrderService extends BaseService
       'canceled' => 'Отменён'
     ];
 
-    public function __construct()
+    public function __construct(
+      protected OrderRepository $repository,
+      private ProductService $productService
+    )
     {
-      parent::__construct();
-      $this->repository = new OrderRepository();
-      $this->productService = new ProductService();
+       parent::__construct();
     }
 
     public function getStatusData(): array 

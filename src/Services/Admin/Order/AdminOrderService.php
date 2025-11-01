@@ -3,15 +3,9 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Admin\Order;
 
-use Vvintage\Services\Messages\FlashMessage;
-
-/** Репозитории */
 use Vvintage\Repositories\Order\OrderRepository;
-use Vvintage\Repositories\Product\ProductRepository;
+use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Order\OrderService;
-
-// use Vvintage\Repositories\MessageRepository;
-
 
 final class AdminOrderService extends OrderService
 {
@@ -28,9 +22,12 @@ final class AdminOrderService extends OrderService
   ];
 
 
-  public function __construct()
+  public function __construct(
+    OrderRepository $orderRepository, 
+    ProductService $productService
+  )
   {
-    parent::__construct();
+    parent::__construct($orderRepository, $productService);
   }
   
 

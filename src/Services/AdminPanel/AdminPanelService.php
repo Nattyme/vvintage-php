@@ -8,14 +8,11 @@ use Vvintage\Services\Order\OrderService;
 
 class AdminPanelService
 {
-    private MessageService $messageService;
-    private OrderService $orderService;
 
-    public function __construct()
-    {
-        $this->messageService = new MessageService();
-        $this->orderService = new OrderService();
-    }
+    public function __construct(
+      private MessageService $messageService,
+      private OrderService $orderService
+    ){}
 
     public function getCounters(): array
     {

@@ -14,20 +14,22 @@ use Vvintage\Repositories\Brand\BrandTranslationRepository;
 use Vvintage\DTO\Brand\BrandInputDTO;
 use Vvintage\DTO\Brand\BrandForProductDTO;
 use Vvintage\DTO\Brand\BrandForProductDTOFactory;
+use Vvintage\Services\Locale\LocaleService;
 
 require_once ROOT . "./libs/functions.php";
 
-class BrandService extends BaseService
+class BrandService 
 {
-    protected BrandRepository $repository;
-    protected BrandTranslationRepository $translationRepo;
-
-    public function __construct()
-    {
-       parent::__construct();
-       $this->repository = new BrandRepository();
-       $this->translationRepo = new BrandTranslationRepository();
+    private $currentLang;
+  
+    public function __construct(
+      private LocaleService $localeService,
+      private BrandRepository $repository,
+      private BrandTranslationRepository $translationRepo
+    ){
+      $this->currentLang = $this->localeService->getCurrentLang();
     }
+
 
     public function getBrandById( int $id): ?Brand 
     {

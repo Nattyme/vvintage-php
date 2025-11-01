@@ -32,29 +32,22 @@ require_once ROOT . "./libs/functions.php";
 
 class ProductService extends BaseService
 {
-    protected ProductRepository $repository;
-    protected ProductTranslationRepository $translationRepo;
-    protected CategoryService $categoryService;
-    protected BrandService $brandService;
-    protected ProductImageService $productImageService;
-    protected PaginationService $paginationService;
-
     private array $status = [
       'active'   => 'Активный',
       'hidden'   => 'Невидимый',
       'archived' => 'В архиве'
     ];
 
-    public function __construct()
+    public function __construct(
+        protected ProductRepository $repository,
+        protected ProductTranslationRepository $translationRepo,
+        protected CategoryService $categoryService,
+        protected BrandService $brandService,
+        protected ProductImageService $productImageService,
+        protected PaginationService $paginationService
+    )
     {
         parent::__construct();
-        $this->repository = new ProductRepository();
-        $this->translationRepo = new ProductTranslationRepository();
-        $this->categoryService = new CategoryService();
-        $this->brandService = new BrandService();
-        $this->productImageService = new ProductImageService();
-        $this->paginationService = new PaginationService();
-        $this->localeService = new LocaleService();
     }
 
     
