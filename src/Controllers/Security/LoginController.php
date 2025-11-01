@@ -42,6 +42,9 @@ final class LoginController extends BaseController
   public function __construct( 
     protected SessionService $sessionService, 
     protected AdminPanelService $adminPanelService,
+    private CartService $cartService,
+    private FavoritesService $favService,
+    private UserItemsMergeService $userItemsMergeService,
     private LoginService $service,
     private ProductService $productService, 
     private PageService $pageService, 
@@ -82,6 +85,7 @@ final class LoginController extends BaseController
     header('Location: ' . HOST . 'profile');
     exit();
   }
+
 
   /**
    * Метод совмещает списки пользователя

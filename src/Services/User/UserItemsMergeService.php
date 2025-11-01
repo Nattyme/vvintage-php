@@ -10,14 +10,10 @@ use Vvintage\Models\Shared\AbstractUserItemsList;
 
 final class UserItemsMergeService
 {
-  private CartService $cartService;
-  private FavoritesService $favService;
-
-  public function __construct(FavoritesService $favService, CartService $cartService)
-  {
-    $this->favService = $favService;
-    $this->cartService = $cartService;
-  }
+  public function __construct(
+    FavoritesService $favService, 
+    CartService $cartService
+  ){}
 
   public function mergeAllAfterLogin(
     AbstractUserItemsList $userCartModel,

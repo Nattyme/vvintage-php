@@ -23,10 +23,7 @@ require_once ROOT . './libs/functions.php';
 
 class UserService extends BaseService
 {
-  protected UserRepository $userRepository;
-  protected AddressService $addressService;
-  protected OrderRepository $orderRepository;
-  protected ProductService $productService;
+
 
   private const FOLDER_NAME = 'avatars';
   private const AVATAR_FULL_SIZE = [160, 160];
@@ -39,14 +36,16 @@ class UserService extends BaseService
                                   IMAGETYPE_WEBP => 'webp',
                               ];
 
-  public function __construct () {
+  public function __construct (
+    protected UserRepository $userRepository,
+    protected AddressService $addressService,
+    protected OrderRepository $orderRepository,
+    protected ProductService $productService
+  ) {
     parent::__construct();
-    $this->userRepository = new UserRepository ();
-    $this->addressService = new AddressService();
-    $this->orderRepository = new OrderRepository();
-    $this->productService = new ProductService();
-  }
 
+  }
+ 
   public function getUserByID(int $id): ?User
   {
     return $this->userRepository->getUserById($id);

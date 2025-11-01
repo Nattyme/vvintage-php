@@ -34,6 +34,7 @@
   use Vvintage\Services\Navigation\NavigationService;
   use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\Admin\Product\AdminProductImageService;
+  use Vvintage\Services\User\UserItemsMergeService;
 
   use Vvintage\Services\Page\PageService;
   use Vvintage\Services\Cart\CartService;
@@ -73,6 +74,7 @@
   use Vvintage\Services\Messages\MessageService;
   use Vvintage\Services\Product\ProductImageService;
   use Vvintage\Services\Shared\PaginationService;
+  use Vvintage\Services\Address\AddressService;
   
   /** Модели */
   use Vvintage\Models\User\User;
@@ -294,11 +296,15 @@
       $sessionService = new SessionService();
       $validator = new LoginValidator($userRepository);
       $pageService = new PageService();
-      $registrationService = new RegistrationService();
+      $addressService = new AddressService();
+
+     
+  
       $registrationValidator = new RegistrationValidator(); 
       $sessionService = new SessionService();
       $messageService = new MessageService();
-
+   
+  
       $brandRepository = new BrandRepository();
       $brandTranslationRepo = new BrandTranslationRepository();
       $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
@@ -317,6 +323,28 @@
          $productImageService,
          $paginationService
       );
+
+      $guestItemsListStore = new GuestItemsListStore();
+      $userItemsListStore = new UserItemsListStore( $userRepository ) ;
+
+      $userModel = $sessionService->getLoggedInUser();
+      $cartModel = $userModel->getCartModel();
+      $cartStore = ($userModel instanceof User) 
+                    ? $userItemsListStore
+                    : $guestItemsListStore;
+      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
+
+      // Получаем избранное и ее модель
+      $favModel = $userModel->getFavModel();
+
+
+      $favStore = ($userModel instanceof User) 
+                  ? $userItemsListStore  
+                  : $guestItemsListStore;
+                    
+      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
+
+      $userItemsMergeService = new UserItemsMergeService( $favService, $cartService );
       $orderRepository = new OrderRepository();
       $orderService = new OrderService($orderRepository, $productService );
       $adminPanelService = new AdminPanelService($messageService, $orderService);
@@ -324,11 +352,14 @@
       $passResetValidator = new PasswordResetValidator($passResetService);
       $loginValidator = new LoginValidator($userRepository);
       $loginService = new LoginService($userRepository, $loginValidator, $sessionService);
-    
-
+      $userService = new UserService($userRepository, $addressService, $orderRepository, $productService);
+      $registrationService = new RegistrationService($userService, $sessionService);
       $loginController = new LoginController(
         $sessionService, 
         $adminPanelService, 
+        $cartService,
+        $favService,
+        $userItemsMergeService,
         $loginService,
         $productService, 
         $pageService, 
@@ -393,7 +424,10 @@
     {
         $flash = new FlashMessage();
         $pageService = new PageService();
-        $userService = new UserService();
+
+        $userRepository = new UserRepository ();
+        $addressService = new AddressService();
+        
         $orderRepository = new OrderRepository();
         $localeService = new LocaleService();
 
@@ -415,6 +449,7 @@
           $productImageService,
           $paginationService
         );
+        $userService = new UserService($userRepository, $addressService, $orderRepository, $productService);
      
         $orderService = new OrderService( $orderRepository, $productService);
         $breadcrumbs = new Breadcrumbs();

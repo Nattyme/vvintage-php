@@ -13,14 +13,12 @@ use RedBeanPHP\R;
 final class RegistrationService extends BaseService
 {
 
-  private UserService $userService;
-  private SessionService $sessionService;
-
-  public function __construct()
+  public function __construct(
+    private UserService $userService,
+    private SessionService $sessionService,
+  )
   {
     parent::__construct(); // Важно!
-    $this->userService = new UserService();
-    $this->sessionService = new SessionService();
   }
  
   public function registrateUser (array $postData):void 
