@@ -6,25 +6,29 @@ namespace Vvintage\Services\PostCategory;
 
 /** Модель */
 use Vvintage\Models\PostCategory\PostCategory;
+
 use Vvintage\Repositories\PostCategory\PostCategoryRepository;
 use Vvintage\Repositories\PostCategory\PostCategoryTranslationRepository;
+
 use Vvintage\DTO\PostCategory\PostCategoryListInBlogDto;
 
 use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Post\PostService;
+use Vvintage\Services\Locale\LocaleService;
 
 require_once ROOT . "./libs/functions.php";
 
-class PostCategoryService extends BaseService
+class PostCategoryService 
 {
-    protected PostCategoryRepository $repository;
-    protected PostCategoryTranslationRepository $translationRepo;
+    private string $currentLang;
 
-    public function __construct()
+    public function __construct(
+        protected PostCategoryRepository $repository,
+        protected PostCategoryTranslationRepository $translationRepo,
+        protected LocaleService $localeService
+    )
     {
-        parent::__construct();
-        $this->repository = new PostCategoryRepository();
-        $this->translationRepo = new PostCategoryTranslationRepository();
+        $this->currentLang = $this->localeService->getCurrentLang();
     }
 
     public function getCategoryById(int $id, ?string $currentLang = null): ?PostCategory
@@ -72,7 +76,7 @@ class PostCategoryService extends BaseService
       $categoriesWithTranslation = array_map(function ($category) {
         
         $this->addCategoryTranslate($category);
-      // dd($category->getTranslation($this->currentLang));
+    
           return new PostCategoryListInBlogDto(
             id: $category->getId(),
             parent_id: $category->getParentId(),
@@ -94,6 +98,7 @@ class PostCategoryService extends BaseService
         
       $categoriesWithTranslation = array_map(function ($category) {
           $this->addCategoryTranslate($category);
+
           return new PostCategoryListInBlogDto(
             id: $category->getId(),
             parent_id: $category->getParentId(),
@@ -115,7 +120,6 @@ class PostCategoryService extends BaseService
     }
 
 
-
     
     private function addCategoryTranslate(PostCategory $category): PostCategory
     {
@@ -127,19 +131,7 @@ class PostCategoryService extends BaseService
         return $category;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // TODO: проверить методы ниже на актуальность
     public function getAllCategories($pagination = null): array
     {
       return $this->repository->getAllCategories($pagination);

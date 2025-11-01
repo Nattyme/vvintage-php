@@ -8,7 +8,9 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Navigation\NavigationService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Post\PostService;
+use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\AdminPanel\AdminPanelService;
 use Vvintage\DTO\Post\PostFilterDTO;
 
@@ -22,11 +24,13 @@ final class BlogController extends BaseController
     public function __construct(
         protected SessionService $sessionService, 
         protected AdminPanelService $adminPanelService,
+        protected PageService $pageService,
+        protected FlashMessage $flash,
         private PostService $postService, 
         private NavigationService $navigationService,
         private Breadcrumbs $breadcrumbsService
     ) {
-        parent::__construct($sessionService, $adminPanelService); // Важно!
+        parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
         
     }
     
@@ -38,12 +42,12 @@ final class BlogController extends BaseController
       $pageTitle = 'Блог';
       // $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
     
-      // Кол-во постов перенести в сервис настроек
-      $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);
+      FIX:// Кол-во постов перенести в сервис настроек
+      $postsPerPage =  9;
 
       // Получаем посты и категории
       $slug = $routeData->uriGet ?? null;
- 
+
       $blogData = $this->postService->getBlogData(array_merge($routeData->uriGetParams, ['slug' => $slug]), $postsPerPage);
       // $shownPosts = (($pagination['page_number'] - 1) * $postsPerPage) + count($posts);
 
@@ -71,9 +75,7 @@ final class BlogController extends BaseController
           'pageTitle' => $pageTitle,
           'routeData' => $routeData,
           // 'breadcrumbs' => $breadcrumbs,
-          'viewModel' => $viewModel,
-          'currentLang' =>  $this->postService->currentLang,
-          'languages' => $this->postService->languages
+          'viewModel' => $viewModel
       ]);
     }
 

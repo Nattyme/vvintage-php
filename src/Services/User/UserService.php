@@ -9,7 +9,6 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Models\Order\Order;
 
 /** Сервисы */
-use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Address\AddressService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Repositories\AddressRepository;
@@ -21,10 +20,8 @@ use Vvintage\DTO\User\UserUpdateDTO;
 
 require_once ROOT . './libs/functions.php';
 
-class UserService extends BaseService
+class UserService 
 {
-
-
   private const FOLDER_NAME = 'avatars';
   private const AVATAR_FULL_SIZE = [160, 160];
   private const AVATAR_SMALL_SIZE = [48, 48];
@@ -41,10 +38,7 @@ class UserService extends BaseService
     protected AddressService $addressService,
     protected OrderRepository $orderRepository,
     protected ProductService $productService
-  ) {
-    parent::__construct();
-
-  }
+  ) {}
  
   public function getUserByID(int $id): ?User
   {
@@ -125,10 +119,11 @@ class UserService extends BaseService
       // 2. Обрезать до мин размера
       $resultSmallSize = resize_and_crop($fileTmpLoc, $filePathSmallSize, self::AVATAR_SMALL_SIZE[0], self::AVATAR_SMALL_SIZE[1]);
 
-      if ($resultFullSize != true || $resultSmallSize != true) {
-        $this->flash->pushError('Ошибка сохранения файла');
-        return false;
-      }
+      // TODO: ТЕКСТ ОШИБКИ ДОЛЖЕН ВЫВЕСТИ КОНТРОЛЛЕР!!! Поправить 
+      // if ($resultFullSize != true || $resultSmallSize != true) {
+      //   $this->flash->pushError('Ошибка сохранения файла');
+      //   return false;
+      // }
 
       // Если новое изображение успешно загружено - удаляем старое
       if ($resultFullSize && $resultSmallSize) {

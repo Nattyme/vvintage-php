@@ -37,16 +37,16 @@ final class CatalogController extends BaseController
     public function __construct(  
         protected SessionService $sessionService, 
         protected AdminPanelService $adminPanelService,
-        private PageService $pageService, 
+        protected PageService $pageService, 
+        protected FlashMessage $flash, 
         private BrandService $brandService, 
         private CategoryService $categoryService, 
         private ProductService $productService, 
-        private FlashMessage $flash, 
         private SeoService $seoService, 
         private Breadcrumbs $breadcrumbsService
     )
     {
-      parent::__construct($sessionService, $adminPanelService); // Важно!
+      parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
     }
 
 
@@ -113,9 +113,7 @@ final class CatalogController extends BaseController
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
-            'viewModel' => $viewModel,
-            'currentLang' =>  $this->pageService->currentLang,
-            'languages' => $this->pageService->languages
+            'viewModel' => $viewModel
       ]);
     }
 }

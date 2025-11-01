@@ -10,23 +10,22 @@ use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\AdminPanel\AdminPanelService;
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
-// use Vvintage\Services\Messages\FlashMessage;
-
-
+use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Messages\FlashMessage;
 
 abstract class BaseController
 {    
   protected array $settings;
   protected RouteData $routeData; 
-  // protected Translator $translator;
-  protected AdminPanelService $adminPanelService;
-  protected SessionService $sessionService;
-
-  public function __construct(SessionService $sessionService, AdminPanelService $adminPanelService)
+ 
+  public function __construct(
+    protected SessionService $sessionService,
+    protected AdminPanelService $adminPanelService,
+    protected PageService $pageService,
+    protected FlashMessage $flash
+  )
   {
       $this->settings = Settings::all(); // зачем??
-      $this->sessionService = $sessionService;
-      $this->adminPanelService = $adminPanelService;
   }
 
 
@@ -34,11 +33,6 @@ abstract class BaseController
   {
       $this->routeData = $routeData;
   }
-
-  // public function getTranslator(): Translator
-  // {
-  //     return $this->translator;
-  // }
 
   protected function renderLayout(string $viewPath, array $vars = []): void
   {
@@ -54,7 +48,10 @@ abstract class BaseController
     extract( array_merge($vars, [
       'settings' => $this->settings, 
       'adminData' => $adminData,
-      'isBlogPage' => $isBlogPage
+      'isBlogPage' => $isBlogPage,
+      'flash' => $this->flash,
+      'currentLang' => $this->pageService->currentLang,
+      'languages' => $this->pageService->languages
     ]) );
 
     ob_start();

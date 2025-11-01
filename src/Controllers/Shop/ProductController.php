@@ -27,14 +27,14 @@ final class ProductController extends BaseController
     public function __construct(
       protected SessionService $sessionService, 
       protected AdminPanelService $adminPanelService,
-      private PageService $pageService, 
+      protected PageService $pageService, 
+      protected FlashMessage $flash, 
       private ProductService $productService, 
-      private FlashMessage $flash, 
       private SeoService $seoService, 
       private Breadcrumbs $breadcrumbsService
     )
     {
-        parent::__construct($sessionService, $adminPanelService); // Важно!
+        parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
     }
 
 
@@ -77,14 +77,10 @@ final class ProductController extends BaseController
         $this->renderLayout('shop/product', [
               'pageTitle' => $pageTitle,
               'seo' => $seo,
-              'currentLang' => $this->productService->currentLang,
               'routeData' => $routeData,
               'navigation' => $this->pageService->getLocalePagesNavTitles(),
               'breadcrumbs' => $breadcrumbs,
-              'viewModel' => $viewModel,
-              'flash' => $this->flash,
-              'currentLang' =>  $this->pageService->currentLang,
-              'languages' => $this->pageService->languages
+              'viewModel' => $viewModel
         ]);
     }
 }

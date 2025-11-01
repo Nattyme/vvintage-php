@@ -4,22 +4,20 @@ declare(strict_types=1);
 namespace Vvintage\DTO\Post;
 
 use Vvintage\DTO\Post\PostListDTO;
-
-/** Model */
 use Vvintage\Models\Post\Post;
-
 use Vvintage\Services\Locale\LocaleService;
 
 final class PostListDTOFactory
 {
     public function __construct(
-        private LocaleService $localeService
+      private LocaleService $localeService
     ) {
       $this->localeService = $localeService;
     }
 
     public function createFromPost(Post $post): PostListDTO
     {
+  
         $currentLang = $this->localeService->getCurrentLang();
         $category = $post->getCategory();
         $coverFile = $post->getCoverSmall() && file_exists(HOST . 'usercontent/blog/' . $post->getCoverSmall())

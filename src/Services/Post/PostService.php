@@ -26,22 +26,18 @@ use Vvintage\DTO\Post\PostListDTOFactory;
 use Vvintage\DTO\Post\PostFullDTO;
 use Vvintage\DTO\Post\PostFullDTOFactory;
 
-class PostService extends BaseService
+class PostService 
 {
-    private PostRepository $repository;
-    private PostTranslationRepository $translationRepo;
-    private PostCategoryService $categoryService;
-    protected PaginationService $paginationService;
-    protected LocaleService $localeService;
-
-    public function __construct()
+    private string $currentLang;
+    public function __construct(
+        protected PostRepository $repository,
+        protected PostTranslationRepository $translationRepo,
+        protected PostCategoryService $categoryService,
+        protected PaginationService $paginationService,
+        protected LocaleService $localeService
+    )
     {
-      parent::__construct(); // Важно!
-      $this->repository = new PostRepository ();
-      $this->translationRepo = new PostTranslationRepository();
-      $this->categoryService = new PostCategoryService($this);
-      $this->paginationService = new PaginationService();
-      $this->localeService = new LocaleService();
+      $this->currentLang = $this->localeService->getCurrentLang();
     }
 
 
@@ -124,12 +120,13 @@ class PostService extends BaseService
       }
 
       $dtos = [];
+ 
       $dtoFactory = new PostListDTOFactory($this->localeService);
       foreach ($posts as $model) {
           $modelFull = $this->setDataToPostModel($model);
           $dtos[]  = $dtoFactory->createFromPost($modelFull);
       }
-
+ 
       return ['posts' => $dtos, 'total' => $totalItems, 'filters' => $filters];
     }
     

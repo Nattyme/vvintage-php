@@ -10,7 +10,6 @@ use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Repositories\Product\ProductTranslationRepository;
 
 /* Service */
-use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Shared\PaginationService;
@@ -19,9 +18,8 @@ use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Services\Seo\SeoService;
 
 /* DTO */
-use Vvintage\DTO\Product\Filter\ProductFilterDTO;
-// use Vvintage\DTO\Product\ProductOutputDTO;
 use Vvintage\DTO\Product\Page\ProductPageDTO;
+use Vvintage\DTO\Product\Filter\ProductFilterDTO;
 use Vvintage\DTO\Product\Page\ProductPageDTOFactory;
 
 use Vvintage\DTO\Product\Card\ProductCardDTO;
@@ -30,8 +28,9 @@ use Vvintage\DTO\Product\Card\ImageForProductCardDTO;
 
 require_once ROOT . "./libs/functions.php";
 
-class ProductService extends BaseService
+class ProductService
 {
+    private string $currentLang;
     private array $status = [
       'active'   => 'Активный',
       'hidden'   => 'Невидимый',
@@ -44,10 +43,11 @@ class ProductService extends BaseService
         protected CategoryService $categoryService,
         protected BrandService $brandService,
         protected ProductImageService $productImageService,
-        protected PaginationService $paginationService
+        protected PaginationService $paginationService,
+        protected LocaleService $localeService
     )
     {
-        parent::__construct();
+        $this->currentLang = $this->localeService->getCurrentLang();
     }
 
     
@@ -64,7 +64,7 @@ class ProductService extends BaseService
         // Создаем dto изображения продукта и подготавливаем к отображению 
         $imageDto = $this->productImageService->getMainImageDTO($productId);
   
-        $dtoFactory = new ProductCardDTOFactory($this->localeService);
+        $dtoFactory = new ProductCardDTOFactory();
         $dto = $dtoFactory->createFromProduct(
           product: $product,
           category: $categoryDTO,
@@ -333,6 +333,5 @@ class ProductService extends BaseService
       return $this->productImageService->getFlatImages($images);
     }
 
-    
 
 }

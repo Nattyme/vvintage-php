@@ -8,10 +8,16 @@ use Vvintage\Config\LanguageConfig;
 /** Модель */
 use Vvintage\Models\Product\Product;
 
+use Vvintage\Repositories\Product\ProductRepository;
+use Vvintage\Repositories\Product\ProductTranslationRepository;
+
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Brand\BrandService;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Admin\Product\AdminProductImageService;
+use Vvintage\Services\Product\ProductImageService;
+use Vvintage\Services\Shared\PaginationService;
+use Vvintage\Services\Locale\LocaleService;
 
 /** DTO */
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
@@ -37,14 +43,20 @@ final class AdminProductService extends ProductService
     'archived' => 'В архив'
   ];
 
-  
 
   public function __construct(
     private AdminProductImageService $imageService,  
-    protected BrandService $service,  
+    protected BrandService $service, 
+    protected ProductRepository $repository,
+    protected ProductTranslationRepository $translationRepo,
+    protected CategoryService $categoryService,
+    protected BrandService $brandService,
+    protected ProductImageService $productImageService,
+    protected PaginationService $paginationService,
+    protected LocaleService $localeService
   )
   {
-    parent::__construct( );
+    parent::__construct( $repository, $translationRepo,  $categoryService, $brandService, $productImageService, $paginationService, $localeService);
 
     $this->defaultLang = LanguageConfig::DEFAULT_LANG;
   }

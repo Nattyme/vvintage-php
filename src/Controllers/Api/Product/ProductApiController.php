@@ -16,15 +16,15 @@ use Vvintage\Services\Admin\Validation\AdminProductImageValidator;
 
 class ProductApiController extends BaseApiController
 {
-    private AdminProductService $service;
-    private ProductApiSerializer $serializer;
-   
 
-    public function __construct()
+    public function __construct(
+      private AdminProductService $service,
+      private ProductApiSerializer $serializer,
+      private AdminProductValidator $validatorText,
+      private AdminProductImageValidator $validatorImg,
+    )
     {
       parent::__construct();
-      $this->service = new AdminProductService();
-      $this->serializer = new ProductApiSerializer();
     }
 
     public function create(): void
@@ -39,15 +39,13 @@ class ProductApiController extends BaseApiController
             $files = [];
         }
 
-        // // Валидация текста
-        $validatorText = new AdminProductValidator();
-        $validatorTextResult = $validatorText->validate($text);
+        // Валидация текста
+        $validatorTextResult = $this->validatorText->validate($text);
 
         $structuredImages = $this->getStructuredImages($files);
 
-        // // Валидация изображений
-        $validatorImg = new AdminProductImageValidator();
-        $validatorImgResult = $validatorImg->validate($structuredImages);
+        // Валидация изображений
+        $validatorImgResult = $this->validatorImg->validate($structuredImages);
 
         // // Объединяем ошибки
         $errors = array_merge( $validatorTextResult['errors'],  $validatorImgResult['errors']);
@@ -90,12 +88,10 @@ class ProductApiController extends BaseApiController
         unset($img);
        
         // Валидация текста
-        $validatorText = new AdminProductValidator();
-        $validatorTextResult = $validatorText->validate($text);
+        $validatorTextResult = $thid->validatorText->validate($text);
 
         // Валидация новых изображений (только то, что реально загружено через dropzone)
-        $validatorImg = new AdminProductImageValidator();
-        $validatorImgResult = $validatorImg->validate($structuredImages, $existingImages);
+        $validatorImgResult = $this->validatorImg->validate($structuredImages, $existingImages);
 
         // Объединяем ошибки
         $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
@@ -107,7 +103,6 @@ class ProductApiController extends BaseApiController
         $success = $this->service->updateProduct(
             $id,
             $validatorTextResult['data'],   // текстовые данные
-            // $structuredImages,                // какие картинки оставить
             $existingImages,                // существующие изображения с новым порядком
             $validatorImgResult['data']          // новые картинки
         );
@@ -160,7 +155,6 @@ class ProductApiController extends BaseApiController
       // Формируем структуру для фронта
       $data = [
           'products' => $products
-          // 'categories' => $categories,
       ];
 
       // Отправляем клиенту JSON

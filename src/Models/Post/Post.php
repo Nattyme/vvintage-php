@@ -85,29 +85,7 @@ final class Post
 
         return $post;
     }
-    // public static function fromObj($dto): self
-    // {
-    //     $post = new self();
-
-    //     $post->id = $dto->id;
-    //     $post->category_id = $dto->category_id;
-
-    //     $post->title = $dto->title;
-    //     $post->slug = $dto->slug;
-    //     $post->description = $dto->description;
-    //     $post->content = $dto->content;
-
-    //     $post->datetime = new \Datetime ();
-    //     $post->views = $dto->views;
-    //     $post->cover = $dto->cover;
-    //     $post->cover_small = $dto->cover_small;
-    //     $post->edit_time = new \Datetime ();
-    //     $post->currentLocale = $dto->locale ?? 'ru';
-    //     $post->translations = $dto->translations;
-
-    //     return $post;
-    // }
-
+   
     
     // Геттеры 
     public function getId(): int

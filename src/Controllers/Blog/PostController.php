@@ -17,6 +17,8 @@ use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Navigation\NavigationService;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\AdminPanel\AdminPanelService;
+use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Messages\FlashMessage;
 
 
 final class PostController extends BaseController
@@ -24,13 +26,15 @@ final class PostController extends BaseController
     public function __construct(
       protected SessionService $sessionService, 
       protected AdminPanelService $adminPanelService,
+      protected PageService $pageService,
+      protected FlashMessage $flash,
       private PostService $postService, 
       private NavigationService $navigationService, 
       private SeoService $seoService,
-      private Breadcrumbs $breadcrumbsService
+      private Breadcrumbs $breadcrumbsService,
     )
     {
-        parent::__construct($sessionService, $adminPanelService); // Важно!
+        parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
     }
 
 
@@ -41,31 +45,12 @@ final class PostController extends BaseController
 
         $id = (int) $routeData->uriGet ?? null; // получаем id поста из URL
         $postData = $this->postService->getPostData($id); 
-        // $post = $this->postService->getPostById ($id);
-        // $postDto = $this->postService->getPostDto($post);
-
-
+    
         if (!$postData) {
             http_response_code(404);
             echo 'Пост не найден';
             return;
         }
-
-        // $mainCategories = $this->postService->getAllMainCategories();
-        // $subCategories = $this->postService->getAllSubCategories();
-
-        // Получаем похожие посты
-        // $postsPerPage = (int)($this->settings['card_on_page_blog'] ?? 9);;
-        // $pagination = pagination($postsPerPage, 'posts');
-        // $relatedPosts = $post;
-        // $relatedPosts = $post->getRelated();
-
-        // Получаем seo страницы
-        // $seo = $this->seoService->getSeoForPage('post',  $postData['post']);
-
-        // Хлебные крошки
-        // $breadcrumbs = $this->breadcrumbsService->generate($routeData, $postData['post']->title);
-
 
         // Получаем данные навигации
         $navigation = [
@@ -77,7 +62,6 @@ final class PostController extends BaseController
         $viewModel = [
             'mainCategories' => $postData['mainCategories'],
             'subCategories' => $postData['subCategories'],
-            // 'breadcrumbs' => $breadcrumbs
         ];
 
         // Подключение шаблонов страницы
@@ -86,9 +70,7 @@ final class PostController extends BaseController
               'navigation' => $navigation,
               // 'seo' => $seo,
               'routeData' => $routeData,
-              'viewModel' => $viewModel,
-              'currentLang' =>  $this->postService->currentLang,
-              'languages' => $this->postService->languages
+              'viewModel' => $viewModel
         ]);
     }
 }

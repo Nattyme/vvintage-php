@@ -32,13 +32,13 @@ class PageController extends BaseController
     protected PostService $postService,
     protected SessionService $sessionService, 
     protected AdminPanelService $adminPanelService,
-    private PageService $pageService, 
+    protected PageService $pageService, 
     private Breadcrumbs $breadcrumbsService, 
-    private FlashMessage $flash, 
+    protected FlashMessage $flash, 
     private SeoService $seoService
   )
   {
-    parent::__construct($sessionService, $adminPanelService); // Важно!
+    parent::__construct($sessionService, $adminPanelService, $pageService, $flash); // Важно!
   }
 
   public function index(RouteData $routeData): void
@@ -98,9 +98,7 @@ class PageController extends BaseController
         'fields' => $page['fields'],
         'navigation' => $this->pageService->getLocalePagesNavTitles(),
         'breadcrumbs' => $breadcrumbs,
-        'pageTitle' => $pageTitle,
-        'currentLang' => $this->pageService->currentLang,
-        'languages' => $this->pageService->languages
+        'pageTitle' => $pageTitle
     ]);
   }
 
@@ -139,9 +137,7 @@ class PageController extends BaseController
         'fields' => $page['fields'],
         'navigation' => $this->pageService->getLocalePagesNavTitles(),
         'breadcrumbs' => $breadcrumbs,
-        'pageTitle' => $pageTitle,
-        'currentLang' => $this->pageService->currentLang,
-        'languages' => $this->pageService->languages
+        'pageTitle' => $pageTitle
       ]);
   }
 
@@ -156,7 +152,7 @@ class PageController extends BaseController
           'products' => $products,
           'posts' => $posts,
           'pageTitle' => $pageTitle,
-          'routeData' => $routeData
+          'routeData' => $this->routeData
     ]);
   }
 

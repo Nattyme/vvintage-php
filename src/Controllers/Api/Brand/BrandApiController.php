@@ -9,12 +9,11 @@ use Vvintage\Controllers\Api\BaseApiController;
 
 class BrandApiController extends BaseApiController
 {
-    private BrandService $service;
-
-    public function __construct()
+    public function __construct(
+      private BrandService $service
+    )
     {
       parent::__construct(); // Важно!
-      $this->service = new BrandService($this->languages, $this->currentLang); 
     } 
 
     //  Метод сам выведет получит и выведет данные через echo и заголовки.

@@ -29,6 +29,7 @@ final class LoginService extends BaseService
 
     $user = $this->userRepository->getUserByEmail($data['email']);
 
+    TOFIX: // СООБЩЕНИЕ ДОЛЖЕН ВЫВОДИТЬ КОНТРОЛЛЕР!!!
     if (!$user || !password_verify($data['password'], $user->getPassword())) {
       $this->flash->pushError('Неверный email или пароль');
       return null;

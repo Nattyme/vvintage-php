@@ -50,6 +50,9 @@
   use Vvintage\Services\Favorites\FavoritesService;
   use Vvintage\Services\Validation\NewOrderValidator;
   use Vvintage\Services\Validation\ProfileValidator;
+  use Vvintage\Repositories\Post\PostTranslationRepository;
+  use Vvintage\Repositories\PostCategory\PostCategoryTranslationRepository;
+  use Vvintage\Services\PostCategory\PostCategoryService;
 
   use Vvintage\Services\Validation\LoginValidator;
   use Vvintage\Services\Security\PasswordSetNewService;
@@ -115,7 +118,10 @@
   use Vvintage\Controllers\Api\Category\CategoryApiController;
   use Vvintage\Controllers\Api\Brand\BrandApiController;
   use Vvintage\Controllers\Api\Product\ProductApiController;
-
+  use Vvintage\Serializers\ProductApiSerializer;
+  
+  use Vvintage\Services\Admin\Validation\AdminProductValidator;
+  use Vvintage\Services\Admin\Validation\AdminProductImageValidator;
 
 
 
@@ -202,9 +208,55 @@
 
     private static function routeApi(RouteData $routeData)
     {
+        $localeService = new LocaleService();
+        $brandRepository = new BrandRepository();
+        $brandTranslationRepo = new BrandTranslationRepository();
+        $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+
+        $productRepository = new ProductRepository();
+        $productTranslationRepo = new ProductTranslationRepository();
+        $categoryService = new CategoryService();
+        $productImageService = new ProductImageService();
+        $paginationService = new PaginationService();
+        $localeService = new LocaleService();
+
+        $productService = new ProductService(
+          $productRepository, 
+          $productTranslationRepo,
+          $categoryService,
+          $brandService,
+          $productImageService,
+          $paginationService,
+          $localeService
+        );
+
+        $adminProductImageService = new AdminProductImageService();
+
+        $adminProductService = new AdminProductService( 
+            $adminProductImageService, 
+            $brandService,
+            $productRepository, 
+            $productTranslationRepo,
+            $categoryService,
+            $brandService,
+            $productImageService,
+            $paginationService,
+            $localeService
+        );
+
+
+        $productApiSerializer = new ProductApiSerializer();
+        $adminProductValidator = new AdminProductValidator();
+        $adminProductImageValidator = new AdminProductImageValidator();
+
         $categoryApiController = new CategoryApiController();
-        $brandApiController = new BrandApiController();
-        $productApiController = new ProductApiController();
+        $brandApiController = new BrandApiController($brandService);
+        $productApiController = new ProductApiController(
+          $adminProductService,
+          $productApiSerializer,
+          $adminProductValidator,
+          $adminProductImageValidator
+        );
 
         $uri = preg_replace('#^api/#', '', $routeData->uri);
         $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
@@ -320,7 +372,8 @@
          $categoryService,
          $brandService,
          $productImageService,
-         $paginationService
+         $paginationService,
+         $localeService
       );
 
       $guestItemsListStore = new GuestItemsListStore();
@@ -469,7 +522,8 @@
           $categoryService,
           $brandService,
           $productImageService,
-          $paginationService
+          $paginationService,
+          $localeService
         );
         $userService = new UserService($userRepository, $addressService, $orderRepository, $productService);
      
@@ -533,7 +587,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
      
       $messageService = new MessageService();
@@ -547,8 +602,8 @@
         $sessionService, 
         $adminPanelService,  
         $pageService, 
-        $productService, 
         $flash, 
+        $productService, 
         $seoService, 
         $breadcrumbs 
       );
@@ -556,10 +611,10 @@
         $sessionService, 
         $adminPanelService,  
         $pageService, 
+        $flash, 
         $brandService, 
         $categoryService, 
         $productService, 
-        $flash, 
         $seoService, 
         $breadcrumbs 
       );
@@ -575,38 +630,75 @@
       
     private static function routeBlog(RouteData $routeData) {
       $breadcrumbs = new Breadcrumbs();
-      $postService = new PostService();
+      $repository = new PostRepository();
+      $categoryRepository = new PostCategoryRepository();
+      $categoryTranslationRepo = new PostCategoryTranslationRepository();
+      $translationRepo = new PostTranslationRepository();
+      $flash = new FlashMessage();
+     
+      $paginationService = new PaginationService();
       $navigationService = new NavigationService();
       $seoService = new SeoService();
       $localeService = new LocaleService();
       $sessionService = new SessionService();
-      $brandRepository = new BrandRepository();
+
+       $brandRepository = new BrandRepository();
       $brandTranslationRepo = new BrandTranslationRepository();
       $brandService = new BrandService($localeService, $brandRepository,  $brandTranslationRepo);
+      $pageService = new PageService();
+    
 
       $productRepository = new ProductRepository();
       $productTranslationRepository = new ProductTranslationRepository();
       $categoryService = new CategoryService();
       $productImageService = new ProductImageService();
       $paginationService = new PaginationService();
-      
+    
       $productService = new ProductService(
         $productRepository,
         $productTranslationRepository,
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
-      
+     
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
       $orderService = new OrderService( $localeService, $orderRepository, $productService );
       $adminPanelService = new AdminPanelService($messageService, $orderService);
-      
+
+
+      $postCategoryService = new PostCategoryService($categoryRepository, $categoryTranslationRepo, $localeService);
+      $postService = new PostService( 
+        $repository, 
+        $translationRepo, 
+        $postCategoryService, 
+        $paginationService, 
+        $localeService, 
+      );
+
   
-      $blogController = new BlogController($sessionService, $adminPanelService, $postService, $navigationService, $breadcrumbs);
-      $postController = new PostController($sessionService, $adminPanelService, $postService, $navigationService, $seoService, $breadcrumbs);
+      $blogController = new BlogController(
+        $sessionService, 
+        $adminPanelService, 
+        $pageService,
+        $flash,
+        $postService, 
+        $navigationService, 
+        $breadcrumbs
+      );
+      $postController = new PostController(
+        $sessionService, 
+        $adminPanelService, 
+        $pageService,
+        $flash,
+        $postService, 
+        $navigationService, 
+        $seoService, 
+        $breadcrumbs
+      );
     
     
         if ($routeData->uriModule === 'blog' && isset($routeData->uriGet)) {
@@ -646,7 +738,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
@@ -680,7 +773,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
 
       $cartStore = ($userModel instanceof User) 
@@ -745,7 +839,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
@@ -778,7 +873,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
 
       $favStore = ($userModel instanceof User) 
@@ -846,7 +942,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
@@ -883,7 +980,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
 
 
@@ -922,7 +1020,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
 
       $orderService = new OrderService( $localeService, $orderRepository, $productService);
@@ -956,7 +1055,21 @@
     private static function routePages(RouteData $routeData)
     {
       $categoryService = new CategoryService();
-      $postService = new PostService();
+      $categoryRepository = new PostCategoryRepository();
+      $categoryTranslationRepo = new PostCategoryTranslationRepository();
+      $localeService = new LocaleService();
+      $paginationService = new PaginationService();
+      $postTranslationRepo = new PostTranslationRepository();
+      $postRepository = new PostRepository();
+      
+      $postCategoryService = new PostCategoryService($categoryRepository, $categoryTranslationRepo, $localeService);
+      $postService = new PostService( 
+        $postRepository, 
+        $postTranslationRepo, 
+        $postCategoryService, 
+        $paginationService, 
+        $localeService, 
+      );
       $pageService = new PageService();
       $breadcrumbs = new Breadcrumbs();
       $localeService = new LocaleService();
@@ -979,7 +1092,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
       $messageService = new MessageService();
       $orderRepository = new OrderRepository();
@@ -1053,7 +1167,8 @@
         $categoryService,
         $brandService,
         $productImageService,
-        $paginationService
+        $paginationService,
+        $localeService
       );
       $orderRepository = new OrderRepository();
       $orderService = new OrderService( $localeService, $orderRepository, $productService );
@@ -1082,7 +1197,17 @@
         $localeService
       );
    
-      $adminProductService = new AdminProductService( $adminProductImageService,  $brandService);
+      $adminProductService = new AdminProductService( 
+        $adminProductImageService, 
+        $brandService,
+        $productRepository, 
+        $productTranslationRepo,
+        $categoryService,
+        $brandService,
+        $productImageService,
+        $paginationService,
+        $localeService
+      );
       $adminUserService = new AdminUserService();
       $adminStatsService = new AdminStatsService;
 

@@ -47,7 +47,7 @@ final class CartController extends BaseController
     public function __construct(
       protected SessionService $sessionService, 
       protected AdminPanelService $adminPanelService,
-      private PageService $pageService,
+      protected PageService $pageService,
       private FlashMessage $flash,
       private CartService $cartService, 
       private UserInterface $userModel, 
@@ -58,7 +58,7 @@ final class CartController extends BaseController
       private SeoService $seoService
     )
     {
-      parent::__construct($sessionService, $adminPanelService); // Важно!
+      parent::__construct($sessionService, $adminPanelService, $pageService); // Важно!
     
     }
 
@@ -102,10 +102,7 @@ final class CartController extends BaseController
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
-            'viewModel' => $viewModel,
-            'flash' => $this->flash,
-            'currentLang' =>  $this->pageService->currentLang,
-            'languages' => $this->pageService->languages
+            'viewModel' => $viewModel
       ]);
     }
 
