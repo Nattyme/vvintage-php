@@ -35,11 +35,8 @@ final class PasswordResetService extends BaseService
   {
     $user = $this->userRepository->getUserByEmail($email);
 
-    if (!$user) {
-      return null;
-    }
+    if (!$user) throw new \Exception('Пользователь с таким email не найден');
 
-    // $code = $this->randomStr();
     $code = $this->randomStr();
 
     // обновляем код в БД 

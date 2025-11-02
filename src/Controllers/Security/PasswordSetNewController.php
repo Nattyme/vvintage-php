@@ -45,7 +45,6 @@ final class PasswordSetNewController extends BaseController
           $resetCode = $_POST['resetCode'] ?? '';
           $password = $_POST['password'] ?? '';
 
-
           try {
             $userModel = $this->setNewPassService->handleNewPassSetting( $email, $resetCode, $password);
             $this->flash->pushSuccess('Пароль был успешно изменён');
@@ -86,9 +85,8 @@ final class PasswordSetNewController extends BaseController
     $page = $this->pageService->getPageBySlug($routeData->uriModule);
     $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
 
-    if($pageModel) {
-      $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
-    }
+    // Если найдена модель страницы - получаем сео
+    if($pageModel) $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
     
     $pageTitle = "Установить новый пароль";
     $pageClass = "authorization-page";

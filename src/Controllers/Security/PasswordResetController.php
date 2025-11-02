@@ -21,6 +21,7 @@ final class PasswordResetController extends BaseController
   private SeoService $seoService;
   private PageService $pageService;
   private PasswordResetService $service;
+  private PasswordResetValidator $validator;
 
   public function __construct(
     FlashMessage $flash,
@@ -32,27 +33,25 @@ final class PasswordResetController extends BaseController
       $this->seoService = $seoService;
       $this->pageService = new PageService();
       $this->service = new PasswordResetService( new UserRepository(), $this->flash);
+      $this->validator = new PasswordResetValidator($this->service);
   }
 
   public function index ($routeData) 
   {
     if (isset($_POST['lost-password'])) {
-      $validator = new PasswordResetValidator($this->service);
-      $resultEmail = false;
-
-      if ($validator->validate($_POST)) {
-        $result = $this->service->processPasswordResetRequest($_POST['email']);
-
-        if ($result['success']) {
-          $resultEmail = true;
-          $this->flash->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
-        } 
-
-      } 
+      try {
+        $resultEmail = false;
+        $this->validator->validate($_POST);
+        $resultEmail = $this->service->processPasswordResetRequest($_POST['email']);
+        $this->flash->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
+      }
+      catch (\Exception $error) {
+        $this->flash->pushError($error->getMessage());
+      }
     }
     
     // Показываем форму
-    self::renderForm($routeData, $resultEmail ?? null);
+    $this->renderForm($routeData, $resultEmail ?? null);
   }
 
   private function renderForm (RouteData $routeData, ?bool $resultEmail = false) {

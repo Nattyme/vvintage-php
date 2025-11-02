@@ -3,43 +3,22 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Validation;
 
-use Vvintage\Services\Security\PasswordResetService;
-use Vvintage\Services\Base\BaseService;
-
-final class PasswordResetValidator extends BaseService
+final class PasswordResetValidator 
 {
-  private PasswordResetService $service;
 
-  public function __construct(PasswordResetService $service)
+  public function validate(array $data): void
   {
-    parent::__construct();
-    $this->service = $service;
-  }
-
-
-  public function validate(array $data): bool
-  {
-    $valid = true;
 
     $csrfToken = $data['csrf'] ?? '';
-    if (!check_csrf($csrfToken)) {
-      $this->flash->pushError('Неверный токен безопасности');
-      $valid = false;
-    } 
+    if (!check_csrf($csrfToken)) throw new \Exception('Неверный токен безопасности');
+      
 
     $email = trim($data['email'] ?? '');
     if ($email === '') {
-      $this->flash->pushError('Введите email', 'Email - обязательное поле');
-      $valid = false;
+      throw new \Exception('Введите email');
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->flash->pushError('Некорректный формат email');
-      $valid = false;
-    } elseif (!$this->service->userExists($email)) {
-      $this->flash->pushError('Пользователя с таким email не существует');
-      $valid = false;
-    }
-
-    return $valid;
+      throw new \Exception('Некорректный формат email');
+    } 
   }
 }
 
