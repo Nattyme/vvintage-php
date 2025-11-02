@@ -68,15 +68,6 @@ final class PasswordResetService extends BaseService
   // Главный метод, объединяющий все шаги
   public function processPasswordResetRequest(string $email): array
   {
-      // if (trim($email) === '') {
-      //   $this->flash->pushError('Введите email', 'Email - обязательное поле');
-      // } elseif (!filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
-      //   $this->flash->pushError('Введите корректный Email');
-      // } elseif (!$this->userExists($email)) {
-      //   $this->flash->pushError('Пользователя с таким email не существует');
-      //   return ['success' => false];
-      // }
-
       $code = $this->createRecoveryCode($email);
 
       if (!$code) {

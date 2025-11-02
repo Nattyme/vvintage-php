@@ -39,46 +39,35 @@ final class PasswordSetNewController extends BaseController
       $resetCode = '';
       $newPasswordReady = false;
 
-      // 1. Обработка отправки формы (POST)
+      // Обработка отправки формы (POST)
       if (!empty($_POST['set-new-password'])) {
           $email = $_POST['email'] ?? '';
           $resetCode = $_POST['resetCode'] ?? '';
           $password = $_POST['password'] ?? '';
 
-          $userModel = $this->setNewPassService->findUserByEmail($email);
 
-          if ($userModel) {
-            $isValidCode = $this->setNewPassService->isValidRecoveryCode($email, $resetCode);
-
-            if ($isValidCode) {
-              $this->setNewPassService->updateUserPassword($password, $email);
-
-              $this->flash->pushSuccess('Пароль был успешно изменён');
-              $newPasswordReady = true;
-            } else {
-              $this->flash->pushError('Неверный код восстановления');
-            }
-          } else {
-              $this->flash->pushError('Пользователь не найден');
+          try {
+            $userModel = $this->setNewPassService->handleNewPassSetting( $email, $resetCode, $password);
+            $this->flash->pushSuccess('Пароль был успешно изменён');
+            $this->redirect('login');
           }
+          catch (\Exception $error) {
+            $this->flash->pushError($error->getMessage());
+            $this->redirect('lost-password');
+          }
+  
       }
 
-      // 2. Переход по ссылке из письма (GET)
+      // Переход по ссылке из письма (GET)
       else if (!empty($_GET['email']) && !empty($_GET['code'])) {
-          $email = $_GET['email'];
-          $resetCode = $_GET['code'];
-
-          $userModel = $this->setNewPassService->findUserByEmail($email);
-
-          if (!$userModel) {
-              $this->flash->pushError('Пользователь не найден');
-              $this->redirect('lost-password');
+          try {
+            $userModel = $this->setNewPassService->handleRecoveryLinkPassing($_GET['email'], $_GET['code']);
           }
-
-          if (!$this->setNewPassService->isValidRecoveryCode($email, $resetCode)) {
-              $this->flash->pushError('Неверный или просроченный код восстановления');
-              $this->redirect('lost-password');
+          catch (\Exception $error) {
+            $this->flash->pushError($error->getMessage());
+            $this->redirect('lost-password');
           }
+         
       }
 
       // Иначе — редирект на форму восстановления
@@ -96,10 +85,16 @@ final class PasswordSetNewController extends BaseController
     // Название страницы
     $page = $this->pageService->getPageBySlug($routeData->uriModule);
     $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
-    $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
+
+    if($pageModel) {
+      $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
+    }
     
     $pageTitle = "Установить новый пароль";
     $pageClass = "authorization-page";
+    $flash = $this->flash;
+    $currentLang =  $this->pageService->currentLang;
+    $languages = $this->pageService->languages;
 
     ob_start();
     include ROOT . 'views/login/set-new-password.tpl';

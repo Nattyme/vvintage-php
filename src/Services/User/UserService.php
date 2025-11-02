@@ -9,7 +9,6 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Models\Order\Order;
 
 /** Сервисы */
-use Vvintage\Services\Base\BaseService;
 use Vvintage\Services\Address\AddressService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Repositories\AddressRepository;
@@ -21,7 +20,7 @@ use Vvintage\DTO\User\UserUpdateDTO;
 
 require_once ROOT . './libs/functions.php';
 
-class UserService extends BaseService
+class UserService
 {
   protected UserRepository $userRepository;
   protected AddressService $addressService;
@@ -37,7 +36,6 @@ class UserService extends BaseService
 
 
   public function __construct () {
-    parent::__construct();
     $this->userRepository = new UserRepository ();
     $this->addressService = new AddressService();
     $this->orderRepository = new OrderRepository();
@@ -75,11 +73,6 @@ class UserService extends BaseService
   public function getProductsByIds(array $ids)
   {
     return $this->productService->getProductsByIds($ids);
-  }
-
-  public function findBlockedUserByEmail(string $email) 
-  {
-    return  $this->userRepository->findBlockedUserByEmail($email);
   }
 
   // TODO:проверить где используется и удалить метод ниже. Использовать updateUser
@@ -122,10 +115,10 @@ class UserService extends BaseService
       ];
   }
 
-/**
- * Удаляет файлы изображений, переданные в массиве $data.
- * 
- * @param array $data Массив с именами файлов для удаления.
+  /**
+   * Удаляет файлы изображений, переданные в массиве $data.
+   * 
+   * @param array $data Массив с именами файлов для удаления.
  */
   public function deleteAvatar(array $data): void 
   {
@@ -158,6 +151,33 @@ class UserService extends BaseService
   {
     return $this->userRepository->updateUser($dto, $id);
   }
+
+  // Методы авторизации
+  public function findBlockedUserByEmail(string $email) 
+  {
+    return  $this->userRepository->findBlockedUserByEmail($email);
+  }
+
+  public function findUserByEmail (string $email): ?User 
+  {
+    return $this->userRepository->getUserByEmail($email) ?? null;
+  }
+
+  public function setRecoveryCode (User $userModel, string $recoveryCode): ?int
+  {
+     return $this->userRepository->setRecoveryCode($userModel, $recoveryCode); 
+  }
+  public function getRecoveryCode (User $userModel): ?string
+  {
+     return $this->userRepository->getRecoveryCode($userModel);
+  }
+
+  public function updateUserPassword (User $userModel, string $password): ?int
+  {
+     return $this->userRepository->updateUserPassword($userModel, $password);
+  }
+
+
 
   // *** Методы транзакции ***
   public function beginTransaction(): void

@@ -1,7 +1,7 @@
-<form class="authorization-form authorization-form--lost-pass" name="formLostPass" method="POST" action="">
+<form class="authorization-form authorization-form--lost-pass" name="formLostPass" method="POST" >
   <div class="authorization-form__heading">
     <h2 class="heading">
-      <?php echo h(__('  auth.tooltip.set.new_password', [], 'auth')) ;?>
+      <?php echo h(__('auth.tooltip.set.new_password', [], 'auth')) ;?>
     </h2>
   </div>
 
@@ -10,18 +10,16 @@
 
   <?php if( !$newPasswordReady ) : ?>
   <div class="authorization-form__field">
-    <label for="password" class="authorization-form__field-title">
-      <?php echo h(__('  auth.tooltip.set.new_password', [], 'auth')) ;?>
-    </label>
-    <input name="password" class="input" type="password" placeholder="Введите новый пароль" id="password"/>
+    <label for="password" class="authorization-form__field-title"></label>
+    <input name="password" class="input" type="password" placeholder="<?php echo h(__('auth.label.new_password', [], 'auth')) ;?>" id="password"/>
   </div>
 
   <input type="hidden" name="email" value="<?php echo h($_GET['email']); ?>">
   <input type="hidden" name="resetCode" value="<?php echo h($_GET['code']); ?>">
 
   <div class="authorization-form__button">
-    <button name="set-new-password" value="set-new-password" class="button button--l button--primary button--with-icon" type="submit">
-      Установить пароль
+    <button name="set-new-password" value="set-new-password" class="button button--m button--primary button--with-icon" type="submit">
+      <?php echo h(__('button.save', [], 'buttons')) ;?>
     </button>
   </div>
   <?php endif; ?>

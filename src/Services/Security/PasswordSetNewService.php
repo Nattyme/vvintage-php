@@ -4,64 +4,71 @@ declare(strict_types=1);
 namespace Vvintage\Services\Security;
 
 use Vvintage\Models\User\User;
-use Vvintage\Services\Base\BaseService;
-use Vvintage\Repositories\User\UserRepository;
+use Vvintage\Services\User\UserService;
 
 
-final class PasswordSetNewService extends BaseService
+final class PasswordSetNewService
 {
-  private UserRepository $userRepository;
+  private UserService $userService;
 
-  public function __construct (UserRepository $userRepository) {
-    parent::__construct(); // Важно!
-    $this->userRepository = $userRepository;
+  public function __construct () {
+    $this->userService = new UserService();
   }
 
-  public function findUserByEmail(string $userEmail): User
+  
+  public function handleRecoveryLinkPassing(string $email, string $resetCode): void
   {
-    $userModel = $this->userRepository->findUserByEmail($userEmail);
+      $userModel = $this->userService->findUserByEmail($email);
+      if (!$userModel) throw new \Exception('Пользователь с таким email не найден');
+      
+      $valid = $this->isValidRecoveryCode($email, $resetCode);
+      if(!$valid) throw new \Exception('Неверный или просроченный код восстановления');
+  }
 
-    return $userModel;
+  public function handleNewPassSetting(string $email, string $resetCode, string $password): void 
+  {
+      $userModel = $this->userService->findUserByEmail($email);
+      if (!$userModel) throw new \Exception('Пользователь с таким email неайден');
+
+      $isValidCode = $this->isValidRecoveryCode($email, $resetCode);
+      if (!$isValidCode) throw new \Exception('Неверный или просроченный код восстановления. Попробуйте ещё раз.');
+
+      $this->userService->updateUserPassword($userModel, $password);
   }
 
   /**
    * Метод сохраняет id адреса в поле теблицы User
   */
-  public function updateRecoveryCodeByEmail (string $email, string $recoveryCode): bool {
-    $userModel = $this->userRepository->findUserByEmail($email);
+  public function updateRecoveryCodeByEmail (string $email, string $recoveryCode): ?int
+  {
+    $userModel = $this->userService->findUserByEmail($email);
     
-    if (!$userModel) {
-        return false;
-    }
-
-    // Сохраняем recovery code в таблицу User
-    $this->userRepository->setRecoveryCode($userModel, $recoveryCode);
-    return true;
+    if (!$userModel) return false; // если пользователь не найден
+    
+    return $this->userService->setRecoveryCode($userModel, $recoveryCode);   // Сохраняем recovery code в таблицу User
   }
 
   public function isValidRecoveryCode(string $email, string $code): bool
   {
-    $userModel = $this->userRepository->findUserByEmail($email);
+    $userModel = $this->userService->findUserByEmail($email);
 
-    if (!$userModel) {
-        return false;
-    }
+    if (!$userModel) return false;
 
     // Получим recovery code из БД
-    $recoveryCodeDB = $this->userRepository->getRecoveryCode($userModel);
+    $recoveryCodeDB = $this->userService->getRecoveryCode($userModel);
 
     return $recoveryCodeDB === $code;
   }
 
   public function updateUserPassword(string $password, string $email)
   {
-    $userModel = $this->userRepository->findUserByEmail($email);
+    $userModel = $this->userService->findUserByEmail($email);
 
     // Смена пароля. Сохраняем пароль в зашифрованном виде функцией password_hash
-    $this->userRepository->updateUserPassword($userModel, $password);
+    $this->userService->updateUserPassword($userModel, $password);
 
     // Сбрасываем recovery code
-    $this->userRepository->setRecoveryCode ($userModel, '');
+    $this->userService->setRecoveryCode ($userModel, '');
   }
 
 }

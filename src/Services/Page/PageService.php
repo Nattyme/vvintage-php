@@ -65,9 +65,7 @@ class PageService extends BaseService
 
     $pageModel = $this->repository->getPageBySlug($slug);
 
-    if(!$pageModel) {
-      return null;
-    }
+    if(!$pageModel) return [];
 
     $pageId = $pageModel->getId();
     $pageTranslations = $this->translationRepo->getTranslationsArray($pageId, $this->currentLang);

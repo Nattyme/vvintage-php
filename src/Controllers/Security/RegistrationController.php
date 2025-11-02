@@ -44,7 +44,7 @@ final class RegistrationController extends BaseController
         $this->redirect('profile/edit');  
       }
       catch (\Exception $error) {
-
+        $this->flash->pushError($error->getMessage());
       }
       
     }

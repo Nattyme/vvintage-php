@@ -261,7 +261,7 @@
       $userRepository = new UserRepository();
       $pageService = new PageService();
       $productService = new ProductService ();
-      $setNewPassService = new PasswordSetNewService($userRepository);
+      $setNewPassService = new PasswordSetNewService();
       $validator = new LoginValidator($userRepository);
 
       $loginController = new LoginController( 

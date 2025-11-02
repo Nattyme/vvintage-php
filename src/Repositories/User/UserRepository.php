@@ -220,16 +220,17 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     //   return null;
     // }
 
-    public function setRecoveryCode (User $userModel, string $recoveryCode): void
+    public function setRecoveryCode (User $userModel, string $recoveryCode): ?int
     {
       $id = $userModel->getId();
       $bean = $this->loadBean(self::TABLE_USERS, $id);
 
-      if ($bean->id !== 0) {
+      if ($bean) {
         $bean->recovery_code = $recoveryCode;
 
-        $this->saveBean($bean);
+        return $this->saveBean($bean) ?? 0;
       }
+
     }
 
     public function getRecoveryCode (User $userModel): ?string
