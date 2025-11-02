@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Security;
 
+/** Роутинг */
+use Vvintage\Routing\RouteData;
+
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
@@ -19,6 +22,7 @@ use Vvintage\Services\Security\LoginService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\User\UserItemsMergeService;
+use Vvintage\Services\Session\SessionService;
 
 /** Хранилища */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
@@ -27,27 +31,19 @@ use Vvintage\Store\UserItemsList\UserItemsListStore;
 /** Репозитории */
 use Vvintage\Repositories\User\UserRepository;
 
-/** Роутинг */
-use Vvintage\Routing\RouteData;
-
-// Пеервод на другие языки
-use Vvintage\Config\LanguageConfig;
-use Vvintage\Services\Translator\Translator;
 
 final class LoginController extends BaseController
 {
-  private SeoService $seoService;
-  private PageService $pageService;
-  private UserRepository $userRepository;
-  private ProductService $productService;
 
-  public function __construct(SeoService $seoService, UserRepository $userRepository) 
+  public function __construct(
+    private SessionService $sessionService,
+    private SeoService $seoService,
+    private PageService $pageService,
+    private ProductService $productService,
+    private UserRepository $userRepository,
+  ) 
   {
     parent::__construct(); // Важно!
-    $this->seoService = $seoService;
-    $this->pageService = new PageService();
-    $this->userRepository = $userRepository;
-    $this->productService = new ProductService();
   }
 
   public function index(RouteData $routeData): void
@@ -61,7 +57,6 @@ final class LoginController extends BaseController
     $userModel = $loginService->login($_POST);
 
 
-
     if (!$userModel) {
       $this->renderForm($routeData);
       return;
@@ -70,7 +65,7 @@ final class LoginController extends BaseController
     $this->handleItemsMerge($userModel);
 
     // Сообщение об успехе
-    $userName = $_SESSION['logged_user']['name'] ?? '';
+    $userName = $userModel->getName() ?? '';
     
     if (trim($userName) !== '') {
       $this->flash->pushSuccess(h(__('login.success.username', ['%name%' => $userName], 'messages')));
@@ -79,19 +74,16 @@ final class LoginController extends BaseController
     }
 
     // Редирект
-    header('Location: ' . HOST . 'profile');
-    exit();
+    $this->redirect('profile');
   }
 
-  /**
-   * Метод совмещает списки пользователя
-   * @return void
-  */
+
   private function handleItemsMerge(User $userModel): void
   {
     $guest = $this->createGuestModels();
    
     $user = $this->createUserModels();
+    
     // Здесь возвращается guest Store
     $cartService = new CartService(
       $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productService
@@ -153,8 +145,8 @@ final class LoginController extends BaseController
     $pageClass = "authorization-page";
     
     $flash = $this->flash;
-    $currentLang =  $this->productService->currentLang;
-    $languages = $this->productService->languages;
+    $currentLang =  $this->pageService->currentLang;
+    $languages = $this->pageService->languages;
     
     ob_start();
     include ROOT . 'views/login/form-login.tpl';

@@ -254,16 +254,17 @@
 
     private static function routeAuth(RouteData $routeData) {
       $seoService = new SeoService();
+      $sessionService = new SessionService();
       $userRepository = new UserRepository();
+      $pageService = new PageService();
+      $productService = new ProductService ();
       $setNewPassService = new PasswordSetNewService($userRepository);
-
       $validator = new LoginValidator($userRepository);
 
-      $loginController = new LoginController( $seoService, $userRepository);
+      $loginController = new LoginController( $sessionService, $seoService, $pageService, $productService, $userRepository);
       $regController = new RegistrationController( $seoService);
       $resetController = new PasswordResetController( $seoService);
       $setNewPassController = new PasswordSetNewController( $seoService, $setNewPassService);
-      $sessionService = new SessionService();
 
    
       switch ($routeData->uriModule) {
