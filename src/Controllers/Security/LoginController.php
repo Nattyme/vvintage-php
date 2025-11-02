@@ -36,7 +36,7 @@ final class LoginController extends BaseController
 {
 
   public function __construct(
-    private SessionService $sessionService,
+    protected SessionService $sessionService,
     private SeoService $seoService,
     private PageService $pageService,
     private ProductService $productService,
@@ -80,8 +80,8 @@ final class LoginController extends BaseController
 
   private function handleItemsMerge(User $userModel): void
   {
+    // Создаем модели корзины и избранного пользователя и отдельно гостя
     $guest = $this->createGuestModels();
-   
     $user = $this->createUserModels();
     
     // Здесь возвращается guest Store
@@ -92,14 +92,22 @@ final class LoginController extends BaseController
     $favService = new FavoritesService(
       $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productService
     );
+
     $userItemsMergeService = new UserItemsMergeService($favService, $cartService);
 
-    $userItemsMergeService->mergeAllAfterLogin(
+    // Сливаем
+    $dataForSession = $userItemsMergeService->mergeAllAfterLogin(
       $user['cart'],
       $guest['cart'],
       $user['fav'],
       $guest['fav']
     );
+
+    // Обновляем сессию
+    foreach ($dataForSession as $key => $value) {
+      $this->sessionService->updateLogggedUserSessionItemsList($key, $value);
+    }
+    
     
   }
 

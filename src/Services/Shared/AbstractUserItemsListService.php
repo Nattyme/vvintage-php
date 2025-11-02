@@ -64,7 +64,7 @@ abstract class AbstractUserItemsListService extends BaseService
       $this->itemsStore->save($sessionKey, $this->itemsModel, $this->userModel);
     }
 
-    public function mergeItemsListAfterLogin(AbstractUserItemsList $userItemsModel, AbstractUserItemsList $guestItemsModel): void
+    public function mergeItemsListAfterLogin(AbstractUserItemsList $userItemsModel, AbstractUserItemsList $guestItemsModel): array
     {
    
       $userItems = $userItemsModel->getItems();
@@ -81,23 +81,10 @@ abstract class AbstractUserItemsListService extends BaseService
       // Обновляем даннные пользователя 
       $this->itemsStore->save( $sessionKey, $userItemsModel, $this->userModel);
 
-      // Обновляем сессию
-      $_SESSION['logged_user'][ $sessionKey] = $userItemsModel->getItems();
-      $_SESSION[  $sessionKey] =  $userItemsModel->getItems();
+      // Вернем новые данные корзины или избранного
+      return $userItemsModel->getItems();
 
-      // Очищаем cookies
-      $this->clearGuestCookies();
     }
 
-    
-
-    private function clearGuestCookies()
-    {
-      $sessionKey = $this->itemsModel->getSessionKey();
-
-      if (isset($_COOKIE[$sessionKey])) {
-        setcookie($sessionKey, '', time() - 3600, '/');
-      }
-    }
 
 }

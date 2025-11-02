@@ -24,10 +24,14 @@ final class UserItemsMergeService
     AbstractUserItemsList $guestCartModel,
     AbstractUserItemsList $userFavoritesModel,
     AbstractUserItemsList $guestFavoritesModel,
-  ): void
+  ): array
   {
 
-    $this->favService->mergeItemsListAfterLogin($userFavoritesModel, $guestFavoritesModel);
-    $this->cartService->mergeItemsListAfterLogin($userCartModel, $guestCartModel);
+    $currentFav = $this->favService->mergeItemsListAfterLogin($userFavoritesModel, $guestFavoritesModel);
+    $currentFav = $this->cartService->mergeItemsListAfterLogin($userCartModel, $guestCartModel);
+    return [
+      'cart' => $currentFav,
+      'fav_list' => $currentFav
+    ];
   }
 }
