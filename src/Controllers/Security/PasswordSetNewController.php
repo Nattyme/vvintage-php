@@ -65,25 +65,22 @@ final class PasswordSetNewController extends BaseController
 
           if (!$userModel) {
               $this->flash->pushError('Пользователь не найден');
-              header("Location: " . HOST . "lost-password");
-              exit;
+              $this->redirect('lost-password');
           }
 
           if (!$this->setNewPassService->isValidRecoveryCode($email, $resetCode)) {
               $this->flash->pushError('Неверный или просроченный код восстановления');
-              header("Location: " . HOST . "lost-password");
-              exit;
+              $this->redirect('lost-password');
           }
       }
 
       // Иначе — редирект на форму восстановления
       else {
-          header("Location: " . HOST . "lost-password");
-          exit;
+          $this->redirect('lost-password');
       }
 
       // Отображение формы
-      self::renderForm($routeData ?? [], $newPasswordReady, $email, $resetCode);
+      $this->renderForm($routeData ?? [], $newPasswordReady, $email, $resetCode);
   }
 
 

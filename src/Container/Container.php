@@ -1,3 +1,13 @@
 <?php
-// TO DO - реализовать логику контейнеров и создавать все зависимости здесь
-// Посмотреть Dependency Injection 
+declare(strict_types=1);
+
+namespace Vvintage\Container;
+
+
+class Container {
+  private array $dependencies = [];
+
+  public function set($name, $callback) {
+    $this->$name = $callback();
+  }
+}

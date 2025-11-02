@@ -108,7 +108,6 @@ final class LoginController extends BaseController
       $this->sessionService->updateLogggedUserSessionItemsList($key, $value);
     }
     
-    
   }
 
   /**
@@ -118,9 +117,10 @@ final class LoginController extends BaseController
  */
   private function createGuestModels(): array
   {
-    $store = new GuestItemsListStore();
+    $store = new GuestItemsListStore(); // создаем хранидище гостя
 
-    $cart = new Cart($store->load('cart'));
+    // Извлекаем данные из хранилища и создаем экземпляры моделей
+    $cart = new Cart($store->load('cart')); 
     $fav = new Favorites($store->load('fav_list'));
 
     return ['store' => $store, 'cart' => $cart, 'fav' => $fav];

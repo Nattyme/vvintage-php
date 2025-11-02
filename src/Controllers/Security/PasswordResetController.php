@@ -40,7 +40,6 @@ final class PasswordResetController extends BaseController
         if ($result['success']) {
           $resultEmail = true;
           $this->flash->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
-   
         } 
 
       } 

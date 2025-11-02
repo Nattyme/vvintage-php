@@ -26,7 +26,6 @@ abstract class BaseController
       $this->settings = Settings::all(); 
       $this->flash = new FlashMessage();
       $this->sessionService = new SessionService();
-      
   }
 
 

@@ -3,13 +3,10 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Security;
 
-/** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
-
-use Vvintage\Services\Page\PageService;
+use Vvintage\Controllers\Base\BaseController; /** Базовый контроллер страниц*/
 use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Security\RegistrationService;
-
 use Vvintage\Services\Validation\RegistrationValidator;
 
 final class RegistrationController extends BaseController
@@ -21,7 +18,6 @@ final class RegistrationController extends BaseController
   public function __construct(SeoService $seoService)
   {
       parent::__construct(); // Важно!
-      $this->seoService = $seoService;
       $this->pageService = new PageService();
       $this->service = new RegistrationService();
   }
