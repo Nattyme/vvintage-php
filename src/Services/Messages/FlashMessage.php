@@ -40,7 +40,7 @@ final class FlashMessage
 
     public function get(string $type): array {
       $messages = $_SESSION[$type] ?? [];
-      unset($_SESSION[$type]); // очищаем, чтобы показывались только один раз
+      // unset($_SESSION[$type]); // очищаем, чтобы показывались только один раз
       return $messages;
     }
 

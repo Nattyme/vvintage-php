@@ -5,7 +5,6 @@ namespace Vvintage\Services\Validation;
 
 use Vvintage\Services\Security\RegistrationService;
 use Vvintage\Repositories\User\UserRepository;
-
 use Vvintage\Services\Base\BaseService;
 
 final class RegistrationValidator extends BaseService
@@ -23,43 +22,26 @@ final class RegistrationValidator extends BaseService
     $valid = true;
 
     $csrfToken = $data['csrf'] ?? '';
-    if (!check_csrf($csrfToken)) {
-      $this->flash->pushError('Неверный токен безопасности');
-      $valid = false;
-    }
+    if (!check_csrf($csrfToken)) throw new \Exception('Неверный токен безопасности');
 
     $email = trim($data['email'] ?? '');
-
     if ($email === '') {
-      $this->flash->pushError('Введите email', 'Email обязателен для регистрации на сайте');
-      $valid = false;
+      throw new \Exception('Введите email');
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->flash->pushError('Введите корректный Email');
-      $valid = false;
+      throw new \Exception('Недопустимый формат Email');
     } elseif ($this->userRepository->findBlockedUserByEmail($email)) {
-
-      $this->flash->pushError('Ошибка регистрации.');
-      $valid = false;
+      throw new \Exception('Ошибка регистрации');
     }
 
     $password = trim($data['password'] ?? '');
-
     if ($password === '') {
-      $this->flash->pushError('Введите пароль', 'Пароль обязателен для регистрации на сайте');
-      $valid = false;
+      throw new \Exception('Введите пароль');
     } elseif (strlen($password) < 5) {
-      $this->flash->pushError('Неверный формат пароля', 'Пароль должен быть больше четырёх символов');
-      $valid = false;
+      throw new \Exception('Пароль должен быть больше четырёх символов');
     }
 
     if ($this->userRepository->getUserByEmail($email)) {
-      $this->flash->pushError(
-        'Пользователь с таким email уже существует',
-        'Используйте другой email адрес или воспользуйтесь <a href="' . HOST . 'lost-password">восстановлением пароля.</a>'
-      );
-      $valid = false;
+      throw new \Exception('Пользователь с таким email уже существует');
     }
-
-    return $valid;
   }
 }

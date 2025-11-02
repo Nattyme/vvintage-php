@@ -16,6 +16,7 @@ final class RegistrationController extends BaseController
   private SeoService $seoService;
   private PageService $pageService;
   private RegistrationService $service;
+  private RegistrationValidator $validator;
 
   public function __construct(
     FlashMessage $flash,
@@ -27,20 +28,25 @@ final class RegistrationController extends BaseController
       $this->pageService = new PageService();
       $this->service = new RegistrationService();
       $this->seoService = new SeoService();
+      $this->validator = new RegistrationValidator();
   }
 
   public function index ($routeData) {
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
-      $validator = new RegistrationValidator();
 
-      if ( $validator->validate( $_POST )) {
-        $newUser = $this->service->registrateUser( $_POST );
+      try {
+        $this->validator->validate( $_POST ); // валидцаия, если ошибка - исключение
+        $newUser = $this->service->registrateUser( $_POST ); // регистрируем пользователя
 
-        // Перенаправляем
-        $this->redirect('profile/edit');
-        
+        // Уведомление 
+        $this->flash->pushSuccess('Вы успешно зарегистрировались. Добро пожаловать!');
+        $this->redirect('profile/edit');  
       }
+      catch (\Exception $error) {
+
+      }
+      
     }
 
     // Показываем форму

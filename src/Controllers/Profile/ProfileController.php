@@ -62,6 +62,7 @@ final class ProfileController extends BaseController
 
   public function index(RouteData $routeData)
   {
+   
     $this->setRouteData($routeData);
     $uriGet = (int) $this->routeData->uriGet ?? null;
 
@@ -94,6 +95,7 @@ final class ProfileController extends BaseController
   public function edit(RouteData $routeData)
   { 
       $this->setRouteData($routeData);
+    
       $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule); // страница
    
       $userModel = null;
