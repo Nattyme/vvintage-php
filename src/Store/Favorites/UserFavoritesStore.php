@@ -19,7 +19,9 @@ class UserFavoritesStore implements FavoritesStoreInterface
 
   public function load(): array
   {
-    $user = $this->userRepository->findUserById((int) $_SESSION['user_id']);
+    $userId = $this->sessionService->getLoggedInUserId();
+    $user = $this->userRepository->findUserById( $userId );
+    
     return $user->getFavList() ?? [];
   }
 

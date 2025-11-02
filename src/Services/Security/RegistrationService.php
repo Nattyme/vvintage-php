@@ -50,15 +50,9 @@ final class RegistrationService extends BaseService
   private function autoLoginNewUser (User $user): void
   {
     $this->sessionService->setUserSession($user);
-
-    // Сообщение об успехе
-    $_SESSION['success'][] = [
-      'title' => 'Регистрация завершена.', 'desc'=>'Заполните свой профиль для дальнейшего пользования сайтом'
-    ];
-
+    
     // Перенаправляем
-    header('Location: ' . HOST . 'profile/edit');
-    exit();
+    $this->redirect('profile/edit');
   }
 
 }

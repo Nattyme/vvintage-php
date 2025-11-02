@@ -5,9 +5,11 @@ namespace Vvintage\Services\Locale;
 
 use Locale;
 use Vvintage\Config\LanguageConfig;
+use Vvintage\Services\Session\SessionService;
 
 final class LocaleService
 {
+    private SessionService $sessionService;
     private string $currentLang;
     private string $currentLocale;
 
@@ -23,7 +25,8 @@ final class LocaleService
 
     public function __construct()
     {
-        $this->currentLang = $_SESSION['locale'] ?? LanguageConfig::getDefault();
+        $this->sessionService = new SessionService();
+        $this->currentLang = $this->sessionService->getCurrentLocale() ?? LanguageConfig::getDefault();
 
         if (!array_key_exists($this->currentLang, LanguageConfig::getAvailableLanguages())) {
             $this->currentLang = LanguageConfig::getDefault();
@@ -55,7 +58,7 @@ final class LocaleService
     public function setCurrentLang(string $lang): void
     {
         if (array_key_exists($lang, LanguageConfig::getAvailableLanguages())) {
-            $_SESSION['locale'] = $lang;
+            $this->sessionService->setCurrentLocale($lang);
             $this->currentLang = $lang;
             $this->currentLocale = $this->buildLocale($lang);
         }

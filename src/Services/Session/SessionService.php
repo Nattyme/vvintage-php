@@ -56,6 +56,12 @@ class SessionService
       }
     }
 
+    public function getLoggedInUserId(): ?int
+    {
+      if (!$this->isLoggedIn()) return null;
+      return (int) $_SESSION['user_id'];
+    }
+
 
     public function getLoggedInUser(): ?UserInterface
     {
@@ -96,6 +102,16 @@ class SessionService
       // Обновляем сессию
       $_SESSION['logged_user'][ $sessionKey] =  $items;
       $_SESSION[ $sessionKey] =  $items;
+    }
+
+    public function getCurrentLocale (): ?string
+    {
+      return $_SESSION['locale'] ?? null;
+    }
+
+    public function setCurrentLocale (string $lang): void
+    {
+       $_SESSION['locale'] = $lang;
     }
 
 }
