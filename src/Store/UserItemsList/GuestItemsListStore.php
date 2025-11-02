@@ -11,7 +11,16 @@ use Vvintage\Contracts\User\UserItemsListStoreInterface;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
 
+/** Сервисы */
+use Vvintage\Services\Session\SessionService;
+
 class GuestItemsListStore implements UserItemsListStoreInterface {
+  private SessionService $sessionService;
+
+  public function __construct() {
+    $this->sessionService = new SessionService();
+  }
+
   public function load($itemKey): array {
     
     return isset($_COOKIE[$itemKey]) && is_string($_COOKIE[$itemKey])

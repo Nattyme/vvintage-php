@@ -23,6 +23,7 @@ use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\User\UserItemsMergeService;
 use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\Cookie\CookieService;
 
 /** Хранилища */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
@@ -37,6 +38,7 @@ final class LoginController extends BaseController
 
   public function __construct(
     protected SessionService $sessionService,
+    protected CookieService $cookieService,
     private SeoService $seoService,
     private PageService $pageService,
     private ProductService $productService,
@@ -103,9 +105,10 @@ final class LoginController extends BaseController
       $guest['fav']
     );
 
-    // Обновляем сессию
+    // Обновляем сессию и очищаем куки
     foreach ($dataForSession as $key => $value) {
       $this->sessionService->updateLogggedUserSessionItemsList($key, $value);
+      $this->cookieService->clear($key); 
     }
     
   }

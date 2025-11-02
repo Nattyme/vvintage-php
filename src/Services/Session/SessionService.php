@@ -1,10 +1,7 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Vvintage\Services\Session;
-
-use RedBeanPHP\R; // Подключаем readbean
 
 /** Контракт */
 use Vvintage\Contracts\User\UserInterface;
@@ -90,26 +87,15 @@ class SessionService
 
     
     /**
-     * Очищает куки сессии гостя для указанного ключа
+     *Обновляет сессию  для указанного ключа
      * 
-     * @param string $sessionKey ключ сессии, для которого нужно очистить куки
+     * @param string $sessionKey ключ сессии
      */
-    private function clearCookies(string $sessionKey): void
-    {
-      if (!isset($_COOKIE[$sessionKey])) return;
-      
-      setcookie($sessionKey, '', time() - 3600, '/');
-    }
-
     public function updateLogggedUserSessionItemsList(string $sessionKey, array $items): void
     {
       // Обновляем сессию
       $_SESSION['logged_user'][ $sessionKey] =  $items;
       $_SESSION[ $sessionKey] =  $items;
-
-      // Очищаем куки
-      $this->clearCookies($sessionKey);
-      
     }
 
 }

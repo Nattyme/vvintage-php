@@ -38,6 +38,7 @@
   use Vvintage\Services\Messages\FlashMessage;
   use Vvintage\Services\Product\ProductService;
   use Vvintage\Services\Session\SessionService;
+  use Vvintage\Services\Cookie\CookieService;
   use Vvintage\Services\Validation\LoginValidator;
   use Vvintage\Services\Favorites\FavoritesService;
   use Vvintage\Services\Validation\NewOrderValidator;
@@ -255,13 +256,14 @@
     private static function routeAuth(RouteData $routeData) {
       $seoService = new SeoService();
       $sessionService = new SessionService();
+      $cookieService = new CookieService();
       $userRepository = new UserRepository();
       $pageService = new PageService();
       $productService = new ProductService ();
       $setNewPassService = new PasswordSetNewService($userRepository);
       $validator = new LoginValidator($userRepository);
 
-      $loginController = new LoginController( $sessionService, $seoService, $pageService, $productService, $userRepository);
+      $loginController = new LoginController( $sessionService, $cookieService, $seoService, $pageService, $productService, $userRepository);
       $regController = new RegistrationController( $seoService);
       $resetController = new PasswordResetController( $seoService);
       $setNewPassController = new PasswordSetNewController( $seoService, $setNewPassService);
