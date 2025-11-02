@@ -13,25 +13,30 @@ use Vvintage\Models\Favorites\Favorites;
 
 /** Сервисы */
 use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\Cookie\CookieService;
 
 class GuestItemsListStore implements UserItemsListStoreInterface {
   private SessionService $sessionService;
+  private CookieService $cookieService;
 
   public function __construct() {
     $this->sessionService = new SessionService();
+    $this->cookieService = new CookieService();
   }
 
+  /**
+   * Получает и декодирует корзину из cookie. Если нет - возвращает пустой массив
+   *
+   * @param string $itemKey
+   * @return array
+ */
   public function load($itemKey): array {
-    
-    return isset($_COOKIE[$itemKey]) && is_string($_COOKIE[$itemKey])
-      ? json_decode($_COOKIE[$itemKey], true)
-      : [];
+    return $this->cookieService->getCookieValueByKey($itemKey);
   }
 
   public function save($itemKey, $itemModel, ?UserInterface $userModel = null): void 
   {
-    
     $items = $itemModel->getItems(); // получаем массив корзины
-    setcookie($itemKey, json_encode( $items), time() + 3600 * 24 * 7, '/');
+    $this->cookieService->setCookieValueByKey($itemKey, $items); // сохраняем в куки на 7 дней, доступ к куки по всему сайту
   }
 }
