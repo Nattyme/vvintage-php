@@ -29,6 +29,7 @@ final class UserItemsMergeService
 
     $currentFav = $this->favService->mergeItemsListAfterLogin($userFavoritesModel, $guestFavoritesModel);
     $currentFav = $this->cartService->mergeItemsListAfterLogin($userCartModel, $guestCartModel);
+    
     return [
       'cart' => $currentFav,
       'fav_list' => $currentFav

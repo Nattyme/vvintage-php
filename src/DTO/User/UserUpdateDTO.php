@@ -8,9 +8,6 @@ final class UserUpdateDTO
     public string $name;
     public string $surname;
 
-    public array $fav_list;
-    public array $cart;
-
     public string $country;
     public string $city;
     public string $phone;
@@ -23,15 +20,10 @@ final class UserUpdateDTO
         $this->name = (string) ($data['name'] ?? '');
         $this->surname = (string) ($data['surname'] ?? '');
 
-        $this->fav_list = is_array($data['fav_list'] ?? null) ? $data['fav_list'] : json_decode($data['fav_list'] ?? '[]', true);
-        $this->cart = is_array($data['cart'] ?? null) ? $data['cart'] : json_decode($data['cart'] ?? '[]', true);
-
-
         $this->country = (string) ($data['country'] ?? '');
         $this->city = (string) ($data['city'] ?? '');
         $this->phone = (string) ($data['phone'] ?? '');
         $this->avatar = (string) $data['avatar'] ?? null;
         $this->avatar_small = (string) $data['avatar_small'] ?? null;
-
     }
 }

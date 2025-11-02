@@ -176,8 +176,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
       $bean->name = $dto->name ?? $bean->name;
       $bean->surname = $dto->surname ?? $bean->surname;
-      $bean->fav_list = json_encode($dto->fav_list ?? json_decode($bean->fav_list, true));
-      $bean->cart = json_encode($dto->cart ?? json_decode($bean->cart, true));
       $bean->country = $dto->country ?? $bean->country;
       $bean->city = $dto->city ?? $bean->city;
       $bean->phone = $dto->phone ?? $bean->phone;
@@ -187,9 +185,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
           $bean->avatar = $dto->avatar;
           $bean->avatarSmall = $dto->avatar_small;
       }
-
-      // $bean->avatar = $dto->avatar ?? $bean->avatar;
-      // $bean->avatar_small = $dto->avatar_small ?? $bean->avatar_small;
 
       $this->saveBean($bean);
 

@@ -16,14 +16,12 @@ use Vvintage\Models\Address\Address;
 /** Сервисы */
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\User\UserService;
-use Vvintage\Services\Validation\ProfileValidator;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Profile\ProfileService;
 use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Services\Order\OrderService;
 use Vvintage\Services\SEO\SeoService;
 
-// use Vvintage\Repositories\Order\OrderRepository;
-use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Models\Order\Order;
 
 use Vvintage\DTO\Order\OrderProfileDetailsDTO;
@@ -36,8 +34,8 @@ final class ProfileController extends BaseController
   private UserService $userService;
   private Breadcrumbs $breadcrumbsService;
   private SeoService $seoService;
-  private ProfileValidator $validator;
   private PageService $pageService;
+  private ProfileService $profileService;
   protected LocaleService $localeService;
   protected OrderService $orderService;
   
@@ -48,50 +46,39 @@ final class ProfileController extends BaseController
     $this->userService = new UserService();
     $this->breadcrumbsService = $breadcrumbs;
     $this->seoService = $seoService;
-    $this->validator = new ProfileValidator();
     $this->pageService = new PageService();
     $this->localeService = new LocaleService();
     $this->orderService = new OrderService();
-
+    $this->profileService = new ProfileService();
   }
 
 
   public function index(RouteData $routeData)
   {
-    $orders = null;
     $this->setRouteData($routeData);
     $uriGet = (int) $this->routeData->uriGet ?? null;
 
+    $orders = null;
     $userModel = $this->getLoggedInUser();
     $userId = $userModel->getId();
 
     // если гость — редиректим
-    if ($userModel instanceof GuestUser || !$userModel) {
-        $this->redirect('login');
-    }
+    if ($userModel instanceof GuestUser || !$userModel) $this->redirect('login');
+
 
     // Если зашли в свой профиль
     if (!$uriGet && $this->isProfileOwner($userId) || $uriGet && $uriGet === $userId) {
-      $userModel = $this->userService->getUserByID($userId);
-
-      if(!$userModel) $this->redirect('login'); // если не нашли пользователя
-    
-      $orders = $this->orderService->getProfileOrdersList($userId);
-
-      $this->renderProfileFull($this->routeData, $userModel, $orders);
+      $profileData = $this->profileService->getFullProfileData($userId);
+      $this->renderProfileFull($this->routeData,  $profileData['userModel'], $profileData['orders']);
     }
 
     //  Если зашли на страницу чужого профиля
     if ( $uriGet && !$this->isProfileOwner($uriGet)) {
       if($this->isLoggedIn() && !$this->isAdmin()) $this->redirect('profile'); // если залогинен - редирект в свой профиль
-      if(!$this->isAdmin()) $this->redirect('login');  // Если не залогинен - на страницу логина
 
       // Значит админ
-      $userModel = $this->userService->getUserByID($uriGet); // получаем пользователя
-      if(!$userModel) $this->redirect('profile'); // если не нашли 
-
-      $orders = $this->orderService->getProfileOrdersList($uriGet);  // получаем заказы пользователя
-      $this->renderProfileFull($this->routeData, $userModel, $orders);
+      $profileData = $this->profileService->getFullProfileData($uriGet);
+      $this->renderProfileFull($this->routeData, $profileData['userModel'], $profileData['orders']);
     } 
   }
 
@@ -103,11 +90,12 @@ final class ProfileController extends BaseController
       $pageModel = $this->pageService->getPageModelBySlug($routeData->uriModule); // страница
    
       $userModel = null;
-      $uriGet = (int) (!empty($this->routeData->uriGetParams) && $this->routeData->uriGetParams[0]) ?? null; // id пользователя
+      $uriGet = (int) (!empty($this->routeData->uriGetParams) ? $this->routeData->uriGetParams[0] : null); // id пользователя
 
       // Если uriGet нет
-      if(!$uriGet && $this->isLoggedIn()) $uriGet = $this->getLoggedInUser()->getId(); // если не id но залогинен
-  
+      if(!$uriGet && $this->isLoggedIn()) $uriGet = $this->getLoggedInUser()->getId(); // если нет id, но залогинен
+
+      //Полуечаем залогиненного пользователя и его id
       $userModel = $this->getLoggedInUser();
       $userId = $userModel->getId();
 
@@ -115,10 +103,9 @@ final class ProfileController extends BaseController
       if (!($this->isProfileOwner($userId) || $this->isAdmin())) $this->redirect('profile'); // не владелец, не админ
   
 
-      // Если зашли в свой профиль
+      // Если зашли в свой профиль - показываем форму
       if ($this->isProfileOwner($uriGet)) {
-         // потом доработать
-        $this->renderProfileEdit(routeData: $routeData, userModel: $userModel, uriGet: $uriGet, address: $address =null);
+        $this->renderProfileEdit(routeData: $routeData, userModel: $userModel, uriGet: $uriGet);
       }
 
       //  Если зашли на страницу чужого профиля
@@ -128,11 +115,10 @@ final class ProfileController extends BaseController
         if(!$this->isAdmin()) $this->redirect('login');  // Если не залогинен - на страницу логина
 
         // Значит админ
-        $userModel = $this->userService->getUserByID($uriGet); // получаем пользователя
-        if(!$userModel) $this->redirect('profile'); // если не нашли 
-
-        $address = null; // потом доработать
-        $this->renderProfileEdit(routeData: $routeData, userModel: $userModel, uriGet: $uriGet, address: $address);
+        $profileData = $this->profileService->getFullProfileData($uriGet); // получаем данные профиля пользователя
+      
+        // $address ; // потом доработать адрес
+        $this->renderProfileEdit(routeData: $routeData, userModel: $profileData['userModel'], uriGet: $uriGet);
       } 
 
      
@@ -201,7 +187,7 @@ final class ProfileController extends BaseController
       ]);
   }
 
-  private function renderProfileEdit (RouteData $routeData, ?User $userModel, $address, int|string|null $uriGet = null): void 
+  private function renderProfileEdit (RouteData $routeData, ?User $userModel, int|string|null $uriGet = null): void 
   {  
       // Название страницы
       $slug = $routeData->uriModule . '/' . $routeData->uriGet;
@@ -217,9 +203,16 @@ final class ProfileController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-      if (isset($_POST['updateProfile']))  $this->updateUserAndGoToProfile($userModel);
+      if (isset($_POST['updateProfile'])) {
+        try {
+          $result = $this->profileService->updateUserAndGoToProfile($_POST, $_FILES, $userModel);
+          $this->redirect('profile', (string) $userModel->getId() );
+        }
+        catch (\Exception $error) {
+          $this->flash->pushError('error', $error->getMessage());
+        }
+      }  
 
- 
       // Подключение шаблонов страницы
       $this->renderLayout('profile/profile-edit', [
             'seo' => $seo,
@@ -229,7 +222,6 @@ final class ProfileController extends BaseController
             'pageClass' => $pageClass,
             'userModel' => $userModel,
             'uriGet' => $uriGet,
-            'address' => $address,
             'navigation' => $this->pageService->getLocalePagesNavTitles(),
             'currentLang' =>  $this->pageService->currentLang,
             'languages' => $this->pageService->languages
@@ -260,32 +252,30 @@ final class ProfileController extends BaseController
   }
 
 
-  private  function updateUserAndGoToProfile (User $userModel) {
+  // private  function updateUserAndGoToProfile (array $data,User $userModel) {
     
-    if ( isset($_POST['updateProfile'])) {
-      // Принимаем данные
-      $data = $_POST;
 
-      $files = $_FILES['avatar'] ?? [];
-      // Если ошибок нет - сохраняем
-      if ( !empty($files['name']) && $files['tmp_name'] !== '') {
-        $validAvatar = $this->validator->validateEditAvatar($files);
-        if(!$validAvatar) return;
-        $avatars = $this->userService->handleAvatar($userModel, $files);
-        $data = array_merge($data, $avatars);
-      }
 
-      $valid = $this->validator->validateEdit($data);
+  //     $files = $_FILES['avatar'] ?? [];
+  //     // Если ошибок нет - сохраняем
+  //     if ( !empty($files['name']) && $files['tmp_name'] !== '') {
+  //       $validAvatar = $this->validator->validateEditAvatar($files);
+  //       if(!$validAvatar) return;
 
-      if(!$valid) return;
-      $dto = $this->userService->getUserUpdateDto($data);
+  //       $avatars = $this->userService->handleAvatar($userModel, $files);
+  //       $data = array_merge($data, $avatars);
+  //     }
+
+  //     $valid = $this->validator->validateEdit($data);
+
+  //     if(!$valid) return;
+  //     $dto = $this->userService->getUserUpdateDto($data);
       
-      $this->userService->updateUser($dto, $userModel->getId());
+  //     $this->userService->updateUser($dto, $userModel->getId());
 
-      $this->redirect('profile', (string)$userModel->getId());
+  //     $this->redirect('profile', (string) $userModel->getId());
      
-    }
-  }
+  // }
 
 
 }

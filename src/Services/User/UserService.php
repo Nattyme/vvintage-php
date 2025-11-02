@@ -29,15 +29,12 @@ class UserService extends BaseService
   protected ProductService $productService;
 
   private const FOLDER_NAME = 'avatars';
+  private const FOLDER_LOCATION = ROOT . 'usercontent/';
+  private const FILE_LOCATION = self::FOLDER_LOCATION . self::FOLDER_NAME . '/';
+   
   private const AVATAR_FULL_SIZE = [160, 160];
   private const AVATAR_SMALL_SIZE = [48, 48];
-  private const EXTENSIONS = [
-                                  IMAGETYPE_GIF  => 'gif',
-                                  IMAGETYPE_JPEG => 'jpg',
-                                  IMAGETYPE_PNG  => 'png',
-                                  IMAGETYPE_BMP  => 'bmp',
-                                  IMAGETYPE_WEBP => 'webp',
-                              ];
+
 
   public function __construct () {
     parent::__construct();
@@ -85,30 +82,27 @@ class UserService extends BaseService
     return  $this->userRepository->findBlockedUserByEmail($email);
   }
 
+  // TODO:проверить где используется и удалить метод ниже. Использовать updateUser
   public function handleFormData(User $userModel, array $data) 
   {
      return $this->userRepository->editUser($data, $userModel->getId());
   }
 
-  // ПЕРЕПИСАТЬ С ТРАНЗАКЦИЕЙ . Если где то ошибка - не удалять предыдущее изображение 
-  public function handleAvatar(User $userModel, array $files): array
+ 
+  public function handleAvatar(User $userModel, array $file): array
   {
-      $fileTmpLoc = $files['tmp_name'] ?? null;
-      $info = getimagesize($fileTmpLoc); // Получаем информацию о файле
+      // Получаем расширение файла
+      $fileExt = pathinfo($file['name'], PATHINFO_EXTENSION) ?? 'jpg'; // по умолчанию jpg
 
-      $mime = $info['mime'] ?? '';
-      $type = $info[2] ?? null; // GD тип
-
-      $fileExt = $extensions[$type] ?? 'jpg'; // по умолчанию jpg
-
-      // Прописываем путь для хранения изображения
-      $imgFolderLocation = ROOT . 'usercontent/' . self::FOLDER_NAME . '/';
-
+      // Получаем информацию о файле
+      $fileTmpLoc = $file['tmp_name'] ?? null;
+  
+      // Формируем имя файла
       $db_file_name = rand(100000000000, 999999999999) . "." . $fileExt;
 
-
-      $filePathFullSize = $imgFolderLocation . $db_file_name;
-      $filePathSmallSize = $imgFolderLocation . self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name;
+      // Формируем пути для файла
+      $filePathFullSize = self::FILE_LOCATION . $db_file_name;
+      $filePathSmallSize = self::FILE_LOCATION . self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name;
 
 
       // Обработать фотографию
@@ -117,26 +111,30 @@ class UserService extends BaseService
       // 2. Обрезать до мин размера
       $resultSmallSize = resize_and_crop($fileTmpLoc, $filePathSmallSize, self::AVATAR_SMALL_SIZE[0], self::AVATAR_SMALL_SIZE[1]);
 
-      if ($resultFullSize != true || $resultSmallSize != true) {
-        $this->flash->pushError('Ошибка сохранения файла');
-        return false;
+      if ($resultFullSize != true || $resultSmallSize != true) throw new \Exception('Ошибка обработки размера изображения');
+
+      // Возвращаем аватары в двух размерах 
+      return [
+          'avatar' => $db_file_name, 
+          'avatar_small' => self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name,
+          'old_avatar' => $userModel->getAvatar(),
+          'old_avatar_small' => $userModel->getAvatarSmall()
+      ];
+  }
+
+/**
+ * Удаляет файлы изображений, переданные в массиве $data.
+ * 
+ * @param array $data Массив с именами файлов для удаления.
+ */
+  public function deleteAvatar(array $data): void 
+  {
+    foreach ($data as $key => $value) {
+      if (file_exists(self::FILE_LOCATION . $data[$key] ) && !empty($data[$key])) {
+        unlink(self::FILE_LOCATION . $data[$key]);
       }
 
-      // Если новое изображение успешно загружено - удаляем старое
-      if ($resultFullSize && $resultSmallSize) {
-      
-          // Если есть старое изображение - удаляем 
-          if (file_exists($imgFolderLocation . $userModel->getAvatar()) && !empty($userModel->getAvatar())) {
-            unlink($imgFolderLocation . $userModel->getAvatar());
-          }
-
-          if (file_exists($imgFolderLocation . $userModel->getAvatarSmall()) && !empty($userModel->getAvatarSmall())) {
-            unlink($imgFolderLocation . $userModel->getAvatarSmall());
-          }
-      }
-
-
-      return ['avatar' => $db_file_name, 'avatar_small' => self::AVATAR_SMALL_SIZE[0] . '-' . $db_file_name,];
+    }
   }
 
   public function getUserUpdateDto(array $data): UserUpdateDTO 
@@ -144,9 +142,6 @@ class UserService extends BaseService
       $dto = new UserUpdateDTO([
                 'name' => (string) $data['name'],
                 'surname' => (string) $data['surname'],
-
-                'fav_list' => json_encode($dto->fav_list ?? []),
-                'cart' => json_encode($dto->cart ?? []),
 
                 'country' => (string) $data['country'],
                 'city' => (string) $data['city'],
@@ -158,8 +153,26 @@ class UserService extends BaseService
     return $dto;
   }
 
+
   public function updateUser (UserUpdateDTO $dto, int $id) 
   {
     return $this->userRepository->updateUser($dto, $id);
   }
+
+  // *** Методы транзакции ***
+  public function beginTransaction(): void
+  {
+    $this->userRepository->begin();
+  }
+
+  public function commit(): void
+  {
+    $this->userRepository->commit();
+  }
+
+  public function rollback(): void
+  {
+    $this->userRepository->rollback();
+  }
+
 }
