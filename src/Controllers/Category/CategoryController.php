@@ -6,12 +6,17 @@ use Vvintage\Controllers\BaseController;
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryOutputDTO;
 use Vvintage\Services\Category\CategoryService;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 
 class CategoryController extends BaseController
 {
-    public function __construct()
+    public function __construct(
+      FlashMessage $flash,
+      SessionService $sessionService
+    )
     {
-        parent::__construct();
+        parent::__construct($flash, $sessionService);
         $this->categoryService = new CategoryService();
     }
 

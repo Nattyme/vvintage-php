@@ -254,6 +254,7 @@
 
 
     private static function routeAuth(RouteData $routeData) {
+      $flash = new FlashMessage();
       $seoService = new SeoService();
       $sessionService = new SessionService();
       $cookieService = new CookieService();
@@ -263,10 +264,34 @@
       $setNewPassService = new PasswordSetNewService($userRepository);
       $validator = new LoginValidator($userRepository);
 
-      $loginController = new LoginController( $sessionService, $cookieService, $seoService, $pageService, $productService, $userRepository);
-      $regController = new RegistrationController( $seoService);
-      $resetController = new PasswordResetController( $seoService);
-      $setNewPassController = new PasswordSetNewController( $seoService, $setNewPassService);
+      $loginController = new LoginController( 
+        $flash,
+        $sessionService,
+        $cookieService, 
+        $seoService, 
+        $pageService, 
+        $productService, 
+        $userRepository
+      );
+
+      $regController = new RegistrationController( 
+        $flash,
+        $sessionService,
+        $seoService
+      );
+
+      $resetController = new PasswordResetController( 
+        $flash,
+        $sessionService,
+        $seoService
+      );
+
+      $setNewPassController = new PasswordSetNewController( 
+        $flash,
+        $sessionService,
+        $seoService, 
+        $setNewPassService
+      );
 
    
       switch ($routeData->uriModule) {
@@ -296,9 +321,17 @@
 
     public static function routeProfile(RouteData $routeData)
     {
+        $flash = new FlashMessage();
+        $sessionService = new SessionService();
         $breadcrumbs = new Breadcrumbs();
         $seoService = new SeoService();
-        $profileController = new ProfileController($seoService, $breadcrumbs);
+        
+        $profileController = new ProfileController(
+          $flash,
+          $sessionService,
+          $seoService, 
+          $breadcrumbs
+        );
 
         // Свой профиль
         if (isset($routeData->uriGet) && $routeData->uriGet === 'edit') {
@@ -316,12 +349,24 @@
 
     // ::::::::::::: SHOP :::::::::::::::::::
     private static function routeShop(RouteData $routeData) {
+      $flash = new FlashMessage();
+      $sessionService = new SessionService();
       $breadcrumbs = new Breadcrumbs();
-
-      // Инициализируем SEO-сервис
       $seoService = new SeoService();
-      $productController = new ProductController($seoService, $breadcrumbs );
-      $catalogController  = new CatalogController($seoService, $breadcrumbs );
+
+      $productController = new ProductController(
+        $flash,
+        $sessionService,
+        $seoService, 
+        $breadcrumbs 
+      );
+
+      $catalogController  = new CatalogController(
+        $flash,
+        $sessionService,
+        $seoService, 
+        $breadcrumbs 
+      );
 
       if ( isset($routeData->uriGet) ) {
         $productController->index($routeData);
@@ -333,45 +378,61 @@
 
       
     private static function routeBlog(RouteData $routeData) {
+      $flash = new FlashMessage();
       $breadcrumbs = new Breadcrumbs();
-  
-      $blogController = new BlogController($breadcrumbs);
-      $postController = new PostController($breadcrumbs);
-    
-        if ($routeData->uriModule === 'add-comment') {
-          // require ROOT . 'modules/blog/add-comment.php';
-        } 
-        elseif ($routeData->uriModule === 'blog' && isset($routeData->uriGet)) {
-          $blogController->index($routeData);
-        }
-        elseif ($routeData->uriModule === 'post') {
-          if (!empty($routeData->uriGet)) {
-              $postController->index($routeData); // конкретный пост
-          } else {
-              header("Location: /blog");
-              exit;
-          }
-        }
+      $sessionService = new SessionService();
 
-        else {
-          $blogController->index($routeData);
+      $blogController = new BlogController(
+        $flash,
+        $sessionService,
+        $breadcrumbs
+      );
+
+      $postController = new PostController(
+        $flash,
+        $sessionService,
+        $breadcrumbs
+      );
+    
+      if ($routeData->uriModule === 'add-comment') {
+        // require ROOT . 'modules/blog/add-comment.php';
+      } 
+      elseif ($routeData->uriModule === 'blog' && isset($routeData->uriGet)) {
+        $blogController->index($routeData);
+      }
+      elseif ($routeData->uriModule === 'post') {
+        if (!empty($routeData->uriGet)) {
+            $postController->index($routeData); // конкретный пост
+        } else {
+            header("Location: /blog");
+            exit;
         }
+      }
+
+      else {
+        $blogController->index($routeData);
+      }
     }
 
     private static function routeCart(RouteData $routeData) {
-      $sessionService = new SessionService();
+      $flash = new FlashMessage();
       $seoService = new SeoService();
+      $breadcrumbs = new Breadcrumbs();
+      $productService = new ProductService();
+      $sessionService = new SessionService();
+
+
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
       */
       $userModel = $sessionService->getLoggedInUser();
-      $breadcrumbs = new Breadcrumbs();
+     
 
       // Получаем корзину и ее модель
       $cartModel = $userModel->getCartModel();
       $cart = $userModel->getCart();;
-      $productService = new ProductService();
+      
 
       /**
        * Получаем хранилище
@@ -380,9 +441,26 @@
       $cartStore = ($userModel instanceof User) 
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
-      $cartService = new CartService($userModel, $cartModel, $cartModel->getItems(), $cartStore, $productService);
 
-      $controller  = new CartController( $cartService, $userModel, $cartModel, $cart, $cartStore, $breadcrumbs, $seoService );
+      $cartService = new CartService(
+        $userModel, 
+        $cartModel, 
+        $cartModel->getItems(), 
+        $cartStore, 
+        $productService
+      );
+
+      $controller  = new CartController( 
+        $flash,
+        $sessionService,
+        $cartService, 
+        $userModel, 
+        $cartModel, 
+        $cart, 
+        $cartStore, 
+        $breadcrumbs, 
+        $seoService 
+      );
 
       switch ($routeData->uriModule) {
         case 'cart':
@@ -398,20 +476,20 @@
     }
 
     private static function routeFav(RouteData $routeData) {
-      $sessionService = new SessionService();
+      $flash = new FlashMessage();
       $seoService = new SeoService();
+      $breadcrumbs = new Breadcrumbs();
+      $sessionService = new SessionService();
+
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
       */
       $userModel = $sessionService->getLoggedInUser();
-      $breadcrumbs = new Breadcrumbs();
-
+    
       // Получаем избранное и ее модель
       $favModel = $userModel->getFavModel();
       $fav = $userModel->getFavList();
-      $productService = new ProductService();
-
 
       /**
        * Получаем хранилище
@@ -421,8 +499,25 @@
                     ? new UserItemsListStore( new UserRepository() ) 
                     : new GuestItemsListStore();
                     
-      $favService = new FavoritesService($userModel, $favModel, $favModel->getItems(), $favStore, $productService);
-      $controller  = new FavoritesController( $favService, $userModel, $favModel, $fav, $favStore, $breadcrumbs, $seoService );
+      $favService = new FavoritesService(
+        $userModel, 
+        $favModel, 
+        $favModel->getItems(), 
+        $favStore, 
+        $productService
+      );
+
+      $controller  = new FavoritesController( 
+        $flash,
+        $sessionService,
+        $favService, 
+        $userModel, 
+        $favModel, 
+        $fav, 
+        $favStore, 
+        $breadcrumbs, 
+        $seoService 
+      );
 
       switch ($routeData->uriModule) {
         case 'favorites':
@@ -494,15 +589,17 @@
     /**********************/
     private static function routePages(RouteData $routeData)
     {
+      $flash = new FlashMessage();
+      $sessionService = new SessionService();
       $pageService = new PageService();
       $breadcrumbs = new Breadcrumbs();
-
-      // Инициализируем SEO-сервис
       $seoService = new SeoService();
-      // $pageModel = $pageService->getPageBySlug($routeData->uriModule);
 
-      // $controller = new PageController($pageModel, $breadcrumbs);
-      $controller = new PageController( $seoService);
+      $controller = new PageController( 
+        $flash,
+        $sessionService,
+        $seoService
+      );
 
       switch ($routeData->uriModule) {
         case '':
@@ -516,13 +613,6 @@
           break;
       }
     }
-
-    // private static function routeHome(RouteData $routeData)
-    // {
-    //   $controller = new HomeController();
-    //   $controller->index($routeData);
-    // }
-
 
 
     

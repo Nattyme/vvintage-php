@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Blog;
 
 use Vvintage\Routing\RouteData;
+
 use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Services\Navigation\NavigationService;
 use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Post\PostService;
 use Vvintage\DTO\Post\PostFilterDTO;
 
@@ -21,9 +24,12 @@ final class BlogController extends BaseController
   
 
     public function __construct(
+        FlashMessage $flash,
+        SessionService $sessionService,
         Breadcrumbs $breadcrumbs
-    ) {
-        parent::__construct(); // Важно!
+    ) 
+    {
+        parent::__construct($flash, $sessionService, $breadcrumbs); // Важно!
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService();
         $this->navigationService = new NavigationService();

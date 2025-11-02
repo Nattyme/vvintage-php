@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Vvintage\Services\Security;
 
 use Vvintage\Models\User\User;
+use Vvintage\Services\Base\BaseService;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Validation\LoginValidator;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Base\BaseService;
 
 final class LoginService extends BaseService 
 {

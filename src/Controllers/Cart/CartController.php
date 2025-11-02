@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Cart;
 
-use RedBeanPHP\R; // Подключаем readbean
-use Vvintage\Routing\Router;
+
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
@@ -28,6 +27,7 @@ use Vvintage\Models\Cart\Cart;
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Product\ProductImageService;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\SEO\SeoService;
@@ -51,6 +51,8 @@ final class CartController extends BaseController
     private SeoService $seoService;
 
     public function __construct(
+      FlashMessage $flash,
+      SessionService $sessionService,
       CartService $cartService, 
       UserInterface $userModel, 
       Cart $cartModel, 
@@ -60,7 +62,7 @@ final class CartController extends BaseController
       SeoService $seoService
     )
     {
-      parent::__construct(); // Важно!
+      parent::__construct($flash, $sessionService); // Важно!
       $this->cartService = $cartService;
       $this->userModel = $userModel;
       $this->cartModel = $cartModel;

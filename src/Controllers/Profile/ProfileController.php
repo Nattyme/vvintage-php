@@ -21,6 +21,8 @@ use Vvintage\Services\Profile\ProfileService;
 use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Services\Order\OrderService;
 use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 
 use Vvintage\Models\Order\Order;
 
@@ -40,9 +42,14 @@ final class ProfileController extends BaseController
   protected OrderService $orderService;
   
 
-  public function __construct( SeoService $seoService, Breadcrumbs $breadcrumbs)
+  public function __construct( 
+    FlashMessage $flash,
+    SessionService $sessionService,
+    SeoService $seoService, 
+    Breadcrumbs $breadcrumbs
+  )
   {
-    parent::__construct(); // Важно!
+    parent::__construct($flash, $sessionService); // Важно!
     $this->userService = new UserService();
     $this->breadcrumbsService = $breadcrumbs;
     $this->seoService = $seoService;

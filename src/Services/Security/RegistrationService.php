@@ -2,13 +2,13 @@
 declare(strict_types=1);
 
 namespace Vvintage\Services\Security;
-use Vvintage\Models\User\User;
-use Vvintage\Repositories\UserRepository;
-use Vvintage\Services\User\UserService;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Base\BaseService;
 
-use RedBeanPHP\R;
+use Vvintage\Models\User\User;
+use Vvintage\Services\User\UserService;
+use Vvintage\Services\Base\BaseService;
+use Vvintage\Repositories\UserRepository;
+use Vvintage\Services\Session\SessionService;
+
 
 final class RegistrationService extends BaseService
 {
@@ -23,16 +23,16 @@ final class RegistrationService extends BaseService
     $this->sessionService = new SessionService();
   }
  
-  public function registrateUser (array $postData):void 
+  public function registrateUser (array $postData): User
   {
-    
     // Создаем нового пользователя
     $newUser = $this->userService->createUser( $postData );
 
     // Автологин 
-    if ($newUser) {
-      $this->autoLoginNewUser($newUser);
-    }
+    if (!$newUser) throw new \Exception('Не удалось зарегистрироваться. Попробуйте ещё раз.');
+    $this->autoLoginNewUser($newUser);
+
+    return $newUser;
   }
 
   public function isEmailFree (string $emailData): int
@@ -50,9 +50,6 @@ final class RegistrationService extends BaseService
   private function autoLoginNewUser (User $user): void
   {
     $this->sessionService->setUserSession($user);
-    
-    // Перенаправляем
-    $this->redirect('profile/edit');
   }
 
 }

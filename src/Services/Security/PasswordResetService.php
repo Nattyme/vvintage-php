@@ -2,11 +2,10 @@
 declare(strict_types=1);
 
 namespace Vvintage\Services\Security;
-use Vvintage\Repositories\User\UserRepository;
 
-use RedBeanPHP\R;
 use Vvintage\Config\Config;
 use Vvintage\Services\Base\BaseService;
+use Vvintage\Repositories\User\UserRepository;
 
 final class PasswordResetService extends BaseService
 {

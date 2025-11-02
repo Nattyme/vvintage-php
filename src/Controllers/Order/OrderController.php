@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Order;
 
-use Vvintage\Routing\Router;
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
@@ -18,6 +17,7 @@ use Vvintage\Contracts\User\UserItemsListStoreInterface;
 use Vvintage\Services\Order\OrderService;
 use Vvintage\Services\Cart\CartService;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Validation\NewOrderValidator;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Page\PageService;
@@ -52,6 +52,8 @@ final class OrderController extends BaseController
   
 
     public function __construct(
+      FlashMessage $flash,
+      SessionService $sessionService,
       OrderService $orderService, 
       CartService $cartService, 
       UserInterface $userModel,
@@ -62,7 +64,7 @@ final class OrderController extends BaseController
       Breadcrumbs $breadcrumbs
     )
     {
-      parent::__construct(); // Важно!
+      parent::__construct($flash, $sessionService); // Важно!
       $this->orderService = $orderService;
       $this->cartService = $cartService;
       $this->userModel = $userModel;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Vvintage\Controllers\Favorites;
 
+use Vvintage\Routing\RouteData;
+
 /** Базовый контроллер страниц*/
 use Vvintage\Controllers\Base\BaseController;
 
@@ -11,8 +13,6 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
-use Vvintage\Routing\Router;
-use Vvintage\Routing\RouteData;
 use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Models\User\User;
@@ -24,15 +24,16 @@ use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 
 use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Messages\FlashMessage;
 
 /** Сервисы */
-use Vvintage\Services\Favorites\FavoritesService;
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Product\ProductImageService;
-use Vvintage\Services\Product\ProductService;
-use Vvintage\Services\Page\PageService;
 use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Page\Breadcrumbs;
+use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\Product\ProductService;
+use Vvintage\Services\Favorites\FavoritesService;
+use Vvintage\Services\Product\ProductImageService;
 
 
 /** Абстракции */
@@ -53,6 +54,8 @@ final class FavoritesController extends BaseController
     private SeoService $seoService;
 
     public function __construct(
+      FlashMessage $flash,
+      SessionService $sessionService,
       FavoritesService $favService, 
       UserInterface $userModel, 
       Favorites $favModel, 
@@ -62,7 +65,7 @@ final class FavoritesController extends BaseController
       SeoService $seoService
     )
     {
-      parent::__construct(); // Важно!
+      parent::__construct($flash, $sessionService); // Важно!
       $this->favService = $favService;
       $this->userModel = $userModel;
       $this->favModel = $favModel;

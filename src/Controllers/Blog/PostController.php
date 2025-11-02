@@ -14,6 +14,8 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Post\PostService;
 use Vvintage\Services\SEO\SeoService;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Navigation\NavigationService;
 
 
@@ -24,9 +26,13 @@ final class PostController extends BaseController
     private PostService $postService;
     private NavigationService $navigationService;
 
-    public function __construct(Breadcrumbs $breadcrumbs)
+    public function __construct(
+      FlashMessage $flash,
+      SessionService $sessionService,
+      Breadcrumbs $breadcrumbs
+    )
     {
-        parent::__construct(); // Важно!
+        parent::__construct($flash, $sessionService, $breadcrumbs); // Важно!
         $this->seoService = new SeoService();
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService();

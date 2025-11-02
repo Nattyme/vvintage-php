@@ -22,6 +22,7 @@ use Vvintage\Services\Security\LoginService;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Favorites\FavoritesService;
 use Vvintage\Services\User\UserItemsMergeService;
+use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Cookie\CookieService;
 
@@ -37,6 +38,7 @@ final class LoginController extends BaseController
 {
 
   public function __construct(
+    protected FlashMessage $flash,
     protected SessionService $sessionService,
     protected CookieService $cookieService,
     private SeoService $seoService,
@@ -45,7 +47,7 @@ final class LoginController extends BaseController
     private UserRepository $userRepository,
   ) 
   {
-    parent::__construct(); // Важно!
+    parent::__construct($flash, $sessionService); // Важно!
   }
 
   public function index(RouteData $routeData): void

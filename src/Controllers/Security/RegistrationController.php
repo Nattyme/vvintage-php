@@ -6,6 +6,8 @@ namespace Vvintage\Controllers\Security;
 use Vvintage\Controllers\Base\BaseController; /** Базовый контроллер страниц*/
 use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Security\RegistrationService;
 use Vvintage\Services\Validation\RegistrationValidator;
 
@@ -15,11 +17,16 @@ final class RegistrationController extends BaseController
   private PageService $pageService;
   private RegistrationService $service;
 
-  public function __construct(SeoService $seoService)
+  public function __construct(
+    FlashMessage $flash,
+    SessionService $sessionService,
+    SeoService $seoService
+  )
   {
-      parent::__construct(); // Важно!
+      parent::__construct($flash, $sessionService); // Важно!
       $this->pageService = new PageService();
       $this->service = new RegistrationService();
+      $this->seoService = new SeoService();
   }
 
   public function index ($routeData) {
@@ -30,9 +37,9 @@ final class RegistrationController extends BaseController
       if ( $validator->validate( $_POST )) {
         $newUser = $this->service->registrateUser( $_POST );
 
-        if (!$newUser) {
-          $this->flash->pushError('Что-то пошло не так. Попробуйте ещё раз.');
-        }
+        // Перенаправляем
+        $this->redirect('profile/edit');
+        
       }
     }
 

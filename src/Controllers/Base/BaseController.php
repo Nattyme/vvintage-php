@@ -5,11 +5,12 @@ namespace Vvintage\Controllers\Base;
 
 /** Интерфейсы */
 use Vvintage\Routing\RouteData;
-use Vvintage\Models\Settings\Settings;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Contracts\User\UserInterface;
+
 use Vvintage\Models\User\User;
+use Vvintage\Models\Settings\Settings;
+use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\AdminPanel\AdminPanelService;
 
 
@@ -17,26 +18,19 @@ abstract class BaseController
 {    
   protected array $settings;
   protected RouteData $routeData; 
-  protected Translator $translator;
-  protected FlashMessage $flash;
-  protected SessionService $sessionService;
 
-  public function __construct()
+  public function __construct(
+    protected FlashMessage $flash,
+    protected SessionService $sessionService
+  )
   {
       $this->settings = Settings::all(); 
-      $this->flash = new FlashMessage();
-      $this->sessionService = new SessionService();
   }
 
 
   public function setRouteData(RouteData $routeData): void
   {
       $this->routeData = $routeData;
-  }
-
-  public function getTranslator(): Translator
-  {
-      return $this->translator;
   }
 
   protected function renderLayout(string $viewPath, array $vars = []): void

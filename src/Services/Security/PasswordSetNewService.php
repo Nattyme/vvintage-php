@@ -2,11 +2,11 @@
 declare(strict_types=1);
 
 namespace Vvintage\Services\Security;
-use Vvintage\Models\User\User;
-use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Base\BaseService;
 
-use RedBeanPHP\R;
+use Vvintage\Models\User\User;
+use Vvintage\Services\Base\BaseService;
+use Vvintage\Repositories\User\UserRepository;
+
 
 final class PasswordSetNewService extends BaseService
 {
