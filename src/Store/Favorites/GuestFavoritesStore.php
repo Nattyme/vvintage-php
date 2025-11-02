@@ -5,18 +5,24 @@ namespace Vvintage\Store\Favorites;
 
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Favorites\Favorites;
+use Vvintage\Services\Cookie\CookieService;
 
 class GuestFavoritesStore implements FavoritesStoreInterface {
-  public function load(): array {
-    
-    return isset($_COOKIE['fav_list']) && is_string($_COOKIE['fav_list'])
-      ? json_decode($_COOKIE['fav_list'], true)
-      : [];
+  private CookieService $cookieService;
+
+  public function __construct() {
+    $this->cookieService = new CookieService();
   }
+
+  public function load(): array 
+  {
+    return $this->cookieService->getCookieValueByKey('fav_list');
+  }
+
 
   public function save(Favorites $favModel, ?UserInterface $userModel = null): void 
   {
     $fav = $favModel->getItems(); // получаем массив избранного
-    setcookie('fav_list', json_encode($fav), time() + 3600 * 24 * 7, '/');
+    $this->cookieService->setCookieValueByKey('fav_list', $fav); // сохраняем в куки
   }
 }

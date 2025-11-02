@@ -3,20 +3,25 @@ declare(strict_types=1);
 
 namespace Vvintage\Store\Cart;
 
-use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Cart\Cart;
+use Vvintage\Models\User\UserInterface;
+use Vvintage\Services\Cookie\CookieService;
 
 class GuestCartStore implements CartStoreInterface {
+
+  private CookieService $cookieService;
+
+  public function __construct() {
+    $this->cookieService = new CookieService();
+  }
+
   public function load(): array {
-    
-    return isset($_COOKIE['cart']) && is_string($_COOKIE['cart'])
-      ? json_decode($_COOKIE['cart'], true)
-      : [];
+    return $this->cookieService->getCookieValueByKey('cart');
   }
 
   public function save(Cart $cartModel, ?UserInterface $userModel = null): void 
   {
     $cart = $cartModel->getItems(); // получаем массив корзины
-    setcookie('cart', json_encode($cart), time() + 3600 * 24 * 7, '/');
+    $this->cookieService->setCookieValueByKey('cart', $cart); // сохраняем в куки
   }
 }
