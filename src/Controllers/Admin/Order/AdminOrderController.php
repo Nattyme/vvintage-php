@@ -120,25 +120,8 @@ class AdminOrderController extends BaseAdminController
 
     $pageClass = 'admin-page';
 
-    // Задаем название страницы и класс
-    if( isset($_POST['submit'])) {
-      // Проверка токена
-      if (!check_csrf($_POST['csrf'] ?? '')) {
-        $_SESSION['errors'][] = ['error', 'Неверный токен безопасности'];
-      }
-
-      // Проверка на заполненность названия
-      if( trim($_POST['title']) == '' ) {
-        $_SESSION['errors'][] = ['title' => 'Введите название бренда'];
-      } 
-
-      // Если нет ошибок
-      if ( empty($_SESSION['errors'])) {
-        $brand = $this->brandRepository->getBrandById((int) $routeData->uriGetParam);
-
-        $_SESSION['success'][] = ['title' => 'Бренд успешно обновлен.'];
-      }
-    }
+    // TODO:закончить реализацию удаления заказа
+    if( isset($_POST['submit'])) {}
 
     $currentLang = LanguageConfig::getCurrentLocale();
 

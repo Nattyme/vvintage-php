@@ -19,6 +19,20 @@ use Vvintage\Store\Favorites\GuestFavoritesStore;
 
 class SessionService
 {
+
+    public function startSession(): void 
+    {
+      session_start();
+      $this->clearFlashNotes(); // на старте очитстим уведомления
+    }
+
+    public function clearFlashNotes(): void 
+    {
+      $_SESSION['errors'] = [];
+      $_SESSION['success'] = [];
+    }
+
+
     public function setUserSession(User $user): bool
     {
         // Автологин пользователя после регистрации
@@ -37,15 +51,11 @@ class SessionService
         return false;
     }
 
-    public function isLoggedIn(): bool
+    public function setCurrentLocale (string $lang): void
     {
-        $result = false;
-
-        if (isset($_SESSION['logged_user']) && $_SESSION['user_id'] && $_SESSION['login'] === 1) {
-            $result = true;
-        }
-        return $result;
+       $_SESSION['locale'] = $lang;
     }
+
 
     public function logout(): void
     {
@@ -56,25 +66,14 @@ class SessionService
       }
     }
 
-    public function getLoggedInUserId(): ?int
+    public function isLoggedIn(): bool
     {
-      if (!$this->isLoggedIn()) return null;
-      return (int) $_SESSION['user_id'];
-    }
+        $result = false;
 
-
-    public function getLoggedInUser(): ?UserInterface
-    {
-        // Если не пользователь - возвращаем экземпляр гостя с корзиной из куки
-        if (!isset($_SESSION['user_id'])) {
-          $guestCart = ( new GuestCartStore() )->load();
-          $guestFav = ( new GuestFavoritesStore() )->load();
-          return new GuestUser( ['cart'=> $guestCart, 'fav' => $guestFav] );
+        if (isset($_SESSION['logged_user']) && $_SESSION['user_id'] && $_SESSION['login'] === 1) {
+            $result = true;
         }
-
-        $userRepository = new UserRepository();
-        
-        return $userRepository->getUserById((int) $_SESSION['user_id']);
+        return $result;
     }
 
     public function isProfileOwner(int $profileId): bool 
@@ -91,7 +90,32 @@ class SessionService
         return $user->getId() === $profileId;
     }
 
-    
+
+    public function getLoggedInUserId(): ?int
+    {
+      if (!$this->isLoggedIn()) return null;
+      return (int) $_SESSION['user_id'];
+    }
+
+    public function getLoggedInUser(): ?UserInterface
+    {
+        // Если не пользователь - возвращаем экземпляр гостя с корзиной из куки
+        if (!isset($_SESSION['user_id'])) {
+          $guestCart = ( new GuestCartStore() )->load();
+          $guestFav = ( new GuestFavoritesStore() )->load();
+          return new GuestUser( ['cart'=> $guestCart, 'fav' => $guestFav] );
+        }
+
+        $userRepository = new UserRepository();
+        
+        return $userRepository->getUserById((int) $_SESSION['user_id']);
+    }
+
+    public function getCurrentLocale (): ?string
+    {
+      return $_SESSION['locale'] ?? null;
+    }
+ 
     /**
      *Обновляет сессию  для указанного ключа
      * 
@@ -104,14 +128,8 @@ class SessionService
       $_SESSION[ $sessionKey] =  $items;
     }
 
-    public function getCurrentLocale (): ?string
-    {
-      return $_SESSION['locale'] ?? null;
-    }
 
-    public function setCurrentLocale (string $lang): void
-    {
-       $_SESSION['locale'] = $lang;
-    }
+
+
 
 }

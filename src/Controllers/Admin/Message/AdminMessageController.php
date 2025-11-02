@@ -108,22 +108,6 @@ class AdminMessageController extends BaseAdminController
       $this->redirect('admin/messages');
     }
 
-    // Если нет ошибок
-
-      // Удаление файла
-      // if ( !empty($message['file_name_src']) ) {
-
-      //   // Удадить файлы с сервера
-      //   $fileFolderLocation = ROOT . 'usercontent/contact-form/';
-      //   unlink($fileFolderLocation . $message->file_name_src);
-      // }
-
-      // R::trash($message);
-      // $_SESSION['success'][] = ['title' => 'Сообщение было успешно удалено.'];
-     
-      // header('Location: ' . HOST . 'admin/messages');
-      // exit();
-
         
     $this->renderLayout('messages/delete',  [
       'pageTitle' => $pageTitle,
