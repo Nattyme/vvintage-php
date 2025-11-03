@@ -3,7 +3,7 @@
   <h3 class="filter__title">
     <?php echo h(__('shop.brands', [], 'shop'));?>
   </h3>
-  <ul class="filter__list" data-show-count="5">
+  <ul class="filter__list filter__list--limit-render" data-show-count="5">
     <?php foreach($viewModel['brands'] as $brand) : ?>
 
       <li class="filter__item">

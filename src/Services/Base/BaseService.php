@@ -6,7 +6,7 @@ namespace Vvintage\Services\Base;
 use Vvintage\Services\Locale\LocaleService;
 use Vvintage\Config\LanguageConfig;
 
-
+//!!  TODO:remove this class and use LocaleService as DI instead
 abstract class BaseService
 {    
   public string $currentLang;
