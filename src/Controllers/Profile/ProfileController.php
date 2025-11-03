@@ -215,7 +215,7 @@ final class ProfileController extends BaseController
       if (isset($_POST['updateProfile'])) {
         try {
           $result = $this->profileService->updateUserAndGoToProfile($_POST, $_FILES, $userModel);
-          $this->flash->pushSuccess('suscess', 'Данные профиля были успешно обновлены.');
+          $this->flash->pushSuccess('Данные профиля были успешно обновлены.');
           $this->redirect('profile', (string) $userModel->getId() );
         }
         catch (\Exception $error) {

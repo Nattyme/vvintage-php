@@ -5,8 +5,11 @@
       <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
       
       <div class="profile-card">
-        <?php include ROOT . "views/components/errors.tpl"; ?>
-        <?php include ROOT . "views/components/success.tpl"; ?>
+        <div class="notifications-wrapper">
+          <?php include ROOT . "views/components/errors.tpl"; ?>
+          <?php include ROOT . "views/components/success.tpl"; ?>
+        </div>
+
 
         <section class="profile-card__header">
             <div class="profile-card__avatar">

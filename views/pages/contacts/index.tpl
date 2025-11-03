@@ -63,16 +63,34 @@
 
         <div class="contacts__widget">
           <h3 class="contacts__widget__title h3"><?php echo h(__('contacts.form.title', [], 'contacts'));?></h3>
-
-          <?php include ROOT . "views/components/errors.tpl"; ?>
-          <?php include ROOT . "views/components/success.tpl"; ?>
-
           <div class="contacts__form">
+            <div class="notifications-wrapper">
+              <?php include ROOT . "views/components/errors.tpl"; ?>
+              <?php include ROOT . "views/components/success.tpl"; ?>
+            </div>
             <form action="<?php echo HOST . 'contacts'; ?>" class="form-contact" method="POST">
               <div class="form-input-wrapper">
-                <input type="text" class="form-input input" placeholder="<?php echo h(__('contacts.form.name', [], 'contacts'));?>" name="name" />
-                <input type="text" class="form-input input" placeholder="<?php echo h(__('contacts.form.email', [], 'contacts'));?>" name="email" />
-                <input type="text" class="form-input input" placeholder="<?php echo h(__('contacts.form.phone', [], 'contacts'));?>" name="phone" />
+                <input 
+                  type="text" 
+                  class="form-input input" 
+                  placeholder="<?php echo h(__('contacts.form.name', [], 'contacts'));?>" 
+                  name="name" 
+                  value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>"
+                />
+                <input 
+                  type="text" 
+                  class="form-input input" 
+                  placeholder="<?php echo h(__('contacts.form.email', [], 'contacts'));?>" 
+                  name="email" 
+                  value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>"
+                />
+                <input 
+                  type="text" 
+                  class="form-input input" 
+                  placeholder="<?php echo h(__('contacts.form.phone', [], 'contacts'));?>" 
+                  name="phone" 
+                  value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : ''; ?>"
+                />
               </div>
 
               <textarea class="form-textarea textarea" name="message" placeholder="<?php echo h(__('contacts.form.message', [], 'contacts'));?>"></textarea>

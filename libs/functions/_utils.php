@@ -55,16 +55,7 @@
     return $result;
   }
   
-  // Проверка вошел ли пользователь в профиль (залогинился)
-  function isLoggedIn() {
-    $result = false;
 
-    if ( isset($_SESSION['logged_user']) ) {
-      $result = true;
-    }
-
-    return $result;
-  }
   
   // Форматируем дату
   // rus_date("j F Y", $post['timestamp'])

@@ -129,22 +129,20 @@ final class FavoritesController extends BaseController
     {
       // Передаем ключ для сохранения куки и id продукта
       $this->favService->addItem($productId);
-
-      // Переадресация обратно на страницу товара
-      header('Location: ' . HOST . 'shop/' . $productId);
-      exit();
+      
+      // Уведомление и преадресация обратно на страницу товара
+      $this->flash->pushSuccess('Товар добавлен в избранное');
+      $this->redirect('shop/' . $productId);
     }
 
     public function removeItem(int $productId): void
     {      
-
         // Удаляем товар
         $this->favService->removeItem($productId);
-        // $this->favStore->save($this->favModel, $this->userModel);
 
-        // Переадресация обратно на страницу товара
-        header('Location: ' . HOST . 'favorites');
-        exit();
+        // Уведомление и преадресация обратно на страницу товара
+        $this->flash->pushSuccess('Товар удален из избранного');
+        $this->redirect('shop/' . $productId);
     }
 
 }

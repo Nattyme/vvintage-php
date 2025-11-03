@@ -7,6 +7,8 @@
       <div class="product__content">
         <!-- Заголовок и хлебные крошки -->
         <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
+
+ 
         
         <div class="product__data">
 
@@ -17,6 +19,9 @@
           <!-- // Галерея изображений -->
 
           <div class="product-card">
+            <div class="notifications-wrapper w">
+              <?php include ROOT . "views/components/success.tpl"; ?>
+            </div>
             <header class="product-card__header">
       
               <div class="product-card__row">

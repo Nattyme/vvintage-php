@@ -1,6 +1,4 @@
-<?php
-  use RedBeanPHP\R;
-  
+<?php  
   // Вывод похожих продуктов
   function get_related_products ($productTitle, $productCategory, $productBrand) {
     // Разбиваем заголовок на слова, записваем массив в переменую

@@ -61,6 +61,21 @@ class ProfileService
 
             // Добавляем данные аватара в к массиву данных
             $data = array_merge($data, $avatars);
+          } elseif (isset($data['delete-avatar']) && $data['delete-avatar'] === 'on') {
+              // Старые файлы для удаления
+              $avatarsToDelete = [
+                  'old_avatar' => $userModel->getAvatar(),
+                  'old_avatar_small' => $userModel->getAvatarSmall()
+              ];  
+
+              // Поля для очистки в БД
+              $avatars = [
+                  'avatar' => null,
+                  'avatar_small' => null
+              ];
+
+              $data = array_merge($data, $avatars);
+          
           }
 
           $this->validator->validateEdit($data); // если невалидно — выбросится исключение
@@ -73,10 +88,11 @@ class ProfileService
           // Подтверждаем транзакцию 
           $this->userService->commit();
 
-          // Удаляем старые аватары
-          if($avatarsToDelete) {
-            $this->userService->deleteAvatar($avatarsToDelete);
+          // Удаляем старые аватары (если есть)
+          if (!empty($avatarsToDelete)) {
+              $this->userService->deleteAvatar($avatarsToDelete);
           }
+
       }
       catch (\Throwable $error)
       {

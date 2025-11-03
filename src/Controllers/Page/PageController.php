@@ -61,32 +61,21 @@ class PageController extends BaseController
     $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
-      $csrfToken = $_POST['csrf'] ?? '';
 
-      if (!$csrfToken) {
-        $this->flash->pushSuccess('Неверный токен безопасности');
+      try {
+        $cleanedData = ContactFormValidation::validate($_POST); // валидация
+        
+        $service = new MessageService();
+        $saved = $service->createMessage($cleanedData); // передаем оичитанные данные
+
+        $this->flash->pushSuccess('Сообщение успешно отправлено. Мы свяжемся с вами в ближайшее время');
+        $this->redirect('contacts');
+      }
+      catch (\Exception $error) {
+        $this->flash->pushError('Не удалось отправить сообщение: ' . $error->getMessage());
         $this->redirect('contacts');
       }
 
-    
-      $result = ContactFormValidation::validate($_POST);
-
-      // Если есть ошибки - пройдём по массиву и покажем.
-      if(!empty($result['errors'])) {
-        $this->renderErrors($result['errors']);
-        $this->redirect('contacts');
-      }
-
-      $service = new MessageService();
-      $saved = $service->createMessage($result['data']);
-
-      if ($saved) {
-          $this->flash->pushSuccess('Сообщение успешно отправлено. Мы свяжемся с вами в ближайшее время');
-          $this->redirect('contacts');
-      } else {
-          $this->flash->pushError('Не отправить сообщение. Проверьте данные и попробуйте ещё раз.');
-          $this->redirect('contacts');
-      }
     }
 
 
@@ -165,16 +154,5 @@ class PageController extends BaseController
     ]);
   }
 
-
-  private function renderErrors(array $errors): void
-  {
-      foreach ($errors as $fields) {
-        foreach ($fields as $index => $value) {
-              $this->flash->pushError("Ошибка: ", $value );
-        }
-      }
-  
-      return;
-  }
 
 }

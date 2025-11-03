@@ -34,12 +34,14 @@ final class MessageRepository extends AbstractRepository implements MessageRepos
         $bean->phone = $data['phone'];
         $bean->email = $data['email'];
         $bean->message = $data['message'];
+        $bean->status = 'new';
+        $bean->datetime = new \DateTime();
 
         $this->saveBean($bean);
 
         $id = (int) $bean->id;
 
-        if (!$id) throw new RuntimeException("Не удалось сохранить сообщение");
+        if (!$id) throw new RuntimeException("Не удалось сохранить сообщение. Повторите попытку.");
 
         return $id;
 

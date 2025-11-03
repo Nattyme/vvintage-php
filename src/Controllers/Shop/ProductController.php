@@ -72,7 +72,6 @@ final class ProductController extends BaseController
             'imagesTotal' => $productDto->images['total'],
             'main' => $productDto->images['main'],
             'gallery' => $productDto->images['gallery'], 
-            // 'related' => $related,
             'statusList'=> $statusList,
         ];
 

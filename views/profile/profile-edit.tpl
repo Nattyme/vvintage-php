@@ -27,6 +27,10 @@
       <!-- Заголовок и хлебные крошки -->
       <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
 
+      <div class="notifications-wrapper">
+        <?php include ROOT . "views/components/errors.tpl"; ?>
+        <?php include ROOT . "views/components/success.tpl"; ?>
+      </div>
 
       <div class="profile__body">
         
@@ -40,8 +44,6 @@
         <?php endif; ?>
 
             <div class="profile-card">
-                <?php include ROOT . "views/components/errors.tpl"; ?>
-                <?php include ROOT . "views/components/success.tpl"; ?>
                 <div class="profile-card__content">
               
                     <div class="profile-card__column profile-card__column--img">

@@ -128,17 +128,17 @@ final class CartController extends BaseController
       $this->cartService->addItem($productId);
 
       // Переадресация обратно на страницу товара
-      header('Location: ' . HOST . 'shop/' . $productId);
-      exit();
+      $this->flash->pushSuccess('Товар добавлен в корзину');
+      $this->redirect('shop/' . $productId);
     }
 
     public function removeItem(int $productId, RouteData $routeData): void
     {
       $this->cartService->removeItem($productId);
 
-      // Переадресация обратно на страницу товара
-      header('Location: ' . HOST . 'cart');
-      exit();
+      // Уведомление и переадресация в корзину
+      $this->flash->pushSuccess('Товар удален из корзины');
+      $this->redirect('cart');
     }
 
 }

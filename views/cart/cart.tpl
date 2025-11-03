@@ -4,6 +4,10 @@
       <!-- Заголовок и хлебные крошки -->
       <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
 
+      <div class="notifications-wrapper">
+        <?php include ROOT . "views/components/success.tpl"; ?>
+      </div>
+
       <div class="page-cart__cart-wrapper">
         <?php include ROOT . 'views/components/success.tpl'; ?>
 

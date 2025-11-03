@@ -46,7 +46,7 @@
 
     
     <!-- Логотип бренда -->
-    <div class="admin-form__field">
+    <!-- <div class="admin-form__field">
       <label class="admin-form__label" for="image">Логотип бренда</label>
       <?php if (isset($brand) && $brand->image): ?>
         <div class="admin-form__image-preview">
@@ -64,7 +64,7 @@
         accept="image/*"
       />
       <small>Оставьте пустым, если не хотите менять текущий логотип</small>
-    </div>
+    </div> -->
 
 
     <div class="admin-form__buttons buttons">
