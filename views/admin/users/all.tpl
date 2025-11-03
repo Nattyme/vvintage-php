@@ -33,14 +33,14 @@
                 <?php echo  h($user->getRole());?>
             </td>
             <td>
-              <a 
+              <!-- <a 
                 class="admin-form-table__unit button button-close cross-wrapper cart__delete link-above-others"   
                 href="<?php /* echo HOST . "admin/";?>user-block/<?php echo h($user->getId());?>"
                 aria-label="Удалить пользователя <?php echo h($user->getName());*/?>"
               >
 
                   <span class="leftright"></span><span class="rightleft"> </span>
-              </a>
+              </a> -->
             </td>
           </tr>
         <?php endforeach; ?>

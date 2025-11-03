@@ -1,9 +1,3 @@
-<?php 
-  // Подключаем readbean
-  use RedBeanPHP\R; 
-
-  // $messages = R::find('messages', 'ORDER BY id DESC'); 
-;?>
 <section class="sidebar" id="sidebar-tab">
 
     <div class="sidebar__container sidebar__content">
@@ -25,8 +19,8 @@
         <?php include ROOT . "views/admin/sidebar/links/_messages.tpl";?>
         <?php include ROOT . "views/admin/sidebar/links/_blog.tpl";?>
         <?php include ROOT . "views/admin/sidebar/links/_users.tpl";?>
-        <?php include ROOT . "views/admin/sidebar/links/_settings.tpl";?>
-        <?php include ROOT . "views/admin/sidebar/links/_pages.tpl";?>
+        <?php /* include ROOT . "views/admin/sidebar/links/_settings.tpl"; */?>
+        <?php /* include ROOT . "views/admin/sidebar/links/_pages.tpl"; */?>
         <?php include ROOT . "views/admin/sidebar/links/_profile.tpl";?>
         <?php include ROOT . "views/admin/sidebar/links/_exit.tpl";?> 
       </ul>
