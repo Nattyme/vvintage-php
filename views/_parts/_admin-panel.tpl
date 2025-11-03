@@ -64,20 +64,6 @@
       </a>
       <!--// Заказы -->
 
-    
-
-      <!-- Редактирование текущей страницы -->
-      <!-- <?php if ( $uriModule === 'blog' && isset($uriGet) && $uriGet !== 'cat') : ?>
-        <a class="admin-panel__link" href="<?php echo HOST . 'admin/post-edit?id=' . u($uriGet); ?>" title='Перейти к редактированию текущей страницы'>
-          <div class="admin-panel__icon-wrapper">
-            <svg class="icon icon--edit">
-              <use href="<?php echo HOST . 'static/img/svgsprite/sprite.symbol.svg#edit';?>"></use>
-            </svg>
-            
-          </div>
-          <span>Редактировать</span>
-        </a>
-      <?php endif; ?> -->
 
     </div>
 

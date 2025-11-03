@@ -65,6 +65,14 @@ class SessionService
         return false;
     }
 
+    public function updateUserAvatarSmall(User $user): void
+    {
+        if (!isset($_SESSION['logged_user']) || !is_array($_SESSION['logged_user'])) return;
+
+        $_SESSION['logged_user']['avatar_small'] = $user->getAvatarSmall();
+        $_SESSION['logged_user']['avatar'] = $user->getAvatar();
+    }
+
     public function setCurrentLocale (string $lang): void
     {
        $_SESSION['locale'] = $lang;

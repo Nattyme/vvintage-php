@@ -21,7 +21,7 @@ class AdminPanelService
     {
         return [
             'newMessages' => $this->messageService->getAllMessagesCount('status = ?', ['new']),
-            'newOrders' => $this->orderService->getAllOrderaCount('status = ?', ['new']),
+            'newOrders' => $this->orderService->getAllOrderaCount('status = ?', ['new'])
         ];
     }
 }
