@@ -64,12 +64,12 @@ final class LoginController extends BaseController
     }
 
     try {
-      $this->validator-validate($_POST); // валидация , если ошибка - выбросит исключение
+      $this->validator->validate($_POST); // валидация , если ошибка - выбросит исключение
 
       $userModel = $this->service->login($_POST);
       $this->sessionService->setUserSession($user);
 
-      $this->handleItemsMerge($userModel); // слияние гостейвой корзин и избранного с данными в БД
+      $this->handleItemsMerge($userModel); // слияние гостевой корзины и избранного с данными в БД
       $this->renderGreetingMessage($userModel);
 
       $this->redirect('profile'); // редирект

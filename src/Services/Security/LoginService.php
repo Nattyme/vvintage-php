@@ -23,7 +23,7 @@ final class LoginService
     if (!$user) throw new \Exception('Пользователь с таким email не найден');
 
     // Проверяем список заблокированных
-    $isBlocked = $this->userService->findBlockedUserByEmail($email);
+    $isBlocked = $this->userService->findBlockedUserByEmail($data['email']);
     if ($isBlocked) throw new \Exception('Ошибка, невозможно зайти в профиль');
 
     // Проверяем пароль

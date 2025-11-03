@@ -6,7 +6,7 @@ namespace Vvintage\Services\Validation;
 
 final class LoginValidator 
 {
-  public function validate(array $data): bool
+  public function validate(array $data): void
   {
   
     $csrfToken = $data['csrf'] ?? '';

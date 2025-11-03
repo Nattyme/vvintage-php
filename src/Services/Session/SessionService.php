@@ -22,8 +22,20 @@ class SessionService
 
     public function startSession(): void 
     {
-      session_start();
-      $this->clearFlashNotes(); // на старте очитстим уведомления
+       if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // если это первая инициализация сессии за время жизни клиента
+        if (!isset($_SESSION['__initialized'])) {
+            $_SESSION['__initialized'] = true; // устанавливаем флаг
+            $this->clearFlashNotes(); // очистить только один раз при старте сессии
+        }
+    }
+
+    private function rewriteSessionId(): void 
+    {
+      session_regenerate_id(true);
     }
 
     public function clearFlashNotes(): void 
@@ -35,6 +47,8 @@ class SessionService
 
     public function setUserSession(User $user): bool
     {
+        $this->rewriteSessionId(); // устанавливаем новый id сессии
+        
         // Автологин пользователя после регистрации
         $_SESSION['logged_user'] = $user->export($user);
         $_SESSION['user_id'] = $user->getId();
