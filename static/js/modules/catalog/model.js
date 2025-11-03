@@ -3,17 +3,6 @@ import * as api from './../api/category/api.js';
 const initModel = () => {
   let cats = [];
 
-  // const loadCatsData = async () => {
-  //   try {
-  //     const res = await fetch('/api/categories');
-  //     if (!res.ok) throw new Error('Ошибка сети');
-  //     const data = await res.json();
-  //     return typeof data === 'object' ? Object.values(data) : [];
-  //   } catch (err) {
-  //     console.error('Ошибка загрузки категорий навигации:', err);
-  //     return [];
-  //   }
-  // }  
 
   const setCatsData = async () => {
     cats = await api.getAll();

@@ -52,7 +52,6 @@ const initController = async () => {
     if (!subSubNav) return;
 
     view.setNavOverlay(); // Добавлем оверлей
-    view.noScroll("body"); // Запрещаем скролл в бody.
 
     // Находим все subNavs и добавляем SubSubNavs
     const subNavBlocksAll = view.getSubNavBlocksAll(subNavList);
@@ -102,7 +101,6 @@ const initController = async () => {
   nav.addEventListener("mouseleave", () => {
     view.findAndRemoveAllSubNavs(nav);
     view.removeOverlay();
-    view.enableScroll("body");
   });
 };
 

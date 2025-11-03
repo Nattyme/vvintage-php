@@ -152,20 +152,6 @@ const renderMenuTree = (cats, level = 1) => {
     // block.innerHTML = data.map(cat => getFirstLvlMenuTemplate(cat)).join('');
   }
 
-  const noScroll =  (element) => {
-    const target = document.querySelector(element);
-    if(!target) return;
-
-    if(target.classList.contains('no-scroll')) return;
-    target.classList.add('no-scroll');
-  }
-
-  const enableScroll =  (element) => {
-    const target = document.querySelector(element);
-    if(!target) return;
-    if(!target.classList.contains('no-scroll')) return;
-    target.classList.remove('no-scroll');
-  }
 
 
   return {
@@ -185,9 +171,7 @@ const renderMenuTree = (cats, level = 1) => {
     addAdminActiveClass,
     removeActiveClassForElems,
     addActiveClassToClosestBlock,
-    renderMenuTree,
-    enableScroll,
-    noScroll
+    renderMenuTree
   }
 }
 
