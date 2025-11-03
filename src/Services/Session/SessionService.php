@@ -65,7 +65,7 @@ class SessionService
         return false;
     }
 
-    public function updateUserAvatarSmall(User $user): void
+    public function updateUserAvatar(User $user): void
     {
         if (!isset($_SESSION['logged_user']) || !is_array($_SESSION['logged_user'])) return;
 

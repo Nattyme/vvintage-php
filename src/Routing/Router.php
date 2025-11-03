@@ -534,6 +534,8 @@
 
     private static function routeOrders(RouteData $routeData) {
       $sessionService = new SessionService();
+      $flash = new FlashMessage($sessionService);
+
       /**
        * Получаем модель пользователя - гость или залогиненный
        * @var UserInreface $userModel
@@ -565,6 +567,8 @@
 
       $orderService = new OrderService();
       $controller = new OrderController(
+        $flash,
+        $sessionService,
         $orderService, 
         $cartService, 
         $userModel, 

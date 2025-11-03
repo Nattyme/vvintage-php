@@ -28,7 +28,10 @@ final class PasswordSetNewService
   public function handleNewPassSetting(string $email, string $resetCode, string $password): void 
   {
       $userModel = $this->userService->findUserByEmail($email);
-      if (!$userModel) throw new \Exception('Пользователь с таким email неайден');
+      if (!$userModel) throw new \Exception('Пользователь с таким email не найден');
+
+      if ($this->userService->findBlockedUserByEmail($email)) throw new \Exception('Ошибка регистрации');
+    
 
       $isValidCode = $this->isValidRecoveryCode($email, $resetCode);
       if (!$isValidCode) throw new \Exception('Неверный или просроченный код восстановления. Попробуйте ещё раз.');

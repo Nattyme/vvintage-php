@@ -3,60 +3,30 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Validation;
 
-use Vvintage\Services\Security\PasswordSetNewService;
-use Vvintage\Services\Base\BaseService;
 
-
-final class PasswordSetNewValidator extends BaseService
+final class PasswordSetNewValidator 
 {
-  private PasswordSetNewService $setNewPassService;
 
-  public function __construct(PasswordSetNewService $setNewPassService)
+  public function validate(array $data): void
   {
-    parent::__construct(); // Важно!
-    $this->setNewPassService = $setNewPassService;
-  }
-
-  public function validate(array $data): bool
-  {
-    $valid = true;
-
+ 
     $csrfToken = $data['csrf'] ?? '';
-    if (!check_csrf($csrfToken)) {
-      $this->flash->pushError('Неверный токен безопасности');
-      $valid = false;
-    }
+    if (!check_csrf($csrfToken)) throw new \Exception('Неверный токен безопасности');
 
     $email = trim($data['email'] ?? '');
     $password = trim($data['password'] ?? '');
 
     if ($email === '') {
-      $this->flash->pushError('Введите email', 'Email обязателен для регистрации на сайте');
-      $valid = false;
+      throw new \Exception('Введите email');
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->flash->pushError('Введите корректный Email');
-      $valid = false;
-    } elseif ($this->regService->isEmailBlocked($email)) {
-      $this->flash->pushError('Ошибка регистрации.');
-      $valid = false;
-    }
+       throw new \Exception('Введите корректный Email');
+    } 
 
     if ($password === '') {
-      $this->flash->pushError('Введите пароль', 'Пароль обязателен для регистрации на сайте');
-      $valid = false;
+      throw new \Exception('Введите пароль');
     } elseif (strlen($password) < 5) {
-      $this->flash->pushError('Неверный формат пароля', 'Пароль должен быть больше четырёх символов');
-      $valid = false;
+       throw new \Exception('Пароль должен быть больше четырёх символов');
     }
 
-    if (! $this->regService->isEmailFree($email)) {
-      $this->flash->pushError(
-        'Пользователь с таким email уже существует',
-        'Используйте другой email адрес или воспользуйтесь <a href="' . HOST . 'lost-password">восстановлением пароля.</a>'
-      );
-      $valid = false;
-    }
-
-    return $valid;
   }
 }

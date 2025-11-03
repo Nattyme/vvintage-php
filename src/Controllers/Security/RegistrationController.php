@@ -36,7 +36,7 @@ final class RegistrationController extends BaseController
     if ( isset($_POST['register']) ) {
 
       try {
-        $this->validator->validate( $_POST ); // валидцаия, если ошибка - исключение
+        $this->validator->validate( $_POST ); // валидация, если ошибка - исключение
         $newUser = $this->service->registrateUser( $_POST ); // регистрируем пользователя
 
         // Уведомление 

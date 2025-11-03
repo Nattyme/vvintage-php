@@ -79,53 +79,43 @@ final class OrderController extends BaseController
     public function index(RouteData $routeData): void
     {
       $this->setRouteData($routeData);
+
       
-      if(empty($this->cart)) {
-        header('Location: ' . HOST . 'cart');
-        exit();
-      }
-    
+      if(empty($this->cart)) $this->redirect('cart'); // Если корзина пуста, то редирект на корзину
+      if($this->userModel instanceof GuestUser) $this->redirect('login'); // Если гость — редиректим
+
       // Получаем продукты
       $products = $this->cartService->getListItems();
       $totalPrice = $this->cartService->getCartTotalPrice($products, $this->cartModel);
 
-      $page = $this->pageService->getPageBySlug($routeData->uriModule);
-      $pageTitle = $page['title'];
-       
+      if(isset($_POST['submit'])) {
+          try {
+            $this->validator->validate($_POST);
 
-      if (!isRequestMethod('post') || !$this->validator->validate($_POST)) {
-        // Показываем страницу
-        $this->renderForm($pageTitle, $this->userModel, $routeData, $products, $this->cartModel, $totalPrice);
-        return;
-      } 
-      
-      if($this->userModel instanceof GuestUser) {
-        header('Location: ' . HOST . 'login');
-        exit();
+            // Вызываем DTO
+            $orderDTO = OrderDTO::fromForm($_POST, $this->cart, $totalPrice, $this->userModel->getId());
+            $order = $this->orderService->create($orderDTO, $this->userModel);
+
+            if ($order === null) throw new \Exception("Произошла ошибка при создании заказа.");
+
+            // Очищаем корзину
+            $cartModel = new Cart($this->cart);
+            $this->cartModel->clear($this->userModel, $cartModel);
+            $orderId = $order->export()['id'];
+
+            $this->flash->pushSuccess('Заказ успешно создан.');
+            $this->redirect('ordercreated', (string) $orderId);
+          }
+          catch(\Throwable $error) {
+            $this->flash->pushError($error->getMessage());
+            $this->redirect('neworder');
+          }
       }
 
-
-      // Вызываем DTO
-      $orderDTO = OrderDTO::fromForm($_POST, $this->cart, $totalPrice, $this->userModel->getId());
-      // $orderDTO->validate();
-
-      $order = $this->orderService->create($orderDTO, $this->userModel);
-
-      if ($order !== null) {
-          // Очищаем корзину
-          $cartModel = new Cart($this->cart);
-          $this->cartModel->clear($this->userModel, $cartModel);
-          $orderId = $order->export()['id'];
-
-          header('Location: ' . HOST . 'ordercreated?id=' . $orderId);
-          exit();
-      } 
-
+      // Название страницы
       $page = $this->pageService->getPageBySlug($routeData->uriModule);
+      $pageTitle = $page['title'];
 
-
-      // сообщение об ошибке
-      $this->flash->pushError("Произошла ошибка при создании заказа.");
       $this->renderForm($pageTitle, $this->userModel, $routeData, $products, $this->cartModel, $totalPrice);
     }
 
@@ -145,20 +135,18 @@ final class OrderController extends BaseController
       // Хлебные крошки
       $breadcrumbs = $this->breadcrumbsService->generate($routeData, $pageTitle);
 
-      
+     
       // Получаем GET['id] 
-      $new_order_id = get('id', 'int');
+      $new_order_id = $routeData->uriGet;
 
       // Если заказ не создан
       if (!$new_order_id || $new_order_id <= 0) {
         $this->flash->pushError('ID заказа не найден');
-        header('Location: ' . HOST);
-        exit();
+        $this->redirect('cart');
       }
 
       // Подключение шаблонов страницы
       $this->renderLayout('orders/created', [
-            'pageTitle' => $pageTitle,
             'pageTitle' => $pageTitle,
             'routeData' => $routeData,
             'breadcrumbs' => $breadcrumbs,
@@ -179,7 +167,6 @@ final class OrderController extends BaseController
       $this->renderLayout('orders/new', [
             'pageTitle' => $pageTitle,
             'user' => $this->userModel,
-            'pageTitle' => $pageTitle,
             'cartModel' => $cartModel,
             'routeData' => $routeData,
             'products' => $products,

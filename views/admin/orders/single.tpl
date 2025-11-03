@@ -48,7 +48,7 @@
         <tr>
           <th>Общая стоимость</th>
           <td>
-            <?php echo h(format_price($order->getPrice()));?> руб.
+            <?php echo h(format_price($order->getPrice()));?> &euro;
           </td>
         </tr>
 
@@ -88,7 +88,7 @@
             <td><?php echo h($product['title']);?></td>
 
             <td>
-              <?php echo h(format_price($product['price']));?> руб.
+              <?php echo h(format_price($product['price']));?> &euro;
             </td>
 
             <td><?php echo h($product['amount']);?></td>

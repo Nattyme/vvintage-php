@@ -11,8 +11,6 @@
 
       </div>
 
-      <?php include ROOT . "views/components/errors.tpl"; ?>
-      <?php include ROOT . "views/components/success.tpl"; ?>
 
          <div class="form-order__details">
             <fieldset class="form-order__block">
@@ -45,6 +43,10 @@
           </div>
 
       <div class="page-order__form">
+  
+          <?php include ROOT . "views/components/errors.tpl"; ?>
+          <?php include ROOT . "views/components/success.tpl"; ?>
+     
         <form class="form-order" method="POST">
           <div class="form-order__user">
               <fieldset class="form-order__block">

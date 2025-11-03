@@ -49,9 +49,7 @@ class ContactFormValidation
         throw new \Exception('Сообщение слишком длинное (максимум 1000 символов)');
       }
 
-
-
-      return  $clean;
+      return  $clean; // вернем очищенные данные
     }
 
 

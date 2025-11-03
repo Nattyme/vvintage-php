@@ -36,6 +36,8 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
 
     private function fillOrderBean(OODBBean $bean, Order $order)
     {
+  
+        $bean->user_id = $order->getUserId();
         $bean->name = $order->getName();
         $bean->surname = $order->getSurname();
         $bean->email = $order->getEmail();
@@ -145,8 +147,6 @@ final class OrderRepository extends AbstractRepository implements OrderRepositor
         // Записываем параметры в bean
         $this->fillOrderBean($bean, $order);
 
-        // Привязываем заказ к пользователю
-        $bean->user = $user->getId();
 
         // Сохраняем в БД
         $id = $this->saveBean($bean);

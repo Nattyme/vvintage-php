@@ -4,23 +4,14 @@ declare(strict_types=1);
 namespace Vvintage\Services\Validation;
 
 use Vvintage\Services\Security\RegistrationService;
-use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Base\BaseService;
 
-final class RegistrationValidator extends BaseService
+
+final class RegistrationValidator 
 {
-  private UserRepository $userRepository;
-
-  public function __construct()
+  
+  public function validate(array $data): void
   {
-      parent::__construct(); // Важно!
-      $this->userRepository = new UserRepository();
-  }
-
-  public function validate(array $data): bool
-  {
-    $valid = true;
-
+  
     $csrfToken = $data['csrf'] ?? '';
     if (!check_csrf($csrfToken)) throw new \Exception('Неверный токен безопасности');
 
@@ -38,10 +29,6 @@ final class RegistrationValidator extends BaseService
       throw new \Exception('Введите пароль');
     } elseif (strlen($password) < 5) {
       throw new \Exception('Пароль должен быть больше четырёх символов');
-    }
-
-    if ($this->userRepository->getUserByEmail($email)) {
-      throw new \Exception('Пользователь с таким email уже существует');
     }
   }
 }

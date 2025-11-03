@@ -19,7 +19,7 @@
           <!-- // Галерея изображений -->
 
           <div class="product-card">
-            <div class="notifications-wrapper w">
+            <div class="notifications-wrapper ">
               <?php include ROOT . "views/components/success.tpl"; ?>
             </div>
             <header class="product-card__header">
@@ -50,10 +50,7 @@
                   </a>
                 </dd>
               </div>
-              <!-- <div class="product-card__item"> -->
-                <!-- <dt><?php echo h(__('product.item.condition', [], 'product'));?></dt> -->
-                <!-- <dd>New without tags</dd> -->
-              <!-- </div> -->
+             
               <div class="product-card__item">
                 <dt><?php echo h(__('product.item.update', [], 'product'));?></dt>
                 <dd>

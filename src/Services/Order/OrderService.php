@@ -55,12 +55,12 @@ class OrderService extends BaseService
         return !empty($products) ? $cartModel->getTotalPrice($products) : 0;
     }
 
-    public function create(OrderDTO $dto, $userModel)
+    public function create(OrderDTO $dto, User $userModel)
     {
  
       // Создаем объект заказа через метод 
       $order = Order::fromDTO($dto);
-         
+       
       $order->setCart( $this->prepareCartData($order->getCart()));
    
       // Сохраняем заказ в БД
@@ -83,9 +83,9 @@ class OrderService extends BaseService
             $product = $productData[$productId];
 
             $result[] = [
-                'id'     => (int) $product->id,
-                'title'  => $product->title,
-                'price'  => (float) $product->price,
+                'id'     => (int) $product->getId(),
+                'title'  => $product->getTitle(),
+                'price'  => (float) $product->getPrice(),
                 'amount' => (int) $amount,
             ];
         }

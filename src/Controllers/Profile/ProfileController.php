@@ -217,7 +217,7 @@ final class ProfileController extends BaseController
           $result = $this->profileService->updateUserAndGoToProfile($_POST, $_FILES, $userModel);
 
           $userModel = $this->userService->getUserById($userModel->getId()); // получим модель с обновленными данными
-          $this->sessionService->updateUserAvatarSmall($userModel); // обновим изображение в сессии
+          $this->sessionService->updateUserAvatar($userModel); // обновим изображение в сессии
 
           $this->flash->pushSuccess('Данные профиля были успешно обновлены.');
           $this->redirect('profile', (string) $userModel->getId() );

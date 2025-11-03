@@ -3,54 +3,26 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Validation;
 
-use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Base\BaseService;
-
-final class NewOrderValidator extends BaseService
+final class NewOrderValidator 
 {
-  private UserRepository $userData;
 
-  public function __construct(UserRepository $userData)
+  public function validate(array $data): void
   {
-    parent::__construct(); // Важно!
-    $this->userData = $userData;
-  }
-
-  public function validate(array $data): bool
-  {
-    $valid = true;
-
     $csrfToken = $data['csrf'] ?? '';
-    if (!check_csrf($csrfToken)) {
-      $this->flash->renderError('Неверный токен безопасности');
-      $valid = false;
-    } 
+    if (!check_csrf($csrfToken)) throw new \Exception('Неверный токен безопасности');
 
     $email = isset($data['email']) ? trim(strtolower($data['email'])) : '';
-
     if ($email === '') {
-      $this->flash->pushError('Введите email');
-      $valid = false;
+      throw new \Exception('Введите email');
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->flash->pushError('Некорректный формат email');
-      $valid = false;
-    } elseif ($email) {
-      $isUserInBlock = $this->userData->findBlockedUserByEmail($email);
-
-      if ($isUserInBlock) {
-        $this->flash->pushError('Ошибка, невозможно оформить заказ для этого email.');
-        $valid = false;
-      }
-
+      throw new \Exception('Недопустимый формат Email');
     } elseif ( empty(trim($data['name'])) ) {
-      $this->flash->pushError('Поле "Имя" пустое. Заполните данные для отправки.');
+       throw new \Exception('Укажите контактное лицо');
     } elseif ( empty(trim($data['phone'])) ) {
-        $this->flash->pushError('Поле "Телефон" пустое. Заполните данные для отправки.');
+      throw new \Exception('Укажите телефон для связи.');
     }  else if ( empty(trim($data['address'])) ) {
-        $this->flash->pushError('Поле "Адрес" пустое. Заполните данные для отправки.');
+      throw new \Exception('Заполните адрес для доставки');
     } 
-
-    return $valid;
   }
 }
 
