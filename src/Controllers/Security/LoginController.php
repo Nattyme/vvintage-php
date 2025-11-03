@@ -33,9 +33,13 @@ use Vvintage\Store\UserItemsList\UserItemsListStore;
 /** Репозитории */
 use Vvintage\Repositories\User\UserRepository;
 
+use Vvintage\Services\Validation\LoginValidator;
+
 
 final class LoginController extends BaseController
 {
+  private LoginService $service;
+  private LoginValidator $validator;
 
   public function __construct(
     protected FlashMessage $flash,
@@ -48,6 +52,8 @@ final class LoginController extends BaseController
   ) 
   {
     parent::__construct($flash, $sessionService); // Важно!
+    $this->service = new LoginService($this->userRepository, $this->flash);
+    $this->validator = new LoginValidator();
   }
 
   public function index(RouteData $routeData): void
@@ -57,28 +63,23 @@ final class LoginController extends BaseController
       return;
     }
 
-    $loginService = new LoginService($this->userRepository, $this->flash);
-    $userModel = $loginService->login($_POST);
+    try {
+      $this->validator-validate($_POST); // валидация , если ошибка - выбросит исключение
 
+      $userModel = $this->service->login($_POST);
+      $this->sessionService->setUserSession($user);
 
-    if (!$userModel) {
-      $this->renderForm($routeData);
-      return;
+      $this->handleItemsMerge($userModel); // слияние гостейвой корзин и избранного с данными в БД
+      $this->renderGreetingMessage($userModel);
+
+      $this->redirect('profile'); // редирект
+    } 
+    catch (\Exception $error) {
+      $this->flash->pushError($error->getMessage());
+      $this->redirect('login');
     }
 
-    $this->handleItemsMerge($userModel);
-
-    // Сообщение об успехе
-    $userName = $userModel->getName() ?? '';
-    
-    if (trim($userName) !== '') {
-      $this->flash->pushSuccess(h(__('login.success.username', ['%name%' => $userName], 'messages')));
-    } else {
-      $this->flash->pushSuccess(h(__('login.success', [], 'messages')));
-    }
-
-    // Редирект
-    $this->redirect('profile');
+  
   }
 
 
@@ -168,5 +169,17 @@ final class LoginController extends BaseController
     include ROOT . "views/_page-parts/_head.tpl";
     include ROOT . "views/login/login-page.tpl";
     include ROOT . "views/_page-parts/_foot.tpl";
+  }
+
+  private function renderGreetingMessage(User $userModel): void 
+  {
+    // Сообщение об успехе
+    $userName = $userModel->getName() ?? '';
+    
+    if (trim($userName) !== '') {
+      $this->flash->pushSuccess(h(__('login.success.username', ['%name%' => $userName], 'messages')));
+    } else {
+      $this->flash->pushSuccess(h(__('login.success', [], 'messages')));
+    }
   }
 }

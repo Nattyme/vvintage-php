@@ -153,7 +153,7 @@ class UserService
   }
 
   // Методы авторизации
-  public function findBlockedUserByEmail(string $email) 
+  public function findBlockedUserByEmail(string $email): bool
   {
     return  $this->userRepository->findBlockedUserByEmail($email);
   }

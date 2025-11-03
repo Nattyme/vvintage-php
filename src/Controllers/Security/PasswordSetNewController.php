@@ -37,7 +37,7 @@ final class PasswordSetNewController extends BaseController
   {
       $email = '';
       $resetCode = '';
-      $newPasswordReady = false;
+      $password = '';
 
       // Обработка отправки формы (POST)
       if (!empty($_POST['set-new-password'])) {

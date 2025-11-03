@@ -63,7 +63,7 @@ final class PasswordResetController extends BaseController
     $page = $this->pageService->getPageBySlug($routeData->uriModule);
     $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
     $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
-          // dd( $this->flash);
+
 
     $pageTitle = "Восстановить пароль";
     $pageClass = "authorization-page";

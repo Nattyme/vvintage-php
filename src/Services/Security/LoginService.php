@@ -4,39 +4,34 @@ declare(strict_types=1);
 namespace Vvintage\Services\Security;
 
 use Vvintage\Models\User\User;
-use Vvintage\Services\Base\BaseService;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Validation\LoginValidator;
+use Vvintage\Services\User\UserService;
 
-final class LoginService extends BaseService 
+
+final class LoginService 
 {
-  private UserRepository $userRepository;
+  private UserService $userService;
 
-  public function __construct(UserRepository $userRepository)
+  public function __construct()
   {
-    parent::__construct(); // Важно!
-    $this->userRepository = $userRepository;
+    $this->userService = new UserService();
   }
 
   public function login(array $data): ?User
   {
-    $sessionService = new SessionService();
-    $validator = new LoginValidator($this->userRepository, $this->flash);
+    // Ищем пользователя
+    $user = $this->userService->findUserByEmail($data['email']);
+    if (!$user) throw new \Exception('Пользователь с таким email не найден');
 
-    if (!$validator->validate($data)) {
-      return null;
-    }
+    // Проверяем список заблокированных
+    $isBlocked = $this->userService->findBlockedUserByEmail($email);
+    if ($isBlocked) throw new \Exception('Ошибка, невозможно зайти в профиль');
 
-    $user = $this->userRepository->getUserByEmail($data['email']);
+    // Проверяем пароль
+    $passwordIsValid = password_verify( $data['password'], $user->getPassword() );
+    if (!$passwordIsValid)  throw new \Exception('Введен неверный пароль');
 
-    // TODO: Уведомление должен быть контроллере
-    if (!$user || !password_verify($data['password'], $user->getPassword())) {
-      $this->flash->pushError('Неверный email или пароль');
-      return null;
-    }
-
-    $sessionService->setUserSession($user);
     return $user;
   }
+
+
 }
