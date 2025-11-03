@@ -4,9 +4,7 @@
   max-height: calc(100vh - 300px);
 }
 
-
 .catalog-dropdown__background {
-  display: none;
   position: absolute;
   left: 0;
   bottom: 0;
@@ -14,10 +12,14 @@
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.6);
+
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
 }
 
 .catalog-dropdown__background.active {
-  display: block;
+  opacity: 1;
 }
 
 

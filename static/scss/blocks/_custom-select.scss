@@ -57,11 +57,19 @@
   }
 }
 
+.custom-select.custom-select--min.open,
+.custom-select.custom-select--min.open .select-trigger {
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius:unset;
+}
+
 .select-trigger {
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 15px;
-  padding-right: 24px;
+  padding-right: 40px;
+
+  height: 43px;
   
   display: flex;
   align-items: center;
@@ -72,11 +80,9 @@
   border-bottom: 1px solid rgb(170, 167, 167);
   transition: background-color 0.2s ease-in;
 
-  
   &:hover {
     background-color: rgba(255, 255, 255, 0.6);
   }
-
 }
 
 .select-icon {

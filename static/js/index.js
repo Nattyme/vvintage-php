@@ -68,9 +68,10 @@ const initEverything = async () => {
       addAccordion("many", "#filter-category");
       initShowMore();
     } else if (page === 'shop' && id) {
+      
       // детальная страница товара
       fancyBox();
-    } else if (page === 'profile/edit') {
+    } else if (page === 'profile' || page === 'profile') {
       addPhotoBtn();
     } else if (page === 'delivery') {
       addAccordion("many", "#prices");
