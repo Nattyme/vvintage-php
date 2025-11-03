@@ -63,21 +63,14 @@ final class PasswordResetService extends BaseService
   }
 
   // Главный метод, объединяющий все шаги
-  public function processPasswordResetRequest(string $email): array
+  public function processPasswordResetRequest(string $email): void
   {
-      $code = $this->createRecoveryCode($email);
-
-      if (!$code) {
-          return ['success' => false, 'errors' => [['title' => 'Ошибка генерации кода восстановления']]];
-      }
-
+      $code = $this->createRecoveryCode( trim($email) );
+      if (!$code) throw new \Exception ('Ошибка генерации кода восстановления');
+     
       $mailResult = $this->sendRecoveryEmail($email, $code);
 
-      if (!$mailResult) {
-          return ['success' => false, 'errors' => [['title' => 'Ошибка отправки письма']]];
-      }
-
-      return ['success' => true];
+      if (!$mailResult) throw new \Exception ('Ошибка отправки письма с кодом восстановления');
   }
 
 }

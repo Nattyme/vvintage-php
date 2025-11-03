@@ -2,17 +2,21 @@
 declare(strict_types=1);
 
 namespace Vvintage\Services\Messages;
+use Vvintage\Services\Session\SessionService;
 
 
 
 final class FlashMessage
 {
+  private SessionService $sessionService;
   private array $messages = [];
 
-  public function __construct()
+  public function __construct(
+    SessionService $sessionService
+  )
   {
-      $this->messages['success'] = $_SESSION['success'] ?? [];
-      $this->messages['errors'] = $_SESSION['errors'] ?? [];
+    $this->sessionService = $sessionService;
+    $this->messages = $this->sessionService->getFlashNotes();
   }
     public function pushError(string $title, ?string $desc = null, ?string $flag = null) {
         $this->addMessage('errors', $title, $desc, $flag);
@@ -21,6 +25,7 @@ final class FlashMessage
     public function pushSuccess(string $title, ?string $desc = null, ?string $flag = null) {
         $this->addMessage('success', $title, $desc, $flag);
     }
+
 
     private function addMessage(string $type, string $title, ?string $desc = null, ?string $flag = null) {
         $message = ['title' => $title];
@@ -33,9 +38,10 @@ final class FlashMessage
             $message['flag'] = $flag;
         }
 
-        $_SESSION[$type][] = $message;
-        // $this->messages['success'] = $_SESSION['success'] ?? [];
-        // $this->messages['errors'] = $_SESSION['errors'] ?? [];
+        $this->sessionService->setSessionByKey($type, $message);
+        
+        $this->messages['success'] = $this->sessionService->getSessionByKey('success') ?? [];
+        $this->messages['errors'] = $this->sessionService->getSessionByKey('errors') ?? [];
     }
 
     public function get(string $type): array {

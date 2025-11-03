@@ -40,26 +40,31 @@ final class PasswordResetController extends BaseController
   {
     if (isset($_POST['lost-password'])) {
       try {
-        $resultEmail = false;
+        $result = true;
         $this->validator->validate($_POST);
-        $resultEmail = $this->service->processPasswordResetRequest($_POST['email']);
+        $this->service->processPasswordResetRequest($_POST['email']);
         $this->flash->pushSuccess('Проверьте почту', 'На указанную почту был отправлен email с ссылкой для сброса пароля.');
+     
       }
       catch (\Exception $error) {
+        $result = false;
         $this->flash->pushError($error->getMessage());
+      // dd( $_SESSION);
+      // dd( $this->flash);
       }
     }
     
     // Показываем форму
-    $this->renderForm($routeData, $resultEmail ?? null);
+    $this->renderForm($routeData, $result ?? null);
   }
 
-  private function renderForm (RouteData $routeData, ?bool $resultEmail = false) {
+  private function renderForm (RouteData $routeData, ?bool $result) {
     // Название страницы
     $page = $this->pageService->getPageBySlug($routeData->uriModule);
     $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
     $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
-    
+          // dd( $this->flash);
+
     $pageTitle = "Восстановить пароль";
     $pageClass = "authorization-page";
     $flash = $this->flash;

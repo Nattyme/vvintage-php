@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Session;
 
-/** Контракт */
+
 use Vvintage\Contracts\User\UserInterface;
 
 /** Модели */
@@ -115,6 +115,25 @@ class SessionService
     {
       return $_SESSION['locale'] ?? null;
     }
+
+    public function getFlashNotes (): array 
+    {
+      return [
+        'success' => $_SESSION['success'] ?? [],
+        'errors' => $_SESSION['errors'] ?? []
+      ];
+
+    }
+
+    public function setSessionByKey (string $type, array $message): void
+    {
+        $_SESSION[$type][] = $message;
+    }
+
+    public function getSessionByKey (string $type): array
+    {
+        return $_SESSION[$type] ?? [];
+    }
  
     /**
      *Обновляет сессию  для указанного ключа
@@ -127,9 +146,4 @@ class SessionService
       $_SESSION['logged_user'][ $sessionKey] =  $items;
       $_SESSION[ $sessionKey] =  $items;
     }
-
-
-
-
-
 }

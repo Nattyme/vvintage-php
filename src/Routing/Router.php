@@ -254,9 +254,9 @@
 
 
     private static function routeAuth(RouteData $routeData) {
-      $flash = new FlashMessage();
       $seoService = new SeoService();
       $sessionService = new SessionService();
+      $flash = new FlashMessage($sessionService);
       $cookieService = new CookieService();
       $userRepository = new UserRepository();
       $pageService = new PageService();
@@ -321,8 +321,8 @@
 
     public static function routeProfile(RouteData $routeData)
     {
-        $flash = new FlashMessage();
         $sessionService = new SessionService();
+        $flash = new FlashMessage($sessionService);
         $breadcrumbs = new Breadcrumbs();
         $seoService = new SeoService();
         
@@ -349,8 +349,8 @@
 
     // ::::::::::::: SHOP :::::::::::::::::::
     private static function routeShop(RouteData $routeData) {
-      $flash = new FlashMessage();
       $sessionService = new SessionService();
+      $flash = new FlashMessage($sessionService);
       $breadcrumbs = new Breadcrumbs();
       $seoService = new SeoService();
 
@@ -378,9 +378,9 @@
 
       
     private static function routeBlog(RouteData $routeData) {
-      $flash = new FlashMessage();
-      $breadcrumbs = new Breadcrumbs();
       $sessionService = new SessionService();
+      $flash = new FlashMessage($sessionService);
+      $breadcrumbs = new Breadcrumbs();
 
       $blogController = new BlogController(
         $flash,
@@ -415,11 +415,11 @@
     }
 
     private static function routeCart(RouteData $routeData) {
-      $flash = new FlashMessage();
+      $sessionService = new SessionService();
+      $flash = new FlashMessage($sessionService);
       $seoService = new SeoService();
       $breadcrumbs = new Breadcrumbs();
       $productService = new ProductService();
-      $sessionService = new SessionService();
 
 
       /**
@@ -476,10 +476,10 @@
     }
 
     private static function routeFav(RouteData $routeData) {
-      $flash = new FlashMessage();
+      $sessionService = new SessionService();
+      $flash = new FlashMessage($sessionService);
       $seoService = new SeoService();
       $breadcrumbs = new Breadcrumbs();
-      $sessionService = new SessionService();
 
       /**
        * Получаем модель пользователя - гость или залогиненный
@@ -589,8 +589,8 @@
     /**********************/
     private static function routePages(RouteData $routeData)
     {
-      $flash = new FlashMessage();
       $sessionService = new SessionService();
+      $flash = new FlashMessage($sessionService);
       $pageService = new PageService();
       $breadcrumbs = new Breadcrumbs();
       $seoService = new SeoService();

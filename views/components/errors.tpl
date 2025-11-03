@@ -1,7 +1,9 @@
 <?php
+
 $errors = $flash->get('errors');
 
-if (isset($errros) && !empty($errors)) :
+
+if (isset($errors) && !empty($errors)) :
     foreach ($errors as $error) :
         ?>
         <div class="notifications<?php echo !empty($error['desc']) ? ' notifications__title--with-message' : ''; ?>">

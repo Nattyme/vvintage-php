@@ -8,28 +8,28 @@
   <?php include ROOT . "views/components/errors.tpl"; ?>
   <?php include ROOT . "views/components/success.tpl"; ?>
 
-  <?php if (!$resultEmail ) : ?>
-  <div class="authorization-form__field">
-    <label for="email" class="authorization-form__field-title">
-      <?php echo h(__('auth.label.email', [], 'auth')) ;?>
-    </label>
-    <input 
-      name="email" 
-      class="input" 
-      type="text" 
-      placeholder="<?php echo h(__('auth.placeholder.email', [], 'auth')) ;?>" 
-      id="email"/>
-  </div>
-  
-  <!-- CSRF-токен -->
-    <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
-  <!-- // CSRF-токен -->
+  <?php if (!$result ) : ?>
+    <div class="authorization-form__field">
+      <label for="email" class="authorization-form__field-title">
+        <?php echo h(__('auth.label.email', [], 'auth')) ;?>
+      </label>
+      <input 
+        name="email" 
+        class="input" 
+        type="text" 
+        placeholder="<?php echo h(__('auth.placeholder.email', [], 'auth')) ;?>" 
+        id="email"/>
+    </div>
+    
+    <!-- CSRF-токен -->
+      <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
+    <!-- // CSRF-токен -->
 
-  <div class="authorization-form__button">
-    <button name="lost-password" value="lost-password" type="submit" class="button button--l button--primary button--with-icon">
-      <?php echo h(__('auth.restore.password', [], 'auth')) ;?>
-    </button>
-  </div>
+    <div class="authorization-form__button">
+      <button name="lost-password" value="lost-password" type="submit" class="button button--l button--primary button--with-icon">
+        <?php echo h(__('auth.restore.password', [], 'auth')) ;?>
+      </button>
+    </div>
   <?php endif; ?>
 </form>
 
