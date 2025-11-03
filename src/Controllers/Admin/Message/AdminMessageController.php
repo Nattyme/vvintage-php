@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Admin\Message;
 
 use Vvintage\Routing\RouteData;
+
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Repositories\Message\MessageRepository;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 
 /** Сервисы */
 use Vvintage\Services\Admin\Messages\AdminMessageService;
@@ -17,9 +20,12 @@ class AdminMessageController extends BaseAdminController
   private AdminMessageService $service;
 
 
-  public function __construct()
+  public function __construct(
+    FlashMessage $flash,
+    SessionService $sessionService
+  )
   {
-    parent::__construct();
+    parent::__construct($flash, $sessionService);
     $this->service = new AdminMessageService();
   }
 

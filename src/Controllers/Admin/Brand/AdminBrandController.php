@@ -5,21 +5,25 @@ namespace Vvintage\Controllers\Admin\Brand;
 
 use Vvintage\Routing\RouteData;
 
-use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Models\Brand\Brand;
 use Vvintage\DTO\Brand\BrandDTO;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
+use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Brand\AdminBrandService;
 use Vvintage\Services\Admin\Validation\AdminBrandValidator;
-
 
 class AdminBrandController extends BaseAdminController 
 {
   private AdminBrandService $service;
   private AdminBrandValidator $validator;
 
-  public function __construct()
+  public function __construct(
+    FlashMessage $flash,
+    SessionService $sessionService
+  )
   {
-    parent::__construct();
+    parent::__construct($flash, $sessionService);
     $this->service = new AdminBrandService();
     $this->validator = new AdminBrandValidator();
   }

@@ -10,6 +10,7 @@ use Vvintage\Repositories\Order\OrderRepository;
 /** Сервис */
 use Vvintage\Services\Admin\Order\AdminOrderService;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Base\BaseService;
 
 
@@ -23,9 +24,12 @@ class AdminOrderController extends BaseAdminController
   // private OrderRepository $orderRepository;
   private AdminOrderService $adminOrderService;
 
-  public function __construct()
+  public function __construct(
+    FlashMessage $flash,
+    SessionService $sessionService
+  )
   {
-    parent::__construct();
+    parent::__construct($flash, $sessionService);
     $this->adminOrderService = new AdminOrderService();
 
   }

@@ -4,11 +4,14 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Admin\PostCategory;
 
 use Vvintage\Routing\RouteData;
+
 use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\PostCategory\AdminPostCategoryService;
 use Vvintage\Services\Admin\Validation\AdminPostCategoryValidator;
 use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
 use Vvintage\Models\PostCategory\PostCategory;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 
 
 final class AdminPostCategoryController extends BaseAdminController 
@@ -18,9 +21,12 @@ final class AdminPostCategoryController extends BaseAdminController
 
   private const TABLE = 'postcategories';
 
-  public function __construct()
+  public function __construct(
+     FlashMessage $flash,
+    SessionService $sessionService,
+  )
   {
-    parent::__construct();
+    parent::__construct($flash, $sessionService);
     $this->service = new AdminPostCategoryService();
     $this->validator = new AdminPostCategoryValidator();
   }

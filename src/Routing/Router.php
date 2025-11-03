@@ -621,20 +621,22 @@
     /**********************/
     public static function routeAdminPages(RouteData $routeData)
     {
+      $sessionService = new SessionService();
+      $flash = new FlashMessage($sessionService);
       $breadcrumbs = new Breadcrumbs();
       $postRepository = new  PostRepository();
       $postCategoryRepository = new PostCategoryRepository(); 
 
-
-      $homeAdminController = new HomeAdminController();
-      $adminProductController = new AdminProductController();
-      $adminBrandController = new AdminBrandController();
-      $adminCategoryController = new AdminCategoryController();
-      $adminUserController = new AdminUserController();
-      $adminOrderController = new AdminOrderController();
-      $adminPostController = new AdminPostController($breadcrumbs);
-      $adminMessageController = new AdminMessageController();
-      $adminPostCatController = new AdminPostCategoryController($postCategoryRepository);
+ 
+      $homeAdminController = new HomeAdminController($flash, $sessionService);
+      $adminProductController = new AdminProductController($flash, $sessionService);
+      $adminBrandController = new AdminBrandController($flash, $sessionService);
+      $adminCategoryController = new AdminCategoryController($flash, $sessionService);
+      $adminUserController = new AdminUserController($flash, $sessionService);
+      $adminOrderController = new AdminOrderController($flash, $sessionService);
+      $adminPostController = new AdminPostController($flash, $sessionService,$breadcrumbs);
+      $adminMessageController = new AdminMessageController($flash, $sessionService);
+      $adminPostCatController = new AdminPostCategoryController($flash, $sessionService, $postCategoryRepository);
   
       switch ($routeData->uriModule) {
          // ::::::::::::: SHOP :::::::::::::::::::

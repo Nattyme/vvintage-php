@@ -6,8 +6,8 @@ namespace Vvintage\Controllers\Admin;
 use Vvintage\Routing\RouteData;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Services\Session\SessionService;
-use Vvintage\Models\User\User;
 use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Models\User\User;
 
 // Пеервод на другие языки
 // Пеервод на другие языки
@@ -22,15 +22,16 @@ abstract class BaseAdminController
   protected LocaleService $localeService;
   protected array $languages;
   protected string $currentLang;
-  protected FlashMessage $flash;
 
-  public function __construct()
+  public function __construct(
+    protected FlashMessage $flash,
+    protected SessionService $sessionService
+  )
   {
       $this->settings = Settings::all(); // Получаем 1 раз массив всех настроек 
       $this->localeService = new LocaleService();
       $this->currentLang = $this->localeService->getCurrentLang();
       $this->languages = LanguageConfig::getAvailableLanguages();
-      $this->flash = new FlashMessage();
   }
 
   protected function isAdmin(): bool

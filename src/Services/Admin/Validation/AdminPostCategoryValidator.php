@@ -3,17 +3,12 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Admin\Validation;
 
-use Vvintage\Services\Messages\FlashMessage;
+
 use Vvintage\Repositories\Category\CategoryRepository;
 
 final class AdminPostCategoryValidator
 {
-    private FlashMessage $flash;
-
-    public function __construct()
-    {
-        $this->flash = new FlashMessage();
-    }
+   
 
     public function new(array &$data): bool
     {

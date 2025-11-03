@@ -4,21 +4,29 @@ declare(strict_types=1);
 namespace Vvintage\Controllers\Admin\Category;
 
 use Vvintage\Routing\RouteData;
-use Vvintage\Controllers\Admin\BaseAdminController;
-use Vvintage\Services\Admin\Category\AdminCategoryService;
-use Vvintage\Services\Admin\Validation\AdminCategoryValidator;
-use Vvintage\DTO\Admin\Category\CategoryInputDTO;
+
 use Vvintage\Models\Category\Category;
 
+use Vvintage\Controllers\Admin\BaseAdminController;
+
+use Vvintage\Services\Admin\Category\AdminCategoryService;
+use Vvintage\Services\Admin\Validation\AdminCategoryValidator;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
+
+use Vvintage\DTO\Admin\Category\CategoryInputDTO;
 
 final class AdminCategoryController extends BaseAdminController 
 {
   private AdminCategoryValidator $validator;
   private AdminCategoryService $service;
 
-  public function __construct()
+  public function __construct(
+    FlashMessage $flash,
+    SessionService $sessionService
+  )
   {
-    parent::__construct();
+    parent::__construct($flash, $sessionService);
     $this->service = new AdminCategoryService();
     $this->validator = new AdminCategoryValidator();
   }

@@ -5,6 +5,8 @@ namespace Vvintage\Controllers\Admin;
 
 use Vvintage\Routing\RouteData;
 use Vvintage\Controllers\Admin\BaseAdminController;
+use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Services\Session\SessionService;
 
 /** Сервисы */
 use Vvintage\Services\Admin\AdminStatsService;
@@ -13,9 +15,12 @@ class HomeAdminController extends BaseAdminController
 {
   public AdminStatsService $adminStatsService;
 
-  public function __construct()
+  public function __construct(
+    FlashMessage $flash,
+    SessionService $sessionService
+  )
   {
-    parent::__construct();
+    parent::__construct($flash, $sessionService);
     $this->adminStatsService = new AdminStatsService();
   }
 
