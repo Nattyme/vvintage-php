@@ -13,6 +13,8 @@ use Vvintage\Controllers\Base\BaseController;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
+/** Репозитории */
+use Vvintage\Repositories\User\UserRepository;
 
 /** Сервисы */
 use Vvintage\Services\SEO\SeoService;
@@ -30,8 +32,6 @@ use Vvintage\Services\Cookie\CookieService;
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 
-/** Репозитории */
-use Vvintage\Repositories\User\UserRepository;
 
 use Vvintage\Services\Validation\LoginValidator;
 
@@ -40,6 +40,7 @@ final class LoginController extends BaseController
 {
   private LoginService $service;
   private LoginValidator $validator;
+  private UserRepository $userRepository;
 
   public function __construct(
     protected FlashMessage $flash,
@@ -47,13 +48,14 @@ final class LoginController extends BaseController
     protected CookieService $cookieService,
     private SeoService $seoService,
     private PageService $pageService,
-    private ProductService $productService,
-    private UserRepository $userRepository,
+    private ProductService $productService
   ) 
   {
     parent::__construct($flash, $sessionService); // Важно!
-    $this->service = new LoginService($this->userRepository, $this->flash);
+    $this->service = new LoginService();
     $this->validator = new LoginValidator();
+    $this->productService = $productService;
+    $this->userRepository = new UserRepository();
   }
 
   public function index(RouteData $routeData): void
@@ -67,7 +69,7 @@ final class LoginController extends BaseController
       $this->validator->validate($_POST); // валидация , если ошибка - выбросит исключение
 
       $userModel = $this->service->login($_POST);
-      $this->sessionService->setUserSession($user);
+      $this->sessionService->setUserSession($userModel);
 
       $this->handleItemsMerge($userModel); // слияние гостевой корзины и избранного с данными в БД
       $this->renderGreetingMessage($userModel);
@@ -86,35 +88,21 @@ final class LoginController extends BaseController
   private function handleItemsMerge(User $userModel): void
   {
     // Создаем модели корзины и избранного пользователя и отдельно гостя
-    $guest = $this->createGuestModels();
-    $user = $this->createUserModels();
-    
-    // Здесь возвращается guest Store
-    $cartService = new CartService(
-      $userModel, $guest['cart'], $guest['cart']->getItems(), $user['store'], $this->productService
-    );
+    $guestModels = $this->createGuestModels();
+    $userModels = $this->createUserModels();
 
-    $favService = new FavoritesService(
-      $userModel, $guest['fav'], $guest['fav']->getItems(), $user['store'], $this->productService
-    );
+    $mergeService = new UserItemsMergeService();
 
-    $userItemsMergeService = new UserItemsMergeService($favService, $cartService);
-
-    // Сливаем
-    $dataForSession = $userItemsMergeService->mergeAllAfterLogin(
-      $user['cart'],
-      $guest['cart'],
-      $user['fav'],
-      $guest['fav']
-    );
+    $dataForSession = $mergeService->mergeAllAfterLogin( $userModel, $userModels,  $guestModels, $this->productService);
+  
 
     // Обновляем сессию и очищаем куки
     foreach ($dataForSession as $key => $value) {
       $this->sessionService->updateLogggedUserSessionItemsList($key, $value);
       $this->cookieService->clear($key); 
     }
-    
   }
+  
 
   /**
    * Создаёт и возвращает модели корзины и избранного гостя + хранилище

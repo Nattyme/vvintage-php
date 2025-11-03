@@ -271,7 +271,6 @@
         $seoService, 
         $pageService, 
         $productService, 
-        $userRepository
       );
 
       $regController = new RegistrationController( 
@@ -479,6 +478,7 @@
       $sessionService = new SessionService();
       $flash = new FlashMessage($sessionService);
       $seoService = new SeoService();
+      $productService = new ProductService();
       $breadcrumbs = new Breadcrumbs();
 
       /**
