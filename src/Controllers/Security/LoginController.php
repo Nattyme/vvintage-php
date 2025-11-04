@@ -38,24 +38,20 @@ use Vvintage\Services\Validation\LoginValidator;
 
 final class LoginController extends BaseController
 {
-  private LoginService $service;
-  private LoginValidator $validator;
-  private UserRepository $userRepository;
 
   public function __construct(
+    private LoginService $service,
+    private LoginValidator $validator,
     protected FlashMessage $flash,
     protected SessionService $sessionService,
     protected CookieService $cookieService,
-    private SeoService $seoService,
+    protected SeoService $seoService,
     protected PageService $pageService,
-    private ProductService $productService
+    private ProductService $productService,
+    private UserItemsListStore $userItemsListStore
   ) 
   {
-    $this->service = new LoginService();
-    $this->validator = new LoginValidator();
-    $this->productService = $productService;
-    $this->userRepository = new UserRepository();
-    parent::__construct($flash, $sessionService,  $this->pageService); // Важно!
+    parent::__construct($flash, $sessionService, $pageService, $seoService); // Важно!
   }
 
   public function index(RouteData $routeData): void
@@ -128,30 +124,22 @@ final class LoginController extends BaseController
  */
   private function createUserModels(): array
   {
-    $store = new UserItemsListStore($this->userRepository);
-    $cart = new Cart($store->load('cart'));
-    $fav = new Favorites($store->load('fav_list'));
+    $cart = new Cart($this->userItemsListStore->load('cart'));
+    $fav = new Favorites($this->userItemsListStore->load('fav_list'));
     
-    return ['store' => $store, 'cart' => $cart, 'fav' => $fav];
+    return ['store' => $this->userItemsListStore, 'cart' => $cart, 'fav' => $fav];
   }
 
 
 
   private function renderForm(RouteData $routeData): void
   {
-    // Название страницы
-    $page = $this->pageService->getPageBySlug($routeData->uriModule);
-    $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
-    $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
-
     $pageTitle = "Вход на сайт";
   
     $currentLang =  $this->pageService->currentLang;
     $languages = $this->pageService->languages;
 
     $this->renderAuthLayout('form-login', [
-      'page' => $page,
-      'seo' => $seo,
       'pageTitle' => $pageTitle,
       'currentLang' => $currentLang,
       'languages' => $languages

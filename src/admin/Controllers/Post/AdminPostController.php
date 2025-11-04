@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Admin\Controllers\Post;
 
 use Vvintage\Routing\RouteData;
+use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Admin\Post\AdminPostService;
@@ -14,8 +15,6 @@ use Vvintage\Services\Session\SessionService;
 use Vvintage\Contracts\Post\PostRepositoryInterface;
 use Vvintage\Contracts\PostCategory\PostCategoryRepositoryInterface;
 
-/** Контроллеры */
-use Vvintage\Controllers\Admin\BaseAdminController;
 
 class AdminPostController extends BaseAdminController
 {

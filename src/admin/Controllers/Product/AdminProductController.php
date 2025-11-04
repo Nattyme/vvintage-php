@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace Vvintage\Admin\Controllers\Product;
 
 use Vvintage\Routing\RouteData;
+use Vvintage\Admin\Controllers\BaseAdminController;
+
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
-use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Product\AdminProductService;
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
 use Vvintage\Services\Messages\FlashMessage;

@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Admin\Controllers\Order;
 
 use Vvintage\Routing\RouteData;
-use Vvintage\Controllers\Admin\BaseAdminController;
-use Vvintage\Repositories\Order\OrderRepository;
+use Vvintage\Admin\Controllers\BaseAdminController;
 
 /** Сервис */
 use Vvintage\Services\Admin\Order\AdminOrderService;

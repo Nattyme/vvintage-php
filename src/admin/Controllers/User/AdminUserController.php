@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace Vvintage\Admin\Controllers\User;
 
 use Vvintage\Routing\RouteData;
-use Vvintage\Controllers\Admin\BaseAdminController;
+use Vvintage\Admin\Controllers\BaseAdminController;
+
 use Vvintage\Services\Admin\User\AdminUserService;
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Messages\FlashMessage;

@@ -35,8 +35,8 @@ final class ProfileController extends BaseController
 { 
   private UserService $userService;
   private Breadcrumbs $breadcrumbsService;
-  private SeoService $seoService;
-  private PageService $pageService;
+  protected SeoService $seoService;
+  protected PageService $pageService;
   private ProfileService $profileService;
   protected LocaleService $localeService;
   protected OrderService $orderService;
@@ -49,7 +49,6 @@ final class ProfileController extends BaseController
     Breadcrumbs $breadcrumbs
   )
   {
-    parent::__construct($flash, $sessionService); // Важно!
     $this->userService = new UserService();
     $this->breadcrumbsService = $breadcrumbs;
     $this->seoService = $seoService;
@@ -57,6 +56,7 @@ final class ProfileController extends BaseController
     $this->localeService = new LocaleService();
     $this->orderService = new OrderService();
     $this->profileService = new ProfileService();
+    parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
   }
 
 

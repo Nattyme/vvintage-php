@@ -45,6 +45,7 @@
   use Vvintage\Services\Security\PasswordSetNewService;
   use Vvintage\Services\Validation\RegistrationValidator;
   use Vvintage\Services\Security\RegistrationService;
+  use Vvintage\Services\Security\LoginService;
 
 
   /** Модели */
@@ -69,15 +70,15 @@
   use Vvintage\Repositories\Message\MessageRepository;
 
   /** Админ контроллеры */
-  use Vvintage\Controllers\Admin\HomeAdminController;
-  use Vvintage\Controllers\Admin\Product\AdminProductController;
-  use Vvintage\Controllers\Admin\Brand\AdminBrandController;
-  use Vvintage\Controllers\Admin\Category\AdminCategoryController;
-  use Vvintage\Controllers\Admin\User\AdminUserController;
-  use Vvintage\Controllers\Admin\Order\AdminOrderController;
-  use Vvintage\Controllers\Admin\Post\AdminPostController;
-  use Vvintage\Controllers\Admin\Message\AdminMessageController;
-  use Vvintage\Controllers\Admin\PostCategory\AdminPostCategoryController;
+  use Vvintage\admin\Controllers\HomeAdminController;
+  use Vvintage\admin\Controllers\Product\AdminProductController;
+  use Vvintage\admin\Controllers\Brand\AdminBrandController;
+  use Vvintage\admin\Controllers\Category\AdminCategoryController;
+  use Vvintage\admin\Controllers\User\AdminUserController;
+  use Vvintage\admin\Controllers\Order\AdminOrderController;
+  use Vvintage\admin\Controllers\Post\AdminPostController;
+  use Vvintage\admin\Controllers\Message\AdminMessageController;
+  use Vvintage\admin\Controllers\PostCategory\AdminPostCategoryController;
 
   // API
   use Vvintage\Controllers\Api\Category\CategoryApiController;
@@ -261,21 +262,29 @@
       $flash = new FlashMessage($sessionService);
       $cookieService = new CookieService();
       $userRepository = new UserRepository();
+
       $pageService = new PageService();
       $productService = new ProductService ();
       $setNewPassService = new PasswordSetNewService();
-      $validator = new LoginValidator($userRepository);
-      $regValidator = new RegistrationValidator();
       $regService = new RegistrationService();
- 
+      $loginService = new LoginService();
+      $userItemsListStore = new UserItemsListStore($userRepository);
+
+      $loginValidator = new LoginValidator();
+      $regValidator = new RegistrationValidator();
+
+
 
       $loginController = new LoginController( 
+        $loginService,
+        $loginValidator,
         $flash,
         $sessionService,
         $cookieService, 
         $seoService, 
         $pageService, 
         $productService, 
+        $userItemsListStore
       );
 
       $regController = new RegistrationController( 

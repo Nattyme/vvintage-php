@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace Vvintage\Admin\Controllers\Brand;
 
 use Vvintage\Routing\RouteData;
+use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Models\Brand\Brand;
 use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
-use Vvintage\Controllers\Admin\BaseAdminController;
 use Vvintage\Services\Admin\Brand\AdminBrandService;
 use Vvintage\Services\Admin\Validation\AdminBrandValidator;
 

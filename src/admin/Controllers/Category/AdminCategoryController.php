@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Vvintage\Admin\Controllers\Category;
 
 use Vvintage\Routing\RouteData;
+use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Models\Category\Category;
 
-use Vvintage\Controllers\Admin\BaseAdminController;
 
 use Vvintage\Services\Admin\Category\AdminCategoryService;
 use Vvintage\Services\Admin\Validation\AdminCategoryValidator;

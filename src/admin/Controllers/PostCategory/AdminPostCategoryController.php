@@ -5,7 +5,8 @@ namespace Vvintage\Admin\Controllers\PostCategory;
 
 use Vvintage\Routing\RouteData;
 
-use Vvintage\Controllers\Admin\BaseAdminController;
+use Vvintage\Admin\Controllers\BaseAdminController;
+
 use Vvintage\Services\Admin\PostCategory\AdminPostCategoryService;
 use Vvintage\Services\Admin\Validation\AdminPostCategoryValidator;
 use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
