@@ -60,6 +60,7 @@ final class LoginController extends BaseController
 
   public function index(RouteData $routeData): void
   {
+    $this->setRouteData($routeData);
     if (!isset($_POST['login'])) {
       $this->renderForm($routeData);
       return;
@@ -146,17 +147,19 @@ final class LoginController extends BaseController
     $pageTitle = "Вход на сайт";
     $pageClass = "authorization-page";
     
-    $flash = $this->flash;
     $currentLang =  $this->pageService->currentLang;
     $languages = $this->pageService->languages;
-    
-    ob_start();
-    include ROOT . 'views/login/form-login.tpl';
-    $content = ob_get_clean();
 
-    include ROOT . "views/_page-parts/_head.tpl";
-    include ROOT . "views/login/login-page.tpl";
-    include ROOT . "views/_page-parts/_foot.tpl";
+    $this->renderAuthLayout('login/form-login', [
+      'routeData' => $routeData,
+      'page' => $page,
+      'seo' => $seo,
+      'pageTitle' => $pageTitle,
+      'pageClass' => $pageClass,
+      'currentLang' => $currentLang,
+      'languages' => $languages
+    ]);
+    
   }
 
   private function renderGreetingMessage(User $userModel): void 

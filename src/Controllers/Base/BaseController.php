@@ -61,6 +61,37 @@ abstract class BaseController
 
   }
 
+  protected function renderAuthLayout(string $viewPath, array $vars = []): void
+  {
+     $isAdminLoggedIn = $this->isAdmin();
+     
+
+    if($isAdminLoggedIn) {
+      $service = new AdminPanelService();
+      $adminData = $service->getCounters();
+    }
+
+    $routePath = $this->routeData->getUriModule() ?? $_SERVER['REQUEST_URI'];
+    $isBlogPage = $this->isBlogPage($routePath);
+  
+    // Превращаем элементы массива в переменные
+    extract( array_merge($vars, [
+      'pageClass' => 'authorization-page',
+      'settings' => $this->settings, 
+      'adminData' => $adminData ?? [],
+      'flash' => $this->flash
+    ]) );
+
+    ob_start();
+    include ROOT . "views/{$viewPath}.tpl"; // views/cart/cart.tpl
+    $content = ob_get_clean();
+
+    include ROOT . "views/_page-parts/_head.tpl";
+    include ROOT . "views/login/login-page.tpl";
+    include ROOT . "views/_page-parts/_foot.tpl";
+
+  }
+
   protected function isAdmin(): bool
   {
     $userModel = $this->sessionService->getLoggedInUser();
@@ -82,13 +113,12 @@ abstract class BaseController
     return $this->sessionService->getLoggedInUser();
    }
 
-  protected function isBlogPage(RouteData $routePath): bool 
+  protected function isBlogPage(): bool 
   {
-      if (!$routePath) return false;
-
       return $this->routeData->getUriModule() === 'blog' || $this->routeData->getUriModule() === 'post';
   }
 
+  // TODO: возможно метод удалить и использовать только сессию
   protected function isProfileOwner(int $profileId): bool 
   {
     return  $this->sessionService->isProfileOwner($profileId);

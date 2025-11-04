@@ -132,7 +132,7 @@ final class FavoritesController extends BaseController
       
       // Уведомление и преадресация обратно на страницу товара
       $this->flash->pushSuccess('Товар добавлен в избранное');
-      $this->redirect('shop/' . $productId);
+      $this->redirect('favorites');
     }
 
     public function removeItem(int $productId): void

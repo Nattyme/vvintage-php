@@ -5,7 +5,9 @@
       <?php include ROOT . 'views/_parts/_inner-header.tpl'; ?>
       
       <div class="page-cart__cart-wrapper">
-        <?php include ROOT . 'views/components/success.tpl'; ?>
+        <div class="notifications-wrapper">
+          <?php include ROOT . "views/components/success.tpl"; ?>
+        </div>
 
         <?php if (!empty($viewModel['products'])) : ?>
           <!-- cart table-->
