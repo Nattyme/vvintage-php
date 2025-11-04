@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Category;
+namespace Vvintage\admin\DTO\Category;
 
 final class CategoryTranslationInputDTO
 {

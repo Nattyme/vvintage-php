@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Category;
+namespace Vvintage\admin\DTO\Category;
 
 /** Model */
 use Vvintage\Models\Category\Category;

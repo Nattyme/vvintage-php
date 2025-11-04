@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Brand;
+namespace Vvintage\admin\DTO\Brand;
 
-use Vvintage\DTO\Admin\Brand\BrandTranslationInputDTO;
+use Vvintage\admin\DTO\Brand\BrandTranslationInputDTO;
 
 final class BrandTranslationInputDTOFactory
 {

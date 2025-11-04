@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Category;
-use Vvintage\DTO\Category\CategoryDTO;
+namespace Vvintage\admin\DTO\Category;
+use Vvintage\admin\DTO\Category\CategoryDTO;
 
 final class CategoryInputDTO 
 {

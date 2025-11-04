@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Post;
+namespace Vvintage\admin\DTO\Post;
 
 use Vvintage\Config\LanguageConfig; 
 
 /** Model */
 use Vvintage\Models\Post\Post;
-use Vvintage\DTO\Admin\Post\PostEditDTO;
+use Vvintage\admin\DTO\Post\PostEditDTO;
 use Vvintage\Services\Locale\LocaleService;
 
 final class PostEditDTOFactory

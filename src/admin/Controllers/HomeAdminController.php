@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Admin\Controllers;
+namespace Vvintage\admin\Controllers;
 
 use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;

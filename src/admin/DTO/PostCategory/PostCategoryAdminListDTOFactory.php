@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\PostCategory;
+namespace Vvintage\admin\DTO\PostCategory;
 
 use Vvintage\Config\LanguageConfig; 
 
 /** Model */
 use Vvintage\Models\PostCategory\PostCategory;
-use Vvintage\DTO\Admin\PostCategory\PostCategoryAdminListDTO;
+use Vvintage\admin\DTO\PostCategory\PostCategoryAdminListDTO;
 
 final class PostCategoryAdminListDTOFactory
 {

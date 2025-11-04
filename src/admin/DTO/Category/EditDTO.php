@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\PostCategory;
+namespace Vvintageadmin\DTO\Category;
 
-final class EditDto
+final class EditDTO
 {
     public function __construct(
     public bool $isMain,
