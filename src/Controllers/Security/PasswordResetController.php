@@ -38,6 +38,8 @@ final class PasswordResetController extends BaseController
 
   public function index ($routeData) 
   {
+    $this->setRouteData($routeData);
+
     if (isset($_POST['lost-password'])) {
       try {
         $result = true;
@@ -49,8 +51,6 @@ final class PasswordResetController extends BaseController
       catch (\Exception $error) {
         $result = false;
         $this->flash->pushError($error->getMessage());
-      // dd( $_SESSION);
-      // dd( $this->flash);
       }
     }
     
@@ -66,23 +66,17 @@ final class PasswordResetController extends BaseController
 
 
     $pageTitle = "Восстановить пароль";
-    $pageClass = "authorization-page";
-    $flash = $this->flash;
     $currentLang =  $this->service->currentLang;
     $languages = $this->service->languages;
- 
-    //Сохраняем код ниже в буфер
-    ob_start();
-    include ROOT . 'views/login/lost-password.tpl';
-    //Записываем вывод из буфера в пепеменную
-    $content = ob_get_contents();
-    //Окончание буфера, очищаем вывод
-    ob_end_clean();
 
-
-    include ROOT . "views/_page-parts/_head.tpl";
-    include ROOT . "views/login/login-page.tpl";
-    include ROOT . "views/_page-parts/_foot.tpl";
+    $this->renderAuthLayout('lost-password', [
+      'page' => $page,
+      'result' => $result,
+      'seo' => $seo,
+      'pageTitle' => $pageTitle,
+      'currentLang' => $currentLang,
+      'languages' => $languages
+    ]);
 
   }
 }

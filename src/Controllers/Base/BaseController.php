@@ -71,19 +71,21 @@ abstract class BaseController
       $adminData = $service->getCounters();
     }
 
-    $routePath = $this->routeData->getUriModule() ?? $_SERVER['REQUEST_URI'];
-    $isBlogPage = $this->isBlogPage($routePath);
+  
+    // $routePath = $this->routeData->getUriModule() ?? $_SERVER['REQUEST_URI'];
+    $isBlogPage = $this->isBlogPage($this->routeData);
   
     // Превращаем элементы массива в переменные
     extract( array_merge($vars, [
       'pageClass' => 'authorization-page',
+      'routeData' => $this->routeData,
       'settings' => $this->settings, 
       'adminData' => $adminData ?? [],
       'flash' => $this->flash
     ]) );
 
     ob_start();
-    include ROOT . "views/{$viewPath}.tpl"; // views/cart/cart.tpl
+    include ROOT . "views/login/{$viewPath}.tpl"; // views/cart/cart.tpl
     $content = ob_get_clean();
 
     include ROOT . "views/_page-parts/_head.tpl";

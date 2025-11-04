@@ -35,6 +35,8 @@ final class PasswordSetNewController extends BaseController
   
   public function index($routeData)
   {
+      $this->setRouteData($routeData);
+
       $email = '';
       $resetCode = '';
       $password = '';
@@ -89,19 +91,16 @@ final class PasswordSetNewController extends BaseController
     if($pageModel) $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
     
     $pageTitle = "Установить новый пароль";
-    $pageClass = "authorization-page";
-    $flash = $this->flash;
     $currentLang =  $this->pageService->currentLang;
     $languages = $this->pageService->languages;
 
-    ob_start();
-    include ROOT . 'views/login/set-new-password.tpl';
-    $content = ob_get_contents();
-    ob_end_clean();
-
-    include ROOT . "views/_page-parts/_head.tpl";
-    include ROOT . "views/login/login-page.tpl";
-    include ROOT . "views/_page-parts/_foot.tpl";
+    $this->renderAuthLayout('set-new-password', [
+      'page' => $page,
+      'seo' => $seo,
+      'pageTitle' => $pageTitle,
+      'currentLang' => $currentLang,
+      'languages' => $languages
+    ]);
   }
 
 }

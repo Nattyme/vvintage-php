@@ -145,17 +145,14 @@ final class LoginController extends BaseController
     $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
 
     $pageTitle = "Вход на сайт";
-    $pageClass = "authorization-page";
-    
+  
     $currentLang =  $this->pageService->currentLang;
     $languages = $this->pageService->languages;
 
-    $this->renderAuthLayout('login/form-login', [
-      'routeData' => $routeData,
+    $this->renderAuthLayout('form-login', [
       'page' => $page,
       'seo' => $seo,
       'pageTitle' => $pageTitle,
-      'pageClass' => $pageClass,
       'currentLang' => $currentLang,
       'languages' => $languages
     ]);

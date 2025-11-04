@@ -32,6 +32,8 @@ final class RegistrationController extends BaseController
   }
 
   public function index ($routeData) {
+    $this->setRouteData($routeData);
+    
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
 
@@ -60,22 +62,15 @@ final class RegistrationController extends BaseController
     $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
     
     $pageTitle = "Регистрация";
-    $pageClass = "authorization-page";
-    $flash = $this->flash;
     $currentLang =  $this->service->currentLang;
     $languages = $this->service->languages;
-    
-    //Сохраняем код ниже в буфер
-    ob_start();
-    include ROOT . 'views/login/form-registration.tpl';
-    //Записываем вывод из буфера в пепеменную
-    $content = ob_get_contents();
-    //Окончание буфера, очищаем вывод
-    ob_end_clean();
 
-    include ROOT . "views/_page-parts/_head.tpl";
-    include ROOT . "views/login/login-page.tpl";
-    include ROOT . "views/_page-parts/_foot.tpl";
-
+    $this->renderAuthLayout('form-registration', [
+      'page' => $page,
+      'seo' => $seo,
+      'pageTitle' => $pageTitle,
+      'currentLang' => $currentLang,
+      'languages' => $languages
+    ]);
   }
 }
