@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Shop;
+namespace Vvintage\public\Controllers\Shop;
 
 use Vvintage\Routing\RouteData;
 
@@ -10,7 +10,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Contracts\Bramd\BrandRepositoryInterface;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 /** Модель */
 use Vvintage\Models\Product\Product;
@@ -28,10 +28,10 @@ use Vvintage\Services\Session\SessionService;
 
 final class ProductController extends BaseController
 {
-    private ProductService $productService;
-    private SeoService $seoService;
+    protected ProductService $productService;
+    protected SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
+    protected PageService $pageService;
 
     public function __construct(
       FlashMessage $flash,
@@ -40,11 +40,11 @@ final class ProductController extends BaseController
       Breadcrumbs $breadcrumbs
     )
     {
-        parent::__construct($flash, $sessionService); // Важно!
-        $this->productService = new ProductService();
-        $this->seoService = $seoService;
-        $this->breadcrumbsService = $breadcrumbs;
-        $this->pageService = new PageService();
+      $this->productService = new ProductService();
+      $this->seoService = $seoService;
+      $this->breadcrumbsService = $breadcrumbs;
+      $this->pageService = new PageService();
+      parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
     }
 
 

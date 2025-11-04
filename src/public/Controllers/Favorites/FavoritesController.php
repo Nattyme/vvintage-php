@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Favorites;
+namespace Vvintage\public\Controllers\Favorites;
 
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 /** Контракты */
 use Vvintage\Contracts\User\UserInterface;
@@ -50,8 +50,8 @@ final class FavoritesController extends BaseController
     private array $fav_list;
     private UserItemsListStoreInterface $favStore;
     private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
-    private SeoService $seoService;
+    protected PageService $pageService;
+    protected SeoService $seoService;
 
     public function __construct(
       FlashMessage $flash,
@@ -65,7 +65,6 @@ final class FavoritesController extends BaseController
       SeoService $seoService
     )
     {
-      parent::__construct($flash, $sessionService); // Важно!
       $this->favService = $favService;
       $this->userModel = $userModel;
       $this->favModel = $favModel;
@@ -74,6 +73,7 @@ final class FavoritesController extends BaseController
       $this->breadcrumbsService = $breadcrumbs;
       $this->pageService = new PageService();
       $this->seoService = $seoService;
+      parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
     }
 
     public function index(RouteData $routeData): void

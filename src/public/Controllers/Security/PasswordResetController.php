@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Security;
+namespace Vvintage\public\Controllers\Security;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Page\PageService;
@@ -18,7 +18,7 @@ use Vvintage\Routing\RouteData;
 
 final class PasswordResetController extends BaseController
 {
-  private SeoService $seoService;
+  protected SeoService $seoService;
   protected PageService $pageService;
   private PasswordResetService $service;
   private PasswordResetValidator $validator;
@@ -31,7 +31,7 @@ final class PasswordResetController extends BaseController
   {
     $this->seoService = $seoService;
     $this->pageService = new PageService();
-    parent::__construct($flash, $sessionService, $this->pageService); // Важно!
+    parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
     $this->service = new PasswordResetService( new UserRepository(), $this->flash);
     $this->validator = new PasswordResetValidator($this->service);
   }

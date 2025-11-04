@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Page;
+namespace Vvintage\public\Controllers\Page;
 
 /** Базовый контроллер страниц*/
 use Vvintage\Routing\RouteData;
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 use Vvintage\Models\Page\Page;
 
@@ -27,7 +27,7 @@ class PageController extends BaseController
 {
   private Page $pageModel;
   protected PageService $pageService;
-  private SeoService $seoService;
+  protected SeoService $seoService;
   private Breadcrumbs $breadcrumbsService;
 
   public function __construct (
@@ -36,10 +36,10 @@ class PageController extends BaseController
     SeoService $seoService
   )
   {
-    parent::__construct($flash, $sessionService); // Важно!
     $this->pageService = new PageService();
     $this->breadcrumbsService = new Breadcrumbs();
     $this->seoService = $seoService;
+    parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
   }
 
   public function index(RouteData $routeData): void

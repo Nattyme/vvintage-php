@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Shop;
+namespace Vvintage\public\Controllers\Shop;
 
 use Vvintage\Routing\RouteData;
 
@@ -9,7 +9,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Contracts\Repositories\BrandRepositoryInterface;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 use Vvintage\Repositories\Product\ProductRepository;
 
 /** Сервисы */
@@ -35,9 +35,9 @@ final class CatalogController extends BaseController
     private ProductService $productService;
     private CategoryService $categoryService;
     private BrandService $brandService;
-    private SeoService $seoService;
+    protected SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
+    protected PageService $pageService;
 
 
     public function __construct(
@@ -47,13 +47,13 @@ final class CatalogController extends BaseController
       Breadcrumbs $breadcrumbs
     )
     {
-      parent::__construct($flash, $sessionService); // Важно!
       $this->productService = new ProductService();
       $this->categoryService = new CategoryService();
       $this->brandService = new BrandService();
       $this->seoService = $seoService;
       $this->breadcrumbsService = $breadcrumbs;
       $this->pageService = new PageService();
+      parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
     }
 
 

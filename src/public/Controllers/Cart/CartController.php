@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Cart;
+namespace Vvintage\public\Controllers\Cart;
 
 
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 /* Абстракции */
 use Vvintage\Models\Shared\AbstractUserItemsList;
@@ -47,8 +47,8 @@ final class CartController extends BaseController
     private array $cart;
     private UserItemsListStoreInterface $cartStore;
     private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
-    private SeoService $seoService;
+    protected PageService $pageService;
+    protected SeoService $seoService;
 
     public function __construct(
       FlashMessage $flash,
@@ -62,7 +62,6 @@ final class CartController extends BaseController
       SeoService $seoService
     )
     {
-      parent::__construct($flash, $sessionService); // Важно!
       $this->cartService = $cartService;
       $this->userModel = $userModel;
       $this->cartModel = $cartModel;
@@ -71,6 +70,7 @@ final class CartController extends BaseController
       $this->breadcrumbsService = $breadcrumbs;
       $this->pageService = new PageService();
       $this->seoService = $seoService;
+      parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
     }
 
     public function index(RouteData $routeData): void

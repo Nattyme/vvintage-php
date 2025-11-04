@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Profile;
+namespace Vvintage\public\Controllers\Profile;
 
 use Vvintage\Routing\RouteData;
 
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;

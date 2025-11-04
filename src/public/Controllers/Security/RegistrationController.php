@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Security;
+namespace Vvintage\public\Controllers\Security;
 
-use Vvintage\Controllers\Base\BaseController; /** Базовый контроллер страниц*/
+use Vvintage\public\Controllers\Base\BaseController;
 use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Page\PageService;
 use Vvintage\Services\Messages\FlashMessage;

@@ -1,13 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers;
-use Vvintage\Controllers\BaseController;
+namespace Vvintage\public\Controllers\CategoryController;
+
+use Vvintage\public\Controllers\Base\BaseController;
 use Vvintage\Models\Category\Category;
 use Vvintage\DTO\Category\CategoryOutputDTO;
 use Vvintage\Services\Category\CategoryService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\SEO\SeoService;
 
 class CategoryController extends BaseController
 {
@@ -16,8 +18,8 @@ class CategoryController extends BaseController
       SessionService $sessionService
     )
     {
-        parent::__construct($flash, $sessionService);
         $this->categoryService = new CategoryService();
+        parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
     }
 
     /**

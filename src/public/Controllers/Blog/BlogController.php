@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Blog;
+namespace Vvintage\public\Controllers\Blog;
 
 use Vvintage\Routing\RouteData;
 
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 use Vvintage\Services\Navigation\NavigationService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
@@ -29,10 +29,10 @@ final class BlogController extends BaseController
         Breadcrumbs $breadcrumbs
     ) 
     {
-        parent::__construct($flash, $sessionService, $breadcrumbs); // Важно!
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService();
         $this->navigationService = new NavigationService();
+        parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
         
     }
     

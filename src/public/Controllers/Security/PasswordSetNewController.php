@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Security;
+namespace Vvintage\public\Controllers\Security;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Page\PageService;
@@ -15,7 +15,7 @@ use Vvintage\Services\Validation\PasswordSetNewValidator;
 
 final class PasswordSetNewController extends BaseController 
 {
-  private SeoService $seoService;
+  protected SeoService $seoService;
   protected PageService $pageService;
   private PasswordSetNewService $setNewPassService;
 
@@ -29,7 +29,7 @@ final class PasswordSetNewController extends BaseController
     $this->seoService = $seoService;
     $this->pageService = new PageService();
     $this->setNewPassService = $setNewPassService;
-    parent::__construct($flash, $sessionService,  $this->pageService); // Важно!
+    parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
   }
 
   

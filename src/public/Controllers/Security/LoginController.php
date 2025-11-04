@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Security;
+namespace Vvintage\public\Controllers\Security;
 
 /** Роутинг */
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 /** Модели */
 use Vvintage\Models\User\User;

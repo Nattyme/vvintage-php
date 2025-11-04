@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Blog;
+namespace Vvintage\public\Controllers\Blog;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 // use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Models\Post\Post;
@@ -32,11 +32,11 @@ final class PostController extends BaseController
       Breadcrumbs $breadcrumbs
     )
     {
-        parent::__construct($flash, $sessionService, $breadcrumbs); // Важно!
         $this->seoService = new SeoService();
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService();
         $this->navigationService = new NavigationService();
+        parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
     }
 
 

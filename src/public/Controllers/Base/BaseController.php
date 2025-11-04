@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Base;
+namespace Vvintage\public\Controllers\Base;
 
 /** Интерфейсы */
 use Vvintage\Routing\RouteData;
@@ -13,6 +13,7 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\AdminPanel\AdminPanelService;
 use Vvintage\Services\Page\PageService;
+use Vvintage\Services\SEO\SeoService;
 
 
 abstract class BaseController
@@ -23,7 +24,8 @@ abstract class BaseController
   public function __construct(
     protected FlashMessage $flash,
     protected SessionService $sessionService,
-    protected PageService $pageService
+    protected PageService $pageService,
+    protected SeoService $seoService
   )
   {
       $this->settings = Settings::all(); 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Order;
+namespace Vvintage\public\Controllers\Order;
 
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
-use Vvintage\Controllers\Base\BaseController;
+use Vvintage\public\Controllers\Base\BaseController;
 
 /** Интерфейсы */
 use Vvintage\Contracts\User\UserInterface;
@@ -48,7 +48,7 @@ final class OrderController extends BaseController
     private UserItemsListStoreInterface $cartStore;
     private NewOrderValidator $validator;
     private Breadcrumbs $breadcrumbsService;
-    private PageService $pageService;
+    protected PageService $pageService;
   
 
     public function __construct(
@@ -64,7 +64,6 @@ final class OrderController extends BaseController
       Breadcrumbs $breadcrumbs
     )
     {
-      parent::__construct($flash, $sessionService); // Важно!
       $this->orderService = $orderService;
       $this->cartService = $cartService;
       $this->userModel = $userModel;
@@ -74,6 +73,7 @@ final class OrderController extends BaseController
       $this->validator = $validator;
       $this->breadcrumbsService = $breadcrumbs;
       $this->pageService = new PageService();
+      parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
     }
 
     public function index(RouteData $routeData): void

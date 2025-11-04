@@ -12,21 +12,21 @@
   use Vvintage\Store\Favorites\FavoritesStoreInterface;
 
   /** Контроллеры */
-  use Vvintage\Controllers\Home\HomeController;
-  use Vvintage\Controllers\Auth\AuthController;
-  use Vvintage\Controllers\Page\PageController;
-  use Vvintage\Controllers\Cart\CartController;
-  use Vvintage\Controllers\Blog\PostController;
-  use Vvintage\Controllers\Blog\BlogController;
-  use Vvintage\Controllers\Order\OrderController;
-  use Vvintage\Controllers\Shop\CatalogController;
-  use Vvintage\Controllers\Shop\ProductController;
-  use Vvintage\Controllers\Security\LoginController;
-  use Vvintage\Controllers\Profile\ProfileController;
-  use Vvintage\Controllers\Favorites\FavoritesController;
-  use Vvintage\Controllers\Security\RegistrationController;
-  use Vvintage\Controllers\Security\PasswordResetController;
-  use Vvintage\Controllers\Security\PasswordSetNewController;
+  use Vvintage\public\Controllers\Auth\AuthController;
+  use Vvintage\public\Controllers\Home\HomeController;
+  use Vvintage\public\Controllers\Page\PageController;
+  use Vvintage\public\Controllers\Cart\CartController;
+  use Vvintage\public\Controllers\Blog\PostController;
+  use Vvintage\public\Controllers\Blog\BlogController;
+  use Vvintage\public\Controllers\Order\OrderController;
+  use Vvintage\public\Controllers\Shop\CatalogController;
+  use Vvintage\public\Controllers\Shop\ProductController;
+  use Vvintage\public\Controllers\Security\LoginController;
+  use Vvintage\public\Controllers\Profile\ProfileController;
+  use Vvintage\public\Controllers\Favorites\FavoritesController;
+  use Vvintage\public\Controllers\Security\RegistrationController;
+  use Vvintage\public\Controllers\Security\PasswordResetController;
+  use Vvintage\public\Controllers\Security\PasswordSetNewController;
 
   /** Сервисы */
   use Vvintage\Services\SEO\SeoService;
