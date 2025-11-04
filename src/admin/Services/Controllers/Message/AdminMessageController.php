@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin\Message;
+namespace Vvintage\Admin\Controllers\Message;
 
 use Vvintage\Routing\RouteData;
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin\Brand;
+namespace Vvintage\Admin\Controllers\Brand;
 
 use Vvintage\Routing\RouteData;
 

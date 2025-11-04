@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Admin\Post;
+namespace Vvintage\Admin\Controllers\Post;
 
 use Vvintage\Routing\RouteData;
 
