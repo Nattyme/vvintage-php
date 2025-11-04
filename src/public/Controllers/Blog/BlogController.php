@@ -10,7 +10,9 @@ use Vvintage\Services\Navigation\NavigationService;
 use Vvintage\Services\Page\Breadcrumbs;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
+use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Post\PostService;
+use Vvintage\Services\Page\PageService;
 use Vvintage\DTO\Post\PostFilterDTO;
 
 
@@ -19,7 +21,9 @@ require_once ROOT . './libs/functions.php';
 final class BlogController extends BaseController
 {
   private Breadcrumbs $breadcrumbsService;
+  protected PageService $pageService;
   private PostService $postService;
+  protected SeoService $seoService;
   private NavigationService $navigationService;
   
 
@@ -32,6 +36,8 @@ final class BlogController extends BaseController
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService();
         $this->navigationService = new NavigationService();
+        $this->pageService = new PageService();
+        $this->seoService = new SeoService();
         parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
         
     }

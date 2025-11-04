@@ -17,12 +17,14 @@ use Vvintage\Services\SEO\SeoService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Navigation\NavigationService;
+use Vvintage\Services\Page\PageService;
 
 
 final class PostController extends BaseController
 {
-    private SeoService $seoService;
+    protected SeoService $seoService;
     private Breadcrumbs $breadcrumbsService;
+    protected PageService $pageService;
     private PostService $postService;
     private NavigationService $navigationService;
 
@@ -36,6 +38,7 @@ final class PostController extends BaseController
         $this->breadcrumbsService = $breadcrumbs;
         $this->postService = new PostService();
         $this->navigationService = new NavigationService();
+        $this->pageService = new PageService();
         parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
     }
 
