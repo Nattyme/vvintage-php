@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Brand;
+namespace Vvintage\public\Services\Brand;
 
 /** Модель */
 use Vvintage\Models\Brand\Brand;
-use Vvintage\Services\Base\BaseService;
+use Vvintage\public\Services\Base\BaseService;
 
 use Vvintage\Repositories\Brand\BrandRepository;
 use Vvintage\Repositories\Brand\BrandTranslationRepository;
 
-use Vvintage\DTO\Brand\BrandInputDTO;
-use Vvintage\DTO\Brand\BrandForProductDTO;
-use Vvintage\DTO\Brand\BrandForProductDTOFactory;
+use Vvintage\public\DTO\Brand\BrandInputDTO;
+use Vvintage\public\DTO\Brand\BrandForProductDTO;
+use Vvintage\public\DTO\Brand\BrandForProductDTOFactory;
 
 require_once ROOT . "./libs/functions.php";
 

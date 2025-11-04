@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Services\PostCategory;
+namespace Vvintage\public\Services\PostCategory;
 
 /** Модель */
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Repositories\PostCategory\PostCategoryRepository;
 use Vvintage\Repositories\PostCategory\PostCategoryTranslationRepository;
-use Vvintage\DTO\PostCategory\PostCategoryListInBlogDto;
+use Vvintage\public\DTO\PostCategory\PostCategoryListInBlogDto;
 
-use Vvintage\Services\Base\BaseService;
-use Vvintage\Services\Post\PostService;
+use Vvintage\public\Services\Base\BaseService;
+use Vvintage\public\Services\Post\PostService;
 
-require_once ROOT . "./libs/functions.php";
+// require_once ROOT . "./libs/functions.php";
 
 class PostCategoryService extends BaseService
 {

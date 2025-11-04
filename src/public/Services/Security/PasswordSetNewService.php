@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Security;
+namespace Vvintage\public\Services\Security;
 
 use Vvintage\Models\User\User;
-use Vvintage\Services\User\UserService;
+use Vvintage\public\Services\User\UserService;
 
 
 final class PasswordSetNewService

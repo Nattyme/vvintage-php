@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\User;
+namespace Vvintage\public\Services\User;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -9,14 +9,14 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Models\Order\Order;
 
 /** Сервисы */
-use Vvintage\Services\Address\AddressService;
-use Vvintage\Services\Product\ProductService;
+use Vvintage\public\Services\Address\AddressService;
+use Vvintage\public\Services\Product\ProductService;
 use Vvintage\Repositories\AddressRepository;
 
 /** Репозитории */
 use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\User\UserRepository;
-use Vvintage\DTO\User\UserUpdateDTO;
+use Vvintage\public\DTO\User\UserUpdateDTO;
 
 require_once ROOT . './libs/functions.php';
 

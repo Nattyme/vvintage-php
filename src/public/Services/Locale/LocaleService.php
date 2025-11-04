@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Locale;
+namespace Vvintage\public\Services\Locale;
 
 use Locale;
 use Vvintage\Config\LanguageConfig;

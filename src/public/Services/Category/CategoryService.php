@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Category;
+namespace Vvintage\public\Services\Category;
 
 /** Модель */
 use Vvintage\Models\Category\Category;
 use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Repositories\Category\CategoryTranslationRepository;
-use Vvintage\Services\Base\BaseService;
+use Vvintage\public\Services\Base\BaseService;
 
-use Vvintage\DTO\Category\CategoryDTO;
-use Vvintage\DTO\Category\CategoryTreeDto;
-use Vvintage\DTO\Category\CategoryForProductDTO;
-use Vvintage\DTO\Category\CategoryForProductDTOFactory;
+use Vvintage\public\DTO\Category\CategoryDTO;
+use Vvintage\public\DTO\Category\CategoryTreeDto;
+use Vvintage\public\DTO\Category\CategoryForProductDTO;
+use Vvintage\public\DTO\Category\CategoryForProductDTOFactory;
 
 require_once ROOT . "./libs/functions.php";
 

@@ -1,15 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\SEO;
+namespace Vvintage\public\Services\SEO;
 
 use Vvintage\DTO\Common\SeoDTO;
-use Vvintage\Services\SEO\ProductSeoStrategy;
-use Vvintage\Services\SEO\PostSeoStrategy;
-use Vvintage\Services\SEO\StaticPageSeoStrategy;
-use Vvintage\Services\Base\BaseService;
-// use Vvintage\Services\SEO\ProductSeoStrategy;
-
+use Vvintage\public\Services\SEO\ProductSeoStrategy;
+use Vvintage\public\Services\SEO\PostSeoStrategy;
+use Vvintage\public\Services\SEO\StaticPageSeoStrategy;
+use Vvintage\public\Services\Base\BaseService;
 
 
 /**

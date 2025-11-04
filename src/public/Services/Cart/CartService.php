@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Cart;
+namespace Vvintage\public\Services\Cart;
 
 use RedBeanPHP\R;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Product\Product;
 use Vvintage\Models\User\User;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Shared\AbstractUserItemsListService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Shared\AbstractUserItemsListService;
 
-use Vvintage\DTO\Cart\CartItemDTO;
-use Vvintage\DTO\Cart\CartItemDTOFactory;
+use Vvintage\public\DTO\Cart\CartItemDTO;
+use Vvintage\public\DTO\Cart\CartItemDTOFactory;
 
 
 class CartService extends AbstractUserItemsListService

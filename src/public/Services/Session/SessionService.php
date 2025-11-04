@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Session;
+namespace Vvintage\public\Services\Session;
 
 
 use Vvintage\Contracts\User\UserInterface;

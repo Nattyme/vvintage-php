@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Base;
+namespace Vvintage\public\Services\Base;
 
-use Vvintage\Services\Locale\LocaleService;
+use Vvintage\public\Services\Locale\LocaleService;
 use Vvintage\Config\LanguageConfig;
 
 //!!  TODO:remove this class and use LocaleService as DI instead

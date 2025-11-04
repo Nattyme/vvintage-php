@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Validation;
+namespace Vvintage\public\Services\Validation;
 
 
 final class RegistrationValidator 

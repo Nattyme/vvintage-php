@@ -1,30 +1,30 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Post;
+namespace Vvintage\public\Services\Post;
 
-use Vvintage\Services\Base\BaseService;
+use Vvintage\public\Services\Base\BaseService;
 
 /* Repository */
 use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Repositories\Post\PostTranslationRepository;
 
 /**Services */
-use Vvintage\Services\PostCategory\PostCategoryService;
-use Vvintage\Services\Shared\PaginationService;
-use Vvintage\Services\Locale\LocaleService;
+use Vvintage\public\Services\PostCategory\PostCategoryService;
+use Vvintage\public\Services\Shared\PaginationService;
+use Vvintage\public\Services\Locale\LocaleService;
 
 /** Model */
 use Vvintage\Models\Post\Post;
 
 /** DTO */
-use Vvintage\DTO\Post\PostDTO;
-use Vvintage\DTO\Post\PostListDto;
-use Vvintage\DTO\Post\PostCardDTO;
-use Vvintage\DTO\Post\PostFilterDTO;
-use Vvintage\DTO\Post\PostListDTOFactory;
-use Vvintage\DTO\Post\PostFullDTO;
-use Vvintage\DTO\Post\PostFullDTOFactory;
+use Vvintage\public\DTO\Post\PostDTO;
+use Vvintage\public\DTO\Post\PostListDto;
+use Vvintage\public\DTO\Post\PostCardDTO;
+use Vvintage\public\DTO\Post\PostFilterDTO;
+use Vvintage\public\DTO\Post\PostListDTOFactory;
+use Vvintage\public\DTO\Post\PostFullDTO;
+use Vvintage\public\DTO\Post\PostFullDTOFactory;
 
 class PostService extends BaseService
 {

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Page;
+namespace Vvintage\public\Services\Page;
 
 use Vvintage\Routing\RouteData;
-use Vvintage\Services\Page\PageService;
+use Vvintage\public\Services\Page\PageService;
 
 class Breadcrumbs
 {

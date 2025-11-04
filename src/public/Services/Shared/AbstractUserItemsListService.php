@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Shared;
+namespace Vvintage\public\Services\Shared;
 
 /** Контракты */
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
 /** Репозитории */
-use Vvintage\Services\Base\BaseService;
+use Vvintage\public\Services\Base\BaseService;
 use Vvintage\Repositories\Product\ProductRepository;
-use Vvintage\Services\Product\ProductService;
+use Vvintage\public\Services\Product\ProductService;
 
 /** Модели */
 use Vvintage\Models\Shared\AbstractUserItemsList;
 
 /** Сервисы */
-use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Messages\FlashMessage;
 
 abstract class AbstractUserItemsListService extends BaseService
 {

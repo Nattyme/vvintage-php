@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Shared;
+namespace Vvintage\public\Services\Shared;
 
 class PaginationService
 {

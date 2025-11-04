@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Messages;
-use Vvintage\Services\Session\SessionService;
+namespace Vvintage\public\Services\Messages;
+use Vvintage\public\Services\Session\SessionService;
 
 
 
