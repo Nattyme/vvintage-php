@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Validation;
 
-use Vvintage\Services\Security\RegistrationService;
 
-
-final class RegistrationValidator 
+final class AuthorizationValidator 
 {
   
   public function validate(array $data): void
@@ -20,9 +18,7 @@ final class RegistrationValidator
       throw new \Exception('Введите email');
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       throw new \Exception('Недопустимый формат Email');
-    } elseif ($this->userRepository->findBlockedUserByEmail($email)) {
-      throw new \Exception('Ошибка регистрации');
-    }
+    } 
 
     $password = trim($data['password'] ?? '');
     if ($password === '') {

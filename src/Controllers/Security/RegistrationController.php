@@ -13,27 +13,28 @@ use Vvintage\Services\Validation\RegistrationValidator;
 
 final class RegistrationController extends BaseController
 {
-  private SeoService $seoService;
-  private PageService $pageService;
+  protected SeoService $seoService;
+  protected PageService $pageService;
   private RegistrationService $service;
   private RegistrationValidator $validator;
 
   public function __construct(
-    FlashMessage $flash,
+    PageService $pageService,
+    SeoService $seoService,
     SessionService $sessionService,
-    SeoService $seoService
+    FlashMessage $flash
   )
   {
-      parent::__construct($flash, $sessionService); // Важно!
-      $this->pageService = new PageService();
-      $this->service = new RegistrationService();
-      $this->seoService = new SeoService();
-      $this->validator = new RegistrationValidator();
+    $this->pageService = new PageService();
+    $this->service = new RegistrationService();
+    $this->seoService = new SeoService();
+    $this->validator = new RegistrationValidator();
+    parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
   }
 
   public function index ($routeData) {
     $this->setRouteData($routeData);
-    
+
     // Если форма отправлена - делаем регистрацию
     if ( isset($_POST['register']) ) {
 
@@ -56,18 +57,16 @@ final class RegistrationController extends BaseController
   }
 
   private function renderForm ($routeData) {
-    // Название страницы
-    $page = $this->pageService->getPageBySlug($routeData->uriModule);
-    $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
-    $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
+    // // Название страницы
+    // $page = $this->pageService->getPageBySlug($routeData->uriModule);
+    // $pageModel = $this->pageService->getPageModelBySlug( $routeData->uriModule );
+    // $seo = $this->seoService->getSeoForPage('profile-edit', $pageModel);
     
     $pageTitle = "Регистрация";
     $currentLang =  $this->service->currentLang;
     $languages = $this->service->languages;
 
     $this->renderAuthLayout('form-registration', [
-      'page' => $page,
-      'seo' => $seo,
       'pageTitle' => $pageTitle,
       'currentLang' => $currentLang,
       'languages' => $languages

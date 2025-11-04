@@ -26,6 +26,7 @@ final class RegistrationService extends BaseService
   public function registrateUser (array $postData): User
   {
     if ($this->userService->getUserByEmail($email)) throw new \Exception('Пользователь с таким email уже существует');
+    if ($this->userService->findBlockedUserByEmail($email)) throw new \Exception('Ошибка регистрации');
 
     // Создаем нового пользователя
     $newUser = $this->userService->createUser( $postData );

@@ -19,7 +19,7 @@ use Vvintage\Routing\RouteData;
 final class PasswordResetController extends BaseController
 {
   private SeoService $seoService;
-  private PageService $pageService;
+  protected PageService $pageService;
   private PasswordResetService $service;
   private PasswordResetValidator $validator;
 
@@ -29,11 +29,11 @@ final class PasswordResetController extends BaseController
     SeoService $seoService
   )
   {
-      parent::__construct($flash, $sessionService); // Важно!
-      $this->seoService = $seoService;
-      $this->pageService = new PageService();
-      $this->service = new PasswordResetService( new UserRepository(), $this->flash);
-      $this->validator = new PasswordResetValidator($this->service);
+    $this->seoService = $seoService;
+    $this->pageService = new PageService();
+    parent::__construct($flash, $sessionService, $this->pageService); // Важно!
+    $this->service = new PasswordResetService( new UserRepository(), $this->flash);
+    $this->validator = new PasswordResetValidator($this->service);
   }
 
   public function index ($routeData) 

@@ -12,6 +12,7 @@ use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\AdminPanel\AdminPanelService;
+use Vvintage\Services\Page\PageService;
 
 
 abstract class BaseController
@@ -21,7 +22,8 @@ abstract class BaseController
 
   public function __construct(
     protected FlashMessage $flash,
-    protected SessionService $sessionService
+    protected SessionService $sessionService,
+    protected PageService $pageService
   )
   {
       $this->settings = Settings::all(); 
@@ -71,9 +73,14 @@ abstract class BaseController
       $adminData = $service->getCounters();
     }
 
-  
-    // $routePath = $this->routeData->getUriModule() ?? $_SERVER['REQUEST_URI'];
     $isBlogPage = $this->isBlogPage($this->routeData);
+
+    $pageSlug = $this->routeData->uriModule;
+ 
+    // Название страницы
+    $page = $this->pageService->getPageBySlug( $pageSlug );
+    $pageModel = $this->pageService->getPageModelBySlug( $pageSlug );
+    $seo = $this->seoService->getSeoForPage($pageSlug, $pageModel);
   
     // Превращаем элементы массива в переменные
     extract( array_merge($vars, [
@@ -81,7 +88,8 @@ abstract class BaseController
       'routeData' => $this->routeData,
       'settings' => $this->settings, 
       'adminData' => $adminData ?? [],
-      'flash' => $this->flash
+      'flash' => $this->flash,
+      'seo' => $seo
     ]) );
 
     ob_start();

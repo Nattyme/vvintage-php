@@ -16,7 +16,7 @@ use Vvintage\Services\Validation\PasswordSetNewValidator;
 final class PasswordSetNewController extends BaseController 
 {
   private SeoService $seoService;
-  private PageService $pageService;
+  protected PageService $pageService;
   private PasswordSetNewService $setNewPassService;
 
   public function __construct(
@@ -26,10 +26,10 @@ final class PasswordSetNewController extends BaseController
     PasswordSetNewService $setNewPassService
   )
   {
-    parent::__construct($flash, $sessionService); // Важно!
     $this->seoService = $seoService;
     $this->pageService = new PageService();
     $this->setNewPassService = $setNewPassService;
+    parent::__construct($flash, $sessionService,  $this->pageService); // Важно!
   }
 
   

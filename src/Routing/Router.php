@@ -263,6 +263,9 @@
       $productService = new ProductService ();
       $setNewPassService = new PasswordSetNewService();
       $validator = new LoginValidator($userRepository);
+      $regValidator = new RegistrationValidator ();
+      $regService = new RegistrationService ();
+ 
 
       $loginController = new LoginController( 
         $flash,
@@ -274,9 +277,10 @@
       );
 
       $regController = new RegistrationController( 
-        $flash,
+        $pageService, 
+        $seoService,
         $sessionService,
-        $seoService
+        $flash
       );
 
       $resetController = new PasswordResetController( 

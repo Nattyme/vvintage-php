@@ -47,15 +47,15 @@ final class LoginController extends BaseController
     protected SessionService $sessionService,
     protected CookieService $cookieService,
     private SeoService $seoService,
-    private PageService $pageService,
+    protected PageService $pageService,
     private ProductService $productService
   ) 
   {
-    parent::__construct($flash, $sessionService); // Важно!
     $this->service = new LoginService();
     $this->validator = new LoginValidator();
     $this->productService = $productService;
     $this->userRepository = new UserRepository();
+    parent::__construct($flash, $sessionService,  $this->pageService); // Важно!
   }
 
   public function index(RouteData $routeData): void
