@@ -43,6 +43,8 @@
   use Vvintage\Services\Favorites\FavoritesService;
   use Vvintage\Services\Validation\NewOrderValidator;
   use Vvintage\Services\Security\PasswordSetNewService;
+  use Vvintage\Services\Validation\RegistrationValidator;
+  use Vvintage\Services\Security\RegistrationService;
 
 
   /** Модели */
@@ -263,8 +265,8 @@
       $productService = new ProductService ();
       $setNewPassService = new PasswordSetNewService();
       $validator = new LoginValidator($userRepository);
-      $regValidator = new RegistrationValidator ();
-      $regService = new RegistrationService ();
+      $regValidator = new RegistrationValidator();
+      $regService = new RegistrationService();
  
 
       $loginController = new LoginController( 
@@ -277,6 +279,8 @@
       );
 
       $regController = new RegistrationController( 
+        $regService,
+        $regValidator,
         $pageService, 
         $seoService,
         $sessionService,

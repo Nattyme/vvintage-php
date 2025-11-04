@@ -13,23 +13,17 @@ use Vvintage\Services\Validation\RegistrationValidator;
 
 final class RegistrationController extends BaseController
 {
-  protected SeoService $seoService;
-  protected PageService $pageService;
-  private RegistrationService $service;
-  private RegistrationValidator $validator;
 
   public function __construct(
-    PageService $pageService,
-    SeoService $seoService,
-    SessionService $sessionService,
-    FlashMessage $flash
+    private RegistrationService $service,
+    private RegistrationValidator $validator,
+    protected PageService $pageService,
+    protected SeoService $seoService,
+    protected SessionService $sessionService,
+    protected FlashMessage $flash
   )
   {
-    $this->pageService = new PageService();
-    $this->service = new RegistrationService();
-    $this->seoService = new SeoService();
-    $this->validator = new RegistrationValidator();
-    parent::__construct($flash, $sessionService, $this->pageService, $this->seoService); // Важно!
+    parent::__construct($flash, $sessionService, $pageService, $seoService); // Важно!
   }
 
   public function index ($routeData) {

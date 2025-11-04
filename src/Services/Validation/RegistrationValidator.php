@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Services\Validation;
 
 
-final class AuthorizationValidator 
+final class RegistrationValidator 
 {
   
   public function validate(array $data): void
