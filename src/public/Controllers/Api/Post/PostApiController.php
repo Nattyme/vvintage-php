@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Api\Post;
+namespace Vvintage\public\Controllers\Api\Post;
 
 use Vvintage\Routing\RouteData;
-use Vvintage\Controllers\Api\BaseApiController;
+use Vvintage\public\Controllers\Api\BaseApiController;
 use Vvintage\Services\Admin\Product\AdminPostService;
 use Vvintage\DTO\Product\PostDTO;
 use Vvintage\Serializers\PostApiSerializer;

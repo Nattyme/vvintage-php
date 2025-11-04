@@ -81,9 +81,9 @@
   use Vvintage\admin\Controllers\PostCategory\AdminPostCategoryController;
 
   // API
-  use Vvintage\Controllers\Api\Category\CategoryApiController;
-  use Vvintage\Controllers\Api\Brand\BrandApiController;
-  use Vvintage\Controllers\Api\Product\ProductApiController;
+  use Vvintage\public\Controllers\Api\Category\CategoryApiController;
+  use Vvintage\public\Controllers\Api\Brand\BrandApiController;
+  use Vvintage\public\Controllers\Api\Product\ProductApiController;
 
 
 

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Controllers\Api\Product;
+namespace Vvintage\public\Controllers\Api\Product;
 
 
 use Vvintage\Routing\RouteData;
-use Vvintage\Controllers\Api\BaseApiController;
+use Vvintage\public\Controllers\Api\BaseApiController;
 use Vvintage\Services\Admin\Product\AdminProductService;
 use Vvintage\Services\Admin\Product\AdminProductImageService;
 use Vvintage\DTO\Product\ProductDTO;
