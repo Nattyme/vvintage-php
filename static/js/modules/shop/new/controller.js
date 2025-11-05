@@ -45,8 +45,7 @@ const initNewProductFormEvents = () => {
         previewModel.reset();
         formView.displayNotification({ type: 'success', title: res.success[0] });
 
-        
-        // window.location.href = '/admin/shop';
+
         return;
       }
 

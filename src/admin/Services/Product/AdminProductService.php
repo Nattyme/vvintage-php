@@ -22,7 +22,7 @@ use Vvintage\Admin\DTO\Product\EditProductDTO;
 use Vvintage\Admin\DTO\Product\ProductInputDTO;
 use Vvintage\Admin\DTO\Product\ProductImageInputDTO;
 
-use Vvintage\Admin\DTO\Product\Lang\ProductTranslationInputDTO;
+use Vvintage\Admin\DTO\Product\ProductTranslationInputDTO;
 
 
 
@@ -124,7 +124,7 @@ final class AdminProductService extends ProductService
           }
 
           // 3. Подготавливаем изображения (tmp + resize)
-          $imagesTMP = $this->imageService->prepareImages($processedImages);
+          $imagesTMP = $this->imageService->prepareImages($processedImages) ?? [];
 
           // Собираем tmp-файлы для возможного удаления при ошибке
           foreach ($imagesTMP as $img) {
@@ -186,7 +186,9 @@ final class AdminProductService extends ProductService
           $this->repository->rollback();
 
           // удаляем tmp-файлы
-          $this->imageService->cleanup($imagesTMP);
+          if(!empty($imagesTMP)) {
+            $this->imageService->cleanup($imagesTMP);
+          }
 
           throw $error;
       }

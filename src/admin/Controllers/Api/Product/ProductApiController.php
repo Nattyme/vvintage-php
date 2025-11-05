@@ -79,36 +79,45 @@ class ProductApiController extends BaseApiController
         $fileOrders = $text['cover_order'] ?? []; //  порядок новых изображений с фронта
         $existingImages = $text['existing_images'] ?? []; // массив с id и image_order
 
-        // Структурируем новые изображения и добавляем порядок
-        $structuredImages = $this->getStructuredImages($files);
-       
-        foreach ($structuredImages as $i => &$img) {
-            $img['image_order'] = $fileOrders[$i] ?? 0; // порядок с фронта
-        }
-        unset($img);
-       
-        // Валидация текста
-        $validatorText = new AdminProductValidator();
-        $validatorTextResult = $validatorText->validate($text);
+        try {
+     
 
-        // Валидация новых изображений (только то, что реально загружено через dropzone)
-        $validatorImg = new AdminProductImageValidator();
-        $validatorImgResult = $validatorImg->validate($structuredImages, $existingImages);
+          if ($files) {
+            // Структурируем новые изображения и добавляем порядок
+            $structuredImages = $this->getStructuredImages($files);
 
-        // Объединяем ошибки
-        $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
-        if (!empty($errors)) {
-            $this->error($errors, 422);
-        }
+            foreach ($structuredImages as $i => &$img) {
+                $img['image_order'] = $fileOrders[$i] ?? 0; // порядок с фронта
+            }
+            unset($img);
+
+            // Валидация новых изображений (только то, что реально загружено через dropzone)
+            $validatorImg = new AdminProductImageValidator();
+            $validatorImgResult = $validatorImg->validate($structuredImages, $existingImages);
+          }
+        
+          // Валидация текста
+          $validatorText = new AdminProductValidator();
+          $validatorTextResult = $validatorText->validate($text);
+
+      
+
+          // Объединяем ошибки
+          // $errors = array_merge($validatorTextResult['errors'], $validatorImgResult['errors']);
+          // if (!empty($errors)) {
+          //     $this->error($errors, 422);
+          // }
 
 
         $success = $this->service->updateProduct(
             $id,
             $validatorTextResult['data'],   // текстовые данные
-            // $structuredImages,                // какие картинки оставить
             $existingImages,                // существующие изображения с новым порядком
-            $validatorImgResult['data']          // новые картинки
+            $validatorImgResult['data'] ?? []         // новые картинки
         );
+      } catch (\Exception $e) {
+          $this->error($e->getMessage(), 500);
+      }
 
         if (!$success) {
             $this->error(['Не удалось обновить продукт'], 500);
@@ -119,6 +128,7 @@ class ProductApiController extends BaseApiController
 
     private function getStructuredImages(array $files): array 
     {
+        if(!$files) return [];
         $images = [];
 
         if (!isset($files['name']) || !is_array($files['name'])) {
