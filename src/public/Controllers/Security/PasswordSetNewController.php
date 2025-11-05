@@ -7,7 +7,7 @@ namespace Vvintage\Public\Controllers\Security;
 use Vvintage\Public\Controllers\Base\BaseController;
 
 use Vvintage\Public\Services\SEO\SeoService;
-use VviUtage\Public\Services\Page\PageService;
+use Vvintage\Public\Services\Page\PageService;
 use Vvintage\Utils\Services\FlashMessage\FlashMessage;
 use Vvintage\Utils\Services\Session\SessionService;
 use Vvintage\Public\Services\Security\PasswordSetNewService;

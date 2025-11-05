@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\Services\Brand;
 
-use Vvintage\Services\Brand\BrandService;
+use Vvintage\Public\Services\Brand\BrandService;
 use Vvintage\Admin\DTO\Brand\BrandInputDTO;
 use Vvintage\Admin\DTO\Brand\EditDTO;
 use Vvintage\Admin\DTO\Brand\BrandTranslationInputDTO;

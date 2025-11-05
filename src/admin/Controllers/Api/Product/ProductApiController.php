@@ -7,7 +7,7 @@ use Vvintage\Routing\RouteData;
 
 use Vvintage\Utils\Api\BaseApiController;
 use Vvintage\Admin\Services\Product\AdminProductService;
-use Vvintage\Admin\Serializers\ProductApiSerializer;
+use Vvintage\Serializers\ProductApiSerializer;
 use Vvintage\Admin\Services\Validation\AdminProductValidator;
 use Vvintage\Admin\Services\Validation\AdminProductImageValidator;
 

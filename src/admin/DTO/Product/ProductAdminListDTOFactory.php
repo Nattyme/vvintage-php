@@ -8,9 +8,9 @@ use Vvintage\Models\Product\Product;
 use Vvintage\Utils\Services\Locale\LocaleService;
 
 use Vvintage\Admin\DTO\Product\ProductAdminListDTO;
-use Vvintage\Admin\DTO\Brand\BrandForProductDTO;
-use Vvintage\Admin\DTO\Category\CategoryForProductDTO;
-use Vvintage\Admin\DTO\Product\Card\ImageForProductCardDTO;
+use Vvintage\Public\DTO\Brand\BrandForProductDTO;
+use Vvintage\Public\DTO\Category\CategoryForProductDTO;
+use Vvintage\Public\DTO\Product\Card\ImageForProductCardDTO;
 
 
 final class ProductAdminListDTOFactory

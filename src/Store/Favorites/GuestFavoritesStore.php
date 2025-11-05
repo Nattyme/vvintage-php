@@ -5,7 +5,7 @@ namespace Vvintage\Store\Favorites;
 
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Favorites\Favorites;
-use Vvintage\Services\Cookie\CookieService;
+use Vvintage\Public\Services\Cookie\CookieService;
 
 class GuestFavoritesStore implements FavoritesStoreInterface {
   private CookieService $cookieService;

@@ -6,7 +6,7 @@ namespace Vvintage\Store\Cart;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Cart\Cart;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\Session\SessionService;
 
 class UserCartStore implements CartStoreInterface
 {

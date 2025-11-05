@@ -15,7 +15,7 @@ use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Models\Cart\Cart;
 
 /** Сервисы */
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\Session\SessionService;
 
 class UserItemsListStore implements UserItemsListStoreInterface
 {

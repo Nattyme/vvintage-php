@@ -5,7 +5,7 @@ namespace Vvintage\Admin\Services\PostCategory;
 
 /** Модель */
 use Vvintage\Models\PostCategory\PostCategory;
-use Vvintage\Services\PostCategory\PostCategoryService;
+use Vvintage\Public\Services\PostCategory\PostCategoryService;
 
 use Vvintage\Admin\DTO\PostCategory\PostCategoryInputDTO;
 use Vvintage\Admin\DTO\PostCategory\PostCategoryAdminListDTOFactory;

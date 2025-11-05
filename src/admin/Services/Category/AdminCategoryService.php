@@ -7,7 +7,7 @@ namespace Vvintage\Admin\Services\Category;
 use Vvintage\Models\Category\Category;
 
 /* Сервисы */
-use Vvintage\Services\Category\CategoryService;
+use Vvintage\Public\Services\Category\CategoryService;
 
 /* DTO */
 use Vvintage\Admin\DTO\Category\CategoryInputDTO;

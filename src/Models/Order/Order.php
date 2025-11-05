@@ -7,7 +7,7 @@ use RedBeanPHP\R;
 use RedBeanPHP\OODBBean;
 
 /** DTO */
-use Vvintage\DTO\Order\OrderDTO;
+use Vvintage\Public\DTO\Order\OrderDTO;
 
 final class Order
 {

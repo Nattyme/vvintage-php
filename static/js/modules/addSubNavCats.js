@@ -130,7 +130,6 @@ const addSubNavCats = () => {
       const subCatId = subCatWrapper.dataset.cat;
       
       const currentSubCatData = cats.filter(cat => +cat.parentId === +subCatId);
-      console.log(currentSubCatData);
       
       // Пройдемся по всем категориям 2го уровня и сначала удали активный класс у всех, а потом добавим его к текущей подкатегории
       const subCatBlocksAll = e.target.closest('ul').querySelectorAll('li');
@@ -140,34 +139,11 @@ const addSubNavCats = () => {
       subSubNav.innerHTML = currentSubCatData.map(subCat => getSubSubNavItemTemplate(subCat)).join('');
     }
   
-    // // Найдем основные категории
-    // const mainCats = cats.filter(cat => +cat.parentId === 0);
   
-    // Добавляем разметку основных категорий в навигацию
-    // navList.innerHTML = mainCats.map(cat => getNavItemTemplate(cat)).join('');
-  
-    // // Находим все блоки главной навигации. На каждый блок вешаем прослушку событий hover
-    // const catBlocksAll = navList.querySelectorAll('.nav__block');
-    // if(!catBlocksAll) return;
      // // Находим все блоки главной навигации. На каждый блок вешаем прослушку событий hover
     catBlocksAll.forEach(catBlock => catBlock.addEventListener('mouseenter', () => addSubNav(catBlock)));
     isMobile();
   }
-
-  // fetch ('/shop/nav-cats', {
-  //   headers: {
-  //   'X-Requested-With': 'XMLHttpRequest'
-  //   }
-  // })
-  // .then(response => response.json())
-  // .then(data => {
-  //   const catsData = Object.values(data);
-  //   if (catsData) renderMenu(catsData);
-  // })
-  // .catch(error => {
-  //   console.log('Ошибка загрузки категорий:', error);
-  // });
-
 
 }
  

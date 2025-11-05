@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\Services\User;
 
-use Vvintage\Services\User\UserService;
+use Vvintage\Public\Services\User\UserService;
 
 
 final class AdminUserService extends UserService

@@ -10,9 +10,9 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Routing\Router;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Config\LanguageConfig;
-use Vvintage\Services\Locale\LocaleService;
-use Vvintage\Services\Translator\Translator;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\Locale\LocaleService;
+use Vvintage\Public\Services\Translator\Translator;
+use Vvintage\Utils\Services\Session\SessionService;
 
 // Старт сесии (хранение ошибок, уведомлений, данных пользователя)
 $sessionService = new SessionService();

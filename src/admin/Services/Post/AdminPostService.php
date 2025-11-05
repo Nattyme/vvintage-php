@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\Services\Post;
 
-use Vvintage\Services\Post\PostService;
+use Vvintage\Public\Services\Post\PostService;
 use Vvintage\Admin\DTO\Post\PostEditDTO;
 use Vvintage\Admin\DTO\Post\PostEditDTOFactory;
 

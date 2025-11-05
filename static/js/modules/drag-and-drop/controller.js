@@ -46,7 +46,6 @@ dropzone.addEventListener('drop', e => {
     if (!imageURL) return;
 
     const imageTmpl = previewV.getImgTmpl(imageURL);
-    console.log(imageTmpl);
     
     previewV.insertTemplate(previewContainer, imageTmpl);
   });

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Models\Message;
 
-use Vvintage\DTO\Message\MessageDTO;
+use Vvintage\Public\DTO\Message\MessageDTO;
 
 
 final class Message

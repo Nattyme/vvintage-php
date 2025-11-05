@@ -15,10 +15,10 @@ use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\User\User;
 use Vvintage\Models\Cart\Cart;
-use Vvintage\DTO\User\UserOutputDTO;
-use Vvintage\DTO\User\UserCreateDTO;
-use Vvintage\DTO\User\UserUpdateDTO;
-use Vvintage\DTO\Address\AddressDTO;
+use Vvintage\Public\DTO\User\UserOutputDTO;
+use Vvintage\Public\DTO\User\UserCreateDTO;
+use Vvintage\Public\DTO\User\UserUpdateDTO;
+use Vvintage\Public\DTO\Address\AddressDTO;
 
 final class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Admin\Services\Product;
 
 use Vvintage\Admin\DTO\Product\ProductImageInputDTO;
-use Vvintage\Services\Product\ProductImageService;
+use Vvintage\Public\Services\Product\ProductImageService;
 
 require_once ROOT . "./libs/functions.php";
 

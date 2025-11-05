@@ -30,7 +30,7 @@
 
   /** Сервисы */
   use Vvintage\Utils\Services\FlashMessage\FlashMessage;
-  use Vvintage\Utils\Session\SessionService;
+  use Vvintage\Utils\Services\Session\SessionService;
   use Vvintage\Public\Services\SEO\SeoService;
   use Vvintage\Public\Services\Page\PageService;
   use Vvintage\Public\Services\Cart\CartService;

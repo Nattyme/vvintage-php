@@ -8,13 +8,13 @@ use Vvintage\Config\LanguageConfig;
 /** Модель */
 use Vvintage\Models\Product\Product;
 
-use Vvintage\Services\Product\ProductService;
-use Vvintage\Services\Brand\BrandService;
-use Vvintage\Services\Category\CategoryService;
+use Vvintage\Public\Services\Product\ProductService;
+use Vvintage\Public\Services\Brand\BrandService;
+use Vvintage\Public\Services\Category\CategoryService;
 use Vvintage\Admin\Services\Product\AdminProductImageService;
 
 /** DTO */
-use Vvintage\Admin\DTO\Product\Filter\ProductFilterDTO;
+use Vvintage\Public\DTO\Product\Filter\ProductFilterDTO;
 use Vvintage\Admin\DTO\Product\EditProductDTOFactory;
 use Vvintage\Admin\DTO\Product\ProductAdminListDTOFactory;
 use Vvintage\Admin\DTO\Product\ProductAdminListDTO;

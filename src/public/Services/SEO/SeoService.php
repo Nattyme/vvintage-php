@@ -50,8 +50,8 @@ class SeoService extends BaseService
           case 'cart':
           case 'login':
           case 'registration':
-          case 'resetpass':
-          case 'setnewpass':
+          case 'lost-password':
+          case 'set-new-password':
               $strategy = new StaticPageSeoStrategy($model, $lang);
               break;
           // case 'cart':

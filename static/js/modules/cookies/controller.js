@@ -7,7 +7,7 @@ const model = initModel();
 const initController = () => {
   const form = view.getFormElement();
   if (!form) return;
-  console.log(form);
+
     // При изменении формы (ввод, чекбоксы)
   form.addEventListener('input', () => {
     const formData = view.getFormConfig();

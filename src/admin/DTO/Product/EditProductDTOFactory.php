@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Product;
+namespace Vvintage\Admin\DTO\Product;
 
 use Vvintage\Models\Product\Product;
 
 use Vvintage\Utils\Services\Locale\LocaleService;
 
 use Vvintage\Admin\DTO\Product\EditProductDTO;
-use Vvintage\Admin\DTO\Brand\BrandForProductDTO;
-use Vvintage\Admin\DTO\Category\CategoryForProductDTO;
+use Vvintage\Public\DTO\Brand\BrandForProductDTO;
+use Vvintage\Public\DTO\Category\CategoryForProductDTO;
 
 final class EditProductDTOFactory
 {

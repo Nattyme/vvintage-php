@@ -44,7 +44,7 @@ const initNewProductFormEvents = () => {
         formView.resetForm();
         previewModel.reset();
         formView.displayNotification({ type: 'success', title: res.success[0] });
-        console.log('result success');
+
         
         // window.location.href = '/admin/shop';
         return;
@@ -90,8 +90,6 @@ const initNewProductFormEvents = () => {
 
 
     } catch (err) {
-      console.error("Ошибка сети или сервера:", err);
-
       formView.displayNotification({ type: 'error', title: 'Не удалось отправить форму' });
       formView.addNotificationText(["Попробуйте yt позже."]);
       formView.scrollToElement('note');

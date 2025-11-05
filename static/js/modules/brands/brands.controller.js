@@ -7,7 +7,6 @@ const initBrandsEvents = async () => {
 
   if (!brands) return;
   const brandsBlock = view.getBrandsBlock();
-  console.log(brands);
 
   if (!brandsBlock) return;
 

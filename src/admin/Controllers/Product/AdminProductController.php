@@ -8,7 +8,7 @@ use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
 use Vvintage\Admin\Services\Product\AdminProductService;
-use Vvintage\DTO\Product\Filter\ProductFilterDTO;
+use Vvintage\Public\DTO\Product\Filter\ProductFilterDTO;
 use Vvintage\Utils\Services\FlashMessage\FlashMessage;
 use Vvintage\Utils\Services\Session\SessionService;
 

@@ -57,11 +57,9 @@ const addAccordion = (type, selector) => {
       currentContent.style.maxHeight = currentContent.scrollHeight + 'px';
     }    
 
-    console.log(currentContent);
   };
 
   const startAccordionByType = (e, btn) => {
-  // console.log(btn);
   
     switch (type) {
       case 'only' :

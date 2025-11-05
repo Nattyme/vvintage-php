@@ -6,7 +6,7 @@ namespace Vvintage\Public\DTO\Post;
 use Vvintage\Public\DTO\Post\PostListDTO;
 
 /** Model */
-use Vvintage\Public\Models\Post\Post;
+use Vvintage\Models\Post\Post;
 
 use Vvintage\Utils\Services\Locale\LocaleService;
 

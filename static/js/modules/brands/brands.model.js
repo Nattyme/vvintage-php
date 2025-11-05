@@ -8,7 +8,6 @@ const initModel = () => {
       if (!res.ok) throw new Error('Ошибка сети');
       return await res.json();
     } catch (err) {
-      console.error('Ошибка загрузки списка брендов:', err);
       return [];
     }
   }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\Services\Messages;
 
-use Vvintage\Services\Messages\MessageService;
+use Vvintage\Public\Services\Messages\MessageService;
 use Vvintage\Repositories\Message\MessageRepository;
 use Vvintage\Models\Message\Message;
 

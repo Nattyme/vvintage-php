@@ -12,8 +12,8 @@ use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
 
 /** Сервисы */
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Cookie\CookieService;
+use Vvintage\Utils\Services\Session\SessionService;
+use Vvintage\Public\Services\Cookie\CookieService;
 
 class GuestItemsListStore implements UserItemsListStoreInterface {
   private SessionService $sessionService;

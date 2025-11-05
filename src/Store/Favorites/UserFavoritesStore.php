@@ -6,7 +6,7 @@ namespace Vvintage\Store\Favorites;
 use Vvintage\Repositories\UserRepository;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\Favorites\Favorites;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\Session\SessionService;
 
 class UserFavoritesStore implements FavoritesStoreInterface
 {

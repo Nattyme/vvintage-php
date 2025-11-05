@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\Order;
+namespace Vvintage\Admin\Services\Order;
 
 use Vvintage\Utils\Services\FlashMessage\FlashMessage;
 
 /** Репозитории */
 use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\Product\ProductRepository;
-use Vvintage\Services\Order\OrderService;
+use Vvintage\Public\Services\Order\OrderService;
 
 
 final class AdminOrderService extends OrderService

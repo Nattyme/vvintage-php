@@ -17,7 +17,7 @@ use Vvintage\Models\Address\Address;
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Favorites\Favorites;
 
-use Vvintage\DTO\User\UserOutputDTO;
+use Vvintage\Public\DTO\User\UserOutputDTO;
 // use Vvintage\DTO\Address\AddressDTO;
 
 final class User implements UserInterface

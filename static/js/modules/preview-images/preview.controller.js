@@ -25,7 +25,6 @@ const initPreviewContainerEvents = () => {
   // 1. ИНИЦИАЛИЗАЦИЯ PHP-изображений
   // ===============================
   const urls = view.getCurrentImages();
-  console.log(urls);
 
   urls.forEach((image) => {
     model.addExistingFile(image.url, image.name, image.id);

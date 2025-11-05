@@ -20,7 +20,7 @@ use Vvintage\Repositories\Address\AddressRepository;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Order\Order;
 
-use Vvintage\DTO\Order\OrderDTO;
+use Vvintage\Public\DTO\Order\OrderDTO;
 
 
 

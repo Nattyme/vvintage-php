@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Contracts;
 
-use Vvintage\DTO\Common\SeoDTO;
+use Vvintage\Public\DTO\Common\SeoDTO;
 
 
 interface SeoStrategyInterface

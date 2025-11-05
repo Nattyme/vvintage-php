@@ -5,7 +5,7 @@ namespace Vvintage\Store\Cart;
 
 use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\User\UserInterface;
-use Vvintage\Services\Cookie\CookieService;
+use Vvintage\Public\Services\Cookie\CookieService;
 
 class GuestCartStore implements CartStoreInterface {
 

@@ -13,7 +13,7 @@ use Vvintage\Contracts\Message\MessageRepositoryInterface;
 use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\Message\Message;
-use Vvintage\DTO\Message\MessageDTO;
+use Vvintage\Public\DTO\Message\MessageDTO;
 
 
 

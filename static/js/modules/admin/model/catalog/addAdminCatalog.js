@@ -82,7 +82,6 @@ const addAdminCatalog = (catalogWrapper) => {
 
   // Ф-ция обрабатывает ссылки каталога
   const handlingCatalogLinks = () => {
-    console.log("hello links");
 
     // Найдем все контейнеры для кнопок-ссылок каталога (удалить и редактировать)
     const catalogLinksWrappers = catalogList.querySelectorAll(
@@ -122,7 +121,7 @@ const addAdminCatalog = (catalogWrapper) => {
               `Вы действительно хотите удалть категорию ${currenyCat.name}?`
             )
           )
-            console.log("okay");
+  
         }
       });
     });

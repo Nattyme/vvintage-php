@@ -115,8 +115,6 @@ const mobileNav = () => {
 	const menuIcon = document.querySelector('.nav-icon');
   const mobileNav = document.querySelector('.mobile-nav');
   const mobileNavList = document.querySelector('.mobile-nav__list');
-  console.log(mobileNav);
-  console.log(mobileNavList);
   
 
 	navBtn.onclick =  () => {
@@ -150,8 +148,6 @@ const mobileNav = () => {
     `
   ).join(' ');
   
-
-  console.log('');
   
 }
 
