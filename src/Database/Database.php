@@ -26,6 +26,7 @@ final class Database
         // R::useJSONFeatures(true); // Настройка ReadBean, кот. сохраняет массив в БД в JSON формате
     }
 
+
     /**
      * Получение массива настроек из таблицы settings
      *

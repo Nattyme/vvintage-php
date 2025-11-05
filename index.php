@@ -6,6 +6,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 // Используем нужные классы
 use Vvintage\Config\Config;
 use Vvintage\Database\Database;
+use Vvintage\Database\DatabasePDO;
 use Vvintage\Routing\RouteData;
 use Vvintage\Routing\Router;
 use Vvintage\Models\Settings\Settings;
@@ -17,7 +18,7 @@ use Vvintage\Utils\Services\Session\SessionService;
 // Старт сесии (хранение ошибок, уведомлений, данных пользователя)
 $sessionService = new SessionService();
 $sessionService->startSession();
-
+DatabasePDO::connect();
 
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
