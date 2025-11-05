@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\public\Controllers\Api\Category;
 
 use Vvintage\public\Controllers\Api\BaseApiController;
-use Vvintage\Services\Category\CategoryService;
+use Vvintage\public\Services\Category\CategoryService;
 use Vvintage\Serializers\CategoryApiSerializer;
 
 

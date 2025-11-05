@@ -6,7 +6,7 @@ namespace Vvintage\Admin\Controllers\User;
 use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
 
-use Vvintage\Services\Admin\User\AdminUserService;
+use Vvintage\admin\Services\User\AdminUserService;
 use Vvintage\Repositories\User\UserRepository;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;

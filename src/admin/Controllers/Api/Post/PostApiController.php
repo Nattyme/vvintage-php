@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace Vvintage\public\Controllers\Api\Post;
 
 use Vvintage\Routing\RouteData;
-use Vvintage\public\Controllers\Api\BaseApiController;
+// use Vvintage\admin\Controllers\Api\BaseApiController;
 use Vvintage\Services\Admin\Product\AdminPostService;
-use Vvintage\DTO\Product\PostDTO;
 use Vvintage\Serializers\PostApiSerializer;
-use Vvintage\Services\Admin\Validation\AdminPostValidator;
+use Vvintage\admin\Services\Validation\AdminPostValidator;
 
 class PostApiController extends BaseApiController
 {

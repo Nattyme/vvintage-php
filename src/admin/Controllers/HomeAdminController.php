@@ -9,7 +9,7 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
 
 /** Сервисы */
-use Vvintage\Services\Admin\AdminStatsService;
+use Vvintage\admin\Services\AdminStatsService;
 
 class HomeAdminController extends BaseAdminController 
 {

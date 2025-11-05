@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Product\Lang;
+namespace Vvintage\admin\DTO\Product\Lang;
 
 final class ProductTranslationInputDTO
 {

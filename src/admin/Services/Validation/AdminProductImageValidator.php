@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\Validation;
+namespace Vvintage\admin\Services\Validation;
 
 final class AdminProductImageValidator
 {

@@ -9,11 +9,11 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Contracts\User\UserInterface;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\AdminPanel\AdminPanelService;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\SEO\SeoService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\AdminPanel\AdminPanelService;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\SEO\SeoService;
 
 
 abstract class BaseController

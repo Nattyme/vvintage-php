@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\Validation;
+namespace Vvintage\admin\Services\Validation;
 
 use Vvintage\Repositories\Brand\BrandRepository;
-use Vvintage\Services\Admin\Validation\AdminBaseValidator;
+use Vvintage\admin\Services\Validation\AdminBaseValidator;
 
 final class AdminBrandValidator extends AdminBaseValidator
 {

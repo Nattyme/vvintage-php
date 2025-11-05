@@ -13,20 +13,20 @@ use Vvintage\public\Controllers\Base\BaseController;
 use Vvintage\Repositories\Product\ProductRepository;
 
 /** Сервисы */
-use Vvintage\Services\Product\ProductService;
-use Vvintage\Services\Category\CategoryService;
-use Vvintage\Services\Brand\BrandService;
-use Vvintage\Services\Product\ProductImageService;
-use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\public\Services\Product\ProductService;
+use Vvintage\public\Services\Category\CategoryService;
+use Vvintage\public\Services\Brand\BrandService;
+use Vvintage\public\Services\Product\ProductImageService;
+use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
 
-use Vvintage\DTO\Product\Filter\ProductFilterDTO;
+use Vvintage\public\DTO\Product\Filter\ProductFilterDTO;
 
 
-require_once ROOT . "./libs/functions.php";
+// require_once ROOT . "./libs/functions.php";
 
 
 

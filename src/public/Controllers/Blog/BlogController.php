@@ -6,17 +6,16 @@ namespace Vvintage\public\Controllers\Blog;
 use Vvintage\Routing\RouteData;
 
 use Vvintage\public\Controllers\Base\BaseController;
-use Vvintage\Services\Navigation\NavigationService;
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Post\PostService;
-use Vvintage\Services\Page\PageService;
-use Vvintage\DTO\Post\PostFilterDTO;
+use Vvintage\public\Services\Navigation\NavigationService;
+use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\public\Services\Post\PostService;
+use Vvintage\public\Services\Page\PageService;
 
 
-require_once ROOT . './libs/functions.php';
+// require_once ROOT . './libs/functions.php';
 
 final class BlogController extends BaseController
 {

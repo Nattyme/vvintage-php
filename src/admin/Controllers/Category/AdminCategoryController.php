@@ -8,13 +8,11 @@ use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Models\Category\Category;
 
-
-use Vvintage\Services\Admin\Category\AdminCategoryService;
-use Vvintage\Services\Admin\Validation\AdminCategoryValidator;
+use Vvintage\admin\Services\Category\AdminCategoryService;
+use Vvintage\admin\Services\Validation\AdminCategoryValidator;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
 
-use Vvintage\DTO\Admin\Category\CategoryInputDTO;
 
 final class AdminCategoryController extends BaseAdminController 
 {

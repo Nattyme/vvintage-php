@@ -17,23 +17,23 @@ use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Repositories\User\UserRepository;
 
 /** Сервисы */
-use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Cart\CartService;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\Security\LoginService;
-use Vvintage\Services\Product\ProductService;
-use Vvintage\Services\Favorites\FavoritesService;
-use Vvintage\Services\User\UserItemsMergeService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Cookie\CookieService;
+use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\public\Services\Cart\CartService;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\Security\LoginService;
+use Vvintage\public\Services\Product\ProductService;
+use Vvintage\public\Services\Favorites\FavoritesService;
+use Vvintage\public\Services\User\UserItemsMergeService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\Cookie\CookieService;
 
 /** Хранилища */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 
 
-use Vvintage\Services\Validation\LoginValidator;
+use Vvintage\public\Services\Validation\LoginValidator;
 
 
 final class LoginController extends BaseController

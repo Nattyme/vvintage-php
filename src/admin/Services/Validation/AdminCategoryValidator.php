@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\Validation;
+namespace Vvintage\admin\Services\Validation;
 
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Repositories\Category\CategoryRepository;
-use Vvintage\Services\Admin\Validation\AdminBaseValidator;
+use Vvintage\admin\Services\Validation\AdminBaseValidator;
 
 final class AdminCategoryValidator extends AdminBaseValidator
 {

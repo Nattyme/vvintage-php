@@ -14,21 +14,21 @@ use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\Address\Address;
 
 /** Сервисы */
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\User\UserService;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\Profile\ProfileService;
-use Vvintage\Services\Locale\LocaleService;
-use Vvintage\Services\Order\OrderService;
-use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\public\Services\User\UserService;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\Profile\ProfileService;
+use Vvintage\public\Services\Locale\LocaleService;
+use Vvintage\public\Services\Order\OrderService;
+use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
 
 use Vvintage\Models\Order\Order;
 
-use Vvintage\DTO\Order\OrderProfileDetailsDTO;
+use Vvintage\public\DTO\Order\OrderProfileDetailsDTO;
 
-require_once ROOT . './libs/functions.php';
+// require_once ROOT . './libs/functions.php';
 
 
 final class ProfileController extends BaseController

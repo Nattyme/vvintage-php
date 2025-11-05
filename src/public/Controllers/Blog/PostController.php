@@ -11,13 +11,13 @@ use Vvintage\Models\Post\Post;
 use Vvintage\Routing\RouteData;
 
 /** Сервисы */
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Post\PostService;
-use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Navigation\NavigationService;
-use Vvintage\Services\Page\PageService;
+use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\public\Services\Post\PostService;
+use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\Navigation\NavigationService;
+use Vvintage\public\Services\Page\PageService;
 
 
 final class PostController extends BaseController

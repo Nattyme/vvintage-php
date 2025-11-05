@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin;
+namespace Vvintage\admin\Services;
 
 /** Репозитории */
 use Vvintage\Repositories\Order\OrderRepository;
-// use Vvintage\Repositories\MessageRepository;
 use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Repositories\User\UserRepository;

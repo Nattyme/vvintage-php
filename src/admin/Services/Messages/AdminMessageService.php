@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\Messages;
+namespace Vvintage\admin\Services\Messages;
 
 use Vvintage\Services\Messages\MessageService;
 use Vvintage\Repositories\Message\MessageRepository;

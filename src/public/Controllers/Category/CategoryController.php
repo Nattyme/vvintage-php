@@ -5,11 +5,11 @@ namespace Vvintage\public\Controllers\CategoryController;
 
 use Vvintage\public\Controllers\Base\BaseController;
 use Vvintage\Models\Category\Category;
-use Vvintage\DTO\Category\CategoryOutputDTO;
-use Vvintage\Services\Category\CategoryService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\SEO\SeoService;
+use Vvintage\public\DTO\Category\CategoryOutputDTO;
+use Vvintage\public\Services\Category\CategoryService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\SEO\SeoService;
 
 class CategoryController extends BaseController
 {

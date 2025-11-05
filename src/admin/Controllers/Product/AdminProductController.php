@@ -7,7 +7,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
-use Vvintage\Services\Admin\Product\AdminProductService;
+use Vvintage\admin\Services\Product\AdminProductService;
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;

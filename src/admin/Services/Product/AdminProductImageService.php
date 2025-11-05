@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Admin\Product;
 
-use Vvintage\DTO\Admin\Product\ProductImageInputDTO;
+use Vvintage\admin\DTO\Product\ProductImageInputDTO;
 use Vvintage\Services\Product\ProductImageService;
 
 require_once ROOT . "./libs/functions.php";

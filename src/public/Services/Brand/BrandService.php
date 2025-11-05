@@ -11,7 +11,6 @@ use Vvintage\public\Services\Base\BaseService;
 use Vvintage\Repositories\Brand\BrandRepository;
 use Vvintage\Repositories\Brand\BrandTranslationRepository;
 
-use Vvintage\public\DTO\Brand\BrandInputDTO;
 use Vvintage\public\DTO\Brand\BrandForProductDTO;
 use Vvintage\public\DTO\Brand\BrandForProductDTOFactory;
 

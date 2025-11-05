@@ -11,7 +11,7 @@ use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
 
 /** Сервисы */
-use Vvintage\Services\Admin\Messages\AdminMessageService;
+use Vvintage\admin\Services\Messages\AdminMessageService;
 
 
 

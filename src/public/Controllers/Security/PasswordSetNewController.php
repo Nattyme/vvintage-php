@@ -6,12 +6,12 @@ namespace Vvintage\public\Controllers\Security;
 /** Базовый контроллер страниц*/
 use Vvintage\public\Controllers\Base\BaseController;
 
-use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Security\PasswordSetNewService;
-use Vvintage\Services\Validation\PasswordSetNewValidator;
+use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\Security\PasswordSetNewService;
+use Vvintage\public\Services\Validation\PasswordSetNewValidator;
 
 final class PasswordSetNewController extends BaseController 
 {

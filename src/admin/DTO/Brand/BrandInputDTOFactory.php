@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Brand;
+namespace Vvintage\admin\DTO\Brand;
 
 use Vvintage\Models\Brand\Brand;
-use Vvintage\public\DTO\Brand\BrandInputDTO;
+use Vvintage\admin\DTO\Brand\BrandInputDTO;
 
 final class BrandInputDTOFactory
 {

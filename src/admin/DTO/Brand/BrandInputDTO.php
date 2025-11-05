@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Brand;
+namespace Vvintage\admin\DTO\Brand;
 
 final class BrandInputDTO 
 {

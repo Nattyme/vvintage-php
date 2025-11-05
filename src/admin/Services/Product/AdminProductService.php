@@ -11,18 +11,18 @@ use Vvintage\Models\Product\Product;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Brand\BrandService;
 use Vvintage\Services\Category\CategoryService;
-use Vvintage\Services\Admin\Product\AdminProductImageService;
+use Vvintage\admin\Services\Product\AdminProductImageService;
 
 /** DTO */
-use Vvintage\DTO\Product\Filter\ProductFilterDTO;
-use Vvintage\DTO\Admin\Product\EditProductDTOFactory;
-use Vvintage\DTO\Admin\Product\ProductAdminListDTOFactory;
-use Vvintage\DTO\Admin\Product\ProductAdminListDTO;
-use Vvintage\DTO\Admin\Product\EditProductDTO;
-use Vvintage\DTO\Admin\Product\ProductInputDTO;
-use Vvintage\DTO\Admin\Product\ProductImageInputDTO;
+use Vvintage\admin\DTO\Product\Filter\ProductFilterDTO;
+use Vvintage\admin\DTO\Product\EditProductDTOFactory;
+use Vvintage\admin\DTO\Product\ProductAdminListDTOFactory;
+use Vvintage\admin\DTO\Product\ProductAdminListDTO;
+use Vvintage\admin\DTO\Product\EditProductDTO;
+use Vvintage\admin\DTO\Product\ProductInputDTO;
+use Vvintage\admin\DTO\Product\ProductImageInputDTO;
 
-use Vvintage\DTO\Product\Lang\ProductTranslationInputDTO;
+use Vvintage\admin\DTO\Product\Lang\ProductTranslationInputDTO;
 
 
 

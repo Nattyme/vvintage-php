@@ -7,7 +7,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Admin\Post\AdminPostService;
+use Vvintage\admin\Services\Post\AdminPostService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
 

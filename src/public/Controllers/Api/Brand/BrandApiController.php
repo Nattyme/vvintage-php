@@ -5,7 +5,7 @@ namespace Vvintage\public\Controllers\Api\Brand;
 
 use Vvintage\public\Controllers\Api\BaseApiController;
 use Vvintage\public\Controllers\Base\BaseController;
-use Vvintage\Services\Brand\BrandService;
+use Vvintage\public\Services\Brand\BrandService;
 
 class BrandApiController extends BaseApiController
 {

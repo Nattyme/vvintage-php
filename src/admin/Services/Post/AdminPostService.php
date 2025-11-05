@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Vvintage\Services\Admin\Post;
 
 use Vvintage\Services\Post\PostService;
-use Vvintage\DTO\Admin\Post\PostEditDTO;
-use Vvintage\DTO\Admin\Post\PostEditDTOFactory;
+use Vvintage\admin\DTO\Post\PostEditDTO;
+use Vvintage\admin\DTO\Post\PostEditDTOFactory;
 
 
 final class AdminPostService extends PostService

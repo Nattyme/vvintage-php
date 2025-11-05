@@ -9,18 +9,18 @@ use Vvintage\public\Controllers\Base\BaseController;
 
 use Vvintage\Models\Page\Page;
 
-use Vvintage\Services\Validation\ContactFormValidation;
+use Vvintage\public\Services\Validation\ContactFormValidation;
 
 /** Сервисы */
-use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Post\PostService;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Product\ProductService;
-use Vvintage\Services\Messages\MessageService;
-use Vvintage\Services\Category\CategoryService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\public\Services\Post\PostService;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\public\Services\Product\ProductService;
+use Vvintage\public\Services\Messages\MessageService;
+use Vvintage\public\Services\Category\CategoryService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
 
 
 class PageController extends BaseController

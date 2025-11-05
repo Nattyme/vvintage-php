@@ -7,7 +7,7 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
 
 /** Сервис */
-use Vvintage\Services\Admin\Order\AdminOrderService;
+use Vvintage\admin\Services\Order\AdminOrderService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Base\BaseService;

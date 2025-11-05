@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\Category;
+namespace Vvintage\admin\Services\Category;
 
 /** Модель */
 use Vvintage\Models\Category\Category;
@@ -10,10 +10,10 @@ use Vvintage\Models\Category\Category;
 use Vvintage\Services\Category\CategoryService;
 
 /* DTO */
-use Vvintage\DTO\Admin\Category\CategoryInputDTO;
-use Vvintage\DTO\Admin\Category\CategoryTranslationInputDTO;
-use Vvintage\DTO\Admin\Category\EditDTO;
-use Vvintage\DTO\Admin\Category\EditDTOFactory;
+use Vvintage\admin\DTO\Category\CategoryInputDTO;
+use Vvintage\admin\DTO\Category\CategoryTranslationInputDTO;
+use Vvintage\admin\DTO\Category\EditDTO;
+use Vvintage\admin\DTO\Category\EditDTOFactory;
 
 
 final class AdminCategoryService extends CategoryService

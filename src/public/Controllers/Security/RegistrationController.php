@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace Vvintage\public\Controllers\Security;
 
 use Vvintage\public\Controllers\Base\BaseController;
-use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Security\RegistrationService;
-use Vvintage\Services\Validation\RegistrationValidator;
+use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\Security\RegistrationService;
+use Vvintage\public\Services\Validation\RegistrationValidator;
 
 final class RegistrationController extends BaseController
 {

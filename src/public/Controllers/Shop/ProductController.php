@@ -16,13 +16,13 @@ use Vvintage\public\Controllers\Base\BaseController;
 use Vvintage\Models\Product\Product;
 
 /** Сервисы */
-use Vvintage\Services\Product\ProductService;
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Seo\SeoService;
-use Vvintage\DTO\Product\ProductPageDTO;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\public\Services\Product\ProductService;
+use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\public\Services\Seo\SeoService;
+use Vvintage\public\DTO\Product\ProductPageDTO;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
 
 
 

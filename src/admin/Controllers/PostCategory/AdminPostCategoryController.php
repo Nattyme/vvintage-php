@@ -7,8 +7,8 @@ use Vvintage\Routing\RouteData;
 
 use Vvintage\Admin\Controllers\BaseAdminController;
 
-use Vvintage\Services\Admin\PostCategory\AdminPostCategoryService;
-use Vvintage\Services\Admin\Validation\AdminPostCategoryValidator;
+use Vvintage\admin\Services\PostCategory\AdminPostCategoryService;
+use Vvintage\admin\Services\Validation\AdminPostCategoryValidator;
 use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Services\Messages\FlashMessage;

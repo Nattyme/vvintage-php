@@ -14,14 +14,14 @@ use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
 /** Сервисы */
-use Vvintage\Services\Order\OrderService;
-use Vvintage\Services\Cart\CartService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Validation\NewOrderValidator;
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\SEO\SeoService;
+use Vvintage\public\Services\Order\OrderService;
+use Vvintage\public\Services\Cart\CartService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\Validation\NewOrderValidator;
+use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\SEO\SeoService;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -36,7 +36,7 @@ use Vvintage\Models\Settings\Settings;
 use Vvintage\DTO\Order\OrderDTO;
 
 
-require_once ROOT . './libs/functions.php';
+// require_once ROOT . './libs/functions.php';
 
 final class OrderController extends BaseController
 {

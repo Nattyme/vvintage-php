@@ -24,20 +24,20 @@ use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
 
 /** Сервисы */
-use Vvintage\Services\Cart\CartService;
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Product\ProductImageService;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\SEO\SeoService;
+use Vvintage\public\Services\Cart\CartService;
+use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\Product\ProductImageService;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\SEO\SeoService;
 
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 
 
-require_once ROOT . './libs/functions.php';
+// require_once ROOT . './libs/functions.php';
 
 final class CartController extends BaseController
 {

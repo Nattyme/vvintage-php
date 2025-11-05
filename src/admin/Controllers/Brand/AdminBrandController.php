@@ -7,11 +7,10 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Models\Brand\Brand;
-use Vvintage\DTO\Brand\BrandDTO;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Admin\Brand\AdminBrandService;
-use Vvintage\Services\Admin\Validation\AdminBrandValidator;
+use Vvintage\admin\Services\Brand\AdminBrandService;
+use Vvintage\admin\Services\Validation\AdminBrandValidator;
 
 class AdminBrandController extends BaseAdminController 
 {

@@ -26,21 +26,21 @@ use Vvintage\Store\UserItemsList\UserItemsListStore;
 use Vvintage\Repositories\User\UserRepository;
 
 /** Сервисы */
-use Vvintage\Services\SEO\SeoService;
-use Vvintage\Services\Page\Breadcrumbs;
-use Vvintage\Services\Page\PageService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Product\ProductService;
-use Vvintage\Services\Favorites\FavoritesService;
-use Vvintage\Services\Product\ProductImageService;
+use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\public\Services\Page\PageService;
+use Vvintage\public\Services\Messages\FlashMessage;
+use Vvintage\public\Services\Session\SessionService;
+use Vvintage\public\Services\Product\ProductService;
+use Vvintage\public\Services\Favorites\FavoritesService;
+use Vvintage\public\Services\Product\ProductImageService;
 
 
 /** Абстракции */
 use Vvintage\Models\Shared\AbstractUserItemsList;
 
 
-require_once ROOT . './libs/functions.php';
+// require_once ROOT . './libs/functions.php';
 
 final class FavoritesController extends BaseController
 {

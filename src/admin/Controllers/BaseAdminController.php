@@ -9,8 +9,6 @@ use Vvintage\Services\Session\SessionService;
 use Vvintage\Services\Messages\FlashMessage;
 use Vvintage\Models\User\User;
 
-// Пеервод на другие языки
-// Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
 use Vvintage\Services\Locale\LocaleService;
 

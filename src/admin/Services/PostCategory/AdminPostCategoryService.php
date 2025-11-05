@@ -6,11 +6,12 @@ namespace Vvintage\Services\Admin\PostCategory;
 /** Модель */
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Services\PostCategory\PostCategoryService;
-use Vvintage\DTO\PostCategory\PostCategoryInputDTO;
-use Vvintage\DTO\Admin\PostCategory\PostCategoryAdminListDTOFactory;
-use Vvintage\DTO\Admin\PostCategory\EditDtoFactory;
-use Vvintage\DTO\Admin\PostCategory\PostCategoryAdminListDTO;
-use Vvintage\DTO\Admin\PostCategory\EditDto;
+
+use Vvintage\admin\DTO\PostCategory\PostCategoryInputDTO;
+use Vvintage\admin\DTO\PostCategory\PostCategoryAdminListDTOFactory;
+use Vvintage\admin\DTO\PostCategory\EditDtoFactory;
+use Vvintage\admin\DTO\PostCategory\PostCategoryAdminListDTO;
+use Vvintage\admin\DTO\PostCategory\EditDto;
 
 
 final class AdminPostCategoryService extends PostCategoryService
