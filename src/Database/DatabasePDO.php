@@ -36,7 +36,7 @@ abstract class DatabasePDO
     } 
     catch (\Exception $error) {
       error_log(  
-             date('Y-m-d H:i:s - ') . "Database connection error: " . $error->getMessage(),
+             date('Y-m-d H:i:s - ') . "База данных - ошибка соединения: " . $error->getMessage(),
           3,
           ROOT .'errors.log'
       );
@@ -58,7 +58,7 @@ abstract class DatabasePDO
     }
     catch (\Exception $error) {
       error_log(  
-             date('Y-m-d H:i:s - ') . "Database connection error: " . $error->getMessage(),
+             date('Y-m-d H:i:s - ') . "База данных - ошибка выполнения запроса: " . $error->getMessage(),
           3,
           ROOT .'errors.log'
       );
@@ -79,11 +79,11 @@ abstract class DatabasePDO
     }   
     catch (\Exception $error) {
       error_log(  
-             date('Y-m-d H:i:s - ') . "Ошибка подключения базы данных error: " . $error->getMessage(),
+             date('Y-m-d H:i:s - ') . "База данных - ошибка при обработке запроса:  " . $error->getMessage(),
           3,
           ROOT .'errors.log'
       );
-      throw new \Exception('Ошибка при получении данных из базе данных');
+      throw new \Exception('Ошибка при обработке запроса из базы данных');
       return $this->pdo;
     }
   }
