@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Page;
+namespace Vvintage\Public\Services\Page;
 
 use Vvintage\Models\Page\Page;
 use Vvintage\Models\Product\Product;
 
-use Vvintage\public\Services\SEO\SeoService;
-use Vvintage\public\Services\Base\BaseService;
-use Vvintage\public\Services\Page\Breadcrumbs;
+use Vvintage\Public\Services\SEO\SeoService;
+use Vvintage\Public\Services\Base\BaseService;
+use Vvintage\Public\Services\Page\Breadcrumbs;
 
-use Vvintage\public\DTO\Page\PageOutputDTO;
+use Vvintage\Public\DTO\Page\PageOutputDTO;
 
 use Vvintage\Repositories\Page\PageRepository;
 use Vvintage\Repositories\Page\PageTranslationRepository;

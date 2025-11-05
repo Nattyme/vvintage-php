@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\DTO\PostCategory;
+namespace Vvintage\Admin\DTO\PostCategory;
 
 final class PostCategoryInputDTO extends PostCategoryDTO
 {

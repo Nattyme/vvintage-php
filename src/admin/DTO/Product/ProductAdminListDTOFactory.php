@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Product;
+namespace Vvintage\Admin\DTO\Product;
 
 use Vvintage\Models\Product\Product;
 
-use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Utils\Services\Locale\LocaleService;
 
-use Vvintage\DTO\Admin\Product\ProductAdminListDTO;
-use Vvintage\DTO\Brand\BrandForProductDTO;
-use Vvintage\DTO\Category\CategoryForProductDTO;
-use Vvintage\DTO\Product\Card\ImageForProductCardDTO;
+use Vvintage\Admin\DTO\Product\ProductAdminListDTO;
+use Vvintage\Admin\DTO\Brand\BrandForProductDTO;
+use Vvintage\Admin\DTO\Category\CategoryForProductDTO;
+use Vvintage\Admin\DTO\Product\Card\ImageForProductCardDTO;
 
 
 final class ProductAdminListDTOFactory

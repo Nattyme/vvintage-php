@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\DTO\Brand;
+namespace Vvintage\Admin\DTO\Brand;
 use Vvintage\Models\Brand\Brand;
 
 final class BrandForProductDTO

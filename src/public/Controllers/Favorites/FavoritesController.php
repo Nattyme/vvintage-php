@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Favorites;
+namespace Vvintage\Public\Controllers\Favorites;
 
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 
 /** Контракты */
 use Vvintage\Contracts\User\UserInterface;
@@ -26,21 +26,18 @@ use Vvintage\Store\UserItemsList\UserItemsListStore;
 use Vvintage\Repositories\User\UserRepository;
 
 /** Сервисы */
-use Vvintage\public\Services\SEO\SeoService;
-use Vvintage\public\Services\Page\Breadcrumbs;
-use Vvintage\public\Services\Page\PageService;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
-use Vvintage\public\Services\Product\ProductService;
-use Vvintage\public\Services\Favorites\FavoritesService;
-use Vvintage\public\Services\Product\ProductImageService;
-
+use Vvintage\Public\Services\SEO\SeoService;
+use Vvintage\Public\Services\Page\Breadcrumbs;
+use Vvintage\Public\Services\Page\PageService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
+use Vvintage\Public\Services\Product\ProductService;
+use Vvintage\Public\Services\Favorites\FavoritesService;
+use Vvintage\Public\Services\Product\ProductImageService;
 
 /** Абстракции */
 use Vvintage\Models\Shared\AbstractUserItemsList;
 
-
-// require_once ROOT . './libs/functions.php';
 
 final class FavoritesController extends BaseController
 {

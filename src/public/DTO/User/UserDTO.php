@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\User;
+namespace Vvintage\Public\DTO\User;
 
-use Vvintage\DTO\Address\AddressDTO;
-use Vvintage\DTO\Address\AddressOutputDTO;
+use Vvintage\Public\DTO\Address\AddressDTO;
+use Vvintage\Public\DTO\Address\AddressOutputDTO;
 
 
 final class UserDTO

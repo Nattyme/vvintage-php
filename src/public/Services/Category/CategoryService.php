@@ -2,20 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Category;
+namespace Vvintage\Public\Services\Category;
 
 /** Модель */
 use Vvintage\Models\Category\Category;
 use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Repositories\Category\CategoryTranslationRepository;
-use Vvintage\public\Services\Base\BaseService;
+use Vvintage\Public\Services\Base\BaseService;
 
-use Vvintage\public\DTO\Category\CategoryDTO;
-use Vvintage\public\DTO\Category\CategoryTreeDto;
-use Vvintage\public\DTO\Category\CategoryForProductDTO;
-use Vvintage\public\DTO\Category\CategoryForProductDTOFactory;
-
-require_once ROOT . "./libs/functions.php";
+use Vvintage\Public\DTO\Category\CategoryDTO;
+use Vvintage\Public\DTO\Category\CategoryTreeDto;
+use Vvintage\Public\DTO\Category\CategoryForProductDTO;
+use Vvintage\Public\DTO\Category\CategoryForProductDTOFactory;
 
 class CategoryService extends BaseService
 {
@@ -111,7 +109,6 @@ class CategoryService extends BaseService
         foreach ($categories as $category) {
             $id = (int) $category->getId();
           
-            // $translations = $this->translationRepo->getLocaleTranslation( $id, $this->currentLang);
             $translations = $this->translationRepo->loadTranslations($id);
             $category->setTranslations($translations);
         }

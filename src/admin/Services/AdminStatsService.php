@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\Services;
+namespace Vvintage\Admin\Services;
 
 /** Репозитории */
 use Vvintage\Repositories\Order\OrderRepository;

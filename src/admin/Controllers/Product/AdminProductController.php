@@ -7,10 +7,10 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Contracts\Brand\BrandRepositoryInterface;
-use Vvintage\admin\Services\Product\AdminProductService;
+use Vvintage\Admin\Services\Product\AdminProductService;
 use Vvintage\DTO\Product\Filter\ProductFilterDTO;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 class AdminProductController extends BaseAdminController
 {

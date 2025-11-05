@@ -1,11 +1,11 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\Post;
+namespace Vvintage\Admin\Services\Post;
 
 use Vvintage\Services\Post\PostService;
-use Vvintage\admin\DTO\Post\PostEditDTO;
-use Vvintage\admin\DTO\Post\PostEditDTOFactory;
+use Vvintage\Admin\DTO\Post\PostEditDTO;
+use Vvintage\Admin\DTO\Post\PostEditDTOFactory;
 
 
 final class AdminPostService extends PostService

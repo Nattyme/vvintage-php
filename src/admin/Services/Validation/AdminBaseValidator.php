@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\Services\Validation;
+namespace Vvintage\Admin\Services\Validation;
 
 abstract class AdminBaseValidator
 {

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Order;
+namespace Vvintage\Public\DTO\Order;
 use Vvintage\Models\Order\Order;
 use Vvintage\Config\LanguageConfig; 
 
-use Vvintage\public\DTO\Order\OrderProfileSummaryDTO;
-use Vvintage\public\DTO\Order\OrderProfileDetailsDTO;
-use Vvintage\public\DTO\Order\OrderProductDTO;
-use Vvintage\public\Services\Locale\LocaleService;
+use Vvintage\Public\DTO\Order\OrderProfileSummaryDTO;
+use Vvintage\Public\DTO\Order\OrderProfileDetailsDTO;
+use Vvintage\Public\DTO\Order\OrderProductDTO;
+use Vvintage\Utils\Services\Locale\LocaleService;
 
 
 final class OrderProfileDTOFactory

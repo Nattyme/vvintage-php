@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Base;
+namespace Vvintage\Public\Controllers\Base;
 
 /** Интерфейсы */
 use Vvintage\Routing\RouteData;
@@ -9,11 +9,11 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Settings\Settings;
 use Vvintage\Contracts\User\UserInterface;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
-use Vvintage\public\Services\AdminPanel\AdminPanelService;
-use Vvintage\public\Services\Page\PageService;
-use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
+use Vvintage\Public\Services\AdminPanel\AdminPanelService;
+use Vvintage\Public\Services\Page\PageService;
+use Vvintage\Public\Services\SEO\SeoService;
 
 
 abstract class BaseController

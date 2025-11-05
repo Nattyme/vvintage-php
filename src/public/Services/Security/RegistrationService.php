@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Security;
+namespace Vvintage\Public\Services\Security;
 
 use Vvintage\Models\User\User;
-use Vvintage\public\Services\User\UserService;
-use Vvintage\public\Services\Base\BaseService;
+use Vvintage\Public\Services\User\UserService;
+use Vvintage\Public\Services\Base\BaseService;
 use Vvintage\Repositories\UserRepository;
-use Vvintage\public\Services\Session\SessionService;
+use Vvintage\Utils\Services\Session\SessionService;
 
 
 final class RegistrationService extends BaseService

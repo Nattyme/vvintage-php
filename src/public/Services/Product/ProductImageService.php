@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Product;
+namespace Vvintage\Public\Services\Product;
 
-use Vvintage\public\DTO\Product\Image\ProductImageDTO;
+use Vvintage\Public\DTO\Product\Image\ProductImageDTO;
 use Vvintage\Repositories\Product\ProductImageRepository;
-use Vvintage\public\DTO\Product\Card\ImageForProductCardDTO;
-use Vvintage\public\DTO\Product\Page\ProductPageImageDTO;
+use Vvintage\Public\DTO\Product\Card\ImageForProductCardDTO;
+use Vvintage\Public\DTO\Product\Page\ProductPageImageDTO;
 
 class ProductImageService
 {

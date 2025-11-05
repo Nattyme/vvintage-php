@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Cookie;
+namespace Vvintage\Public\Services\Cookie;
 
 
 class CookieService

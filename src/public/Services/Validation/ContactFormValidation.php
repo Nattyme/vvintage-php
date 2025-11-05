@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Validation;
+namespace Vvintage\Public\Services\Validation;
 
 class ContactFormValidation
 {

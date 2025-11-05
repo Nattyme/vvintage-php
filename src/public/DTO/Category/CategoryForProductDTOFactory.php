@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Category;
+namespace Vvintage\Public\DTO\Category;
 
 use Vvintage\Models\Category\Category;
-use Vvintage\public\DTO\Category\CategoryForProductDTO;
+use Vvintage\Public\DTO\Category\CategoryForProductDTO;
 
 final class CategoryForProductDTOFactory
 {

@@ -12,40 +12,40 @@
   use Vvintage\Store\Favorites\FavoritesStoreInterface;
 
   /** Контроллеры */
-  use Vvintage\public\Controllers\Auth\AuthController;
-  use Vvintage\public\Controllers\Home\HomeController;
-  use Vvintage\public\Controllers\Page\PageController;
-  use Vvintage\public\Controllers\Cart\CartController;
-  use Vvintage\public\Controllers\Blog\PostController;
-  use Vvintage\public\Controllers\Blog\BlogController;
-  use Vvintage\public\Controllers\Order\OrderController;
-  use Vvintage\public\Controllers\Shop\CatalogController;
-  use Vvintage\public\Controllers\Shop\ProductController;
-  use Vvintage\public\Controllers\Security\LoginController;
-  use Vvintage\public\Controllers\Profile\ProfileController;
-  use Vvintage\public\Controllers\Favorites\FavoritesController;
-  use Vvintage\public\Controllers\Security\RegistrationController;
-  use Vvintage\public\Controllers\Security\PasswordResetController;
-  use Vvintage\public\Controllers\Security\PasswordSetNewController;
+  use Vvintage\Public\Controllers\Auth\AuthController;
+  use Vvintage\Public\Controllers\Home\HomeController;
+  use Vvintage\Public\Controllers\Page\PageController;
+  use Vvintage\Public\Controllers\Cart\CartController;
+  use Vvintage\Public\Controllers\Blog\PostController;
+  use Vvintage\Public\Controllers\Blog\BlogController;
+  use Vvintage\Public\Controllers\Order\OrderController;
+  use Vvintage\Public\Controllers\Shop\CatalogController;
+  use Vvintage\Public\Controllers\Shop\ProductController;
+  use Vvintage\Public\Controllers\Security\LoginController;
+  use Vvintage\Public\Controllers\Profile\ProfileController;
+  use Vvintage\Public\Controllers\Favorites\FavoritesController;
+  use Vvintage\Public\Controllers\Security\RegistrationController;
+  use Vvintage\Public\Controllers\Security\PasswordResetController;
+  use Vvintage\Public\Controllers\Security\PasswordSetNewController;
 
   /** Сервисы */
-  use Vvintage\public\Services\SEO\SeoService;
-  use Vvintage\public\Services\Page\PageService;
-  use Vvintage\public\Services\Cart\CartService;
-  use Vvintage\public\Services\Blog\BlogService;
-  use Vvintage\public\Services\Page\Breadcrumbs;
-  use Vvintage\public\Services\Order\OrderService;
-  use Vvintage\public\Services\Messages\FlashMessage;
-  use Vvintage\public\Services\Product\ProductService;
-  use Vvintage\public\Services\Session\SessionService;
-  use Vvintage\public\Services\Cookie\CookieService;
-  use Vvintage\public\Services\Validation\LoginValidator;
-  use Vvintage\public\Services\Favorites\FavoritesService;
-  use Vvintage\public\Services\Validation\NewOrderValidator;
-  use Vvintage\public\Services\Security\PasswordSetNewService;
-  use Vvintage\public\Services\Validation\RegistrationValidator;
-  use Vvintage\public\Services\Security\RegistrationService;
-  use Vvintage\public\Services\Security\LoginService;
+  use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+  use Vvintage\Utils\Session\SessionService;
+  use Vvintage\Public\Services\SEO\SeoService;
+  use Vvintage\Public\Services\Page\PageService;
+  use Vvintage\Public\Services\Cart\CartService;
+  use Vvintage\Public\Services\Blog\BlogService;
+  use Vvintage\Public\Services\Page\Breadcrumbs;
+  use Vvintage\Public\Services\Order\OrderService;
+  use Vvintage\Public\Services\Product\ProductService;
+  use Vvintage\Public\Services\Cookie\CookieService;
+  use Vvintage\Public\Services\Validation\LoginValidator;
+  use Vvintage\Public\Services\Favorites\FavoritesService;
+  use Vvintage\Public\Services\Validation\NewOrderValidator;
+  use Vvintage\Public\Services\Security\PasswordSetNewService;
+  use Vvintage\Public\Services\Validation\RegistrationValidator;
+  use Vvintage\Public\Services\Security\RegistrationService;
+  use Vvintage\Public\Services\Security\LoginService;
 
 
   /** Модели */
@@ -70,20 +70,21 @@
   use Vvintage\Repositories\Message\MessageRepository;
 
   /** Админ контроллеры */
-  use Vvintage\admin\Controllers\HomeAdminController;
-  use Vvintage\admin\Controllers\Product\AdminProductController;
-  use Vvintage\admin\Controllers\Brand\AdminBrandController;
-  use Vvintage\admin\Controllers\Category\AdminCategoryController;
-  use Vvintage\admin\Controllers\User\AdminUserController;
-  use Vvintage\admin\Controllers\Order\AdminOrderController;
-  use Vvintage\admin\Controllers\Post\AdminPostController;
-  use Vvintage\admin\Controllers\Message\AdminMessageController;
-  use Vvintage\admin\Controllers\PostCategory\AdminPostCategoryController;
+  use Vvintage\Admin\Controllers\HomeAdminController;
+  use Vvintage\Admin\Controllers\Product\AdminProductController;
+  use Vvintage\Admin\Controllers\Brand\AdminBrandController;
+  use Vvintage\Admin\Controllers\Category\AdminCategoryController;
+  use Vvintage\Admin\Controllers\User\AdminUserController;
+  use Vvintage\Admin\Controllers\Order\AdminOrderController;
+  use Vvintage\Admin\Controllers\Post\AdminPostController;
+  use Vvintage\Admin\Controllers\Message\AdminMessageController;
+  use Vvintage\Admin\Controllers\PostCategory\AdminPostCategoryController;
 
   // API
-  use Vvintage\public\Controllers\Api\Category\CategoryApiController;
-  use Vvintage\public\Controllers\Api\Brand\BrandApiController;
-  use Vvintage\public\Controllers\Api\Product\ProductApiController;
+  use Vvintage\Public\Controllers\Api\Category\CategoryApiController;
+  use Vvintage\Public\Controllers\Api\Brand\BrandApiController;
+  
+  use Vvintage\Admin\Controllers\Api\Product\ProductApiController;
 
 
 

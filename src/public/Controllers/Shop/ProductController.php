@@ -2,27 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Shop;
+namespace Vvintage\Public\Controllers\Shop;
 
 use Vvintage\Routing\RouteData;
 
-/** Контракты */
-use Vvintage\Contracts\Bramd\BrandRepositoryInterface;
 
 /** Базовый контроллер страниц*/
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 
 /** Модель */
 use Vvintage\Models\Product\Product;
 
 /** Сервисы */
-use Vvintage\public\Services\Product\ProductService;
-use Vvintage\public\Services\Page\Breadcrumbs;
-use Vvintage\public\Services\Seo\SeoService;
-use Vvintage\public\DTO\Product\ProductPageDTO;
-use Vvintage\public\Services\Page\PageService;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
+use Vvintage\Public\Services\Product\ProductService;
+use Vvintage\Public\Services\Page\Breadcrumbs;
+use Vvintage\Public\Services\Seo\SeoService;
+use Vvintage\Public\DTO\Product\ProductPageDTO;
+use Vvintage\Public\Services\Page\PageService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 
 

@@ -5,11 +5,11 @@ namespace Vvintage\DTO\Admin\Product;
 
 use Vvintage\Models\Product\Product;
 
-use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Utils\Services\Locale\LocaleService;
 
-use Vvintage\DTO\Admin\Product\EditProductDTO;
-use Vvintage\DTO\Brand\BrandForProductDTO;
-use Vvintage\DTO\Category\CategoryForProductDTO;
+use Vvintage\Admin\DTO\Product\EditProductDTO;
+use Vvintage\Admin\DTO\Brand\BrandForProductDTO;
+use Vvintage\Admin\DTO\Category\CategoryForProductDTO;
 
 final class EditProductDTOFactory
 {

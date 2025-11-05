@@ -1,26 +1,26 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Page;
+namespace Vvintage\Public\Controllers\Page;
 
 /** Базовый контроллер страниц*/
 use Vvintage\Routing\RouteData;
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 
 use Vvintage\Models\Page\Page;
 
-use Vvintage\public\Services\Validation\ContactFormValidation;
+use Vvintage\Public\Services\Validation\ContactFormValidation;
 
 /** Сервисы */
-use Vvintage\public\Services\SEO\SeoService;
-use Vvintage\public\Services\Post\PostService;
-use Vvintage\public\Services\Page\PageService;
-use Vvintage\public\Services\Page\Breadcrumbs;
-use Vvintage\public\Services\Product\ProductService;
-use Vvintage\public\Services\Messages\MessageService;
-use Vvintage\public\Services\Category\CategoryService;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
+use Vvintage\Public\Services\SEO\SeoService;
+use Vvintage\Public\Services\Post\PostService;
+use Vvintage\Public\Services\Page\PageService;
+use Vvintage\Public\Services\Page\Breadcrumbs;
+use Vvintage\Public\Services\Product\ProductService;
+use Vvintage\Public\Services\Messages\MessageService;
+use Vvintage\Public\Services\Category\CategoryService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 
 class PageController extends BaseController

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Order;
+namespace Vvintage\Public\DTO\Order;
 
 final class OrderProfileDetailsDTO
 {

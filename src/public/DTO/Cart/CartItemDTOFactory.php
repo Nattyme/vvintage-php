@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Cart;
+namespace Vvintage\Public\DTO\Cart;
 use Vvintage\Models\Product\Product;
-use Vvintage\public\Services\Product\ProductImageService;
-use Vvintage\public\DTO\Product\ImageForProductCardDTO;
-use Vvintage\public\DTO\Cart\CartItemDTO;
+use Vvintage\Public\Services\Product\ProductImageService;
+use Vvintage\Public\DTO\Product\ImageForProductCardDTO;
+use Vvintage\Public\DTO\Cart\CartItemDTO;
 
 
 final class CartItemDTOFactory

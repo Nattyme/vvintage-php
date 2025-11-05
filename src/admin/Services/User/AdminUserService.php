@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\admin\Services\User;
+namespace Vvintage\Admin\Services\User;
 
 use Vvintage\Services\User\UserService;
 

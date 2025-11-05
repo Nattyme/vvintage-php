@@ -1,11 +1,11 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Profile;
+namespace Vvintage\Public\Services\Profile;
 
-use Vvintage\public\Services\User\UserService;
-use Vvintage\public\Services\Order\OrderService;
-use Vvintage\public\Services\Validation\ProfileValidator;
+use Vvintage\Public\Services\User\UserService;
+use Vvintage\Public\Services\Order\OrderService;
+use Vvintage\Public\Services\Validation\ProfileValidator;
 use Vvintage\Models\User\User;
 
 

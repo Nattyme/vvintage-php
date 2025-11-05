@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Translator;
+namespace Vvintage\Public\Services\Translator;
 
 use Symfony\Component\Translation\Translator as SymfonyTranslator;
 use Symfony\Component\Translation\Loader\ArrayLoader;

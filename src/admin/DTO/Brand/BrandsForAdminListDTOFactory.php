@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\DTO\Brand;
+namespace Vvintage\Admin\DTO\Brand;
 
 use Vvintage\Models\Brand\Brand;
-use Vvintage\admin\DTO\Brand\BrandForAdminListDTO;
-use Vvintage\admin\Services\Brand\AdminBrandService;
+use Vvintage\Admin\DTO\Brand\BrandForAdminListDTO;
+use Vvintage\Admin\Services\Brand\AdminBrandService;
 use Vvintage\Config\LanguageConfig; 
 
 final class BrandsForAdminListDTOFactory

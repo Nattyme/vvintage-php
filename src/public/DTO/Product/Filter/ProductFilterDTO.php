@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Product\Filter;
+namespace Vvintage\Public\DTO\Product\Filter;
 
 
 class ProductFilterDTO {

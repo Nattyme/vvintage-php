@@ -5,12 +5,12 @@ namespace Vvintage\Admin\Controllers;
 
 use Vvintage\Routing\RouteData;
 use Vvintage\Models\Settings\Settings;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 use Vvintage\Models\User\User;
 
 use Vvintage\Config\LanguageConfig;
-use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Utils\Services\Locale\LocaleService;
 
 
 abstract class BaseAdminController

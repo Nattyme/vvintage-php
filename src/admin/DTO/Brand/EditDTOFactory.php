@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\DTO\Brand;
+namespace Vvintage\Admin\DTO\Brand;
 
 /** Model */
 use Vvintage\Models\Brand\Brand;
-use Vvintage\admin\DTO\Brand\EditDTO;
+use Vvintage\Admin\DTO\Brand\EditDTO;
 
 final class EditDTOFactory
 {

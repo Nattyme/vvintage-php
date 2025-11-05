@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Utils;
+namespace Vvintage\Public\Services\Utils;
 
 class SlugService
 {

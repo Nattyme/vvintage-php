@@ -7,11 +7,11 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
 
 use Vvintage\Repositories\Message\MessageRepository;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 /** Сервисы */
-use Vvintage\admin\Services\Messages\AdminMessageService;
+use Vvintage\Admin\Services\Messages\AdminMessageService;
 
 
 

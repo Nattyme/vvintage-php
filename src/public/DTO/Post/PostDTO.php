@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Post;
-use Vvintage\public\DTO\PostCategory\PostCategoryDTO;
+namespace Vvintage\Public\DTO\Post;
+use Vvintage\Public\DTO\PostCategory\PostCategoryDTO;
 
 final class PostDTO
 {

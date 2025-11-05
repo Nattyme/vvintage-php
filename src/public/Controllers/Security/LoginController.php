@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Security;
+namespace Vvintage\Public\Controllers\Security;
 
 /** Роутинг */
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -17,16 +17,16 @@ use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Repositories\User\UserRepository;
 
 /** Сервисы */
-use Vvintage\public\Services\SEO\SeoService;
-use Vvintage\public\Services\Cart\CartService;
-use Vvintage\public\Services\Page\PageService;
-use Vvintage\public\Services\Security\LoginService;
-use Vvintage\public\Services\Product\ProductService;
-use Vvintage\public\Services\Favorites\FavoritesService;
-use Vvintage\public\Services\User\UserItemsMergeService;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
-use Vvintage\public\Services\Cookie\CookieService;
+use Vvintage\Public\Services\SEO\SeoService;
+use Vvintage\Public\Services\Cart\CartService;
+use Vvintage\Public\Services\Page\PageService;
+use Vvintage\Public\Services\Security\LoginService;
+use Vvintage\Public\Services\Product\ProductService;
+use Vvintage\Public\Services\Favorites\FavoritesService;
+use Vvintage\Public\Services\User\UserItemsMergeService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
+use Vvintage\Public\Services\Cookie\CookieService;
 
 /** Хранилища */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;

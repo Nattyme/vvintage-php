@@ -1,23 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Blog;
+namespace Vvintage\Public\Controllers\Blog;
 
 /** Базовый контроллер страниц*/
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 
 // use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Models\Post\Post;
 use Vvintage\Routing\RouteData;
 
 /** Сервисы */
-use Vvintage\public\Services\Page\Breadcrumbs;
-use Vvintage\public\Services\Post\PostService;
-use Vvintage\public\Services\SEO\SeoService;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
-use Vvintage\public\Services\Navigation\NavigationService;
-use Vvintage\public\Services\Page\PageService;
+use Vvintage\Public\Services\Page\Breadcrumbs;
+use Vvintage\Public\Services\Post\PostService;
+use Vvintage\Public\Services\SEO\SeoService;
+use Vvintage\Public\Services\Navigation\NavigationService;
+use Vvintage\Public\Services\Page\PageService;
+
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 
 final class PostController extends BaseController

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\User;
+namespace Vvintage\Public\Services\User;
 
 /** Репозитории */
 use Vvintage\Repositories\User\UserRepository;
@@ -11,9 +11,9 @@ use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Models\User\User;
 use Vvintage\Models\Shared\AbstractUserItemsList;
 
-use Vvintage\public\Services\Cart\CartService;
-use Vvintage\public\Services\Product\ProductService;
-use Vvintage\public\Services\Favorites\FavoritesService;
+use Vvintage\Public\Services\Cart\CartService;
+use Vvintage\Public\Services\Product\ProductService;
+use Vvintage\Public\Services\Favorites\FavoritesService;
 
 /** Хранилища */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;

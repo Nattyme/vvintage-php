@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Page;
-use Vvintage\public\DTO\Page\PageDTO;
+namespace Vvintage\Public\DTO\Page;
+use Vvintage\Public\DTO\Page\PageDTO;
 
 class PageOutputDTO extends PageDTO
 {

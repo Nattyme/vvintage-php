@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Navigation;
+namespace Vvintage\Public\Services\Navigation;
 
-use Vvintage\public\Services\Base\BaseService;
+use Vvintage\Public\Services\Base\BaseService;
 
 class NavigationService extends BaseService
 {

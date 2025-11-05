@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\DTO\PostCategory;
+namespace Vvintage\Admin\DTO\PostCategory;
 
 use Vvintage\Config\LanguageConfig; 
 
 /** Model */
 use Vvintage\Models\PostCategory\PostCategory;
-use Vvintage\admin\DTO\PostCategory\EditDto;
+use Vvintage\Admin\DTO\PostCategory\EditDto;
 
 final class EditDtoFactory
 {

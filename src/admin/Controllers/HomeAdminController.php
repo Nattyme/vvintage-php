@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\Controllers;
+namespace Vvintage\Admin\Controllers;
 
 use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 /** Сервисы */
 use Vvintage\admin\Services\AdminStatsService;

@@ -7,10 +7,9 @@ use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
 
 /** Сервис */
-use Vvintage\admin\Services\Order\AdminOrderService;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
-use Vvintage\Services\Base\BaseService;
+use Vvintage\Admin\Services\Order\AdminOrderService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 
 class AdminOrderController extends BaseAdminController 

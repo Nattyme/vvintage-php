@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Address;
+namespace Vvintage\Public\DTO\Address;
 
 final class AddressOutputDTO
 {

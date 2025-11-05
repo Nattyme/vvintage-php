@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\AdminPanel;
+namespace Vvintage\Public\Services\AdminPanel;
 
-use Vvintage\public\Services\Messages\MessageService;
-use Vvintage\public\Services\Order\OrderService;
+use Vvintage\Public\Services\Messages\MessageService;
+use Vvintage\Public\Services\Order\OrderService;
 
 class AdminPanelService
 {

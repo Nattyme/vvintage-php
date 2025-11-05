@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Security;
+namespace Vvintage\Public\Controllers\Security;
 
 /** Базовый контроллер страниц*/
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 
-use Vvintage\public\Services\SEO\SeoService;
-use Vvintage\public\Services\Page\PageService;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
-use Vvintage\public\Services\Security\PasswordSetNewService;
-use Vvintage\public\Services\Validation\PasswordSetNewValidator;
+use Vvintage\Public\Services\SEO\SeoService;
+use VviUtage\Public\Services\Page\PageService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
+use Vvintage\Public\Services\Security\PasswordSetNewService;
+use Vvintage\Public\Services\Validation\PasswordSetNewValidator;
 
 final class PasswordSetNewController extends BaseController 
 {

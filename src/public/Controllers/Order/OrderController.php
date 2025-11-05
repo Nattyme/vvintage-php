@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Order;
+namespace Vvintage\Public\Controllers\Order;
 
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 
 /** Интерфейсы */
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Contracts\User\UserItemsListStoreInterface;
 
 /** Сервисы */
-use Vvintage\public\Services\Order\OrderService;
-use Vvintage\public\Services\Cart\CartService;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
-use Vvintage\public\Services\Validation\NewOrderValidator;
-use Vvintage\public\Services\Page\Breadcrumbs;
-use Vvintage\public\Services\Page\PageService;
-use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\Public\Services\Order\OrderService;
+use Vvintage\Public\Services\Cart\CartService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
+use Vvintage\Public\Services\Validation\NewOrderValidator;
+use Vvintage\Public\Services\Page\Breadcrumbs;
+use Vvintage\Public\Services\Page\PageService;
+use Vvintage\Public\Services\SEO\SeoService;
 
 /** Модели */
 use Vvintage\Models\User\User;
@@ -30,13 +30,9 @@ use Vvintage\Models\Cart\Cart;
 use Vvintage\Models\Order\Order;
 use Vvintage\Models\Settings\Settings;
 
-/** Хранилище */
-
 /** DTO */
-use Vvintage\DTO\Order\OrderDTO;
+use Vvintage\Public\DTO\Order\OrderDTO;
 
-
-// require_once ROOT . './libs/functions.php';
 
 final class OrderController extends BaseController
 {

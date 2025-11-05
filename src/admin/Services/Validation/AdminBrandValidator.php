@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\Services\Validation;
+namespace Vvintage\Admin\Services\Validation;
 
 use Vvintage\Repositories\Brand\BrandRepository;
-use Vvintage\admin\Services\Validation\AdminBaseValidator;
+use Vvintage\Admin\Services\Validation\AdminBaseValidator;
 
 final class AdminBrandValidator extends AdminBaseValidator
 {
@@ -32,11 +32,11 @@ final class AdminBrandValidator extends AdminBaseValidator
             $len = mb_strlen(trim((string)$value));
             if ($len < $min || $len > $max) {
                 $flagPath = HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$lang";
-                $this->flash->pushError(
-                    'Некорректная длина',
-                    "$fieldLabel должно быть от $min до $max символов",
-                    $flagPath
-                );
+                // $this->flash->pushError(
+                //     'Некорректная длина',
+                //     "$fieldLabel должно быть от $min до $max символов",
+                //     $flagPath
+                // );
                 $valid = false;
             }
         }
@@ -61,11 +61,11 @@ final class AdminBrandValidator extends AdminBaseValidator
             // Если были недопустимые символы, пушим сообщение об ошибке
             if ($trimmed !== '' && $trimmed !== $cleaned) {
                 $flagPath = HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$lang";
-                $this->flash->pushError(
-                    'Недопустимые символы',
-                    "$fieldLabel был автоматически очищен от лишних символов",
-                    $flagPath
-                );
+                // $this->flash->pushError(
+                //     'Недопустимые символы',
+                //     "$fieldLabel был автоматически очищен от лишних символов",
+                //     $flagPath
+                // );
                 $valid = false;
             }
 
@@ -90,13 +90,13 @@ final class AdminBrandValidator extends AdminBaseValidator
         $valid = true;
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            $this->flash->pushError('Ошибка загрузки', 'Не удалось загрузить логотип');
+            // $this->flash->pushError('Ошибка загрузки', 'Не удалось загрузить логотип');
             return false;
         }
 
         $maxSize = 2 * 1024 * 1024; // 2MB
         if ($file['size'] > $maxSize) {
-            $this->flash->pushError('Слишком большой файл', 'Максимальный размер логотипа — 2 МБ');
+            // $this->flash->pushError('Слишком большой файл', 'Максимальный размер логотипа — 2 МБ');
             $valid = false;
         }
 
@@ -106,8 +106,8 @@ final class AdminBrandValidator extends AdminBaseValidator
 
         $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
         if (!in_array($mime, $allowed, true)) {
-            $this->flash->pushError('Неверный формат', 'Допустимые форматы: JPG, PNG, WEBP, SVG');
-            $valid = false;
+            // $this->flash->pushError('Неверный формат', 'Допустимые форматы: JPG, PNG, WEBP, SVG');
+            // $valid = false;
         }
 
         return $valid;
@@ -136,11 +136,11 @@ final class AdminBrandValidator extends AdminBaseValidator
             
             if ($exists > 0) {
                 $flagPath = HOST . "static/img/svgsprite/stack/svg/sprite.stack.svg#flag-$lang";
-                $this->flash->pushError(
-                    'Такой бренд уже существует',
-                    "Бренд уже добавлен",
-                    $flagPath
-                );
+                // $this->flash->pushError(
+                //     'Такой бренд уже существует',
+                //     "Бренд уже добавлен",
+                //     $flagPath
+                // );
                 $valid = false;
             }
         }

@@ -1,30 +1,30 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Post;
+namespace Vvintage\Public\Services\Post;
 
-use Vvintage\public\Services\Base\BaseService;
+use Vvintage\Public\Services\Base\BaseService;
 
 /* Repository */
 use Vvintage\Repositories\Post\PostRepository;
 use Vvintage\Repositories\Post\PostTranslationRepository;
 
 /**Services */
-use Vvintage\public\Services\PostCategory\PostCategoryService;
-use Vvintage\public\Services\Shared\PaginationService;
-use Vvintage\public\Services\Locale\LocaleService;
+use Vvintage\Public\Services\PostCategory\PostCategoryService;
+use Vvintage\Public\Services\Shared\PaginationService;
+use Vvintage\Utils\Services\Locale\LocaleService;
 
 /** Model */
 use Vvintage\Models\Post\Post;
 
 /** DTO */
-use Vvintage\public\DTO\Post\PostDTO;
-use Vvintage\public\DTO\Post\PostListDto;
-use Vvintage\public\DTO\Post\PostCardDTO;
-use Vvintage\public\DTO\Post\PostFilterDTO;
-use Vvintage\public\DTO\Post\PostListDTOFactory;
-use Vvintage\public\DTO\Post\PostFullDTO;
-use Vvintage\public\DTO\Post\PostFullDTOFactory;
+use Vvintage\Public\DTO\Post\PostDTO;
+use Vvintage\Public\DTO\Post\PostListDto;
+use Vvintage\Public\DTO\Post\PostCardDTO;
+use Vvintage\Public\DTO\Post\PostFilterDTO;
+use Vvintage\Public\DTO\Post\PostListDTOFactory;
+use Vvintage\Public\DTO\Post\PostFullDTO;
+use Vvintage\Public\DTO\Post\PostFullDTOFactory;
 
 class PostService extends BaseService
 {

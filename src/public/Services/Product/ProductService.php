@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Product;
+namespace Vvintage\Public\Services\Product;
 
 /** Модель */
 use Vvintage\Models\Product\Product;
@@ -10,23 +10,22 @@ use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Repositories\Product\ProductTranslationRepository;
 
 /* Service */
-use Vvintage\public\Services\Base\BaseService;
-use Vvintage\public\Services\Product\ProductImageService;
-use Vvintage\public\Services\Category\CategoryService;
-use Vvintage\public\Services\Shared\PaginationService;
-use Vvintage\public\Services\Brand\BrandService;
-use Vvintage\public\Services\Locale\LocaleService;
-use Vvintage\public\Services\Seo\SeoService;
+use Vvintage\Public\Services\Base\BaseService;
+use Vvintage\Public\Services\Product\ProductImageService;
+use Vvintage\Public\Services\Category\CategoryService;
+use Vvintage\Public\Services\Shared\PaginationService;
+use Vvintage\Public\Services\Brand\BrandService;
+use Vvintage\Utils\Services\Locale\LocaleService;
+use Vvintage\Public\Services\Seo\SeoService;
 
 /* DTO */
-use Vvintage\public\DTO\Product\Filter\ProductFilterDTO;
-use Vvintage\public\DTO\Product\Page\ProductPageDTO;
-use Vvintage\public\DTO\Product\Page\ProductPageDTOFactory;
-use Vvintage\public\DTO\Product\Card\ProductCardDTO;
-use Vvintage\public\DTO\Product\Card\ProductCardDTOFactory;
-use Vvintage\public\DTO\Product\Card\ImageForProductCardDTO;
+use Vvintage\Public\DTO\Product\Filter\ProductFilterDTO;
+use Vvintage\Public\DTO\Product\Page\ProductPageDTO;
+use Vvintage\Public\DTO\Product\Page\ProductPageDTOFactory;
+use Vvintage\Public\DTO\Product\Card\ProductCardDTO;
+use Vvintage\Public\DTO\Product\Card\ProductCardDTOFactory;
+use Vvintage\Public\DTO\Product\Card\ImageForProductCardDTO;
 
-// require_once ROOT . "./libs/functions.php";
 
 class ProductService extends BaseService
 {

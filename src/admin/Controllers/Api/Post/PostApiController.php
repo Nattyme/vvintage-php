@@ -1,13 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Api\Post;
+namespace Vvintage\Admin\Controllers\Api\Post;
 
 use Vvintage\Routing\RouteData;
-// use Vvintage\admin\Controllers\Api\BaseApiController;
-use Vvintage\Services\Admin\Product\AdminPostService;
+
+use Vvintage\Utils\Api\BaseApiController;
+use Vvintage\Admin\Services\Product\AdminPostService;
 use Vvintage\Serializers\PostApiSerializer;
-use Vvintage\admin\Services\Validation\AdminPostValidator;
+use Vvintage\Admin\Services\Validation\AdminPostValidator;
 
 class PostApiController extends BaseApiController
 {

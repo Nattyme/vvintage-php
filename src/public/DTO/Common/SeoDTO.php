@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Common;
+namespace Vvintage\Public\DTO\Common;
 
 class SeoDTO
 {

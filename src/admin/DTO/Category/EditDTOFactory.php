@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\DTO\Category;
+namespace Vvintage\Admin\DTO\Category;
 
 /** Model */
 use Vvintage\Models\Category\Category;
-use Vvintage\DTO\Admin\Category\EditDTO;
+use Vvintage\Admin\DTO\Category\EditDTO;
 use Vvintage\Config\LanguageConfig;
 
 final class EditDTOFactory

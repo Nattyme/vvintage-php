@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Category;
-use Vvintage\public\DTO\Category;
+namespace Vvintage\Public\DTO\Category;
+use Vvintage\Public\DTO\Category;
 
 final class CategoryCardDTO 
 {

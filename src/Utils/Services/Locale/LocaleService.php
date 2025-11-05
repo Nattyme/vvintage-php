@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Locale;
+namespace Vvintage\Utils\Services\Locale;
 
 use Locale;
 use Vvintage\Config\LanguageConfig;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\Session\SessionService;
 
 final class LocaleService
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Cart;
+namespace Vvintage\Public\Controllers\Cart;
 
 
 use Vvintage\Routing\RouteData;
 
 /** Базовый контроллер страниц*/
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 
 /* Абстракции */
 use Vvintage\Models\Shared\AbstractUserItemsList;
@@ -24,20 +24,18 @@ use Vvintage\Models\Shop\Catalog;
 use Vvintage\Models\Cart\Cart;
 
 /** Сервисы */
-use Vvintage\public\Services\Cart\CartService;
-use Vvintage\public\Services\Page\Breadcrumbs;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
-use Vvintage\public\Services\Product\ProductImageService;
-use Vvintage\public\Services\Page\PageService;
-use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\Public\Services\Cart\CartService;
+use Vvintage\Public\Services\Page\Breadcrumbs;
+use Vvintage\Public\Services\Product\ProductImageService;
+use Vvintage\Public\Services\Page\PageService;
+use Vvintage\Public\Services\SEO\SeoService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 /** Хранилище */
 use Vvintage\Store\UserItemsList\GuestItemsListStore;
 use Vvintage\Store\UserItemsList\UserItemsListStore;
 
-
-// require_once ROOT . './libs/functions.php';
 
 final class CartController extends BaseController
 {

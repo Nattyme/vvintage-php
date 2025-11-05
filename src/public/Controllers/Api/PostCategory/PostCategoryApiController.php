@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Api\PostCategory;
+namespace Vvintage\Public\Controllers\Api\PostCategory;
 
 use Models\Post\PostCategory;
-use Vvintage\public\Controllers\Api\BaseApiController;
+use Vvintage\Utils\Api\BaseApiController;
 
 class PostCategoriesApiController extends BaseApiController
 {

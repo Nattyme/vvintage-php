@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Message;
+namespace Vvintage\Public\DTO\Message;
 
 final class MessageDTO
 {

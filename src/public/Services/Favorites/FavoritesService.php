@@ -1,17 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Favorites;
+namespace Vvintage\Public\Services\Favorites;
 
-use RedBeanPHP\R;
 use Vvintage\Models\Favorites\Favorites;
 use Vvintage\Models\Product\Product;
 use Vvintage\Models\User\User;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Shared\AbstractUserItemsListService;
+use Vvintage\Public\Services\Shared\AbstractUserItemsListService;
 
-use Vvintage\public\DTO\Favorites\FavItemDTO;
-use Vvintage\public\DTO\Favorites\FavItemDTOFactory;
+use Vvintage\Public\DTO\Favorites\FavItemDTO;
+use Vvintage\Public\DTO\Favorites\FavItemDTOFactory;
 
 
 class FavoritesService extends AbstractUserItemsListService

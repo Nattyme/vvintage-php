@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Product;
+namespace Vvintage\Admin\DTO\Product;
 
-use Vvintage\DTO\Category\CategoryForProductDTO;
-use Vvintage\DTO\Brand\BrandForProductDTO;
+use Vvintage\Admin\DTO\Category\CategoryForProductDTO;
+use Vvintage\Admin\DTO\Brand\BrandForProductDTO;
 
 final class EditProductDTO 
 {

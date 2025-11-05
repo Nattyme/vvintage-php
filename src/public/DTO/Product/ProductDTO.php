@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Product;
-use Vvintage\public\DTO\Category\CategoryOutputDTO;
-use Vvintage\public\DTO\Brand\BrandOutputDTO;
+namespace Vvintage\Public\DTO\Product;
+
+use Vvintage\Public\DTO\Category\CategoryOutputDTO;
+use Vvintage\Public\DTO\Brand\BrandOutputDTO;
 
 class ProductDTO
 {

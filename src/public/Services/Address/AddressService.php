@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Address;
+namespace Vvintage\Public\Services\Address;
 
 use Vvintage\Models\Address\Address;
 use Vvintage\Repositories\Address\AddressRepository;

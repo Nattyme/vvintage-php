@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Favorites;
+namespace Vvintage\Public\DTO\Favorites;
 use Vvintage\Models\Product\Product;
-use Vvintage\public\Services\Product\ProductImageService;
-use Vvintage\public\DTO\Product\ImageForProductCardDTO;
-use Vvintage\public\DTO\Favorites\FavItemDTO;
+use Vvintage\Public\Services\Product\ProductImageService;
+use Vvintage\Public\DTO\Product\ImageForProductCardDTO;
+use Vvintage\Public\DTO\Favorites\FavItemDTO;
 
 
 final class FavItemDTOFactory

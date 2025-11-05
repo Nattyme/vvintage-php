@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Post;
+namespace Vvintage\Public\DTO\Post;
 
-use Vvintage\public\DTO\Post\PostFullDto;
+use Vvintage\Public\DTO\Post\PostFullDto;
 
 /** Model */
 use Vvintage\Models\Post\Post;
 
-use Vvintage\public\Services\Locale\LocaleService;
+use Vvintage\Utils\Services\Locale\LocaleService;
 
 final class PostFullDTOFactory
 {

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Order;
+namespace Vvintage\Public\Services\Order;
 
 use Vvintage\Models\Order\Order;
 use Vvintage\Repositories\Order\OrderRepository;
-use Vvintage\public\Services\Shared\AbstractUserItemsListService;
-use Vvintage\public\Services\Base\BaseService;
-use Vvintage\public\Services\Product\ProductService;
+use Vvintage\Public\Services\Shared\AbstractUserItemsListService;
+use Vvintage\Public\Services\Base\BaseService;
+use Vvintage\Public\Services\Product\ProductService;
 use Vvintage\Models\User\UserInterface;
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
 
 /** DTO */
-use Vvintage\public\DTO\Order\OrderDTO;
-use Vvintage\public\DTO\Order\OrderProfileSummaryDTO;
-use Vvintage\public\DTO\Order\OrderProfileDTOFactory;
+use Vvintage\Public\DTO\Order\OrderDTO;
+use Vvintage\Public\DTO\Order\OrderProfileSummaryDTO;
+use Vvintage\Public\DTO\Order\OrderProfileDTOFactory;
 
 
 // extends AbstractUserItemsListService

@@ -1,34 +1,32 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Profile;
+namespace Vvintage\Public\Controllers\Profile;
 
 use Vvintage\Routing\RouteData;
 
 
 /** Базовый контроллер страниц*/
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 
 use Vvintage\Models\User\User;
 use Vvintage\Models\User\GuestUser;
 use Vvintage\Models\Address\Address;
 
 /** Сервисы */
-use Vvintage\public\Services\Page\Breadcrumbs;
-use Vvintage\public\Services\User\UserService;
-use Vvintage\public\Services\Page\PageService;
-use Vvintage\public\Services\Profile\ProfileService;
-use Vvintage\public\Services\Locale\LocaleService;
-use Vvintage\public\Services\Order\OrderService;
-use Vvintage\public\Services\SEO\SeoService;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
+use Vvintage\Public\Services\Page\Breadcrumbs;
+use Vvintage\Public\Services\User\UserService;
+use Vvintage\Public\Services\Page\PageService;
+use Vvintage\Public\Services\Profile\ProfileService;
+use Vvintage\Public\Services\Order\OrderService;
+use Vvintage\Public\Services\SEO\SeoService;
+use Vvintage\Utils\Services\Locale\LocaleService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 use Vvintage\Models\Order\Order;
 
-use Vvintage\public\DTO\Order\OrderProfileDetailsDTO;
-
-// require_once ROOT . './libs/functions.php';
+use Vvintage\Public\DTO\Order\OrderProfileDetailsDTO;
 
 
 final class ProfileController extends BaseController

@@ -1,17 +1,17 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\PostCategory;
+namespace Vvintage\Admin\Services\PostCategory;
 
 /** Модель */
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Services\PostCategory\PostCategoryService;
 
-use Vvintage\admin\DTO\PostCategory\PostCategoryInputDTO;
-use Vvintage\admin\DTO\PostCategory\PostCategoryAdminListDTOFactory;
-use Vvintage\admin\DTO\PostCategory\EditDtoFactory;
-use Vvintage\admin\DTO\PostCategory\PostCategoryAdminListDTO;
-use Vvintage\admin\DTO\PostCategory\EditDto;
+use Vvintage\Admin\DTO\PostCategory\PostCategoryInputDTO;
+use Vvintage\Admin\DTO\PostCategory\PostCategoryAdminListDTOFactory;
+use Vvintage\Admin\DTO\PostCategory\EditDtoFactory;
+use Vvintage\Admin\DTO\PostCategory\PostCategoryAdminListDTO;
+use Vvintage\Admin\DTO\PostCategory\EditDto;
 
 
 final class AdminPostCategoryService extends PostCategoryService

@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\Services\Validation;
-use Vvintage\admin\Services\Validation\AdminBaseValidator;
+namespace Vvintage\Admin\Services\Validation;
+use Vvintage\Admin\Services\Validation\AdminBaseValidator;
 
 final class AdminProductValidator extends AdminBaseValidator
 {

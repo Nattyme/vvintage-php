@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Brand;
+namespace Vvintage\Public\DTO\Brand;
 
 use Vvintage\Models\Brand\Brand;
-use Vvintage\public\DTO\Brand\BrandForProductDTO;
+use Vvintage\Public\DTO\Brand\BrandForProductDTO;
 
 final class BrandForProductDTOFactory
 {

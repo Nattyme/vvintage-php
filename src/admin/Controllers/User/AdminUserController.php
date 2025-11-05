@@ -6,10 +6,10 @@ namespace Vvintage\Admin\Controllers\User;
 use Vvintage\Routing\RouteData;
 use Vvintage\Admin\Controllers\BaseAdminController;
 
-use Vvintage\admin\Services\User\AdminUserService;
+use Vvintage\Admin\Services\User\AdminUserService;
 use Vvintage\Repositories\User\UserRepository;
-use Vvintage\Services\Messages\FlashMessage;
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 final class AdminUserController extends BaseAdminController 
 {

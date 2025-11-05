@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Page;
+namespace Vvintage\Public\DTO\Page;
 
 class PageDTO
 {
@@ -11,7 +11,6 @@ class PageDTO
     public int $visible;
     public int $show_in_navigation;
     public array $translations; // ['ru' => ['title'=>..., 'description'=>...], 'en' => [...]];
-    // public string $locale;
 
     public function __construct(array $data)
     {

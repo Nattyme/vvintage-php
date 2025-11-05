@@ -1,17 +1,17 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\admin\Services\Brand;
+namespace Vvintage\Admin\Services\Brand;
 
 use Vvintage\Services\Brand\BrandService;
-use Vvintage\admin\DTO\Brand\BrandInputDTO;
-use Vvintage\admin\DTO\Admin\Brand\EditDTO;
-use Vvintage\admin\DTO\Brand\BrandTranslationInputDTO;
-use Vvintage\admin\DTO\Admin\Brand\BrandForAdminListDTO;
-use Vvintage\admin\DTO\Admin\Brand\BrandsForAdminListDTOFactory;
-use Vvintage\admin\DTO\Admin\Brand\BrandTranslationInputDTOFactory;
-use Vvintage\admin\DTO\Brand\BrandInputDTOFactory;
-use Vvintage\admin\DTO\Admin\Brand\EditDTOFactory;
+use Vvintage\Admin\DTO\Brand\BrandInputDTO;
+use Vvintage\Admin\DTO\Brand\EditDTO;
+use Vvintage\Admin\DTO\Brand\BrandTranslationInputDTO;
+use Vvintage\Admin\DTO\Brand\BrandForAdminListDTO;
+use Vvintage\Admin\DTO\Brand\BrandsForAdminListDTOFactory;
+use Vvintage\Admin\DTO\Brand\BrandTranslationInputDTOFactory;
+use Vvintage\Admin\DTO\Brand\BrandInputDTOFactory;
+use Vvintage\Admin\DTO\Brand\EditDTOFactory;
 
 
 final class AdminBrandService extends BrandService

@@ -5,14 +5,14 @@ namespace Vvintage\public\Controllers\Blog;
 
 use Vvintage\Routing\RouteData;
 
-use Vvintage\public\Controllers\Base\BaseController;
-use Vvintage\public\Services\Navigation\NavigationService;
-use Vvintage\public\Services\Page\Breadcrumbs;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
-use Vvintage\public\Services\SEO\SeoService;
-use Vvintage\public\Services\Post\PostService;
-use Vvintage\public\Services\Page\PageService;
+use Vvintage\Public\Controllers\Base\BaseController;
+use Vvintage\Public\Services\Navigation\NavigationService;
+use Vvintage\Public\Services\Page\Breadcrumbs;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
+use Vvintage\Public\Services\SEO\SeoService;
+use Vvintage\Public\Services\Post\PostService;
+use Vvintage\Public\Services\Page\PageService;
 
 
 // require_once ROOT . './libs/functions.php';

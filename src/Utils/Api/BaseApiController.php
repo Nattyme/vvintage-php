@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Api;
+namespace Vvintage\Utils\Api;
 
-use Vvintage\Services\Session\SessionService;
+use Vvintage\Utils\Services\Session\SessionService;
 use Vvintage\Contracts\User\UserInterface;
 use Vvintage\Models\User\User;
 // Пеервод на другие языки
 use Vvintage\Config\LanguageConfig;
-use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Utils\Services\Locale\LocaleService;
 
 
 class BaseApiController 

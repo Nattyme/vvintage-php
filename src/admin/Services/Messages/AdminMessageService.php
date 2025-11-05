@@ -1,12 +1,11 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\admin\Services\Messages;
+namespace Vvintage\Admin\Services\Messages;
 
 use Vvintage\Services\Messages\MessageService;
 use Vvintage\Repositories\Message\MessageRepository;
 use Vvintage\Models\Message\Message;
-use Vvintage\DTO\Message\MessageDTO;
 
 final class AdminMessageService extends MessageService
 {

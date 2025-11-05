@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintageadmin\DTO\Category;
+namespace Vvintage\Admin\DTO\Category;
 
 final class EditDTO
 {

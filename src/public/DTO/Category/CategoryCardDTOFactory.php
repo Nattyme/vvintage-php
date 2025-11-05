@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Category;
+namespace Vvintage\Public\DTO\Category;
 
 
 use Vvintage\Config\LanguageConfig; 
 
 /** Model */
 use Vvintage\Models\Category\Category;
-use Vvintage\public\DTO\Category\CategoryCardDTO;
+use Vvintage\Public\DTO\Category\CategoryCardDTO;
 
 final class CategoryCardDTOFactory
 {

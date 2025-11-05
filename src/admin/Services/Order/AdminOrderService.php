@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace Vvintage\Services\Admin\Order;
 
-use Vvintage\Services\Messages\FlashMessage;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
 
 /** Репозитории */
 use Vvintage\Repositories\Order\OrderRepository;
 use Vvintage\Repositories\Product\ProductRepository;
 use Vvintage\Services\Order\OrderService;
-
-// use Vvintage\Repositories\MessageRepository;
 
 
 final class AdminOrderService extends OrderService

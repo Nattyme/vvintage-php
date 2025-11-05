@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Post;
+namespace Vvintage\Public\DTO\Post;
 
 
 class PostFilterDTO {

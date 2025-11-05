@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Product;
-use Vvintage\DTO\Admin\Category\CategoryForProductDTO;
-use Vvintage\DTO\Admin\Brand\BrandForProductDTO;
+namespace Vvintage\Admin\DTO\Product;
+use Vvintage\Admin\DTO\Category\CategoryForProductDTO;
+use Vvintage\Admin\DTO\Brand\BrandForProductDTO;
 use Vvintage\Models\Product\Product;
 
 final class ProductDTO 

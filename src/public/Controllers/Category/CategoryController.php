@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\CategoryController;
+namespace Vvintage\Public\Controllers\CategoryController;
 
-use Vvintage\public\Controllers\Base\BaseController;
+use Vvintage\Public\Controllers\Base\BaseController;
 use Vvintage\Models\Category\Category;
-use Vvintage\public\DTO\Category\CategoryOutputDTO;
-use Vvintage\public\Services\Category\CategoryService;
-use Vvintage\public\Services\Messages\FlashMessage;
-use Vvintage\public\Services\Session\SessionService;
-use Vvintage\public\Services\SEO\SeoService;
+use Vvintage\Public\DTO\Category\CategoryOutputDTO;
+use Vvintage\Public\Services\Category\CategoryService;
+use Vvintage\Public\Services\SEO\SeoService;
+use Vvintage\Utils\Services\FlashMessage\FlashMessage;
+use Vvintage\Utils\Services\Session\SessionService;
 
 class CategoryController extends BaseController
 {

@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\Controllers\Api\Product;
-
+namespace Vvintage\Admin\Controllers\Api\Product;
 
 use Vvintage\Routing\RouteData;
-// use Vvintage\public\Controllers\Api\BaseApiController;
-use Vvintage\admin\Services\Product\AdminProductService;
-use Vvintage\admin\Serializers\ProductApiSerializer;
-use Vvintage\admin\Services\Validation\AdminProductValidator;
-use Vvintage\admin\Services\Validation\AdminProductImageValidator;
+
+use Vvintage\Utils\Api\BaseApiController;
+use Vvintage\Admin\Services\Product\AdminProductService;
+use Vvintage\Admin\Serializers\ProductApiSerializer;
+use Vvintage\Admin\Services\Validation\AdminProductValidator;
+use Vvintage\Admin\Services\Validation\AdminProductImageValidator;
 
 
 class ProductApiController extends BaseApiController

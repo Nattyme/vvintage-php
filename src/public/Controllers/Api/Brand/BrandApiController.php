@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Api\Brand;
+namespace Vvintage\Public\Controllers\Api\Brand;
 
-use Vvintage\public\Controllers\Api\BaseApiController;
-use Vvintage\public\Controllers\Base\BaseController;
-use Vvintage\public\Services\Brand\BrandService;
+use Vvintage\Utils\Api\BaseApiController;
+use Vvintage\Public\Controllers\Base\BaseController;
+use Vvintage\Public\Services\Brand\BrandService;
 
 class BrandApiController extends BaseApiController
 {

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\SEO;
+namespace Vvintage\Public\Services\SEO;
 
 use Vvintage\Contracts\SeoStrategyInterface;
-use Vvintage\public\DTO\Common\SeoDTO;
+use Vvintage\Public\DTO\Common\SeoDTO;
 
 
 class StaticPageSeoStrategy implements SeoStrategyInterface

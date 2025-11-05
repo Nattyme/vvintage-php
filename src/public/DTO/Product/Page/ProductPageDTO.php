@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Product\Page;
+namespace Vvintage\Public\DTO\Product\Page;
 
-use Vvintage\public\DTO\Category\CategoryForProductDTO;
-use Vvintage\public\DTO\Brand\BrandForProductDTO;
+use Vvintage\Public\DTO\Category\CategoryForProductDTO;
+use Vvintage\Public\DTO\Brand\BrandForProductDTO;
 use Vvintage\Models\Product\Product;
 
 final class ProductPageDTO 

@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\Product;
+namespace Vvintage\Admin\Services\Product;
 
 use Vvintage\Config\LanguageConfig;
 
@@ -11,18 +11,18 @@ use Vvintage\Models\Product\Product;
 use Vvintage\Services\Product\ProductService;
 use Vvintage\Services\Brand\BrandService;
 use Vvintage\Services\Category\CategoryService;
-use Vvintage\admin\Services\Product\AdminProductImageService;
+use Vvintage\Admin\Services\Product\AdminProductImageService;
 
 /** DTO */
-use Vvintage\admin\DTO\Product\Filter\ProductFilterDTO;
-use Vvintage\admin\DTO\Product\EditProductDTOFactory;
-use Vvintage\admin\DTO\Product\ProductAdminListDTOFactory;
-use Vvintage\admin\DTO\Product\ProductAdminListDTO;
-use Vvintage\admin\DTO\Product\EditProductDTO;
-use Vvintage\admin\DTO\Product\ProductInputDTO;
-use Vvintage\admin\DTO\Product\ProductImageInputDTO;
+use Vvintage\Admin\DTO\Product\Filter\ProductFilterDTO;
+use Vvintage\Admin\DTO\Product\EditProductDTOFactory;
+use Vvintage\Admin\DTO\Product\ProductAdminListDTOFactory;
+use Vvintage\Admin\DTO\Product\ProductAdminListDTO;
+use Vvintage\Admin\DTO\Product\EditProductDTO;
+use Vvintage\Admin\DTO\Product\ProductInputDTO;
+use Vvintage\Admin\DTO\Product\ProductImageInputDTO;
 
-use Vvintage\admin\DTO\Product\Lang\ProductTranslationInputDTO;
+use Vvintage\Admin\DTO\Product\Lang\ProductTranslationInputDTO;
 
 
 

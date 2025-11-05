@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Cart;
+namespace Vvintage\Public\DTO\Cart;
 use Vvintage\Models\Product\Product;
 
 final class CartItemDTO 

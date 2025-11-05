@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Product;
-use Vvintage\public\DTO\Product\ProductImageDTO;
+namespace Vvintage\Public\DTO\Product;
+
+use Vvintage\Public\DTO\Product\ProductImageDTO;
 
 final class ProductImageOutputDTO extends ProductImageDTO
 {

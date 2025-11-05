@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Favorites;
+namespace Vvintage\Public\DTO\Favorites;
 use Vvintage\Models\Product\Product;
 
 final class FavItemDTO 

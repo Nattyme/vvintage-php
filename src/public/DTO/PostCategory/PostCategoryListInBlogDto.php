@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\PostCategory;
+namespace Vvintage\Public\DTO\PostCategory;
 
 use Vvintage\Models\PostCategory\PostCategory;
 

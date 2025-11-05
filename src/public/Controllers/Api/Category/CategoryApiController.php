@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Controllers\Api\Category;
+namespace Vvintage\Public\Controllers\Api\Category;
 
-use Vvintage\public\Controllers\Api\BaseApiController;
-use Vvintage\public\Services\Category\CategoryService;
+use Vvintage\Utils\Api\BaseApiController;
+use Vvintage\Public\Services\Category\CategoryService;
 use Vvintage\Serializers\CategoryApiSerializer;
 
 

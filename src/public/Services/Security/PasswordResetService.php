@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Security;
+namespace Vvintage\Public\Services\Security;
 
 use Vvintage\Config\Config;
-use Vvintage\public\Services\Base\BaseService;
+use Vvintage\Public\Services\Base\BaseService;
 use Vvintage\Repositories\User\UserRepository;
 
 final class PasswordResetService extends BaseService

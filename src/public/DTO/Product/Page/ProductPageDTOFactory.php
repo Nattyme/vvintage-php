@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\DTO\Product\Page;
+namespace Vvintage\Public\DTO\Product\Page;
 
 use Vvintage\Models\Product\Product;
 
-use Vvintage\Services\Locale\LocaleService;
+use Vvintage\Utils\Services\Locale\LocaleService;
 
 /* DTO */
-use Vvintage\public\DTO\Category\CategoryForProductDTO;
-use Vvintage\public\DTO\Brand\BrandForProductDTO;
+use Vvintage\Public\DTO\Category\CategoryForProductDTO;
+use Vvintage\Public\DTO\Brand\BrandForProductDTO;
 
 
 

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\Services\Admin\Product;
+namespace Vvintage\Admin\Services\Product;
 
-use Vvintage\admin\DTO\Product\ProductImageInputDTO;
+use Vvintage\Admin\DTO\Product\ProductImageInputDTO;
 use Vvintage\Services\Product\ProductImageService;
 
 require_once ROOT . "./libs/functions.php";

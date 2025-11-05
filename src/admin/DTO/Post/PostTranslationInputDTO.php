@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\admin\DTO\Post;
+namespace Vvintage\Admin\DTO\Post;
 
 final class PostTranslationInputDTO
 {

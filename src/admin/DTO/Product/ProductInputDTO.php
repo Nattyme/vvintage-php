@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\DTO\Admin\Product;
+namespace Vvintage\Admin\DTO\Product;
 
 final class ProductInputDTO
 {

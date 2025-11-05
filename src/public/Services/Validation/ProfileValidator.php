@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vvintage\public\Services\Validation;
-
-use Vvintage\Repositories\User\UserRepository;
+namespace Vvintage\Public\Services\Validation;
 
 
 final class ProfileValidator 
