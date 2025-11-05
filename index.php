@@ -18,11 +18,11 @@ use Vvintage\Utils\Services\Session\SessionService;
 // Старт сесии (хранение ошибок, уведомлений, данных пользователя)
 $sessionService = new SessionService();
 $sessionService->startSession();
-DatabasePDO::connect();
+
 
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
-
+$pdo = DatabasePDO::connect();
 require_once ROOT . 'libs/functions.php'; // подключаем пользовательскте ф-ции
 
 

@@ -11,28 +11,80 @@ use Vvintage\Config\Config;
  */
 abstract class DatabasePDO
 {
-  private static $username = Config::DB_USER;
-  private static $password = Config::DB_PASS;
-  private static $dsn = 'mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8';
-  public static $affected_rows;
+  private ?\PDO $pdo = null;
+  private  $username = Config::DB_USER;
+  private  $password = Config::DB_PASS;
+  private  $dsn = 'mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8';
+  public  $affected_rows;
 
-  public static function connect() 
+  public  function connect() 
   {
     try {
+      if($this->pdo !== null) return $this->pdo;
+      
       // connection string, username, password
-      $pdo = new \PDO(self::$dsn, self::$username, self::$password);
+      $this->pdo = new \PDO(
+        $this->dsn, 
+        $this->username, 
+        $this->password
+      );
+
       // Throw errors as exceptions
-      $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+      $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
       echo 'Connection successful';
+      return $this->pdo;
     } 
     catch (\Exception $error) {
       error_log(  
-          date('Y-m-d H:i:s') . "Danabase connection error:" . $error->getMessage(),
+             date('Y-m-d H:i:s - ') . "Database connection error: " . $error->getMessage(),
           3,
-          'errors.log'
+          ROOT .'errors.log'
       );
-      throw new \Exception('Database connection failed');
-      return $pdo;
+      throw new \Exception('Ошибка соединения с базой данных');
+      
+    }
+  }
+
+  public function query($sql, $bindings_values = []) 
+  {
+    try {
+      $pdo = $this->connect();
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute($bindings_values);
+      $this->affected_rows = $stmt->rowCount();
+
+      // не обязательно, т.к. php автоматичесик закрывает соединение после завершения кода
+      $stmt = null;
+    }
+    catch (\Exception $error) {
+      error_log(  
+             date('Y-m-d H:i:s - ') . "Database connection error: " . $error->getMessage(),
+          3,
+          ROOT .'errors.log'
+      );
+      throw new \Exception('Ошибка при выполнении запроса в базе данных');
+      return $this->pdo;
+    }
+  }
+
+  public function select($sql, $binding_values = []) 
+  {
+    try {
+      $pdo = $this->connect();
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute($binding_values);
+      $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+      $stmt = null;
+      return $data;
+    }   
+    catch (\Exception $error) {
+      error_log(  
+             date('Y-m-d H:i:s - ') . "Ошибка подключения базы данных error: " . $error->getMessage(),
+          3,
+          ROOT .'errors.log'
+      );
+      throw new \Exception('Ошибка при получении данных из базе данных');
+      return $this->pdo;
     }
   }
 
