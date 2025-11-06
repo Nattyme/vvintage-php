@@ -22,7 +22,6 @@ $sessionService->startSession();
 
 define('ROOT', Config::getRoot());
 define('HOST', Config::getHost());
-$pdo = DatabasePDO::connect();
 require_once ROOT . 'libs/functions.php'; // подключаем пользовательскте ф-ции
 
 
