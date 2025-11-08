@@ -3,30 +3,33 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Base\BaseController;
+use Illuminate\View\View;
 
-final class LoginController extends BaseController
+final class LoginController 
+// final class LoginController extends BaseController
 {
 
   public function __construct(
-    private LoginService $service,
-    private LoginValidator $validator,
-    protected FlashMessage $flash,
-    protected SessionService $sessionService,
-    protected CookieService $cookieService,
-    protected SeoService $seoService,
-    protected PageService $pageService,
-    private ProductService $productService,
-    private UserItemsListStore $userItemsListStore
+    // private LoginService $service,
+    // private LoginValidator $validator,
+    // protected FlashMessage $flash,
+    // protected SessionService $sessionService,
+    // protected CookieService $cookieService,
+    // protected SeoService $seoService,
+    // protected PageService $pageService,
+    // private ProductService $productService,
+    // private UserItemsListStore $userItemsListStore
   ) 
   {
-    parent::__construct($flash, $sessionService, $pageService, $seoService); // Важно!
+    // parent::__construct($flash, $sessionService, $pageService, $seoService); // Важно!
   }
 
-  public function index(RouteData $routeData): void
+  public function index(): void
   {
-    $this->setRouteData($routeData);
+    $this->renderForm($routeData);
+    dd('hey');
     if (!isset($_POST['login'])) {
-      $this->renderForm($routeData);
       return;
     }
 
@@ -47,6 +50,11 @@ final class LoginController extends BaseController
     }
 
   
+  }
+
+  public function show (): View 
+  {
+    return view(('auth.login'), []);
   }
 
 
@@ -97,6 +105,7 @@ final class LoginController extends BaseController
     
     return ['store' => $this->userItemsListStore, 'cart' => $cart, 'fav' => $fav];
   }
+
 
 
 
