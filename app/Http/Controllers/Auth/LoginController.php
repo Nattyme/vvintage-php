@@ -27,7 +27,7 @@ final class LoginController
 
   public function index(): void
   {
-    $this->renderForm($routeData);
+    $this->renderForm();
     dd('hey');
     if (!isset($_POST['login'])) {
       return;
@@ -52,9 +52,9 @@ final class LoginController
   
   }
 
-  public function show (): View 
+  public function renderForm (): View 
   {
-    return view(('auth.login'), []);
+     return view('layouts.auth-page', []);
   }
 
 
@@ -109,20 +109,20 @@ final class LoginController
 
 
 
-  private function renderForm(RouteData $routeData): void
-  {
-    $pageTitle = "Вход на сайт";
+  // private function renderForm(RouteData $routeData): void
+  // {
+  //   $pageTitle = "Вход на сайт";
   
-    $currentLang =  $this->pageService->currentLang;
-    $languages = $this->pageService->languages;
+  //   $currentLang =  $this->pageService->currentLang;
+  //   $languages = $this->pageService->languages;
 
-    $this->renderAuthLayout('form-login', [
-      'pageTitle' => $pageTitle,
-      'currentLang' => $currentLang,
-      'languages' => $languages
-    ]);
+  //   $this->renderAuthLayout('form-login', [
+  //     'pageTitle' => $pageTitle,
+  //     'currentLang' => $currentLang,
+  //     'languages' => $languages
+  //   ]);
     
-  }
+  // }
 
   private function renderGreetingMessage(User $userModel): void 
   {

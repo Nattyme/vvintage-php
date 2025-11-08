@@ -8,7 +8,7 @@ use App\Http\Controllers\Auth\PasswordSetNewController;
 
 
 /* Authorization */
-Route::get('/login', [LoginController::class, 'show'])->name('login');
+Route::get('/login', [LoginController::class, 'renderForm'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::get('/registration', [RegistrationController::class, 'index'])->name('registration');

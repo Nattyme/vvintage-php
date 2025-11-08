@@ -5,8 +5,10 @@
     </h2>
   </div>
 
-  <?php include ROOT . "views/components/errors.tpl"; ?>
-  <?php include ROOT . "views/components/success.tpl"; ?>
+  @include ('components.notifications.error')
+  @include ('components.notifications.success')
+
+  @csrf
 
   <?php if (!$result ) : ?>
     <div class="authorization-form__field">
@@ -21,9 +23,9 @@
         id="email"/>
     </div>
     
-    <!-- CSRF-токен -->
+    {{-- CSRF-токен --}}
       <input type="hidden" name="csrf" value="<?php echo h(csrf_token()) ;?>">
-    <!-- // CSRF-токен -->
+    {{-- // CSRF-токен --}}
 
     <div class="authorization-form__button">
       <button name="lost-password" value="lost-password" type="submit" class="button button--l button--primary button--with-icon">
