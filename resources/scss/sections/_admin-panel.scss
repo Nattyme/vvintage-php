@@ -1,0 +1,129 @@
+.admin-panel {
+  padding: 0 var(--space-lg);
+
+  // position: fixed;
+  // z-index: 999;
+  // top: 0;
+  // left: 0;
+  // right: 0;
+
+  height: 70px;
+  line-height: 70px;
+  background-color: var(--admin-panel-bg);
+
+ 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-panel__icon-wrapper {
+  display: flex;
+}
+
+.admin-panel__logo .logo {
+  font-size: var(--font-size-lg);
+  color: #fff;
+}
+
+.admin-panel__login {  
+  display: flex;
+  align-items: center;
+  column-gap: var(--space-lg);
+}
+
+// .admin-panel__item {
+//   margin-right: var(--space-sm);
+
+//   position: relative;
+
+//   display: flex;
+//   width: 24px;
+//   height: 24px;
+// }
+
+.admin-panel__item-icon {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+  background-color: var(--admin-panel-note-marker-bg); /* для теста */
+  border-radius: 50%;
+  padding: 0;
+  
+  font-size: var(--admin-panel-note-marker-font-size);
+  font-family: var(--admin-panel-note-marker-font-family);
+  line-height: 1;
+  color: var(--admin-panel-note-marker-color);
+}
+
+
+.admin-panel__block-list {
+  display: flex;
+  align-items: center;
+}
+
+.admin-panel__link {
+  margin-right: 45px;
+
+  display: flex;
+  column-gap: var(--space-md);
+  align-items: center;
+
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  font-size: var(--admin-panel-font-size);
+  text-decoration: none;
+  color: var(--admin-panel-link-text);
+
+  transition: all 0.2s ease-in;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.admin-panel__link--avatar img {
+  width: var(--space-2xl);
+  height: var(--space-2xl);
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.admin-panel__block-button {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  color: var(--admin-panel-button-text);
+
+  transition: all 0.2s ease-in;
+
+  &:hover {
+    color: var(--admin-panel-button-text-hover);
+  }
+}
+
+.admin-panel__login .button-login {
+  width: 22px;
+  height: 22px;
+}
+
+
+
+// .header {
+//   position: sticky;
+//   z-index: 999;
+//   background-color: #fff;
+//   overflow: hidden;
+
+// 	&__row {
+// 		display: flex;
+// 		justify-content: space-between;
+// 		align-items: center;
+// 	}
+// }

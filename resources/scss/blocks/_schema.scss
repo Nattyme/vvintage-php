@@ -1,0 +1,115 @@
+// .schema {
+//   display: grid;
+//   grid-template-columns: repeat(4, 1fr);
+//   justify-content: space-between;
+//   align-items: stretch;
+  
+//   text-align: center;
+//   column-gap: 20px;
+
+//   * {
+//     // flex: 1 1;
+//   }
+
+//   svg {
+//     margin-left: auto;
+//     margin-right: auto;
+//     width: 80px;
+//     height: 80px;
+//     flex-shrink: 0;
+//   }
+// }
+
+// .schema__item {
+//   padding-top: 40px;
+//   position: relative;
+
+//   display: flex;
+//   // justify-content: space-between;
+//   row-gap: 20px;
+//   flex-direction: column;
+
+//   p {
+//       padding-left: 4px;
+//       padding-right: 4px;
+//   }
+// }
+
+// .schema__icon {
+//   margin-bottom: 15px;
+//    flex-grow: 0;
+//   flex-shrink: 1;
+// }
+
+// .schema__link {
+//   margin-top: auto;
+// }
+
+
+/* Схема шагов заказа */
+.schema {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin-top: 40px;
+  list-style: none;
+  padding: 0;
+}
+
+.schema__item {
+  display: grid;
+  row-gap: 20px;
+  grid-template-rows: 70px 200px 1fr;
+
+  text-align: center;
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.schema__item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+.schema__icon {
+  margin-bottom: 20px;
+  width: 70px;
+  height: 70px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f5f1eb;
+}
+
+.schema__icon svg {
+  width: 36px;
+  height: 36px;
+  fill: #6c6c6c;
+}
+
+.schema__item p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.schema__link {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #b76e33;
+  transition: color 0.3s ease;
+}
+
+.schema__link:hover {
+  color: #8c5024;
+  text-decoration: underline;
+}
+

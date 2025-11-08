@@ -1,0 +1,46 @@
+.widget__title {
+  margin-bottom: var(--space-xl);
+}
+
+.widget__list--blog {
+  border: 1px solid var(--color-gray-400);
+}
+
+.widget__item--categories:first-child {
+  padding-top: var(--space-md);
+}
+
+.widget__item--categories:last-child {
+  padding-bottom: var(--space-md);
+}
+
+.widget__link--categories {
+  padding: var(--space-md) var(--space-xs) var(--space-md) var(--space-lg);
+  position: relative;
+
+  transition: color 0.2s ease-in;
+
+  &::before {
+    content: "";
+    display: inline-block;
+
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 50%;
+    width: 2px;
+
+    transform: translateY(-80%);
+
+    transition: background-color 0.2s ease-in, transform 0.3s ease-in;
+  }
+
+  &:hover {
+    color: var(--color-accent);
+  }
+
+  &:hover::before {
+    background-color: var(--color-accent);
+    transform: translateY(-50%);
+  }
+}

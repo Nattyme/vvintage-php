@@ -1,0 +1,8 @@
+.payment-list {
+  display: flex;
+  li {
+    padding: var(--space-xs);
+    border-radius: var(--space-xs);
+    background-color: var(--color-white);
+  }
+}

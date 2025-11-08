@@ -1,0 +1,39 @@
+.input {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  width: 100%;
+  border-radius: var(--radius-xs);
+  background-color: var(--color-white);
+  border: 1px solid var(--input-border);
+
+  transition: all 0.2s ease-in;
+
+  &:hover {
+    border-color: var(--input-border-hover);
+    box-shadow: 0px 0px 5px var(--input-border-hover);
+  }
+
+  &:focus {
+    border-color: var(--input-border-focus);
+  }
+
+  &:active {
+    border-color: var(--input-border-active);
+  }
+
+  &:disabled, &:disabled:hover, &:disabled:focus, &:disabled:focus:active   {
+    border-color: var(--color-gray-400);
+    box-shadow: none;
+    background-color: var(--color-gray-200);
+  }
+
+  &:valid:not(:placeholder-shown) {
+    border-color: var(--color-green);
+    box-shadow: 0px 0px 3px var(--color-green);
+  }
+
+  &:invalid:not(:placeholder-shown) {
+    border-color: var(--color-red-400);
+    box-shadow: 0px 0px 3px var(--color-red-400);
+  }
+}

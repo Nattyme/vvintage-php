@@ -1,0 +1,27 @@
+@mixin mediaBg() {
+	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+	    @content;
+    }
+}
+
+@mixin tablet () {
+    @media (max-width: 1220px) {
+		@content;
+	}
+}
+
+@mixin mobile () {
+    @media (max-width: 820px) {
+		@content;
+	}
+}
+
+/*BUTTINS*/
+@mixin button-size($height, $padding-x, $min-width, $font-size: var(--font-size-sm)) {
+  padding: var(--spacing-zero) $padding-x;
+  height: $height;
+  line-height: $height;
+  min-width: $min-width;
+  min-inline-size: $min-width;
+  font-size: $font-size;
+}

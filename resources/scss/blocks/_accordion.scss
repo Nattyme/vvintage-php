@@ -1,0 +1,15 @@
+.accordion {
+  display: flex;
+}
+
+.accordion__btn {
+  width: 100%;
+}
+
+.accordion__content {
+  /* Important for accordion*/
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.2s ease-in;  
+}
+

@@ -1,0 +1,15 @@
+.cite {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.cite__content {
+  text-align: right;
+}
+
+.cite__title {
+  font-family: var(--font--cite);
+  font-style: italic;
+  font-size: var(--font-size-3xl);
+  line-height: 1.1;
+}

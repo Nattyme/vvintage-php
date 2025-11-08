@@ -1,0 +1,63 @@
+.policy {
+}
+
+.policy__header {
+  margin-bottom: 100px;
+}
+
+.policy__content {
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.policy__title {
+  margin-bottom: 50px;
+
+  font-size: 24px;
+  text-align: center;
+}
+
+.policy__desc {
+  margin-bottom: 30px;
+ 
+  p {
+    text-indent: 35px;
+  }
+}
+
+.policy-list {
+  margin-bottom: 20px;
+  counter-reset: li;
+}
+
+.policy-list__item {
+  margin-bottom: 10px;
+  text-indent: 10px;
+}
+
+.policy-list__item::before {
+  counter-increment: li;
+  content:counters(li, ".") ". ";
+}
+
+.policy__subtitle {
+  margin-bottom: 10px;
+
+  display: inline-block;
+  text-transform: uppercase;
+
+  font-weight: 600;
+}
+
+.policy-link {
+  display: inline;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: #266ae8;
+}
+
+
+
+
+.letter-marked {
+}

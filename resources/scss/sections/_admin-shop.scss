@@ -1,0 +1,19 @@
+.shop {
+  padding-bottom: 50px;
+}
+
+.shop__content {
+  overflow-x: auto;
+}
+
+.shop__button {
+  display: flex;
+  align-items: center;
+  column-gap: var(--space-lg);
+  color: #fff;
+}
+
+.shop__button .expand-icon__body::before,
+.shop__button .expand-icon__body::after {
+  background-color: #fff;
+}

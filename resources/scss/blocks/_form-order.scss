@@ -1,0 +1,123 @@
+.form-order {
+  width: 100%;
+}
+
+.form-order__user {
+  display: grid;
+  grid-template-columns: 1fr 100px 1fr;
+}
+
+.form-order__row {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-4xl);
+  row-gap: var(--space-md);
+}
+
+.form-order__row + .form-order__row  {
+  margin-top: var(--space-lg);
+}
+
+.form-order__input-wrapper {
+  width: 350px;
+}
+
+.form-order__table {
+  margin-bottom: 160px;
+}
+
+.form-order__table-row {
+  padding: var(--space-lg) var(--space-md);
+
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr;
+  column-gap: 30px;
+
+  box-shadow: 0px 0px 4px #cfcece;
+}
+
+.form-order__total--button-fake {
+  position: relative;
+  z-index: 2;
+  &::before {
+    z-index: -1;
+    display: inline-block;
+    content: "";
+    position: absolute;
+    top: -(var(--space-md));
+    left: -(var(--space-lg));
+
+    display: inline-block;
+    width: 65%;
+    height: 57px;
+
+    background-color: var(--color-white-100);
+
+    font-weight: var(--font-weight-semi-bold);
+    font-size: var( --space-lg);
+    line-height: 1.4;
+    color: var(--color-black);
+  }
+}
+
+.form-order__img-wrapper {
+  width: 60px;
+  height: auto;
+}
+
+.form-order__button-wrapper {
+  margin-top: 100px;
+
+  display: flex;
+  align-items: center;
+  column-gap: var(--space-2xl);
+}
+
+.form-order__label {
+  margin-bottom: var(--space-md);
+  display: block;
+}
+
+.form-order__field + .form-order__field {
+  margin-top: var(--space-xl);
+}
+
+.form-order__title {
+  font-size: var(--font-size-lg);
+  color: var(--color-white);
+}
+
+.form-order__title-block {
+  padding: var(--space-sm) var(--space-md);
+
+  border-radius: var(--radius-sm);
+  background-color: var(--color-black);
+}
+
+.form-order__title-wrapper {
+  margin-bottom: var(--space-xl);
+}
+
+.form-order__user .form-order__block:first-child {
+  grid-column: 1;
+}
+
+.form-order__user .form-order__block:last-child {
+  grid-column: 3;
+}
+
+
+.form-order__total {
+  margin-top: 40px;
+  background-color: var(--color-white-100);
+}
+
+.form-order__table-header {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semi-bold);
+  border-top-left-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
+  background-color: var(--color-gray-100);
+  box-shadow: 0px 0px 6px var(--color-gray-400);
+}
+

@@ -1,0 +1,46 @@
+.product-table td {
+  vertical-align: middle;
+}
+
+.product-table__body tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
+
+  &:hover {
+    background-color: rgba(232, 232, 232, 0.6); 
+  }
+}
+
+.product-table__item--checkbox {
+  width: 40px;
+}
+
+.product-table__item--title {
+  width: 20%;
+}
+
+.product-table__img img {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.button-dropdownMenu .icon--menu {
+  stroke: #373737;
+  stroke-width: 2px;
+}
+
+// .dropdownMenu--product-table {
+//   display: none;
+// }
+
+.product-table__body tr[data-status="active"] {
+  background-color: rgba(238, 253, 237, 0.6);
+}
+.product-table__body tr[data-status="hidden"] {
+  background-color: rgba(249, 225, 219, 0.6);
+}
+.product-table__body tr[data-status="archived"] {
+  opacity: 0.5;
+}

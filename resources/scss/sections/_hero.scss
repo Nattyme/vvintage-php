@@ -1,0 +1,141 @@
+/*text*/
+.hero {
+  position: relative;
+  // min-height: 450px;
+}
+
+.hero__background {
+  position: relative;
+  overflow: hidden; /* чтобы градиент не выходил */
+}
+
+.hero__content-wrapper {
+  z-index: 9;
+  position: absolute;
+  top: 50%;
+  right: 47%;
+  transform: translateY(-50%);
+  
+  display: flex;
+  max-width: 600px;
+  flex-direction: column;
+}
+
+.hero__text {
+  padding: 40px 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  
+  color: var(--color-black);
+  font-weight: 500;
+  letter-spacing: 1.6px;
+}
+
+.hero__desc {
+
+  p {
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.4;
+  }
+
+  p + p {
+    margin-top: var(--space-sm);
+  }
+}
+
+.hero__button {
+  margin-top: var(--space-4xl);
+  display: flex;
+  justify-content: center;
+}
+
+.hero__block {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hero__img-wrapper {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+
+  // &::before {
+  //   z-index: 1;
+  //   content: "";
+
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 100%;
+
+  //   background-color: rgba(0, 0, 0, 0.4);
+  // }
+}
+  
+.hero__img {
+  display: block;
+  width: 100%;
+  // height: 800px;
+  height: 450px;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Градиентный фейд */
+.hero__img-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%; /* зона перехода, можно регулировать */
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #fff 100%);
+  pointer-events: none; /* чтобы не мешал кликам */
+}
+
+
+.hero__img-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10%; /* зона перехода, можно регулировать */
+  background: linear-gradient(to top, rgba(49, 49, 49, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+  pointer-events: none; /* чтобы не мешал кликам */
+}
+
+.hero__img-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, #fff 90%);
+    pointer-events: none;
+}
+
+.header .button--l.button--primary {
+    border-radius: var(--radius-sm);
+    background-color: #f6f4f2;
+    color: #0a0a0a;
+    border: 1px solid #090908;
+}
+.hero__text {
+    letter-spacing: 1.6px;
+    color: #000;
+}
+
+.hero__text .h1 {
+  font-size: 36px;
+}

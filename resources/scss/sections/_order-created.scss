@@ -1,0 +1,27 @@
+.order__header {
+  margin-bottom: 214px;
+}
+
+.order__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order__notification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.order__img {
+ margin-right: var(--space-xl);
+}
+
+.order__text {
+  line-height: 1.4;
+}
+
+.order__title {
+  margin-bottom: var( --space-md);
+  font-size: var(--font-size-xl);
+}

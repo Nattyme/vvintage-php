@@ -2,7 +2,7 @@
   <form id="language-selector" method="GET" custom-select-form>
     @csrf
     
-    <input type="hidden" name="lang" id="selected-language" value="<?php echo h($this->currentLang ?? '') ?>" custom-select-input>
+    <input type="hidden" name="lang" id="selected-language" value="{{ app()->getLocale(); }}" custom-select-input>
     
     <div class="select-trigger" tabindex="0" aria-haspopup="listbox" aria-expanded="false" custom-select-trigger>
           <?php 

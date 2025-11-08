@@ -1,0 +1,46 @@
+.counter {
+  position: relative;
+}
+
+.counter__widget {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  padding: 0;
+  
+  font-size: var(--admin-panel-note-marker-font-size);
+  font-family: var(--admin-panel-note-marker-font-family);
+  line-height: 1;
+  color: var(--admin-panel-note-marker-color);
+
+  animation: bounce 0.5s ease-in-out;
+
+  &--cart {
+    top: -2px;
+    right: -12px;
+
+    width: 24px;
+    height: 24px;
+  }
+}
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+
+
+

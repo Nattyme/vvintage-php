@@ -1,0 +1,110 @@
+/* Контейнеры */
+.container {
+	margin: 0 auto;
+	padding: 0 var(--container-padding);
+	width: var(--container-width);
+
+    /* Desctop - wide*/
+  @media (max-width: 1600px) {
+    width: 1280px;
+  }
+
+   /* Desctop */
+  @media (max-width: 1279px) {
+    width: 960px;
+  }
+
+  /* Tablet */
+  @media (max-width: 959px) {
+    width: 768px;
+  }
+
+  /* Mobile */
+  @media (max-width: 767px) {
+    width: 480px;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%; /* Контейнер растягивается на всю ширину экрана */ 
+  }
+}
+
+.container-full {
+	padding: 0 var(--container-padding);
+	max-width: 100%;
+}
+
+.container-left-50 {
+	padding: 0 var(--container-padding);
+	max-width: 50%;
+
+	@include mobile {
+		max-width: 100%;
+	}
+}
+
+.container-right-50 {
+	padding: 0 var(--container-padding);
+	max-width: 50%;
+	margin-left: auto;
+
+	@include mobile {
+		max-width: 100%;
+	}
+}
+
+.container-right {
+	padding-left: calc(
+		(100% - var(--container-width)) / 2 + var(--container-padding)
+	);
+
+	@include tablet {
+		padding-left: var(--container-padding);
+	}
+}
+
+.container-left {
+	padding-right: calc(
+		(100% - var(--container-width)) / 2 + var(--container-padding)
+	);
+
+	@include tablet {
+		padding-right: var(--container-padding);
+	}
+}
+
+.container-half-left {
+	padding-right: calc(
+		(100% - var(--container-width)) / 2 + (var(--container-width) / 2)
+	);
+	padding-left: calc(
+		(100% - var(--container-width)) / 2 + var(--container-padding)
+	);
+
+	@include tablet {
+		padding-left: var(--container-padding);
+	}
+
+	@include mobile {
+		padding: 0 var(--container-padding);
+	}
+}
+
+.container-half-right {
+	padding-left: calc(
+		(100% - var(--container-width)) / 2 + (var(--container-width) / 2)
+	);
+	padding-right: calc(
+		(100% - var(--container-width)) / 2 + var(--container-padding)
+	);
+
+	@include tablet {
+		padding-right: var(--container-padding);
+	}
+
+	@include mobile {
+		padding: 0 var(--container-padding);
+	}
+
+  
+}

@@ -1,0 +1,19 @@
+<?php
+declare(strict_types=1);
+
+return [
+  'button.save' => 'Guardar',
+  'button.remove' => 'Eliminar',
+  'button.submit' => 'Enviar',
+  'button.cancel' => 'Cancelar',
+  'button.login' => 'Iniciar sesión',
+  'button.goto.shop' => 'Ir a la tienda',
+  'button.goto.blog' => 'Ir al blog',
+  'button.goto.main' => 'Ir a inicio', 
+  'button.cart.add' => 'Añadir al carrito',
+  'button.item.incart' => 'Producto en el carrito',
+  'button.cart.order' => 'Realizar pedido',
+  'button.products.add' => 'Agregar productos',
+  'button.apply.filters' => 'Aplicar filtros',
+  'button.clear.filters' => 'Limpiar',
+];

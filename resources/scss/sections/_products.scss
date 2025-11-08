@@ -1,0 +1,86 @@
+.products__cards-wrapper {
+  margin-bottom: var(--space-4xl);
+}
+
+/* ======= Карточки ======= */
+.products__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(236px, 1fr));
+  column-gap: 42px;
+  row-gap: 52px;
+}
+
+.products__pages-shown {
+  margin-bottom: var(--space-4xl);
+}
+
+
+/* ======= Магазин ======= */
+.products__content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* ======= Верхняя панель ======= */
+.products__toolbar {
+  margin-bottom: 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 14px;
+}
+
+.products__sort select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 14px;
+}
+
+/* ======= Сетка контента ======= */
+.products__layout {
+  margin-bottom: 40px;
+
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 30px;
+  overflow: hidden;
+}
+
+/* ======= Фильтры ======= */
+.products__filters select,
+.products__filters input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fafafa;
+  font-size: 14px;
+}
+
+.products__filters select:focus,
+.products__filters input:focus {
+  outline: none;
+  border-color: #000;
+  background: #fff;
+}
+
+
+/* ======= Нижняя панель ======= */
+.products__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 14px;
+}

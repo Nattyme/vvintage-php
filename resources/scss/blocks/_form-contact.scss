@@ -1,0 +1,17 @@
+.form-contact {
+  width: 100%;
+  * + * {
+    margin-top: var(--space-xl);
+  }
+}
+
+.form-contact__title {
+  margin-bottom: var(--space-4xl);
+
+  font-size: var(--font-size-xl);
+  line-height: 1.4;
+}
+
+.form-contact__button:not(:last-child) {
+  margin-bottom: var(--space-4xl);
+}

@@ -1,0 +1,175 @@
+/* Tablet-big*/
+@media (max-width: 1200px) {
+  .h1 {
+    font-size: 45px;
+  }
+
+  .section-title {
+    margin-bottom: 40px;
+  }
+
+  .button-solid, a.button-solid {
+    width: 240px;
+  }
+
+  .flex-block {
+    justify-content: flex-end;
+  }
+
+  /* Header - top*/
+  .header-top {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+  
+  .header-top__phone {
+    display: none;
+  }
+
+  .header-top__cta {
+    width: unset;
+  }
+
+  /* Hader */
+  .header__title {
+    margin-bottom: 30px;
+  }
+
+  .header__desc {
+    padding-right: 100px;
+  }
+
+  .header__button {
+    padding-right: 100px;
+  }
+
+  .swiper.swiperHeaderImg {
+    margin-right: 0; 
+    .swiper-slide {
+      margin-right: 0;
+    }
+  }
+
+  .swiper.swiperHeaderImg {
+    width: 350px;
+  }
+
+  .swiper.swiperHeaderText {
+    width: 450px;
+  }
+
+  .header__image-less:last-child, .header__image-less:first-child {
+    display: none;
+  }
+
+  /* Arrival*/
+  .arrival {
+    padding-top: 60px;
+  }
+
+  .arrival__cards-wrapper {
+    margin-bottom: 45px;
+  }
+
+  .cards-row {
+    column-gap: 20px;
+  }
+
+  .card {
+    width: 270px;
+  }
+
+  /* Features */
+  .feature {
+    padding-top: 60px;
+  }
+
+  .feature__list {
+    margin-bottom: 50px;
+    column-gap: 20px;
+  }
+
+  /* About*/
+  .about {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .about__content {
+    // grid-template-columns: 1fr 3fr;
+    column-gap: 20px;
+  }
+
+  .swiperAbout {
+    width: 500px;
+    height: 334px;
+  }
+
+  .swiperAbout-button-prev {
+    left: 0;
+  }
+
+  .swiperAbout-button-next {
+    text-align: right;
+    right: 0;
+  }
+
+  .icon--slider-arrow {
+    width: 20px;
+    height: 20px;
+  }
+
+   /* Footer */
+   .footer {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .footer__content {
+    column-gap: 15px;
+  }
+
+  /*****************************/
+  /******* CATALOG PAGE *******/
+  /***************************/
+  .products-tab__nav-button {
+    padding-left: 40px;
+    padding-right: 40px;    
+  }
+
+  /*****************************/
+  /******* PRODUCT PAGE *******/
+  /***************************/
+  main.product-page {
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
+
+  .product {
+    margin-bottom: 90px;
+  }
+
+  .product__content {
+    column-gap: 25px;
+  }
+
+  .product-swiper {
+    width: 450px;
+  }
+
+  .product-thumbs {
+    width: 450px;
+  }
+
+  /*****************************/
+  /******* CART *******/
+  /***************************/
+  .inner-page {
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
+
+  .page-shopping-cart__header {
+    margin-bottom: 60px;
+  }
+}

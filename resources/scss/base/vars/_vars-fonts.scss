@@ -1,0 +1,75 @@
+/**
+ * Variables Fonts
+ * ----------------------------------------
+ * Переменные для шрифтов.
+ * Именование: --font-[название]
+ * Хранит имена шрифтов, веса, размеры и т.д.
+ *
+ * Пример:
+ *   --font-main: "Lora", serif;
+ *   --font-secondary: "Work Sans", sans-serif;
+ *
+ * Используем единый стиль и избегаем дублирования.
+ */
+
+@import url(https://fonts.googleapis.com/css?family=Dancing+Script:regular,500,600,700);
+@import url(https://fonts.googleapis.com/css?family=Lora:regular,500,600,700,italic,500italic,600italic,700italic);
+@import url(https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+@import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+@import url(https://fonts.googleapis.com/css?family=Playfair+Display:regular,500,600,700,800,900,italic,500italic,600italic,700italic,800italic,900italic);
+@import url('https://fonts.googleapis.com/css2?family=Marck+Script&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+:root {
+	--font-main: "Lora", serif;
+  --font-secondary: "Work Sans", sans-serif;
+  --font-third: "Inter", sans-serif;
+  --font--accent: "Dancing Script", sans-serif;
+  --font--accent-secondary: "Playfair Display", serif;
+  --font--cite: "Marck Script", cursive;
+
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.9375rem;  /* 15px */
+  --font-size-md: 1rem;       /* 16px */  /* Основной текст */
+
+  /* Подзаголовки */
+  --font-size-lg: 1.25rem;    /* 20px */ 
+  --font-size-xl: 1.5625rem;  /* 25px */
+
+  /* Заголовки */
+  --font-size-2xl: 1.9375rem; /* 31px */ 
+  --font-size-3xl: 2.4375rem; /* 39px */
+  --font-size-4xl: 3.0625rem; /* 49px */
+
+  --font-weight-regular: 400;
+  --font-weight-semi-bold: 600;
+  --font-weight-bold: 700;
+  --line-height-base: 1.5;
+  
+	--font-titles: var(--font-main);
+
+  /* Админ панель*/
+  --admin-panel-font: var(--font-main);
+  --admin-panel-font-size: 14px;
+  --admin-panel-note-marker-font: var(--admin-panel-font);
+  --admin-panel-note-marker-font-size: 12px;
+
+  /* Mobile menu*/
+  --mobile-menu-title-size: 26px;
+  --mobile-menu-title-font: var(--font-main);
+
+  @media (max-width: 768px) {
+  .h1 {
+    font-size: var(--font-size-3xl); /* 39px */
+  }
+  .h2 {
+    font-size: var(--font-size-2xl); /* 31px */
+  }
+  .h3 {
+    font-size: var(--font-size-xl);  /* 25px */
+  }
+  .h4 {
+    font-size: var(--font-size-lg);  /* 20px */
+  }
+}
+}

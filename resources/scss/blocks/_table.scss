@@ -1,0 +1,40 @@
+.table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  background-color: #fff;
+
+  thead {
+    color: #fff;
+    background-color: #1e1e1e;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease-in;
+
+    &:hover {
+      background-color: rgb(237, 237, 237, 0.8);
+    }
+  }
+}
+
+.page-profile table {
+  max-width: 800px;
+}
+
+th, td {
+  padding: var( --space-md) var( --space-lg);
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  vertical-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  word-break: break-word;
+}
+
+tr {
+  position: relative;
+}

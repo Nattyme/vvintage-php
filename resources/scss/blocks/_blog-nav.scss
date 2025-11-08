@@ -1,0 +1,31 @@
+.blog-nav {
+    margin-bottom: 60px;
+}
+
+.blog-nav__list {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    row-gap: 25px;
+    flex-wrap: wrap;
+}
+
+.blog-nav__item {
+  border-radius: 4px;
+  border: 1px solid var(--color-black-100);
+  transition: background-color 0.2s ease-in, border-color 0.2s ease-in;
+
+  &:hover {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+} 
+
+.blog-nav__link {
+  padding: 8px 16px;
+  transition: color 0.2s ease-in;
+
+  &:hover {
+    color: var(--color-white);
+  }
+} 
