@@ -17,52 +17,20 @@ use Vvintage\DTO\PostCategory\PostCategoryOutputDTO;
 final class PostCategoryRepository extends AbstractRepository 
 {
     private const TABLE = 'postscategories';
-    // private const TABLE_TRANSLATION = 'postscategoriestranslation';
 
-    // private function loadTranslations(int $categoryId): array
-    // {
-    //     $sql =  'SELECT locale, title, description, meta_title, meta_description 
-    //          FROM ' . self::TABLE_TRANSLATION . ' WHERE category_id = ?';
+    private function mapBeanToCategory(OODBBean $bean): ?PostCategory
+    {
+      return PostCategory::fromArray([
+          'id' => (int) $bean->id,
+          'parent_id' => (int) $bean->parent_id,
+          'title' => (string) $bean->title,
+          'description' => (string) $bean->description,
+          'slug' => (string) $bean->slug,
+          'image' => (string) $bean->image,
+      ]);
 
-    //     $rows = $this->getAll($sql, [$categoryId]);
-
-    //     $translations = [];
-
-    //     foreach ($rows as $row) {
-    //         $translations[$row['locale']] = [
-    //             'title' => $row['title'],
-    //             'description' => $row['description'],
-    //             'meta_title' => $row['meta_title'],
-    //             'meta_description' => $row['meta_description'],
-    //         ];
-    //     }
-
-    //     return $translations;
-    // }
-
-    // private function mapBeanToPostCategory(OODBBean $bean): PostCategory
-    // {
-    //     $translations = $this->loadTranslations((int) $bean->id);
-
-    //     $translatedData = $translations[$this->currentLang] ?? $translations[self::DEFAULT_LANG] ?? [
-    //       'title' => '',
-    //       'description' => '',
-    //       'meta_title' => '',
-    //       'meta_description' => ''
-    //     ];
-
-    //     $dto = new PostCategoryInputDTO([
-    //         'id' => (int) $bean->id,
-    //         'title' => (string) $bean->title,
-    //         'parent_id' => (int) $bean->parent_id,
-    //         'image' => (string) $bean->image,
-    //         'slug' => '', 
-    //         'translations' => $translations,
-    //     ]);
-
-    //     return PostCategory::fromDTO($dto);
-    // }
-
+    }
+  
     public function getCategoryById(int $id): ?PostCategory
     {
         $bean = $this->findById(self::TABLE, $id);
@@ -71,7 +39,7 @@ final class PostCategoryRepository extends AbstractRepository
             return null;
         }
 
-        return PostCategory::fromBean($bean);
+        return $this->mapBeanToCategory($bean);
     }
 
 
@@ -83,7 +51,7 @@ final class PostCategoryRepository extends AbstractRepository
             return null;
         }
 
-        return PostCategory::fromBean($bean);
+        return $this->mapBeanToCategory($bean);
     }
 
     public function getMainCats(): array
@@ -94,7 +62,7 @@ final class PostCategoryRepository extends AbstractRepository
     public function getSubCats(): array
     {
         $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NOT NULL']);
-        return array_map(fn($bean) => PostCategory::fromBean($bean), $beans);
+        return array_map(fn($bean) => $this->mapBeanToCategory($bean), $beans);
     }
 
     public function findCatsByParentId(?int $parentId = null): array
@@ -107,32 +75,10 @@ final class PostCategoryRepository extends AbstractRepository
             $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id = ?'], params: [$parentId]);
         }
 
-        return array_map(fn($bean) => PostCategory::fromBean($bean), $beans);
+        return array_map(fn($bean) => $this->mapBeanToCategory($bean), $beans);
     }
 
    
-
-    // private function createCategoryDTOFromArray(array $row): PostCategoryDTO
-    // {
-    //     $locale = $this->currentLang ?? self::DEFAULT_LANG;
-
-    //     return new PostCategoryDTO([
-    //         'id' => (int) $row['id'],
-    //         'title' => (string) ($row['category_title_translation'] ?? ''),
-    //         'parent_id' => (int) ($row['parent_id'] ?? 0),
-    //         'image' => (string) ($row['image'] ?? ''),
-    //         'slug' => (string) ($row['slug'] ?? ''),
-    //         'translations' => [
-    //             $locale => [
-    //                 'slug' => $row['slug'] ?? '',
-    //                 'title' => $row['category_title_translation'] ?? '',
-    //                 'description' => $row['category_description'] ?? '',
-    //                 'seo_title' => $row['category_meta_title'] ?? '',
-    //                 'seo_description' => $row['category_meta_description'] ?? '',
-    //             ]
-    //         ],
-    //     ]);
-    // }
     private function createCategoryOutputDTOFromArray(array $row): PostCategoryOutputDTO
     {
       $locale = 'ru';
@@ -152,12 +98,6 @@ final class PostCategoryRepository extends AbstractRepository
                 ]
             ],
         ]);
-    }
-
-    private function mapArrayToPostCategory(array $row): PostCategory
-    {
-        $dto = $this->createCategoryOutputDTOFromArray($row);
-        return PostCategory::fromOutputDTO($dto);
     }
 
 
@@ -189,10 +129,6 @@ final class PostCategoryRepository extends AbstractRepository
         }
     }
 
-
-
-
-
     
     public function getAllCategories(): array
     {
@@ -201,13 +137,13 @@ final class PostCategoryRepository extends AbstractRepository
         if (!$beans) {
             return [];
         }
-        return array_map(fn($bean) => PostCategory::fromBean($bean), $beans);
+        return array_map(fn($bean) => $this->mapBeanToCategory($bean), $beans);
     }
 
     public function getCategoriesByIds(array $ids): array
     {
         $beans = $this->findByIds(self::TABLE, $ids);
-        return array_map([$this, 'mapBeanToPostCategory'], $beans);
+        return array_map([$this, 'mapBeanCategory'], $beans);
     }
 
 
@@ -219,7 +155,7 @@ final class PostCategoryRepository extends AbstractRepository
             $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id = ?'], params: [$id]);
         }
 
-        return array_map([$this, 'mapBeanToPostCategory'], $beans);
+        return array_map([$this, 'mapBeanToCategory'], $beans);
     }
 
     
@@ -230,50 +166,38 @@ final class PostCategoryRepository extends AbstractRepository
       return $this->getCategoryById($mainCatId) ?? null;
     }
 
-    
+  
 
-    // public function getSubCats($currentLang): array
+    // public function savePostCat(PostCategory $cat): int
     // {
-    //     $rows = $this->unitePostRawData($currentLang);
+    //     $bean = $cat->getId()
+    //         ? $this->loadBean(self::TABLE, $cat->getId())
+    //         : $this->createBean(self::TABLE);
 
-    //     $subCategories = array_filter($rows, function ($row) {
-    //         return $row['parent_id'] !== null;
-    //     });
+    //     $bean->title = $cat->getTitle();
+    //     $bean->parent_id = $cat->getParentId();
+    //     $bean->image = $cat->getImage();
+    //     $bean->seo_title = $cat->getSeoTitle();
+    //     $bean->seo_description = $cat->getSeoDescription();
 
-    //     return array_map([$this, 'mapArrayToPostCategory'], $subCategories);
+    //     $id = (int) $this->saveBean($bean);
+
+    //     // Сохраняем переводы
+    //     R::exec('DELETE FROM ' . self::TABLE_TRANSLATION . ' WHERE category_id = ?', [$id]);
+
+    //     foreach ($cat->getAllTranslations() as $locale => $translation) {
+    //         $transBean = $this->createBean(self::TABLE_TRANSLATION);
+    //         $transBean->category_id = $id;
+    //         $transBean->locale = $locale;
+    //         $transBean->title = $translation['title'] ?? '';
+    //         $transBean->description = $translation['description'] ?? '';
+    //         $transBean->meta_title = $translation['meta_title'] ?? '';
+    //         $transBean->meta_description = $translation['meta_description'] ?? '';
+    //         $this->saveBean($transBean);
+    //     }
+
+    //     return $id;
     // }
-
-
-    public function savePostCat(PostCategory $cat): int
-    {
-        $bean = $cat->getId()
-            ? $this->loadBean(self::TABLE, $cat->getId())
-            : $this->createBean(self::TABLE);
-
-        $bean->title = $cat->getTitle();
-        $bean->parent_id = $cat->getParentId();
-        $bean->image = $cat->getImage();
-        $bean->seo_title = $cat->getSeoTitle();
-        $bean->seo_description = $cat->getSeoDescription();
-
-        $id = (int) $this->saveBean($bean);
-
-        // Сохраняем переводы
-        R::exec('DELETE FROM ' . self::TABLE_TRANSLATION . ' WHERE category_id = ?', [$id]);
-
-        foreach ($cat->getAllTranslations() as $locale => $translation) {
-            $transBean = $this->createBean(self::TABLE_TRANSLATION);
-            $transBean->category_id = $id;
-            $transBean->locale = $locale;
-            $transBean->title = $translation['title'] ?? '';
-            $transBean->description = $translation['description'] ?? '';
-            $transBean->meta_title = $translation['meta_title'] ?? '';
-            $transBean->meta_description = $translation['meta_description'] ?? '';
-            $this->saveBean($transBean);
-        }
-
-        return $id;
-    }
 
   
     public function getAllCategoriesCount (?string $sql = null, array $params = []): int
@@ -287,7 +211,7 @@ final class PostCategoryRepository extends AbstractRepository
       return $this->saveCategory($cat);
     }
 
-
+    // TODO: убрать сохранение переводов в репозиторий переводов
     public function saveCategory(PostCategory $cat): int
     {
         // сохраняем основную категорию
