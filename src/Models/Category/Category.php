@@ -11,46 +11,16 @@ use Vvintage\DTO\Category\CategoryOutputDTO;
 final class Category
 {
     private int $id;
-    private string $title;
-    private ?string $description;
     private int $parent_id;
     private string $slug;
+    private string $title;
     private string $image;
+    private ?string $description;
 
     private ?array $translations = [];
 
 
     private function __construct() {}
-
-    public static function fromInputDTO(CategoryInputDTO $dto): self
-    {
-        $category = new self();
-
-        $category->id = $dto->id;
-        $category->title = $dto->title;
-        $category->description = $dto->description ?? null;
-        $category->parent_id = $dto->parent_id;
-        $category->slug = $dto->slug;
-        $category->image = $dto->image;
-        $category->translations = $dto->translations;
-
-        return $category;
-    }
-
-    public static function fromOutputDTO(CategoryOutputDTO $dto): self
-    {
-        $category = new self();
-
-        $category->id = $dto->id;
-        $category->title = $dto->title;
-        $category->description = $dto->description ?? null;
-        $category->parent_id = $dto->parent_id;
-        $category->slug = $dto->slug;
-        $category->image = $dto->image;
-        $category->translations = $dto->translations ?? [];
-
-        return $category;
-    }
 
     public static function fromArray(array $data): self
     {
@@ -68,7 +38,6 @@ final class Category
         return $category;
     }
 
- 
 
     // Получение названия в нужной локали, иначе fallback title
     public function getTitle(?string $locale = null): string

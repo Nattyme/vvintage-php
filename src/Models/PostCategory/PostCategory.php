@@ -14,6 +14,7 @@ final class PostCategory
     private string $slug;
     private string $title;
     private string $image;
+    private ?string $description;
 
     private array $translations = [];
 
