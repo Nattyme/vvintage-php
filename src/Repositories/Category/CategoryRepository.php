@@ -115,7 +115,6 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
 
     public function getSubCats(): array
     {
-        // $beans = $this->findAll(table: self::TABLE, 'parent_id IS NOT NULL');
         $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NOT NULL']);
         return array_map([$this, 'mapBeanToCategory'], $beans);
     }
@@ -125,10 +124,8 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
     public function findCatsByParentId(?int $parentId = null): array
     {
         if ($parentId === null) {
-            // $beans = $this->findAll(table: self::TABLE, 'parent_id IS NULL');
             $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id IS NULL']);
         } else {
-            // $beans = $this->findAll(self::TABLE, 'parent_id = ?', [$parentId]);
             $beans = $this->findAll(table: self::TABLE, conditions: ['parent_id = ?'], params: [$parentId]);
         }
 
@@ -193,38 +190,6 @@ final class CategoryRepository extends AbstractRepository implements CategoryRep
       }
 
       return $this->getCategoryById($id);
-    }
-
-    public function getCategoryWithChildren(int $id): array
-    {
-        if ($id <= 0) {
-            return [];
-        }
-
-        $parentBean = R::findOne(self::TABLE, 'id = ?', [$id]);
-
-        if (!$parentBean) {
-            return [];
-        }
-
-        $childrenBeans = $this->findAll(table: self::TABLE, conditions: ['parent_id = ?'], params: [$id]);
-        // $childrenBeans = R::findAll('categories', 'parent_id = ?', [$id]);
-
-        $result = [$this->mapBeanToCategory($parentBean)];
-        foreach ($childrenBeans as $childBean) {
-            $result[] = $this->mapBeanToCategory($childBean);
-        }
-
-        return $result;
-    }
-
-    public function hasChildren(int $id): bool
-    {
-        if ($id <= 0) {
-            return false;
-        }
-
-        return $this->countAll(self::TABLE, 'parent_id = ?', [$id]) > 0;
     }
 
     public function getAllCategoriesCount(?string $sql = null, array $params = []): int

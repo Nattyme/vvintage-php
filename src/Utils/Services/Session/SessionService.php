@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Vvintage\Utils\Services\Session;
 
-
 use Vvintage\Contracts\User\UserInterface;
 
 /** Модели */
