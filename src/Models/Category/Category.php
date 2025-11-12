@@ -14,8 +14,8 @@ final class Category
     private int $parent_id;
     private string $slug;
     private string $title;
-    private string $image;
     private ?string $description;
+    private ?string $image;
 
     private ?array $translations = [];
 
@@ -27,10 +27,10 @@ final class Category
         $category = new self();
 
         $category->id = (int) ($data['id'] ?? 0);
-        $category->title = (string) ($data['title'] ?? '');
-        $category->description = (string) ($data['description'] ?? '');
         $category->parent_id = (int) ($data['parent_id'] ?? 0);
         $category->slug = (string) ($data['slug'] ?? '');
+        $category->title = (string) ($data['title'] ?? '');
+        $category->description = (string) ($data['description'] ?? '');
         $category->image = (string) ($data['image'] ?? '');
         $category->translations = $data['translations'] ?? [];
 
@@ -38,16 +38,30 @@ final class Category
         return $category;
     }
 
+    
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
-    // Получение названия в нужной локали, иначе fallback title
+    public function getParentId(): int
+    {
+        return $this->parent_id;
+    }
+
+
+   
     public function getTitle(?string $locale = null): string
     {
         $locale = $locale ?? null;
 
-        return $this->translations[$locale]['title']
-            ?? $this->translations['ru']['title']
+        if($locale) {
+          return $this->translations[$locale]['title'];
+        }
+        return $this->translations['ru']['title']
             ?? $this->title;
     }
+
 
     public function getDescription(?string $locale = null): string
     {
@@ -63,16 +77,6 @@ final class Category
       return $this->slug;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getParentId(): int
-    {
-        return $this->parent_id;
-    }
-
     public function getImage(): string
     {
         return $this->image;
@@ -83,10 +87,6 @@ final class Category
         return $this->translations;
     }
 
-    public function getCurrentLocale(): string
-    {
-        return $this->currentLocale;
-    }
 
     public function getTranslations(?string $locale = null): array
     {

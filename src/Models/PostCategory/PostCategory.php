@@ -9,12 +9,12 @@ use Vvintage\DTO\PostCategory\PostCategoryOutputDTO;
 
 final class PostCategory
 {
-    private ?int $id;
-    private ?int $parent_id;
+    private int $id;
+    private int $parent_id;
     private string $slug;
     private string $title;
-    private string $image;
     private ?string $description;
+    private ?string $image;
 
     private array $translations = [];
 
@@ -35,6 +35,16 @@ final class PostCategory
         return $category;
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getParentId(): ?int
+    {
+        return $this->parent_id;
+    }
+
     public function getTitle(?string $locale = null): string
     {
         $locale = $locale ?? null;
@@ -47,27 +57,17 @@ final class PostCategory
     }
 
     // Получение названия в нужной локали, иначе fallback description
+   
     public function getDescription(?string $locale = null): string
     {
-      $locale = $locale ?? null;
+        $locale = $locale ?? $this->currentLocale;
 
-      if($locale) {
-        return $this->translations[$locale]['description'];
-      }
-      return $this->translations['ru']['description']
-          ?? $this->description;
+        return $this->translations[$locale]['description']
+            ?? $this->translations['ru']['description']
+            ?? '';
     }
 
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getParentId(): ?int
-    {
-        return $this->parent_id;
-    }
+  
 
     public function getImage(): string
     {
@@ -77,11 +77,6 @@ final class PostCategory
     public function getAllTranslations(): array
     {
         return $this->translations;
-    }
-
-    public function getCurrentLocale(): string
-    {
-        return $this->currentLocale;
     }
 
     // Позволяет задать локаль один раз, чтобы не передавать её в каждый геттер.

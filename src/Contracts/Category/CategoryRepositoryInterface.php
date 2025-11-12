@@ -12,7 +12,6 @@ interface CategoryRepositoryInterface
     public function getAllCategories(): array;
     
     public function getMainCats(): array;
-    public function getCategoryWithChildren(int $id): array;
     public function getParentCategory(int $id): ?Category;    
     public function getSubCats(): array;
     public function createMainCategoriesArray(): array;
@@ -20,7 +19,6 @@ interface CategoryRepositoryInterface
 
     public function saveCategory(array $data): int; 
     public function findCatsByParentId(?int $parentId = null): array;
-    public function hasChildren(int $id): bool;
     public function getAllCategoriesCount(?string $sql = null, array $params = []): int;
     public function deleteCategory(int $id): void;
 }

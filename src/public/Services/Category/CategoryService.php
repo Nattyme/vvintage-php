@@ -9,6 +9,7 @@ use Vvintage\Models\Category\Category;
 use Vvintage\Repositories\Category\CategoryRepository;
 use Vvintage\Repositories\Category\CategoryTranslationRepository;
 use Vvintage\Public\Services\Base\BaseService;
+use Vvintage\Models\Category\Category\CategoryApiSerializer;
 
 use Vvintage\Public\DTO\Category\CategoryDTO;
 use Vvintage\Public\DTO\Category\CategoryTreeDto;
