@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Category;
 
-class CategoryDTO
+final readonly class CategoryDTO
 {
     public int $id;
     public string $title;

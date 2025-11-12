@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Public\DTO\Favorites;
 use Vvintage\Models\Product\Product;
 
-final class FavItemDTO 
+final readonly class FavItemDTO 
 {
     public function __construct(
         public int $id,

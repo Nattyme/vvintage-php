@@ -6,7 +6,7 @@ namespace Vvintage\Admin\DTO\Product;
 use Vvintage\Admin\DTO\Category\CategoryForProductDTO;
 use Vvintage\Admin\DTO\Brand\BrandForProductDTO;
 
-final class EditProductDTO 
+final readonly class EditProductDTO 
 {
 
     public function __construct(

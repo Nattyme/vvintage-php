@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Public\DTO\Category;
 use Vvintage\Public\DTO\Category;
 
-final class CategoryCardDTO 
+final readonly class CategoryCardDTO 
 {
     public function __construct(
         public int $id,

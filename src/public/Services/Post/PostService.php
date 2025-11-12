@@ -144,11 +144,8 @@ class PostService extends BaseService
     
     public function getLastPosts(int $count): array
     {
-        $models = $this->repository->getLastPosts($count);
-        if (!$models) {
-            return [];
-        }
-
+        $models = $this->repository->getLastPosts($count) ?? [];
+      
         $dtos = [];
         foreach ($models as $model) {
             $modelFull = $this->setDataToPostModel($model);

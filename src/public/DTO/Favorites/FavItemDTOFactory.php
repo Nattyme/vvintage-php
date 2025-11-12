@@ -8,7 +8,7 @@ use Vvintage\Public\DTO\Product\ImageForProductCardDTO;
 use Vvintage\Public\DTO\Favorites\FavItemDTO;
 
 
-final class FavItemDTOFactory
+final readonly class FavItemDTOFactory
 {
     public function createFromProduct(
       Product $product,

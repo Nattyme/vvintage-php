@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\User;
 
-final class UserOutputDTO
+final readonly class UserOutputDTO
 {
     public int $id;
     public string $password;

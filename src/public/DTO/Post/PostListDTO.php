@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Public\DTO\Post;
 
 
-final class PostListDTO
+final readonly class PostListDTO
 {
     public function __construct(
       public int $id,

@@ -7,7 +7,7 @@ namespace Vvintage\Admin\DTO\Brand;
 use Vvintage\Models\Brand\Brand;
 use Vvintage\Admin\DTO\Brand\EditDTO;
 
-final class EditDTOFactory
+final readonly class EditDTOFactory
 {
     public function createFromBrand(Brand $brand): EditDTO
     {

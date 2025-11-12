@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\DTO\Product;
 
-final class ProductInputDTO
+final readonly class ProductInputDTO
 {
-    public ?int $id = null;
+    public ?int $id;
     public int $category_id;
     public int $brand_id;
 

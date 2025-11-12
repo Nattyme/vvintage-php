@@ -6,7 +6,7 @@ namespace Vvintage\Admin\DTO\Brand;
 use Vvintage\Models\Brand\Brand;
 use Vvintage\Admin\DTO\Brand\BrandInputDTO;
 
-final class BrandInputDTOFactory
+final readonly class BrandInputDTOFactory
 {
     public function createFromArray(array $data, ?int $id): BrandInputDTO
     {

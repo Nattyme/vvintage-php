@@ -4,13 +4,10 @@ declare(strict_types=1);
 namespace Vvintage\Public\DTO\Post;
 
 use Vvintage\Public\DTO\Post\PostFullDto;
-
-/** Model */
 use Vvintage\Models\Post\Post;
-
 use Vvintage\Utils\Services\Locale\LocaleService;
 
-final class PostFullDTOFactory
+final readonly class PostFullDTOFactory
 {
     public function __construct(
       private LocaleService $localeService

@@ -6,7 +6,7 @@ namespace Vvintage\Public\DTO\Product;
 use Vvintage\Public\DTO\Category\CategoryOutputDTO;
 use Vvintage\Public\DTO\Brand\BrandOutputDTO;
 
-class ProductDTO
+final readonly class ProductDTO
 {
     public int $category_id;
     public string $category_title;

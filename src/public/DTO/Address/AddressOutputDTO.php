@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Address;
 
-final class AddressOutputDTO
+final readonly class AddressOutputDTO
 {
     public int $id;
     public int $user_id;

@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Common;
 
-class SeoDTO
+final readonly class SeoDTO
 {
-    public string $title = '';
-    public ?string $slug = '';
-    public ?string $description = '';
-    public ?string $content = '';
-    public ?string $meta_title = '';
-    public ?string $meta_description = '';
-    public ?string $currentLang = 'ru';
-    public ?string $structuredData = '';
-    public ?string $isIndexed = 'noindex,follow';
+    public string $title;
+    public ?string $slug;
+    public ?string $description;
+    public ?string $content;
+    public ?string $meta_title;
+    public ?string $meta_description;
+    public ?string $currentLang;
+    public ?string $structuredData;
+    public ?string $isIndexed;
 
     public function __construct(
         string $title = '',

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Product\Page;
 
-final class ProductPageImageDTO
+final readonly class ProductPageImageDTO
 {
     public function __construct(
         public ?int $id,

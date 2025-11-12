@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Admin\DTO\Brand;
 use Vvintage\Models\Brand\Brand;
 
-final class BrandTranslationInputDTO 
+final readonly class BrandTranslationInputDTO 
 {
     public function __construct(
       public int $brand_id,

@@ -13,7 +13,7 @@ use Vvintage\Public\DTO\Brand\BrandForProductDTO;
 
 
 
-final class ProductPageDTOFactory
+final readonly class ProductPageDTOFactory
 {
     public function __construct(
       private LocaleService $localeService

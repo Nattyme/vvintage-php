@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Public\DTO\Page;
 use Vvintage\Public\DTO\Page\PageDTO;
 
-class PageOutputDTO extends PageDTO
+final readonly class PageOutputDTO extends PageDTO
 {
     public int $id;
   

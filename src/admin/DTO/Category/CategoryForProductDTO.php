@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Admin\DTO\Category;
 use Vvintage\Models\Category\Category;
 
-final class CategoryForProductDTO
+final readonly class CategoryForProductDTO
 {
     public int $id;
     public string $title;

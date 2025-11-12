@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\DTO\Category;
 
-final class CategoryTranslationInputDTO
+final readonly class CategoryTranslationInputDTO
 {
     public ?int $category_id;
     public string $slug;

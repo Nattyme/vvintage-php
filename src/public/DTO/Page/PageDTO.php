@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Page;
 
+// TODO: сделать readonly и убрать extends для PageOutputDTO
 class PageDTO
 {
     // public int $id;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\DTO\Product;
 
-final class ProductImageInputDTO 
+final readonly class ProductImageInputDTO 
 {
     public int $product_id;
     public string $filename;

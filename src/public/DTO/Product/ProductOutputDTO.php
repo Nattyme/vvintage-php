@@ -7,7 +7,7 @@ use Vvintage\Public\DTO\Product\ProductDTO;
 use Vvintage\Public\DTO\Category\CategoryOutputDTO;
 use Vvintage\Public\DTO\Brand\BrandOutputDTO;
 
-final class ProductOutputDTO extends ProductDTO
+final readonly class ProductOutputDTO extends ProductDTO
 {
     public int $id;
     public ?int $amount;

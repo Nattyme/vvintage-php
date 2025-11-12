@@ -6,7 +6,7 @@ namespace Vvintage\Public\DTO\Brand;
 use Vvintage\Models\Brand\Brand;
 use Vvintage\Public\DTO\Brand\BrandForProductDTO;
 
-final class BrandForProductDTOFactory
+final readonly class BrandForProductDTOFactory
 {
  
     public function createFromBrand(Brand $brand, string $currentLang): BrandForProductDTO

@@ -3,27 +3,23 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Product\Filter;
 
-
-class ProductFilterDTO {
-    public array $categories = [];
-    public array $brands = [];
-    public ?int $priceMin = null;
-    public ?int $priceMax = null;
-    public ?string $sort = null;
-    public ?string $sortKey = null;
-    public ?array $pagination = [];
-    public ?string $status = null;
+// TODO: move out pagination from filter dto add readonly property
+final class ProductFilterDTO {
+    public array $categories;
+    public array $brands;
+    public ?int $priceMin;
+    public ?int $priceMax;
+    public ?string $sort;
+    public ?string $sortKey;
+    public ?array $pagination;
+    public ?string $status;
 
     public function __construct(array $query) {
         $sortData = !empty($query['sort']) ? $query['sort'] : null;
 
-        if(  $sortData === 'price_asc') {
-          $sort = 'price ASC';
-        }
+        if( $sortData === 'price_asc') $sort = 'price ASC';
        
-        if(  $sortData === 'price_desc') {
-          $sort = 'price DESC';
-        }
+        if( $sortData === 'price_desc') $sort = 'price DESC';
 
         $this->categories = $query['categories'] ?? [];
         $this->brands = $query['brands'] ?? [];

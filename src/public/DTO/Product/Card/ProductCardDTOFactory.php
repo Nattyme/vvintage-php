@@ -10,7 +10,7 @@ use Vvintage\Public\DTO\Category\CategoryForProductDTO;
 use Vvintage\Public\DTO\Product\Card\ImageForProductCardDTO;
 
 
-final class ProductCardDTOFactory
+final readonly class ProductCardDTOFactory
 {
 
     public function createFromProduct(

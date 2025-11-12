@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\DTO\Product;
 
-final class ProductAdminListDTO
+final readonly class ProductAdminListDTO
 {
     public function __construct(
         public int $id,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Admin\DTO\Brand;
 use Vvintage\Models\Brand\Brand;
 
-final class BrandForAdminListDTO 
+final readonly class BrandForAdminListDTO 
 {
     public function __construct(
       public int $id,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Public\DTO\Category;
 use Vvintage\Public\DTO\Category;
 
-final class CategoryTreeDto 
+final readonly class CategoryTreeDto 
 {
     public int $id;
     public int $parent_id;

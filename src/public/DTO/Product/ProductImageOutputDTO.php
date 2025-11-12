@@ -5,7 +5,7 @@ namespace Vvintage\Public\DTO\Product;
 
 use Vvintage\Public\DTO\Product\ProductImageDTO;
 
-final class ProductImageOutputDTO extends ProductImageDTO
+final readonly class ProductImageOutputDTO extends ProductImageDTO
 {
     public int $id;
     public int $product_id;

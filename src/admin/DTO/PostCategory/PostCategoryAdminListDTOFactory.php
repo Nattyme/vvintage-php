@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace Vvintage\Admin\DTO\PostCategory;
 
 use Vvintage\Config\LanguageConfig; 
-
-/** Model */
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Admin\DTO\PostCategory\PostCategoryAdminListDTO;
 
-final class PostCategoryAdminListDTOFactory
+final readonly class PostCategoryAdminListDTOFactory
 {
     public function createFromPostCategory(PostCategory $category): PostCategoryAdminListDTO
     {

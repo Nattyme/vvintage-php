@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace Vvintage\Admin\DTO\PostCategory;
 
 use Vvintage\Config\LanguageConfig; 
-
-/** Model */
 use Vvintage\Models\PostCategory\PostCategory;
 use Vvintage\Admin\DTO\PostCategory\EditDto;
 
-final class EditDtoFactory
+final readonly class EditDtoFactory
 {
     public function createFromPostCategory(PostCategory $category, PostCategory $parentCategory = null): EditDto
     {

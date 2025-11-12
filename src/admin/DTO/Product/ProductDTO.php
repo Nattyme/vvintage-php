@@ -6,7 +6,7 @@ use Vvintage\Admin\DTO\Category\CategoryForProductDTO;
 use Vvintage\Admin\DTO\Brand\BrandForProductDTO;
 use Vvintage\Models\Product\Product;
 
-final class ProductDTO 
+final readonly class ProductDTO 
 {
     public int $id;
     public int $category_id;

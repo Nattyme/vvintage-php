@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Product\Card;
 
-final class ProductCardDTO
+final readonly class ProductCardDTO
 {
     public function __construct(
         public int $id,

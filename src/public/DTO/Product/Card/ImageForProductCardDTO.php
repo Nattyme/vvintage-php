@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Product\Card;
 
-final class ImageForProductCardDTO
+final readonly class ImageForProductCardDTO
 {
     public function __construct(
         public ?string $filename,

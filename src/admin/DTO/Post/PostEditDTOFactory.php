@@ -10,7 +10,7 @@ use Vvintage\Models\Post\Post;
 use Vvintage\Admin\DTO\Post\PostEditDTO;
 use Vvintage\Utils\Services\Locale\LocaleService;
 
-final class PostEditDTOFactory
+final readonly class PostEditDTOFactory
 {
     private string $currentLang;
 

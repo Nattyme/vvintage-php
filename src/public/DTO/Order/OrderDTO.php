@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Order;
 
-final class OrderDTO
+final readonly class OrderDTO
 {
     public ?int $id;
     public string $name;

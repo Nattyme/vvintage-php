@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Product\Lang;
 
-final class ProductTranslationOutputDTO
+final readonly class ProductTranslationOutputDTO
 {
     public int $id;
     public int $product_id;

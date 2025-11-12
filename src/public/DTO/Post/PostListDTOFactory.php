@@ -4,10 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Public\DTO\Post;
 
 use Vvintage\Public\DTO\Post\PostListDTO;
-
-/** Model */
 use Vvintage\Models\Post\Post;
-
 use Vvintage\Utils\Services\Locale\LocaleService;
 
 final class PostListDTOFactory

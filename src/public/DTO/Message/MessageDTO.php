@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Message;
 
-final class MessageDTO
+final readonly class MessageDTO
 {
     public ?int $id;
     public ?string $email;

@@ -6,7 +6,7 @@ namespace Vvintage\Public\DTO\Post;
 /** Model */
 use Vvintage\Models\Post\Post;
 
-final class PostFullDTO
+final readonly class PostFullDTO
 {
     public function __construct(
       public int $id,

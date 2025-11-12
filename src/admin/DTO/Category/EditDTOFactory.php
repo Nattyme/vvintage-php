@@ -8,7 +8,7 @@ use Vvintage\Models\Category\Category;
 use Vvintage\Admin\DTO\Category\EditDTO;
 use Vvintage\Config\LanguageConfig;
 
-final class EditDTOFactory
+final readonly class EditDTOFactory
 {
     public function createFromCategory(Category $category, Category $parentCategory = null): EditDTO
     {

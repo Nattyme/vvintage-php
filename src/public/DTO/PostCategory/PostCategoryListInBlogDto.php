@@ -5,7 +5,7 @@ namespace Vvintage\Public\DTO\PostCategory;
 
 use Vvintage\Models\PostCategory\PostCategory;
 
-final class PostCategoryListInBlogDto 
+final readonly class PostCategoryListInBlogDto 
 {
     public function __construct(
       public int $id,

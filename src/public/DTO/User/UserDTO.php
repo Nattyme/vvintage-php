@@ -7,7 +7,7 @@ use Vvintage\Public\DTO\Address\AddressDTO;
 use Vvintage\Public\DTO\Address\AddressOutputDTO;
 
 
-final class UserDTO
+final readonly class UserDTO
 {
     public int $id;
     public string $password;
@@ -25,8 +25,7 @@ final class UserDTO
 
     public string $avatar;
     public string $avatar_small;
-    // private int $addressId;
-    public ?AddressOutputDTO $address = null;
+
 
     public function __construct(array $data)
     {
@@ -47,7 +46,6 @@ final class UserDTO
         $this->phone = (string) ($data['phone'] ?? '');
         $this->avatar = (string) ($data['avatar'] ?? '');
         $this->avatar_small = (string) ($data['avatar_small'] ?? '');
-        // $this->addressId = (string) ($data['addressId'] ?? 0);
     
         if (isset($data['address'])) {
           $this->address = $data['address'];

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Admin\DTO\Category;
 use Vvintage\Admin\DTO\Category\CategoryDTO;
 
-final class CategoryInputDTO 
+final readonly class CategoryInputDTO 
 {
   public int $id;
     public string $title;

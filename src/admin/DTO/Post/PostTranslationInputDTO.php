@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\DTO\Post;
 
-final class PostTranslationInputDTO
+final readonly class PostTranslationInputDTO
 {
     public ?int $post_id;
     public string $slug;

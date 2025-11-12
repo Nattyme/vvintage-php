@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\DTO\Category;
 
-final class EditDTO
+final readonly class EditDTO
 {
     public function __construct(
     public bool $isMain,

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\DTO\Post;
 
-final class PostEditDTO
+final readonly class PostEditDTO
 {
     public function __construct(
     public int $id,

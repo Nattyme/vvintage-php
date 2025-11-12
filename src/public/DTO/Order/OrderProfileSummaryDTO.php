@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Order;
 
-final class OrderProfileSummaryDTO
+final readonly class OrderProfileSummaryDTO
 {
     public function __construct(
       public readonly ?int $id,

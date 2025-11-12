@@ -3,14 +3,11 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Category;
 
-
 use Vvintage\Config\LanguageConfig; 
-
-/** Model */
 use Vvintage\Models\Category\Category;
 use Vvintage\Public\DTO\Category\CategoryCardDTO;
 
-final class CategoryCardDTOFactory
+final readonly class CategoryCardDTOFactory
 {
     public function createFromCategory(Category $category, string $currentLang): CategoryCardDTO
     {

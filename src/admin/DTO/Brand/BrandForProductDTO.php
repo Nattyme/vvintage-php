@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Admin\DTO\Brand;
 use Vvintage\Models\Brand\Brand;
 
-final class BrandForProductDTO
+final readonly class BrandForProductDTO
 {
     public int $id;
     public ?string $title;

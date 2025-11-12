@@ -6,7 +6,7 @@ namespace Vvintage\Public\DTO\Category;
 use Vvintage\Models\Category\Category;
 use Vvintage\Public\DTO\Category\CategoryForProductDTO;
 
-final class CategoryForProductDTOFactory
+final readonly class CategoryForProductDTOFactory
 {
  
     public function createFromCategory(Category $category, string $currentLang): CategoryForProductDTO

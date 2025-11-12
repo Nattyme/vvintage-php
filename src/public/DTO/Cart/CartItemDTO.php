@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Public\DTO\Cart;
 use Vvintage\Models\Product\Product;
 
-final class CartItemDTO 
+final readonly class CartItemDTO 
 {
     public function __construct(
         public int $id,

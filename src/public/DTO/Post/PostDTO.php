@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vvintage\Public\DTO\Post;
 use Vvintage\Public\DTO\PostCategory\PostCategoryDTO;
 
-final class PostDTO
+final readonly class PostDTO
 {
     public int $id;
     public string $title;
@@ -12,9 +12,9 @@ final class PostDTO
     public string $slug;
     public string $description;
     public string $content;
-    public int $views = 0;
-    public ?string $cover = '';
-    public ?string $cover_small = '';
+    public int $views;
+    public ?string $cover;
+    public ?string $cover_small;
 
     public array $translations;
     public string $locale; 

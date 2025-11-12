@@ -2,13 +2,14 @@
 declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Cart;
+
 use Vvintage\Models\Product\Product;
 use Vvintage\Public\Services\Product\ProductImageService;
 use Vvintage\Public\DTO\Product\ImageForProductCardDTO;
 use Vvintage\Public\DTO\Cart\CartItemDTO;
 
 
-final class CartItemDTOFactory
+final readonly class CartItemDTOFactory
 {
     public function createFromProduct(
       Product $product,

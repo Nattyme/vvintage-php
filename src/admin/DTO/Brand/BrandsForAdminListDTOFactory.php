@@ -8,7 +8,7 @@ use Vvintage\Admin\DTO\Brand\BrandForAdminListDTO;
 use Vvintage\Admin\Services\Brand\AdminBrandService;
 use Vvintage\Config\LanguageConfig; 
 
-final class BrandsForAdminListDTOFactory
+final readonly class BrandsForAdminListDTOFactory
 {
  
     public function createFromBrand(Brand $brand): BrandForAdminListDTO

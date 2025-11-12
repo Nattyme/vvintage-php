@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\User;
 
-final class UserUpdateDTO
+final readonly class UserUpdateDTO
 {
     public string $name;
     public string $surname;

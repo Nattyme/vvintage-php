@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Admin\DTO\PostCategory;
 
-final class PostCategoryAdminListDTO
+final readonly class PostCategoryAdminListDTO
 {
     public function __construct(
     public int $id,

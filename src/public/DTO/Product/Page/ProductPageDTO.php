@@ -7,7 +7,7 @@ use Vvintage\Public\DTO\Category\CategoryForProductDTO;
 use Vvintage\Public\DTO\Brand\BrandForProductDTO;
 use Vvintage\Models\Product\Product;
 
-final class ProductPageDTO 
+final readonly class ProductPageDTO 
 {
     public function __construct(
       public int $id,

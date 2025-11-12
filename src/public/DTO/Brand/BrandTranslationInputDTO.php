@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vvintage\Public\DTO\Brand;
 
-final class BrandTranslationInputDTO
+final readonly class BrandTranslationInputDTO
 {
     public int $brand_id;
     public string $locale;

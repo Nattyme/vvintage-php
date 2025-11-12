@@ -5,7 +5,7 @@ namespace Vvintage\Admin\DTO\Brand;
 
 use Vvintage\Admin\DTO\Brand\BrandTranslationInputDTO;
 
-final class BrandTranslationInputDTOFactory
+final readonly class BrandTranslationInputDTOFactory
 {
  
     public function createFromArray(array $translate, string $locale, int $brandId): BrandTranslationInputDTO
