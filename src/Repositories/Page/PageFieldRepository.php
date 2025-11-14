@@ -48,7 +48,7 @@ final class PageFieldRepository extends AbstractRepository
     $bean->ownPagefieldsList = [];
 
     foreach ($pageFields as $name => $value) {
-      $field = R::dispense('pagefields');
+      $field = $this->createBean('pagefields');
       $field->name = $name;
       $field->value = $value;
 

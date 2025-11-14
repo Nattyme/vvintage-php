@@ -24,7 +24,7 @@ final class PageRepository extends AbstractRepository implements PageRepositoryI
   public function getPageBySlug(string $slug): ?Page
   {
     // Подключение к БД и выброрка страницы по slug
-    $bean = R::findOne('pages', 'slug = ?', [$slug]);
+    $bean = $this->findOneBy('pages', 'slug = ?', [$slug]);
 
     if (!$bean) {
         return null;

@@ -50,12 +50,15 @@ class UserService
 // createNewUser
   public function createUser (array $postData): ?User
   {
-  
-    /**
-     * @var User|null
-    */
-    $userModel = $this->userRepository->createUser($postData);
-    $userId = $userModel->getId();
+
+
+    try {
+      $this->userRepository->createUser($postData);
+      $userId = $userModel->getId();
+    } catch (\Exception $error) {
+      echo $e->getMessage();
+      return null;
+    }
 
     return $userModel;
   }

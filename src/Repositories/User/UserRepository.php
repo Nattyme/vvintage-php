@@ -324,10 +324,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
       $id = $userModel->getId();
       $bean = $this->loadBean(self::TABLE_USERS, $id);
 
-      if ($bean->id !== 0) {
-        R::trash( $bean ); 
-      }
-
+      if ($bean->id !== 0) $this->deleteBean( $bean ); 
     }
 
 
