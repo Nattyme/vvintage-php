@@ -66,6 +66,7 @@ final class LoginController extends BaseController
       $this->validator->validate($_POST); // валидация , если ошибка - выбросит исключение
 
       $userModel = $this->service->login($_POST);
+
       $this->sessionService->setUserSession($userModel);
 
       $this->handleItemsMerge($userModel); // слияние гостевой корзины и избранного с данными в БД

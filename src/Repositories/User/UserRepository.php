@@ -14,11 +14,8 @@ use Vvintage\Contracts\User\UserRepositoryInterface;
 use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\User\User;
-use Vvintage\Models\Cart\Cart;
-use Vvintage\Public\DTO\User\UserOutputDTO;
-use Vvintage\Public\DTO\User\UserCreateDTO;
 use Vvintage\Public\DTO\User\UserUpdateDTO;
-use Vvintage\Public\DTO\Address\AddressDTO;
+use Vvintage\Public\DTO\User\UserCreateDTO;
 
 final class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
@@ -35,9 +32,8 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     {
         $bean = $this->loadBean(self::TABLE_USERS, $id);
 
-        if ($bean->id === 0) {
-            return null;
-        }
+        if ($bean->id === 0) return null;
+
 
         return $this->mapBeanToUser($bean);
     }
@@ -51,43 +47,14 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     public function getUserByEmail(string $email): ?User
     {
       $bean = $this->findOneBy(self::TABLE_USERS, 'email = ?', [strtolower($email)]);
-
-      if (!$bean) {
-          return null;
-      }
+      if (!$bean) return null;
 
       return $this->mapBeanToUser($bean);;
     }
 
-     /** create DTO */
-    private function getUserCreateDto(array $data): UserCreateDTO
-    {
-  
-      $dto = new UserCreateDTO([
-                  'password' => (string) $data['password'],
-                  'email' => strtolower((string) $data['email']),
-                  'name' => null,
-                  'role' => (string) 'customer',
-
-                  'fav_list' => json_encode($dto->fav_list ?? []),
-                  'cart' => json_encode($dto->cart ?? []),
-
-                  'country' => (string) '',
-                  'city' => (string) '',
-                  'phone' => (string) '',
-
-                  'avatar' => (string) '',
-                  'avatar_small' => (string) ''
-              ]);
-  
-         
-      return  $dto;
-
-    }
-
     private function mapBeanToUser(OODBBean $bean): User
     {
-        $dto = new UserOutputDTO([
+        return User::fromArray([
             'id' => (int) $bean->id,
             'password' => (string) $bean->password,
             'email' => (string) $bean->email,
@@ -105,8 +72,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
             'avatar' => (string) $bean->avatar,
             'avatar_small' => (string) $bean->avatar_small,
         ]);
-
-        return User::fromDTO($dto);
     }
 
 
@@ -125,9 +90,8 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     {
         $beans = $this->findAll(table: self::TABLE_USERS);
 
-        if (empty($beans)) {
-          return [];
-        }
+        if (empty($beans)) return [];
+
 
         return array_map([$this, 'mapBeanToUser'], $beans);
     }
@@ -137,9 +101,8 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
      * 
      * @return User|null
     */
-    public function createUser(array $postData): ?User
+    public function createUser(array $dto): ?User
     {
-      $dto = $this->getUserCreateDto($postData);
       return $this->saveNewUser($dto);
     }
 
@@ -169,8 +132,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
   public function updateUser(UserUpdateDTO $dto, int $id): ?User
   {
-
-  
       $bean = $this->loadBean(self::TABLE_USERS, $id);
       if (!$bean || $bean->id === 0) return null;
 
@@ -191,35 +152,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
       return $this->mapBeanToUser($bean);
   }
 
-  
-    /**
-     * Метод редактирует пользователя 
-     * @param User $userModel, array $newUserData
-     * @return User|null
-     */
-    // public function editUser(User $userModel, array $postData): ?User
-    // {
-    //   $id = $userModel->getId();
-    //   $bean = $this->loadBean(self::TABLE_USERS, $id);
-
-    //   if ($bean->id !== 0) {
-    //     // Заполнить пар-ры
-    //     $bean->name =  $postData['name'] ?? '';
-    //     $bean->surname = $postData['surname'] ?? '';
-    //     $bean->country = $postData['country'] ?? '';
-    //     $bean->city = $postData['city'] ?? '';
-    //     $bean->phone = $postData['phone'] ?? '';
-    //     $bean->avatar = $postData['avatar'] ?? '';
-    //     $bean->avatar_small = $postData['avatar_small'] ?? '';
-
-    //     $userId = $this->saveBean($bean);
-  
-    //     return new User ($bean);
-    //   }
-
-    //   return null;
-    // }
-
     public function setRecoveryCode (User $userModel, string $recoveryCode): ?int
     {
       $id = $userModel->getId();
@@ -238,9 +170,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
       $id = $userModel->getId();
       $bean = $this->loadBean(self::TABLE_USERS, $id);
 
-      if ($bean->id !== 0) {
-        return $bean->recovery_code;
-      }
+      if ($bean->id !== 0) return $bean->recovery_code;
 
       return null;
     }
@@ -261,42 +191,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     {
       return password_hash($password, PASSWORD_DEFAULT);
     }
-
-
-    /**
-     * Метод сохраняет id адреса в поле теблицы User
-    */
-    // public function updateUserAddressId(int $userId, int $addressId): void {
-    //   $userBean = $this->loadBean(self::TABLE_USERS, $userId);
-    //   $addressBean = $this->loadBean(self::TABLE_ADDRESSES,  $addressId);
-
-    //   if ($userBean->id !== 0) {
-    //     $userBean->address = $addressBean;
-    //     $this->saveBean($userBean);
-    //   }
-    // }
-
-    // public function ensureUserHasAddress(User $userModel): ?int
-    // {
-    //   $bean = $this->loadBean(self::TABLE_USERS, $userModel->getId());
-
-    //   if ($bean->address_id !== null) {
-    //     return null;
-    //   }
-
-    //   $addressModel = $this->addressRepository->createAddress(); // создаем новый адрес
-    //   $addressId = $addressModel->getId();
-
-    //   if (!is_int($addressId) || $addressId === 0) {
-    //     return null;
-    //   }
-
-    //   $addressBean = $this->loadBean(self::TABLE_ADDRESSES, $addressId);
-    //   $bean->address = $addressBean;
-
-    //   return $this->saveBean($bean);
-    // }
-
 
     /**
      * Метод обновляет корзину

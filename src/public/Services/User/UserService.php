@@ -50,10 +50,25 @@ class UserService
 // createNewUser
   public function createUser (array $postData): ?User
   {
-
-
     try {
-      $this->userRepository->createUser($postData);
+      $dto =  new UserCreateDTO([
+                  'password' => (string) $data['password'],
+                  'email' => strtolower((string) $data['email']),
+                  'name' => null,
+                  'role' => (string) 'customer',
+
+                  'fav_list' => json_encode($dto->fav_list ?? []),
+                  'cart' => json_encode($dto->cart ?? []),
+
+                  'country' => (string) '',
+                  'city' => (string) '',
+                  'phone' => (string) '',
+
+                  'avatar' => (string) '',
+                  'avatar_small' => (string) ''
+              ]);
+  
+      $this->userRepository->createUser($dto);
       $userId = $userModel->getId();
     } catch (\Exception $error) {
       echo $e->getMessage();
