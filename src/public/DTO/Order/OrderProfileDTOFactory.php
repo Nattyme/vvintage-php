@@ -11,7 +11,7 @@ use Vvintage\Public\DTO\Order\OrderProductDTO;
 use Vvintage\Utils\Services\Locale\LocaleService;
 
 
-final readonly class OrderProfileDTOFactory
+final class OrderProfileDTOFactory
 {
     private string $currentLang;
 
