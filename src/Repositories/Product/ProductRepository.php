@@ -228,14 +228,14 @@ final class ProductRepository extends AbstractRepository
 
         // категории
         if (!empty($filters['categories'])) {
-            $placeholders = R::genSlots($filters['categories']);
+            $placeholders = $this->genSlots($filters['categories']);
             $conditions[] = "category_id IN ($placeholders)";
             $params = array_merge($params, $filters['categories']);
         }
 
         // бренды
         if (!empty($filters['brands'])) {
-            $placeholders = R::genSlots($filters['brands']);
+            $placeholders = $this->genSlots($filters['brands']);
             $conditions[] = "brand_id IN ($placeholders)";
             $params = array_merge($params, $filters['brands']);
         }

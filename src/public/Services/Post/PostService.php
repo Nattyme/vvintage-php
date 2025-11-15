@@ -179,9 +179,9 @@ class PostService extends BaseService
       $category_id = $category ? $category->getId() : null;
 
       $filterDto = new PostFilterDTO(
-        categories: $category_id ?? null,
-        sort: $getData['sort'] ?? null,
-        search: $getData['q'] ?? null,
+        categories: [$category_id] ?? [],
+        sort: $getData['sort'] ?? [],
+        search: $getData['q'] ?? [],
         // 'page' =>  $page,
         perPage: (int) $postsPerPage ?? 10
       );
@@ -189,7 +189,7 @@ class PostService extends BaseService
 
       // Получаем статьи с учётом пагинации
       $filteredPostsData = $this->getFilteredPosts( filters: $filterDto, perPage: 9);
-     
+     dd( $filteredPostsData);
       $posts =  $filteredPostsData['posts'];
       $total = $filteredPostsData['total'];
       $filters = $filteredPostsData['filters'];

@@ -79,55 +79,55 @@ final class PostCategoryRepository extends AbstractRepository
     }
 
    
-    private function createCategoryOutputDTOFromArray(array $row): PostCategoryOutputDTO
-    {
-      $locale = 'ru';
-        return new PostCategoryOutputDTO([
-            'id' => (int) $row['id'],
-            'title' => (string) ($row['category_title_translation'] ?? ''),
-            'parent_id' => $row['parent_id'] ?? null,
-            'image' => (string) ($row['image'] ?? ''),
-            'slug' => (string) ($row['slug'] ?? ''),
-            'translations' => [
-                $locale => [
-                    'slug' => $row['slug'] ?? '',
-                    'title' => $row['category_title_translation'] ?? '',
-                    'description' => $row['category_description'] ?? '',
-                    'seo_title' => $row['category_meta_title'] ?? '',
-                    'seo_description' => $row['category_meta_description'] ?? '',
-                ]
-            ],
-        ]);
-    }
+    // private function createCategoryOutputDTOFromArray(array $row): PostCategoryOutputDTO
+    // {
+    //   $locale = 'ru';
+    //     return new PostCategoryOutputDTO([
+    //         'id' => (int) $row['id'],
+    //         'title' => (string) ($row['category_title_translation'] ?? ''),
+    //         'parent_id' => $row['parent_id'] ?? null,
+    //         'image' => (string) ($row['image'] ?? ''),
+    //         'slug' => (string) ($row['slug'] ?? ''),
+    //         'translations' => [
+    //             $locale => [
+    //                 'slug' => $row['slug'] ?? '',
+    //                 'title' => $row['category_title_translation'] ?? '',
+    //                 'description' => $row['category_description'] ?? '',
+    //                 'seo_title' => $row['category_meta_title'] ?? '',
+    //                 'seo_description' => $row['category_meta_description'] ?? '',
+    //             ]
+    //         ],
+    //     ]);
+    // }
 
 
-    private function unitePostRawData(string $currentLang, ?int $categoryId = null): array
-    {
-        $sql = '
-            SELECT 
-                c.*,
-                ct.title AS category_title_translation,
-                ct.description AS category_description,
-                ct.meta_title AS category_meta_title,
-                ct.meta_description AS category_meta_description
-            FROM ' . self::TABLE .' c
-            LEFT JOIN ' . self::TABLE_TRANSLATION .' ct ON ct.category_id = c.id AND ct.locale = ?
-        ';
+    // private function unitePostRawData(string $currentLang, ?int $categoryId = null): array
+    // {
+    //     $sql = '
+    //         SELECT 
+    //             c.*,
+    //             ct.title AS category_title_translation,
+    //             ct.description AS category_description,
+    //             ct.meta_title AS category_meta_title,
+    //             ct.meta_description AS category_meta_description
+    //         FROM ' . self::TABLE .' c
+    //         LEFT JOIN ' . self::TABLE_TRANSLATION .' ct ON ct.category_id = c.id AND ct.locale = ?
+    //     ';
 
      
-        $bindings = [$currentLang];
+    //     $bindings = [$currentLang];
 
-        if ($categoryId !== null) {
-            $sql .= ' WHERE c.id = ? GROUP BY c.id LIMIT 1';
-            $bindings[] = $categoryId;
-            $row = R::getRow($sql, $bindings);
+    //     if ($categoryId !== null) {
+    //         $sql .= ' WHERE c.id = ? GROUP BY c.id LIMIT 1';
+    //         $bindings[] = $categoryId;
+    //         $row = $this->getRow($sql, $bindings);
 
-            return $row ? [$row] : [];
-        } else {
-            $sql .= ' GROUP BY c.id ORDER BY c.id DESC';
-            return R::getAll($sql, $bindings);
-        }
-    }
+    //         return $row ? [$row] : [];
+    //     } else {
+    //         $sql .= ' GROUP BY c.id ORDER BY c.id DESC';
+    //         return $this->getAll($sql, $bindings);
+    //     }
+    // }
 
     
     public function getAllCategories(): array
@@ -165,39 +165,6 @@ final class PostCategoryRepository extends AbstractRepository
       $mainCatId =  $childCategrory->getParentId();
       return $this->getCategoryById($mainCatId) ?? null;
     }
-
-  
-
-    // public function savePostCat(PostCategory $cat): int
-    // {
-    //     $bean = $cat->getId()
-    //         ? $this->loadBean(self::TABLE, $cat->getId())
-    //         : $this->createBean(self::TABLE);
-
-    //     $bean->title = $cat->getTitle();
-    //     $bean->parent_id = $cat->getParentId();
-    //     $bean->image = $cat->getImage();
-    //     $bean->seo_title = $cat->getSeoTitle();
-    //     $bean->seo_description = $cat->getSeoDescription();
-
-    //     $id = (int) $this->saveBean($bean);
-
-    //     // Сохраняем переводы
-    //     R::exec('DELETE FROM ' . self::TABLE_TRANSLATION . ' WHERE category_id = ?', [$id]);
-
-    //     foreach ($cat->getAllTranslations() as $locale => $translation) {
-    //         $transBean = $this->createBean(self::TABLE_TRANSLATION);
-    //         $transBean->category_id = $id;
-    //         $transBean->locale = $locale;
-    //         $transBean->title = $translation['title'] ?? '';
-    //         $transBean->description = $translation['description'] ?? '';
-    //         $transBean->meta_title = $translation['meta_title'] ?? '';
-    //         $transBean->meta_description = $translation['meta_description'] ?? '';
-    //         $this->saveBean($transBean);
-    //     }
-
-    //     return $id;
-    // }
 
   
     public function getAllCategoriesCount (?string $sql = null, array $params = []): int

@@ -24,13 +24,6 @@ use Vvintage\DTO\Post\PostDTO;
 final class PostRepository extends AbstractRepository 
 {  
     private const TABLE = 'posts';
-    // private const TABLE_TRANSLATION = 'poststranslation';
-
-    // private const TABLE_CATEGORIES = 'postscategories';
-    // private const TABLE_CATEGORIES_TRANSLATION = 'postscategoriestranslation';
-
-    // private string $currentLang;
-    // private const DEFAULT_LANG = 'ru';
 
     private function createPostBean(): OODBBean 
     {
@@ -100,7 +93,7 @@ final class PostRepository extends AbstractRepository
 
         // категории
         if (!empty($filters['categories'])) {
-            $placeholders = R::genSlots($filters['categories']);
+            $placeholders = $this->genSlots($filters['categories']);
             $conditions[] = "category_id IN ($placeholders)";
             $params = array_merge($params, $filters['categories']);
         }
@@ -126,61 +119,6 @@ final class PostRepository extends AbstractRepository
     {
       return $this->getDistinctColumnValues(self:: TABLE, $column);
     }
-
-
-
-
-
-
-    // public function getPostById(int $id): ?Post
-    // {
-    //     $rows = $this->unitePostRawData($id);
-       
-    //     return $rows ? $this->fetchPostWithJoins($rows[0]) : null;
-    // }
-
-
-    // private function unitePostRawData(?int $postId = null): array
-    // {
-
-    //     $sql = '
-    //         SELECT 
-    //             p.*,
-    //             pt.locale,
-    //             pt.content,
-    //             pt.title,
-    //             pt.description,
-    //             pt.meta_title,
-    //             pt.meta_description,
-    //             c.id AS category_id,
-    //             c.title AS category_title,
-    //             c.parent_id AS category_parent_id,
-    //             c.image AS category_image,
-    //             ct.title AS category_title_translation,
-    //             ct.description AS category_description,
-    //             ct.meta_title AS category_meta_title,
-    //             ct.meta_description AS category_meta_description
-    //         FROM ' . self::TABLE .' p
-    //         LEFT JOIN ' . self::TABLE_TRANSLATION .' pt ON pt.post_id = p.id AND pt.locale = ?
-    //         LEFT JOIN ' . self::TABLE_CATEGORIES .' c ON p.category_id = c.id
-    //         LEFT JOIN ' . self::TABLE_CATEGORIES_TRANSLATION . ' ct ON ct.category_id = c.id AND ct.locale = ?
-    //     ';
-
-    //     $locale = $this->currentLang ?? self::DEFAULT_LANG;
-    //     $bindings = [$locale, $locale];
-
-    //     if ($postId !== null) {
-    //         $sql .= ' WHERE p.id = ? LIMIT 1';
-    //         $bindings[] = $postId;
-    //         // ⬇Заворачиваем в массив
-    //         $row = R::getRow($sql, $bindings);
-
-    //         return $row ?[$row] : [];
-    //     } else {
-    //         $sql .= ' GROUP BY p.id ORDER BY p.id DESC';
-    //         return $this->getAll($sql, $bindings);
-    //     }
-    // }
 
 
     private function loadTranslations(int $postId): array
@@ -226,64 +164,6 @@ final class PostRepository extends AbstractRepository
             'locale' => $locale,
         ]);
     }
-    // private function createCategoryDTOFromArray(array $row): PostCategoryOutputDTO
-    // {
-    //     $locale = $this->currentLang ?? self::DEFAULT_LANG;;
-
-    //     return new PostCategoryDTO([
-    //         'id' => (int) $row['category_id'],
-    //         'title' => (string) ($row['category_title_translation'] ?? ''),
-    //         'parent_id' => (int) ($row['category_parent_id'] ?? 0),
-    //         'image' => (string) ($row['category_image'] ?? ''),
-    //         'translations' => [
-    //             $locale => [
-    //                 'slug' => $row['category_slug_translation'] ?? '',
-    //                 'title' => $row['category_title_translation'] ?? '',
-    //                 'description' => $row['category_description'] ?? '',
-    //                 'seo_title' => $row['category_meta_title'] ?? '',
-    //                 'seo_description' => $row['category_meta_description'] ?? '',
-    //             ]
-    //         ],
-    //         'locale' => $locale,
-    //     ]);
-    // }
-
-
-    // private function fetchPostWithJoins(array $row): Post
-    // {
-    //     $postId = (int) $row['id'];
-
-    //     $translations = $this->loadTranslations($postId);
-    
-    //     $categoryDTO = $this->createCategoryOutputDTO($row);
-
-    //     $dto = new PostDTO([
-    //         'id' => (int) $row['id'],
-    //         'categoryDTO' => $categoryDTO,
-    //         'title' => (string) $row['title'],
-    //         'description' => (string) $row['description'],
-    //         'content' => (string) $row['content'],
-    //         'slug' => (string) $row['slug'],
-    //         'views' => (int) $row['views'],
-    //         'cover' => (string) $row['cover'],
-    //         'cover_small' => (string) $row['cover_small'],
-    //         'datetime' => (string) $row['datetime'],
-    //         'translations' => $translations,
-    //         'locale' => $this->currentLang ?? self::DEFAULT_LANG
-    //     ]);
-
-    //     return Post::fromDTO($dto);
-    // }
-
-   
- 
-
-    // public function getAllPosts(array $pagination): array
-    // {
-    //     $rows = $this->unitePostRawData();
-
-    //     return array_map([$this, 'fetchPostWithJoins'], $rows);
-    // }
 
     public function getPostsByIds(array $ids): array
     {
@@ -321,16 +201,7 @@ final class PostRepository extends AbstractRepository
       return $this->countAll(self::TABLE, $sql, $params);
     }
 
-    /* :::::::: Категории :::::::: */
 
-    // Получаем категорию поста
-    // public function getCategory(Post $post): PostCategoryDTO 
-    // {
-    //     $catId = $post->getCategory()->getId();
-    //     $row = $this->loadBean(self::TABLE_CATEGORIES, $catId);
-
-    //     return $this->createCategoryDTOFromArray($row);
-    // }
 
     public function findBySlug(string $slug): PostCategoryDTO
     {
@@ -338,10 +209,4 @@ final class PostRepository extends AbstractRepository
         return $this->createCategoryOutputDTO($row);
     }
 
-
-    // public function getAllDTO(): array
-    // {
-    //     $rows = $this->findAll(self::TABLE_CATEGORIES);
-    //     return array_map([ $this, 'createCategoryDTOFromArray'], $rows);
-    // }
 }

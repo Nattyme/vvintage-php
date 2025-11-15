@@ -174,6 +174,11 @@ abstract class AbstractRepository
         return array_map('intval', $rows);
     }
 
+    protected function genSlots(array $array): string
+    {
+      return R::genSlots($array);
+    }
+
 
    
 
