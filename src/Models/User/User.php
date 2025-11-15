@@ -65,6 +65,7 @@ final class User implements UserInterface
 
     public static function fromArray(array $data): self
     {
+      dd($data);
         $user = new self();
         $user->id = (int) ($data['id'] ?? 0);
         $user->password = (string) ($data['password'] ?? '');

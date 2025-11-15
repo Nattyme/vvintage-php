@@ -14,11 +14,7 @@ use Vvintage\Contracts\User\UserRepositoryInterface;
 use Vvintage\Repositories\AbstractRepository;
 
 use Vvintage\Models\User\User;
-use Vvintage\Models\Cart\Cart;
-use Vvintage\Public\DTO\User\UserOutputDTO;
-use Vvintage\Public\DTO\User\UserCreateDTO;
 use Vvintage\Public\DTO\User\UserUpdateDTO;
-use Vvintage\Public\DTO\Address\AddressDTO;
 
 final class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
@@ -87,7 +83,7 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
     private function mapBeanToUser(OODBBean $bean): User
     {
-        $dto = new UserOutputDTO([
+        return User::fromArray([
             'id' => (int) $bean->id,
             'password' => (string) $bean->password,
             'email' => (string) $bean->email,
@@ -105,8 +101,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
             'avatar' => (string) $bean->avatar,
             'avatar_small' => (string) $bean->avatar_small,
         ]);
-
-        return User::fromDTO($dto);
     }
 
 
@@ -169,8 +163,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
 
   public function updateUser(UserUpdateDTO $dto, int $id): ?User
   {
-
-  
       $bean = $this->loadBean(self::TABLE_USERS, $id);
       if (!$bean || $bean->id === 0) return null;
 
