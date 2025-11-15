@@ -47,7 +47,6 @@ final class UserRepository extends AbstractRepository implements UserRepositoryI
     public function getUserByEmail(string $email): ?User
     {
       $bean = $this->findOneBy(self::TABLE_USERS, 'email = ?', [strtolower($email)]);
-
       if (!$bean) return null;
 
       return $this->mapBeanToUser($bean);;

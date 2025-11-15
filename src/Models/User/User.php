@@ -65,7 +65,6 @@ final class User implements UserInterface
 
     public static function fromArray(array $data): self
     {
-      dd($data);
         $user = new self();
         $user->id = (int) ($data['id'] ?? 0);
         $user->password = (string) ($data['password'] ?? '');
@@ -73,16 +72,16 @@ final class User implements UserInterface
         $user->name = $data['name'] ?? '';
         $user->surname = $data['surname'] ?? '';
         $user->role = (string) ($data['role'] ?? 'Пользователь');
-        $user->fav_list = (string) ($data['fav_list'] ?? []);
-        $user->cart = (string) ($data['cart'] ?? []);
+        $user->fav_list = (array) ($data['fav_list'] ? json_decode($data['fav_list'] ?? '[]', true) : []);
+        $user->cart = (array) ($data['cart'] ? json_decode($data['cart'] ?? '[]', true) : []);
 
         $user->country = (string) ($data['country'] ?? '');
         $user->city = (string) ($data['city'] ?? '');
         $user->phone = (string) ($data['phone'] ?? '');
          
         $user->avatar = (string) ($data['avatar'] ?? '');
-        $user->avatar_small = (string) $dto->avatar_small;
-           
+        $user->avatar_small = (string) ($data['avatar_small'] ?? '');
+         
         return $user;
     }
   
@@ -99,13 +98,11 @@ final class User implements UserInterface
           'surname' => $this->surname,
           'email' => $this->email,
           'role' => $this->role,
-          // 'password' => $this->password,
           'cart' => $this->cart,
           'fav' => $this->fav_list,
           'country' => $this->country,
           'city' => $this->city,
           'phone' => $this->phone,
-          // 'address' => $this->getAddress(),
           'avatar' => $this->avatar,
           'avatar_small' => $this->avatar_small
         ];
