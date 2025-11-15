@@ -124,7 +124,7 @@ final class ProfileController extends BaseController
         // Значит админ
         $profileData = $this->profileService->getFullProfileData($uriGet); // получаем данные профиля пользователя
       
-        // $address ; // потом доработать адрес
+        TODO:// $address ; // потом доработать адрес
         $this->renderProfileEdit(routeData: $routeData, userModel: $profileData['userModel'], uriGet: $uriGet);
       } 
 
@@ -150,9 +150,7 @@ final class ProfileController extends BaseController
       $orderId = $routeData->uriGetParams[0] ?? null;
 
       
-      if (!$orderId || !$userId) {
-          $this->redirect('profile');
-      }
+      if (!$orderId || !$userId) $this->redirect('profile');
  
       $order = $this->orderService->getProfileDetailedOrder((int) $orderId);
    
