@@ -88,14 +88,16 @@ class PostService extends BaseService
       $categories = !empty($filters->categories) ? $filters->categories : null;
 
       // Проверяем на главную
-      $id = (int) $filters->categories;
-      $category = $this->categoryService->getCategoryById($id) ?? null;
+      $category = count($categories) === 1 ? 
+                  $this->categoryService->getCategoryById((int) $categories[0]) 
+                  : null;
+
       $parent_id = $category ? $category->getParentId() : null;
 
-      // Если у категории нет Id родител - значит это главная. Получаем ее подкатегории
+      // Если у категории нет Id родителя - значит это главная. Получаем ее подкатегории
       if(!$parent_id) {
   
-        $subCategories = $this->categoryService->getSubCategoriesArray($id);
+        $subCategories = $this->categoryService->getSubCategoriesArray($category->getId());
         
         $subCategoryIds = [];
         // Получаем только id из массива подкатегорий
@@ -189,7 +191,7 @@ class PostService extends BaseService
 
       // Получаем статьи с учётом пагинации
       $filteredPostsData = $this->getFilteredPosts( filters: $filterDto, perPage: 9);
-     dd( $filteredPostsData);
+     
       $posts =  $filteredPostsData['posts'];
       $total = $filteredPostsData['total'];
       $filters = $filteredPostsData['filters'];
